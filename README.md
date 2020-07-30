@@ -26,8 +26,8 @@ A new Flutter application.
 | date             | TEXT      |             | no   | なし        | 日付 　　       |  　　|
 | game_id          | INTEGER   |             | no   | なし        | ゲーム名ID　　　 |      |
 | tag_id           | INTEGER   |             | no   | なし        | タグID　　　  　 |      |
-| my_deck_id       | INTEGER   |             | no   | なし        | 使用デッキID　　 |  　　|
-| opponent_deck_id | INTEGER   |             | no   | なし        | 相手のデッキID   |  　　|
+| my_deck_id       | INTEGER   |             | no   | なし        | 使用デッキID　　 | deck_idで紐づけ 　　|
+| opponent_deck_id | INTEGER   |             | no   | なし        | 相手のデッキID   | deck_idで紐づけ 　　|
 | 1st_play         | INTEGER   |             | no   | なし        | 先攻後攻    　　 |  　　|
 | win_or_lose1     | INTEGER   |             | no   | なし        | 勝敗1　　    　　|  　　|
 | memo             | TEXT      |             | yes  | なし        | メモ 　　       |  　　|
