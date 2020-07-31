@@ -3,55 +3,46 @@ import 'package:flutter/material.dart';
 class Record with ChangeNotifier {
   int recordId;
   DateTime date;
-  String title;
-  int numberPeople;
-  String mode;
+  int gameId;
   int tagId;
-  bool isEdit;
-  bool isDuplicate;
+  int myDeckId;
+  int opponentDeckId;
+  int firstOrSecond;
+  int winOrLose;
+  String memo;
 
   Record(
       {this.recordId,
       this.date,
-      this.title,
-      this.numberPeople = 1,
-      this.mode = '順位モード',
-      this.tagId = 1,
-      this.isEdit = false,
-      this.isDuplicate = false});
+      this.gameId,
+      this.tagId,
+      this.myDeckId,
+      this.opponentDeckId,
+      this.firstOrSecond,
+      this.winOrLose,
+      this.memo});
 
   factory Record.fromDatabaseJson(Map<String, dynamic> data) => Record(
         recordId: data['record_id'],
         date: DateTime.parse(data['date']).toLocal(),
-        title: data['title'],
-        numberPeople: data['number_people'],
-        mode: data['mode'],
+        gameId: data['game_id'],
         tagId: data['tag_id'],
-        isEdit: data['is_edit'] == 1 ? true : false,
+        myDeckId: data['my_deck_id'],
+        opponentDeckId: data['opponent_deck_id'],
+        firstOrSecond: data['first_or_seconde'],
+        winOrLose: data['win_or_lose'],
+        memo: data['memo'],
       );
 
   Map<String, dynamic> toDatabaseJson() => {
-        'record_id': recordId,
+        'record__id': recordId,
         'date': date.toUtc().toIso8601String(),
-        'title': title,
-        'number_people': numberPeople,
-        'mode': mode,
+        'game_id': gameId,
         'tag_id': tagId,
-        'is_edit': isEdit ? 1 : 0,
+        'my_deck_id': myDeckId,
+        'opponent_deck_id': opponentDeckId,
+        'first_or_second': firstOrSecond,
+        'win_or_lose': winOrLose,
+        'memo': memo,
       };
-
-  Future changeNumberPeople(int newCount) async {
-    numberPeople = newCount;
-    notifyListeners();
-  }
-
-  Future changeMode(String newMode) async {
-    mode = newMode;
-    notifyListeners();
-  }
-
-  Future changeIsEdit() async {
-    isEdit = !isEdit;
-    notifyListeners();
-  }
 }

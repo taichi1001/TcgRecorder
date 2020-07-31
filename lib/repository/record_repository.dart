@@ -4,14 +4,14 @@ import 'package:tcg_recorder/entity/record.dart';
 class RecordRepo {
   final recordDao = RecordDao();
 
-  Future getAllRecords() => recordDao.getAll();
+  Future getAllTag() => recordDao.getAll();
 
-  Future insertRecord(Record todo) => recordDao.create(todo);
+  Future insertTag(Record record) => recordDao.create(record);
 
-  Future updateRecord(Record todo) => recordDao.update(todo);
+  Future updateTag(Record record) => recordDao.update(record);
 
-  Future deleteRecordById(int id) => recordDao.delete(id);
+  Future deleteTagById(int id) => recordDao.delete(id);
 
-  //not use this sample
-  Future deleteAllRecords() => recordDao.deleteAll();
+  //not use this
+  Future deleteAllTag() => recordDao.deleteAll();
 }

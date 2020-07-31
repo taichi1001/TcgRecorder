@@ -1,6 +1,6 @@
-import 'package:sqflite/sqflite.dart';
-import 'package:tcg_recorder/service/database.dart';
+import 'package:tcg_recorder/entity/game.dart';
 import 'package:tcg_recorder/entity/record.dart';
+import 'package:tcg_recorder/service/database.dart';
 
 class RecordDao {
   final dbProvider = DatabaseService.dbProvider;
@@ -8,8 +8,7 @@ class RecordDao {
 
   Future<int> create(Record record) async {
     final db = await dbProvider.database;
-    final result = db.insert(tableName, record.toDatabaseJson(),
-        conflictAlgorithm: ConflictAlgorithm.replace);
+    final result = db.insert(tableName, record.toDatabaseJson());
     return result;
   }
 
@@ -17,7 +16,7 @@ class RecordDao {
     final db = await dbProvider.database;
     final List<Map<String, dynamic>> result = await db.query(tableName);
     final List<Record> records = result.isNotEmpty
-        ? result.map((item) => Record.fromDatabaseJson(item)).toList()
+        ? result.map((item) => Game.fromDatabaseJson(item)).toList()
         : [];
     return records;
   }

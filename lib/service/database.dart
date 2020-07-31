@@ -11,11 +11,9 @@ class DatabaseService {
 
   //tableName
   static const recordTableName = 'record';
-  static const recordContentsTableName = 'record_contents';
-  static const nameTableName = 'name';
+  static const gameTableName = 'game';
+  static const deckTableName = 'deck';
   static const tagTableName = 'tag';
-  static const mappingNameRecordTableName = 'mapping_name_record';
-  static const rankRateTableName = 'rank_rate';
 
   static final DatabaseService dbProvider = DatabaseService();
 
@@ -49,51 +47,32 @@ class DatabaseService {
       CREATE TABLE $recordTableName (
         record_id INTEGER PRIMARY KEY AUTOINCREMENT,
         date TEXT NOT NULL,
-        title TEXT NOT NULL,
-        number_people INTEGER NOT NULL ,
-        mode TEXT NOT NULL,
-        tag_id INTEGER NOT NULL,
-        is_edit INTEGER NOT NULL
+        game_id INTEGER NOT NULL,
+        tag_id INTEGER NOT NULL ,
+        my_deck_id INTEGER NOT NULL,
+        opponent_deck_id INTEGER NOT NULL,
+        first_or_seconde INTEGER NOT NULL,
+        win_or_lose INTEGER NOT NULL,
+        memo TEXT
       )
     ''');
     await database.execute('''
-      CREATE TABLE $recordContentsTableName (
-        record_contents_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        record_id INTEGER NOT NULL,
-        name_id INTEGER NOT NULL,
-        count INTEGER NOT NULL,
-        score INTEGER NOT NULL,
-        calc_score INTEGER
+      CREATE TABLE $gameTableName (
+        game_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        game TEXT NOT NULL,
       )
     ''');
     await database.execute('''
-      CREATE TABLE $nameTableName (
-        name_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
-        UNIQUE(name)
+      CREATE TABLE $deckTableName (
+        deck_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        deck TEXT NOT NULL,
       )
     ''');
     await database.execute('''
       CREATE TABLE $tagTableName (
         tag_id INTEGER PRIMARY KEY AUTOINCREMENT,
         tag TEXT NOT NULL,
-        UNIQUE(tag)
-      )
-    ''');
-    await database.execute('''
-      CREATE TABLE $mappingNameRecordTableName (
-        mapping_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name_id INTEGER NOT NULL,
-        record_id INTEGER NOT NULL,
-        UNIQUE(name_id, record_id)
-      )
-    ''');
-    await database.execute('''
-      CREATE TABLE $rankRateTableName (
-        rank_rate_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        record_id INTEGER NOT NULL,
-        rank INTEGER NOT NULL,
-        rate INTEGER NOT NULL
+        game_id INTEGER NOT NULL,
       )
     ''');
     await database.insert(tagTableName, Tag(tag: 'default').toDatabaseJson());
