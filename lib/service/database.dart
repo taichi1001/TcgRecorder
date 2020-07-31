@@ -59,20 +59,21 @@ class DatabaseService {
     await database.execute('''
       CREATE TABLE $gameTableName (
         game_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        game TEXT NOT NULL,
+        game TEXT NOT NULL
       )
     ''');
     await database.execute('''
       CREATE TABLE $deckTableName (
         deck_id INTEGER PRIMARY KEY AUTOINCREMENT,
         deck TEXT NOT NULL,
+        game_id INTEGER NOT NULL
       )
     ''');
     await database.execute('''
       CREATE TABLE $tagTableName (
         tag_id INTEGER PRIMARY KEY AUTOINCREMENT,
         tag TEXT NOT NULL,
-        game_id INTEGER NOT NULL,
+        game_id INTEGER NOT NULL
       )
     ''');
     await database.insert(tagTableName, Tag(tag: 'default').toDatabaseJson());
