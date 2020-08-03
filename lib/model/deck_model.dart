@@ -1,34 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:tcg_recorder/entity/record.dart';
-import 'package:tcg_recorder/entity/tag.dart';
-import 'package:tcg_recorder/repository/record_repository.dart';
+import 'package:tcg_recorder/entity/deck.dart';
+import 'package:tcg_recorder/entity/game.dart';
+import 'package:tcg_recorder/repository/deck_repository.dart';
 
-class RecordModel with ChangeNotifier {
-  List<Tag> allTagList;
+class DeckModel with ChangeNotifier {
+  Game game;
+  List<Deck> gameDeckList;
 
-  final recordRepo = RecordRepo();
+  final deckRepo = DeckRepo();
 
-  RecordModel() {
+  DeckModel(this.game) {
     _fetchAll();
   }
 
   Future _fetchAll() async {
-    allTagList = await recordRepo.getAllTag();
+    gameDeckList = await deckRepo.getGameDeck(game.gameId);
     notifyListeners();
   }
 
-  Future add(Record record) async {
-    recordRepo.insertTag(record);
+  Future add(Deck deck) async {
+    deckRepo.insert(deck);
     _fetchAll();
   }
 
-  Future update(Record record) async {
-    await recordRepo.updateTag(record);
+  Future update(Deck deck) async {
+    await deckRepo.update(deck);
     _fetchAll();
   }
 
-  Future remove(Record record) async {
-    await recordRepo.deleteTagById(record.recordId);
+  Future remove(Deck deck) async {
+    await deckRepo.deleteById(deck.deckId);
     _fetchAll();
   }
 }

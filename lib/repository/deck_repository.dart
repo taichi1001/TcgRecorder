@@ -4,14 +4,16 @@ import 'package:tcg_recorder/entity/deck.dart';
 class DeckRepo {
   final deckDao = DeckDao();
 
-  Future getAllTag() => deckDao.getAll();
+  Future getAll() => deckDao.getAll();
 
-  Future insertTag(Deck deck) => deckDao.create(deck);
+  Future getGameDeck(int id) => deckDao.getGameDeck(id);
 
-  Future updateTag(Deck deck) => deckDao.update(deck);
+  Future insert(Deck deck) => deckDao.create(deck);
 
-  Future deleteTagById(int id) => deckDao.delete(id);
+  Future update(Deck deck) => deckDao.update(deck);
+
+  Future deleteById(int id) => deckDao.delete(id);
 
   //not use this
-  Future deleteAllTag() => deckDao.deleteAll();
+  Future deleteAll() => deckDao.deleteAll();
 }
