@@ -17,6 +17,7 @@ A new Flutter application.
 |------------|-----------|-------------|------|-------------|-----------------|--------|
 | deck_id    | INTEGER   | PRIMARY KEY | no   | なし         | ID      | AUTO_INCREMENT |
 | deck       | TEXT      | UNIQUE      | no   | なし         | デッキ名 |  　　|
+| game_Id | INTEGER   |             | no   | なし        | ゲーム名ID |      |
 
 - 記録テーブル
 

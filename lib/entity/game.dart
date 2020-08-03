@@ -1,4 +1,6 @@
-class Game {
+import 'package:flutter/material.dart';
+
+class Game with ChangeNotifier {
   int gameId;
   String game;
 

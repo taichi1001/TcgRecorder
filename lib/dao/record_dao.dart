@@ -21,6 +21,26 @@ class RecordDao {
     return records;
   }
 
+  Future<List<Record>> getGameRecord(int id) async {
+    final db = await dbProvider.database;
+    final List<Map<String, dynamic>> result =
+        await db.query(tableName, where: 'game_id = ?', whereArgs: [id]);
+    final List<Record> records = result.isNotEmpty
+        ? result.map((item) => Game.fromDatabaseJson(item)).toList()
+        : [];
+    return records;
+  }
+
+  Future<List<Record>> getGameTag(int id) async {
+    final db = await dbProvider.database;
+    final List<Map<String, dynamic>> result =
+        await db.query(tableName, where: 'tag_id = ?', whereArgs: [id]);
+    final List<Record> records = result.isNotEmpty
+        ? result.map((item) => Game.fromDatabaseJson(item)).toList()
+        : [];
+    return records;
+  }
+
   Future<int> update(Record record) async {
     final db = await dbProvider.database;
     final result = await db.update(tableName, record.toDatabaseJson(),
