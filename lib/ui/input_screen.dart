@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:tcg_recorder/model/game_model.dart';
+import 'package:tcg_recorder/model/tag_model.dart';
 
 class InputScreen extends StatelessWidget {
   const InputScreen({Key key}) : super(key: key);
@@ -25,6 +26,8 @@ class _Body extends StatelessWidget {
     final _formKey = GlobalKey<FormState>();
     final _gameController = TextEditingController(
         text: context.select((GameModel model) => model.selectedGame.game));
+    final _tagController = TextEditingController(
+        text: context.select((TagModel model) => model.selectedTag.tag));
     return Form(
       key: _formKey,
       child: Column(
@@ -38,6 +41,9 @@ class _Body extends StatelessWidget {
             ),
             autovalidate: false,
             controller: _gameController,
+            onChanged: (String value) {
+              context.read<GameModel>().selectedGameChangeToString(value);
+            },
             validator: (value) {
               if (value.isEmpty) {
                 return '入力されていません';
@@ -45,15 +51,36 @@ class _Body extends StatelessWidget {
               return null;
             },
           ),
-          const _ShowModalPicker(),
+          const _ShowGameModalPicker(),
+
+          TextFormField(
+            decoration: InputDecoration(
+              icon: Icon(Icons.settings),
+              border: const OutlineInputBorder(),
+              labelText: 'タグ名',
+              hintText: 'Enter タグ名',
+            ),
+            autovalidate: false,
+            controller: _tagController,
+            onChanged: (String value) {
+              context.read<TagModel>().selectedTagChangeToString(value);
+            },
+            validator: (value) {
+              if (value.isEmpty) {
+                return '入力されていません';
+              }
+              return null;
+            },
+          ),
+          const _ShowTagModalPicker(),
         ],
       ),
     );
   }
 }
 
-class _ShowModalPicker extends StatelessWidget {
-  const _ShowModalPicker({Key key}) : super(key: key);
+class _ShowGameModalPicker extends StatelessWidget {
+  const _ShowGameModalPicker({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final gameModel = Provider.of<GameModel>(context, listen: true);
@@ -73,7 +100,41 @@ class _ShowModalPicker extends StatelessWidget {
                   children: gameModel.allGameList
                       .map((game) => Text(game.game))
                       .toList(),
-                  onSelectedItemChanged: gameModel.selectedGameChange,
+                  onSelectedItemChanged: gameModel.selectedGameChangeToIndex,
+                ),
+              ),
+            );
+          },
+        );
+      },
+      child: const Text('選択'),
+    );
+  }
+}
+
+class _ShowTagModalPicker extends StatelessWidget {
+  const _ShowTagModalPicker({Key key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    final tagModel = Provider.of<TagModel>(context, listen: true);
+    tagModel.getGameTagList(context.select((GameModel model) => model.selectedGame.gameId));
+    return RaisedButton(
+      onPressed: () {
+        showModalBottomSheet(
+          context: context,
+          builder: (BuildContext context) {
+            return Container(
+              height: MediaQuery.of(context).size.height / 3,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: CupertinoPicker(
+                  itemExtent: 40,
+                  children: tagModel.gameTagList
+                      .map((tag) => Text(tag.tag))
+                      .toList(),
+                  onSelectedItemChanged: tagModel.selectedTagChangeToIndex,
                 ),
               ),
             );

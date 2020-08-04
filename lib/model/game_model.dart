@@ -12,18 +12,19 @@ class GameModel with ChangeNotifier {
     _fetchAll();
   }
 
-  void selectedGameChange(int index) {
+  void selectedGameChangeToIndex(int index) {
     selectedGame = allGameList[index];
+    notifyListeners();
+  }
+
+  void selectedGameChangeToString(String newValue) {
+    selectedGame.game = newValue;
     notifyListeners();
   }
 
   Future _fetchAll() async {
     allGameList = await gameRepo.getAllTag();
-    if (allGameList.isEmpty) {
-      selectedGame = Game(gameId: 0, game: 'None');
-    } else {
-      selectedGame = allGameList[0];
-    }
+    selectedGame = allGameList[0];  
     notifyListeners();
   }
 
