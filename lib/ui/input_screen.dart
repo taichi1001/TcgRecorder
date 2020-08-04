@@ -3,8 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:tcg_recorder/model/game_model.dart';
 
-void main() => runApp(InputScreen());
-
 class InputScreen extends StatelessWidget {
   const InputScreen({Key key}) : super(key: key);
   @override
@@ -13,7 +11,7 @@ class InputScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('データ入力'),
       ),
-      body: Center(
+      body: const Center(
         child: _Body(),
       ),
     );
@@ -31,27 +29,23 @@ class _Body extends StatelessWidget {
       key: _formKey,
       child: Column(
         children: [
-          Row(
-            children: [
-              TextFormField(
-                decoration: InputDecoration(
-                  icon: Icon(Icons.settings),
-                  border: OutlineInputBorder(),
-                  labelText: "ゲーム名",
-                  hintText: 'Enter your email',
-                ),
-                autovalidate: false,
-                controller: _gameController,
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return '入力されていません';
-                  }
-                  return null;
-                },
-              ),
-              _ShowModalPicker(),
-            ],
+          TextFormField(
+            decoration: InputDecoration(
+              icon: Icon(Icons.settings),
+              border: const OutlineInputBorder(),
+              labelText: 'ゲーム名',
+              hintText: 'Enter your email',
+            ),
+            autovalidate: false,
+            controller: _gameController,
+            validator: (value) {
+              if (value.isEmpty) {
+                return '入力されていません';
+              }
+              return null;
+            },
           ),
+          const _ShowModalPicker(),
         ],
       ),
     );

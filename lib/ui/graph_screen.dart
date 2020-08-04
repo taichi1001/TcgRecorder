@@ -10,7 +10,7 @@ class GraphScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('グラフ'),
       ),
-      body: Center(child: Text('グラフ'),),
+      body: const Center(child: Text('グラフ'),),
     );
   }
 }

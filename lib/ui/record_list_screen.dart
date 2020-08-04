@@ -10,7 +10,7 @@ class RecordListScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('データ一覧'),
       ),
-      body: Center(child: Text('一覧'),),
+      body: const Center(child: Text('一覧'),),
     );
   }
 }
