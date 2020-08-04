@@ -17,19 +17,24 @@ class GameModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void selectedGameChangeToString(String newValue) {
-    selectedGame.game = newValue;
+  Future selectedGameChangeToString(String newValue) async {
+    selectedGame =
+        allGameList.where((value) => value.game == newValue).toList()[0];
+    if (selectedGame == null) {
+      selectedGame = Game(game: newValue);
+      await gameRepo.insert(selectedGame);
+    }
     notifyListeners();
   }
 
   Future _fetchAll() async {
     allGameList = await gameRepo.getAllTag();
-    selectedGame = allGameList[0];  
+    selectedGame = allGameList[0];
     notifyListeners();
   }
 
   Future add(Game game) async {
-    gameRepo.insert(game);
+    await gameRepo.insert(game);
     _fetchAll();
   }
 

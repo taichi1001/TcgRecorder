@@ -21,7 +21,7 @@ class TagModel with ChangeNotifier {
 
   Future getGameTagList(int id) async {
     gameTagList = await tagRepo.getGameTag(id);
-    notifyListeners();    
+    notifyListeners();
   }
 
   void selectedTagChangeToIndex(int index) {
@@ -29,8 +29,13 @@ class TagModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void selectedTagChangeToString(String newValue) {
-    selectedTag.tag = newValue;
+  Future selectedTagChangeToString(String newValue, int gameId) async {
+    selectedTag =
+        gameTagList.where((value) => value.tag == newValue).toList()[0];
+    if (selectedTag == null) {
+      selectedTag = Tag(tag: newValue, gameId: gameId);
+      await tagRepo.update(selectedTag);
+    }
     notifyListeners();
   }
 

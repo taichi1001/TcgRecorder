@@ -24,10 +24,13 @@ class _Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
-    final _gameController = TextEditingController(
-        text: context.select((GameModel model) => model.selectedGame.game));
-    final _tagController = TextEditingController(
-        text: context.select((TagModel model) => model.selectedTag.tag));
+    final _selectedGame =
+        context.select((GameModel model) => model.selectedGame);
+    final _selectedTag = context.select((TagModel model) => model.selectedTag);
+    
+    final _gameController = TextEditingController(text: _selectedGame.game);
+    final _tagController = TextEditingController(text: _selectedTag.tag);
+
     return Form(
       key: _formKey,
       child: Column(
@@ -41,7 +44,7 @@ class _Body extends StatelessWidget {
             ),
             autovalidate: false,
             controller: _gameController,
-            onChanged: (String value) {
+            onFieldSubmitted: (String value) {
               context.read<GameModel>().selectedGameChangeToString(value);
             },
             validator: (value) {
@@ -52,7 +55,6 @@ class _Body extends StatelessWidget {
             },
           ),
           const _ShowGameModalPicker(),
-
           TextFormField(
             decoration: InputDecoration(
               icon: Icon(Icons.settings),
@@ -62,8 +64,8 @@ class _Body extends StatelessWidget {
             ),
             autovalidate: false,
             controller: _tagController,
-            onChanged: (String value) {
-              context.read<TagModel>().selectedTagChangeToString(value);
+            onFieldSubmitted: (String value) {
+              context.read<TagModel>().selectedTagChangeToString(value, _selectedGame.gameId);
             },
             validator: (value) {
               if (value.isEmpty) {
@@ -117,7 +119,8 @@ class _ShowTagModalPicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tagModel = Provider.of<TagModel>(context, listen: true);
-    tagModel.getGameTagList(context.select((GameModel model) => model.selectedGame.gameId));
+    tagModel.getGameTagList(
+        context.select((GameModel model) => model.selectedGame.gameId));
     return RaisedButton(
       onPressed: () {
         showModalBottomSheet(
@@ -131,9 +134,8 @@ class _ShowTagModalPicker extends StatelessWidget {
                 },
                 child: CupertinoPicker(
                   itemExtent: 40,
-                  children: tagModel.gameTagList
-                      .map((tag) => Text(tag.tag))
-                      .toList(),
+                  children:
+                      tagModel.gameTagList.map((tag) => Text(tag.tag)).toList(),
                   onSelectedItemChanged: tagModel.selectedTagChangeToIndex,
                 ),
               ),
