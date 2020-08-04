@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tcg_recorder/model/bottom_navigation_model.dart';
+import 'package:tcg_recorder/model/game_model.dart';
 import 'package:tcg_recorder/ui/main_bottom_navigation.dart';
 
 void main() => runApp(MyApp());
@@ -12,6 +13,9 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<BottomNavigationModel>(
           create: (context) => BottomNavigationModel(),
+        ),
+        ChangeNotifierProvider<GameModel>(
+          create: (context) => GameModel(),
         ),
       ],
       child: MaterialApp(
