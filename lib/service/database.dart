@@ -76,6 +76,5 @@ class DatabaseService {
         game_id INTEGER NOT NULL
       )
     ''');
-    await database.insert(tagTableName, Tag(tag: 'default').toDatabaseJson());
   }
 }

@@ -18,18 +18,21 @@ class GameModel with ChangeNotifier {
   }
 
   Future selectedGameChangeToString(String newValue) async {
-    selectedGame =
-        allGameList.where((value) => value.game == newValue).toList()[0];
-    if (selectedGame == null) {
+    if (allGameList.where((value) => value.game == newValue).isEmpty) {
       selectedGame = Game(game: newValue);
       await gameRepo.insert(selectedGame);
     }
+    allGameList = await gameRepo.getAllTag();
     notifyListeners();
   }
 
   Future _fetchAll() async {
     allGameList = await gameRepo.getAllTag();
-    selectedGame = allGameList[0];
+    if(allGameList.isNotEmpty) {
+      selectedGame = allGameList[0];
+    } else {
+      selectedGame = Game(gameId: 0, game:'None');
+    }
     notifyListeners();
   }
 

@@ -27,7 +27,7 @@ class _Body extends StatelessWidget {
     final _selectedGame =
         context.select((GameModel model) => model.selectedGame);
     final _selectedTag = context.select((TagModel model) => model.selectedTag);
-    
+
     final _gameController = TextEditingController(text: _selectedGame.game);
     final _tagController = TextEditingController(text: _selectedTag.tag);
 
@@ -46,6 +46,7 @@ class _Body extends StatelessWidget {
             controller: _gameController,
             onFieldSubmitted: (String value) {
               context.read<GameModel>().selectedGameChangeToString(value);
+              _tagController.clear();
             },
             validator: (value) {
               if (value.isEmpty) {

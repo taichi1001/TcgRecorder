@@ -15,7 +15,11 @@ class TagModel with ChangeNotifier {
 
   Future _fetchAll() async {
     allTagList = await tagRepo.getAll();
-    selectedTag = allTagList[0];
+    if(allTagList.isNotEmpty) {
+      selectedTag = allTagList[0];
+    } else {
+      selectedTag = Tag(tagId: 0, tag:'default', gameId: 0);
+    }
     notifyListeners();
   }
 
@@ -30,12 +34,11 @@ class TagModel with ChangeNotifier {
   }
 
   Future selectedTagChangeToString(String newValue, int gameId) async {
-    selectedTag =
-        gameTagList.where((value) => value.tag == newValue).toList()[0];
-    if (selectedTag == null) {
+    if (gameTagList.where((value) => value.tag == newValue).isEmpty) {
       selectedTag = Tag(tag: newValue, gameId: gameId);
-      await tagRepo.update(selectedTag);
+      await tagRepo.insert(selectedTag);
     }
+    allTagList = await tagRepo.getAll();
     notifyListeners();
   }
 
