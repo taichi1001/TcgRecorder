@@ -19,27 +19,26 @@ class GameModel with ChangeNotifier {
 
   Future _fetchAll() async {
     allGameList = await gameRepo.getAllTag();
-    allGameList = [
-      Game(gameId: 1, game: 'a'),
-      Game(gameId: 2, game: 'b'),
-      Game(gameId: 3, game: 'c')
-    ];
-    selectedGame = allGameList[0];
+    if (allGameList.isEmpty) {
+      selectedGame = Game(gameId: 0, game: 'None');
+    } else {
+      selectedGame = allGameList[0];
+    }
     notifyListeners();
   }
 
   Future add(Game game) async {
-    gameRepo.insertTag(game);
+    gameRepo.insert(game);
     _fetchAll();
   }
 
   Future update(Game game) async {
-    await gameRepo.updateTag(game);
+    await gameRepo.update(game);
     _fetchAll();
   }
 
   Future remove(Game game) async {
-    await gameRepo.deleteTagById(game.gameId);
+    await gameRepo.deleteById(game.gameId);
     _fetchAll();
   }
 }

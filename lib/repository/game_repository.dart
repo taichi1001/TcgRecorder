@@ -6,12 +6,12 @@ class GameRepo {
 
   Future getAllTag() => gameDao.getAll();
 
-  Future insertTag(Game game) => gameDao.create(game);
+  Future insert(Game game) => gameDao.create(game);
 
-  Future updateTag(Game game) => gameDao.update(game);
+  Future update(Game game) => gameDao.update(game);
 
-  Future deleteTagById(int id) => gameDao.delete(id);
+  Future deleteById(int id) => gameDao.delete(id);
 
   //not use this
-  Future deleteAllTag() => gameDao.deleteAll();
+  Future deleteAll() => gameDao.deleteAll();
 }
