@@ -4,6 +4,7 @@ import 'package:tcg_recorder/repository/game_repository.dart';
 
 class GameModel with ChangeNotifier {
   List<Game> allGameList;
+  Game selectedGame;
 
   final gameRepo = GameRepo();
 
@@ -11,8 +12,19 @@ class GameModel with ChangeNotifier {
     _fetchAll();
   }
 
+  void selectedGameChange(int index) {
+    selectedGame = allGameList[index];
+    notifyListeners();
+  }
+
   Future _fetchAll() async {
     allGameList = await gameRepo.getAllTag();
+    allGameList = [
+      Game(gameId: 1, game: 'a'),
+      Game(gameId: 2, game: 'b'),
+      Game(gameId: 3, game: 'c')
+    ];
+    selectedGame = allGameList[0];
     notifyListeners();
   }
 
