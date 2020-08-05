@@ -28,8 +28,12 @@ class _Body extends StatelessWidget {
         context.select((GameModel model) => model.selectedGame);
     final _selectedTag = context.select((TagModel model) => model.selectedTag);
 
-    final _gameController = TextEditingController(text: _selectedGame.game);
-    final _tagController = TextEditingController(text: _selectedTag.tag);
+    final _gameController = _selectedGame != null
+        ? TextEditingController(text: _selectedGame.game)
+        : TextEditingController();
+    final _tagController = _selectedTag != null
+        ? TextEditingController(text: _selectedTag.tag)
+        : TextEditingController();
 
     return Form(
       key: _formKey,
@@ -66,9 +70,7 @@ class _Body extends StatelessWidget {
             autovalidate: false,
             controller: _tagController,
             onFieldSubmitted: (String value) {
-              context
-                  .read<TagModel>()
-                  .selectedTagChangeToString(value);
+              context.read<TagModel>().selectedTagChangeToString(value);
             },
             validator: (value) {
               if (value.isEmpty) {
