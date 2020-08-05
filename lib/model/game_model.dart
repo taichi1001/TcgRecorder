@@ -3,7 +3,7 @@ import 'package:tcg_recorder/entity/game.dart';
 import 'package:tcg_recorder/repository/game_repository.dart';
 
 class GameModel with ChangeNotifier {
-  List<Game> allGameList;
+  List<Game> allGameList = [];
   Game selectedGame;
 
   final gameRepo = GameRepo();
@@ -27,11 +27,15 @@ class GameModel with ChangeNotifier {
   }
 
   Future _fetchAll() async {
-    allGameList = await gameRepo.getAllTag();
+    // allGameList = await gameRepo.getAllTag();
+    allGameList = [
+      Game(gameId: 0, game:''),
+      Game(gameId: 1, game:'a')
+    ];
     if(allGameList.isNotEmpty) {
-      selectedGame = allGameList[0];
+      selectedGame = allGameList[1];
     } else {
-      selectedGame = Game(gameId: 0, game:'None');
+      selectedGame = null;
     }
     notifyListeners();
   }

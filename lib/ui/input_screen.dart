@@ -53,7 +53,7 @@ class _Body extends StatelessWidget {
               _tagController.clear();
             },
             validator: (value) {
-              if (value.isEmpty) {
+              if (value == null) {
                 return '入力されていません';
               }
               return null;
@@ -73,7 +73,7 @@ class _Body extends StatelessWidget {
               context.read<TagModel>().selectedTagChangeToString(value);
             },
             validator: (value) {
-              if (value.isEmpty) {
+              if (value == null) {
                 return '入力されていません';
               }
               return null;
@@ -92,7 +92,7 @@ class _ShowGameModalPicker extends StatelessWidget {
   Widget build(BuildContext context) {
     final gameModel = Provider.of<GameModel>(context, listen: true);
     return RaisedButton(
-      onPressed: gameModel.allGameList.isEmpty
+      onPressed: gameModel.allGameList.length == 1
           ? null
           : () {
               showModalBottomSheet(
@@ -127,10 +127,12 @@ class _ShowTagModalPicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tagModel = Provider.of<TagModel>(context, listen: true);
-    tagModel.getGameTagList(
-        context.select((GameModel model) => model.selectedGame.gameId));
+    final selectedGame = context.select((GameModel model) => model.selectedGame);
+    if(selectedGame != null){
+      tagModel.getGameTagList(selectedGame.gameId);
+    }
     return RaisedButton(
-      onPressed: tagModel.gameTagList.isEmpty
+      onPressed: tagModel.gameTagList.length == 1
           ? null
           : () {
               showModalBottomSheet(
