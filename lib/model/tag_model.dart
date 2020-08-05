@@ -33,12 +33,12 @@ class TagModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Future selectedTagChangeToString(String newValue, int gameId) async {
+  void selectedTagChangeToString(String newValue) {
     if (gameTagList.where((value) => value.tag == newValue).isEmpty) {
-      selectedTag = Tag(tag: newValue, gameId: gameId);
-      await tagRepo.insert(selectedTag);
+      selectedTag = Tag(tag: newValue);
+    } else {
+      selectedTag = gameTagList.where((value) => value.tag == newValue).toList()[0];
     }
-    allTagList = await tagRepo.getAll();
     notifyListeners();
   }
 

@@ -6,14 +6,13 @@ class Tag {
   Tag({
     this.tagId,
     this.tag,
-    this.gameId
+    this.gameId = 0,
   });
 
   factory Tag.fromDatabaseJson(Map<String, dynamic> data) => Tag(
         tagId: data['tag_id'],
         tag: data['tag'],
         gameId: data['game_id'],
-
       );
 
   Map<String, dynamic> toDatabaseJson() => {

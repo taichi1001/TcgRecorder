@@ -66,7 +66,9 @@ class _Body extends StatelessWidget {
             autovalidate: false,
             controller: _tagController,
             onFieldSubmitted: (String value) {
-              context.read<TagModel>().selectedTagChangeToString(value, _selectedGame.gameId);
+              context
+                  .read<TagModel>()
+                  .selectedTagChangeToString(value);
             },
             validator: (value) {
               if (value.isEmpty) {
@@ -88,28 +90,31 @@ class _ShowGameModalPicker extends StatelessWidget {
   Widget build(BuildContext context) {
     final gameModel = Provider.of<GameModel>(context, listen: true);
     return RaisedButton(
-      onPressed: () {
-        showModalBottomSheet(
-          context: context,
-          builder: (BuildContext context) {
-            return Container(
-              height: MediaQuery.of(context).size.height / 3,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
+      onPressed: gameModel.allGameList.isEmpty
+          ? null
+          : () {
+              showModalBottomSheet(
+                context: context,
+                builder: (BuildContext context) {
+                  return Container(
+                    height: MediaQuery.of(context).size.height / 3,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: CupertinoPicker(
+                        itemExtent: 40,
+                        children: gameModel.allGameList
+                            .map((game) => Text(game.game))
+                            .toList(),
+                        onSelectedItemChanged:
+                            gameModel.selectedGameChangeToIndex,
+                      ),
+                    ),
+                  );
                 },
-                child: CupertinoPicker(
-                  itemExtent: 40,
-                  children: gameModel.allGameList
-                      .map((game) => Text(game.game))
-                      .toList(),
-                  onSelectedItemChanged: gameModel.selectedGameChangeToIndex,
-                ),
-              ),
-            );
-          },
-        );
-      },
+              );
+            },
       child: const Text('選択'),
     );
   }
@@ -123,27 +128,31 @@ class _ShowTagModalPicker extends StatelessWidget {
     tagModel.getGameTagList(
         context.select((GameModel model) => model.selectedGame.gameId));
     return RaisedButton(
-      onPressed: () {
-        showModalBottomSheet(
-          context: context,
-          builder: (BuildContext context) {
-            return Container(
-              height: MediaQuery.of(context).size.height / 3,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
+      onPressed: tagModel.gameTagList.isEmpty
+          ? null
+          : () {
+              showModalBottomSheet(
+                context: context,
+                builder: (BuildContext context) {
+                  return Container(
+                    height: MediaQuery.of(context).size.height / 3,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: CupertinoPicker(
+                        itemExtent: 40,
+                        children: tagModel.gameTagList
+                            .map((tag) => Text(tag.tag))
+                            .toList(),
+                        onSelectedItemChanged:
+                            tagModel.selectedTagChangeToIndex,
+                      ),
+                    ),
+                  );
                 },
-                child: CupertinoPicker(
-                  itemExtent: 40,
-                  children:
-                      tagModel.gameTagList.map((tag) => Text(tag.tag)).toList(),
-                  onSelectedItemChanged: tagModel.selectedTagChangeToIndex,
-                ),
-              ),
-            );
-          },
-        );
-      },
+              );
+            },
       child: const Text('選択'),
     );
   }

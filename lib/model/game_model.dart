@@ -17,12 +17,12 @@ class GameModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Future selectedGameChangeToString(String newValue) async {
+  void selectedGameChangeToString(String newValue) {
     if (allGameList.where((value) => value.game == newValue).isEmpty) {
       selectedGame = Game(game: newValue);
-      await gameRepo.insert(selectedGame);
+    } else {
+      selectedGame = allGameList.where((value) => value.game == newValue).toList()[0];
     }
-    allGameList = await gameRepo.getAllTag();
     notifyListeners();
   }
 
