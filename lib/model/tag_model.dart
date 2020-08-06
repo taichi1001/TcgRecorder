@@ -14,13 +14,7 @@ class TagModel with ChangeNotifier {
   }
 
   Future _fetchAll() async {
-    // allTagList = await tagRepo.getAll();
-    allTagList = [
-      Tag(tagId: 1, tag: 'aa', gameId: 1),
-      Tag(tagId: 2, tag: 'bb', gameId: 1),
-      Tag(tagId: 3, tag: 'cc', gameId: 2),
-
-    ];
+    allTagList = await tagRepo.getAll();
     if(allTagList.isNotEmpty) {
       selectedTag = allTagList[0];
     } else {
@@ -31,12 +25,6 @@ class TagModel with ChangeNotifier {
 
   Future getGameTagList(int id) async {
     gameTagList = await tagRepo.getGameTag(id);
-        gameTagList = [
-      Tag(tagId: 1, tag: 'aa', gameId: 1),
-      Tag(tagId: 2, tag: 'bb', gameId: 1),
-      Tag(tagId: 3, tag: 'cc', gameId: 2),
-
-    ];
     notifyListeners();
   }
 

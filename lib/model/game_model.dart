@@ -27,11 +27,7 @@ class GameModel with ChangeNotifier {
   }
 
   Future _fetchAll() async {
-    // allGameList = await gameRepo.getAllTag();
-    allGameList = [
-      Game(gameId: 0, game:''),
-      Game(gameId: 1, game:'a')
-    ];
+    allGameList = await gameRepo.getAllTag();
     if(allGameList.isNotEmpty) {
       selectedGame = allGameList[1];
     } else {

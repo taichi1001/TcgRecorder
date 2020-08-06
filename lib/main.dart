@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tcg_recorder/model/bottom_navigation_model.dart';
+import 'package:tcg_recorder/model/deck_model.dart';
 import 'package:tcg_recorder/model/game_model.dart';
 import 'package:tcg_recorder/model/tag_model.dart';
 import 'package:tcg_recorder/ui/main_bottom_navigation.dart';
@@ -20,6 +21,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<TagModel>(
           create: (context) => TagModel(),
+        ),
+        ChangeNotifierProvider<DeckModel>(
+          create: (context) => DeckModel(),
         ),
       ],
       child: MaterialApp(
