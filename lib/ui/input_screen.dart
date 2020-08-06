@@ -186,7 +186,7 @@ class _ShowTagModalPicker extends StatelessWidget {
       tagModel.getGameTagList(selectedGame.gameId);
     }
     return RaisedButton(
-      onPressed: tagModel.gameTagList.length == 1
+      onPressed: tagModel.gameTagList.length == 1 || selectedGame == null
           ? null
           : () {
               showModalBottomSheet(
@@ -227,7 +227,7 @@ class _ShowUseDeckModalPicker extends StatelessWidget {
       deckModel.getGameDeckList(selectedGame.gameId);
     }
     return RaisedButton(
-      onPressed: deckModel.gameDeckList.length == 1
+      onPressed: deckModel.gameDeckList.length == 1 || selectedGame == null
           ? null
           : () {
               showModalBottomSheet(
@@ -268,7 +268,7 @@ class _ShowOpponetDeckModalPicker extends StatelessWidget {
       deckModel.getGameDeckList(selectedGame.gameId);
     }
     return RaisedButton(
-      onPressed: deckModel.gameDeckList.length == 1
+      onPressed: deckModel.gameDeckList.length == 1 || selectedGame == null
           ? null
           : () {
               showModalBottomSheet(
