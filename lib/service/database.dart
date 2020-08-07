@@ -47,7 +47,7 @@ class DatabaseService {
         record_id INTEGER PRIMARY KEY AUTOINCREMENT,
         date TEXT NOT NULL,
         game_id INTEGER NOT NULL,
-        tag_id INTEGER NOT NULL ,
+        tag_id INTEGER,
         my_deck_id INTEGER NOT NULL,
         opponent_deck_id INTEGER NOT NULL,
         first_or_seconde INTEGER NOT NULL,
