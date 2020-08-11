@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tcg_recorder/entity/game.dart';
+import 'package:tcg_recorder/entity/record.dart';
 import 'package:tcg_recorder/repository/game_repository.dart';
 
 class GameModel with ChangeNotifier {
@@ -18,17 +19,27 @@ class GameModel with ChangeNotifier {
   }
 
   void selectedGameChangeToString(String newValue) {
-    if (allGameList.where((value) => value.game == newValue).isEmpty) {
+    if (newValue == '') {
+      selectedGame = null;
+    } else if (allGameList.where((value) => value.game == newValue).isEmpty) {
       selectedGame = Game(game: newValue);
     } else {
-      selectedGame = allGameList.where((value) => value.game == newValue).toList()[0];
+      selectedGame =
+          allGameList.where((value) => value.game == newValue).toList()[0];
     }
     notifyListeners();
   }
 
+  void findGameFromRecord(Record record) {
+    record.game = allGameList
+        .where((value) => value.gameId == record.gameId)
+        .toList()[0]
+        .game;
+  }
+
   Future _fetchAll() async {
     allGameList = await gameRepo.getAllTag();
-    if(allGameList.isNotEmpty) {
+    if (allGameList.isNotEmpty) {
       selectedGame = allGameList[1];
     } else {
       selectedGame = null;

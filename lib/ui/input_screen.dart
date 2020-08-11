@@ -339,6 +339,9 @@ class _OkButton extends StatelessWidget {
                       memo: null,
                     ),
                   );
+              context.read<TagModel>().selectedTagChangeToString('');
+              context.read<DeckModel>().selectedUseDeckChangeToString('');
+              context.read<DeckModel>().selectedOpponentDeckChangeToString('');
             },
       child: const Text('OK'),
     );

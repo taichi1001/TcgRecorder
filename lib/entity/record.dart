@@ -11,6 +11,11 @@ class Record with ChangeNotifier {
   int winOrLose;
   String memo;
 
+  String game;
+  String tag;
+  String myDeck;
+  String opponentDeck;
+
   Record(
       {this.recordId,
       this.date,

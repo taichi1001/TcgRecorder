@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tcg_recorder/entity/record.dart';
 import 'package:tcg_recorder/entity/tag.dart';
 import 'package:tcg_recorder/repository/tag_repository.dart';
 
@@ -15,7 +16,7 @@ class TagModel with ChangeNotifier {
 
   Future _fetchAll() async {
     allTagList = await tagRepo.getAll();
-    if(allTagList.isNotEmpty) {
+    if (allTagList.isNotEmpty) {
       selectedTag = allTagList[0];
     } else {
       selectedTag = null;
@@ -34,12 +35,22 @@ class TagModel with ChangeNotifier {
   }
 
   void selectedTagChangeToString(String newValue) {
-    if (gameTagList.where((value) => value.tag == newValue).isEmpty) {
+    if (newValue == '') {
+      selectedTag = null;
+    } else if (gameTagList.where((value) => value.tag == newValue).isEmpty) {
       selectedTag = Tag(tag: newValue);
     } else {
-      selectedTag = gameTagList.where((value) => value.tag == newValue).toList()[0];
+      selectedTag =
+          gameTagList.where((value) => value.tag == newValue).toList()[0];
     }
     notifyListeners();
+  }
+
+  void findTagFromRecord(Record record) {
+    record.tag = allTagList
+        .where((value) => value.tagId == record.tagId)
+        .toList()[0]
+        .tag;
   }
 
   Future add(Tag tag) async {
