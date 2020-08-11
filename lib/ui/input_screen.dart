@@ -26,6 +26,7 @@ class _Body extends StatelessWidget {
   const _Body({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final _size = MediaQuery.of(context).size;
     final _formKey = GlobalKey<FormState>();
     final _selectedGame =
         context.select((GameModel model) => model.selectedGame);
@@ -52,27 +53,40 @@ class _Body extends StatelessWidget {
       key: _formKey,
       child: Column(
         children: [
-          TextFormField(
-            decoration: const InputDecoration(
-              icon: Icon(Icons.settings),
-              border: OutlineInputBorder(),
-              labelText: 'ゲーム名',
-              hintText: 'Enter your email',
-            ),
-            autovalidate: false,
-            controller: _gameController,
-            onFieldSubmitted: (String value) {
-              context.read<GameModel>().selectedGameChangeToString(value);
-              _tagController.clear();
-            },
-            validator: (value) {
-              if (value == null) {
-                return '入力されていません';
-              }
-              return null;
-            },
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                height: 100,
+                width: _size.width * (70 / 100),
+                padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
+                child: TextFormField(
+                  decoration: const InputDecoration(
+                    icon: Icon(Icons.settings),
+                    border: OutlineInputBorder(),
+                    labelText: 'ゲーム名',
+                    hintText: 'Enter your email',
+                  ),
+                  autovalidate: false,
+                  controller: _gameController,
+                  onFieldSubmitted: (String value) {
+                    context.read<GameModel>().selectedGameChangeToString(value);
+                    _tagController.clear();
+                  },
+                  validator: (value) {
+                    if (value == null) {
+                      return '入力されていません';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              Container(
+                  width: _size.width * (15 / 100),
+                  child: const _ShowGameModalPicker()),
+            ],
           ),
-          const _ShowGameModalPicker(),
           TextFormField(
             decoration: const InputDecoration(
               icon: Icon(Icons.settings),
