@@ -133,6 +133,8 @@ class _InputGameRow extends StatelessWidget {
           child: const _InputGameTextField(),
         ),
         Container(
+            height: 80,
+            padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
             width: _size.width * (15 / 100),
             child: const _ShowGameModalPicker()),
       ],
@@ -146,10 +148,15 @@ class _InputGameTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     final _selectedGame =
         context.select((GameModel model) => model.selectedGame);
-    context.read<TextEditingControllerModel>().gameController =
+    // context.read<TextEditingControllerModel>().setGameController(
+    //     _selectedGame != null
+    //         ? TextEditingController(text: _selectedGame.game)
+    //         : TextEditingController());
+
+    context.select((TextEditingControllerModel model) => model.gameController =
         _selectedGame != null
             ? TextEditingController(text: _selectedGame.game)
-            : TextEditingController();
+            : TextEditingController());
 
     return TextFormField(
       decoration: const InputDecoration(
@@ -200,8 +207,9 @@ class _ShowGameModalPicker extends StatelessWidget {
                         children: _allGameList
                             .map((game) => Text(game.game))
                             .toList(),
-                        onSelectedItemChanged:
-                            context.read<GameModel>().selectedGameChangeToIndex,
+                        onSelectedItemChanged:(int value) =>
+                            context.read<GameModel>().selectedGameChangeToIndex(value),
+                        
                       ),
                     ),
                   );
