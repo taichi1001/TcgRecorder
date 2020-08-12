@@ -6,7 +6,7 @@ import 'package:tcg_recorder/repository/record_repository.dart';
 
 class RecordModel with ChangeNotifier {
   Game game;
-  Tag selectTag;
+  Tag selectedTag;
   int firstOrSecond = 1;
   int winOrLose = 1;
   List<Record> allRecordList;
@@ -21,8 +21,8 @@ class RecordModel with ChangeNotifier {
 
   Future _fetchAll() async {
     allRecordList = await recordRepo.getAll();
-//    gameRecordList = await recordRepo.getGameRecord(game.gameId);
-//    gameRecordList = await recordRepo.getTagRecord(selectTag.tagId);
+    gameRecordList = await recordRepo.getGameRecord(game.gameId);
+    tagRecordList = await recordRepo.getTagRecord(selectedTag.tagId);
     notifyListeners();
   }
 

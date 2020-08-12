@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tcg_recorder/entity/game.dart';
+import 'package:tcg_recorder/entity/record.dart';
 import 'package:tcg_recorder/repository/game_repository.dart';
 
 class GameModel with ChangeNotifier {
@@ -27,6 +28,13 @@ class GameModel with ChangeNotifier {
           allGameList.where((value) => value.game == newValue).toList()[0];
     }
     notifyListeners();
+  }
+
+  void findGameFromRecord(Record record) {
+    record.game = allGameList
+        .where((value) => value.gameId == record.gameId)
+        .toList()[0]
+        .game;
   }
 
   Future _fetchAll() async {

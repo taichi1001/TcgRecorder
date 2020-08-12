@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tcg_recorder/entity/deck.dart';
+import 'package:tcg_recorder/entity/record.dart';
 import 'package:tcg_recorder/repository/deck_repository.dart';
 
 class DeckModel with ChangeNotifier {
@@ -16,12 +17,12 @@ class DeckModel with ChangeNotifier {
 
   Future _fetchAll() async {
     allDeckList = await deckRepo.getAll();
-    if (allDeckList.isNotEmpty){
+    if (allDeckList.isNotEmpty) {
       selectedUseDeck = allDeckList[0];
       selectedOpponentDeck = allDeckList[0];
     } else {
       selectedUseDeck = null;
-      selectedOpponentDeck = null;      
+      selectedOpponentDeck = null;
     }
     notifyListeners();
   }
@@ -42,21 +43,41 @@ class DeckModel with ChangeNotifier {
   }
 
   void selectedUseDeckChangeToString(String newValue) {
-    if (gameDeckList.where((value) => value.deck == newValue).isEmpty) {
+    if (newValue == '') {
+      selectedUseDeck = null;
+    } else if (gameDeckList.where((value) => value.deck == newValue).isEmpty) {
       selectedUseDeck = Deck(deck: newValue);
     } else {
-      selectedUseDeck = gameDeckList.where((value) => value.deck == newValue).toList()[0];
+      selectedUseDeck =
+          gameDeckList.where((value) => value.deck == newValue).toList()[0];
     }
     notifyListeners();
   }
 
   void selectedOpponentDeckChangeToString(String newValue) {
-    if (gameDeckList.where((value) => value.deck == newValue).isEmpty) {
+    if (newValue == '') {
+      selectedOpponentDeck = null;
+    } else if (gameDeckList.where((value) => value.deck == newValue).isEmpty) {
       selectedOpponentDeck = Deck(deck: newValue);
     } else {
-      selectedOpponentDeck = gameDeckList.where((value) => value.deck == newValue).toList()[0];
+      selectedOpponentDeck =
+          gameDeckList.where((value) => value.deck == newValue).toList()[0];
     }
     notifyListeners();
+  }
+
+  void findMyDeckFromRecord(Record record) {
+    record.myDeck = allDeckList
+        .where((value) => value.deckId == record.myDeckId)
+        .toList()[0]
+        .deck;
+  }
+
+  void findOpponentDeckFromRecord(Record record) {
+    record.opponentDeck = allDeckList
+        .where((value) => value.deckId == record.opponentDeckId)
+        .toList()[0]
+        .deck;
   }
 
   Future add(Deck deck) async {
