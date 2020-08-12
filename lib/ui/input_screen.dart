@@ -6,7 +6,9 @@ import 'package:tcg_recorder/model/deck_model.dart';
 import 'package:tcg_recorder/model/game_model.dart';
 import 'package:tcg_recorder/model/record_model.dart';
 import 'package:tcg_recorder/model/tag_model.dart';
-import 'package:tcg_recorder/model/text_editing_controller_model.dart';
+import 'package:tcg_recorder/ui/parts/input_game_row.dart';
+import 'package:tcg_recorder/ui/parts/input_tag_row.dart';
+import 'package:tcg_recorder/ui/parts/input_use_deck_row.dart';
 
 class InputScreen extends StatelessWidget {
   const InputScreen({Key key}) : super(key: key);
@@ -28,65 +30,17 @@ class _Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
-    final _selectedTag = context.select((TagModel model) => model.selectedTag);
-    final _selectedUseDeck =
-        context.select((DeckModel model) => model.selectedUseDeck);
     final _selectedOpponentDeck =
         context.select((DeckModel model) => model.selectedOpponentDeck);
-
-    final _tagController = _selectedTag != null
-        ? TextEditingController(text: _selectedTag.tag)
-        : TextEditingController();
-    final _useDeckController = _selectedUseDeck != null
-        ? TextEditingController(text: _selectedUseDeck.deck)
-        : TextEditingController();
     final _opponentDeckController = _selectedOpponentDeck != null
         ? TextEditingController(text: _selectedOpponentDeck.deck)
         : TextEditingController();
 
     final column = Column(
       children: [
-        const _InputGameRow(),
-        TextFormField(
-          decoration: const InputDecoration(
-            icon: Icon(Icons.settings),
-            border: OutlineInputBorder(),
-            labelText: 'タグ名',
-            hintText: 'Enter タグ名',
-          ),
-          autovalidate: false,
-          controller: _tagController,
-          onFieldSubmitted: (String value) {
-            context.read<TagModel>().selectedTagChangeToString(value);
-          },
-          validator: (value) {
-            if (value == null) {
-              return '入力されていません';
-            }
-            return null;
-          },
-        ),
-        const _ShowTagModalPicker(),
-        TextFormField(
-          decoration: const InputDecoration(
-            icon: Icon(Icons.settings),
-            border: OutlineInputBorder(),
-            labelText: '使用デッキ',
-            hintText: 'Enter 使用デッキ',
-          ),
-          autovalidate: false,
-          controller: _useDeckController,
-          onFieldSubmitted: (String value) {
-            context.read<DeckModel>().selectedUseDeckChangeToString(value);
-          },
-          validator: (value) {
-            if (value == null) {
-              return '入力されていません';
-            }
-            return null;
-          },
-        ),
-        const _ShowUseDeckModalPicker(),
+        const InputGameRow(),
+        const InputTagRow(),
+        const InputUseDeckRow(),
         TextFormField(
           decoration: const InputDecoration(
             icon: Icon(Icons.settings),
@@ -117,191 +71,7 @@ class _Body extends StatelessWidget {
   }
 }
 
-class _InputGameRow extends StatelessWidget {
-  const _InputGameRow({Key key}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    final _size = MediaQuery.of(context).size;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Container(
-          height: 100,
-          width: _size.width * (70 / 100),
-          padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
-          child: const _InputGameTextField(),
-        ),
-        Container(
-            height: 80,
-            padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
-            width: _size.width * (15 / 100),
-            child: const _ShowGameModalPicker()),
-      ],
-    );
-  }
-}
 
-class _InputGameTextField extends StatelessWidget {
-  const _InputGameTextField({Key key}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    final _selectedGame =
-        context.select((GameModel model) => model.selectedGame);
-    // context.read<TextEditingControllerModel>().setGameController(
-    //     _selectedGame != null
-    //         ? TextEditingController(text: _selectedGame.game)
-    //         : TextEditingController());
-
-    context.select((TextEditingControllerModel model) => model.gameController =
-        _selectedGame != null
-            ? TextEditingController(text: _selectedGame.game)
-            : TextEditingController());
-
-    return TextFormField(
-      decoration: const InputDecoration(
-        icon: Icon(Icons.settings),
-        border: OutlineInputBorder(),
-        labelText: 'ゲーム名',
-        hintText: 'Enter your email',
-      ),
-      autovalidate: false,
-      controller: context
-          .select((TextEditingControllerModel model) => model.gameController),
-      onFieldSubmitted: (String value) {
-        context.read<GameModel>().selectedGameChangeToString(value);
-        context
-            .select((TextEditingControllerModel model) => model.tagController)
-            .clear();
-      },
-      validator: (value) {
-        if (value == null) {
-          return '入力されていません';
-        }
-        return null;
-      },
-    );
-  }
-}
-
-class _ShowGameModalPicker extends StatelessWidget {
-  const _ShowGameModalPicker({Key key}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    final _allGameList = context.select((GameModel model) => model.allGameList);
-    return RaisedButton(
-      onPressed: _allGameList.length == 1
-          ? null
-          : () {
-              showModalBottomSheet(
-                context: context,
-                builder: (BuildContext context) {
-                  return Container(
-                    height: MediaQuery.of(context).size.height / 3,
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: CupertinoPicker(
-                        itemExtent: 40,
-                        children: _allGameList
-                            .map((game) => Text(game.game))
-                            .toList(),
-                        onSelectedItemChanged:(int value) =>
-                            context.read<GameModel>().selectedGameChangeToIndex(value),
-                        
-                      ),
-                    ),
-                  );
-                },
-              );
-            },
-      child: const Text('選択'),
-    );
-  }
-}
-
-class _ShowTagModalPicker extends StatelessWidget {
-  const _ShowTagModalPicker({Key key}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    final tagModel = Provider.of<TagModel>(context, listen: true);
-    final selectedGame =
-        context.select((GameModel model) => model.selectedGame);
-    if (selectedGame != null) {
-      tagModel.getGameTagList(selectedGame.gameId);
-    }
-    return RaisedButton(
-      onPressed: tagModel.gameTagList.length == 1 || selectedGame == null
-          ? null
-          : () {
-              showModalBottomSheet(
-                context: context,
-                builder: (BuildContext context) {
-                  return Container(
-                    height: MediaQuery.of(context).size.height / 3,
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: CupertinoPicker(
-                        itemExtent: 40,
-                        children: tagModel.gameTagList
-                            .map((tag) => Text(tag.tag))
-                            .toList(),
-                        onSelectedItemChanged:
-                            tagModel.selectedTagChangeToIndex,
-                      ),
-                    ),
-                  );
-                },
-              );
-            },
-      child: const Text('選択'),
-    );
-  }
-}
-
-class _ShowUseDeckModalPicker extends StatelessWidget {
-  const _ShowUseDeckModalPicker({Key key}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    final deckModel = Provider.of<DeckModel>(context, listen: true);
-    final selectedGame =
-        context.select((GameModel model) => model.selectedGame);
-    if (selectedGame != null) {
-      deckModel.getGameDeckList(selectedGame.gameId);
-    }
-    return RaisedButton(
-      onPressed: deckModel.gameDeckList.length == 1 || selectedGame == null
-          ? null
-          : () {
-              showModalBottomSheet(
-                context: context,
-                builder: (BuildContext context) {
-                  return Container(
-                    height: MediaQuery.of(context).size.height / 3,
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: CupertinoPicker(
-                        itemExtent: 40,
-                        children: deckModel.gameDeckList
-                            .map((deck) => Text(deck.deck))
-                            .toList(),
-                        onSelectedItemChanged:
-                            deckModel.selectedUseDeckChangeToIndex,
-                      ),
-                    ),
-                  );
-                },
-              );
-            },
-      child: const Text('選択'),
-    );
-  }
-}
 
 class _ShowOpponetDeckModalPicker extends StatelessWidget {
   const _ShowOpponetDeckModalPicker({Key key}) : super(key: key);
