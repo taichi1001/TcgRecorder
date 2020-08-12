@@ -5,6 +5,7 @@ import 'package:tcg_recorder/model/deck_model.dart';
 import 'package:tcg_recorder/model/game_model.dart';
 import 'package:tcg_recorder/model/tag_model.dart';
 import 'package:tcg_recorder/model/record_model.dart';
+import 'package:tcg_recorder/model/text_editing_controller_model.dart';
 import 'package:tcg_recorder/ui/main_bottom_navigation.dart';
 
 void main() => runApp(MyApp());
@@ -28,6 +29,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<RecordModel>(
           create: (context) => RecordModel(),
+        ),
+        ChangeNotifierProvider<TextEditingControllerModel>(
+          create: (context) => TextEditingControllerModel(),
         ),
       ],
       child: MaterialApp(
