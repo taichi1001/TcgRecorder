@@ -7,6 +7,7 @@ import 'package:tcg_recorder/model/game_model.dart';
 import 'package:tcg_recorder/model/record_model.dart';
 import 'package:tcg_recorder/model/tag_model.dart';
 import 'package:tcg_recorder/ui/parts/input_game_row.dart';
+import 'package:tcg_recorder/ui/parts/input_opponent_deck_row.dart';
 import 'package:tcg_recorder/ui/parts/input_tag_row.dart';
 import 'package:tcg_recorder/ui/parts/input_use_deck_row.dart';
 
@@ -30,86 +31,18 @@ class _Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
-    final _selectedOpponentDeck =
-        context.select((DeckModel model) => model.selectedOpponentDeck);
-    final _opponentDeckController = _selectedOpponentDeck != null
-        ? TextEditingController(text: _selectedOpponentDeck.deck)
-        : TextEditingController();
-
     final column = Column(
       children: [
         const InputGameRow(),
         const InputTagRow(),
         const InputUseDeckRow(),
-        TextFormField(
-          decoration: const InputDecoration(
-            icon: Icon(Icons.settings),
-            border: OutlineInputBorder(),
-            labelText: '相手デッキ',
-            hintText: 'Enter 相手デッキ',
-          ),
-          autovalidate: false,
-          controller: _opponentDeckController,
-          onFieldSubmitted: (String value) {
-            context.read<DeckModel>().selectedOpponentDeckChangeToString(value);
-          },
-          validator: (value) {
-            if (value == null) {
-              return '入力されていません';
-            }
-            return null;
-          },
-        ),
-        const _ShowOpponetDeckModalPicker(),
+        const InputOpponentDeckRow(),
         const _OkButton(),
       ],
     );
     return Form(
       key: _formKey,
       child: column,
-    );
-  }
-}
-
-
-
-class _ShowOpponetDeckModalPicker extends StatelessWidget {
-  const _ShowOpponetDeckModalPicker({Key key}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    final deckModel = Provider.of<DeckModel>(context, listen: true);
-    final selectedGame =
-        context.select((GameModel model) => model.selectedGame);
-    if (selectedGame != null) {
-      deckModel.getGameDeckList(selectedGame.gameId);
-    }
-    return RaisedButton(
-      onPressed: deckModel.gameDeckList.length == 1 || selectedGame == null
-          ? null
-          : () {
-              showModalBottomSheet(
-                context: context,
-                builder: (BuildContext context) {
-                  return Container(
-                    height: MediaQuery.of(context).size.height / 3,
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: CupertinoPicker(
-                        itemExtent: 40,
-                        children: deckModel.gameDeckList
-                            .map((deck) => Text(deck.deck))
-                            .toList(),
-                        onSelectedItemChanged:
-                            deckModel.selectedOpponentDeckChangeToIndex,
-                      ),
-                    ),
-                  );
-                },
-              );
-            },
-      child: const Text('選択'),
     );
   }
 }
