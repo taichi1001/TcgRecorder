@@ -29,13 +29,13 @@ class Record with ChangeNotifier {
         tagId: data['tag_id'],
         myDeckId: data['my_deck_id'],
         opponentDeckId: data['opponent_deck_id'],
-        firstOrSecond: data['first_or_seconde'],
+        firstOrSecond: data['first_or_second'],
         winOrLose: data['win_or_lose'],
         memo: data['memo'],
       );
 
   Map<String, dynamic> toDatabaseJson() => {
-        'record__id': recordId,
+        'record_id': recordId,
         'date': date.toUtc().toIso8601String(),
         'game_id': gameId,
         'tag_id': tagId,

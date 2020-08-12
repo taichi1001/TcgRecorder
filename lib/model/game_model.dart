@@ -18,17 +18,20 @@ class GameModel with ChangeNotifier {
   }
 
   void selectedGameChangeToString(String newValue) {
-    if (allGameList.where((value) => value.game == newValue).isEmpty) {
+    if (newValue == '') {
+      selectedGame = null;
+    } else if (allGameList.where((value) => value.game == newValue).isEmpty) {
       selectedGame = Game(game: newValue);
     } else {
-      selectedGame = allGameList.where((value) => value.game == newValue).toList()[0];
+      selectedGame =
+          allGameList.where((value) => value.game == newValue).toList()[0];
     }
     notifyListeners();
   }
 
   Future _fetchAll() async {
     allGameList = await gameRepo.getAllTag();
-    if(allGameList.isNotEmpty) {
+    if (allGameList.isNotEmpty) {
       selectedGame = allGameList[1];
     } else {
       selectedGame = null;

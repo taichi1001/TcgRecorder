@@ -50,7 +50,7 @@ class DatabaseService {
         tag_id INTEGER,
         my_deck_id INTEGER NOT NULL,
         opponent_deck_id INTEGER NOT NULL,
-        first_or_seconde INTEGER NOT NULL,
+        first_or_second INTEGER NOT NULL,
         win_or_lose INTEGER NOT NULL,
         memo TEXT
       )
