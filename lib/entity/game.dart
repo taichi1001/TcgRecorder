@@ -5,7 +5,7 @@ class Game with ChangeNotifier {
   String game;
 
   Game({
-    this.gameId,
+    this.gameId = 0,
     this.game,
   });
 

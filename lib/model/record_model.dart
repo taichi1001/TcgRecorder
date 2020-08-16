@@ -21,8 +21,8 @@ class RecordModel with ChangeNotifier {
 
   Future _fetchAll() async {
     allRecordList = await recordRepo.getAll();
-    gameRecordList = await recordRepo.getGameRecord(game.gameId);
-    tagRecordList = await recordRepo.getTagRecord(selectedTag.tagId);
+    // gameRecordList = await recordRepo.getGameRecord(game.gameId);
+    // tagRecordList = await recordRepo.getTagRecord(selectedTag.tagId);
     notifyListeners();
   }
 

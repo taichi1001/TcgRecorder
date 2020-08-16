@@ -49,10 +49,14 @@ class RecordListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<GameModel>().findGameFromRecord(record);
-    context.read<TagModel>().findTagFromRecord(record);
-    context.read<DeckModel>().findMyDeckFromRecord(record);
-    context.read<DeckModel>().findOpponentDeckFromRecord(record);
+    final _gameModel = Provider.of<GameModel>(context, listen: false);
+    final _tagModel = Provider.of<TagModel>(context, listen: false);
+    final _deckModel = Provider.of<DeckModel>(context, listen: false);
+
+    _gameModel.findGameFromRecord(record);
+    _tagModel.findTagFromRecord(record);
+    _deckModel.findMyDeckFromRecord(record);
+    _deckModel.findOpponentDeckFromRecord(record);
     return Card(
       child: ListTile(
         title: Text(record.game),

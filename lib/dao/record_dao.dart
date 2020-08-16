@@ -1,4 +1,3 @@
-import 'package:tcg_recorder/entity/game.dart';
 import 'package:tcg_recorder/entity/record.dart';
 import 'package:tcg_recorder/service/database.dart';
 
@@ -16,7 +15,7 @@ class RecordDao {
     final db = await dbProvider.database;
     final List<Map<String, dynamic>> result = await db.query(tableName);
     final List<Record> records = result.isNotEmpty
-        ? result.map((item) => Game.fromDatabaseJson(item)).toList()
+        ? result.map((item) => Record.fromDatabaseJson(item)).toList()
         : [];
     return records;
   }
@@ -26,7 +25,7 @@ class RecordDao {
     final List<Map<String, dynamic>> result =
         await db.query(tableName, where: 'game_id = ?', whereArgs: [id]);
     final List<Record> records = result.isNotEmpty
-        ? result.map((item) => Game.fromDatabaseJson(item)).toList()
+        ? result.map((item) => Record.fromDatabaseJson(item)).toList()
         : [];
     return records;
   }
@@ -36,7 +35,7 @@ class RecordDao {
     final List<Map<String, dynamic>> result =
         await db.query(tableName, where: 'tag_id = ?', whereArgs: [id]);
     final List<Record> records = result.isNotEmpty
-        ? result.map((item) => Game.fromDatabaseJson(item)).toList()
+        ? result.map((item) => Record.fromDatabaseJson(item)).toList()
         : [];
     return records;
   }

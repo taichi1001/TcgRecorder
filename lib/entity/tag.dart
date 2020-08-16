@@ -4,7 +4,7 @@ class Tag {
   int gameId;
 
   Tag({
-    this.tagId,
+    this.tagId = 0,
     this.tag,
     this.gameId = 0,
   });

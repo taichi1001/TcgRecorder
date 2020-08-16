@@ -11,14 +11,18 @@ class InputOpponentDeckRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final _size = MediaQuery.of(context).size;
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
             height: 100,
             width: _size.width * (70 / 100),
+            padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
             child: const _InputOpponentDeckTextField()),
         Container(
-            height: 100,
-            width: _size.width * (70 / 100),
+            height: 80,
+            width: _size.width * (15 / 100),
+            padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
             child: const _ShowOpponentDeckModalPicker()),
       ],
     );
@@ -32,10 +36,16 @@ class _InputOpponentDeckTextField extends StatelessWidget {
     final _selectedOpponentDeck =
         context.select((DeckModel model) => model.selectedOpponentDeck);
 
-    context.select((TextEditingControllerModel model) =>
-        model.opponentDeckController = _selectedOpponentDeck != null
-            ? TextEditingController(text: _selectedOpponentDeck.deck)
-            : TextEditingController());
+    // context.select((TextEditingControllerModel model) =>
+    //     model.opponentDeckController = _selectedOpponentDeck != null
+    //         ? TextEditingController(text: _selectedOpponentDeck.deck)
+    //         : TextEditingController());
+
+    final _textModel =
+        Provider.of<TextEditingControllerModel>(context, listen: false);
+    _textModel.setOpponentDeckController(_selectedOpponentDeck != null
+        ? TextEditingController(text: _selectedOpponentDeck.deck)
+        : TextEditingController());
 
     return TextFormField(
       decoration: const InputDecoration(

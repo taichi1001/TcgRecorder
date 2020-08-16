@@ -37,6 +37,15 @@ class GameModel with ChangeNotifier {
         .game;
   }
 
+  Future test() async{
+    if(selectedGame.gameId !=0) return;
+    selectedGame.gameId = null;
+    final selectedGameId = await gameRepo.insert(selectedGame);
+    selectedGame.gameId = selectedGameId;
+    allGameList = await gameRepo.getAllTag();
+    notifyListeners();
+  }
+
   Future _fetchAll() async {
     allGameList = await gameRepo.getAllTag();
     if (allGameList.isNotEmpty) {

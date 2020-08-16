@@ -46,6 +46,15 @@ class TagModel with ChangeNotifier {
     notifyListeners();
   }
 
+  Future test() async{
+    if(selectedTag.tagId !=0) return;
+    selectedTag.tagId = null;
+    final selectedTagId = await tagRepo.insert(selectedTag);
+    selectedTag.tagId = selectedTagId;
+    allTagList = await tagRepo.getAll();
+    notifyListeners();
+  }
+
   void findTagFromRecord(Record record) {
     record.tag = allTagList
         .where((value) => value.tagId == record.tagId)

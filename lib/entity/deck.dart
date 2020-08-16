@@ -4,7 +4,7 @@ class Deck {
   int gameId;
 
   Deck({
-    this.deckId,
+    this.deckId = 0,
     this.deck,
     this.gameId = 0,
   });

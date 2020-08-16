@@ -32,12 +32,12 @@ class _Body extends StatelessWidget {
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
     final column = Column(
-      children: [
-        const InputGameRow(),
-        const InputTagRow(),
-        const InputUseDeckRow(),
-        const InputOpponentDeckRow(),
-        const _OkButton(),
+      children: const [
+        InputGameRow(),
+        InputTagRow(),
+        InputUseDeckRow(),
+        InputOpponentDeckRow(),
+        _OkButton(),
       ],
     );
     return Form(
@@ -51,7 +51,7 @@ class _OkButton extends StatelessWidget {
   const _OkButton({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final deckModel = Provider.of<DeckModel>(context, listen: true);
+    final _deckModel = Provider.of<DeckModel>(context, listen: false);
     final _selectedGame =
         context.select((GameModel model) => model.selectedGame);
     final _selectedTag = context.select((TagModel model) => model.selectedTag);
@@ -59,28 +59,36 @@ class _OkButton extends StatelessWidget {
         context.select((DeckModel model) => model.selectedUseDeck);
     final _selectedOpponentDeck =
         context.select((DeckModel model) => model.selectedOpponentDeck);
-    final _selectedFirstOrSeconde =
+    final _selectedFirstOrSecond =
         context.select((RecordModel model) => model.firstOrSecond);
     final _selectedWinOrLose =
         context.select((RecordModel model) => model.winOrLose);
 
     if (_selectedGame != null) {
-      deckModel.getGameDeckList(_selectedGame.gameId);
+      _deckModel.getGameDeckList(_selectedGame.gameId);
     }
     return RaisedButton(
       onPressed: _selectedGame == null ||
               _selectedUseDeck == null ||
               _selectedOpponentDeck == null
           ? null
-          : () {
-              context.read<RecordModel>().add(
+          : () async {
+              if (_selectedGame.gameId == 0)
+                await context.read<GameModel>().test();
+              if (_selectedTag.tagId == 0)
+                await context.read<TagModel>().test();
+              if (_selectedUseDeck.deckId == 0)
+                await context.read<DeckModel>().testUse();
+              if (_selectedOpponentDeck.deckId == 0)
+                await context.read<DeckModel>().testOpponent();
+              await context.read<RecordModel>().add(
                     Record(
                       date: DateTime.now(),
                       gameId: _selectedGame.gameId,
                       tagId: _selectedTag == null ? null : _selectedTag.tagId,
                       myDeckId: _selectedUseDeck.deckId,
                       opponentDeckId: _selectedOpponentDeck.deckId,
-                      firstOrSecond: _selectedFirstOrSeconde,
+                      firstOrSecond: _selectedFirstOrSecond,
                       winOrLose: _selectedWinOrLose,
                       memo: null,
                     ),

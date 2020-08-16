@@ -11,14 +11,18 @@ class InputTagRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final _size = MediaQuery.of(context).size;
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
             height: 100,
             width: _size.width * (70 / 100),
+            padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
             child: const _InputTagTextField()),
         Container(
-            height: 100,
-            width: _size.width * (70 / 100),
+            height: 80,
+            width: _size.width * (15 / 100),
+            padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
             child: const _ShowTagModalPicker()),
       ],
     );
@@ -31,10 +35,16 @@ class _InputTagTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     final _selectedTag = context.select((TagModel model) => model.selectedTag);
 
-    context.select((TextEditingControllerModel model) => model.tagController =
-        _selectedTag != null
-            ? TextEditingController(text: _selectedTag.tag)
-            : TextEditingController());
+    // context.select((TextEditingControllerModel model) => model.tagController =
+    //     _selectedTag != null
+    //         ? TextEditingController(text: _selectedTag.tag)
+    //         : TextEditingController());
+
+    final _textModel =
+        Provider.of<TextEditingControllerModel>(context, listen: false);
+    _textModel.setTagController(_selectedTag != null
+        ? TextEditingController(text: _selectedTag.tag)
+        : TextEditingController());
 
     return TextFormField(
       decoration: const InputDecoration(

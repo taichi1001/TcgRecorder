@@ -20,10 +20,11 @@ class InputGameRow extends StatelessWidget {
           child: const _InputGameTextField(),
         ),
         Container(
-            height: 80,
-            padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
-            width: _size.width * (15 / 100),
-            child: const _ShowGameModalPicker()),
+          height: 80,
+          padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
+          width: _size.width * (15 / 100),
+          child: const _ShowGameModalPicker(),
+        ),
       ],
     );
   }
@@ -35,15 +36,15 @@ class _InputGameTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     final _selectedGame =
         context.select((GameModel model) => model.selectedGame);
-    // context.read<TextEditingControllerModel>().setGameController(
+    // context.select((TextEditingControllerModel model) => model.gameController =
     //     _selectedGame != null
     //         ? TextEditingController(text: _selectedGame.game)
     //         : TextEditingController());
-
-    context.select((TextEditingControllerModel model) => model.gameController =
-        _selectedGame != null
-            ? TextEditingController(text: _selectedGame.game)
-            : TextEditingController());
+    final _textModel =
+        Provider.of<TextEditingControllerModel>(context, listen: false);
+    _textModel.setGameController(_selectedGame != null
+        ? TextEditingController(text: _selectedGame.game)
+        : TextEditingController());
 
     return TextFormField(
       decoration: const InputDecoration(
@@ -94,9 +95,9 @@ class _ShowGameModalPicker extends StatelessWidget {
                         children: _allGameList
                             .map((game) => Text(game.game))
                             .toList(),
-                        onSelectedItemChanged:(int index) =>
-                            context.read<GameModel>().selectedGameChangeToIndex(index),
-                        
+                        onSelectedItemChanged: (int index) => context
+                            .read<GameModel>()
+                            .selectedGameChangeToIndex(index),
                       ),
                     ),
                   );

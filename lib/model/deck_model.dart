@@ -17,13 +17,8 @@ class DeckModel with ChangeNotifier {
 
   Future _fetchAll() async {
     allDeckList = await deckRepo.getAll();
-    if (allDeckList.isNotEmpty) {
-      selectedUseDeck = allDeckList[0];
-      selectedOpponentDeck = allDeckList[0];
-    } else {
-      selectedUseDeck = null;
-      selectedOpponentDeck = null;
-    }
+    selectedUseDeck = null;
+    selectedOpponentDeck = null;
     notifyListeners();
   }
 
@@ -71,6 +66,24 @@ class DeckModel with ChangeNotifier {
         .where((value) => value.deckId == record.myDeckId)
         .toList()[0]
         .deck;
+  }
+
+  Future testUse() async {
+    if (selectedUseDeck.deckId != 0) return;
+    selectedUseDeck.deckId = null;
+    final selectedUseDeckId = await deckRepo.insert(selectedUseDeck);
+    selectedUseDeck.deckId = selectedUseDeckId;
+    allDeckList = await deckRepo.getAll();
+    notifyListeners();
+  }
+
+  Future testOpponent() async {
+    if (selectedOpponentDeck.deckId != 0) return;
+    selectedOpponentDeck.deckId = null;
+    final selectedOpponentDeckId = await deckRepo.insert(selectedOpponentDeck);
+    selectedOpponentDeck.deckId = selectedOpponentDeckId;
+    allDeckList = await deckRepo.getAll();
+    notifyListeners();
   }
 
   void findOpponentDeckFromRecord(Record record) {
