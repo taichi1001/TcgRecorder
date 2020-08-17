@@ -34,12 +34,6 @@ class _InputTagTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _selectedTag = context.select((TagModel model) => model.selectedTag);
-
-    // context.select((TextEditingControllerModel model) => model.tagController =
-    //     _selectedTag != null
-    //         ? TextEditingController(text: _selectedTag.tag)
-    //         : TextEditingController());
-
     final _textModel =
         Provider.of<TextEditingControllerModel>(context, listen: false);
     _textModel.setTagController(_selectedTag != null

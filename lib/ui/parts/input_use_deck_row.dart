@@ -35,12 +35,6 @@ class _InputUseDeckTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     final _selectedUseDeck =
         context.select((DeckModel model) => model.selectedUseDeck);
-
-    // context.select((TextEditingControllerModel model) =>
-    //     model.useDeckController = _selectedUseDeck != null
-    //         ? TextEditingController(text: _selectedUseDeck.deck)
-    //         : TextEditingController());
-
     final _textModel =
         Provider.of<TextEditingControllerModel>(context, listen: false);
     _textModel.setUseDeckController(_selectedUseDeck != null

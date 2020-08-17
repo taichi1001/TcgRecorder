@@ -35,12 +35,6 @@ class _InputOpponentDeckTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     final _selectedOpponentDeck =
         context.select((DeckModel model) => model.selectedOpponentDeck);
-
-    // context.select((TextEditingControllerModel model) =>
-    //     model.opponentDeckController = _selectedOpponentDeck != null
-    //         ? TextEditingController(text: _selectedOpponentDeck.deck)
-    //         : TextEditingController());
-
     final _textModel =
         Provider.of<TextEditingControllerModel>(context, listen: false);
     _textModel.setOpponentDeckController(_selectedOpponentDeck != null
