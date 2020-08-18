@@ -26,13 +26,13 @@ class RecordModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void changeFirstOrSecond(int number) {
-    firstOrSecond = number;
+  void changeFirstOrSecond() {
+    firstOrSecond = firstOrSecond == 1 ? 2 : 1;
     notifyListeners();
   }
 
-  void changeWinOrLose(int number) {
-    winOrLose = number;
+  void changeWinOrLose() {
+    winOrLose = winOrLose == 1 ? 2 : 1;
     notifyListeners();
   }
 
