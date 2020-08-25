@@ -53,8 +53,8 @@ class RecordListTile extends StatelessWidget {
     final _tagModel = Provider.of<TagModel>(context, listen: false);
     final _deckModel = Provider.of<DeckModel>(context, listen: false);
 
-    _gameModel.findGameFromRecord(record);
-    _tagModel.findTagFromRecord(record);
+    _gameModel.findGameUsingRecord(record);
+    _tagModel.findTagUsingRecord(record);
     _deckModel.findMyDeckFromRecord(record);
     _deckModel.findOpponentDeckFromRecord(record);
     return Card(

@@ -51,7 +51,7 @@ class _InputGameTextField extends StatelessWidget {
       controller: context
           .select((TextEditingControllerModel model) => model.gameController),
       onFieldSubmitted: (String value) {
-        context.read<GameModel>().selectedGameChangeToString(value);
+        context.read<GameModel>().changeSelectedGameUsingString(value);
         context
             .select((TextEditingControllerModel model) => model.tagController)
             .clear();
@@ -83,7 +83,7 @@ void _showCupertinoPicker(BuildContext context) {
                 .map((game) => Text(game.game))
                 .toList(),
             onSelectedItemChanged: (int index) =>
-                context.read<GameModel>().selectedGameChangeToIndex(index),
+                context.read<GameModel>().changeSelectedGameUsingIndex(index),
           ),
         ),
       );

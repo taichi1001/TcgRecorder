@@ -13,12 +13,12 @@ class GameModel with ChangeNotifier {
     _fetchAll();
   }
 
-  void selectedGameChangeToIndex(int index) {
+  void changeSelectedGameUsingIndex(int index) {
     selectedGame = allGameList[index];
     notifyListeners();
   }
 
-  void selectedGameChangeToString(String newValue) {
+  void changeSelectedGameUsingString(String newValue) {
     if (newValue == '') {
       selectedGame = null;
     } else if (allGameList.where((value) => value.game == newValue).isEmpty) {
@@ -30,14 +30,14 @@ class GameModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void findGameFromRecord(Record record) {
+  void findGameUsingRecord(Record record) {
     record.game = allGameList
         .where((value) => value.gameId == record.gameId)
         .toList()[0]
         .game;
   }
 
-  Future test() async{
+  Future addSelectedGame() async{
     if(selectedGame.gameId !=0) return;
     selectedGame.gameId = null;
     final selectedGameId = await gameRepo.insert(selectedGame);

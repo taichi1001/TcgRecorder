@@ -37,14 +37,10 @@ class OkButton extends StatelessWidget {
                 _selectedOpponentDeck == null
             ? null
             : () async {
-                if (_selectedGame.gameId == 0)
-                  await context.read<GameModel>().test();
-                if (_selectedTag.tagId == 0)
-                  await context.read<TagModel>().test();
-                if (_selectedUseDeck.deckId == 0)
-                  await context.read<DeckModel>().testUse();
-                if (_selectedOpponentDeck.deckId == 0)
-                  await context.read<DeckModel>().testOpponent();
+                await context.read<GameModel>().addSelectedGame();
+                await context.read<TagModel>().addSelectedTag();
+                await context.read<DeckModel>().addSelectedUseDeck();
+                await context.read<DeckModel>().addSelectedOpponentDeck();
                 await context.read<RecordModel>().add(
                       Record(
                         date: DateTime.now(),
@@ -57,11 +53,11 @@ class OkButton extends StatelessWidget {
                         memo: null,
                       ),
                     );
-                context.read<TagModel>().selectedTagChangeToString('');
-                context.read<DeckModel>().selectedUseDeckChangeToString('');
+                context.read<TagModel>().changeSelectedTagUsingString('');
+                context.read<DeckModel>().changeSelectedUseDeckUsingString('');
                 context
                     .read<DeckModel>()
-                    .selectedOpponentDeckChangeToString('');
+                    .changeSelectedOpponentDeckUsingString('');
               },
         child: const Text('OK'),
       ),

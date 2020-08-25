@@ -29,12 +29,12 @@ class TagModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void selectedTagChangeToIndex(int index) {
+  void changeSelectedTagUsingIndex(int index) {
     selectedTag = gameTagList[index];
     notifyListeners();
   }
 
-  void selectedTagChangeToString(String newValue) {
+  void changeSelectedTagUsingString(String newValue) {
     if (newValue == '') {
       selectedTag = null;
     } else if (gameTagList.where((value) => value.tag == newValue).isEmpty) {
@@ -46,7 +46,7 @@ class TagModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Future test() async{
+  Future addSelectedTag() async{
     if(selectedTag.tagId !=0) return;
     selectedTag.tagId = null;
     final selectedTagId = await tagRepo.insert(selectedTag);
@@ -55,7 +55,7 @@ class TagModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void findTagFromRecord(Record record) {
+  void findTagUsingRecord(Record record) {
     record.tag = allTagList
         .where((value) => value.tagId == record.tagId)
         .toList()[0]

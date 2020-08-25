@@ -27,17 +27,17 @@ class DeckModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void selectedUseDeckChangeToIndex(int index) {
+  void changeSelectedUseDeckUsingIndex(int index) {
     selectedUseDeck = gameDeckList[index];
     notifyListeners();
   }
 
-  void selectedOpponentDeckChangeToIndex(int index) {
+  void changeSelectedOpponentDeckUsingIndex(int index) {
     selectedOpponentDeck = gameDeckList[index];
     notifyListeners();
   }
 
-  void selectedUseDeckChangeToString(String newValue) {
+  void changeSelectedUseDeckUsingString(String newValue) {
     if (newValue == '') {
       selectedUseDeck = null;
     } else if (gameDeckList.where((value) => value.deck == newValue).isEmpty) {
@@ -49,7 +49,7 @@ class DeckModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void selectedOpponentDeckChangeToString(String newValue) {
+  void changeSelectedOpponentDeckUsingString(String newValue) {
     if (newValue == '') {
       selectedOpponentDeck = null;
     } else if (gameDeckList.where((value) => value.deck == newValue).isEmpty) {
@@ -68,20 +68,20 @@ class DeckModel with ChangeNotifier {
         .deck;
   }
 
-  Future testUse() async {
+  Future addSelectedUseDeck() async {
     if (selectedUseDeck.deckId != 0) return;
     selectedUseDeck.deckId = null;
-    final selectedUseDeckId = await deckRepo.insert(selectedUseDeck);
-    selectedUseDeck.deckId = selectedUseDeckId;
+    final deckId = await deckRepo.insert(selectedUseDeck);
+    selectedUseDeck.deckId = deckId;
     allDeckList = await deckRepo.getAll();
     notifyListeners();
   }
 
-  Future testOpponent() async {
+  Future addSelectedOpponentDeck() async {
     if (selectedOpponentDeck.deckId != 0) return;
     selectedOpponentDeck.deckId = null;
-    final selectedOpponentDeckId = await deckRepo.insert(selectedOpponentDeck);
-    selectedOpponentDeck.deckId = selectedOpponentDeckId;
+    final deckId = await deckRepo.insert(selectedOpponentDeck);
+    selectedOpponentDeck.deckId = deckId;
     allDeckList = await deckRepo.getAll();
     notifyListeners();
   }

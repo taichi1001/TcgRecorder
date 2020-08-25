@@ -36,8 +36,8 @@ class _InputOpponentDeckTextField extends StatelessWidget {
       decoration: InputDecoration(
         // icon: Icon(Icons.settings),
         border: OutlineInputBorder(
-            // borderRadius: BorderRadius.circular(10.0),          
-        ),
+            // borderRadius: BorderRadius.circular(10.0),
+            ),
         labelText: '使用デッキ',
         hintText: 'Enter 使用デッキ',
         suffixIcon: IconButton(
@@ -51,7 +51,7 @@ class _InputOpponentDeckTextField extends StatelessWidget {
       controller: context.select(
           (TextEditingControllerModel model) => model.opponentDeckController),
       onFieldSubmitted: (String value) {
-        context.read<DeckModel>().selectedOpponentDeckChangeToString(value);
+        context.read<DeckModel>().changeSelectedOpponentDeckUsingString(value);
       },
       validator: (value) {
         if (value == null) {
@@ -79,8 +79,9 @@ void _showCupertinoPicker(BuildContext context) {
                 .select((DeckModel model) => model.gameDeckList)
                 .map((deck) => Text(deck.deck))
                 .toList(),
-            onSelectedItemChanged: (int index) =>
-                context.read<DeckModel>().selectedOpponentDeckChangeToIndex(index),
+            onSelectedItemChanged: (int index) => context
+                .read<DeckModel>()
+                .changeSelectedOpponentDeckUsingIndex(index),
           ),
         ),
       );

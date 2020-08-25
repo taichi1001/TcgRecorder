@@ -50,7 +50,7 @@ class _InputTagTextField extends StatelessWidget {
       controller: context
           .select((TextEditingControllerModel model) => model.tagController),
       onFieldSubmitted: (String value) {
-        context.read<TagModel>().selectedTagChangeToString(value);
+        context.read<TagModel>().changeSelectedTagUsingString(value);
       },
       validator: (value) {
         if (value == null) {
@@ -79,7 +79,7 @@ void _showCupertinoPicker(BuildContext context) {
                 .map((tag) => Text(tag.tag))
                 .toList(),
             onSelectedItemChanged: (int index) =>
-                context.read<TagModel>().selectedTagChangeToIndex(index),
+                context.read<TagModel>().changeSelectedTagUsingIndex(index),
           ),
         ),
       );
