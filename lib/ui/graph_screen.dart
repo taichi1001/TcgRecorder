@@ -1,16 +1,67 @@
 import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:provider/provider.dart';
-
+import 'package:tcg_recorder/entity/game.dart';
+import 'package:tcg_recorder/model/graph_model.dart';
 
 class GraphScreen extends StatelessWidget {
-  const GraphScreen({Key key}) : super(key: key);
+  const GraphScreen({this.game, key}) : super(key: key);
+  final Game game;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('グラフ'),
-      ),
-      body: const Center(child: Text('グラフ'),),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<GraphModel>(
+          create: (context) => GraphModel(selectedGame: Game(gameId: 1, game: 'ああああ')),
+          builder: (context, baz){
+            return Scaffold(
+              appBar: AppBar(
+                title: Text('Half yearly sales analysis'),
+              ),
+              body: Center(
+                child: Container(
+                  child: SfCartesianChart(
+                    tooltipBehavior: TooltipBehavior(enable: true),
+                    primaryXAxis: DateTimeAxis(),
+                    series: <ChartSeries>[
+                      LineSeries<WinRateData, DateTime>(
+                        name: 'aaa',
+                        enableTooltip: true,
+                        dataSource: context.select((GraphModel model) => model.winRateList),
+                        xValueMapper: (WinRateData data, _) => data.record.date,
+                        yValueMapper: (WinRateData data, _) => data.winRate,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      ],
+      // child: Scaffold(
+      //   appBar: AppBar(
+      //     title: Text('Half yearly sales analysis'),
+      //   ),
+      //   body: Center(
+      //     child: Container(
+      //       child: SfCartesianChart(
+      //         tooltipBehavior: TooltipBehavior(enable: true),
+      //         primaryXAxis: DateTimeAxis(),
+      //         series: <ChartSeries>[
+      //           LineSeries<WinRateData, DateTime>(
+      //             name: 'aaa',
+      //             enableTooltip: true,
+      //             dataSource: context.select((GraphModel model) => model.winRateList),
+      //             xValueMapper: (WinRateData data, _) => data.record.date,
+      //             yValueMapper: (WinRateData data, _) => data.winRate,
+      //           ),
+      //         ],
+      //       ),
+      //     ),
+      //   ),
+      // ),
     );
   }
 }

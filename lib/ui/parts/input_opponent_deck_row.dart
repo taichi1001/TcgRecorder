@@ -12,7 +12,7 @@ class InputOpponentDeckRow extends StatelessWidget {
     return Container(
       height: _size.height * (10 / 100),
       width: _size.width * (80 / 100),
-      padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
+      padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
       child: const _InputOpponentDeckTextField(),
     );
   }
@@ -38,8 +38,8 @@ class _InputOpponentDeckTextField extends StatelessWidget {
         border: OutlineInputBorder(
             // borderRadius: BorderRadius.circular(10.0),
             ),
-        labelText: '使用デッキ',
-        hintText: 'Enter 使用デッキ',
+        labelText: '相手デッキ',
+        hintText: 'Enter 相手デッキ',
         suffixIcon: IconButton(
           icon: const Icon(Icons.arrow_drop_down),
           onPressed: () {

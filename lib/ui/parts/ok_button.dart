@@ -30,7 +30,7 @@ class OkButton extends StatelessWidget {
     return Container(
       height: _size.height * (10 / 100),
       width: _size.width * (80 / 100),
-      padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
+      padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
       child: RaisedButton(
         onPressed: _selectedGame == null ||
                 _selectedUseDeck == null ||

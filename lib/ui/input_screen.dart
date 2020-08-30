@@ -45,9 +45,12 @@ class _Body extends StatelessWidget {
         const OkButton(),
       ],
     );
-    return Form(
-      key: _formKey,
-      child: column,
+    return Padding(
+      padding: const EdgeInsets.only(top: 20.0),
+      child: Form(
+        key: _formKey,
+        child: column,
+      ),
     );
   }
 }

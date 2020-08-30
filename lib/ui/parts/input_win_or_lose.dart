@@ -14,7 +14,7 @@ class InputWinOrLoseRow extends StatelessWidget {
           height: _size.height * (10 / 100),
           width: _size.width * (40 / 100),
           margin: const EdgeInsets.only(right: 3),
-          padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
+          padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
           child: RaisedButton(
             onPressed: context.select((RecordModel model) => model.winOrLose) == 1 ? null :() {
               context.read<RecordModel>().changeWinOrLose();
@@ -26,7 +26,7 @@ class InputWinOrLoseRow extends StatelessWidget {
           height: _size.height * (10 / 100),
           width: _size.width * (40 / 100),
           margin: const EdgeInsets.only(right: 5),
-          padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
+          padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
           child: RaisedButton(
             onPressed: context.select((RecordModel model) => model.winOrLose) == 2 ? null :() {
               context.read<RecordModel>().changeWinOrLose();
