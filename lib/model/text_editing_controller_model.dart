@@ -4,24 +4,24 @@ class TextEditingControllerModel with ChangeNotifier {
   TextEditingController gameController;
   void setGameController(value) {
     gameController = value;
-   notifyListeners();
+    notifyListeners();
   }
 
   TextEditingController tagController;
   void setTagController(value) {
     tagController = value;
-   notifyListeners();
+    notifyListeners();
   }
 
   TextEditingController useDeckController;
   void setUseDeckController(value) {
     useDeckController = value;
-   notifyListeners();
+    notifyListeners();
   }
 
   TextEditingController opponentDeckController;
   void setOpponentDeckController(value) {
     opponentDeckController = value;
-   notifyListeners();
+    notifyListeners();
   }
 }

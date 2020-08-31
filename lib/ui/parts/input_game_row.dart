@@ -22,10 +22,9 @@ class _InputGameTextField extends StatelessWidget {
   const _InputGameTextField({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final _selectedGame =
-        context.select((GameModel model) => model.selectedGame);
-    Provider.of<TextEditingControllerModel>(context, listen: false)
-        .setGameController(_selectedGame != null
+    final _selectedGame = context.select((GameModel model) => model.selectedGame);
+    Provider.of<TextEditingControllerModel>(context, listen: false).setGameController(
+        _selectedGame != null
             ? TextEditingController(text: _selectedGame.game)
             : TextEditingController());
 
@@ -36,8 +35,8 @@ class _InputGameTextField extends StatelessWidget {
       decoration: InputDecoration(
         // icon: const Icon(Icons.settings),
         border: OutlineInputBorder(
-          // borderRadius: BorderRadius.circular(10.0),
-        ),
+            // borderRadius: BorderRadius.circular(10.0),
+            ),
         labelText: 'ゲーム名',
         hintText: 'Enter your ゲーム名',
         suffixIcon: IconButton(
@@ -48,13 +47,10 @@ class _InputGameTextField extends StatelessWidget {
         ),
       ),
       autovalidate: false,
-      controller: context
-          .select((TextEditingControllerModel model) => model.gameController),
+      controller: context.select((TextEditingControllerModel model) => model.gameController),
       onFieldSubmitted: (String value) {
         context.read<GameModel>().changeSelectedGameUsingString(value);
-        context
-            .select((TextEditingControllerModel model) => model.tagController)
-            .clear();
+        context.select((TextEditingControllerModel model) => model.tagController).clear();
       },
       validator: (value) {
         if (value == null) {

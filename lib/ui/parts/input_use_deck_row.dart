@@ -21,10 +21,9 @@ class _InputUseDeckTextField extends StatelessWidget {
   const _InputUseDeckTextField({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final _selectedUseDeck =
-        context.select((DeckModel model) => model.selectedUseDeck);
-    Provider.of<TextEditingControllerModel>(context, listen: false)
-        .setUseDeckController(_selectedUseDeck != null
+    final _selectedUseDeck = context.select((DeckModel model) => model.selectedUseDeck);
+    Provider.of<TextEditingControllerModel>(context, listen: false).setUseDeckController(
+        _selectedUseDeck != null
             ? TextEditingController(text: _selectedUseDeck.deck)
             : TextEditingController());
 
@@ -47,8 +46,7 @@ class _InputUseDeckTextField extends StatelessWidget {
         ),
       ),
       autovalidate: false,
-      controller: context.select(
-          (TextEditingControllerModel model) => model.useDeckController),
+      controller: context.select((TextEditingControllerModel model) => model.useDeckController),
       onFieldSubmitted: (String value) {
         context.read<DeckModel>().changeSelectedUseDeckUsingString(value);
       },
@@ -78,9 +76,8 @@ void _showCupertinoPicker(BuildContext context) {
                 .select((DeckModel model) => model.gameDeckList)
                 .map((deck) => Text(deck.deck))
                 .toList(),
-            onSelectedItemChanged: (int index) => context
-                .read<DeckModel>()
-                .changeSelectedUseDeckUsingIndex(index),
+            onSelectedItemChanged: (int index) =>
+                context.read<DeckModel>().changeSelectedUseDeckUsingIndex(index),
           ),
         ),
       );

@@ -43,8 +43,7 @@ class DeckModel with ChangeNotifier {
     } else if (gameDeckList.where((value) => value.deck == newValue).isEmpty) {
       selectedUseDeck = Deck(deck: newValue);
     } else {
-      selectedUseDeck =
-          gameDeckList.where((value) => value.deck == newValue).toList()[0];
+      selectedUseDeck = gameDeckList.where((value) => value.deck == newValue).toList()[0];
     }
     notifyListeners();
   }
@@ -55,17 +54,13 @@ class DeckModel with ChangeNotifier {
     } else if (gameDeckList.where((value) => value.deck == newValue).isEmpty) {
       selectedOpponentDeck = Deck(deck: newValue);
     } else {
-      selectedOpponentDeck =
-          gameDeckList.where((value) => value.deck == newValue).toList()[0];
+      selectedOpponentDeck = gameDeckList.where((value) => value.deck == newValue).toList()[0];
     }
     notifyListeners();
   }
 
   void findMyDeckFromRecord(Record record) {
-    record.myDeck = allDeckList
-        .where((value) => value.deckId == record.myDeckId)
-        .toList()[0]
-        .deck;
+    record.myDeck = allDeckList.where((value) => value.deckId == record.myDeckId).toList()[0].deck;
   }
 
   Future addSelectedUseDeck() async {
@@ -87,10 +82,8 @@ class DeckModel with ChangeNotifier {
   }
 
   void findOpponentDeckFromRecord(Record record) {
-    record.opponentDeck = allDeckList
-        .where((value) => value.deckId == record.opponentDeckId)
-        .toList()[0]
-        .deck;
+    record.opponentDeck =
+        allDeckList.where((value) => value.deckId == record.opponentDeckId).toList()[0].deck;
   }
 
   Future add(Deck deck) async {

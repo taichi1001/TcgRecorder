@@ -10,7 +10,8 @@ import 'package:tcg_recorder/model/text_editing_controller_model.dart';
 import 'package:tcg_recorder/ui/main_bottom_navigation.dart';
 
 void main() {
-  SyncfusionLicense.registerLicense('NT8mJyc2IWhia31hfWN9ZmZoYmF8YGJ8ampqanNiYmlmamlmanMDHmgnfSAyIDI4OmJkaxM0PjI6P30wPD4=');
+  SyncfusionLicense.registerLicense(
+      'NT8mJyc2IWhia31hfWN9ZmZoYmF8YGJ8ampqanNiYmlmamlmanMDHmgnfSAyIDI4OmJkaxM0PjI6P30wPD4=');
   return runApp(MyApp());
 }
 

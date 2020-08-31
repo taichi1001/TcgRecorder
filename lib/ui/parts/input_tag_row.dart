@@ -23,8 +23,8 @@ class _InputTagTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _selectedTag = context.select((TagModel model) => model.selectedTag);
-    Provider.of<TextEditingControllerModel>(context, listen: true)
-        .setTagController(_selectedTag != null
+    Provider.of<TextEditingControllerModel>(context, listen: true).setTagController(
+        _selectedTag != null
             ? TextEditingController(text: _selectedTag.tag)
             : TextEditingController());
 
@@ -47,8 +47,7 @@ class _InputTagTextField extends StatelessWidget {
         ),
       ),
       autovalidate: false,
-      controller: context
-          .select((TextEditingControllerModel model) => model.tagController),
+      controller: context.select((TextEditingControllerModel model) => model.tagController),
       onFieldSubmitted: (String value) {
         context.read<TagModel>().changeSelectedTagUsingString(value);
       },

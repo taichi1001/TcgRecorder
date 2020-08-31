@@ -27,12 +27,11 @@ class DatabaseService {
   }
 
   Future createDatabase() async {
-    final Directory documentsDirectory =
-        await getApplicationDocumentsDirectory();
+    final Directory documentsDirectory = await getApplicationDocumentsDirectory();
     final String path = join(documentsDirectory.path, _databaseName);
 
-    final database = await openDatabase(path,
-        version: _databaseVersion, onCreate: initDB, onUpgrade: onUpgrade);
+    final database =
+        await openDatabase(path, version: _databaseVersion, onCreate: initDB, onUpgrade: onUpgrade);
     return database;
   }
 

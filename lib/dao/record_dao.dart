@@ -14,9 +14,8 @@ class RecordDao {
   Future<List<Record>> getAll() async {
     final db = await dbProvider.database;
     final List<Map<String, dynamic>> result = await db.query(tableName);
-    final List<Record> records = result.isNotEmpty
-        ? result.map((item) => Record.fromDatabaseJson(item)).toList()
-        : [];
+    final List<Record> records =
+        result.isNotEmpty ? result.map((item) => Record.fromDatabaseJson(item)).toList() : [];
     return records;
   }
 
@@ -24,9 +23,8 @@ class RecordDao {
     final db = await dbProvider.database;
     final List<Map<String, dynamic>> result =
         await db.query(tableName, where: 'game_id = ?', whereArgs: [id]);
-    final List<Record> records = result.isNotEmpty
-        ? result.map((item) => Record.fromDatabaseJson(item)).toList()
-        : [];
+    final List<Record> records =
+        result.isNotEmpty ? result.map((item) => Record.fromDatabaseJson(item)).toList() : [];
     return records;
   }
 
@@ -34,9 +32,8 @@ class RecordDao {
     final db = await dbProvider.database;
     final List<Map<String, dynamic>> result =
         await db.query(tableName, where: 'tag_id = ?', whereArgs: [id]);
-    final List<Record> records = result.isNotEmpty
-        ? result.map((item) => Record.fromDatabaseJson(item)).toList()
-        : [];
+    final List<Record> records =
+        result.isNotEmpty ? result.map((item) => Record.fromDatabaseJson(item)).toList() : [];
     return records;
   }
 
@@ -49,8 +46,7 @@ class RecordDao {
 
   Future<int> delete(int id) async {
     final db = await dbProvider.database;
-    final result =
-        await db.delete(tableName, where: 'record_id = ?', whereArgs: [id]);
+    final result = await db.delete(tableName, where: 'record_id = ?', whereArgs: [id]);
     return result;
   }
 

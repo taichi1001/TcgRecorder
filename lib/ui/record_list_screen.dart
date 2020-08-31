@@ -27,8 +27,7 @@ class RecordListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final recordList =
-        context.select((RecordModel model) => model.allRecordList);
+    final recordList = context.select((RecordModel model) => model.allRecordList);
     if (recordList.isEmpty) {
       return const Center(child: Text('No Items'));
     }

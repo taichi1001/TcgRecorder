@@ -14,7 +14,7 @@ class GraphScreen extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<GraphModel>(
           create: (context) => GraphModel(selectedGame: Game(gameId: 1, game: 'ああああ')),
-          builder: (context, baz){
+          builder: (context, baz) {
             return Scaffold(
               appBar: AppBar(
                 title: Text('Half yearly sales analysis'),

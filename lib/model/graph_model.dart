@@ -25,8 +25,7 @@ class GraphModel with ChangeNotifier {
     for (final record in recordList) {
       tmpRecordList.add(record);
       final matches = tmpRecordList.length;
-      final wins =
-          tmpRecordList.where((record) => record.winOrLose == 1).length;
+      final wins = tmpRecordList.where((record) => record.winOrLose == 1).length;
       final winRate = ((wins / matches * 100) * 10).round() / 10;
       winRateList.add(WinRateData(winRate, record));
     }
