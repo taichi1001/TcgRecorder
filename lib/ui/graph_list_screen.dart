@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tcg_recorder/entity/game.dart';
-import 'package:tcg_recorder/entity/record.dart';
-import 'package:tcg_recorder/model/deck_model.dart';
 import 'package:tcg_recorder/model/game_model.dart';
-import 'package:tcg_recorder/model/record_model.dart';
-import 'package:tcg_recorder/model/tag_model.dart';
 import 'package:tcg_recorder/ui/graph_screen.dart';
-import 'package:tcg_recorder/ui/record_detail_view.dart';
 
 class GraphListScreen extends StatelessWidget {
   const GraphListScreen({Key key}) : super(key: key);

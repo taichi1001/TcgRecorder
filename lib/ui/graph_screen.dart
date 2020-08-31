@@ -13,11 +13,11 @@ class GraphScreen extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<GraphModel>(
-          create: (context) => GraphModel(selectedGame: Game(gameId: 1, game: 'ああああ')),
+          create: (context) => GraphModel(selectedGame: game),
           builder: (context, baz) {
             return Scaffold(
               appBar: AppBar(
-                title: Text('Half yearly sales analysis'),
+                title: Text(game.game),
               ),
               body: Center(
                 child: Container(
@@ -26,7 +26,7 @@ class GraphScreen extends StatelessWidget {
                     primaryXAxis: DateTimeAxis(),
                     series: <ChartSeries>[
                       LineSeries<WinRateData, DateTime>(
-                        name: 'aaa',
+                        name: 'Win Rate',
                         enableTooltip: true,
                         dataSource: context.select((GraphModel model) => model.winRateList),
                         xValueMapper: (WinRateData data, _) => data.record.date,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class SettingScreen extends StatelessWidget {
   const SettingScreen({Key key}) : super(key: key);
