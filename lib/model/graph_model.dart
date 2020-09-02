@@ -45,7 +45,29 @@ class GraphModel with ChangeNotifier {
       final percentage =
           recordList.where((record) => record.myDeckId == deck.deckId).toList().length /
               recordList.length;
-      useDeckPercentageList.add(DeckPercentageData(percentage: percentage, deck: deck));
+      final wins = recordList
+          .where((record) => record.myDeckId == deck.deckId)
+          .toList()
+          .where((record) => record.winOrLose == 1)
+          .toList()
+          .length;
+      final loses = recordList
+          .where((record) => record.myDeckId == deck.deckId)
+          .toList()
+          .where((record) => record.winOrLose == 2)
+          .toList()
+          .length;
+      final deckCount =
+          recordList.where((record) => record.myDeckId == deck.deckId).toList().length;
+      useDeckPercentageList.add(
+        DeckPercentageData(
+          percentage: percentage,
+          deck: deck,
+          wins: wins,
+          loses: loses,
+          count: deckCount,
+        ),
+      );
     }
   }
 
@@ -54,7 +76,29 @@ class GraphModel with ChangeNotifier {
       final percentage =
           recordList.where((record) => record.opponentDeckId == deck.deckId).toList().length /
               recordList.length;
-      opponentDeckPercentageList.add(DeckPercentageData(percentage: percentage, deck: deck));
+      final wins = recordList
+          .where((record) => record.opponentDeckId == deck.deckId)
+          .toList()
+          .where((record) => record.winOrLose == 1)
+          .toList()
+          .length;
+      final loses = recordList
+          .where((record) => record.opponentDeckId == deck.deckId)
+          .toList()
+          .where((record) => record.winOrLose == 2)
+          .toList()
+          .length;
+      final deckCount =
+          recordList.where((record) => record.opponentDeckId == deck.deckId).toList().length;
+      opponentDeckPercentageList.add(
+        DeckPercentageData(
+          percentage: percentage,
+          deck: deck,
+          wins: wins,
+          loses: loses,
+          count: deckCount,
+        ),
+      );
     }
   }
 }
@@ -66,10 +110,13 @@ class WinRateData {
   Record record;
 }
 
-/// 使用デッキ割合グラフ用のデータクラス
+/// 使用デッキ割合用のデータクラス
 class DeckPercentageData {
-  DeckPercentageData({this.percentage, this.deck, this.color});
+  DeckPercentageData({this.percentage, this.deck, this.color, this.wins, this.loses, this.count});
   double percentage;
   Deck deck;
   Color color;
+  int wins;
+  int loses;
+  int count;
 }
