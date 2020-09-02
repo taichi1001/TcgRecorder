@@ -20,20 +20,39 @@ class GraphScreen extends StatelessWidget {
                 title: Text(game.game),
               ),
               body: Center(
-                child: Container(
-                  child: SfCartesianChart(
-                    tooltipBehavior: TooltipBehavior(enable: true),
-                    primaryXAxis: DateTimeAxis(),
-                    series: <ChartSeries>[
-                      LineSeries<WinRateData, DateTime>(
-                        name: 'Win Rate',
-                        enableTooltip: true,
-                        dataSource: context.select((GraphModel model) => model.winRateList),
-                        xValueMapper: (WinRateData data, _) => data.record.date,
-                        yValueMapper: (WinRateData data, _) => data.winRate,
+                child: Column(
+                  children: [
+                    Container(
+                      child: SfCartesianChart(
+                        tooltipBehavior: TooltipBehavior(enable: true),
+                        primaryXAxis: DateTimeAxis(),
+                        series: <ChartSeries>[
+                          LineSeries<WinRateData, DateTime>(
+                            name: 'Win Rate',
+                            enableTooltip: true,
+                            dataSource: context.select((GraphModel model) => model.winRateList),
+                            xValueMapper: (WinRateData data, _) => data.record.date,
+                            yValueMapper: (WinRateData data, _) => data.winRate,
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                    Container(
+                      child: SfCircularChart(
+                        tooltipBehavior: TooltipBehavior(enable: true),
+                        series: <CircularSeries>[
+                          PieSeries<DeckPercentageData, String>(
+                            enableTooltip: true,
+                            dataSource:
+                                context.select((GraphModel model) => model.useDeckPercentageList),
+                            pointColorMapper: (DeckPercentageData data, _) => data.color,
+                            xValueMapper: (DeckPercentageData data, _) => data.deck.deck,
+                            yValueMapper: (DeckPercentageData data, _) => data.percentage,
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
             );
