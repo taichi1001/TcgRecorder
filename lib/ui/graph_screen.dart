@@ -14,73 +14,77 @@ class GraphScreen extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<GraphModel>(
           create: (context) => GraphModel(selectedGame: game),
-          builder: (context, baz) {
-            return Scaffold(
-              appBar: AppBar(
-                title: Text(game.game),
-              ),
-              body: Center(
-                child: Column(
-                  children: [
-                    Container(
-                      child: SfCartesianChart(
-                        tooltipBehavior: TooltipBehavior(enable: true),
-                        primaryXAxis: DateTimeAxis(),
-                        series: <ChartSeries>[
-                          LineSeries<WinRateData, DateTime>(
-                            name: 'Win Rate',
-                            enableTooltip: true,
-                            dataSource: context.select((GraphModel model) => model.winRateList),
-                            xValueMapper: (WinRateData data, _) => data.record.date,
-                            yValueMapper: (WinRateData data, _) => data.winRate,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      child: SfCircularChart(
-                        tooltipBehavior: TooltipBehavior(enable: true),
-                        series: <CircularSeries>[
-                          PieSeries<DeckPercentageData, String>(
-                            enableTooltip: true,
-                            dataSource:
-                                context.select((GraphModel model) => model.useDeckPercentageList),
-                            pointColorMapper: (DeckPercentageData data, _) => data.color,
-                            xValueMapper: (DeckPercentageData data, _) => data.deck.deck,
-                            yValueMapper: (DeckPercentageData data, _) => data.percentage,
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
         ),
       ],
-      // child: Scaffold(
-      //   appBar: AppBar(
-      //     title: Text('Half yearly sales analysis'),
-      //   ),
-      //   body: Center(
-      //     child: Container(
-      //       child: SfCartesianChart(
-      //         tooltipBehavior: TooltipBehavior(enable: true),
-      //         primaryXAxis: DateTimeAxis(),
-      //         series: <ChartSeries>[
-      //           LineSeries<WinRateData, DateTime>(
-      //             name: 'aaa',
-      //             enableTooltip: true,
-      //             dataSource: context.select((GraphModel model) => model.winRateList),
-      //             xValueMapper: (WinRateData data, _) => data.record.date,
-      //             yValueMapper: (WinRateData data, _) => data.winRate,
-      //           ),
-      //         ],
-      //       ),
-      //     ),
-      //   ),
-      // ),
+      child: const _Graph(),
+    );
+  }
+}
+
+class _Graph extends StatelessWidget {
+  const _Graph({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(context.select((GraphModel model) => model.selectedGame.game)),
+      ),
+      body: Center(
+        child: Column(
+          children: const [
+            _WinRateGraph(),
+            _UseDeckPercentageGraph(),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _WinRateGraph extends StatelessWidget {
+  const _WinRateGraph({key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: SfCartesianChart(
+        tooltipBehavior: TooltipBehavior(enable: true),
+        primaryXAxis: DateTimeAxis(),
+        series: <ChartSeries>[
+          LineSeries<WinRateData, DateTime>(
+            name: 'Win Rate',
+            enableTooltip: true,
+            dataSource: context.select((GraphModel model) => model.winRateList),
+            xValueMapper: (WinRateData data, _) => data.record.date,
+            yValueMapper: (WinRateData data, _) => data.winRate,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _UseDeckPercentageGraph extends StatelessWidget {
+  const _UseDeckPercentageGraph({key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: SfCircularChart(
+        tooltipBehavior: TooltipBehavior(enable: true),
+        series: <CircularSeries>[
+          PieSeries<DeckPercentageData, String>(
+            enableTooltip: true,
+            dataSource: context.select((GraphModel model) => model.useDeckPercentageList),
+            pointColorMapper: (DeckPercentageData data, _) => data.color,
+            xValueMapper: (DeckPercentageData data, _) => data.deck.deck,
+            yValueMapper: (DeckPercentageData data, _) => data.percentage,
+          )
+        ],
+      ),
     );
   }
 }
