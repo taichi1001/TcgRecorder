@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tcg_recorder/entity/deck.dart';
+import 'package:tcg_recorder/entity/game.dart';
 import 'package:tcg_recorder/entity/record.dart';
 import 'package:tcg_recorder/repository/deck_repository.dart';
 
@@ -63,18 +64,20 @@ class DeckModel with ChangeNotifier {
     record.myDeck = allDeckList.where((value) => value.deckId == record.myDeckId).toList()[0].deck;
   }
 
-  Future addSelectedUseDeck() async {
+  Future addSelectedUseDeck(Game game) async {
     if (selectedUseDeck.deckId != 0) return;
     selectedUseDeck.deckId = null;
+    selectedUseDeck.gameId = game.gameId;
     final deckId = await deckRepo.insert(selectedUseDeck);
     selectedUseDeck.deckId = deckId;
     allDeckList = await deckRepo.getAll();
     notifyListeners();
   }
 
-  Future addSelectedOpponentDeck() async {
+  Future addSelectedOpponentDeck(Game game) async {
     if (selectedOpponentDeck.deckId != 0) return;
     selectedOpponentDeck.deckId = null;
+    selectedOpponentDeck.gameId = game.gameId;
     final deckId = await deckRepo.insert(selectedOpponentDeck);
     selectedOpponentDeck.deckId = deckId;
     allDeckList = await deckRepo.getAll();

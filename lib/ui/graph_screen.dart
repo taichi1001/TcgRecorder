@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:provider/provider.dart';
 import 'package:tcg_recorder/entity/game.dart';
 import 'package:tcg_recorder/model/graph_model.dart';
+import 'package:tcg_recorder/ui/graph_list_screen.dart';
 
 class GraphScreen extends StatelessWidget {
   const GraphScreen({this.game, key}) : super(key: key);
@@ -30,14 +32,18 @@ class _Graph extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(context.select((GraphModel model) => model.selectedGame.game)),
+        title:
+            Text(context.select((GraphModel model) => model.selectedGame.game)),
       ),
       body: Center(
-        child: Column(
-          children: const [
-            _WinRateGraph(),
-            _UseDeckPercentageGraph(),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: const [
+              _WinRateGraph(),
+              _UseDeckPercentageGraph(),
+              _UseDeckDetail(),
+            ],
+          ),
         ),
       ),
     );
@@ -49,6 +55,7 @@ class _WinRateGraph extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final model = context.watch<GraphModel>();
     return Container(
       child: SfCartesianChart(
         tooltipBehavior: TooltipBehavior(enable: true),
@@ -57,7 +64,7 @@ class _WinRateGraph extends StatelessWidget {
           LineSeries<WinRateData, DateTime>(
             name: 'Win Rate',
             enableTooltip: true,
-            dataSource: context.select((GraphModel model) => model.winRateList),
+            dataSource: model.winRateList,
             xValueMapper: (WinRateData data, _) => data.record.date,
             yValueMapper: (WinRateData data, _) => data.winRate,
           ),
@@ -72,18 +79,58 @@ class _UseDeckPercentageGraph extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final model = context.watch<GraphModel>();
     return Container(
+      // width: 200,
+      height: 400,
       child: SfCircularChart(
         tooltipBehavior: TooltipBehavior(enable: true),
         series: <CircularSeries>[
           PieSeries<DeckPercentageData, String>(
             enableTooltip: true,
-            dataSource: context.select((GraphModel model) => model.useDeckPercentageList),
+            dataSource: model.useDeckPercentageList,
             pointColorMapper: (DeckPercentageData data, _) => data.color,
             xValueMapper: (DeckPercentageData data, _) => data.deck.deck,
             yValueMapper: (DeckPercentageData data, _) => data.percentage,
           )
         ],
+      ),
+    );
+  }
+}
+
+class _UseDeckDetail extends StatelessWidget {
+  const _UseDeckDetail({key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final model = context.watch<GraphModel>();
+    return Center(
+      child: Container(
+        padding: const EdgeInsets.only(left: 30.0),
+        child: SfDataGrid(
+          source: model,
+          cellBuilder: (BuildContext context, GridColumn column, int rowIndex){
+            return FlatButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => GraphListScreen(),
+                    ),
+                  );
+                },
+                child: Text(model.useDeckPercentageList[rowIndex].deck.deck),
+            );
+          },
+          columnWidthMode: ColumnWidthMode.auto,
+          columns: [
+            GridWidgetColumn(mappingName: 'deck', headerText: 'デッキ名'),
+            GridNumericColumn(mappingName: 'count', headerText: '試合'),
+            GridTextColumn(mappingName: 'win', headerText: '勝'),
+            GridTextColumn(mappingName: 'lose', headerText: '負'),
+            GridNumericColumn(mappingName: 'percentage', headerText: '勝率'),
+          ],
+        ),
       ),
     );
   }

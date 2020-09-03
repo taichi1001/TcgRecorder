@@ -35,6 +35,7 @@ dependencies:
 
   charts_flutter: ^0.9.0
   syncfusion_flutter_charts: ^18.2.55
+  syncfusion_flutter_datagrid: ^18.2.55
 
 dev_dependencies:
   flutter_test:
