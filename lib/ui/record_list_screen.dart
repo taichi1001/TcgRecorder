@@ -60,7 +60,9 @@ class RecordListTile extends StatelessWidget {
       child: ListTile(
         title: Text(record.game),
         subtitle: Text(
-            '${record.date.year}年${record.date.month}月${record.date.day}日${record.date.hour}:${record.date.minute}'),
+          '使用デッキ：${record.myDeck} 対戦デッキ：${record.opponentDeck}\n'
+          '${record.date.year}年${record.date.month}月${record.date.day}日${record.date.hour}:${record.date.minute}',
+        ),
         onTap: () {
           Navigator.of(context).push(
             MaterialPageRoute(
