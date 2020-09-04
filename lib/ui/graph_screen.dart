@@ -89,6 +89,11 @@ class _UseDeckPercentageGraph extends StatelessWidget {
       // width: 200,
       height: 400,
       child: SfCircularChart(
+        legend: Legend(
+          isVisible: true,
+          position: LegendPosition.right,
+          overflowMode: LegendItemOverflowMode.wrap,
+        ),
         tooltipBehavior: TooltipBehavior(enable: true),
         series: <CircularSeries>[
           PieSeries<DeckDetailData, String>(
