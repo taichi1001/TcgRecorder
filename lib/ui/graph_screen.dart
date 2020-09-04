@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import 'package:tcg_recorder/entity/game.dart';
 import 'package:tcg_recorder/model/graph_model.dart';
 import 'package:tcg_recorder/ui/deck_detail_screen.dart';
-import 'package:tcg_recorder/ui/graph_list_screen.dart';
 
 class GraphScreen extends StatelessWidget {
   const GraphScreen({this.game, key}) : super(key: key);
@@ -109,14 +108,16 @@ class _UseDeckDetail extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.only(left: 30.0),
         child: SfDataGrid(
-          source: model,
+          source: model.useDeckDetailDataGridSource,
           cellBuilder: (BuildContext context, GridColumn column, int rowIndex) {
             return FlatButton(
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) =>
-                        DeckDetailScreen(deck: model.useDeckDetailList[rowIndex].deck),
+                    builder: (context) => DeckDetailScreen(
+                      deck: model.useDeckDetailList[rowIndex].deck,
+                      model: model,
+                    ),
                   ),
                 );
               },

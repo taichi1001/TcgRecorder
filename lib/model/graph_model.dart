@@ -6,16 +6,16 @@ import 'package:tcg_recorder/entity/record.dart';
 import 'package:tcg_recorder/repository/record_repository.dart';
 import 'package:tcg_recorder/repository/deck_repository.dart';
 
-class GraphModel extends DataGridSource with ChangeNotifier {
+class GraphModel with ChangeNotifier {
   final Game selectedGame;
   List<Record> recordList;
   List<Deck> deckList;
+  UseDeckDetailDataGridSource useDeckDetailDataGridSource;
+  VsDeckDetailDataGridSource vsDeckDetailDataGridSource;
   List<WinRateData> winRateList = [];
   List<DeckDetailData> useDeckDetailList = [];
   List<DeckDetailData> opponentDeckDetailList = [];
-
-  @override
-  List<Object> get dataSource => useDeckDetailList;
+  List<DeckDetailData> vsDeckDetailList = [];
 
   final recordRepo = RecordRepo();
   final deckRepo = DeckRepo();
@@ -30,31 +30,8 @@ class GraphModel extends DataGridSource with ChangeNotifier {
     makeWinRateList();
     makeUseDeckPercentageList();
     makeOpponentDeckPercentageList();
+    useDeckDetailDataGridSource = UseDeckDetailDataGridSource(useDeckDetailList);
     notifyListeners();
-  }
-
-  @override
-  Object getCellValue(int rowIndex, String columnName) {
-    switch (columnName) {
-      case 'deck':
-        return useDeckDetailList[rowIndex].deck.deck;
-        break;
-      case 'matches':
-        return useDeckDetailList[rowIndex].matches;
-        break;
-      case 'win':
-        return useDeckDetailList[rowIndex].wins;
-        break;
-      case 'lose':
-        return useDeckDetailList[rowIndex].loses;
-        break;
-      case 'winRate':
-        return useDeckDetailList[rowIndex].winRate;
-        break;
-      default:
-        return ' ';
-        break;
-    }
   }
 
   void makeWinRateList() {
@@ -130,9 +107,118 @@ class GraphModel extends DataGridSource with ChangeNotifier {
       );
     }
   }
+
+  void make(Deck useDeck) {
+    final vsDeck = recordList.where((record) => record.myDeckId == useDeck.deckId).toList();
+    for (final opponentDeck in deckList) {
+      final matches =
+          vsDeck.where((record) => record.opponentDeckId == opponentDeck.deckId).toList().length;
+      final wins = vsDeck
+          .where((record) => record.opponentDeckId == opponentDeck.deckId)
+          .toList()
+          .where((record) => record.winOrLose == 1)
+          .toList()
+          .length;
+      final loses = vsDeck
+          .where((record) => record.opponentDeckId == opponentDeck.deckId)
+          .toList()
+          .where((record) => record.winOrLose == 2)
+          .toList()
+          .length;
+      final useageRate = matches / vsDeck.length;
+      final winRate = wins / matches;
+      opponentDeckDetailList.add(
+        DeckDetailData(
+          deck: opponentDeck,
+          matches: matches,
+          wins: wins,
+          loses: loses,
+          useageRate: useageRate,
+          winRate: winRate,
+        ),
+      );
+      vsDeckDetailDataGridSource = VsDeckDetailDataGridSource(vsDeckDetailList);
+    }
+  }
 }
 
-/// 勝率グラフ用のデータクラス
+class UseDeckDetailDataGridSource extends DataGridSource {
+  UseDeckDetailDataGridSource(List<DeckDetailData> list) {
+    useDeckDetailList = list;
+  }
+
+  List<DeckDetailData> _useDeckDetailList;
+  set useDeckDetailList(List<DeckDetailData> newList) {
+    _useDeckDetailList = newList;
+  }
+
+  @override
+  List<Object> get dataSource => _useDeckDetailList;
+
+  @override
+  Object getCellValue(int rowIndex, String columnName) {
+    switch (columnName) {
+      case 'deck':
+        return _useDeckDetailList[rowIndex].deck.deck;
+        break;
+      case 'matches':
+        return _useDeckDetailList[rowIndex].matches;
+        break;
+      case 'win':
+        return _useDeckDetailList[rowIndex].wins;
+        break;
+      case 'lose':
+        return _useDeckDetailList[rowIndex].loses;
+        break;
+      case 'winRate':
+        return _useDeckDetailList[rowIndex].winRate;
+        break;
+      default:
+        return ' ';
+        break;
+    }
+  }
+}
+
+class VsDeckDetailDataGridSource extends DataGridSource {
+  VsDeckDetailDataGridSource(List<DeckDetailData> list) {
+    vsDeckDetailList = list;
+  }
+
+  List<DeckDetailData> _vsDeckDetailList;
+  set vsDeckDetailList(List<DeckDetailData> newList) {
+    _vsDeckDetailList = newList;
+  }
+
+  @override
+  List<Object> get dataSource => _vsDeckDetailList;
+
+  @override
+  Object getCellValue(int rowIndex, String columnName) {
+    switch (columnName) {
+      case 'deck':
+        return _vsDeckDetailList[rowIndex].deck.deck;
+        break;
+      case 'matches':
+        return _vsDeckDetailList[rowIndex].matches;
+        break;
+      case 'win':
+        return _vsDeckDetailList[rowIndex].wins;
+        break;
+      case 'lose':
+        return _vsDeckDetailList[rowIndex].loses;
+        break;
+      case 'winRate':
+        return _vsDeckDetailList[rowIndex].winRate;
+        break;
+      default:
+        return ' ';
+        break;
+    }
+  }
+}
+
+/// 勝率推移グラフ用のデータクラス
 class WinRateData {
   WinRateData({this.winRate, this.record});
   double winRate;
