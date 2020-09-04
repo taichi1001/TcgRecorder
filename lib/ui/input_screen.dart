@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:tcg_recorder/ui/parts/input_1st_or_2nd_row.dart';
-import 'package:tcg_recorder/ui/parts/input_game_row.dart';
-import 'package:tcg_recorder/ui/parts/input_opponent_deck_row.dart';
-import 'package:tcg_recorder/ui/parts/input_tag_row.dart';
-import 'package:tcg_recorder/ui/parts/input_use_deck_row.dart';
-import 'package:tcg_recorder/ui/parts/input_win_or_lose.dart';
-import 'package:tcg_recorder/ui/parts/ok_button.dart';
+import 'package:tcg_recorder/ui/parts/input_screen/input_1st_or_2nd_row.dart';
+import 'package:tcg_recorder/ui/parts/input_screen/input_game_row.dart';
+import 'package:tcg_recorder/ui/parts/input_screen/input_opponent_deck_row.dart';
+import 'package:tcg_recorder/ui/parts/input_screen/input_tag_row.dart';
+import 'package:tcg_recorder/ui/parts/input_screen/input_use_deck_row.dart';
+import 'package:tcg_recorder/ui/parts/input_screen/input_win_or_lose.dart';
+import 'package:tcg_recorder/ui/parts/input_screen/ok_button.dart';
 
 class InputScreen extends StatelessWidget {
   const InputScreen({Key key}) : super(key: key);

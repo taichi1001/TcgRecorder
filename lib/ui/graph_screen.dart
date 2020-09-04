@@ -4,6 +4,7 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:provider/provider.dart';
 import 'package:tcg_recorder/entity/game.dart';
 import 'package:tcg_recorder/model/graph_model.dart';
+import 'package:tcg_recorder/ui/deck_detail_screen.dart';
 import 'package:tcg_recorder/ui/graph_list_screen.dart';
 
 class GraphScreen extends StatelessWidget {
@@ -114,7 +115,8 @@ class _UseDeckDetail extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => const GraphListScreen(),
+                    builder: (context) =>
+                        DeckDetailScreen(deck: model.useDeckDetailList[rowIndex].deck),
                   ),
                 );
               },
