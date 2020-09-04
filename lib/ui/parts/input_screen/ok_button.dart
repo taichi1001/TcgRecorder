@@ -12,6 +12,7 @@ class OkButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final _size = MediaQuery.of(context).size;
     final _deckModel = Provider.of<DeckModel>(context, listen: false);
+    final _tagModel = Provider.of<TagModel>(context, listen: false);
     final _selectedGame = context.select((GameModel model) => model.selectedGame);
     final _selectedTag = context.select((TagModel model) => model.selectedTag);
     final _selectedUseDeck = context.select((DeckModel model) => model.selectedUseDeck);
@@ -21,6 +22,7 @@ class OkButton extends StatelessWidget {
 
     if (_selectedGame != null) {
       _deckModel.getGameDeckList(_selectedGame.gameId);
+      _tagModel.getGameTagList(_selectedGame.gameId);
     }
     return Container(
       height: _size.height * (10 / 100),

@@ -25,6 +25,7 @@ class DeckModel with ChangeNotifier {
 
   Future getGameDeckList(int id) async {
     gameDeckList = await deckRepo.getGameDeck(id);
+    gameDeckList.insert(0, Deck(deck: ''));
     notifyListeners();
   }
 

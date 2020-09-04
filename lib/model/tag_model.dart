@@ -16,16 +16,13 @@ class TagModel with ChangeNotifier {
 
   Future _fetchAll() async {
     allTagList = await tagRepo.getAll();
-    if (allTagList.isNotEmpty) {
-      selectedTag = allTagList[0];
-    } else {
-      selectedTag = null;
-    }
+    selectedTag = null;
     notifyListeners();
   }
 
   Future getGameTagList(int id) async {
     gameTagList = await tagRepo.getGameTag(id);
+    gameTagList.insert(0, Tag(tag: ''));
     notifyListeners();
   }
 

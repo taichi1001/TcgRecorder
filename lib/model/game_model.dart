@@ -44,7 +44,8 @@ class GameModel with ChangeNotifier {
 
   Future _fetchAll() async {
     allGameList = await gameRepo.getAllTag();
-    if (allGameList.isNotEmpty) {
+    allGameList.insert(0, Game(game: ''));
+    if (allGameList.length > 1) {
       selectedGame = allGameList[1];
     } else {
       selectedGame = null;
