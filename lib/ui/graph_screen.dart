@@ -32,8 +32,7 @@ class _Graph extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:
-            Text(context.select((GraphModel model) => model.selectedGame.game)),
+        title: Text(context.select((GraphModel model) => model.selectedGame.game)),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -86,12 +85,12 @@ class _UseDeckPercentageGraph extends StatelessWidget {
       child: SfCircularChart(
         tooltipBehavior: TooltipBehavior(enable: true),
         series: <CircularSeries>[
-          PieSeries<DeckPercentageData, String>(
+          PieSeries<DeckDetailData, String>(
             enableTooltip: true,
-            dataSource: model.useDeckPercentageList,
-            pointColorMapper: (DeckPercentageData data, _) => data.color,
-            xValueMapper: (DeckPercentageData data, _) => data.deck.deck,
-            yValueMapper: (DeckPercentageData data, _) => data.percentage,
+            dataSource: model.useDeckDetailList,
+            pointColorMapper: (DeckDetailData data, _) => data.color,
+            xValueMapper: (DeckDetailData data, _) => data.deck.deck,
+            yValueMapper: (DeckDetailData data, _) => data.useageRate,
           )
         ],
       ),
@@ -110,25 +109,25 @@ class _UseDeckDetail extends StatelessWidget {
         padding: const EdgeInsets.only(left: 30.0),
         child: SfDataGrid(
           source: model,
-          cellBuilder: (BuildContext context, GridColumn column, int rowIndex){
+          cellBuilder: (BuildContext context, GridColumn column, int rowIndex) {
             return FlatButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => GraphListScreen(),
-                    ),
-                  );
-                },
-                child: Text(model.useDeckPercentageList[rowIndex].deck.deck),
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const GraphListScreen(),
+                  ),
+                );
+              },
+              child: Text(model.useDeckDetailList[rowIndex].deck.deck),
             );
           },
           columnWidthMode: ColumnWidthMode.auto,
           columns: [
             GridWidgetColumn(mappingName: 'deck', headerText: 'デッキ名'),
-            GridNumericColumn(mappingName: 'count', headerText: '試合'),
+            GridNumericColumn(mappingName: 'matches', headerText: '試合'),
             GridTextColumn(mappingName: 'win', headerText: '勝'),
             GridTextColumn(mappingName: 'lose', headerText: '負'),
-            GridNumericColumn(mappingName: 'percentage', headerText: '勝率'),
+            GridNumericColumn(mappingName: 'winRate', headerText: '勝率'),
           ],
         ),
       ),

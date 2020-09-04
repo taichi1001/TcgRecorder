@@ -11,11 +11,11 @@ class GraphModel extends DataGridSource with ChangeNotifier {
   List<Record> recordList;
   List<Deck> deckList;
   List<WinRateData> winRateList = [];
-  List<DeckPercentageData> useDeckPercentageList = [];
-  List<DeckPercentageData> opponentDeckPercentageList = [];
+  List<DeckDetailData> useDeckDetailList = [];
+  List<DeckDetailData> opponentDeckDetailList = [];
 
   @override
-  List<Object> get dataSource => useDeckPercentageList;
+  List<Object> get dataSource => useDeckDetailList;
 
   final recordRepo = RecordRepo();
   final deckRepo = DeckRepo();
@@ -33,27 +33,23 @@ class GraphModel extends DataGridSource with ChangeNotifier {
     notifyListeners();
   }
 
-  void notify() {
-    notifyListeners();
-  }
-
   @override
   Object getCellValue(int rowIndex, String columnName) {
     switch (columnName) {
       case 'deck':
-        return useDeckPercentageList[rowIndex].deck.deck;
+        return useDeckDetailList[rowIndex].deck.deck;
         break;
-      case 'count':
-        return useDeckPercentageList[rowIndex].count;
+      case 'matches':
+        return useDeckDetailList[rowIndex].matches;
         break;
       case 'win':
-        return useDeckPercentageList[rowIndex].wins;
+        return useDeckDetailList[rowIndex].wins;
         break;
       case 'lose':
-        return useDeckPercentageList[rowIndex].loses;
+        return useDeckDetailList[rowIndex].loses;
         break;
-      case 'percentage':
-        return useDeckPercentageList[rowIndex].winRate;
+      case 'winRate':
+        return useDeckDetailList[rowIndex].winRate;
         break;
       default:
         return ' ';
@@ -66,8 +62,7 @@ class GraphModel extends DataGridSource with ChangeNotifier {
     for (final record in recordList) {
       tmpRecordList.add(record);
       final matches = tmpRecordList.length;
-      final wins =
-          tmpRecordList.where((record) => record.winOrLose == 1).length;
+      final wins = tmpRecordList.where((record) => record.winOrLose == 1).length;
       final winRate = ((wins / matches * 100) * 10).round() / 10;
       winRateList.add(WinRateData(winRate: winRate, record: record));
     }
@@ -75,54 +70,40 @@ class GraphModel extends DataGridSource with ChangeNotifier {
 
   void makeUseDeckPercentageList() {
     for (final deck in deckList) {
-      final percentage = recordList
-              .where((record) => record.myDeckId == deck.deckId)
-              .toList()
-              .length /
-          recordList.length;
-      if (percentage != 0) {
-        final wins = recordList
-            .where((record) => record.myDeckId == deck.deckId)
-            .toList()
-            .where((record) => record.winOrLose == 1)
-            .toList()
-            .length;
-        final loses = recordList
-            .where((record) => record.myDeckId == deck.deckId)
-            .toList()
-            .where((record) => record.winOrLose == 2)
-            .toList()
-            .length;
-        final deckCount = recordList
-            .where((record) => record.myDeckId == deck.deckId)
-            .toList()
-            .length;
-        final winRate = wins /
-            recordList
-                .where((record) => record.myDeckId == deck.deckId)
-                .toList()
-                .length;
-        useDeckPercentageList.add(
-          DeckPercentageData(
-            percentage: percentage,
-            winRate: winRate,
-            deck: deck,
-            wins: wins,
-            loses: loses,
-            count: deckCount,
-          ),
-        );
-      }
+      final matches = recordList.where((record) => record.myDeckId == deck.deckId).toList().length;
+      if (matches == 0) continue;
+      final wins = recordList
+          .where((record) => record.myDeckId == deck.deckId)
+          .toList()
+          .where((record) => record.winOrLose == 1)
+          .toList()
+          .length;
+      final loses = recordList
+          .where((record) => record.myDeckId == deck.deckId)
+          .toList()
+          .where((record) => record.winOrLose == 2)
+          .toList()
+          .length;
+      final useageRate = matches / recordList.length;
+      final winRate = wins / matches;
+      useDeckDetailList.add(
+        DeckDetailData(
+          deck: deck,
+          matches: matches,
+          wins: wins,
+          loses: loses,
+          useageRate: useageRate,
+          winRate: winRate,
+        ),
+      );
     }
   }
 
   void makeOpponentDeckPercentageList() {
     for (final deck in deckList) {
-      final percentage = recordList
-              .where((record) => record.opponentDeckId == deck.deckId)
-              .toList()
-              .length /
-          recordList.length;
+      final matches =
+          recordList.where((record) => record.opponentDeckId == deck.deckId).toList().length;
+      if (matches == 0) continue;
       final wins = recordList
           .where((record) => record.opponentDeckId == deck.deckId)
           .toList()
@@ -135,17 +116,16 @@ class GraphModel extends DataGridSource with ChangeNotifier {
           .where((record) => record.winOrLose == 2)
           .toList()
           .length;
-      final deckCount = recordList
-          .where((record) => record.opponentDeckId == deck.deckId)
-          .toList()
-          .length;
-      opponentDeckPercentageList.add(
-        DeckPercentageData(
-          percentage: percentage,
+      final useageRate = matches / recordList.length;
+      final winRate = wins / matches;
+      opponentDeckDetailList.add(
+        DeckDetailData(
           deck: deck,
+          matches: matches,
           wins: wins,
           loses: loses,
-          count: deckCount,
+          useageRate: useageRate,
+          winRate: winRate,
         ),
       );
     }
@@ -159,22 +139,16 @@ class WinRateData {
   Record record;
 }
 
-/// 使用デッキ割合用のデータクラス
-class DeckPercentageData {
-  DeckPercentageData(
-      {this.percentage,
-      this.deck,
-      this.winRate,
-      this.color,
-      this.wins,
-      this.loses,
-      this.count});
+/// デッキごとの詳細データ用のデータクラス
+class DeckDetailData {
+  DeckDetailData(
+      {this.deck, this.useageRate, this.winRate, this.wins, this.loses, this.matches, this.color});
 
-  double percentage;
   Deck deck;
+  double useageRate;
   double winRate;
-  Color color;
   int wins;
   int loses;
-  int count;
+  int matches;
+  Color color;
 }
