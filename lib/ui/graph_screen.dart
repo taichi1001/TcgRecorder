@@ -58,7 +58,13 @@ class _WinRateGraph extends StatelessWidget {
     return Container(
       child: SfCartesianChart(
         tooltipBehavior: TooltipBehavior(enable: true),
-        primaryXAxis: DateTimeAxis(),
+        primaryYAxis: NumericAxis(
+          maximum: 100,
+          minimum: 0,
+        ),
+        primaryXAxis: DateTimeAxis(
+          intervalType: DateTimeIntervalType.days,
+        ),
         series: <ChartSeries>[
           LineSeries<WinRateData, DateTime>(
             name: 'Win Rate',
