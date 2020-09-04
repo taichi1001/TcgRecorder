@@ -34,7 +34,7 @@ class _InputOpponentDeckTextField extends StatelessWidget {
       // ),
       decoration: InputDecoration(
         // icon: Icon(Icons.settings),
-        border: OutlineInputBorder(
+        border: const OutlineInputBorder(
             // borderRadius: BorderRadius.circular(10.0),
             ),
         labelText: '相手デッキ',

@@ -34,7 +34,7 @@ class _InputTagTextField extends StatelessWidget {
       // ),
       decoration: InputDecoration(
         // icon: Icon(Icons.settings),
-        border: OutlineInputBorder(
+        border: const OutlineInputBorder(
             // borderRadius: BorderRadius.circular(10.0),
             ),
         labelText: 'タグ名',

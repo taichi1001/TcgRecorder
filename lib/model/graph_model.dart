@@ -8,6 +8,7 @@ import 'package:tcg_recorder/repository/deck_repository.dart';
 
 class GraphModel with ChangeNotifier {
   final Game selectedGame;
+  Deck selectedDeck;
   List<Record> recordList;
   List<Deck> deckList;
   UseDeckDetailDataGridSource useDeckDetailDataGridSource;
@@ -108,8 +109,8 @@ class GraphModel with ChangeNotifier {
     }
   }
 
-  void make(Deck useDeck) {
-    final vsDeck = recordList.where((record) => record.myDeckId == useDeck.deckId).toList();
+  void make() {
+    final vsDeck = recordList.where((record) => record.myDeckId == selectedDeck.deckId).toList();
     for (final opponentDeck in deckList) {
       final matches =
           vsDeck.where((record) => record.opponentDeckId == opponentDeck.deckId).toList().length;

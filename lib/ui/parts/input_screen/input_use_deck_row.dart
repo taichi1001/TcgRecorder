@@ -33,7 +33,7 @@ class _InputUseDeckTextField extends StatelessWidget {
       // ),
       decoration: InputDecoration(
         // icon: Icon(Icons.settings),
-        border: OutlineInputBorder(
+        border: const OutlineInputBorder(
             // borderRadius: BorderRadius.circular(10.0),
             ),
         labelText: '使用デッキ',

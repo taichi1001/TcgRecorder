@@ -34,7 +34,7 @@ class _InputGameTextField extends StatelessWidget {
       // ),
       decoration: InputDecoration(
         // icon: const Icon(Icons.settings),
-        border: OutlineInputBorder(
+        border: const OutlineInputBorder(
             // borderRadius: BorderRadius.circular(10.0),
             ),
         labelText: 'ゲーム名',

@@ -112,9 +112,10 @@ class _UseDeckDetail extends StatelessWidget {
           cellBuilder: (BuildContext context, GridColumn column, int rowIndex) {
             return FlatButton(
               onPressed: () {
+                model.selectedDeck = model.useDeckDetailList[rowIndex].deck;
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => DeckDetailScreen(
+                    builder: (context) => VsDeckDetailScreen(
                       deck: model.useDeckDetailList[rowIndex].deck,
                       model: model,
                     ),
