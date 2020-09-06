@@ -31,12 +31,11 @@ class _VsDeckDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final model = context.watch<GraphModel>();
-    model.make();
     return Center(
       child: Container(
         padding: const EdgeInsets.only(left: 30.0),
         child: SfDataGrid(
-          source: model.useDeckDetailDataGridSource,
+          source: model.vsDeckDetailDataGridSource,
           columnWidthMode: ColumnWidthMode.auto,
           columns: [
             GridTextColumn(mappingName: 'deck', headerText: '対戦デッキ名'),
