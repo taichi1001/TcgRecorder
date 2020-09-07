@@ -62,7 +62,7 @@ class GraphModel with ChangeNotifier {
           .where((record) => record.winOrLose == 2)
           .toList()
           .length;
-      final useageRate = matches / recordList.length;
+      final useageRate = ((matches / recordList.length * 100) * 10).round() / 10;
       final winRate = ((wins / matches * 100) * 10).round() / 10;
       useDeckDetailList.add(
         DeckDetailData(
@@ -94,8 +94,8 @@ class GraphModel with ChangeNotifier {
           .where((record) => record.winOrLose == 2)
           .toList()
           .length;
-      final useageRate = matches / recordList.length;
-      final winRate = wins / matches;
+      final useageRate = ((matches / recordList.length * 100) * 10).round() / 10;
+      final winRate = ((wins / matches * 100) * 10).round() / 10;
       opponentDeckDetailList.add(
         DeckDetailData(
           deck: deck,

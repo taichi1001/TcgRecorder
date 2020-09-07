@@ -18,13 +18,13 @@ class GraphScreen extends StatelessWidget {
           create: (context) => GraphModel(selectedGame: game),
         ),
       ],
-      child: const _Graph(),
+      child: const _Body(),
     );
   }
 }
 
-class _Graph extends StatelessWidget {
-  const _Graph({
+class _Body extends StatelessWidget {
+  const _Body({
     Key key,
   }) : super(key: key);
 
@@ -38,8 +38,7 @@ class _Graph extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: const [
-              _WinRateGraph(),
-              _UseDeckPercentageGraph(),
+              _Graphs(),
               Divider(
                 color: Colors.black,
               ),
@@ -47,6 +46,29 @@ class _Graph extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _Graphs extends StatelessWidget {
+  const _Graphs({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = PageController(initialPage: 1);
+    return Container(
+      width: 200,
+      height: 200,
+      child: PageView(
+        controller: controller,
+        children: const [
+          _UseDeckPercentageGraph(),
+          _OpponentDeckPercentageGraph(),
+          _WinRateGraph(),
+        ],
       ),
     );
   }
@@ -87,8 +109,8 @@ class _UseDeckPercentageGraph extends StatelessWidget {
   Widget build(BuildContext context) {
     final model = context.watch<GraphModel>();
     return Container(
-      // width: 200,
-      height: 400,
+      width: 200,
+      height: 200,
       child: SfCircularChart(
         legend: Legend(
           isVisible: true,
@@ -100,6 +122,36 @@ class _UseDeckPercentageGraph extends StatelessWidget {
           PieSeries<DeckDetailData, String>(
             enableTooltip: true,
             dataSource: model.useDeckDetailList,
+            pointColorMapper: (DeckDetailData data, _) => data.color,
+            xValueMapper: (DeckDetailData data, _) => data.deck.deck,
+            yValueMapper: (DeckDetailData data, _) => data.useageRate,
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class _OpponentDeckPercentageGraph extends StatelessWidget {
+  const _OpponentDeckPercentageGraph({key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final model = context.watch<GraphModel>();
+    return Container(
+      width: 200,
+      height: 200,
+      child: SfCircularChart(
+        legend: Legend(
+          isVisible: true,
+          position: LegendPosition.right,
+          overflowMode: LegendItemOverflowMode.wrap,
+        ),
+        tooltipBehavior: TooltipBehavior(enable: true),
+        series: <CircularSeries>[
+          PieSeries<DeckDetailData, String>(
+            enableTooltip: true,
+            dataSource: model.opponentDeckDetailList,
             pointColorMapper: (DeckDetailData data, _) => data.color,
             xValueMapper: (DeckDetailData data, _) => data.deck.deck,
             yValueMapper: (DeckDetailData data, _) => data.useageRate,
