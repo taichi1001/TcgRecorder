@@ -40,6 +40,9 @@ class _Graph extends StatelessWidget {
             children: const [
               _WinRateGraph(),
               _UseDeckPercentageGraph(),
+              Divider(
+                color: Colors.black,
+              ),
               _UseDeckDetail(),
             ],
           ),
