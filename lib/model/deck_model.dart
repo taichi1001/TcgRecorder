@@ -42,10 +42,8 @@ class DeckModel with ChangeNotifier {
   void changeSelectedUseDeckUsingString(String newValue) {
     if (newValue == '') {
       selectedUseDeck = null;
-    } else if (gameDeckList.where((value) => value.deck == newValue).isEmpty) {
-      selectedUseDeck = Deck(deck: newValue);
     } else {
-      selectedUseDeck = gameDeckList.where((value) => value.deck == newValue).toList()[0];
+      selectedUseDeck = Deck(deck: newValue);
     }
     notifyListeners();
   }
@@ -53,10 +51,8 @@ class DeckModel with ChangeNotifier {
   void changeSelectedOpponentDeckUsingString(String newValue) {
     if (newValue == '') {
       selectedOpponentDeck = null;
-    } else if (gameDeckList.where((value) => value.deck == newValue).isEmpty) {
-      selectedOpponentDeck = Deck(deck: newValue);
     } else {
-      selectedOpponentDeck = gameDeckList.where((value) => value.deck == newValue).toList()[0];
+      selectedOpponentDeck = Deck(deck: newValue);
     }
     notifyListeners();
   }
@@ -65,22 +61,38 @@ class DeckModel with ChangeNotifier {
     record.myDeck = allDeckList.where((value) => value.deckId == record.myDeckId).toList()[0].deck;
   }
 
+  void _changeItIfSelectedUseDeckInDb() {
+    if (gameDeckList.where((value) => value.deck == selectedUseDeck.deck).isNotEmpty) {
+      selectedUseDeck =
+          gameDeckList.where((value) => value.deck == selectedUseDeck.deck).toList()[0];
+    }
+  }
+
+  void _changeItIfSelectedOpponentDeckInDb() {
+    if (gameDeckList.where((value) => value.deck == selectedOpponentDeck.deck).isNotEmpty) {
+      selectedOpponentDeck =
+          gameDeckList.where((value) => value.deck == selectedOpponentDeck.deck).toList()[0];
+    }
+  }
+
   Future addSelectedUseDeck(Game game) async {
+    _changeItIfSelectedUseDeckInDb();
     if (selectedUseDeck.deckId != 0) return;
     selectedUseDeck.deckId = null;
-    selectedUseDeck.gameId = game.gameId;
     final deckId = await deckRepo.insert(selectedUseDeck);
     selectedUseDeck.deckId = deckId;
+    selectedUseDeck.gameId = game.gameId;
     allDeckList = await deckRepo.getAll();
     notifyListeners();
   }
 
   Future addSelectedOpponentDeck(Game game) async {
+    _changeItIfSelectedOpponentDeckInDb();
     if (selectedOpponentDeck.deckId != 0) return;
     selectedOpponentDeck.deckId = null;
-    selectedOpponentDeck.gameId = game.gameId;
     final deckId = await deckRepo.insert(selectedOpponentDeck);
     selectedOpponentDeck.deckId = deckId;
+    selectedOpponentDeck.gameId = game.gameId;
     allDeckList = await deckRepo.getAll();
     notifyListeners();
   }

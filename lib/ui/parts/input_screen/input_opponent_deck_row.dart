@@ -13,7 +13,13 @@ class InputOpponentDeckRow extends StatelessWidget {
       height: _size.height * (10 / 100),
       width: _size.width * (80 / 100),
       padding: const EdgeInsets.only(top: 10, bottom: 10),
-      child: const _InputOpponentDeckTextField(),
+      child: Stack(
+        alignment: Alignment.centerRight,
+        children: const [
+          _InputOpponentDeckTextField(),
+          _ShowCupertinoPickerButton(),
+        ],
+      ),
     );
   }
 }
@@ -32,56 +38,54 @@ class _InputOpponentDeckTextField extends StatelessWidget {
       // style: const TextStyle(
       //   fontSize: 13,
       // ),
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         // icon: Icon(Icons.settings),
-        border: const OutlineInputBorder(
+        border: OutlineInputBorder(
             // borderRadius: BorderRadius.circular(10.0),
             ),
         labelText: '相手デッキ',
         hintText: 'Enter 相手デッキ',
-        suffixIcon: IconButton(
-          icon: const Icon(Icons.arrow_drop_down),
-          onPressed: () {
-            _showCupertinoPicker(context);
-          },
-        ),
       ),
       controller:
           context.select((TextEditingControllerModel model) => model.opponentDeckController),
-      onFieldSubmitted: (String value) {
+      onChanged: (String value) {
         context.read<DeckModel>().changeSelectedOpponentDeckUsingString(value);
-      },
-      validator: (value) {
-        if (value == null) {
-          return '入力されていません';
-        }
-        return null;
       },
     );
   }
 }
 
-void _showCupertinoPicker(BuildContext context) {
-  showModalBottomSheet(
-    context: context,
-    builder: (BuildContext context) {
-      return Container(
-        height: MediaQuery.of(context).size.height / 3,
-        child: GestureDetector(
-          onTap: () {
-            Navigator.pop(context);
+class _ShowCupertinoPickerButton extends StatelessWidget {
+  const _ShowCupertinoPickerButton({key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: const Icon(Icons.arrow_drop_down),
+      onPressed: () {
+        showModalBottomSheet(
+          context: context,
+          builder: (BuildContext context) {
+            return Container(
+              height: MediaQuery.of(context).size.height / 3,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: CupertinoPicker(
+                  itemExtent: 40,
+                  onSelectedItemChanged: (int index) =>
+                      context.read<DeckModel>().changeSelectedOpponentDeckUsingIndex(index),
+                  children: context
+                      .select((DeckModel model) => model.gameDeckList)
+                      .map((deck) => Text(deck.deck))
+                      .toList(),
+                ),
+              ),
+            );
           },
-          child: CupertinoPicker(
-            itemExtent: 40,
-            onSelectedItemChanged: (int index) =>
-                context.read<DeckModel>().changeSelectedOpponentDeckUsingIndex(index),
-            children: context
-                .select((DeckModel model) => model.gameDeckList)
-                .map((deck) => Text(deck.deck))
-                .toList(),
-          ),
-        ),
-      );
-    },
-  );
+        );
+      },
+    );
+  }
 }
