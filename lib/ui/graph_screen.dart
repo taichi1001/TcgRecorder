@@ -55,26 +55,24 @@ class _WinRateGraph extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final model = context.watch<GraphModel>();
-    return Container(
-      child: SfCartesianChart(
-        tooltipBehavior: TooltipBehavior(enable: true),
-        primaryYAxis: NumericAxis(
-          maximum: 100,
-          minimum: 0,
-        ),
-        primaryXAxis: DateTimeAxis(
-          intervalType: DateTimeIntervalType.days,
-        ),
-        series: <ChartSeries>[
-          LineSeries<WinRateData, DateTime>(
-            name: 'Win Rate',
-            enableTooltip: true,
-            dataSource: model.winRateList,
-            xValueMapper: (WinRateData data, _) => data.record.date,
-            yValueMapper: (WinRateData data, _) => data.winRate,
-          ),
-        ],
+    return SfCartesianChart(
+      tooltipBehavior: TooltipBehavior(enable: true),
+      primaryYAxis: NumericAxis(
+        maximum: 100,
+        minimum: 0,
       ),
+      primaryXAxis: DateTimeAxis(
+        intervalType: DateTimeIntervalType.days,
+      ),
+      series: <ChartSeries>[
+        LineSeries<WinRateData, DateTime>(
+          name: 'Win Rate',
+          enableTooltip: true,
+          dataSource: model.winRateList,
+          xValueMapper: (WinRateData data, _) => data.record.date,
+          yValueMapper: (WinRateData data, _) => data.winRate,
+        ),
+      ],
     );
   }
 }
@@ -117,7 +115,7 @@ class _UseDeckDetail extends StatelessWidget {
     final model = context.watch<GraphModel>();
     return Center(
       child: Container(
-        padding: const EdgeInsets.only(left: 30.0),
+        padding: const EdgeInsets.only(left: 30),
         child: SfDataGrid(
           source: model.useDeckDetailDataGridSource,
           cellBuilder: (BuildContext context, GridColumn column, int rowIndex) {

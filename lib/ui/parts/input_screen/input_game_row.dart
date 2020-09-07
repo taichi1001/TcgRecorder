@@ -12,7 +12,7 @@ class InputGameRow extends StatelessWidget {
     return Container(
       height: _size.height * (10 / 100),
       width: _size.width * (80 / 100),
-      padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+      padding: const EdgeInsets.only(top: 10, bottom: 10),
       child: const _InputGameTextField(),
     );
   }
@@ -46,7 +46,6 @@ class _InputGameTextField extends StatelessWidget {
           },
         ),
       ),
-      autovalidate: false,
       controller: context.select((TextEditingControllerModel model) => model.gameController),
       onFieldSubmitted: (String value) {
         context.read<GameModel>().changeSelectedGameUsingString(value);
@@ -74,12 +73,12 @@ void _showCupertinoPicker(BuildContext context) {
           },
           child: CupertinoPicker(
             itemExtent: 40,
+            onSelectedItemChanged: (int index) =>
+                context.read<GameModel>().changeSelectedGameUsingIndex(index),
             children: context
                 .select((GameModel model) => model.allGameList)
                 .map((game) => Text(game.game))
                 .toList(),
-            onSelectedItemChanged: (int index) =>
-                context.read<GameModel>().changeSelectedGameUsingIndex(index),
           ),
         ),
       );

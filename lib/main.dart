@@ -12,40 +12,41 @@ import 'package:tcg_recorder/ui/main_bottom_navigation.dart';
 void main() {
   SyncfusionLicense.registerLicense(
       'NT8mJyc2IWhia31hfWN9ZmZoYmF8YGJ8ampqanNiYmlmamlmanMDHmgnfSAyIDI4OmJkaxM0PjI6P30wPD4=');
-  return runApp(MyApp());
+  return runApp(
+    const MyApp(),
+  );
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({key}) : super(key: key);
   @override
-  Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider<BottomNavigationModel>(
-          create: (context) => BottomNavigationModel(),
+  Widget build(BuildContext context) => MultiProvider(
+        providers: [
+          ChangeNotifierProvider<BottomNavigationModel>(
+            create: (context) => BottomNavigationModel(),
+          ),
+          ChangeNotifierProvider<GameModel>(
+            create: (context) => GameModel(),
+          ),
+          ChangeNotifierProvider<TagModel>(
+            create: (context) => TagModel(),
+          ),
+          ChangeNotifierProvider<DeckModel>(
+            create: (context) => DeckModel(),
+          ),
+          ChangeNotifierProvider<RecordModel>(
+            create: (context) => RecordModel(),
+          ),
+          ChangeNotifierProvider<TextEditingControllerModel>(
+            create: (context) => TextEditingControllerModel(),
+          ),
+        ],
+        child: MaterialApp(
+          title: 'Todo App Sample',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          home: const MainBottomNavigation(),
         ),
-        ChangeNotifierProvider<GameModel>(
-          create: (context) => GameModel(),
-        ),
-        ChangeNotifierProvider<TagModel>(
-          create: (context) => TagModel(),
-        ),
-        ChangeNotifierProvider<DeckModel>(
-          create: (context) => DeckModel(),
-        ),
-        ChangeNotifierProvider<RecordModel>(
-          create: (context) => RecordModel(),
-        ),
-        ChangeNotifierProvider<TextEditingControllerModel>(
-          create: (context) => TextEditingControllerModel(),
-        ),
-      ],
-      child: MaterialApp(
-        title: 'Todo App Sample',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: MainBottomNavigation(),
-      ),
-    );
-  }
+      );
 }

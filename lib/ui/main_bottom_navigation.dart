@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:tcg_recorder/model/bottom_navigation_model.dart';
 
 class MainBottomNavigation extends StatelessWidget {
+  const MainBottomNavigation({key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final bottomNavigationModel = Provider.of<BottomNavigationModel>(context, listen: true);

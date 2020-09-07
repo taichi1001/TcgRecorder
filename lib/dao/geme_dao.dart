@@ -13,8 +13,8 @@ class GameDao {
 
   Future<List<Game>> getAll() async {
     final db = await dbProvider.database;
-    final List<Map<String, dynamic>> result = await db.query(tableName);
-    final List<Game> games =
+    final result = await db.query(tableName);
+    final games =
         result.isNotEmpty ? result.map((item) => Game.fromDatabaseJson(item)).toList() : [];
     return games;
   }

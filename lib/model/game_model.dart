@@ -55,16 +55,16 @@ class GameModel with ChangeNotifier {
 
   Future add(Game game) async {
     await gameRepo.insert(game);
-    _fetchAll();
+    await _fetchAll();
   }
 
   Future update(Game game) async {
     await gameRepo.update(game);
-    _fetchAll();
+    await _fetchAll();
   }
 
   Future remove(Game game) async {
     await gameRepo.deleteById(game.gameId);
-    _fetchAll();
+    await _fetchAll();
   }
 }

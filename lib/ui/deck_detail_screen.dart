@@ -33,7 +33,7 @@ class _VsDeckDetail extends StatelessWidget {
     final model = context.watch<GraphModel>();
     return Center(
       child: Container(
-        padding: const EdgeInsets.only(left: 30.0),
+        padding: const EdgeInsets.only(left: 30),
         child: SfDataGrid(
           source: model.vsDeckDetailDataGridSource,
           columnWidthMode: ColumnWidthMode.auto,

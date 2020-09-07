@@ -2,25 +2,25 @@ import 'package:flutter/material.dart';
 
 class TextEditingControllerModel with ChangeNotifier {
   TextEditingController gameController;
-  void setGameController(value) {
+  void setGameController(TextEditingController value) {
     gameController = value;
     notifyListeners();
   }
 
   TextEditingController tagController;
-  void setTagController(value) {
+  void setTagController(TextEditingController value) {
     tagController = value;
     notifyListeners();
   }
 
   TextEditingController useDeckController;
-  void setUseDeckController(value) {
+  void setUseDeckController(TextEditingController value) {
     useDeckController = value;
     notifyListeners();
   }
 
   TextEditingController opponentDeckController;
-  void setOpponentDeckController(value) {
+  void setOpponentDeckController(TextEditingController value) {
     opponentDeckController = value;
     notifyListeners();
   }

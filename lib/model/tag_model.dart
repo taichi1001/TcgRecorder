@@ -56,17 +56,17 @@ class TagModel with ChangeNotifier {
   }
 
   Future add(Tag tag) async {
-    tagRepo.insert(tag);
-    _fetchAll();
+    await tagRepo.insert(tag);
+    await _fetchAll();
   }
 
   Future update(Tag tag) async {
     await tagRepo.update(tag);
-    _fetchAll();
+    await _fetchAll();
   }
 
   Future remove(Tag tag) async {
     await tagRepo.deleteById(tag.tagId);
-    _fetchAll();
+    await _fetchAll();
   }
 }

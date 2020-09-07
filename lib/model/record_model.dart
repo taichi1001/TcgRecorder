@@ -37,17 +37,17 @@ class RecordModel with ChangeNotifier {
   }
 
   Future add(Record record) async {
-    recordRepo.insert(record);
-    _fetchAll();
+    await recordRepo.insert(record);
+    await _fetchAll();
   }
 
   Future update(Record record) async {
     await recordRepo.update(record);
-    _fetchAll();
+    await _fetchAll();
   }
 
   Future remove(Record record) async {
     await recordRepo.deleteById(record.recordId);
-    _fetchAll();
+    await _fetchAll();
   }
 }

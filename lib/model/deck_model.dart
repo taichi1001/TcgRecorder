@@ -91,17 +91,17 @@ class DeckModel with ChangeNotifier {
   }
 
   Future add(Deck deck) async {
-    deckRepo.insert(deck);
-    _fetchAll();
+    await deckRepo.insert(deck);
+    await _fetchAll();
   }
 
   Future update(Deck deck) async {
     await deckRepo.update(deck);
-    _fetchAll();
+    await _fetchAll();
   }
 
   Future remove(Deck deck) async {
     await deckRepo.deleteById(deck.deckId);
-    _fetchAll();
+    await _fetchAll();
   }
 }

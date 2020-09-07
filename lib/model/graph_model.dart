@@ -36,7 +36,7 @@ class GraphModel with ChangeNotifier {
   }
 
   void makeWinRateList() {
-    final List<Record> tmpRecordList = [];
+    final tmpRecordList = [];
     for (final record in recordList) {
       tmpRecordList.add(record);
       final matches = tmpRecordList.length;
@@ -115,7 +115,7 @@ class GraphModel with ChangeNotifier {
     for (final opponentDeck in deckList) {
       final matches =
           vsDeck.where((record) => record.opponentDeckId == opponentDeck.deckId).toList().length;
-      if(matches == 0) continue;
+      if (matches == 0) continue;
       final wins = vsDeck
           .where((record) => record.opponentDeckId == opponentDeck.deckId)
           .toList()

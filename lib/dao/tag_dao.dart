@@ -13,18 +13,15 @@ class TagDao {
 
   Future<List<Tag>> getAll() async {
     final db = await dbProvider.database;
-    final List<Map<String, dynamic>> result = await db.query(tableName);
-    final List<Tag> tags =
-        result.isNotEmpty ? result.map((item) => Tag.fromDatabaseJson(item)).toList() : [];
+    final result = await db.query(tableName);
+    final tags = result.isNotEmpty ? result.map((item) => Tag.fromDatabaseJson(item)).toList() : [];
     return tags;
   }
 
   Future<List<Tag>> getGameTag(int id) async {
     final db = await dbProvider.database;
-    final List<Map<String, dynamic>> result =
-        await db.query(tableName, where: 'game_id = ?', whereArgs: [id]);
-    final List<Tag> tags =
-        result.isNotEmpty ? result.map((item) => Tag.fromDatabaseJson(item)).toList() : [];
+    final result = await db.query(tableName, where: 'game_id = ?', whereArgs: [id]);
+    final tags = result.isNotEmpty ? result.map((item) => Tag.fromDatabaseJson(item)).toList() : [];
     return tags;
   }
 

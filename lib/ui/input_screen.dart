@@ -40,7 +40,7 @@ class _Body extends StatelessWidget {
       ],
     );
     return Padding(
-      padding: const EdgeInsets.only(top: 20.0),
+      padding: const EdgeInsets.only(top: 20),
       child: Form(
         key: _formKey,
         child: column,

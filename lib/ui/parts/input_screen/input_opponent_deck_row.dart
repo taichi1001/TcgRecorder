@@ -12,7 +12,7 @@ class InputOpponentDeckRow extends StatelessWidget {
     return Container(
       height: _size.height * (10 / 100),
       width: _size.width * (80 / 100),
-      padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+      padding: const EdgeInsets.only(top: 10, bottom: 10),
       child: const _InputOpponentDeckTextField(),
     );
   }
@@ -46,7 +46,6 @@ class _InputOpponentDeckTextField extends StatelessWidget {
           },
         ),
       ),
-      autovalidate: false,
       controller:
           context.select((TextEditingControllerModel model) => model.opponentDeckController),
       onFieldSubmitted: (String value) {
@@ -74,12 +73,12 @@ void _showCupertinoPicker(BuildContext context) {
           },
           child: CupertinoPicker(
             itemExtent: 40,
+            onSelectedItemChanged: (int index) =>
+                context.read<DeckModel>().changeSelectedOpponentDeckUsingIndex(index),
             children: context
                 .select((DeckModel model) => model.gameDeckList)
                 .map((deck) => Text(deck.deck))
                 .toList(),
-            onSelectedItemChanged: (int index) =>
-                context.read<DeckModel>().changeSelectedOpponentDeckUsingIndex(index),
           ),
         ),
       );

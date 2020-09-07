@@ -12,7 +12,7 @@ class InputTagRow extends StatelessWidget {
     return Container(
       height: _size.height * (10 / 100),
       width: _size.width * (80 / 100),
-      padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+      padding: const EdgeInsets.only(top: 10, bottom: 10),
       child: const _InputTagTextField(),
     );
   }
@@ -46,7 +46,6 @@ class _InputTagTextField extends StatelessWidget {
           },
         ),
       ),
-      autovalidate: false,
       controller: context.select((TextEditingControllerModel model) => model.tagController),
       onFieldSubmitted: (String value) {
         context.read<TagModel>().changeSelectedTagUsingString(value);
@@ -73,12 +72,12 @@ void _showCupertinoPicker(BuildContext context) {
           },
           child: CupertinoPicker(
             itemExtent: 40,
+            onSelectedItemChanged: (int index) =>
+                context.read<TagModel>().changeSelectedTagUsingIndex(index),
             children: context
                 .select((TagModel model) => model.gameTagList)
                 .map((tag) => Text(tag.tag))
                 .toList(),
-            onSelectedItemChanged: (int index) =>
-                context.read<TagModel>().changeSelectedTagUsingIndex(index),
           ),
         ),
       );

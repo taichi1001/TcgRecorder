@@ -19,7 +19,5 @@ class BottomNavigationModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Widget getSelectedScreen() {
-    return options[selectedIndex];
-  }
+  Widget getSelectedScreen() => options[selectedIndex];
 }

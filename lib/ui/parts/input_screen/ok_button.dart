@@ -27,7 +27,7 @@ class OkButton extends StatelessWidget {
     return Container(
       height: _size.height * (10 / 100),
       width: _size.width * (80 / 100),
-      padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+      padding: const EdgeInsets.only(top: 10, bottom: 10),
       child: RaisedButton(
         onPressed:
             _selectedGame == null || _selectedUseDeck == null || _selectedOpponentDeck == null
@@ -41,12 +41,11 @@ class OkButton extends StatelessWidget {
                           Record(
                             date: DateTime.now(),
                             gameId: _selectedGame.gameId,
-                            tagId: _selectedTag == null ? null : _selectedTag.tagId,
+                            tagId: _selectedTag == null ? 0 : _selectedTag.tagId,
                             myDeckId: _selectedUseDeck.deckId,
                             opponentDeckId: _selectedOpponentDeck.deckId,
                             firstOrSecond: _selectedFirstOrSecond,
                             winOrLose: _selectedWinOrLose,
-                            memo: null,
                           ),
                         );
                     context.read<TagModel>().changeSelectedTagUsingString('');

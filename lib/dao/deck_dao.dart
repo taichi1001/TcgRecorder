@@ -13,17 +13,16 @@ class DeckDao {
 
   Future<List<Deck>> getAll() async {
     final db = await dbProvider.database;
-    final List<Map<String, dynamic>> result = await db.query(tableName);
-    final List<Deck> decks =
+    final result = await db.query(tableName);
+    final decks =
         result.isNotEmpty ? result.map((item) => Deck.fromDatabaseJson(item)).toList() : [];
     return decks;
   }
 
   Future<List<Deck>> getGameDeck(int id) async {
     final db = await dbProvider.database;
-    final List<Map<String, dynamic>> result =
-        await db.query(tableName, where: 'game_id = ?', whereArgs: [id]);
-    final List<Deck> decks =
+    final result = await db.query(tableName, where: 'game_id = ?', whereArgs: [id]);
+    final decks =
         result.isNotEmpty ? result.map((item) => Deck.fromDatabaseJson(item)).toList() : [];
     return decks;
   }
