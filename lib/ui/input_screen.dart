@@ -28,22 +28,23 @@ class _Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
-    final column = Column(
-      children: const [
-        InputGameRow(),
-        InputTagRow(),
-        InputUseDeckRow(),
-        InputOpponentDeckRow(),
-        InputFirstOrSecondRow(),
-        InputWinOrLoseRow(),
-        OkButton(),
-      ],
-    );
     return Padding(
       padding: const EdgeInsets.only(top: 20),
-      child: Form(
-        key: _formKey,
-        child: column,
+      child: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: const [
+              InputGameRow(),
+              InputTagRow(),
+              InputUseDeckRow(),
+              InputOpponentDeckRow(),
+              InputFirstOrSecondRow(),
+              InputWinOrLoseRow(),
+              OkButton(),
+            ],
+          ),
+        ),
       ),
     );
   }
