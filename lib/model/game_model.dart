@@ -24,12 +24,16 @@ class GameModel with ChangeNotifier {
   void changeSelectedGameUsingString(String newValue) {
     if (newValue == '') {
       selectedGame = null;
-    } else if (allGameList.where((value) => value.game == newValue).isEmpty) {
-      selectedGame = Game(game: newValue);
     } else {
-      selectedGame = allGameList.where((value) => value.game == newValue).toList()[0];
+      selectedGame = Game(game: newValue);
     }
     notifyListeners();
+  }
+
+  void _changeItIfSelectedGameInDB() {
+    if (allGameList.where((value) => value.game == selectedGame.game).isNotEmpty) {
+      selectedGame = allGameList.where((value) => value.game == selectedGame.game).toList()[0];
+    }
   }
 
   void findGameUsingRecord(Record record) {
@@ -37,6 +41,7 @@ class GameModel with ChangeNotifier {
   }
 
   Future addSelectedGame() async {
+    _changeItIfSelectedGameInDB();
     if (selectedGame.gameId != 0) return;
     selectedGame.gameId = null;
     final selectedGameId = await gameRepo.insert(selectedGame);

@@ -13,7 +13,13 @@ class InputGameRow extends StatelessWidget {
       height: _size.height * (10 / 100),
       width: _size.width * (80 / 100),
       padding: const EdgeInsets.only(top: 10, bottom: 10),
-      child: const _InputGameTextField(),
+      child: Stack(
+        alignment: Alignment.centerRight,
+        children: const [
+          _InputGameTextField(),
+          _ShowCupertinoPickerButton(),
+        ],
+      ),
     );
   }
 }
@@ -32,56 +38,56 @@ class _InputGameTextField extends StatelessWidget {
       // style: const TextStyle(
       //   fontSize: 13,
       // ),
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         // icon: const Icon(Icons.settings),
-        border: const OutlineInputBorder(
+        border: OutlineInputBorder(
             // borderRadius: BorderRadius.circular(10.0),
             ),
         labelText: 'ゲーム名',
         hintText: 'Enter your ゲーム名',
-        suffixIcon: IconButton(
-          icon: const Icon(Icons.arrow_drop_down),
-          onPressed: () {
-            _showCupertinoPicker(context);
-          },
-        ),
       ),
       controller: context.select((TextEditingControllerModel model) => model.gameController),
-      onFieldSubmitted: (String value) {
+      onChanged: (String value) {
         context.read<GameModel>().changeSelectedGameUsingString(value);
         context.select((TextEditingControllerModel model) => model.tagController).clear();
-      },
-      validator: (value) {
-        if (value == null) {
-          return '入力されていません';
-        }
-        return null;
+        context.select((TextEditingControllerModel model) => model.useDeckController).clear();
+        context.select((TextEditingControllerModel model) => model.opponentDeckController).clear();
       },
     );
   }
 }
 
-void _showCupertinoPicker(BuildContext context) {
-  showModalBottomSheet(
-    context: context,
-    builder: (BuildContext context) {
-      return Container(
-        height: MediaQuery.of(context).size.height / 3,
-        child: GestureDetector(
-          onTap: () {
-            Navigator.pop(context);
+class _ShowCupertinoPickerButton extends StatelessWidget {
+  const _ShowCupertinoPickerButton({key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: const Icon(Icons.arrow_drop_down),
+      onPressed: () {
+        showModalBottomSheet(
+          context: context,
+          builder: (BuildContext context) {
+            return Container(
+              height: MediaQuery.of(context).size.height / 3,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: CupertinoPicker(
+                  itemExtent: 40,
+                  onSelectedItemChanged: (int index) =>
+                      context.read<GameModel>().changeSelectedGameUsingIndex(index),
+                  children: context
+                      .select((GameModel model) => model.allGameList)
+                      .map((game) => Text(game.game))
+                      .toList(),
+                ),
+              ),
+            );
           },
-          child: CupertinoPicker(
-            itemExtent: 40,
-            onSelectedItemChanged: (int index) =>
-                context.read<GameModel>().changeSelectedGameUsingIndex(index),
-            children: context
-                .select((GameModel model) => model.allGameList)
-                .map((game) => Text(game.game))
-                .toList(),
-          ),
-        ),
-      );
-    },
-  );
+        );
+      },
+    );
+  }
 }
