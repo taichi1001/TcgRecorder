@@ -57,12 +57,16 @@ class RecordListTile extends StatelessWidget {
     _deckModel.findMyDeckFromRecord(record);
     _deckModel.findOpponentDeckFromRecord(record);
     return Card(
+      color: record.winOrLose == 1 ? Colors.red : Colors.blue,
       child: ListTile(
         title: Text(record.game),
         subtitle: Text(
           '使用デッキ：${record.myDeck} 対戦デッキ：${record.opponentDeck}\n'
           '${record.date.year}年${record.date.month}月${record.date.day}日${record.date.hour}:${record.date.minute}',
         ),
+        trailing: record.winOrLose == 1
+            ? const Icon(Icons.radio_button_unchecked)
+            : const Icon(Icons.close),
         onTap: () {
           Navigator.of(context).push(
             MaterialPageRoute(
