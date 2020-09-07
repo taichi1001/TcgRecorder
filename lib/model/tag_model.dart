@@ -35,20 +35,25 @@ class TagModel with ChangeNotifier {
   void changeSelectedTagUsingString(String newValue) {
     if (newValue == '') {
       selectedTag = null;
-    } else if (gameTagList.where((value) => value.tag == newValue).isEmpty) {
-      selectedTag = Tag(tag: newValue);
     } else {
-      selectedTag = gameTagList.where((value) => value.tag == newValue).toList()[0];
+      selectedTag = Tag(tag: newValue);
     }
     notifyListeners();
   }
 
+  void _changeItIfSelectedTagInDB() {
+    if (gameTagList.where((value) => value.tag == selectedTag.tag).isNotEmpty) {
+      selectedTag = gameTagList.where((value) => value.tag == selectedTag.tag).toList()[0];
+    }
+  }
+
   Future addSelectedTag(Game game) async {
+    _changeItIfSelectedTagInDB();
     if (selectedTag.tagId != 0) return;
     selectedTag.tagId = null;
-    selectedTag.gameId = game.gameId;
     final selectedTagId = await tagRepo.insert(selectedTag);
     selectedTag.tagId = selectedTagId;
+    selectedTag.gameId = game.gameId;
     allTagList = await tagRepo.getAll();
     notifyListeners();
   }

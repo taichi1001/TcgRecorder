@@ -11,7 +11,7 @@ class RecordDetailView extends StatelessWidget {
         title: const Text('詳細'),
       ),
       body: Center(
-        child: Text(record.myDeck),
+        child: Text('タグ名：${record.tag}\nデッキ名：${record.myDeck}'),
       ),
     );
   }
