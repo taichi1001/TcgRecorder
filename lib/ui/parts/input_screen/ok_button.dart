@@ -34,7 +34,7 @@ class OkButton extends StatelessWidget {
                 ? null
                 : () async {
                     await context.read<GameModel>().addSelectedGame();
-                    await context.read<TagModel>().addSelectedTag();
+                    await context.read<TagModel>().addSelectedTag(_selectedGame);
                     await context.read<DeckModel>().addSelectedUseDeck(_selectedGame);
                     await context.read<DeckModel>().addSelectedOpponentDeck(_selectedGame);
                     await context.read<RecordModel>().add(

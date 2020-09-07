@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tcg_recorder/entity/game.dart';
 import 'package:tcg_recorder/entity/record.dart';
 import 'package:tcg_recorder/entity/tag.dart';
 import 'package:tcg_recorder/repository/tag_repository.dart';
@@ -42,9 +43,10 @@ class TagModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Future addSelectedTag() async {
+  Future addSelectedTag(Game game) async {
     if (selectedTag.tagId != 0) return;
     selectedTag.tagId = null;
+    selectedTag.gameId = game.gameId;
     final selectedTagId = await tagRepo.insert(selectedTag);
     selectedTag.tagId = selectedTagId;
     allTagList = await tagRepo.getAll();
