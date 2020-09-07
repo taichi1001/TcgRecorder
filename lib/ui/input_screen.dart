@@ -31,18 +31,21 @@ class _Body extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 20),
       child: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: const [
-              InputGameRow(),
-              InputTagRow(),
-              InputUseDeckRow(),
-              InputOpponentDeckRow(),
-              InputFirstOrSecondRow(),
-              InputWinOrLoseRow(),
-              OkButton(),
-            ],
+        child: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: const [
+                InputGameRow(),
+                InputTagRow(),
+                InputUseDeckRow(),
+                InputOpponentDeckRow(),
+                InputFirstOrSecondRow(),
+                InputWinOrLoseRow(),
+                OkButton(),
+              ],
+            ),
           ),
         ),
       ),
