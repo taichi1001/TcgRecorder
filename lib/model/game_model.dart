@@ -5,6 +5,9 @@ import 'package:tcg_recorder/repository/game_repository.dart';
 
 class GameModel with ChangeNotifier {
   List<Game> allGameList = [];
+
+  /// graphList用のgameList
+  List<Game> graphListallGameList = [];
   Game selectedGame;
 
   final gameRepo = GameRepo();
@@ -38,19 +41,24 @@ class GameModel with ChangeNotifier {
     selectedGame.gameId = null;
     final selectedGameId = await gameRepo.insert(selectedGame);
     selectedGame.gameId = selectedGameId;
-    allGameList = await gameRepo.getAllTag();
+    await _getAllGameList();
     notifyListeners();
   }
 
   Future _fetchAll() async {
-    allGameList = await gameRepo.getAllTag();
-    allGameList.insert(0, Game(game: ''));
+    await _getAllGameList();
     if (allGameList.length > 1) {
       selectedGame = allGameList[1];
     } else {
       selectedGame = null;
     }
     notifyListeners();
+  }
+
+  Future _getAllGameList() async {
+    allGameList = await gameRepo.getAllTag();
+    allGameList.insert(0, Game(game: ''));
+    graphListallGameList = await gameRepo.getAllTag();
   }
 
   Future add(Game game) async {
