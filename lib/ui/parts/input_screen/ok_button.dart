@@ -23,6 +23,9 @@ class OkButton extends StatelessWidget {
     if (_selectedGame != null) {
       _deckModel.getGameDeckList(_selectedGame.gameId);
       _tagModel.getGameTagList(_selectedGame.gameId);
+    } else {
+      _deckModel.gameDeckList = [];
+      _tagModel.gameTagList = [];
     }
     return Container(
       height: _size.height * (10 / 100),
