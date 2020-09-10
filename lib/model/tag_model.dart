@@ -8,10 +8,9 @@ class TagModel with ChangeNotifier {
   List<Tag> allTagList = [];
   List<Tag> gameTagList = [];
   Tag selectedTag;
+  final TagRepo tagRepo;
 
-  final tagRepo = TagRepo();
-
-  TagModel() {
+  TagModel(this.tagRepo) {
     _fetchAll();
   }
 

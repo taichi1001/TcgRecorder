@@ -10,9 +10,9 @@ class DeckModel with ChangeNotifier {
   Deck selectedUseDeck;
   Deck selectedOpponentDeck;
 
-  final deckRepo = DeckRepo();
+  final DeckRepo deckRepo;
 
-  DeckModel() {
+  DeckModel(this.deckRepo) {
     _fetchAll();
   }
 

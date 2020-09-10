@@ -9,10 +9,9 @@ class GameModel with ChangeNotifier {
   /// graphList用のgameList
   List<Game> graphListallGameList = [];
   Game selectedGame;
+  final GameRepo gameRepo;
 
-  final gameRepo = GameRepo();
-
-  GameModel() {
+  GameModel(this.gameRepo) {
     _fetchAll();
   }
 

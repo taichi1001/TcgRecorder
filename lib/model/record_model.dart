@@ -12,10 +12,9 @@ class RecordModel with ChangeNotifier {
   List<Record> allRecordList;
   List<Record> gameRecordList;
   List<Record> tagRecordList;
+  final RecordRepo recordRepo;
 
-  final recordRepo = RecordRepo();
-
-  RecordModel() {
+  RecordModel(this.recordRepo) {
     _fetchAll();
   }
 

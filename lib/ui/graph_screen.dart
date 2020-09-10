@@ -1,9 +1,12 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:provider/provider.dart';
 import 'package:tcg_recorder/entity/game.dart';
 import 'package:tcg_recorder/model/graph_model.dart';
+import 'package:tcg_recorder/repository/deck_repository.dart';
+import 'package:tcg_recorder/repository/record_repository.dart';
 import 'package:tcg_recorder/ui/deck_detail_screen.dart';
 
 class GraphScreen extends StatelessWidget {
@@ -15,7 +18,11 @@ class GraphScreen extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<GraphModel>(
-          create: (context) => GraphModel(selectedGame: game),
+          create: (context) => GraphModel(
+            selectedGame: game,
+            deckRepo: kIsWeb ? DeckRepo() : DeckRepo(),
+            recordRepo: kIsWeb ? RecordRepo() : RecordRepo(),
+          ),
         ),
       ],
       child: const _Body(),
