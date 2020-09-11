@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -8,6 +9,11 @@ import 'package:tcg_recorder/model/game_model.dart';
 import 'package:tcg_recorder/model/tag_model.dart';
 import 'package:tcg_recorder/model/record_model.dart';
 import 'package:tcg_recorder/model/text_editing_controller_model.dart';
+import 'package:tcg_recorder/repository/deck_repository.dart';
+import 'package:tcg_recorder/repository/game_repository.dart';
+import 'package:tcg_recorder/repository/mock/deck_repository_mock.dart';
+import 'package:tcg_recorder/repository/record_repository.dart';
+import 'package:tcg_recorder/repository/tag_repository.dart';
 import 'package:tcg_recorder/ui/main_bottom_navigation.dart';
 
 void main() {
@@ -33,16 +39,16 @@ class MyApp extends StatelessWidget {
             create: (context) => BottomNavigationModel(),
           ),
           ChangeNotifierProvider<GameModel>(
-            create: (context) => GameModel(),
+            create: (context) => GameModel(kIsWeb ? GameRepo() : GameRepo()),
           ),
           ChangeNotifierProvider<TagModel>(
-            create: (context) => TagModel(),
+            create: (context) => TagModel(kIsWeb ? TagRepo() : TagRepo()),
           ),
           ChangeNotifierProvider<DeckModel>(
-            create: (context) => DeckModel(),
+            create: (context) => DeckModel(kIsWeb ? DeckRepoMock() : DeckRepo()),
           ),
           ChangeNotifierProvider<RecordModel>(
-            create: (context) => RecordModel(),
+            create: (context) => RecordModel(kIsWeb ? RecordRepo() : RecordRepo()),
           ),
           ChangeNotifierProvider<TextEditingControllerModel>(
             create: (context) => TextEditingControllerModel(),

@@ -29,7 +29,7 @@ class _InputTagTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _selectedTag = context.select((TagModel model) => model.selectedTag);
-    Provider.of<TextEditingControllerModel>(context, listen: true).setTagController(
+    Provider.of<TextEditingControllerModel>(context, listen: false).setTagController(
         _selectedTag != null
             ? TextEditingController(text: _selectedTag.tag)
             : TextEditingController());

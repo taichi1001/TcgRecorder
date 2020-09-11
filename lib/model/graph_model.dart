@@ -18,10 +18,10 @@ class GraphModel with ChangeNotifier {
   List<DeckDetailData> opponentDeckDetailList = [];
   List<DeckDetailData> vsDeckDetailList = [];
 
-  final recordRepo = RecordRepo();
-  final deckRepo = DeckRepo();
+  final RecordRepo recordRepo;
+  final DeckRepo deckRepo;
 
-  GraphModel({@required this.selectedGame}) {
+  GraphModel({@required this.selectedGame, @required this.recordRepo, @required this.deckRepo}) {
     _fetchAll();
   }
 
