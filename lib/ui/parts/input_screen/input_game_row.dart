@@ -29,7 +29,7 @@ class _InputGameTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _selectedGame = context.select((GameModel model) => model.selectedGame);
-    Provider.of<TextEditingControllerModel>(context, listen: false).setGameController(
+    Provider.of<TextEditingControllerModel>(context, listen: true).setGameController(
         _selectedGame != null
             ? TextEditingController(text: _selectedGame.game)
             : TextEditingController());

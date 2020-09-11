@@ -34,17 +34,17 @@ class _Body extends StatelessWidget {
       appBar: AppBar(
         title: Text(context.select((GraphModel model) => model.selectedGame.game)),
       ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            children: const [
-              _Graphs(),
-              Divider(
-                color: Colors.black,
-              ),
-              _UseDeckDetail(),
-            ],
-          ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: const [
+            _Graphs(),
+            Divider(
+              indent: 20,
+              endIndent: 20,
+              color: Colors.black,
+            ),
+            _UseDeckDetail(),
+          ],
         ),
       ),
     );
@@ -58,10 +58,10 @@ class _Graphs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = PageController(initialPage: 1);
+    final controller = PageController();
     return Container(
-      width: 200,
-      height: 200,
+      width: 400,
+      height: 250,
       child: PageView(
         controller: controller,
         children: const [
@@ -80,24 +80,30 @@ class _WinRateGraph extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final model = context.watch<GraphModel>();
-    return SfCartesianChart(
-      tooltipBehavior: TooltipBehavior(enable: true),
-      primaryYAxis: NumericAxis(
-        maximum: 100,
-        minimum: 0,
-      ),
-      primaryXAxis: DateTimeAxis(
-        intervalType: DateTimeIntervalType.days,
-      ),
-      series: <ChartSeries>[
-        LineSeries<WinRateData, DateTime>(
-          name: 'Win Rate',
-          enableTooltip: true,
-          dataSource: model.winRateList,
-          xValueMapper: (WinRateData data, _) => data.record.date,
-          yValueMapper: (WinRateData data, _) => data.winRate,
+    return Container(
+      width: 200,
+      height: 100,
+      child: SfCartesianChart(
+        tooltipBehavior: TooltipBehavior(enable: true),
+        primaryYAxis: NumericAxis(
+          maximum: 100,
+          minimum: 0,
         ),
-      ],
+        primaryXAxis: DateTimeAxis(
+          intervalType: DateTimeIntervalType.days,
+        ),
+        margin: const EdgeInsets.only(left: 50, right: 50, top: 40,),
+        series: <ChartSeries>[
+          LineSeries<WinRateData, DateTime>(
+            name: 'Win Rate',
+            enableTooltip: true,
+            dataSource: model.winRateList,
+            xValueMapper: (WinRateData data, _) => data.record.date,
+            yValueMapper: (WinRateData data, _) => data.winRate,
+            animationDuration: 0
+          ),
+        ],
+      ),
     );
   }
 }
@@ -109,7 +115,7 @@ class _UseDeckPercentageGraph extends StatelessWidget {
   Widget build(BuildContext context) {
     final model = context.watch<GraphModel>();
     return Container(
-      width: 200,
+      width: 400,
       height: 200,
       child: SfCircularChart(
         legend: Legend(
@@ -125,6 +131,7 @@ class _UseDeckPercentageGraph extends StatelessWidget {
             pointColorMapper: (DeckDetailData data, _) => data.color,
             xValueMapper: (DeckDetailData data, _) => data.deck.deck,
             yValueMapper: (DeckDetailData data, _) => data.useageRate,
+            animationDuration: 0
           )
         ],
       ),
@@ -139,7 +146,7 @@ class _OpponentDeckPercentageGraph extends StatelessWidget {
   Widget build(BuildContext context) {
     final model = context.watch<GraphModel>();
     return Container(
-      width: 200,
+      width: 400,
       height: 200,
       child: SfCircularChart(
         legend: Legend(
@@ -155,6 +162,7 @@ class _OpponentDeckPercentageGraph extends StatelessWidget {
             pointColorMapper: (DeckDetailData data, _) => data.color,
             xValueMapper: (DeckDetailData data, _) => data.deck.deck,
             yValueMapper: (DeckDetailData data, _) => data.useageRate,
+            animationDuration: 0
           )
         ],
       ),
