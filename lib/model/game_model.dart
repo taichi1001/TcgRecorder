@@ -60,9 +60,9 @@ class GameModel with ChangeNotifier {
   }
 
   Future _getAllGameList() async {
-    allGameList = await gameRepo.getAllTag();
+    allGameList = await gameRepo.getAll();
     allGameList.insert(0, Game(game: ''));
-    graphListallGameList = await gameRepo.getAllTag();
+    graphListallGameList = await gameRepo.getAll();
   }
 
   Future add(Game game) async {

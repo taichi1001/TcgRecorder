@@ -4,7 +4,7 @@ import 'package:tcg_recorder/entity/game.dart';
 class GameRepo {
   final gameDao = GameDao();
 
-  Future getAllTag() => gameDao.getAll();
+  Future getAll() => gameDao.getAll();
 
   Future insert(Game game) => gameDao.create(game);
 
