@@ -5,13 +5,15 @@ import 'package:tcg_recorder/entity/tag.dart';
 import 'package:tcg_recorder/repository/record_repository.dart';
 
 class RecordModel with ChangeNotifier {
-  Game game;
+  Game selectedGame;
   Tag selectedTag;
   int firstOrSecond = 1;
   int winOrLose = 1;
-  List<Record> allRecordList;
-  List<Record> gameRecordList;
-  List<Record> tagRecordList;
+  List<Record> allRecordList = [];
+  List<Record> gameRecordList(Game game) =>
+      allRecordList.where((record) => record.gameId == game.gameId).toList();
+  List<Record> tagRecordList(Tag tag) =>
+      allRecordList.where((record) => record.tagId == tag.tagId).toList();
   final RecordRepo recordRepo;
 
   RecordModel(this.recordRepo) {
@@ -20,8 +22,6 @@ class RecordModel with ChangeNotifier {
 
   Future _fetchAll() async {
     allRecordList = await recordRepo.getAll();
-    // gameRecordList = await recordRepo.getGameRecord(game.gameId);
-    // tagRecordList = await recordRepo.getTagRecord(selectedTag.tagId);
     notifyListeners();
   }
 
