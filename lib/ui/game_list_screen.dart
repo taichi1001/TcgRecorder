@@ -30,8 +30,11 @@ class GameListView extends StatelessWidget {
     }
 
     return ListView.builder(
-        itemCount: _gameList.length,
-        itemBuilder: (BuildContext context, int index) => GameListTile(game: _gameList[index]));
+      itemCount: _gameList.length,
+      itemBuilder: (BuildContext context, int index) => GameListTile(
+        game: _gameList[index],
+      ),
+    );
   }
 }
 
