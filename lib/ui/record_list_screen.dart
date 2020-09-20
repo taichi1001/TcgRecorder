@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tcg_recorder/entity/game.dart';
 import 'package:tcg_recorder/entity/record.dart';
 import 'package:tcg_recorder/model/deck_model.dart';
-import 'package:tcg_recorder/model/game_model.dart';
 import 'package:tcg_recorder/model/record_model.dart';
-import 'package:tcg_recorder/model/tag_model.dart';
 import 'package:tcg_recorder/ui/record_detail_view.dart';
 
 class RecordListScreen extends StatelessWidget {
-  const RecordListScreen({Key key}) : super(key: key);
+  const RecordListScreen({
+    Key key,
+    this.game,
+  }) : super(key: key);
+  final Game game;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('All Records'),
+        title: Text(game.game),
       ),
       body: const RecordListView(),
     );
@@ -23,11 +27,13 @@ class RecordListScreen extends StatelessWidget {
 class RecordListView extends StatelessWidget {
   const RecordListView({
     Key key,
+    this.game,
   }) : super(key: key);
+  final Game game;
 
   @override
   Widget build(BuildContext context) {
-    final recordList = context.select((RecordModel model) => model.allRecordList);
+    final recordList = context.select((RecordModel model) => model.gameRecordList(game));
     if (recordList.isEmpty) {
       return const Center(child: Text('No Items'));
     }
@@ -48,20 +54,15 @@ class RecordListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _gameModel = Provider.of<GameModel>(context, listen: false);
-    final _tagModel = Provider.of<TagModel>(context, listen: false);
     final _deckModel = Provider.of<DeckModel>(context, listen: false);
-
-    _gameModel.findGameUsingRecord(record);
-    _tagModel.findTagUsingRecord(record);
     _deckModel.findMyDeckFromRecord(record);
     _deckModel.findOpponentDeckFromRecord(record);
+
     return Card(
       color: record.winOrLose == 1 ? Colors.red : Colors.blue,
       child: ListTile(
-        title: Text(record.game),
+        title: Text('使用デッキ：${record.myDeck} 対戦デッキ：${record.opponentDeck} '),
         subtitle: Text(
-          '使用デッキ：${record.myDeck} 対戦デッキ：${record.opponentDeck}\n'
           '${record.date.year}年${record.date.month}月${record.date.day}日${record.date.hour}:${record.date.minute}',
         ),
         trailing: record.winOrLose == 1
