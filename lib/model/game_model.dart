@@ -7,7 +7,7 @@ class GameModel with ChangeNotifier {
   List<Game> allGameList = [];
 
   /// graphList用のgameList
-  List<Game> graphListallGameList = [];
+  List<Game> graphListAllGameList = [];
   Game selectedGame;
   final GameRepo gameRepo;
 
@@ -30,13 +30,20 @@ class GameModel with ChangeNotifier {
   }
 
   void _changeItIfSelectedGameInDB() {
-    if (allGameList.where((value) => value.game == selectedGame.game).isNotEmpty) {
-      selectedGame = allGameList.where((value) => value.game == selectedGame.game).toList()[0];
+    if (allGameList
+        .where((value) => value.game == selectedGame.game)
+        .isNotEmpty) {
+      selectedGame = allGameList
+          .where((value) => value.game == selectedGame.game)
+          .toList()[0];
     }
   }
 
   void findGameUsingRecord(Record record) {
-    record.game = allGameList.where((value) => value.gameId == record.gameId).toList()[0].game;
+    record.game = allGameList
+        .where((value) => value.gameId == record.gameId)
+        .toList()[0]
+        .game;
   }
 
   Future addSelectedGame() async {
@@ -62,7 +69,7 @@ class GameModel with ChangeNotifier {
   Future _getAllGameList() async {
     allGameList = await gameRepo.getAllTag();
     allGameList.insert(0, Game(game: ''));
-    graphListallGameList = await gameRepo.getAllTag();
+    graphListAllGameList = await gameRepo.getAllTag();
   }
 
   Future add(Game game) async {

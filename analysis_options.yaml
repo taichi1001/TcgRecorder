@@ -121,7 +121,7 @@ linter:
     - no_runtimeType_toString # not yet tested
     - non_constant_identifier_names
     - null_closures  # not yet tested
-    - omit_local_variable_types # opposite of always_specify_types
+    # - omit_local_variable_types # opposite of always_specify_types
     - one_member_abstracts # too many false positives
     - only_throw_errors # https://github.com/flutter/flutter/issues/5792
     - overridden_fields

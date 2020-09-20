@@ -14,7 +14,7 @@ class RecordDao {
   Future<List<Record>> getAll() async {
     final db = await dbProvider.database;
     final result = await db.query(tableName);
-    final records =
+    final List<Record> records =
         result.isNotEmpty ? result.map((item) => Record.fromDatabaseJson(item)).toList() : [];
     return records;
   }
@@ -22,7 +22,7 @@ class RecordDao {
   Future<List<Record>> getGameRecord(int id) async {
     final db = await dbProvider.database;
     final result = await db.query(tableName, where: 'game_id = ?', whereArgs: [id]);
-    final records =
+    final List<Record> records =
         result.isNotEmpty ? result.map((item) => Record.fromDatabaseJson(item)).toList() : [];
     return records;
   }
