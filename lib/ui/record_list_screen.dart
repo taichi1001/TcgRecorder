@@ -19,7 +19,9 @@ class RecordListScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(game.game),
       ),
-      body: const RecordListView(),
+      body: RecordListView(
+        game: game,
+      ),
     );
   }
 }
@@ -33,7 +35,9 @@ class RecordListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final recordList = context.select((RecordModel model) => model.gameRecordList(game));
+    // final recordList = context.select((RecordModel model) => model.gameRecordList(game));
+    final recordList =
+        Provider.of<RecordModel>(context).getGameRecordList(game);
     if (recordList.isEmpty) {
       return const Center(child: Text('No Items'));
     }

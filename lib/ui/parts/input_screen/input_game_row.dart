@@ -28,9 +28,10 @@ class _InputGameTextField extends StatelessWidget {
   const _InputGameTextField({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final _selectedGame = context.select((GameModel model) => model.selectedGame);
-    Provider.of<TextEditingControllerModel>(context, listen: true).setGameController(
-        _selectedGame != null
+    final _selectedGame =
+        context.select((GameModel model) => model.selectedGame);
+    Provider.of<TextEditingControllerModel>(context, listen: false)
+        .setGameController(_selectedGame != null
             ? TextEditingController(text: _selectedGame.game)
             : TextEditingController());
 
@@ -46,12 +47,21 @@ class _InputGameTextField extends StatelessWidget {
         labelText: 'ゲーム名',
         hintText: 'Enter your ゲーム名',
       ),
-      controller: context.select((TextEditingControllerModel model) => model.gameController),
+      controller: context
+          .select((TextEditingControllerModel model) => model.gameController),
       onChanged: (String value) {
         context.read<GameModel>().changeSelectedGameUsingString(value);
-        context.select((TextEditingControllerModel model) => model.tagController).clear();
-        context.select((TextEditingControllerModel model) => model.useDeckController).clear();
-        context.select((TextEditingControllerModel model) => model.opponentDeckController).clear();
+        context
+            .select((TextEditingControllerModel model) => model.tagController)
+            .clear();
+        context
+            .select(
+                (TextEditingControllerModel model) => model.useDeckController)
+            .clear();
+        context
+            .select((TextEditingControllerModel model) =>
+                model.opponentDeckController)
+            .clear();
       },
     );
   }
@@ -76,8 +86,9 @@ class _ShowCupertinoPickerButton extends StatelessWidget {
                 },
                 child: CupertinoPicker(
                   itemExtent: 40,
-                  onSelectedItemChanged: (int index) =>
-                      context.read<GameModel>().changeSelectedGameUsingIndex(index),
+                  onSelectedItemChanged: (int index) => context
+                      .read<GameModel>()
+                      .changeSelectedGameUsingIndex(index),
                   children: context
                       .select((GameModel model) => model.allGameList)
                       .map((game) => Text(game.game))

@@ -42,7 +42,9 @@ class TagModel with ChangeNotifier {
 
   void _changeItIfSelectedTagInDB() {
     if (gameTagList.where((value) => value.tag == selectedTag.tag).isNotEmpty) {
-      selectedTag = gameTagList.where((value) => value.tag == selectedTag.tag).toList()[0];
+      selectedTag = gameTagList
+          .where((value) => value.tag == selectedTag.tag)
+          .toList()[0];
     }
   }
 
@@ -50,15 +52,18 @@ class TagModel with ChangeNotifier {
     _changeItIfSelectedTagInDB();
     if (selectedTag.tagId != 0) return;
     selectedTag.tagId = null;
+    selectedTag.gameId = game.gameId;
     final selectedTagId = await tagRepo.insert(selectedTag);
     selectedTag.tagId = selectedTagId;
-    selectedTag.gameId = game.gameId;
     allTagList = await tagRepo.getAll();
     notifyListeners();
   }
 
   void findTagUsingRecord(Record record) {
-    record.tag = allTagList.where((value) => value.tagId == record.tagId).toList()[0].tag;
+    record.tag = allTagList
+        .where((value) => value.tagId == record.tagId)
+        .toList()[0]
+        .tag;
   }
 
   Future add(Tag tag) async {
