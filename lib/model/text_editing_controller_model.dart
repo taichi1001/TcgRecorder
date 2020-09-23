@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class TextEditingControllerModel with ChangeNotifier {
-  TextEditingController gameController;
-  void setGameController(TextEditingController value) {
-    gameController = value;
+  TextEditingController gameController = TextEditingController();
+  void setGameController(String value) {
+    gameController.text = value;
     notifyListeners();
   }
 

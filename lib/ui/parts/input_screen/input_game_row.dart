@@ -28,13 +28,6 @@ class _InputGameTextField extends StatelessWidget {
   const _InputGameTextField({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final _selectedGame =
-        context.select((GameModel model) => model.selectedGame);
-    Provider.of<TextEditingControllerModel>(context, listen: false)
-        .setGameController(_selectedGame != null
-            ? TextEditingController(text: _selectedGame.game)
-            : TextEditingController());
-
     return TextFormField(
       // style: const TextStyle(
       //   fontSize: 13,
@@ -47,21 +40,12 @@ class _InputGameTextField extends StatelessWidget {
         labelText: 'ゲーム名',
         hintText: 'Enter your ゲーム名',
       ),
-      controller: context
-          .select((TextEditingControllerModel model) => model.gameController),
+      controller: context.select((TextEditingControllerModel model) => model.gameController),
       onChanged: (String value) {
         context.read<GameModel>().changeSelectedGameUsingString(value);
-        context
-            .select((TextEditingControllerModel model) => model.tagController)
-            .clear();
-        context
-            .select(
-                (TextEditingControllerModel model) => model.useDeckController)
-            .clear();
-        context
-            .select((TextEditingControllerModel model) =>
-                model.opponentDeckController)
-            .clear();
+        context.read<TextEditingControllerModel>().tagController.clear();
+        context.read<TextEditingControllerModel>().useDeckController.clear();
+        context.read<TextEditingControllerModel>().opponentDeckController.clear();
       },
     );
   }
@@ -69,7 +53,6 @@ class _InputGameTextField extends StatelessWidget {
 
 class _ShowCupertinoPickerButton extends StatelessWidget {
   const _ShowCupertinoPickerButton({key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return IconButton(
@@ -86,9 +69,12 @@ class _ShowCupertinoPickerButton extends StatelessWidget {
                 },
                 child: CupertinoPicker(
                   itemExtent: 40,
-                  onSelectedItemChanged: (int index) => context
-                      .read<GameModel>()
-                      .changeSelectedGameUsingIndex(index),
+                  onSelectedItemChanged: (int index) {
+                    context.read<GameModel>().changeSelectedGameUsingIndex(index);
+                    context
+                        .read<TextEditingControllerModel>()
+                        .setGameController(context.read<GameModel>().selectedGame.game);
+                  },
                   children: context
                       .select((GameModel model) => model.allGameList)
                       .map((game) => Text(game.game))
