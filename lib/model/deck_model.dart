@@ -42,18 +42,24 @@ class DeckModel with ChangeNotifier {
   void changeSelectedUseDeckUsingString(String newValue) {
     if (newValue == '') {
       selectedUseDeck = null;
+      notifyListeners();
+      return;
     } else {
       selectedUseDeck = Deck(deck: newValue);
     }
+    _changeItIfSelectedUseDeckInDb();
     notifyListeners();
   }
 
   void changeSelectedOpponentDeckUsingString(String newValue) {
     if (newValue == '') {
       selectedOpponentDeck = null;
+      notifyListeners();
+      return;
     } else {
       selectedOpponentDeck = Deck(deck: newValue);
     }
+    _changeItIfSelectedOpponentDeckInDb();
     notifyListeners();
   }
 

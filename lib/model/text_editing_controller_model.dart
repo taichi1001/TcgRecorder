@@ -7,21 +7,21 @@ class TextEditingControllerModel with ChangeNotifier {
     notifyListeners();
   }
 
-  TextEditingController tagController;
-  void setTagController(TextEditingController value) {
-    tagController = value;
+  TextEditingController tagController = TextEditingController();
+  void setTagController(String value) {
+    tagController.text = value;
     notifyListeners();
   }
 
-  TextEditingController useDeckController;
-  void setUseDeckController(TextEditingController value) {
-    useDeckController = value;
+  TextEditingController useDeckController = TextEditingController();
+  void setUseDeckController(String value) {
+    useDeckController.text = value;
     notifyListeners();
   }
 
-  TextEditingController opponentDeckController;
-  void setOpponentDeckController(TextEditingController value) {
-    opponentDeckController = value;
+  TextEditingController opponentDeckController = TextEditingController();
+  void setOpponentDeckController(String value) {
+    opponentDeckController.text = value;
     notifyListeners();
   }
 }

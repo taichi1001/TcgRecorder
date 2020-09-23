@@ -35,17 +35,20 @@ class RecordListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final recordList = context.select((RecordModel model) => model.gameRecordList(game));
     final recordList =
-        Provider.of<RecordModel>(context).getGameRecordList(game);
+        context.select((RecordModel model) => model.gameRecordList(game));
+    // final recordList =
+    //     Provider.of<RecordModel>(context).getGameRecordList(game);
     if (recordList.isEmpty) {
       return const Center(child: Text('No Items'));
     }
 
     return ListView.builder(
-        itemCount: recordList.length,
-        itemBuilder: (BuildContext context, int index) =>
-            RecordListTile(record: recordList[index]));
+      itemCount: recordList.length,
+      itemBuilder: (BuildContext context, int index) => RecordListTile(
+        record: recordList[index],
+      ),
+    );
   }
 }
 
