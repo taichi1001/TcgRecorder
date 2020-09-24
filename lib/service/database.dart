@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:tcg_recorder/entity/tag.dart';
 
 class DatabaseService {
   static const _databaseVersion = 1;
@@ -28,8 +29,8 @@ class DatabaseService {
     final documentsDirectory = await getApplicationDocumentsDirectory();
     final path = join(documentsDirectory.path, _databaseName);
 
-    final database =
-        await openDatabase(path, version: _databaseVersion, onCreate: initDB, onUpgrade: onUpgrade);
+    final database = await openDatabase(path,
+        version: _databaseVersion, onCreate: initDB, onUpgrade: onUpgrade);
     return database;
   }
 
@@ -72,5 +73,6 @@ class DatabaseService {
         game_id INTEGER NOT NULL
       )
     ''');
+    await database.insert(tagTableName, Tag(tag: 'none').toDatabaseJson());
   }
 }

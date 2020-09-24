@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:tcg_recorder/ui/parts/input_screen/input_1st_or_2nd_row.dart';
 import 'package:tcg_recorder/ui/parts/input_screen/input_game_row.dart';
 import 'package:tcg_recorder/ui/parts/input_screen/input_opponent_deck_row.dart';
-import 'package:tcg_recorder/ui/parts/input_screen/input_tag_row.dart';
 import 'package:tcg_recorder/ui/parts/input_screen/input_use_deck_row.dart';
 import 'package:tcg_recorder/ui/parts/input_screen/input_win_or_lose.dart';
 import 'package:tcg_recorder/ui/parts/input_screen/ok_button.dart';
@@ -38,7 +37,7 @@ class _Body extends StatelessWidget {
             child: Column(
               children: const [
                 InputGameRow(),
-                InputTagRow(),
+                // InputTagRow(),
                 InputUseDeckRow(),
                 InputOpponentDeckRow(),
                 InputFirstOrSecondRow(),

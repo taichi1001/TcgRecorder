@@ -36,14 +36,17 @@ class RecordListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final recordList = context.select((RecordModel model) => model.gameRecordList(game));
+    final recordList =
+        context.select((RecordModel model) => model.gameRecordList(game));
     return recordList.isEmpty
         ? const Center(child: Text('No Items'))
         : ListView.builder(
             itemCount: recordList.length,
             itemBuilder: (BuildContext context, int index) {
               context.read<DeckModel>().findMyDeckFromRecord(recordList[index]);
-              context.read<DeckModel>().findOpponentDeckFromRecord(recordList[index]);
+              context
+                  .read<DeckModel>()
+                  .findOpponentDeckFromRecord(recordList[index]);
               return RecordListTile(
                 record: recordList[index],
               );
@@ -75,7 +78,7 @@ class RecordListTile extends StatelessWidget {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) {
-                context.read<TagModel>().findTagUsingRecord(record);
+                context.watch<TagModel>().findTagUsingRecord(record);
                 return RecordDetailView(record: record);
               },
             ),

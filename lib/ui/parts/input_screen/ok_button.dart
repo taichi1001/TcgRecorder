@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tcg_recorder/entity/deck.dart';
 import 'package:tcg_recorder/entity/record.dart';
+import 'package:tcg_recorder/entity/tag.dart';
 import 'package:tcg_recorder/model/deck_model.dart';
 import 'package:tcg_recorder/model/game_model.dart';
 import 'package:tcg_recorder/model/record_model.dart';
 import 'package:tcg_recorder/model/tag_model.dart';
-import 'package:tcg_recorder/model/text_editing_controller_model.dart';
 
 class OkButton extends StatelessWidget {
   const OkButton({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final _size = MediaQuery.of(context).size;
-    final _deckModel = Provider.of<DeckModel>(context, listen: false);
-    final _tagModel = Provider.of<TagModel>(context, listen: false);
+    final _deckModel = Provider.of<DeckModel>(context, listen: true);
+    final _tagModel = Provider.of<TagModel>(context, listen: true);
     final _selectedGame =
         context.select((GameModel model) => model.selectedGame);
     final _selectedTag = context.select((TagModel model) => model.selectedTag);
@@ -30,8 +31,8 @@ class OkButton extends StatelessWidget {
       _deckModel.getGameDeckList(_selectedGame.gameId);
       _tagModel.getGameTagList(_selectedGame.gameId);
     } else {
-      _deckModel.gameDeckList = [];
-      _tagModel.gameTagList = [];
+      _deckModel.gameDeckList = [Deck(deck: '')];
+      _tagModel.gameTagList = [Tag(tag: '')];
     }
     return Container(
       height: _size.height * (10 / 100),
@@ -43,6 +44,11 @@ class OkButton extends StatelessWidget {
                 _selectedOpponentDeck == null
             ? null
             : () async {
+                _selectedTag == null
+                    ? context
+                        .read<TagModel>()
+                        .changeSelectedTagUsingString('none')
+                    : {};
                 await context.read<GameModel>().addSelectedGame();
                 await context.read<TagModel>().addSelectedTag(_selectedGame);
                 await context
@@ -55,30 +61,13 @@ class OkButton extends StatelessWidget {
                       Record(
                         date: DateTime.now(),
                         gameId: _selectedGame.gameId,
-                        tagId: _selectedTag == null ? 0 : _selectedTag.tagId,
+                        tagId: _selectedTag == null ? 1 : _selectedTag.tagId,
                         myDeckId: _selectedUseDeck.deckId,
                         opponentDeckId: _selectedOpponentDeck.deckId,
                         firstOrSecond: _selectedFirstOrSecond,
                         winOrLose: _selectedWinOrLose,
                       ),
                     );
-                context.read<TagModel>().changeSelectedTagUsingString('');
-                context.read<DeckModel>().changeSelectedUseDeckUsingString('');
-                context
-                    .read<DeckModel>()
-                    .changeSelectedOpponentDeckUsingString('');
-                context
-                    .read<TextEditingControllerModel>()
-                    .tagController
-                    .clear();
-                context
-                    .read<TextEditingControllerModel>()
-                    .useDeckController
-                    .clear();
-                context
-                    .read<TextEditingControllerModel>()
-                    .opponentDeckController
-                    .clear();
               },
         child: const Text('OK'),
       ),

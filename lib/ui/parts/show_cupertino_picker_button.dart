@@ -14,7 +14,7 @@ class ShowCupertinoPickerButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       icon: const Icon(Icons.arrow_drop_down),
-      onPressed: children.isEmpty
+      onPressed: children.length == 1
           ? null
           : () {
               showModalBottomSheet(

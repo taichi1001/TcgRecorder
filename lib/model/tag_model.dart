@@ -36,6 +36,7 @@ class TagModel with ChangeNotifier {
       selectedTag = null;
     } else {
       selectedTag = Tag(tag: newValue);
+      _changeItIfSelectedTagInDB();
     }
     notifyListeners();
   }
