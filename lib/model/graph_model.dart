@@ -188,7 +188,7 @@ class VsDeckDetailDataGridSource extends DataGridSource {
     vsDeckDetailList = list;
   }
 
-  List<DeckDetailData> _vsDeckDetailList;
+  List<DeckDetailData> _vsDeckDetailList = [];
   set vsDeckDetailList(List<DeckDetailData> newList) {
     _vsDeckDetailList = newList;
   }
