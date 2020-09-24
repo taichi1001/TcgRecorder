@@ -29,6 +29,15 @@ class DeckModel with ChangeNotifier {
     notifyListeners();
   }
 
+  void findMyDeckFromRecord(Record record) {
+    record.myDeck = allDeckList.where((value) => value.deckId == record.myDeckId).toList()[0].deck;
+  }
+
+  void findOpponentDeckFromRecord(Record record) {
+    record.opponentDeck =
+        allDeckList.where((value) => value.deckId == record.opponentDeckId).toList()[0].deck;
+  }
+
   void changeSelectedUseDeckUsingIndex(int index) {
     selectedUseDeck = gameDeckList[index];
     notifyListeners();
@@ -42,51 +51,34 @@ class DeckModel with ChangeNotifier {
   void changeSelectedUseDeckUsingString(String newValue) {
     if (newValue == '') {
       selectedUseDeck = null;
-      notifyListeners();
-      return;
     } else {
       selectedUseDeck = Deck(deck: newValue);
+      _changeItIfSelectedUseDeckInDb();
     }
-    _changeItIfSelectedUseDeckInDb();
     notifyListeners();
   }
 
   void changeSelectedOpponentDeckUsingString(String newValue) {
     if (newValue == '') {
       selectedOpponentDeck = null;
-      notifyListeners();
-      return;
     } else {
       selectedOpponentDeck = Deck(deck: newValue);
+      _changeItIfSelectedOpponentDeckInDb();
     }
-    _changeItIfSelectedOpponentDeckInDb();
     notifyListeners();
   }
 
-  void findMyDeckFromRecord(Record record) {
-    record.myDeck = allDeckList
-        .where((value) => value.deckId == record.myDeckId)
-        .toList()[0]
-        .deck;
-  }
-
   void _changeItIfSelectedUseDeckInDb() {
-    if (gameDeckList
-        .where((value) => value.deck == selectedUseDeck.deck)
-        .isNotEmpty) {
-      selectedUseDeck = gameDeckList
-          .where((value) => value.deck == selectedUseDeck.deck)
-          .toList()[0];
+    if (gameDeckList.where((value) => value.deck == selectedUseDeck.deck).isNotEmpty) {
+      selectedUseDeck =
+          gameDeckList.where((value) => value.deck == selectedUseDeck.deck).toList()[0];
     }
   }
 
   void _changeItIfSelectedOpponentDeckInDb() {
-    if (gameDeckList
-        .where((value) => value.deck == selectedOpponentDeck.deck)
-        .isNotEmpty) {
-      selectedOpponentDeck = gameDeckList
-          .where((value) => value.deck == selectedOpponentDeck.deck)
-          .toList()[0];
+    if (gameDeckList.where((value) => value.deck == selectedOpponentDeck.deck).isNotEmpty) {
+      selectedOpponentDeck =
+          gameDeckList.where((value) => value.deck == selectedOpponentDeck.deck).toList()[0];
     }
   }
 
@@ -110,13 +102,6 @@ class DeckModel with ChangeNotifier {
     selectedOpponentDeck.deckId = deckId;
     allDeckList = await deckRepo.getAll();
     notifyListeners();
-  }
-
-  void findOpponentDeckFromRecord(Record record) {
-    record.opponentDeck = allDeckList
-        .where((value) => value.deckId == record.opponentDeckId)
-        .toList()[0]
-        .deck;
   }
 
   Future add(Deck deck) async {

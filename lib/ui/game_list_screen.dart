@@ -25,16 +25,16 @@ class GameListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _gameList = context.select((GameModel model) => model.graphListAllGameList);
-    if (_gameList.isEmpty) {
-      return const Center(child: Text('No Items'));
-    }
-
-    return ListView.builder(
-      itemCount: _gameList.length,
-      itemBuilder: (BuildContext context, int index) => GameListTile(
-        game: _gameList[index],
-      ),
-    );
+    return _gameList.isEmpty
+        ? const Center(
+            child: Text('No Items'),
+          )
+        : ListView.builder(
+            itemCount: _gameList.length,
+            itemBuilder: (BuildContext context, int index) => GameListTile(
+              game: _gameList[index],
+            ),
+          );
   }
 }
 

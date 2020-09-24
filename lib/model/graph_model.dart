@@ -21,7 +21,11 @@ class GraphModel with ChangeNotifier {
   final RecordRepo recordRepo;
   final DeckRepo deckRepo;
 
-  GraphModel({@required this.selectedGame, @required this.recordRepo, @required this.deckRepo}) {
+  GraphModel({
+    @required this.selectedGame,
+    @required this.recordRepo,
+    @required this.deckRepo,
+  }) {
     _fetchAll();
   }
 
