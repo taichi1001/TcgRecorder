@@ -14,26 +14,28 @@ class ShowCupertinoPickerButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       icon: const Icon(Icons.arrow_drop_down),
-      onPressed: () {
-        showModalBottomSheet(
-          context: context,
-          builder: (BuildContext context) {
-            return Container(
-              height: MediaQuery.of(context).size.height / 3,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
+      onPressed: children.isEmpty
+          ? null
+          : () {
+              showModalBottomSheet(
+                context: context,
+                builder: (BuildContext context) {
+                  return Container(
+                    height: MediaQuery.of(context).size.height / 3,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: CupertinoPicker(
+                        itemExtent: 40,
+                        onSelectedItemChanged: onSelectedItemChanged,
+                        children: children,
+                      ),
+                    ),
+                  );
                 },
-                child: CupertinoPicker(
-                  itemExtent: 40,
-                  onSelectedItemChanged: onSelectedItemChanged,
-                  children: children,
-                ),
-              ),
-            );
-          },
-        );
-      },
+              );
+            },
     );
   }
 }
