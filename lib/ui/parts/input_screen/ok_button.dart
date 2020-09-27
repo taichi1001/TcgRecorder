@@ -44,30 +44,56 @@ class OkButton extends StatelessWidget {
                 _selectedOpponentDeck == null
             ? null
             : () async {
-                _selectedTag == null
-                    ? context
-                        .read<TagModel>()
-                        .changeSelectedTagUsingString('none')
-                    : {};
-                await context.read<GameModel>().addSelectedGame();
-                await context.read<TagModel>().addSelectedTag(_selectedGame);
-                await context
-                    .read<DeckModel>()
-                    .addSelectedUseDeck(_selectedGame);
-                await context
-                    .read<DeckModel>()
-                    .addSelectedOpponentDeck(_selectedGame);
-                await context.read<RecordModel>().add(
-                      Record(
-                        date: DateTime.now(),
-                        gameId: _selectedGame.gameId,
-                        tagId: _selectedTag == null ? 1 : _selectedTag.tagId,
-                        myDeckId: _selectedUseDeck.deckId,
-                        opponentDeckId: _selectedOpponentDeck.deckId,
-                        firstOrSecond: _selectedFirstOrSecond,
-                        winOrLose: _selectedWinOrLose,
-                      ),
+                await showDialog(
+                  context: context,
+                  barrierDismissible: true,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('確認'),
+                      content: const Text('登録情報あってますか？'),
+                      actions: <Widget>[
+                        FlatButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text('CANCEL'),
+                        ),
+                        FlatButton(
+                          onPressed: () async {
+                            _selectedTag ??
+                                context
+                                    .read<TagModel>()
+                                    .changeSelectedTagUsingString('none');
+                            await context.read<GameModel>().addSelectedGame();
+                            await context
+                                .read<TagModel>()
+                                .addSelectedTag(_selectedGame);
+                            await context
+                                .read<DeckModel>()
+                                .addSelectedUseDeck(_selectedGame);
+                            await context
+                                .read<DeckModel>()
+                                .addSelectedOpponentDeck(_selectedGame);
+                            await context.read<RecordModel>().add(
+                                  Record(
+                                    date: DateTime.now(),
+                                    gameId: _selectedGame.gameId,
+                                    tagId: _selectedTag.tagId,
+                                    myDeckId: _selectedUseDeck.deckId,
+                                    opponentDeckId:
+                                        _selectedOpponentDeck.deckId,
+                                    firstOrSecond: _selectedFirstOrSecond,
+                                    winOrLose: _selectedWinOrLose,
+                                  ),
+                                );
+                            Navigator.pop(context);
+                          },
+                          child: const Text('OK'),
+                        ),
+                      ],
                     );
+                  },
+                );
               },
         child: const Text('OK'),
       ),

@@ -66,24 +66,27 @@ class RecordListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       color: record.winOrLose == 1 ? Colors.red : Colors.blue,
-      child: ListTile(
-        title: Text('使用デッキ：${record.myDeck}\n 対戦デッキ：${record.opponentDeck}'),
-        subtitle: Text(
-          '${record.date.year}年${record.date.month}月${record.date.day}日${record.date.hour}:${record.date.minute}',
+      child: Dismissible(
+        key: ObjectKey(record),
+        child: ListTile(
+          title: Text('使用デッキ：${record.myDeck}\n 対戦デッキ：${record.opponentDeck}'),
+          subtitle: Text(
+            '${record.date.year}年${record.date.month}月${record.date.day}日${record.date.hour}:${record.date.minute}',
+          ),
+          trailing: record.winOrLose == 1
+              ? const Icon(Icons.radio_button_unchecked)
+              : const Icon(Icons.close),
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) {
+                  context.watch<TagModel>().findTagUsingRecord(record);
+                  return RecordDetailView(record: record);
+                },
+              ),
+            );
+          },
         ),
-        trailing: record.winOrLose == 1
-            ? const Icon(Icons.radio_button_unchecked)
-            : const Icon(Icons.close),
-        onTap: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) {
-                context.watch<TagModel>().findTagUsingRecord(record);
-                return RecordDetailView(record: record);
-              },
-            ),
-          );
-        },
       ),
     );
   }
