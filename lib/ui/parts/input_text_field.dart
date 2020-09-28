@@ -15,20 +15,24 @@ class InputTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      // style: const TextStyle(
-      //   fontSize: 13,
-      // ),
-      decoration: InputDecoration(
-        // icon: const Icon(Icons.settings),
-        border: const OutlineInputBorder(
-            // borderRadius: BorderRadius.circular(10.0),
-            ),
-        labelText: labelText ?? labelText,
-        hintText: hintText ?? hintText,
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: TextFormField(
+        // style: const TextStyle(
+        //   fontSize: 13,
+        // ),
+        decoration: InputDecoration(
+          border: const OutlineInputBorder(
+              // borderRadius: BorderRadius.circular(10.0),
+              ),
+          labelText: labelText ?? labelText,
+          hintText: hintText ?? hintText,
+        ),
+        controller: controller,
+        onChanged: onChanged,
       ),
-      controller: controller,
-      onChanged: onChanged,
     );
   }
 }
