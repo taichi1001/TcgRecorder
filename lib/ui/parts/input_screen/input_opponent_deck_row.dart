@@ -16,25 +16,20 @@ class InputOpponentDeckRow extends StatelessWidget {
         alignment: Alignment.centerRight,
         children: [
           InputTextField(
-            controller: context.select((TextEditingControllerModel model) =>
-                model.opponentDeckController),
+            controller:
+                context.select((TextEditingControllerModel model) => model.opponentDeckController),
             onChanged: (String value) {
-              context
-                  .read<DeckModel>()
-                  .changeSelectedOpponentDeckUsingString(value);
+              context.read<DeckModel>().changeSelectedOpponentDeckUsingString(value);
             },
-            labelText: '使用デッキ',
-            hintText: 'Enter 使用デッキ',
+            labelText: '対戦相手デッキ',
+            hintText: 'Enter 対戦相手デッキ',
           ),
           ShowCupertinoPickerButton(
             onSelectedItemChanged: (int index) {
-              context
-                  .read<DeckModel>()
-                  .changeSelectedOpponentDeckUsingIndex(index);
+              context.read<DeckModel>().changeSelectedOpponentDeckUsingIndex(index);
               context
                   .read<TextEditingControllerModel>()
-                  .setOpponentDeckController(
-                      context.read<DeckModel>().selectedOpponentDeck.deck);
+                  .setOpponentDeckController(context.read<DeckModel>().selectedOpponentDeck.deck);
             },
             children: context
                 .select((DeckModel model) => model.gameDeckList)
