@@ -79,8 +79,14 @@ class RecordListTile extends StatelessWidget {
               '${record.date.year}年${record.date.month}月${record.date.day}日${record.date.hour}:${record.date.minute}',
             ),
             trailing: record.winOrLose == 1
-                ? const Icon(Icons.radio_button_unchecked)
-                : const Icon(Icons.close),
+                ? const Icon(
+                    Icons.radio_button_unchecked,
+                    color: Colors.red,
+                  )
+                : const Icon(
+                    Icons.close,
+                    color: Colors.blue,
+                  ),
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
