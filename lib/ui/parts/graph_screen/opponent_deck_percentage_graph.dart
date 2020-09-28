@@ -1,0 +1,34 @@
+import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:provider/provider.dart';
+import 'package:tcg_recorder/model/graph_model.dart';
+
+class OpponentDeckPercentageGraph extends StatelessWidget {
+  const OpponentDeckPercentageGraph({key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final model = context.watch<GraphModel>();
+    return Container(
+      width: 400,
+      height: 200,
+      child: SfCircularChart(
+        legend: Legend(
+          isVisible: true,
+          position: LegendPosition.right,
+          overflowMode: LegendItemOverflowMode.wrap,
+        ),
+        tooltipBehavior: TooltipBehavior(enable: true),
+        series: <CircularSeries>[
+          PieSeries<DeckDetailData, String>(
+              enableTooltip: true,
+              dataSource: model.opponentDeckDetailList,
+              pointColorMapper: (DeckDetailData data, _) => data.color,
+              xValueMapper: (DeckDetailData data, _) => data.deck.deck,
+              yValueMapper: (DeckDetailData data, _) => data.useageRate,
+              animationDuration: 0)
+        ],
+      ),
+    );
+  }
+}

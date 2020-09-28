@@ -1,13 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:provider/provider.dart';
 import 'package:tcg_recorder/entity/game.dart';
 import 'package:tcg_recorder/model/graph_model.dart';
 import 'package:tcg_recorder/repository/deck_repository.dart';
 import 'package:tcg_recorder/repository/record_repository.dart';
-import 'package:tcg_recorder/ui/deck_detail_screen.dart';
+import 'package:tcg_recorder/ui/parts/graph_screen/opponent_deck_percentage_graph.dart';
+import 'package:tcg_recorder/ui/parts/graph_screen/use_deck_detail.dart';
+import 'package:tcg_recorder/ui/parts/graph_screen/use_deck_percentage_graph.dart';
+import 'package:tcg_recorder/ui/parts/graph_screen/win_rate_graph.dart';
 
 class GraphScreen extends StatelessWidget {
   const GraphScreen({this.game, key}) : super(key: key);
@@ -50,34 +51,10 @@ class _Body extends StatelessWidget {
             tabs: tabs,
           ),
         ),
-        body: TabBarView(
+        body: const TabBarView(
           children: [
-            SingleChildScrollView(
-              child: Column(
-                children: const [
-                  _WinRateGraph(),
-                  Divider(
-                    indent: 20,
-                    endIndent: 20,
-                    color: Colors.black,
-                  ),
-                  _UseDeckDetail(),
-                ],
-              ),
-            ),
-            SingleChildScrollView(
-              child: Column(
-                children: const [
-                  _UseDeckPercentageGraph(),
-                  Divider(
-                    indent: 20,
-                    endIndent: 20,
-                    color: Colors.black,
-                  ),
-                  _OpponentDeckPercentageGraph(),
-                ],
-              ),
-            ),
+            _WinRateView(),
+            _UseageRateView(),
           ],
         ),
       ),
@@ -85,164 +62,55 @@ class _Body extends StatelessWidget {
   }
 }
 
-// class _Graphs extends StatelessWidget {
-//   const _Graphs({
-//     Key key,
-//   }) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final controller = PageController();
-//     return Container(
-//       width: 400,
-//       height: 250,
-//       child: PageView(
-//         controller: controller,
-//         children: const [
-//           _UseDeckPercentageGraph(),
-//           _OpponentDeckPercentageGraph(),
-//           _WinRateGraph(),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
-class _WinRateGraph extends StatelessWidget {
-  const _WinRateGraph({key}) : super(key: key);
+class _UseageRateView extends StatelessWidget {
+  const _UseageRateView({
+    Key key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final model = context.watch<GraphModel>();
-    return Container(
-      width: 200,
-      height: 100,
-      child: SfCartesianChart(
-        tooltipBehavior: TooltipBehavior(enable: true),
-        primaryYAxis: NumericAxis(
-          maximum: 100,
-          minimum: 0,
-        ),
-        primaryXAxis: DateTimeAxis(
-          intervalType: DateTimeIntervalType.days,
-        ),
-        margin: const EdgeInsets.only(
-          left: 50,
-          right: 50,
-          top: 40,
-        ),
-        series: <ChartSeries>[
-          LineSeries<WinRateData, DateTime>(
-              name: 'Win Rate',
-              enableTooltip: true,
-              dataSource: model.winRateList,
-              xValueMapper: (WinRateData data, _) => data.record.date,
-              yValueMapper: (WinRateData data, _) => data.winRate,
-              animationDuration: 0),
+    return SingleChildScrollView(
+      child: Column(
+        children: const [
+          UseDeckPercentageGraph(),
+          _Divider(),
+          OpponentDeckPercentageGraph(),
         ],
       ),
     );
   }
 }
 
-class _UseDeckPercentageGraph extends StatelessWidget {
-  const _UseDeckPercentageGraph({key}) : super(key: key);
+class _WinRateView extends StatelessWidget {
+  const _WinRateView({
+    Key key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final model = context.watch<GraphModel>();
-    return Container(
-      width: 400,
-      height: 200,
-      child: SfCircularChart(
-        legend: Legend(
-          isVisible: true,
-          position: LegendPosition.right,
-          overflowMode: LegendItemOverflowMode.wrap,
-        ),
-        tooltipBehavior: TooltipBehavior(enable: true),
-        series: <CircularSeries>[
-          PieSeries<DeckDetailData, String>(
-              enableTooltip: true,
-              dataSource: model.useDeckDetailList,
-              pointColorMapper: (DeckDetailData data, _) => data.color,
-              xValueMapper: (DeckDetailData data, _) => data.deck.deck,
-              yValueMapper: (DeckDetailData data, _) => data.useageRate,
-              animationDuration: 0)
+    return SingleChildScrollView(
+      child: Column(
+        children: const [
+          WinRateGraph(),
+          _Divider(),
+          UseDeckDetail(),
         ],
       ),
     );
   }
 }
 
-class _OpponentDeckPercentageGraph extends StatelessWidget {
-  const _OpponentDeckPercentageGraph({key}) : super(key: key);
+class _Divider extends StatelessWidget {
+  const _Divider({
+    Key key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final model = context.watch<GraphModel>();
-    return Container(
-      width: 400,
-      height: 200,
-      child: SfCircularChart(
-        legend: Legend(
-          isVisible: true,
-          position: LegendPosition.right,
-          overflowMode: LegendItemOverflowMode.wrap,
-        ),
-        tooltipBehavior: TooltipBehavior(enable: true),
-        series: <CircularSeries>[
-          PieSeries<DeckDetailData, String>(
-              enableTooltip: true,
-              dataSource: model.opponentDeckDetailList,
-              pointColorMapper: (DeckDetailData data, _) => data.color,
-              xValueMapper: (DeckDetailData data, _) => data.deck.deck,
-              yValueMapper: (DeckDetailData data, _) => data.useageRate,
-              animationDuration: 0)
-        ],
-      ),
-    );
-  }
-}
-
-class _UseDeckDetail extends StatelessWidget {
-  const _UseDeckDetail({key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final model = context.watch<GraphModel>();
-    return Center(
-      child: Container(
-        padding: const EdgeInsets.only(left: 30),
-        child: SfDataGrid(
-          source: model.useDeckDetailDataGridSource,
-          cellBuilder: (BuildContext context, GridColumn column, int rowIndex) {
-            return FlatButton(
-              onPressed: () {
-                model.selectedDeck = model.useDeckDetailList[rowIndex].deck;
-                model.make();
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => VsDeckDetailScreen(
-                      deck: model.useDeckDetailList[rowIndex].deck,
-                      model: model,
-                    ),
-                  ),
-                );
-              },
-              child: Text(model.useDeckDetailList[rowIndex].deck.deck),
-            );
-          },
-          columnWidthMode: ColumnWidthMode.auto,
-          columns: [
-            GridWidgetColumn(mappingName: 'deck', headerText: 'デッキ名'),
-            GridNumericColumn(mappingName: 'matches', headerText: '試合'),
-            GridTextColumn(mappingName: 'win', headerText: '勝'),
-            GridTextColumn(mappingName: 'lose', headerText: '負'),
-            GridNumericColumn(mappingName: 'winRate', headerText: '勝率'),
-          ],
-        ),
-      ),
+    return const Divider(
+      indent: 20,
+      endIndent: 20,
+      color: Colors.black,
     );
   }
 }
