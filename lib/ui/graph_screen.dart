@@ -37,20 +37,47 @@ class _Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(context.select((GraphModel model) => model.selectedGame.game)),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: const [
-            _Graphs(),
-            Divider(
-              indent: 20,
-              endIndent: 20,
-              color: Colors.black,
+    final List<Tab> tabs = <Tab>[
+      const Tab(text: 'WinRate', icon: Icon(Icons.directions_car)),
+      const Tab(text: 'UseRate', icon: Icon(Icons.directions_bike)),
+    ];
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(context.select((GraphModel model) => model.selectedGame.game)),
+          bottom: TabBar(
+            tabs: tabs,
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            SingleChildScrollView(
+              child: Column(
+                children: const [
+                  _WinRateGraph(),
+                  Divider(
+                    indent: 20,
+                    endIndent: 20,
+                    color: Colors.black,
+                  ),
+                  _UseDeckDetail(),
+                ],
+              ),
             ),
-            _UseDeckDetail(),
+            SingleChildScrollView(
+              child: Column(
+                children: const [
+                  _UseDeckPercentageGraph(),
+                  Divider(
+                    indent: 20,
+                    endIndent: 20,
+                    color: Colors.black,
+                  ),
+                  _OpponentDeckPercentageGraph(),
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -58,28 +85,28 @@ class _Body extends StatelessWidget {
   }
 }
 
-class _Graphs extends StatelessWidget {
-  const _Graphs({
-    Key key,
-  }) : super(key: key);
+// class _Graphs extends StatelessWidget {
+//   const _Graphs({
+//     Key key,
+//   }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    final controller = PageController();
-    return Container(
-      width: 400,
-      height: 250,
-      child: PageView(
-        controller: controller,
-        children: const [
-          _UseDeckPercentageGraph(),
-          _OpponentDeckPercentageGraph(),
-          _WinRateGraph(),
-        ],
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     final controller = PageController();
+//     return Container(
+//       width: 400,
+//       height: 250,
+//       child: PageView(
+//         controller: controller,
+//         children: const [
+//           _UseDeckPercentageGraph(),
+//           _OpponentDeckPercentageGraph(),
+//           _WinRateGraph(),
+//         ],
+//       ),
+//     );
+//   }
+// }
 
 class _WinRateGraph extends StatelessWidget {
   const _WinRateGraph({key}) : super(key: key);
@@ -99,16 +126,19 @@ class _WinRateGraph extends StatelessWidget {
         primaryXAxis: DateTimeAxis(
           intervalType: DateTimeIntervalType.days,
         ),
-        margin: const EdgeInsets.only(left: 50, right: 50, top: 40,),
+        margin: const EdgeInsets.only(
+          left: 50,
+          right: 50,
+          top: 40,
+        ),
         series: <ChartSeries>[
           LineSeries<WinRateData, DateTime>(
-            name: 'Win Rate',
-            enableTooltip: true,
-            dataSource: model.winRateList,
-            xValueMapper: (WinRateData data, _) => data.record.date,
-            yValueMapper: (WinRateData data, _) => data.winRate,
-            animationDuration: 0
-          ),
+              name: 'Win Rate',
+              enableTooltip: true,
+              dataSource: model.winRateList,
+              xValueMapper: (WinRateData data, _) => data.record.date,
+              yValueMapper: (WinRateData data, _) => data.winRate,
+              animationDuration: 0),
         ],
       ),
     );
@@ -133,13 +163,12 @@ class _UseDeckPercentageGraph extends StatelessWidget {
         tooltipBehavior: TooltipBehavior(enable: true),
         series: <CircularSeries>[
           PieSeries<DeckDetailData, String>(
-            enableTooltip: true,
-            dataSource: model.useDeckDetailList,
-            pointColorMapper: (DeckDetailData data, _) => data.color,
-            xValueMapper: (DeckDetailData data, _) => data.deck.deck,
-            yValueMapper: (DeckDetailData data, _) => data.useageRate,
-            animationDuration: 0
-          )
+              enableTooltip: true,
+              dataSource: model.useDeckDetailList,
+              pointColorMapper: (DeckDetailData data, _) => data.color,
+              xValueMapper: (DeckDetailData data, _) => data.deck.deck,
+              yValueMapper: (DeckDetailData data, _) => data.useageRate,
+              animationDuration: 0)
         ],
       ),
     );
@@ -164,13 +193,12 @@ class _OpponentDeckPercentageGraph extends StatelessWidget {
         tooltipBehavior: TooltipBehavior(enable: true),
         series: <CircularSeries>[
           PieSeries<DeckDetailData, String>(
-            enableTooltip: true,
-            dataSource: model.opponentDeckDetailList,
-            pointColorMapper: (DeckDetailData data, _) => data.color,
-            xValueMapper: (DeckDetailData data, _) => data.deck.deck,
-            yValueMapper: (DeckDetailData data, _) => data.useageRate,
-            animationDuration: 0
-          )
+              enableTooltip: true,
+              dataSource: model.opponentDeckDetailList,
+              pointColorMapper: (DeckDetailData data, _) => data.color,
+              xValueMapper: (DeckDetailData data, _) => data.deck.deck,
+              yValueMapper: (DeckDetailData data, _) => data.useageRate,
+              animationDuration: 0)
         ],
       ),
     );
