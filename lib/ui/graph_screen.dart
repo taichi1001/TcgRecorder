@@ -9,6 +9,7 @@ import 'package:tcg_recorder/ui/parts/graph_screen/opponent_deck_percentage_grap
 import 'package:tcg_recorder/ui/parts/graph_screen/use_deck_detail.dart';
 import 'package:tcg_recorder/ui/parts/graph_screen/use_deck_percentage_graph.dart';
 import 'package:tcg_recorder/ui/parts/graph_screen/win_rate_graph.dart';
+import 'package:tcg_recorder/ui/record_list_screen.dart';
 
 class GraphScreen extends StatelessWidget {
   const GraphScreen({this.game, key}) : super(key: key);
@@ -26,7 +27,9 @@ class GraphScreen extends StatelessWidget {
           ),
         ),
       ],
-      child: const _Body(),
+      child: _Body2(
+        game: game,
+      ),
     );
   }
 }
@@ -39,22 +42,66 @@ class _Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Tab> tabs = <Tab>[
-      const Tab(text: 'WinRate', icon: Icon(Icons.directions_car)),
-      const Tab(text: 'UseRate', icon: Icon(Icons.directions_bike)),
+      const Tab(text: 'WinRate'),
+      const Tab(text: 'UseRate'),
     ];
+
+    return DefaultTabController(
+      length: tabs.length,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            TabBar(
+              labelColor: Colors.amber,
+              unselectedLabelColor: Colors.grey,
+              tabs: tabs,
+            ),
+            Container(
+              height: 600,
+              child: const TabBarView(
+                children: [
+                  _WinRateView(),
+                  _UseageRateView(),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _Body2 extends StatelessWidget {
+  const _Body2({
+    Key key,
+    this.game,
+  }) : super(key: key);
+  final Game game;
+
+  @override
+  Widget build(BuildContext context) {
+    final List<Tab> tabs = <Tab>[
+      const Tab(text: 'グラフ'),
+      const Tab(text: 'リスト'),
+    ];
+
     return DefaultTabController(
       length: tabs.length,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(context.select((GraphModel model) => model.selectedGame.game)),
+          title: Text(
+              context.select((GraphModel model) => model.selectedGame.game)),
           bottom: TabBar(
             tabs: tabs,
           ),
         ),
-        body: const TabBarView(
+        body: TabBarView(
           children: [
-            _WinRateView(),
-            _UseageRateView(),
+            const _Body(),
+            RecordListScreen(
+              game: game,
+            ),
           ],
         ),
       ),

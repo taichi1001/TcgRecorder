@@ -7,7 +7,7 @@ import 'package:tcg_recorder/repository/tag_repository.dart';
 class TagModel with ChangeNotifier {
   List<Tag> allTagList = [];
   List<Tag> gameTagList = [];
-  Tag selectedTag;
+  Tag selectedTag = Tag(tagId: 1, tag: 'none');
   final TagRepo tagRepo;
 
   TagModel(this.tagRepo) {
@@ -16,7 +16,7 @@ class TagModel with ChangeNotifier {
 
   Future _fetchAll() async {
     allTagList = await tagRepo.getAll();
-    selectedTag = null;
+    // selectedTag = null;
     notifyListeners();
   }
 

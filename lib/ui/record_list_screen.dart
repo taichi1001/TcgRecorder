@@ -16,13 +16,8 @@ class RecordListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(game.game),
-      ),
-      body: RecordListView(
-        game: game,
-      ),
+    return RecordListView(
+      game: game,
     );
   }
 }
@@ -36,14 +31,17 @@ class RecordListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final recordList = context.select((RecordModel model) => model.gameRecordList(game));
+    final recordList =
+        context.select((RecordModel model) => model.gameRecordList(game));
     return recordList.isEmpty
         ? const Center(child: Text('No Items'))
         : ListView.builder(
             itemCount: recordList.length,
             itemBuilder: (BuildContext context, int index) {
               context.read<DeckModel>().findMyDeckFromRecord(recordList[index]);
-              context.read<DeckModel>().findOpponentDeckFromRecord(recordList[index]);
+              context
+                  .read<DeckModel>()
+                  .findOpponentDeckFromRecord(recordList[index]);
               return RecordListTile(
                 record: recordList[index],
               );
@@ -70,11 +68,15 @@ class RecordListTile extends StatelessWidget {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               stops: const [0.02, 0.02],
-              colors: [if (record.winOrLose == 1) Colors.red else Colors.blue, them.canvasColor],
+              colors: [
+                if (record.winOrLose == 1) Colors.red else Colors.blue,
+                them.canvasColor
+              ],
             ),
           ),
           child: ListTile(
-            title: Text('使用デッキ：${record.myDeck}\n 対戦デッキ：${record.opponentDeck}'),
+            title:
+                Text('使用デッキ：${record.myDeck}\n 対戦デッキ：${record.opponentDeck}'),
             subtitle: Text(
               '${record.date.year}年${record.date.month}月${record.date.day}日${record.date.hour}:${record.date.minute}',
             ),

@@ -6,7 +6,8 @@ class MainBottomNavigation extends StatelessWidget {
   const MainBottomNavigation({key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final bottomNavigationModel = Provider.of<BottomNavigationModel>(context, listen: true);
+    final bottomNavigationModel =
+        Provider.of<BottomNavigationModel>(context, listen: true);
     return Scaffold(
       body: Center(
         child: bottomNavigationModel.getSelectedScreen(),
@@ -18,16 +19,8 @@ class MainBottomNavigation extends StatelessWidget {
             title: Text('入力'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.list),
-            title: Text('一覧'),
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.pie_chart),
             title: Text('グラフ'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            title: Text('設定'),
           ),
         ],
         type: BottomNavigationBarType.fixed,

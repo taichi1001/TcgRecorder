@@ -10,8 +10,8 @@ class WinRateGraph extends StatelessWidget {
   Widget build(BuildContext context) {
     final model = context.watch<GraphModel>();
     return Container(
-      width: 200,
-      height: 100,
+      width: 400,
+      height: 200,
       child: SfCartesianChart(
         tooltipBehavior: TooltipBehavior(enable: true),
         primaryYAxis: NumericAxis(
