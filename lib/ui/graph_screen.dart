@@ -42,7 +42,7 @@ class _Body extends StatelessWidget {
       const Tab(text: 'UseRate', icon: Icon(Icons.directions_bike)),
     ];
     return DefaultTabController(
-      length: 2,
+      length: tabs.length,
       child: Scaffold(
         appBar: AppBar(
           title: Text(context.select((GraphModel model) => model.selectedGame.game)),
