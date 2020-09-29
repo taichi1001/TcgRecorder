@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tcg_recorder/entity/game.dart';
 import 'package:tcg_recorder/model/game_model.dart';
-import 'package:tcg_recorder/ui/graph_screen.dart';
+import 'package:tcg_recorder/ui/data_screen.dart';
 
-class GraphListScreen extends StatelessWidget {
-  const GraphListScreen({Key key}) : super(key: key);
+class DataListScreen extends StatelessWidget {
+  const DataListScreen({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,7 +53,7 @@ class GraphListTile extends StatelessWidget {
         onTap: () {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => GraphScreen(game: game),
+              builder: (context) => DataScreen(game: game),
             ),
           );
         },
