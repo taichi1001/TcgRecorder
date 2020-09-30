@@ -24,7 +24,8 @@ class GraphListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _gameList = context.select((GameModel model) => model.graphListAllGameList);
+    final _gameList =
+        context.select((GameModel model) => model.graphListAllGameList);
     return _gameList.isEmpty
         ? const Center(
             child: Text('No Items'),

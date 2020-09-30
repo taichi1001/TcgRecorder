@@ -35,8 +35,6 @@ class GraphModel with ChangeNotifier {
     makeWinRateList();
     makeUseDeckPercentageList();
     makeOpponentDeckPercentageList();
-    useDeckDetailDataGridSource =
-        UseDeckDetailDataGridSource(useDeckDetailList);
     notifyListeners();
   }
 
@@ -120,6 +118,11 @@ class GraphModel with ChangeNotifier {
         ),
       );
     }
+  }
+
+  void make2() {
+    useDeckDetailDataGridSource =
+        UseDeckDetailDataGridSource(useDeckDetailList);
   }
 
   void make() {

@@ -26,27 +26,30 @@ class DataScreen extends StatelessWidget {
             deckRepo: kIsWeb ? DeckRepo() : DeckRepo(),
             recordRepo: kIsWeb ? RecordRepo() : RecordRepo(),
           ),
+          builder: (context, baz) {
+            return DefaultTabController(
+              length: _tabs.length,
+              child: Scaffold(
+                appBar: AppBar(
+                  title: Text(context
+                      .select((GraphModel model) => model.selectedGame.game)),
+                  bottom: TabBar(
+                    tabs: _tabs,
+                  ),
+                ),
+                body: TabBarView(
+                  children: [
+                    const GraphView(),
+                    RecordListView(
+                      game: game,
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
         ),
       ],
-      child: DefaultTabController(
-        length: _tabs.length,
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text(context.select((GraphModel model) => model.selectedGame.game)),
-            bottom: TabBar(
-              tabs: _tabs,
-            ),
-          ),
-          body: TabBarView(
-            children: [
-              const GraphView(),
-              RecordListView(
-                game: game,
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }

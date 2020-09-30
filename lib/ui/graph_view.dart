@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tcg_recorder/model/graph_model.dart';
 import 'package:tcg_recorder/ui/parts/data_screen/opponent_deck_percentage_graph.dart';
 import 'package:tcg_recorder/ui/parts/data_screen/use_deck_detail.dart';
 import 'package:tcg_recorder/ui/parts/data_screen/use_deck_percentage_graph.dart';
@@ -16,7 +18,6 @@ class GraphView extends StatelessWidget {
       const Tab(text: 'WinRate'),
       const Tab(text: 'UseRate'),
     ];
-
     return DefaultTabController(
       length: _tabs.length,
       child: SingleChildScrollView(
@@ -69,6 +70,7 @@ class _WinRateView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<GraphModel>().make2();
     return SingleChildScrollView(
       child: Column(
         children: const [
