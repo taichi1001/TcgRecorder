@@ -26,9 +26,7 @@ class RecordModel with ChangeNotifier {
   }
 
   List<Record> getGameRecordList(Game game) {
-    return allRecordList
-        .where((record) => record.gameId == game.gameId)
-        .toList();
+    return allRecordList.where((record) => record.gameId == game.gameId).toList();
   }
 
   void changeFirstOrSecond() {

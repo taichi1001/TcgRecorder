@@ -16,7 +16,6 @@ class TagModel with ChangeNotifier {
 
   Future _fetchAll() async {
     allTagList = await tagRepo.getAll();
-    // selectedTag = null;
     notifyListeners();
   }
 
@@ -42,11 +41,8 @@ class TagModel with ChangeNotifier {
   }
 
   void _changeItIfSelectedTagInDB() {
-    if (gameTagList.where((value) => value.tag == selectedTag.tag).isNotEmpty) {
-      selectedTag = gameTagList
-          .where((value) => value.tag == selectedTag.tag)
-          .toList()[0];
-    }
+    final list = gameTagList.where((value) => value.tag == selectedTag.tag).toList();
+    if (list.isNotEmpty) selectedTag = list[0];
   }
 
   Future addSelectedTag(Game game) async {
@@ -61,10 +57,7 @@ class TagModel with ChangeNotifier {
   }
 
   void findTagUsingRecord(Record record) {
-    record.tag = allTagList
-        .where((value) => value.tagId == record.tagId)
-        .toList()[0]
-        .tag;
+    record.tag = allTagList.where((value) => value.tagId == record.tagId).toList()[0].tag;
   }
 
   Future add(Tag tag) async {

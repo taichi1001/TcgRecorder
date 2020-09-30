@@ -30,30 +30,23 @@ class GameModel with ChangeNotifier {
   }
 
   void _changeItIfSelectedGameInDB() {
-    if (allGameList
-        .where((value) => value.game == selectedGame.game)
-        .isNotEmpty) {
-      selectedGame = allGameList
-          .where((value) => value.game == selectedGame.game)
-          .toList()[0];
-    }
+    final list = allGameList.where((value) => value.game == selectedGame.game).toList();
+    if (list.isNotEmpty) selectedGame = list[0];
   }
 
   void findGameUsingRecord(Record record) {
-    record.game = allGameList
-        .where((value) => value.gameId == record.gameId)
-        .toList()[0]
-        .game;
+    record.game = allGameList.where((value) => value.gameId == record.gameId).toList()[0].game;
   }
 
   Future addSelectedGame() async {
     _changeItIfSelectedGameInDB();
-    if (selectedGame.gameId != 0) return;
-    selectedGame.gameId = null;
-    final selectedGameId = await gameRepo.insert(selectedGame);
-    selectedGame.gameId = selectedGameId;
-    await _getAllGameList();
-    notifyListeners();
+    if (selectedGame.gameId == 0) {
+      selectedGame.gameId = null;
+      final selectedGameId = await gameRepo.insert(selectedGame);
+      selectedGame.gameId = selectedGameId;
+      await _getAllGameList();
+      notifyListeners();
+    }
   }
 
   Future _fetchAll() async {
