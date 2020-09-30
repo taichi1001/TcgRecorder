@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:tcg_recorder/entity/game.dart';
 import 'package:tcg_recorder/entity/record.dart';
@@ -43,8 +44,19 @@ class _RecordListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final them = Theme.of(context);
     return Card(
-      child: Dismissible(
+      child: Slidable(
+        actionPane: const SlidableScrollActionPane(),
         key: ObjectKey(record),
+        secondaryActions: [
+          IconSlideAction(
+            caption: '削除',
+            color: Colors.red,
+            icon: Icons.remove,
+            onTap: () {
+              context.read<RecordModel>().remove(record);
+            },
+          ),
+        ],
         child: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
