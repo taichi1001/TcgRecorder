@@ -27,36 +27,38 @@ class DataScreen extends StatelessWidget {
             recordRepo: kIsWeb ? RecordRepo() : RecordRepo(),
           ),
           builder: (context, baz) {
-            return FutureBuilder(
-              future: context.read<GraphModel>().fetchAll(),
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                if (snapshot.hasData) {
-                  return DefaultTabController(
-                    length: _tabs.length,
-                    child: Scaffold(
-                      appBar: AppBar(
-                        title: Text(context.select((GraphModel model) => model.selectedGame.game)),
-                        bottom: TabBar(
-                          tabs: _tabs,
-                        ),
-                      ),
-                      body: TabBarView(
+            return DefaultTabController(
+              length: _tabs.length,
+              child: Scaffold(
+                appBar: AppBar(
+                  title: Text(context.select((GraphModel model) => model.selectedGame.game)),
+                  bottom: TabBar(
+                    tabs: _tabs,
+                  ),
+                ),
+                body: FutureBuilder(
+                  future: context.read<GraphModel>().fetchAll(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return const TabBarView(
+                        children: [
+                          CircularProgressIndicator(),
+                          CircularProgressIndicator(),
+                        ],
+                      );
+                    } else {
+                      return TabBarView(
                         children: [
                           const GraphView(),
                           RecordListView(
                             game: game,
                           ),
                         ],
-                      ),
-                    ),
-                  );
-                } else {
-                  return Scaffold(
-                    appBar: AppBar(),
-                    body: Container(),
-                  );
-                }
-              },
+                      );
+                    }
+                  },
+                ),
+              ),
             );
           },
         ),
