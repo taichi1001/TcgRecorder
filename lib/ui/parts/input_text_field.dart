@@ -15,10 +15,11 @@ class InputTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _focusNode = FocusNode();
+    // final _focusNode = FocusNode();
     return GestureDetector(
       onTap: () {
-        _focusNode.unfocus();
+        // _focusNode.unfocus();
+        FocusScope.of(context).unfocus();
       },
       child: TextFormField(
         // style: const TextStyle(
@@ -31,7 +32,7 @@ class InputTextField extends StatelessWidget {
           labelText: labelText ?? labelText,
           hintText: hintText ?? hintText,
         ),
-        focusNode: _focusNode,
+        // focusNode: _focusNode,
         controller: controller,
         onChanged: onChanged,
       ),
