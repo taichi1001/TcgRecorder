@@ -25,9 +25,7 @@ class GraphModel with ChangeNotifier {
     @required this.selectedGame,
     @required this.recordRepo,
     @required this.deckRepo,
-  }) {
-    fetchAll();
-  }
+  });
 
   Future fetchAll() async {
     recordList = await recordRepo.getGameRecord(selectedGame.gameId);
