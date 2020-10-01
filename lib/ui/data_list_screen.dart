@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:tcg_recorder/entity/game.dart';
 import 'package:tcg_recorder/model/game_model.dart';
 import 'package:tcg_recorder/ui/data_screen.dart';
+import 'package:tcg_recorder/localization/l10n.dart';
 
 class DataListScreen extends StatelessWidget {
   const DataListScreen({Key key}) : super(key: key);
@@ -10,7 +11,7 @@ class DataListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Select Game'),
+        title: Text(L10n.of(context).gameListTitle),
       ),
       body: const GraphListView(),
     );
@@ -24,11 +25,10 @@ class GraphListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _gameList =
-        context.select((GameModel model) => model.graphListAllGameList);
+    final _gameList = context.select((GameModel model) => model.graphListAllGameList);
     return _gameList.isEmpty
-        ? const Center(
-            child: Text('No Items'),
+        ? Center(
+            child: Text(L10n.of(context).noItem),
           )
         : ListView.builder(
             itemCount: _gameList.length,

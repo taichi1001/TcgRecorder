@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tcg_recorder/localization/l10n.dart';
 import 'package:tcg_recorder/model/record_model.dart';
 
 class InputFirstOrSecondRow extends StatelessWidget {
@@ -21,7 +22,7 @@ class InputFirstOrSecondRow extends StatelessWidget {
                 : () {
                     context.read<RecordModel>().changeFirstOrSecond();
                   },
-            child: const Text('1st'),
+            child: Text(L10n.of(context).first),
           ),
         ),
         Container(
@@ -35,7 +36,7 @@ class InputFirstOrSecondRow extends StatelessWidget {
                 : () {
                     context.read<RecordModel>().changeFirstOrSecond();
                   },
-            child: const Text('2nd'),
+            child: Text(L10n.of(context).second),
           ),
         ),
       ],

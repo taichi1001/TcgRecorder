@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import 'package:tcg_recorder/localization/l10n.dart';
 import 'package:tcg_recorder/model/tag_model.dart';
 import 'package:tcg_recorder/model/text_editing_controller_model.dart';
 import 'package:tcg_recorder/ui/parts/show_cupertino_picker_button.dart';
@@ -16,13 +17,12 @@ class InputTagRow extends StatelessWidget {
         alignment: Alignment.centerRight,
         children: [
           InputTextField(
-            controller: context.select(
-                (TextEditingControllerModel model) => model.tagController),
+            controller: context.select((TextEditingControllerModel model) => model.tagController),
             onChanged: (String value) {
               context.read<TagModel>().changeSelectedTagUsingString(value);
             },
-            labelText: 'タグ名',
-            hintText: 'Enter タグ名',
+            labelText: L10n.of(context).inputTagLabel,
+            hintText: L10n.of(context).inputTagHint,
           ),
           ShowCupertinoPickerButton(
             onSelectedItemChanged: (int index) {

@@ -3,6 +3,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:tcg_recorder/entity/game.dart';
 import 'package:tcg_recorder/entity/record.dart';
+import 'package:tcg_recorder/localization/l10n.dart';
 import 'package:tcg_recorder/model/deck_model.dart';
 import 'package:tcg_recorder/model/graph_model.dart';
 import 'package:tcg_recorder/model/record_model.dart';
@@ -20,7 +21,7 @@ class RecordListView extends StatelessWidget {
   Widget build(BuildContext context) {
     final recordList = context.select((RecordModel model) => model.gameRecordList(game));
     return recordList.isEmpty
-        ? const Center(child: Text('No Items'))
+        ? Center(child: Text(L10n.of(context).noItem))
         : ListView.builder(
             itemCount: recordList.length,
             itemBuilder: (BuildContext context, int index) {
@@ -52,7 +53,7 @@ class _RecordListTile extends StatelessWidget {
         controller: slidableController,
         secondaryActions: [
           IconSlideAction(
-            caption: '削除',
+            caption: L10n.of(context).delete,
             color: Colors.red,
             icon: Icons.delete,
             onTap: () async {
@@ -69,7 +70,7 @@ class _RecordListTile extends StatelessWidget {
             ),
           ),
           child: ListTile(
-            title: Text('使用デッキ：${record.myDeck}\n 対戦デッキ：${record.opponentDeck}'),
+            title: Text(L10n.of(context).recordDeck(record.myDeck, record.opponentDeck)),
             subtitle: Text(
               '${record.date.year}年${record.date.month}月${record.date.day}日${record.date.hour}:${record.date.minute}',
             ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tcg_recorder/localization/l10n.dart';
 import 'package:tcg_recorder/model/record_model.dart';
 
 class InputWinOrLoseRow extends StatelessWidget {
@@ -21,7 +22,7 @@ class InputWinOrLoseRow extends StatelessWidget {
                 : () {
                     context.read<RecordModel>().changeWinOrLose();
                   },
-            child: const Text('Win'),
+            child: Text(L10n.of(context).win),
           ),
         ),
         Container(
@@ -35,7 +36,7 @@ class InputWinOrLoseRow extends StatelessWidget {
                 : () {
                     context.read<RecordModel>().changeWinOrLose();
                   },
-            child: const Text('Lose'),
+            child: Text(L10n.of(context).lose),
           ),
         ),
       ],

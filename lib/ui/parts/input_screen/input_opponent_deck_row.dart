@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import 'package:tcg_recorder/localization/l10n.dart';
 import 'package:tcg_recorder/model/deck_model.dart';
 import 'package:tcg_recorder/model/text_editing_controller_model.dart';
 import 'package:tcg_recorder/ui/parts/show_cupertino_picker_button.dart';
@@ -21,8 +22,8 @@ class InputOpponentDeckRow extends StatelessWidget {
             onChanged: (String value) {
               context.read<DeckModel>().changeSelectedOpponentDeckUsingString(value);
             },
-            labelText: '対戦相手デッキ',
-            hintText: 'Enter 対戦相手デッキ',
+            labelText: L10n.of(context).inputOpponentDeckLabel,
+            hintText: L10n.of(context).inputOpponentDeckHint,
           ),
           ShowCupertinoPickerButton(
             onSelectedItemChanged: (int index) {

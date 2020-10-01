@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import 'package:tcg_recorder/localization/l10n.dart';
 import 'package:tcg_recorder/model/deck_model.dart';
 import 'package:tcg_recorder/model/text_editing_controller_model.dart';
 import 'package:tcg_recorder/ui/parts/show_cupertino_picker_button.dart';
@@ -16,19 +17,20 @@ class InputUseDeckRow extends StatelessWidget {
         alignment: Alignment.centerRight,
         children: [
           InputTextField(
-            controller: context.select(
-                (TextEditingControllerModel model) => model.useDeckController),
+            controller:
+                context.select((TextEditingControllerModel model) => model.useDeckController),
             onChanged: (String value) {
               context.read<DeckModel>().changeSelectedUseDeckUsingString(value);
             },
-            labelText: '使用デッキ',
-            hintText: 'Enter 使用デッキ',
+            labelText: L10n.of(context).inputUseDeckLabel,
+            hintText: L10n.of(context).inputUseDeckHint,
           ),
           ShowCupertinoPickerButton(
             onSelectedItemChanged: (int index) {
               context.read<DeckModel>().changeSelectedUseDeckUsingIndex(index);
-              context.read<TextEditingControllerModel>().setUseDeckController(
-                  context.read<DeckModel>().selectedUseDeck.deck);
+              context
+                  .read<TextEditingControllerModel>()
+                  .setUseDeckController(context.read<DeckModel>().selectedUseDeck.deck);
             },
             children: context
                 .select((DeckModel model) => model.gameDeckList)

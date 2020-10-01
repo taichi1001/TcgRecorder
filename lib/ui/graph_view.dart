@@ -13,8 +13,8 @@ class GraphView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Tab> _tabs = <Tab>[
-      const Tab(text: 'WinRate'),
-      const Tab(text: 'UseRate'),
+      const Tab(text: '勝率'),
+      const Tab(text: '使用率'),
     ];
     return DefaultTabController(
       length: _tabs.length,

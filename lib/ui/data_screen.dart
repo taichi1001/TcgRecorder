@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tcg_recorder/localization/l10n.dart';
 import 'package:tcg_recorder/entity/game.dart';
 import 'package:tcg_recorder/model/graph_model.dart';
 import 'package:tcg_recorder/repository/deck_repository.dart';
@@ -15,8 +16,8 @@ class DataScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Tab> _tabs = <Tab>[
-      const Tab(text: 'グラフ'),
-      const Tab(text: 'リスト'),
+      Tab(text: L10n.of(context).graphTabName),
+      Tab(text: L10n.of(context).listTabName),
     ];
     return MultiProvider(
       providers: [

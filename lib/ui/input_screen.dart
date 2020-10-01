@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:tcg_recorder/localization/l10n.dart';
 import 'package:tcg_recorder/ui/parts/input_screen/input_1st_or_2nd_row.dart';
 import 'package:tcg_recorder/ui/parts/input_screen/input_game_row.dart';
 import 'package:tcg_recorder/ui/parts/input_screen/input_opponent_deck_row.dart';
@@ -13,7 +14,7 @@ class InputScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('データ入力'),
+        title: Text(L10n.of(context).inputScreenTitle),
       ),
       body: const Center(
         child: _Body(),
