@@ -27,12 +27,12 @@ class DataScreen extends StatelessWidget {
             recordRepo: kIsWeb ? RecordRepo() : RecordRepo(),
           ),
           builder: (context, baz) {
+            context.read<GraphModel>().make2();
             return DefaultTabController(
               length: _tabs.length,
               child: Scaffold(
                 appBar: AppBar(
-                  title: Text(context
-                      .select((GraphModel model) => model.selectedGame.game)),
+                  title: Text(context.select((GraphModel model) => model.selectedGame.game)),
                   bottom: TabBar(
                     tabs: _tabs,
                   ),

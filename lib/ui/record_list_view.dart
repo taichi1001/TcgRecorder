@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:tcg_recorder/entity/game.dart';
 import 'package:tcg_recorder/entity/record.dart';
 import 'package:tcg_recorder/model/deck_model.dart';
+import 'package:tcg_recorder/model/graph_model.dart';
 import 'package:tcg_recorder/model/record_model.dart';
 import 'package:tcg_recorder/model/tag_model.dart';
 import 'package:tcg_recorder/ui/record_detail_view.dart';
@@ -53,9 +54,10 @@ class _RecordListTile extends StatelessWidget {
           IconSlideAction(
             caption: '削除',
             color: Colors.red,
-            icon: Icons.remove,
-            onTap: () {
-              context.read<RecordModel>().remove(record);
+            icon: Icons.delete,
+            onTap: () async {
+              await context.read<RecordModel>().remove(record);
+              await context.read<GraphModel>().fetchAll();
             },
           ),
         ],
