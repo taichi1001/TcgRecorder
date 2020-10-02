@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_core/core.dart';
 import 'package:tcg_recorder/localization/localizations_delegate.dart';
@@ -46,12 +47,10 @@ class MyApp extends StatelessWidget {
             create: (context) => TagModel(kIsWeb ? TagRepo() : TagRepo()),
           ),
           ChangeNotifierProvider<DeckModel>(
-            create: (context) =>
-                DeckModel(kIsWeb ? DeckRepoMock() : DeckRepo()),
+            create: (context) => DeckModel(kIsWeb ? DeckRepoMock() : DeckRepo()),
           ),
           ChangeNotifierProvider<RecordModel>(
-            create: (context) =>
-                RecordModel(kIsWeb ? RecordRepo() : RecordRepo()),
+            create: (context) => RecordModel(kIsWeb ? RecordRepo() : RecordRepo()),
           ),
           ChangeNotifierProvider<TextEditingControllerModel>(
             create: (context) => TextEditingControllerModel(),
@@ -64,8 +63,8 @@ class MyApp extends StatelessWidget {
           ),
           localizationsDelegates: const [
             SampleLocalizationsDelegate(),
-            // GlobalMaterialLocalizations.delegate,
-            // GlobalWidgetsLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
           ],
           supportedLocales: const [
             Locale('en', ''),
