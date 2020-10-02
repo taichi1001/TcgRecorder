@@ -28,36 +28,24 @@ class DataScreen extends StatelessWidget {
             recordRepo: kIsWeb ? RecordRepo() : RecordRepo(),
           ),
           builder: (context, baz) {
+            context.select((GraphModel model) => model.make2());
             return DefaultTabController(
               length: _tabs.length,
               child: Scaffold(
                 appBar: AppBar(
-                  title: Text(context.select((GraphModel model) => model.selectedGame.game)),
+                  title: Text(context
+                      .select((GraphModel model) => model.selectedGame.game)),
                   bottom: TabBar(
                     tabs: _tabs,
                   ),
                 ),
-                body: FutureBuilder(
-                  future: context.read<GraphModel>().fetchAll(),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return const TabBarView(
-                        children: [
-                          CircularProgressIndicator(),
-                          CircularProgressIndicator(),
-                        ],
-                      );
-                    } else {
-                      return TabBarView(
-                        children: [
-                          const GraphView(),
-                          RecordListView(
-                            game: game,
-                          ),
-                        ],
-                      );
-                    }
-                  },
+                body: TabBarView(
+                  children: [
+                    const GraphView(),
+                    RecordListView(
+                      game: game,
+                    ),
+                  ],
                 ),
               ),
             );

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_core/core.dart';
+import 'package:tcg_recorder/localization/localizations_delegate.dart';
 import 'package:tcg_recorder/model/bottom_navigation_model.dart';
 import 'package:tcg_recorder/model/deck_model.dart';
 import 'package:tcg_recorder/model/game_model.dart';
@@ -45,10 +46,12 @@ class MyApp extends StatelessWidget {
             create: (context) => TagModel(kIsWeb ? TagRepo() : TagRepo()),
           ),
           ChangeNotifierProvider<DeckModel>(
-            create: (context) => DeckModel(kIsWeb ? DeckRepoMock() : DeckRepo()),
+            create: (context) =>
+                DeckModel(kIsWeb ? DeckRepoMock() : DeckRepo()),
           ),
           ChangeNotifierProvider<RecordModel>(
-            create: (context) => RecordModel(kIsWeb ? RecordRepo() : RecordRepo()),
+            create: (context) =>
+                RecordModel(kIsWeb ? RecordRepo() : RecordRepo()),
           ),
           ChangeNotifierProvider<TextEditingControllerModel>(
             create: (context) => TextEditingControllerModel(),
@@ -59,6 +62,15 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
+          localizationsDelegates: const [
+            SampleLocalizationsDelegate(),
+            // GlobalMaterialLocalizations.delegate,
+            // GlobalWidgetsLocalizations.delegate,
+          ],
+          supportedLocales: const [
+            Locale('en', ''),
+            Locale('ja', ''),
+          ],
           home: const MainBottomNavigation(),
         ),
       );

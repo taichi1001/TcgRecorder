@@ -25,7 +25,9 @@ class GraphModel with ChangeNotifier {
     @required this.selectedGame,
     @required this.recordRepo,
     @required this.deckRepo,
-  });
+  }) {
+    fetchAll();
+  }
 
   Future fetchAll() async {
     recordList = await recordRepo.getGameRecord(selectedGame.gameId);
@@ -34,6 +36,8 @@ class GraphModel with ChangeNotifier {
     makeUseDeckPercentageList();
     makeOpponentDeckPercentageList();
     notifyListeners();
+
+    return 1;
   }
 
   void makeWinRateList() {
@@ -41,7 +45,8 @@ class GraphModel with ChangeNotifier {
     for (final record in recordList) {
       tmpRecordList.add(record);
       final matches = tmpRecordList.length;
-      final wins = tmpRecordList.where((record) => record.winOrLose == 1).length;
+      final wins =
+          tmpRecordList.where((record) => record.winOrLose == 1).length;
       final winRate = ((wins / matches * 100) * 10).round() / 10;
       winRateList.add(WinRateData(winRate: winRate, record: record));
     }
@@ -49,7 +54,10 @@ class GraphModel with ChangeNotifier {
 
   void makeUseDeckPercentageList() {
     for (final deck in deckList) {
-      final matches = recordList.where((record) => record.myDeckId == deck.deckId).toList().length;
+      final matches = recordList
+          .where((record) => record.myDeckId == deck.deckId)
+          .toList()
+          .length;
       if (matches == 0) continue;
       final wins = recordList
           .where((record) => record.myDeckId == deck.deckId)
@@ -63,7 +71,8 @@ class GraphModel with ChangeNotifier {
           .where((record) => record.winOrLose == 2)
           .toList()
           .length;
-      final useageRate = ((matches / recordList.length * 100) * 10).round() / 10;
+      final useageRate =
+          ((matches / recordList.length * 100) * 10).round() / 10;
       final winRate = ((wins / matches * 100) * 10).round() / 10;
       useDeckDetailList.add(
         DeckDetailData(
@@ -80,8 +89,10 @@ class GraphModel with ChangeNotifier {
 
   void makeOpponentDeckPercentageList() {
     for (final deck in deckList) {
-      final matches =
-          recordList.where((record) => record.opponentDeckId == deck.deckId).toList().length;
+      final matches = recordList
+          .where((record) => record.opponentDeckId == deck.deckId)
+          .toList()
+          .length;
       if (matches == 0) continue;
       final wins = recordList
           .where((record) => record.opponentDeckId == deck.deckId)
@@ -95,7 +106,8 @@ class GraphModel with ChangeNotifier {
           .where((record) => record.winOrLose == 2)
           .toList()
           .length;
-      final useageRate = ((matches / recordList.length * 100) * 10).round() / 10;
+      final useageRate =
+          ((matches / recordList.length * 100) * 10).round() / 10;
       final winRate = ((wins / matches * 100) * 10).round() / 10;
       opponentDeckDetailList.add(
         DeckDetailData(
@@ -111,15 +123,20 @@ class GraphModel with ChangeNotifier {
   }
 
   void make2() {
-    useDeckDetailDataGridSource = UseDeckDetailDataGridSource(useDeckDetailList);
+    useDeckDetailDataGridSource =
+        UseDeckDetailDataGridSource(useDeckDetailList);
   }
 
   void make() {
     vsDeckDetailList = [];
-    final vsDeck = recordList.where((record) => record.myDeckId == selectedDeck.deckId).toList();
+    final vsDeck = recordList
+        .where((record) => record.myDeckId == selectedDeck.deckId)
+        .toList();
     for (final opponentDeck in deckList) {
-      final matches =
-          vsDeck.where((record) => record.opponentDeckId == opponentDeck.deckId).toList().length;
+      final matches = vsDeck
+          .where((record) => record.opponentDeckId == opponentDeck.deckId)
+          .toList()
+          .length;
       if (matches == 0) continue;
       final wins = vsDeck
           .where((record) => record.opponentDeckId == opponentDeck.deckId)
@@ -236,7 +253,13 @@ class WinRateData {
 /// デッキごとの詳細データ用のデータクラス
 class DeckDetailData {
   DeckDetailData(
-      {this.deck, this.useageRate, this.winRate, this.wins, this.loses, this.matches, this.color});
+      {this.deck,
+      this.useageRate,
+      this.winRate,
+      this.wins,
+      this.loses,
+      this.matches,
+      this.color});
 
   Deck deck;
   double useageRate;
