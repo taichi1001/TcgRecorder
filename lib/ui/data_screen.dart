@@ -33,8 +33,9 @@ class DataScreen extends StatelessWidget {
               length: _tabs.length,
               child: Scaffold(
                 appBar: AppBar(
-                  title: Text(context
-                      .select((GraphModel model) => model.selectedGame.game)),
+                  title: Text(L10n.of(context).dataScreenTitle(
+                    context.select((GraphModel model) => model.selectedGame.game),
+                  )),
                   bottom: TabBar(
                     tabs: _tabs,
                   ),

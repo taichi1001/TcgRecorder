@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:tcg_recorder/localization/l10n.dart';
 import 'package:tcg_recorder/ui/parts/data_screen/opponent_deck_percentage_graph.dart';
 import 'package:tcg_recorder/ui/parts/data_screen/use_deck_detail.dart';
 import 'package:tcg_recorder/ui/parts/data_screen/use_deck_percentage_graph.dart';
@@ -13,8 +14,8 @@ class GraphView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Tab> _tabs = <Tab>[
-      const Tab(text: '勝率'),
-      const Tab(text: '使用率'),
+      Tab(text: L10n.of(context).winRate),
+      Tab(text: L10n.of(context).useageRate),
     ];
     return DefaultTabController(
       length: _tabs.length,

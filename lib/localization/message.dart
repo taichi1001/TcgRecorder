@@ -28,6 +28,18 @@ class Message {
     @required this.confirmationText,
     @required this.ok,
     @required this.submit,
+    @required this.winRate,
+    @required this.useageRate,
+    @required this.deckDetailScreenDeckName,
+    @required this.deckDetailScreenMatches,
+    @required this.deckDetailScreenWin,
+    @required this.deckDetailScreenLose,
+    @required this.deckDetailScreenWinRate,
+    @required this.opponentDeckPercentageGraphTitle,
+    @required this.useDeckPercentageGraphTitle,
+    @required this.winRateGraphTitle,
+    @required this.dataScreenTitle,
+    @required this.vsDeckDetailScreenTitle,
   });
 
   final String input;
@@ -56,6 +68,18 @@ class Message {
   final String ok;
   final String confirmation;
   final String confirmationText;
+  final String winRate;
+  final String useageRate;
+  final String deckDetailScreenDeckName;
+  final String deckDetailScreenMatches;
+  final String deckDetailScreenWin;
+  final String deckDetailScreenLose;
+  final String deckDetailScreenWinRate;
+  final String opponentDeckPercentageGraphTitle;
+  final String useDeckPercentageGraphTitle;
+  final String winRateGraphTitle;
+  final String Function(String) dataScreenTitle;
+  final String Function(String) vsDeckDetailScreenTitle;
 
   factory Message.of(Locale locale) {
     switch (locale.languageCode) {
@@ -95,6 +119,18 @@ class Message {
         ok: 'はい',
         submit: '完了',
         cancel: 'キャンセル',
+        winRate: '勝率',
+        useageRate: '使用率',
+        deckDetailScreenDeckName: '対戦デッキ',
+        deckDetailScreenMatches: '試合数',
+        deckDetailScreenWin: '勝',
+        deckDetailScreenLose: '負',
+        deckDetailScreenWinRate: '勝率',
+        useDeckPercentageGraphTitle: 'デッキ使用率',
+        opponentDeckPercentageGraphTitle: '対戦相手デッキ使用率',
+        winRateGraphTitle: '勝率推移',
+        dataScreenTitle: (game) => '{$game}のデータ',
+        vsDeckDetailScreenTitle: (deck) => '{$deck}の対戦データ',
       );
 
   factory Message.en() => Message(
@@ -124,5 +160,17 @@ class Message {
         ok: 'OK',
         submit: 'Submit',
         cancel: 'CANCEL',
+        winRate: 'Winning Percentage',
+        useageRate: 'Useage Rate',
+        deckDetailScreenDeckName: 'Opponent Deck',
+        deckDetailScreenMatches: 'Match',
+        deckDetailScreenWin: 'Win',
+        deckDetailScreenLose: 'Lose',
+        deckDetailScreenWinRate: '%',
+        useDeckPercentageGraphTitle: 'Deck Useage',
+        opponentDeckPercentageGraphTitle: 'Opponent Deck Useage',
+        winRateGraphTitle: 'Winning Ratios',
+        dataScreenTitle: (game) => '$game Data',
+        vsDeckDetailScreenTitle: (deck) => '{$deck}\'s Matchup Data',
       );
 }

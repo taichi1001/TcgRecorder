@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:provider/provider.dart';
+import 'package:tcg_recorder/localization/l10n.dart';
 import 'package:tcg_recorder/model/graph_model.dart';
 
 class OpponentDeckPercentageGraph extends StatelessWidget {
@@ -13,10 +14,13 @@ class OpponentDeckPercentageGraph extends StatelessWidget {
       width: 400,
       height: 200,
       child: SfCircularChart(
+        title: ChartTitle(
+          text: L10n.of(context).opponentDeckPercentageGraphTitle,
+        ),
         legend: Legend(
           isVisible: true,
           position: LegendPosition.right,
-          overflowMode: LegendItemOverflowMode.wrap,
+          overflowMode: LegendItemOverflowMode.scroll,
         ),
         tooltipBehavior: TooltipBehavior(enable: true),
         series: <CircularSeries>[

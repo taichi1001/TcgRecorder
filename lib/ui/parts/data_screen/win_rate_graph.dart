@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:provider/provider.dart';
+import 'package:tcg_recorder/localization/l10n.dart';
 import 'package:tcg_recorder/model/graph_model.dart';
 
 class WinRateGraph extends StatelessWidget {
@@ -13,6 +14,9 @@ class WinRateGraph extends StatelessWidget {
       width: 400,
       height: 200,
       child: SfCartesianChart(
+        title: ChartTitle(
+          text: L10n.of(context).winRateGraphTitle,
+        ),
         tooltipBehavior: TooltipBehavior(enable: true),
         primaryYAxis: NumericAxis(
           maximum: 100,
