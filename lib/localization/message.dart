@@ -101,7 +101,8 @@ class Message {
         listTabName: 'リスト',
         noItem: 'データがありません。',
         delete: '削除',
-        recordDeck: (mydeck, opponentDeck) => '使用デッキ：$mydeck\n対戦デッキ：$opponentDeck',
+        recordDeck: (mydeck, opponentDeck) =>
+            '使用デッキ：$mydeck\n対戦デッキ：$opponentDeck',
         first: '先攻',
         second: '後攻',
         win: '勝ち',
@@ -110,8 +111,8 @@ class Message {
         inputGameHint: 'ゲーム名を入力してください',
         inputTagLabel: 'タグ名',
         inputTagHint: 'タグ名を入力してください(必須ではない)',
-        inputUseDeckHint: '使用デッキ',
-        inputUseDeckLabel: '使用デッキを入力してください',
+        inputUseDeckLabel: '使用デッキ',
+        inputUseDeckHint: '使用デッキを入力してください',
         inputOpponentDeckLabel: '対戦相手のデッキ',
         inputOpponentDeckHint: '対戦相手のデッキを入力してください',
         confirmation: '確認',
@@ -129,8 +130,8 @@ class Message {
         useDeckPercentageGraphTitle: 'デッキ使用率',
         opponentDeckPercentageGraphTitle: '対戦相手デッキ使用率',
         winRateGraphTitle: '勝率推移',
-        dataScreenTitle: (game) => '{$game}のデータ',
-        vsDeckDetailScreenTitle: (deck) => '{$deck}の対戦データ',
+        dataScreenTitle: (game) => '$gameのデータ',
+        vsDeckDetailScreenTitle: (deck) => '$deckの対戦データ',
       );
 
   factory Message.en() => Message(
@@ -142,7 +143,8 @@ class Message {
         listTabName: 'List',
         noItem: 'No Items',
         delete: 'Delete',
-        recordDeck: (mydeck, opponentDeck) => 'Use Deck：$mydeck\nOpponet Deck：$opponentDeck',
+        recordDeck: (mydeck, opponentDeck) =>
+            'Use Deck：$mydeck\nOpponet Deck：$opponentDeck',
         first: '1st',
         second: '2nd',
         win: 'Win',
@@ -171,6 +173,6 @@ class Message {
         opponentDeckPercentageGraphTitle: 'Opponent Deck Useage',
         winRateGraphTitle: 'Winning Ratios',
         dataScreenTitle: (game) => '$game Data',
-        vsDeckDetailScreenTitle: (deck) => '{$deck}\'s Matchup Data',
+        vsDeckDetailScreenTitle: (deck) => '$deck\'s Matchup Data',
       );
 }

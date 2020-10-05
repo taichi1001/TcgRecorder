@@ -12,7 +12,7 @@ class OpponentDeckPercentageGraph extends StatelessWidget {
     final model = context.watch<GraphModel>();
     return Container(
       width: 400,
-      height: 200,
+      height: 280,
       child: SfCircularChart(
         title: ChartTitle(
           text: L10n.of(context).opponentDeckPercentageGraphTitle,

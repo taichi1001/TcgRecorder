@@ -18,7 +18,7 @@ class VsDeckDetailScreen extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             title: Text(L10n.of(context).vsDeckDetailScreenTitle(
-                context.select((GraphModel model) => model.selectedGame.game))),
+                context.select((GraphModel model) => model.selectedDeck.deck))),
           ),
           body: const _VsDeckDetail(),
         );
@@ -33,24 +33,56 @@ class _VsDeckDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final model = context.watch<GraphModel>();
-    return Center(
-      child: Container(
-        padding: const EdgeInsets.only(left: 30),
-        child: SfDataGrid(
-          source: model.vsDeckDetailDataGridSource,
-          columnWidthMode: ColumnWidthMode.auto,
-          columns: [
-            GridTextColumn(
-                mappingName: 'deck', headerText: L10n.of(context).deckDetailScreenDeckName),
-            GridNumericColumn(
-                mappingName: 'matches', headerText: L10n.of(context).deckDetailScreenMatches),
-            GridTextColumn(mappingName: 'win', headerText: L10n.of(context).deckDetailScreenWin),
-            GridTextColumn(mappingName: 'lose', headerText: L10n.of(context).deckDetailScreenLose),
-            GridNumericColumn(
-                mappingName: 'winRate', headerText: L10n.of(context).deckDetailScreenWinRate),
-          ],
-        ),
-      ),
+    final _size = MediaQuery.of(context).size;
+    return SfDataGrid(
+      source: model.vsDeckDetailDataGridSource,
+      cellBuilder: (context, column, index) {
+        return Center(
+          child: Container(
+            width: _size.width * (35 / 100),
+            padding: const EdgeInsets.only(right: 20, left: 20),
+            child: Text(
+              model.vsDeckDetailList[index].deck.deck,
+              textAlign: TextAlign.left,
+            ),
+          ),
+        );
+      },
+      columns: [
+        GridWidgetColumn(
+            mappingName: 'deck',
+            headerText: L10n.of(context).deckDetailScreenDeckName)
+          ..textAlignment = Alignment.centerLeft
+          ..headerTextAlignment = Alignment.centerLeft
+          ..softWrap = true
+          ..headerTextSoftWrap = true
+          ..width = _size.width * (35 / 100),
+        GridNumericColumn(
+            mappingName: 'matches',
+            headerText: L10n.of(context).deckDetailScreenMatches)
+          ..width = _size.width * (15 / 100)
+          ..headerTextAlignment = Alignment.center
+          ..textAlignment = Alignment.center
+          ..headerTextOverflow = TextOverflow.visible,
+        GridTextColumn(
+            mappingName: 'win',
+            headerText: L10n.of(context).deckDetailScreenWin)
+          ..width = _size.width * (15 / 100)
+          ..headerTextAlignment = Alignment.center
+          ..textAlignment = Alignment.center,
+        GridTextColumn(
+            mappingName: 'lose',
+            headerText: L10n.of(context).deckDetailScreenLose)
+          ..width = _size.width * (15 / 100)
+          ..headerTextAlignment = Alignment.center
+          ..textAlignment = Alignment.center,
+        GridNumericColumn(
+            mappingName: 'winRate',
+            headerText: L10n.of(context).deckDetailScreenWinRate)
+          ..width = _size.width * (20 / 100)
+          ..headerTextAlignment = Alignment.center
+          ..textAlignment = Alignment.center,
+      ],
     );
   }
 }

@@ -18,24 +18,28 @@ class WinRateGraph extends StatelessWidget {
           text: L10n.of(context).winRateGraphTitle,
         ),
         tooltipBehavior: TooltipBehavior(enable: true),
+        trackballBehavior: TrackballBehavior(
+          enable: true,
+          tooltipSettings: InteractiveTooltip(),
+        ),
         primaryYAxis: NumericAxis(
           maximum: 100,
           minimum: 0,
         ),
-        primaryXAxis: DateTimeAxis(
-          intervalType: DateTimeIntervalType.days,
+        primaryXAxis: NumericAxis(
+          isVisible: false,
         ),
-        margin: const EdgeInsets.only(
-          left: 50,
-          right: 50,
-          top: 40,
-        ),
+        // margin: const EdgeInsets.only(
+        //   left: 50,
+        //   right: 50,
+        //   top: 40,
+        // ),
         series: <ChartSeries>[
-          LineSeries<WinRateData, DateTime>(
+          LineSeries<WinRateData, int>(
               name: 'Win Rate',
               enableTooltip: true,
               dataSource: model.winRateList,
-              xValueMapper: (WinRateData data, _) => data.record.date,
+              xValueMapper: (WinRateData data, _) => data.count,
               yValueMapper: (WinRateData data, _) => data.winRate,
               animationDuration: 0),
         ],

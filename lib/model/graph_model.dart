@@ -42,13 +42,21 @@ class GraphModel with ChangeNotifier {
 
   void makeWinRateList() {
     final tmpRecordList = [];
+    var count = 0;
     for (final record in recordList) {
+      count++;
       tmpRecordList.add(record);
       final matches = tmpRecordList.length;
       final wins =
           tmpRecordList.where((record) => record.winOrLose == 1).length;
       final winRate = ((wins / matches * 100) * 10).round() / 10;
-      winRateList.add(WinRateData(winRate: winRate, record: record));
+      winRateList.add(
+        WinRateData(
+          count: count,
+          winRate: winRate,
+          record: record,
+        ),
+      );
     }
   }
 
@@ -245,7 +253,8 @@ class VsDeckDetailDataGridSource extends DataGridSource {
 
 /// 勝率推移グラフ用のデータクラス
 class WinRateData {
-  WinRateData({this.winRate, this.record});
+  WinRateData({this.count, this.winRate, this.record});
+  int count;
   double winRate;
   Record record;
 }
