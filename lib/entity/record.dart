@@ -7,8 +7,8 @@ class Record with ChangeNotifier {
   int tagId;
   int myDeckId;
   int opponentDeckId;
-  int firstOrSecond;
-  int winOrLose;
+  bool firstOrSecond;
+  bool winOrLose;
   String memo;
 
   String game;
@@ -34,8 +34,8 @@ class Record with ChangeNotifier {
         tagId: data['tag_id'],
         myDeckId: data['my_deck_id'],
         opponentDeckId: data['opponent_deck_id'],
-        firstOrSecond: data['first_or_second'],
-        winOrLose: data['win_or_lose'],
+        firstOrSecond: data['first_or_second'] == 1 ? true : false,
+        winOrLose: data['win_or_lose'] == 1 ? true : false,
         memo: data['memo'],
       );
 
@@ -46,8 +46,8 @@ class Record with ChangeNotifier {
         'tag_id': tagId,
         'my_deck_id': myDeckId,
         'opponent_deck_id': opponentDeckId,
-        'first_or_second': firstOrSecond,
-        'win_or_lose': winOrLose,
+        'first_or_second': firstOrSecond ? 1 : 0,
+        'win_or_lose': winOrLose ? 1 : 0,
         'memo': memo,
       };
 }

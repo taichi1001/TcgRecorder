@@ -17,7 +17,7 @@ class InputFirstOrSecondRow extends StatelessWidget {
           margin: const EdgeInsets.only(right: 3),
           padding: const EdgeInsets.only(top: 10, bottom: 10),
           child: RaisedButton(
-            onPressed: context.select((RecordModel model) => model.firstOrSecond) == 1
+            onPressed: context.select((RecordModel model) => model.firstOrSecond)
                 ? null
                 : () {
                     context.read<RecordModel>().changeFirstOrSecond();
@@ -31,7 +31,7 @@ class InputFirstOrSecondRow extends StatelessWidget {
           margin: const EdgeInsets.only(right: 5),
           padding: const EdgeInsets.only(top: 10, bottom: 10),
           child: RaisedButton(
-            onPressed: context.select((RecordModel model) => model.firstOrSecond) == 2
+            onPressed: !context.select((RecordModel model) => model.firstOrSecond)
                 ? null
                 : () {
                     context.read<RecordModel>().changeFirstOrSecond();

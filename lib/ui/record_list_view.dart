@@ -66,7 +66,7 @@ class _RecordListTile extends StatelessWidget {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               stops: const [0.02, 0.02],
-              colors: [if (record.winOrLose == 1) Colors.red else Colors.blue, them.canvasColor],
+              colors: [if (record.winOrLose) Colors.red else Colors.blue, them.canvasColor],
             ),
           ),
           child: ListTile(
@@ -74,7 +74,7 @@ class _RecordListTile extends StatelessWidget {
             subtitle: Text(
               '${record.date.year}年${record.date.month}月${record.date.day}日${record.date.hour}:${record.date.minute}',
             ),
-            trailing: record.winOrLose == 1
+            trailing: record.winOrLose
                 ? const Icon(
                     Icons.radio_button_unchecked,
                     color: Colors.red,

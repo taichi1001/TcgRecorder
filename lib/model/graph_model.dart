@@ -62,7 +62,7 @@ class GraphModel with ChangeNotifier {
 
   void makeAllUseDeckPercentageList() {
     final matches = recordList.length;
-    final wins = recordList.where((record) => record.winOrLose == 1).toList().length;
+    final wins = recordList.where((record) => record.winOrLose == true).toList().length;
     final loses = matches - wins;
     final winRate = _calcPercentage(wins, matches);
     useDeckDetailList.add(
@@ -84,7 +84,7 @@ class GraphModel with ChangeNotifier {
       final wins = recordList
           .where((record) => record.myDeckId == deck.deckId)
           .toList()
-          .where((record) => record.winOrLose == 1)
+          .where((record) => record.winOrLose == true)
           .toList()
           .length;
       final loses = matches - wins;
@@ -111,7 +111,7 @@ class GraphModel with ChangeNotifier {
       final wins = recordList
           .where((record) => record.opponentDeckId == deck.deckId)
           .toList()
-          .where((record) => record.winOrLose == 1)
+          .where((record) => record.winOrLose == true)
           .toList()
           .length;
       final loses = matches - wins;
@@ -144,13 +144,13 @@ class GraphModel with ChangeNotifier {
       final wins = vsDeck
           .where((record) => record.opponentDeckId == opponentDeck.deckId)
           .toList()
-          .where((record) => record.winOrLose == 1)
+          .where((record) => record.winOrLose == true)
           .toList()
           .length;
       final loses = vsDeck
           .where((record) => record.opponentDeckId == opponentDeck.deckId)
           .toList()
-          .where((record) => record.winOrLose == 2)
+          .where((record) => record.winOrLose == false)
           .toList()
           .length;
       final useageRate = _calcPercentage(matches, vsDeck.length);

@@ -7,8 +7,8 @@ import 'package:tcg_recorder/repository/record_repository.dart';
 class RecordModel with ChangeNotifier {
   Game selectedGame;
   Tag selectedTag;
-  int firstOrSecond = 1;
-  int winOrLose = 1;
+  bool firstOrSecond = true;
+  bool winOrLose = true;
   List<Record> allRecordList = [];
   List<Record> gameRecordList(Game game) =>
       allRecordList.where((record) => record.gameId == game.gameId).toList();
@@ -30,12 +30,12 @@ class RecordModel with ChangeNotifier {
   }
 
   void changeFirstOrSecond() {
-    firstOrSecond = firstOrSecond == 1 ? 2 : 1;
+    firstOrSecond = firstOrSecond == true ? false : true;
     notifyListeners();
   }
 
   void changeWinOrLose() {
-    winOrLose = winOrLose == 1 ? 2 : 1;
+    winOrLose = winOrLose == true ? false : true;
     notifyListeners();
   }
 
