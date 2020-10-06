@@ -28,28 +28,21 @@ class _Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
-    // final _focusNode = FocusNode();
     return Padding(
       padding: const EdgeInsets.only(top: 20),
       child: SingleChildScrollView(
-        child: GestureDetector(
-          onTap: () {
-            FocusScope.of(context).unfocus();
-            // _focusNode.unfocus();
-          },
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: const [
-                InputGameRow(),
-                // InputTagRow(),
-                InputUseDeckRow(),
-                InputOpponentDeckRow(),
-                InputFirstOrSecondRow(),
-                InputWinOrLoseRow(),
-                OkButton(),
-              ],
-            ),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: const [
+              InputGameRow(),
+              // InputTagRow(),
+              InputUseDeckRow(),
+              InputOpponentDeckRow(),
+              InputFirstOrSecondRow(),
+              InputWinOrLoseRow(),
+              OkButton(),
+            ],
           ),
         ),
       ),
