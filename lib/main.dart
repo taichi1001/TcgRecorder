@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
-import 'package:syncfusion_flutter_core/core.dart';
+// import 'package:syncfusion_flutter_core/core.dart';
 import 'package:tcg_recorder/localization/localizations_delegate.dart';
 import 'package:tcg_recorder/model/bottom_navigation_model.dart';
 import 'package:tcg_recorder/model/deck_model.dart';
@@ -25,8 +25,8 @@ void main() {
       DeviceOrientation.portraitUp,
     ],
   );
-  SyncfusionLicense.registerLicense(
-      'NT8mJyc2IWhia31hfWN9ZmZoYmF8YGJ8ampqanNiYmlmamlmanMDHmgnfSAyIDI4OmJkaxM0PjI6P30wPD4=');
+  // SyncfusionLicense.registerLicense(
+  //     'NT8mJyc2IWhia31hfWN9ZmZoYmF8YGJ8ampqanNiYmlmamlmanMDHmgnfSAyIDI4OmJkaxM0PjI6P30wPD4=');
   return runApp(
     const MyApp(),
   );

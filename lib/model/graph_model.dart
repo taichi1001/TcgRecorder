@@ -33,8 +33,8 @@ class GraphModel with ChangeNotifier {
     recordList = await recordRepo.getGameRecord(selectedGame.gameId);
     deckList = await deckRepo.getGameDeck(selectedGame.gameId);
     makeWinRateList();
-    makeAllUseDeckPercentageList();
     makeUseDeckPercentageList();
+    makeAllUseDeckPercentageList();
     makeOpponentDeckPercentageList();
     notifyListeners();
 
@@ -65,8 +65,7 @@ class GraphModel with ChangeNotifier {
     final wins = recordList.where((record) => record.winOrLose == 1).toList().length;
     final loses = matches - wins;
     final winRate = ((wins / matches * 100) * 10).round() / 10;
-    useDeckDetailList.insert(
-      0,
+    useDeckDetailList.add(
       DeckDetailData(
         deck: Deck(deck: '合計'),
         matches: matches,

@@ -38,6 +38,7 @@ class UseDeckDetail extends StatelessWidget {
             ),
           );
         },
+        footerFrozenRowsCount: 1,
         columns: [
           GridWidgetColumn(mappingName: 'deck', headerText: 'デッキ名')
             ..textAlignment = Alignment.centerLeft
