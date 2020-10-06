@@ -17,8 +17,8 @@ class InputUseDeckRow extends StatelessWidget {
         alignment: Alignment.centerRight,
         children: [
           InputTextField(
-            controller:
-                context.select((TextEditingControllerModel model) => model.useDeckController),
+            controller: context.select(
+                (TextEditingControllerModel model) => model.useDeckController),
             onChanged: (String value) {
               context.read<DeckModel>().changeSelectedUseDeckUsingString(value);
             },
@@ -28,9 +28,8 @@ class InputUseDeckRow extends StatelessWidget {
           ShowCupertinoPickerButton(
             onSelectedItemChanged: (int index) {
               context.read<DeckModel>().changeSelectedUseDeckUsingIndex(index);
-              context
-                  .read<TextEditingControllerModel>()
-                  .setUseDeckController(context.read<DeckModel>().selectedUseDeck.deck);
+              context.read<TextEditingControllerModel>().setUseDeckController(
+                  context.read<DeckModel>().selectedUseDeck.deck);
             },
             children: context
                 .select((DeckModel model) => model.gameDeckList)

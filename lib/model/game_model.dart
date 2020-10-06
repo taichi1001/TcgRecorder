@@ -26,17 +26,22 @@ class GameModel with ChangeNotifier {
       selectedGame = null;
     } else {
       selectedGame = Game(game: newValue);
+      _changeItIfSelectedGameInDB();
     }
     notifyListeners();
   }
 
   void _changeItIfSelectedGameInDB() {
-    final list = allGameList.where((value) => value.game == selectedGame.game).toList();
+    final list =
+        allGameList.where((value) => value.game == selectedGame.game).toList();
     if (list.isNotEmpty) selectedGame = list[0];
   }
 
   void findGameUsingRecord(Record record) {
-    record.game = allGameList.where((value) => value.gameId == record.gameId).toList()[0].game;
+    record.game = allGameList
+        .where((value) => value.gameId == record.gameId)
+        .toList()[0]
+        .game;
   }
 
   Future addSelectedGame() async {

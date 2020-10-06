@@ -16,8 +16,11 @@ class InputScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(L10n.of(context).inputScreenTitle),
       ),
-      body: const Center(
-        child: _Body(),
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: const Center(
+          child: _Body(),
+        ),
       ),
     );
   }
