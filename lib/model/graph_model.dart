@@ -48,7 +48,8 @@ class GraphModel with ChangeNotifier {
       count++;
       tmpRecordList.add(record);
       final matches = tmpRecordList.length;
-      final wins = tmpRecordList.where((record) => record.winOrLose == 1).length;
+      final wins =
+          tmpRecordList.where((record) => record.winOrLose == true).length;
       final winRate = _calcPercentage(wins, matches);
       winRateList.add(
         WinRateData(
@@ -62,7 +63,8 @@ class GraphModel with ChangeNotifier {
 
   void makeAllUseDeckPercentageList() {
     final matches = recordList.length;
-    final wins = recordList.where((record) => record.winOrLose == true).toList().length;
+    final wins =
+        recordList.where((record) => record.winOrLose == true).toList().length;
     final loses = matches - wins;
     final winRate = _calcPercentage(wins, matches);
     useDeckDetailList.add(
@@ -79,7 +81,10 @@ class GraphModel with ChangeNotifier {
 
   void makeUseDeckPercentageList() {
     for (final deck in deckList) {
-      final matches = recordList.where((record) => record.myDeckId == deck.deckId).toList().length;
+      final matches = recordList
+          .where((record) => record.myDeckId == deck.deckId)
+          .toList()
+          .length;
       if (matches == 0) continue;
       final wins = recordList
           .where((record) => record.myDeckId == deck.deckId)
@@ -105,8 +110,10 @@ class GraphModel with ChangeNotifier {
 
   void makeOpponentDeckPercentageList() {
     for (final deck in deckList) {
-      final matches =
-          recordList.where((record) => record.opponentDeckId == deck.deckId).toList().length;
+      final matches = recordList
+          .where((record) => record.opponentDeckId == deck.deckId)
+          .toList()
+          .length;
       if (matches == 0) continue;
       final wins = recordList
           .where((record) => record.opponentDeckId == deck.deckId)
@@ -131,15 +138,20 @@ class GraphModel with ChangeNotifier {
   }
 
   void make2() {
-    useDeckDetailDataGridSource = UseDeckDetailDataGridSource(useDeckDetailList);
+    useDeckDetailDataGridSource =
+        UseDeckDetailDataGridSource(useDeckDetailList);
   }
 
   void make() {
     vsDeckDetailList = [];
-    final vsDeck = recordList.where((record) => record.myDeckId == selectedDeck.deckId).toList();
+    final vsDeck = recordList
+        .where((record) => record.myDeckId == selectedDeck.deckId)
+        .toList();
     for (final opponentDeck in deckList) {
-      final matches =
-          vsDeck.where((record) => record.opponentDeckId == opponentDeck.deckId).toList().length;
+      final matches = vsDeck
+          .where((record) => record.opponentDeckId == opponentDeck.deckId)
+          .toList()
+          .length;
       if (matches == 0) continue;
       final wins = vsDeck
           .where((record) => record.opponentDeckId == opponentDeck.deckId)
@@ -172,7 +184,8 @@ class GraphModel with ChangeNotifier {
   /// decimalPlaceには1または10の倍数を指定してください
   ///
   /// (例) 小数点第一位を四捨五入 : 10, 小数点第二位を四捨五入 : 100
-  double _calcPercentage(int molecule, int denominator, {int decimalPlace = 10}) =>
+  double _calcPercentage(int molecule, int denominator,
+          {int decimalPlace = 10}) =>
       ((molecule / denominator * 100) * decimalPlace).round() / decimalPlace;
 }
 
@@ -263,7 +276,13 @@ class WinRateData {
 /// デッキごとの詳細データ用のデータクラス
 class DeckDetailData {
   DeckDetailData(
-      {this.deck, this.useageRate, this.winRate, this.wins, this.loses, this.matches, this.color});
+      {this.deck,
+      this.useageRate,
+      this.winRate,
+      this.wins,
+      this.loses,
+      this.matches,
+      this.color});
 
   Deck deck;
   double useageRate;

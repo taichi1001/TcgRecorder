@@ -16,27 +16,38 @@ class UseDeckDetail extends StatelessWidget {
       child: SfDataGrid(
         source: model.useDeckDetailDataGridSource,
         cellBuilder: (BuildContext context, GridColumn column, int rowIndex) {
-          return FlatButton(
-            onPressed: () {
-              model.selectedDeck = model.useDeckDetailList[rowIndex].deck;
-              model.make();
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => VsDeckDetailScreen(
-                    deck: model.useDeckDetailList[rowIndex].deck,
-                    model: model,
+          return model.useDeckDetailList[rowIndex].deck.deck != '合計'
+              ? FlatButton(
+                  onPressed: () {
+                    model.selectedDeck = model.useDeckDetailList[rowIndex].deck;
+                    model.make();
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => VsDeckDetailScreen(
+                          deck: model.useDeckDetailList[rowIndex].deck,
+                          model: model,
+                        ),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    width: _size.width * (35 / 100),
+                    child: Text(
+                      model.useDeckDetailList[rowIndex].deck.deck,
+                      textAlign: TextAlign.left,
+                    ),
                   ),
-                ),
-              );
-            },
-            child: Container(
-              width: _size.width * (35 / 100),
-              child: Text(
-                model.useDeckDetailList[rowIndex].deck.deck,
-                textAlign: TextAlign.left,
-              ),
-            ),
-          );
+                )
+              : Center(
+                  child: Container(
+                    width: _size.width * (35 / 100),
+                    padding: const EdgeInsets.only(right: 20, left: 20),
+                    child: Text(
+                      model.useDeckDetailList[rowIndex].deck.deck,
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                );
         },
         footerFrozenRowsCount: 1,
         columns: [
