@@ -17,6 +17,7 @@ class GameModel with ChangeNotifier {
 
   void changeSelectedGameUsingIndex(int index) {
     selectedGame = allGameList[index];
+    if (selectedGame.game == '') selectedGame = null;
     notifyListeners();
   }
 
