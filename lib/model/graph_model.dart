@@ -49,7 +49,7 @@ class GraphModel with ChangeNotifier {
       tmpRecordList.add(record);
       final matches = tmpRecordList.length;
       final wins = tmpRecordList.where((record) => record.winOrLose == 1).length;
-      final winRate = ((wins / matches * 100) * 10).round() / 10;
+      final winRate = _calcPercentage(wins, matches);
       winRateList.add(
         WinRateData(
           count: count,
@@ -64,7 +64,7 @@ class GraphModel with ChangeNotifier {
     final matches = recordList.length;
     final wins = recordList.where((record) => record.winOrLose == 1).toList().length;
     final loses = matches - wins;
-    final winRate = ((wins / matches * 100) * 10).round() / 10;
+    final winRate = _calcPercentage(wins, matches);
     useDeckDetailList.add(
       DeckDetailData(
         deck: Deck(deck: '合計'),
@@ -88,8 +88,8 @@ class GraphModel with ChangeNotifier {
           .toList()
           .length;
       final loses = matches - wins;
-      final useageRate = ((matches / recordList.length * 100) * 10).round() / 10;
-      final winRate = ((wins / matches * 100) * 10).round() / 10;
+      final useageRate = _calcPercentage(matches, recordList.length);
+      final winRate = _calcPercentage(wins, matches);
       useDeckDetailList.add(
         DeckDetailData(
           deck: deck,
@@ -115,8 +115,8 @@ class GraphModel with ChangeNotifier {
           .toList()
           .length;
       final loses = matches - wins;
-      final useageRate = ((matches / recordList.length * 100) * 10).round() / 10;
-      final winRate = ((wins / matches * 100) * 10).round() / 10;
+      final useageRate = _calcPercentage(matches, recordList.length);
+      final winRate = _calcPercentage(wins, matches);
       opponentDeckDetailList.add(
         DeckDetailData(
           deck: deck,
@@ -153,8 +153,8 @@ class GraphModel with ChangeNotifier {
           .where((record) => record.winOrLose == 2)
           .toList()
           .length;
-      final useageRate = ((matches / vsDeck.length * 100) * 10).round() / 10;
-      final winRate = ((wins / matches * 100) * 10).round() / 10;
+      final useageRate = _calcPercentage(matches, vsDeck.length);
+      final winRate = _calcPercentage(wins, matches);
       vsDeckDetailList.add(
         DeckDetailData(
           deck: opponentDeck,
@@ -168,6 +168,12 @@ class GraphModel with ChangeNotifier {
       vsDeckDetailDataGridSource = VsDeckDetailDataGridSource(vsDeckDetailList);
     }
   }
+
+  /// decimalPlaceには1または10の倍数を指定してください
+  ///
+  /// (例) 小数点第一位を四捨五入 : 10, 小数点第二位を四捨五入 : 100
+  double _calcPercentage(int molecule, int denominator, {int decimalPlace = 10}) =>
+      ((molecule / denominator * 100) * decimalPlace).round() / decimalPlace;
 }
 
 class UseDeckDetailDataGridSource extends DataGridSource {
