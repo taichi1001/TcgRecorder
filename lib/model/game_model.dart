@@ -17,13 +17,13 @@ class GameModel with ChangeNotifier {
 
   void changeSelectedGameUsingIndex(int index) {
     selectedGame = allGameList[index];
-    if (selectedGame.game == '') selectedGame = null;
+    if (selectedGame.game == '') selectedGame = Game(game: '');
     notifyListeners();
   }
 
   void changeSelectedGameUsingString(String newValue) {
     if (newValue == '') {
-      selectedGame = null;
+      selectedGame = Game(game: '');
     } else {
       selectedGame = Game(game: newValue);
       _changeItIfSelectedGameInDB();

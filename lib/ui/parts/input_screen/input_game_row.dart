@@ -46,6 +46,20 @@ class InputGameRow extends StatelessWidget {
               context.read<GameModel>().changeSelectedGameUsingIndex(value);
               context.read<TextEditingControllerModel>().setGameController(
                   context.read<GameModel>().selectedGame.game);
+              context.read<TextEditingControllerModel>().tagController.clear();
+              context
+                  .read<TextEditingControllerModel>()
+                  .useDeckController
+                  .clear();
+              context
+                  .read<TextEditingControllerModel>()
+                  .opponentDeckController
+                  .clear();
+              context.read<TagModel>().changeSelectedTagUsingString('');
+              context.read<DeckModel>().changeSelectedUseDeckUsingString('');
+              context
+                  .read<DeckModel>()
+                  .changeSelectedOpponentDeckUsingString('');
             },
             children: context
                 .select((GameModel model) => model.allGameList)
