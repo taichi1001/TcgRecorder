@@ -38,7 +38,7 @@ dependencies:
 
   flutter_slidable: ^0.5.7
 
-  syncfusion_flutter_charts: ^18.3.35
+  syncfusion_flutter_charts: ^18.3.38
   syncfusion_flutter_datagrid: ^18.3.35-beta
 
 dev_dependencies:

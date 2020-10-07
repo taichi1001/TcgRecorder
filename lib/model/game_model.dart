@@ -8,7 +8,7 @@ class GameModel with ChangeNotifier {
 
   /// graphList用のgameList
   List<Game> graphListAllGameList = [];
-  Game selectedGame;
+  Game selectedGame = Game(game: '');
   final GameRepo gameRepo;
 
   GameModel(this.gameRepo) {

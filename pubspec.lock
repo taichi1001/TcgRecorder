@@ -244,14 +244,14 @@ packages:
       name: syncfusion_flutter_charts
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "18.3.35"
+    version: "18.3.38"
   syncfusion_flutter_core:
     dependency: transitive
     description:
       name: syncfusion_flutter_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "18.3.35"
+    version: "18.3.38"
   syncfusion_flutter_datagrid:
     dependency: "direct main"
     description:

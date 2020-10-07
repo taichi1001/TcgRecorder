@@ -32,7 +32,7 @@ class InputGameRow extends StatelessWidget {
                   .read<TextEditingControllerModel>()
                   .opponentDeckController
                   .clear();
-              context.read<TagModel>().changeSelectedTagUsingString('');
+              // context.read<TagModel>().changeSelectedTagUsingString('');
               context.read<DeckModel>().changeSelectedUseDeckUsingString('');
               context
                   .read<DeckModel>()
@@ -55,7 +55,7 @@ class InputGameRow extends StatelessWidget {
                   .read<TextEditingControllerModel>()
                   .opponentDeckController
                   .clear();
-              context.read<TagModel>().changeSelectedTagUsingString('');
+              // context.read<TagModel>().changeSelectedTagUsingString('');
               context.read<DeckModel>().changeSelectedUseDeckUsingString('');
               context
                   .read<DeckModel>()

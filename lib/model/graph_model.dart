@@ -15,6 +15,7 @@ class GraphModel with ChangeNotifier {
   VsDeckDetailDataGridSource vsDeckDetailDataGridSource;
   List<WinRateData> winRateList = [];
   List<DeckDetailData> useDeckDetailList = [];
+  List<DeckDetailData> useDeckGraphDetailList = [];
   List<DeckDetailData> opponentDeckDetailList = [];
   List<DeckDetailData> vsDeckDetailList = [];
 
@@ -67,7 +68,7 @@ class GraphModel with ChangeNotifier {
         recordList.where((record) => record.winOrLose == true).toList().length;
     final loses = matches - wins;
     final winRate = _calcPercentage(wins, matches);
-    useDeckDetailList.add(
+    useDeckGraphDetailList.add(
       DeckDetailData(
         deck: Deck(deck: '合計'),
         matches: matches,
@@ -96,6 +97,16 @@ class GraphModel with ChangeNotifier {
       final useageRate = _calcPercentage(matches, recordList.length);
       final winRate = _calcPercentage(wins, matches);
       useDeckDetailList.add(
+        DeckDetailData(
+          deck: deck,
+          matches: matches,
+          wins: wins,
+          loses: loses,
+          useageRate: useageRate,
+          winRate: winRate,
+        ),
+      );
+      useDeckGraphDetailList.add(
         DeckDetailData(
           deck: deck,
           matches: matches,

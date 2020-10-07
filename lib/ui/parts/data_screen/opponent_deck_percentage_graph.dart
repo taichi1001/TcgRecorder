@@ -25,12 +25,14 @@ class OpponentDeckPercentageGraph extends StatelessWidget {
         tooltipBehavior: TooltipBehavior(enable: true),
         series: <CircularSeries>[
           PieSeries<DeckDetailData, String>(
-              enableTooltip: true,
-              dataSource: model.opponentDeckDetailList,
-              pointColorMapper: (DeckDetailData data, _) => data.color,
-              xValueMapper: (DeckDetailData data, _) => data.deck.deck,
-              yValueMapper: (DeckDetailData data, _) => data.useageRate,
-              animationDuration: 0)
+            enableTooltip: true,
+            dataSource: model.opponentDeckDetailList,
+            pointColorMapper: (DeckDetailData data, _) => data.color,
+            xValueMapper: (DeckDetailData data, _) => data.deck.deck,
+            yValueMapper: (DeckDetailData data, _) => data.useageRate,
+            animationDuration: 0,
+            radius: '100%',
+          )
         ],
       ),
     );

@@ -20,17 +20,19 @@ class UseDeckPercentageGraph extends StatelessWidget {
         legend: Legend(
           isVisible: true,
           position: LegendPosition.right,
-          overflowMode: LegendItemOverflowMode.wrap,
+          overflowMode: LegendItemOverflowMode.scroll,
         ),
-        tooltipBehavior: TooltipBehavior(enable: true),
+        // tooltipBehavior: TooltipBehavior(enable: true),
         series: <CircularSeries>[
           PieSeries<DeckDetailData, String>(
-              enableTooltip: true,
-              dataSource: model.useDeckDetailList,
-              pointColorMapper: (DeckDetailData data, _) => data.color,
-              xValueMapper: (DeckDetailData data, _) => data.deck.deck,
-              yValueMapper: (DeckDetailData data, _) => data.useageRate,
-              animationDuration: 0)
+            enableTooltip: true,
+            dataSource: model.useDeckDetailList,
+            pointColorMapper: (DeckDetailData data, _) => data.color,
+            xValueMapper: (DeckDetailData data, _) => data.deck.deck,
+            yValueMapper: (DeckDetailData data, _) => data.useageRate,
+            animationDuration: 0,
+            radius: '100%',
+          )
         ],
       ),
     );

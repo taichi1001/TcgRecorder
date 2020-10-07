@@ -26,6 +26,7 @@ class InputTextField extends StatelessWidget {
         labelText: labelText ?? labelText,
         hintText: hintText ?? hintText,
       ),
+      maxLength: 12,
       controller: controller,
       onChanged: onChanged,
     );

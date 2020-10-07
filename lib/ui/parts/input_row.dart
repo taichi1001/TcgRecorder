@@ -10,7 +10,7 @@ class InputRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final _size = MediaQuery.of(context).size;
     return Container(
-      height: _size.height * (10 / 100),
+      height: _size.height * (12 / 100),
       width: _size.width * (80 / 100),
       padding: const EdgeInsets.only(top: 10, bottom: 10),
       child: child,
