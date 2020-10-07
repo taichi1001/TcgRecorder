@@ -22,11 +22,20 @@ class RecordModel with ChangeNotifier {
 
   Future _fetchAll() async {
     allRecordList = await recordRepo.getAll();
+    sortDescendingOrderRecordList(allRecordList);
     notifyListeners();
   }
 
   List<Record> getGameRecordList(Game game) {
     return allRecordList.where((record) => record.gameId == game.gameId).toList();
+  }
+
+  void sortAscendingOrderRecordList(List<Record> list) {
+    list.sort((a, b) => a.recordId.compareTo(b.recordId));
+  }
+
+  void sortDescendingOrderRecordList(List<Record> list) {
+    list.sort((a, b) => b.recordId.compareTo(a.recordId));
   }
 
   void changeFirstOrSecond() {
