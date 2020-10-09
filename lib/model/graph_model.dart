@@ -44,6 +44,7 @@ class GraphModel with ChangeNotifier {
 
   void makeWinRateList() {
     final tmpRecordList = [];
+    winRateList = [];
     var count = 0;
     for (final record in recordList) {
       count++;
@@ -68,7 +69,7 @@ class GraphModel with ChangeNotifier {
         recordList.where((record) => record.winOrLose == true).toList().length;
     final loses = matches - wins;
     final winRate = _calcPercentage(wins, matches);
-    useDeckGraphDetailList.add(
+    useDeckDetailList.add(
       DeckDetailData(
         deck: Deck(deck: '合計'),
         matches: matches,

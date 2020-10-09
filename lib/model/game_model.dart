@@ -59,8 +59,6 @@ class GameModel with ChangeNotifier {
     await _getAllGameList();
     if (allGameList.length > 1) {
       selectedGame = allGameList[1];
-    } else {
-      selectedGame = null;
     }
     notifyListeners();
   }
