@@ -19,24 +19,15 @@ class InputGameRow extends StatelessWidget {
         alignment: Alignment.centerRight,
         children: [
           InputTextField(
-            controller: context.select(
-                (TextEditingControllerModel model) => model.gameController),
+            controller: context.select((TextEditingControllerModel model) => model.gameController),
             onChanged: (String value) {
               context.read<GameModel>().changeSelectedGameUsingString(value);
               context.read<TextEditingControllerModel>().tagController.clear();
-              context
-                  .read<TextEditingControllerModel>()
-                  .useDeckController
-                  .clear();
-              context
-                  .read<TextEditingControllerModel>()
-                  .opponentDeckController
-                  .clear();
+              context.read<TextEditingControllerModel>().useDeckController.clear();
+              context.read<TextEditingControllerModel>().opponentDeckController.clear();
               // context.read<TagModel>().changeSelectedTagUsingString('');
               context.read<DeckModel>().changeSelectedUseDeckUsingString('');
-              context
-                  .read<DeckModel>()
-                  .changeSelectedOpponentDeckUsingString('');
+              context.read<DeckModel>().changeSelectedOpponentDeckUsingString('');
             },
             labelText: L10n.of(context).inputGameLabel,
             hintText: L10n.of(context).inputGameHint,
@@ -44,22 +35,15 @@ class InputGameRow extends StatelessWidget {
           ShowCupertinoPickerButton(
             onSelectedItemChanged: (int value) {
               context.read<GameModel>().changeSelectedGameUsingIndex(value);
-              context.read<TextEditingControllerModel>().setGameController(
-                  context.read<GameModel>().selectedGame.game);
+              context
+                  .read<TextEditingControllerModel>()
+                  .setGameController(context.read<GameModel>().selectedGame.game);
               context.read<TextEditingControllerModel>().tagController.clear();
-              context
-                  .read<TextEditingControllerModel>()
-                  .useDeckController
-                  .clear();
-              context
-                  .read<TextEditingControllerModel>()
-                  .opponentDeckController
-                  .clear();
+              context.read<TextEditingControllerModel>().useDeckController.clear();
+              context.read<TextEditingControllerModel>().opponentDeckController.clear();
               // context.read<TagModel>().changeSelectedTagUsingString('');
               context.read<DeckModel>().changeSelectedUseDeckUsingString('');
-              context
-                  .read<DeckModel>()
-                  .changeSelectedOpponentDeckUsingString('');
+              context.read<DeckModel>().changeSelectedOpponentDeckUsingString('');
             },
             children: context
                 .select((GameModel model) => model.allGameList)

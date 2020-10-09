@@ -32,16 +32,12 @@ class GameModel with ChangeNotifier {
   }
 
   void _changeItIfSelectedGameInDB() {
-    final list =
-        allGameList.where((value) => value.game == selectedGame.game).toList();
-    if (list.isNotEmpty) selectedGame = list[0];
+    final list = allGameList.where((value) => value.game == selectedGame.game).toList();
+    if (list.isNotEmpty) selectedGame = list.first;
   }
 
   void findGameUsingRecord(Record record) {
-    record.game = allGameList
-        .where((value) => value.gameId == record.gameId)
-        .toList()[0]
-        .game;
+    record.game = allGameList.where((value) => value.gameId == record.gameId).toList().first.game;
   }
 
   Future addSelectedGame() async {
