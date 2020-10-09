@@ -42,7 +42,7 @@ class TagModel with ChangeNotifier {
 
   void _changeItIfSelectedTagInDB() {
     final list = gameTagList.where((value) => value.tag == selectedTag.tag).toList();
-    if (list.isNotEmpty) selectedTag = list[0];
+    if (list.isNotEmpty) selectedTag = list.first;
   }
 
   Future addSelectedTag(Game game) async {

@@ -48,37 +48,30 @@ class _VsDeckDetail extends StatelessWidget {
           ),
         );
       },
+      footerFrozenRowsCount: 1,
       columns: [
-        GridWidgetColumn(
-            mappingName: 'deck',
-            headerText: L10n.of(context).deckDetailScreenDeckName)
+        GridWidgetColumn(mappingName: 'deck', headerText: L10n.of(context).deckDetailScreenDeckName)
           ..textAlignment = Alignment.centerLeft
           ..headerTextAlignment = Alignment.centerLeft
           ..softWrap = true
           ..headerTextSoftWrap = true
           ..width = _size.width * (35 / 100),
         GridNumericColumn(
-            mappingName: 'matches',
-            headerText: L10n.of(context).deckDetailScreenMatches)
+            mappingName: 'matches', headerText: L10n.of(context).deckDetailScreenMatches)
           ..width = _size.width * (15 / 100)
           ..headerTextAlignment = Alignment.center
           ..textAlignment = Alignment.center
           ..headerTextOverflow = TextOverflow.visible,
-        GridTextColumn(
-            mappingName: 'win',
-            headerText: L10n.of(context).deckDetailScreenWin)
+        GridTextColumn(mappingName: 'win', headerText: L10n.of(context).deckDetailScreenWin)
           ..width = _size.width * (15 / 100)
           ..headerTextAlignment = Alignment.center
           ..textAlignment = Alignment.center,
-        GridTextColumn(
-            mappingName: 'lose',
-            headerText: L10n.of(context).deckDetailScreenLose)
+        GridTextColumn(mappingName: 'lose', headerText: L10n.of(context).deckDetailScreenLose)
           ..width = _size.width * (15 / 100)
           ..headerTextAlignment = Alignment.center
           ..textAlignment = Alignment.center,
         GridNumericColumn(
-            mappingName: 'winRate',
-            headerText: L10n.of(context).deckDetailScreenWinRate)
+            mappingName: 'winRate', headerText: L10n.of(context).deckDetailScreenWinRate)
           ..width = _size.width * (20 / 100)
           ..headerTextAlignment = Alignment.center
           ..textAlignment = Alignment.center,

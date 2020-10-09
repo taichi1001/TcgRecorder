@@ -20,7 +20,7 @@ class UseDeckDetail extends StatelessWidget {
               ? FlatButton(
                   onPressed: () {
                     model.selectedDeck = model.useDeckDetailList[rowIndex].deck;
-                    model.make();
+                    model.makeVsDeckDetailList();
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => VsDeckDetailScreen(

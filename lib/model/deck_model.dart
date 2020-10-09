@@ -30,12 +30,13 @@ class DeckModel with ChangeNotifier {
   }
 
   void findMyDeckFromRecord(Record record) {
-    record.myDeck = allDeckList.where((value) => value.deckId == record.myDeckId).toList()[0].deck;
+    record.myDeck =
+        allDeckList.where((value) => value.deckId == record.myDeckId).toList().first.deck;
   }
 
   void findOpponentDeckFromRecord(Record record) {
     record.opponentDeck =
-        allDeckList.where((value) => value.deckId == record.opponentDeckId).toList()[0].deck;
+        allDeckList.where((value) => value.deckId == record.opponentDeckId).toList().first.deck;
   }
 
   void changeSelectedUseDeckUsingIndex(int index) {
@@ -72,12 +73,12 @@ class DeckModel with ChangeNotifier {
 
   void _changeItIfSelectedUseDeckInDb() {
     final list = gameDeckList.where((value) => value.deck == selectedUseDeck.deck).toList();
-    if (list.isNotEmpty) selectedUseDeck = list[0];
+    if (list.isNotEmpty) selectedUseDeck = list.first;
   }
 
   void _changeItIfSelectedOpponentDeckInDb() {
     final list = gameDeckList.where((value) => value.deck == selectedOpponentDeck.deck).toList();
-    if (list.isNotEmpty) selectedOpponentDeck = list[0];
+    if (list.isNotEmpty) selectedOpponentDeck = list.first;
   }
 
   Future addSelectedUseDeck(Game game) async {
