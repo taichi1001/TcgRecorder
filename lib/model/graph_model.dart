@@ -40,13 +40,11 @@ class GraphModel with ChangeNotifier {
     useDeckDetailList = [];
     useDeckGraphDetailList = [];
     makeUseDeckDetailList();
-    makeAllUseDeckDetailList();
 
     opponentDeckDetailList = [];
     makeOpponentDeckDetailList();
-    notifyListeners();
 
-    return 1;
+    notifyListeners();
   }
 
   void makeWinRateList() {
@@ -68,9 +66,9 @@ class GraphModel with ChangeNotifier {
     }
   }
 
-  void makeAllUseDeckDetailList() {
-    final matches = recordList.length;
-    final wins = recordList.where((record) => record.winOrLose == true).toList().length;
+  void _makeAllUseDeckDetailList(List<Record> list) {
+    final matches = list.length;
+    final wins = list.where((record) => record.winOrLose == true).toList().length;
     final loses = matches - wins;
     final winRate = _calcPercentage(wins, matches);
     useDeckGraphDetailList.add(
@@ -109,7 +107,8 @@ class GraphModel with ChangeNotifier {
         ),
       );
     }
-    useDeckDetailList = useDeckDetailList.toList();
+    _makeAllUseDeckDetailList(recordList);
+    useDeckGraphDetailList = useDeckDetailList.toList();
   }
 
   void makeOpponentDeckDetailList() {
@@ -143,26 +142,29 @@ class GraphModel with ChangeNotifier {
     useDeckDetailDataGridSource = UseDeckDetailDataGridSource(useDeckDetailList);
   }
 
-  void make() {
+  void makeVsDeckDetailList() {
     vsDeckDetailList = [];
-    final vsDeck = recordList.where((record) => record.myDeckId == selectedDeck.deckId).toList();
+    final vsDeckList =
+        recordList.where((record) => record.myDeckId == selectedDeck.deckId).toList();
     for (final opponentDeck in deckList) {
-      final matches =
-          vsDeck.where((record) => record.opponentDeckId == opponentDeck.deckId).toList().length;
+      final matches = vsDeckList
+          .where((record) => record.opponentDeckId == opponentDeck.deckId)
+          .toList()
+          .length;
       if (matches == 0) continue;
-      final wins = vsDeck
+      final wins = vsDeckList
           .where((record) => record.opponentDeckId == opponentDeck.deckId)
           .toList()
           .where((record) => record.winOrLose == true)
           .toList()
           .length;
-      final loses = vsDeck
+      final loses = vsDeckList
           .where((record) => record.opponentDeckId == opponentDeck.deckId)
           .toList()
           .where((record) => record.winOrLose == false)
           .toList()
           .length;
-      final useageRate = _calcPercentage(matches, vsDeck.length);
+      final useageRate = _calcPercentage(matches, vsDeckList.length);
       final winRate = _calcPercentage(wins, matches);
       vsDeckDetailList.add(
         DeckDetailData(
@@ -174,6 +176,7 @@ class GraphModel with ChangeNotifier {
           winRate: winRate,
         ),
       );
+      _makeAllUseDeckDetailList(vsDeckList);
       vsDeckDetailDataGridSource = VsDeckDetailDataGridSource(vsDeckDetailList);
     }
   }
