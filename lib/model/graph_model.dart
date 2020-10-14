@@ -9,8 +9,8 @@ import 'package:tcg_recorder/repository/deck_repository.dart';
 class GraphModel with ChangeNotifier {
   final Game selectedGame;
   Deck selectedDeck;
-  List<Record> recordList;
-  List<Deck> deckList;
+  List<Record> recordList = [];
+  List<Deck> deckList = [];
   UseDeckDetailDataGridSource useDeckDetailDataGridSource;
   VsDeckDetailDataGridSource vsDeckDetailDataGridSource;
   List<WinRateData> winRateList = [];
@@ -67,9 +67,9 @@ class GraphModel with ChangeNotifier {
     }
   }
 
-  void _makeAllUseDeckDetailList(List<Record> list) {
-    final matches = list.length;
-    final wins = list.where((record) => record.winOrLose == true).toList().length;
+  void _makeAllUseDeckDetailList() {
+    final matches = recordList.length;
+    final wins = recordList.where((record) => record.winOrLose == true).toList().length;
     final loses = matches - wins;
     final winRate = _calcPercentage(wins, matches);
     useDeckDetailList.add(
@@ -85,6 +85,7 @@ class GraphModel with ChangeNotifier {
   }
 
   void makeUseDeckDetailList() {
+    if (recordList.isEmpty) return;
     for (final deck in deckList) {
       final matches = recordList.where((record) => record.myDeckId == deck.deckId).toList().length;
       if (matches == 0) continue;
@@ -108,8 +109,13 @@ class GraphModel with ChangeNotifier {
         ),
       );
     }
-    _makeAllUseDeckDetailList(recordList);
     useDeckGraphDetailList = useDeckDetailList.toList();
+    sortDeckGraphDetailList(useDeckGraphDetailList);
+    _makeAllUseDeckDetailList();
+  }
+
+  void sortDeckGraphDetailList(List<DeckDetailData> list) {
+    list.sort((a, b) => b.matches.compareTo(a.matches));
   }
 
   void makeOpponentDeckDetailList() {
@@ -137,6 +143,7 @@ class GraphModel with ChangeNotifier {
         ),
       );
     }
+    sortDeckGraphDetailList(opponentDeckDetailList);
   }
 
   void make2() {
@@ -177,9 +184,26 @@ class GraphModel with ChangeNotifier {
           winRate: winRate,
         ),
       );
-      _makeAllUseDeckDetailList(vsDeckList);
-      vsDeckDetailDataGridSource = VsDeckDetailDataGridSource(vsDeckDetailList);
     }
+    _makeAllVsDeckDetailList(vsDeckList);
+    vsDeckDetailDataGridSource = VsDeckDetailDataGridSource(vsDeckDetailList);
+  }
+
+  void _makeAllVsDeckDetailList(List<Record> list) {
+    final matches = list.length;
+    final wins = list.where((record) => record.winOrLose == true).toList().length;
+    final loses = matches - wins;
+    final winRate = _calcPercentage(wins, matches);
+    vsDeckDetailList.add(
+      DeckDetailData(
+        deck: Deck(deck: '合計'),
+        matches: matches,
+        wins: wins,
+        loses: loses,
+        useageRate: 100,
+        winRate: winRate,
+      ),
+    );
   }
 
   /// decimalPlaceには1または10の倍数を指定してください

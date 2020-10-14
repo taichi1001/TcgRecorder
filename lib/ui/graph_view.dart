@@ -52,7 +52,7 @@ class _UseageRateView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return context.select((GraphModel model) => model.deckList).isEmpty
+    return context.select((GraphModel model) => model.recordList).isEmpty
         ? Center(child: Text(L10n.of(context).noItem))
         : SingleChildScrollView(
             child: Column(
@@ -73,7 +73,7 @@ class _WinRateView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return context.select((GraphModel model) => model.deckList).isEmpty
+    return context.select((GraphModel model) => model.recordList).isEmpty
         ? Center(child: Text(L10n.of(context).noItem))
         : SingleChildScrollView(
             child: Column(

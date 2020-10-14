@@ -20,12 +20,16 @@ class InputTextField extends StatelessWidget {
       //   fontSize: 13,
       // ),
       decoration: InputDecoration(
-        border: const OutlineInputBorder(
-            // borderRadius: BorderRadius.circular(10.0),
-            ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
         labelText: labelText ?? labelText,
+        labelStyle: const TextStyle(fontSize: 12),
         hintText: hintText ?? hintText,
+        hintStyle: const TextStyle(fontSize: 12),
+        counterText: '',
       ),
+      style: const TextStyle(fontSize: 15),
       maxLength: 12,
       controller: controller,
       onChanged: onChanged,

@@ -12,7 +12,7 @@ class InputFirstOrSecondRow extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          height: _size.height * (10 / 100),
+          height: _size.height * (9 / 100),
           width: _size.width * (40 / 100),
           margin: const EdgeInsets.only(right: 3),
           padding: const EdgeInsets.only(top: 10, bottom: 10),
@@ -26,7 +26,7 @@ class InputFirstOrSecondRow extends StatelessWidget {
           ),
         ),
         Container(
-          height: _size.height * (10 / 100),
+          height: _size.height * (9 / 100),
           width: _size.width * (40 / 100),
           margin: const EdgeInsets.only(right: 5),
           padding: const EdgeInsets.only(top: 10, bottom: 10),

@@ -58,16 +58,16 @@ class _VsDeckDetail extends StatelessWidget {
           ..width = _size.width * (35 / 100),
         GridNumericColumn(
             mappingName: 'matches', headerText: L10n.of(context).deckDetailScreenMatches)
-          ..width = _size.width * (15 / 100)
+          ..width = _size.width * (19 / 100)
           ..headerTextAlignment = Alignment.center
           ..textAlignment = Alignment.center
           ..headerTextOverflow = TextOverflow.visible,
         GridTextColumn(mappingName: 'win', headerText: L10n.of(context).deckDetailScreenWin)
-          ..width = _size.width * (15 / 100)
+          ..width = _size.width * (13 / 100)
           ..headerTextAlignment = Alignment.center
           ..textAlignment = Alignment.center,
         GridTextColumn(mappingName: 'lose', headerText: L10n.of(context).deckDetailScreenLose)
-          ..width = _size.width * (15 / 100)
+          ..width = _size.width * (13 / 100)
           ..headerTextAlignment = Alignment.center
           ..textAlignment = Alignment.center,
         GridNumericColumn(
