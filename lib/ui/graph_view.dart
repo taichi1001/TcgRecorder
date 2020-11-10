@@ -84,18 +84,3 @@ class _WinRateView extends StatelessWidget {
           );
   }
 }
-
-class _Divider extends StatelessWidget {
-  const _Divider({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const Divider(
-      indent: 20,
-      endIndent: 20,
-      color: Colors.black,
-    );
-  }
-}

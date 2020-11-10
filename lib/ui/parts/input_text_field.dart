@@ -21,7 +21,7 @@ class InputTextField extends StatelessWidget {
       // ),
       decoration: InputDecoration(
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(10),
         ),
         labelText: labelText ?? labelText,
         labelStyle: const TextStyle(fontSize: 12),

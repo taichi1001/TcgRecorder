@@ -45,7 +45,6 @@ class _RecordListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final slidableController = SlidableController();
-    final them = Theme.of(context);
     return Card(
       child: Slidable(
         actionPane: const SlidableScrollActionPane(),
