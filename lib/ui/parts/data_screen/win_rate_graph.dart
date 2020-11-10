@@ -10,39 +10,50 @@ class WinRateGraph extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final model = context.watch<GraphModel>();
-    return Container(
-      width: 400,
-      height: 200,
-      child: SfCartesianChart(
-        title: ChartTitle(
-          text: L10n.of(context).winRateGraphTitle,
+    return Card(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+      child: Container(
+        width: 400,
+        height: 200,
+        child: SfCartesianChart(
+          title: ChartTitle(
+            text: L10n.of(context).winRateGraphTitle,
+          ),
+          palette: const [Colors.indigoAccent],
+          tooltipBehavior: TooltipBehavior(enable: true),
+          trackballBehavior: TrackballBehavior(
+            enable: true,
+            tooltipSettings: InteractiveTooltip(),
+          ),
+          primaryYAxis: NumericAxis(
+            maximum: 100,
+            minimum: 0,
+          ),
+          primaryXAxis: NumericAxis(
+            visibleMaximum: 15,
+            visibleMinimum: 10,
+            // isVisible: false,
+          ),
+          zoomPanBehavior: ZoomPanBehavior(
+            enablePanning: true,
+          ),
+          // margin: const EdgeInsets.only(
+          //   left: 50,
+          //   right: 50,
+          //   top: 40,
+          // ),
+          series: <ChartSeries>[
+            LineSeries<WinRateData, int>(
+                name: 'Win Rate',
+                enableTooltip: true,
+                dataSource: model.winRateList,
+                xValueMapper: (WinRateData data, _) => data.count,
+                yValueMapper: (WinRateData data, _) => data.winRate,
+                animationDuration: 0),
+          ],
         ),
-        tooltipBehavior: TooltipBehavior(enable: true),
-        trackballBehavior: TrackballBehavior(
-          enable: true,
-          tooltipSettings: InteractiveTooltip(),
-        ),
-        primaryYAxis: NumericAxis(
-          maximum: 100,
-          minimum: 0,
-        ),
-        primaryXAxis: NumericAxis(
-          isVisible: false,
-        ),
-        // margin: const EdgeInsets.only(
-        //   left: 50,
-        //   right: 50,
-        //   top: 40,
-        // ),
-        series: <ChartSeries>[
-          LineSeries<WinRateData, int>(
-              name: 'Win Rate',
-              enableTooltip: true,
-              dataSource: model.winRateList,
-              xValueMapper: (WinRateData data, _) => data.count,
-              yValueMapper: (WinRateData data, _) => data.winRate,
-              animationDuration: 0),
-        ],
       ),
     );
   }

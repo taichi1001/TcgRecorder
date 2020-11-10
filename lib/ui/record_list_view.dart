@@ -19,17 +19,14 @@ class RecordListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final recordList =
-        context.select((RecordModel model) => model.gameRecordList(game));
+    final recordList = context.select((RecordModel model) => model.gameRecordList(game));
     return recordList.isEmpty
         ? Center(child: Text(L10n.of(context).noItem))
         : ListView.builder(
             itemCount: recordList.length,
             itemBuilder: (BuildContext context, int index) {
               context.read<DeckModel>().findMyDeckFromRecord(recordList[index]);
-              context
-                  .read<DeckModel>()
-                  .findOpponentDeckFromRecord(recordList[index]);
+              context.read<DeckModel>().findOpponentDeckFromRecord(recordList[index]);
               return _RecordListTile(
                 record: recordList[index],
               );
@@ -70,25 +67,24 @@ class _RecordListTile extends StatelessWidget {
             gradient: LinearGradient(
               stops: const [0.02, 0.02],
               colors: [
-                if (record.winOrLose) Colors.red else Colors.blue,
-                them.canvasColor
+                if (record.winOrLose) Colors.redAccent else Colors.indigoAccent,
+                Colors.white
               ],
             ),
           ),
           child: ListTile(
-            title: Text(L10n.of(context)
-                .recordDeck(record.myDeck, record.opponentDeck)),
+            title: Text(L10n.of(context).recordDeck(record.myDeck, record.opponentDeck)),
             subtitle: Text(
               '${record.date.year}年${record.date.month}月${record.date.day}日${record.date.hour}:${record.date.minute}',
             ),
             trailing: record.winOrLose
                 ? const Icon(
                     Icons.radio_button_unchecked,
-                    color: Colors.red,
+                    color: Colors.redAccent,
                   )
                 : const Icon(
                     Icons.close,
-                    color: Colors.blue,
+                    color: Colors.indigoAccent,
                   ),
             onTap: () {
               // Navigator.of(context).push(

@@ -34,10 +34,11 @@ class DataScreen extends StatelessWidget {
               child: Scaffold(
                 appBar: AppBar(
                   title: Text(L10n.of(context).dataScreenTitle(
-                    context
-                        .select((GraphModel model) => model.selectedGame.game),
+                    context.select((GraphModel model) => model.selectedGame.game),
                   )),
                   bottom: TabBar(
+                    labelColor: Colors.amber,
+                    unselectedLabelColor: Colors.grey,
                     tabs: _tabs,
                   ),
                 ),

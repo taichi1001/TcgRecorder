@@ -58,7 +58,6 @@ class _UseageRateView extends StatelessWidget {
             child: Column(
               children: const [
                 UseDeckPercentageGraph(),
-                _Divider(),
                 OpponentDeckPercentageGraph(),
               ],
             ),
@@ -79,7 +78,6 @@ class _WinRateView extends StatelessWidget {
             child: Column(
               children: const [
                 WinRateGraph(),
-                _Divider(),
                 UseDeckDetail(),
               ],
             ),

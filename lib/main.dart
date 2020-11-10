@@ -59,7 +59,8 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           title: 'Todo App Sample',
           theme: ThemeData(
-            primarySwatch: Colors.blue,
+            primarySwatch: Colors.indigo,
+            accentColor: Colors.amber,
           ),
           localizationsDelegates: const [
             SampleLocalizationsDelegate(),
