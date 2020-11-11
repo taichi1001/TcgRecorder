@@ -46,21 +46,47 @@ class _RecordListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final slidableController = SlidableController();
     return Card(
-      child: Slidable(
+      child: Slidable.builder(
         actionPane: const SlidableScrollActionPane(),
         key: ObjectKey(record),
         controller: slidableController,
-        secondaryActions: [
-          IconSlideAction(
-            caption: L10n.of(context).delete,
-            color: Colors.red,
-            icon: Icons.delete,
-            onTap: () async {
-              await context.read<RecordModel>().remove(record);
-              await context.read<GraphModel>().fetchAll();
-            },
-          ),
-        ],
+        secondaryActionDelegate: SlideActionBuilderDelegate(
+          actionCount: 1,
+          builder: (context, index, animation, renderingMode) {
+            return IconSlideAction(
+              caption: L10n.of(context).delete,
+              color: Colors.redAccent,
+              icon: Icons.delete,
+              onTap: () async {
+                final state = Slidable.of(context);
+                final dismiss = await showDialog<bool>(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: const Text('Delete'),
+                      content: const Text('Item will be deleted'),
+                      actions: <Widget>[
+                        FlatButton(
+                          onPressed: () => Navigator.of(context).pop(false),
+                          child: const Text('Cancel'),
+                        ),
+                        FlatButton(
+                          onPressed: () => Navigator.of(context).pop(true),
+                          child: const Text('Ok'),
+                        ),
+                      ],
+                    );
+                  },
+                );
+                if (dismiss) {
+                  await context.read<RecordModel>().remove(record);
+                  await context.read<GraphModel>().fetchAll();
+                  state.dismiss();
+                }
+              },
+            );
+          },
+        ),
         child: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
