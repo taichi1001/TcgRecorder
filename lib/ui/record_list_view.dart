@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
@@ -50,6 +51,11 @@ class _RecordListTile extends StatelessWidget {
         actionPane: const SlidableScrollActionPane(),
         key: ObjectKey(record),
         controller: slidableController,
+        dismissal: const SlidableDismissal(
+          dragDismissible: false,
+          closeOnCanceled: true,
+          child: SlidableDrawerDismissal(),
+        ),
         secondaryActionDelegate: SlideActionBuilderDelegate(
           actionCount: 1,
           builder: (context, index, animation, renderingMode) {
@@ -79,9 +85,9 @@ class _RecordListTile extends StatelessWidget {
                   },
                 );
                 if (dismiss) {
+                  state.dismiss();
                   await context.read<RecordModel>().remove(record);
                   await context.read<GraphModel>().fetchAll();
-                  state.dismiss();
                 }
               },
             );
