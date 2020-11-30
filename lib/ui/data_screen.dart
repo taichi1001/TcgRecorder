@@ -32,14 +32,18 @@ class DataScreen extends StatelessWidget {
             return DefaultTabController(
               length: _tabs.length,
               child: Scaffold(
-                appBar: AppBar(
-                  title: Text(L10n.of(context).dataScreenTitle(
-                    context.select((GraphModel model) => model.selectedGame.game),
-                  )),
-                  bottom: TabBar(
-                    labelColor: Colors.amber,
-                    unselectedLabelColor: Colors.grey,
-                    tabs: _tabs,
+                appBar: PreferredSize(
+                  preferredSize: const Size.fromHeight(80),
+                  child: AppBar(
+                    title: Text(L10n.of(context).dataScreenTitle(
+                      context.select((GraphModel model) => model.selectedGame.game),
+                    )),
+                    bottom: TabBar(
+                      labelColor: Colors.white,
+                      indicatorColor: const Color(0xFFA99F44),
+                      unselectedLabelColor: Colors.grey,
+                      tabs: _tabs,
+                    ),
                   ),
                 ),
                 body: TabBarView(

@@ -14,9 +14,10 @@ class InputWinOrLoseRow extends StatelessWidget {
         Container(
           height: _size.height * (9 / 100),
           width: _size.width * (40 / 100),
-          margin: const EdgeInsets.only(right: 3),
+          margin: const EdgeInsets.all(0),
           padding: const EdgeInsets.only(top: 10, bottom: 10),
           child: RaisedButton(
+            color: const Color(0xFF5660BB),
             onPressed: context.select((RecordModel model) => model.winOrLose)
                 ? null
                 : () {
@@ -24,15 +25,22 @@ class InputWinOrLoseRow extends StatelessWidget {
                   },
             child: Text(
               L10n.of(context).win,
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 14,
+                // fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ),
         Container(
           height: _size.height * (9 / 100),
           width: _size.width * (40 / 100),
-          margin: const EdgeInsets.only(right: 5),
+          margin: const EdgeInsets.all(0),
           padding: const EdgeInsets.only(top: 10, bottom: 10),
           child: RaisedButton(
+            color: const Color(0xFF5660BB),
             onPressed: !context.select((RecordModel model) => model.winOrLose)
                 ? null
                 : () {
@@ -40,6 +48,12 @@ class InputWinOrLoseRow extends StatelessWidget {
                   },
             child: Text(
               L10n.of(context).lose,
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 14,
+                // fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ),

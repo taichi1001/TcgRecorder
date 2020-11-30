@@ -25,7 +25,7 @@ class MainBottomNavigation extends StatelessWidget {
         ],
         type: BottomNavigationBarType.fixed,
         currentIndex: bottomNavigationModel.selectedIndex,
-        selectedItemColor: Colors.amber[800],
+        selectedItemColor: const Color(0xFFA99F44),
         onTap: (index) {
           bottomNavigationModel.change(index);
         },

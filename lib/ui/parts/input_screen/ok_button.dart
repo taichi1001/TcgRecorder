@@ -14,19 +14,14 @@ class OkButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _size = MediaQuery.of(context).size;
-    final _deckModel = Provider.of<DeckModel>(context, listen: true);
-    final _tagModel = Provider.of<TagModel>(context, listen: true);
-    final _selectedGame =
-        context.select((GameModel model) => model.selectedGame);
+    final _deckModel = Provider.of<DeckModel>(context, listen: false);
+    final _tagModel = Provider.of<TagModel>(context, listen: false);
+    final _selectedGame = context.select((GameModel model) => model.selectedGame);
     final _selectedTag = context.select((TagModel model) => model.selectedTag);
-    final _selectedUseDeck =
-        context.select((DeckModel model) => model.selectedUseDeck);
-    final _selectedOpponentDeck =
-        context.select((DeckModel model) => model.selectedOpponentDeck);
-    final _selectedFirstOrSecond =
-        context.select((RecordModel model) => model.firstOrSecond);
-    final _selectedWinOrLose =
-        context.select((RecordModel model) => model.winOrLose);
+    final _selectedUseDeck = context.select((DeckModel model) => model.selectedUseDeck);
+    final _selectedOpponentDeck = context.select((DeckModel model) => model.selectedOpponentDeck);
+    final _selectedFirstOrSecond = context.select((RecordModel model) => model.firstOrSecond);
+    final _selectedWinOrLose = context.select((RecordModel model) => model.winOrLose);
 
     if (_selectedGame != null) {
       _deckModel.getGameDeckList(_selectedGame.gameId);
@@ -40,6 +35,7 @@ class OkButton extends StatelessWidget {
       width: _size.width * (80 / 100),
       padding: const EdgeInsets.only(top: 10, bottom: 10),
       child: RaisedButton(
+        color: const Color(0xFFA99F44),
         onPressed: _selectedGame.game == '' ||
                 _selectedUseDeck == null ||
                 _selectedOpponentDeck == null
@@ -62,27 +58,18 @@ class OkButton extends StatelessWidget {
                         FlatButton(
                           onPressed: () async {
                             _selectedTag ??
-                                context
-                                    .read<TagModel>()
-                                    .changeSelectedTagUsingString('none');
+                                context.read<TagModel>().changeSelectedTagUsingString('none');
                             await context.read<GameModel>().addSelectedGame();
-                            await context
-                                .read<TagModel>()
-                                .addSelectedTag(_selectedGame);
-                            await context
-                                .read<DeckModel>()
-                                .addSelectedUseDeck(_selectedGame);
-                            await context
-                                .read<DeckModel>()
-                                .addSelectedOpponentDeck(_selectedGame);
+                            await context.read<TagModel>().addSelectedTag(_selectedGame);
+                            await context.read<DeckModel>().addSelectedUseDeck(_selectedGame);
+                            await context.read<DeckModel>().addSelectedOpponentDeck(_selectedGame);
                             await context.read<RecordModel>().add(
                                   Record(
                                     date: DateTime.now(),
                                     gameId: _selectedGame.gameId,
                                     tagId: _selectedTag.tagId,
                                     myDeckId: _selectedUseDeck.deckId,
-                                    opponentDeckId:
-                                        _selectedOpponentDeck.deckId,
+                                    opponentDeckId: _selectedOpponentDeck.deckId,
                                     firstOrSecond: _selectedFirstOrSecond,
                                     winOrLose: _selectedWinOrLose,
                                   ),
@@ -96,7 +83,15 @@ class OkButton extends StatelessWidget {
                   },
                 );
               },
-        child: Text(L10n.of(context).submit),
+        child: Text(
+          L10n.of(context).submit,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+            // fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
   }

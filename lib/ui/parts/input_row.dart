@@ -12,7 +12,7 @@ class InputRow extends StatelessWidget {
     return Container(
       height: _size.height * (10 / 100),
       width: _size.width * (80 / 100),
-      padding: const EdgeInsets.only(top: 10, bottom: 10),
+      padding: const EdgeInsets.only(top: 8, bottom: 8),
       child: child,
     );
   }

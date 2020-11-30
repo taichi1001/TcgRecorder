@@ -23,15 +23,18 @@ class RecordListView extends StatelessWidget {
     final recordList = context.select((RecordModel model) => model.gameRecordList(game));
     return recordList.isEmpty
         ? Center(child: Text(L10n.of(context).noItem))
-        : ListView.builder(
-            itemCount: recordList.length,
-            itemBuilder: (BuildContext context, int index) {
-              context.read<DeckModel>().findMyDeckFromRecord(recordList[index]);
-              context.read<DeckModel>().findOpponentDeckFromRecord(recordList[index]);
-              return _RecordListTile(
-                record: recordList[index],
-              );
-            },
+        : Padding(
+            padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
+            child: ListView.builder(
+              itemCount: recordList.length,
+              itemBuilder: (BuildContext context, int index) {
+                context.read<DeckModel>().findMyDeckFromRecord(recordList[index]);
+                context.read<DeckModel>().findOpponentDeckFromRecord(recordList[index]);
+                return _RecordListTile(
+                  record: recordList[index],
+                );
+              },
+            ),
           );
   }
 }
@@ -46,53 +49,53 @@ class _RecordListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final slidableController = SlidableController();
-    return Card(
-      child: Slidable.builder(
-        actionPane: const SlidableScrollActionPane(),
-        key: ObjectKey(record),
-        controller: slidableController,
-        dismissal: const SlidableDismissal(
-          dragDismissible: false,
-          closeOnCanceled: true,
-          child: SlidableDrawerDismissal(),
-        ),
-        secondaryActionDelegate: SlideActionBuilderDelegate(
-          actionCount: 1,
-          builder: (context, index, animation, renderingMode) {
-            return IconSlideAction(
-              caption: L10n.of(context).delete,
-              color: Colors.redAccent,
-              icon: Icons.delete,
-              onTap: () async {
-                final state = Slidable.of(context);
-                final dismiss = await showDialog<bool>(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: const Text('Delete'),
-                      content: const Text('Item will be deleted'),
-                      actions: <Widget>[
-                        FlatButton(
-                          onPressed: () => Navigator.of(context).pop(false),
-                          child: const Text('Cancel'),
-                        ),
-                        FlatButton(
-                          onPressed: () => Navigator.of(context).pop(true),
-                          child: const Text('Ok'),
-                        ),
-                      ],
-                    );
-                  },
-                );
-                if (dismiss) {
-                  state.dismiss();
-                  await context.read<RecordModel>().remove(record);
-                  await context.read<GraphModel>().fetchAll();
-                }
-              },
-            );
-          },
-        ),
+    return Slidable.builder(
+      actionPane: const SlidableScrollActionPane(),
+      key: ObjectKey(record),
+      controller: slidableController,
+      dismissal: const SlidableDismissal(
+        dragDismissible: false,
+        closeOnCanceled: true,
+        child: SlidableDrawerDismissal(),
+      ),
+      secondaryActionDelegate: SlideActionBuilderDelegate(
+        actionCount: 1,
+        builder: (context, index, animation, renderingMode) {
+          return IconSlideAction(
+            caption: L10n.of(context).delete,
+            color: Colors.redAccent,
+            icon: Icons.delete,
+            onTap: () async {
+              final state = Slidable.of(context);
+              final dismiss = await showDialog<bool>(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: const Text('Delete'),
+                    content: const Text('Item will be deleted'),
+                    actions: <Widget>[
+                      FlatButton(
+                        onPressed: () => Navigator.of(context).pop(false),
+                        child: const Text('Cancel'),
+                      ),
+                      FlatButton(
+                        onPressed: () => Navigator.of(context).pop(true),
+                        child: const Text('Ok'),
+                      ),
+                    ],
+                  );
+                },
+              );
+              if (dismiss) {
+                state.dismiss();
+                await context.read<RecordModel>().remove(record);
+                await context.read<GraphModel>().fetchAll();
+              }
+            },
+          );
+        },
+      ),
+      child: Card(
         child: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(

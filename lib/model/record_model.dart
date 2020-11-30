@@ -59,8 +59,9 @@ class RecordModel with ChangeNotifier {
   }
 
   Future remove(Record record) async {
-    // await Future.delayed(Duration(milliseconds: 500));
     await recordRepo.deleteById(record.recordId);
-    await _fetchAll();
+    allRecordList = await recordRepo.getAll();
+    // await Future.delayed(Duration(milliseconds: 1000));
+    // await _fetchAll();
   }
 }

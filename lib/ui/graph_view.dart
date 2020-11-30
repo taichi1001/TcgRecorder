@@ -24,10 +24,14 @@ class GraphView extends StatelessWidget {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            TabBar(
-              labelColor: Colors.amber,
-              unselectedLabelColor: Colors.grey,
-              tabs: _tabs,
+            ColoredTabBar(
+              color: const Color(0xFF5660BB),
+              tabBar: TabBar(
+                labelColor: Colors.white,
+                indicatorColor: const Color(0xFFA99F44),
+                unselectedLabelColor: Colors.grey,
+                tabs: _tabs,
+              ),
             ),
             Container(
               height: 600,
@@ -83,4 +87,20 @@ class _WinRateView extends StatelessWidget {
             ),
           );
   }
+}
+
+class ColoredTabBar extends Container implements PreferredSizeWidget {
+  ColoredTabBar({this.color, this.tabBar});
+
+  final Color color;
+  final TabBar tabBar;
+
+  @override
+  Size get preferredSize => tabBar.preferredSize;
+
+  @override
+  Widget build(BuildContext context) => Container(
+        color: color,
+        child: tabBar,
+      );
 }

@@ -101,8 +101,7 @@ class Message {
         listTabName: 'リスト',
         noItem: 'データがありません。',
         delete: '削除',
-        recordDeck: (mydeck, opponentDeck) =>
-            '使用デッキ：$mydeck\n対戦デッキ：$opponentDeck',
+        recordDeck: (mydeck, opponentDeck) => '使用デッキ：$mydeck\n対戦デッキ：$opponentDeck',
         first: '先攻',
         second: '後攻',
         win: '勝ち',
@@ -118,7 +117,7 @@ class Message {
         confirmation: '確認',
         confirmationText: '登録しますか？',
         ok: 'はい',
-        submit: '完了',
+        submit: '登録する',
         cancel: 'キャンセル',
         winRate: '勝率',
         useageRate: '使用率',
@@ -143,8 +142,7 @@ class Message {
         listTabName: 'List',
         noItem: 'No Items',
         delete: 'Delete',
-        recordDeck: (mydeck, opponentDeck) =>
-            'Use Deck：$mydeck\nOpponet Deck：$opponentDeck',
+        recordDeck: (mydeck, opponentDeck) => 'Use Deck：$mydeck\nOpponet Deck：$opponentDeck',
         first: '1st',
         second: '2nd',
         win: 'Win',
