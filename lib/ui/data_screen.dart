@@ -21,12 +21,14 @@ class DataScreen extends StatelessWidget {
       Tab(text: L10n.of(context).graphTabName),
       Tab(text: L10n.of(context).listTabName),
     ];
+    final _showRecordList = context.select((RecordModel model) => model.showRecordList);
+    final _showDeckList = context.select((DeckModel model) => model.showDeckList);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<GraphModel>(
           create: (context) => GraphModel(
-            recordList: context.select((RecordModel model) => model.showRecordList),
-            deckList: context.select((DeckModel model) => model.showDeckList),
+            recordList: _showRecordList,
+            deckList: _showDeckList,
             deckRepo: kIsWeb ? DeckRepo() : DeckRepo(),
             recordRepo: kIsWeb ? RecordRepo() : RecordRepo(),
           ),

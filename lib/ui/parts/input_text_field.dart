@@ -33,8 +33,9 @@ class InputTextField extends StatelessWidget {
         counterText: '',
       ),
       style: const TextStyle(
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: FontWeight.bold,
+        // color: Colors.black87,
       ),
       maxLength: 12,
       controller: controller,

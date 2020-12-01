@@ -47,13 +47,13 @@ class DeckModel with ChangeNotifier {
 
   void changeSelectedUseDeckUsingIndex(int index) {
     selectedUseDeck = gameDeckList[index];
-    if (selectedUseDeck.deck == '') selectedUseDeck = null;
+    if (selectedUseDeck.deck == '') selectedUseDeck = Deck(deck: '');
     notifyListeners();
   }
 
   void changeSelectedOpponentDeckUsingIndex(int index) {
     selectedOpponentDeck = gameDeckList[index];
-    if (selectedOpponentDeck.deck == '') selectedOpponentDeck = null;
+    if (selectedOpponentDeck.deck == '') selectedOpponentDeck = Deck(deck: '');
     notifyListeners();
   }
 

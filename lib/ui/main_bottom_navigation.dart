@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:tcg_recorder/model/bottom_navigation_model.dart';
 import 'package:tcg_recorder/localization/l10n.dart';
@@ -8,6 +9,10 @@ class MainBottomNavigation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bottomNavigationModel = Provider.of<BottomNavigationModel>(context, listen: true);
+    ScreenUtil.init(
+      context,
+      designSize: const Size(1125, 2001),
+    );
     return Scaffold(
       body: Center(
         child: bottomNavigationModel.getSelectedScreen(),

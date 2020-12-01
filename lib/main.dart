@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:tcg_recorder/localization/localizations_delegate.dart';
@@ -34,10 +33,6 @@ class MyApp extends StatelessWidget {
   const MyApp({key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(
-      context,
-      designSize: const Size(1125, 2001),
-    );
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<BottomNavigationModel>(
