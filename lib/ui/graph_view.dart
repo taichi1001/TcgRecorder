@@ -90,7 +90,11 @@ class _WinRateView extends StatelessWidget {
 }
 
 class ColoredTabBar extends Container implements PreferredSizeWidget {
-  ColoredTabBar({this.color, this.tabBar});
+  ColoredTabBar({
+    Key key,
+    this.color,
+    this.tabBar,
+  }) : super(key: key);
 
   final Color color;
   final TabBar tabBar;
