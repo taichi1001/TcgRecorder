@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:tcg_recorder/entity/deck.dart';
-import 'package:tcg_recorder/entity/game.dart';
 import 'package:tcg_recorder/entity/record.dart';
 import 'package:tcg_recorder/repository/record_repository.dart';
 import 'package:tcg_recorder/repository/deck_repository.dart';
 
 class GraphModel with ChangeNotifier {
-  // final Game selectedGame;
   Deck selectedDeck;
-  // List<Record> recordList = [];
-  // List<Deck> deckList = [];
   UseDeckDetailDataGridSource useDeckDetailDataGridSource;
   VsDeckDetailDataGridSource vsDeckDetailDataGridSource;
   List<WinRateData> winRateList = [];
