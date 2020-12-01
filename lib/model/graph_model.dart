@@ -7,10 +7,10 @@ import 'package:tcg_recorder/repository/record_repository.dart';
 import 'package:tcg_recorder/repository/deck_repository.dart';
 
 class GraphModel with ChangeNotifier {
-  final Game selectedGame;
+  // final Game selectedGame;
   Deck selectedDeck;
-  List<Record> recordList = [];
-  List<Deck> deckList = [];
+  // List<Record> recordList = [];
+  // List<Deck> deckList = [];
   UseDeckDetailDataGridSource useDeckDetailDataGridSource;
   VsDeckDetailDataGridSource vsDeckDetailDataGridSource;
   List<WinRateData> winRateList = [];
@@ -21,9 +21,12 @@ class GraphModel with ChangeNotifier {
 
   final RecordRepo recordRepo;
   final DeckRepo deckRepo;
+  final List<Deck> deckList;
+  final List<Record> recordList;
 
   GraphModel({
-    @required this.selectedGame,
+    @required this.deckList,
+    @required this.recordList,
     @required this.recordRepo,
     @required this.deckRepo,
   }) {
@@ -31,9 +34,6 @@ class GraphModel with ChangeNotifier {
   }
 
   Future fetchAll() async {
-    recordList = await recordRepo.getGameRecord(selectedGame.gameId);
-    deckList = await deckRepo.getGameDeck(selectedGame.gameId);
-
     winRateList = [];
     makeWinRateList();
 

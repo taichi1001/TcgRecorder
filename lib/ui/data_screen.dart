@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tcg_recorder/localization/l10n.dart';
 import 'package:tcg_recorder/entity/game.dart';
+import 'package:tcg_recorder/model/deck_model.dart';
 import 'package:tcg_recorder/model/graph_model.dart';
+import 'package:tcg_recorder/model/record_model.dart';
 import 'package:tcg_recorder/repository/deck_repository.dart';
 import 'package:tcg_recorder/repository/record_repository.dart';
 import 'package:tcg_recorder/ui/graph_view.dart';
@@ -23,7 +25,8 @@ class DataScreen extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<GraphModel>(
           create: (context) => GraphModel(
-            selectedGame: game,
+            recordList: context.select((RecordModel model) => model.showRecordList),
+            deckList: context.select((DeckModel model) => model.showDeckList),
             deckRepo: kIsWeb ? DeckRepo() : DeckRepo(),
             recordRepo: kIsWeb ? RecordRepo() : RecordRepo(),
           ),
@@ -35,9 +38,7 @@ class DataScreen extends StatelessWidget {
                 appBar: PreferredSize(
                   preferredSize: const Size.fromHeight(80),
                   child: AppBar(
-                    title: Text(L10n.of(context).dataScreenTitle(
-                      context.select((GraphModel model) => model.selectedGame.game),
-                    )),
+                    title: Text(L10n.of(context).dataScreenTitle(game.game)),
                     bottom: TabBar(
                       labelColor: Colors.white,
                       indicatorColor: const Color(0xFFA99F44),

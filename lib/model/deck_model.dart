@@ -7,6 +7,7 @@ import 'package:tcg_recorder/repository/deck_repository.dart';
 class DeckModel with ChangeNotifier {
   List<Deck> allDeckList = [];
   List<Deck> gameDeckList = [];
+  List<Deck> showDeckList = [];
   Deck selectedUseDeck;
   Deck selectedOpponentDeck;
 
@@ -26,6 +27,11 @@ class DeckModel with ChangeNotifier {
   Future getGameDeckList(int id) async {
     gameDeckList = await deckRepo.getGameDeck(id);
     gameDeckList.insert(0, Deck(deck: ''));
+    notifyListeners();
+  }
+
+  Future makeShowDeckList(int id) async {
+    showDeckList = await deckRepo.getGameDeck(id);
     notifyListeners();
   }
 
@@ -53,7 +59,7 @@ class DeckModel with ChangeNotifier {
 
   void changeSelectedUseDeckUsingString(String newValue) {
     if (newValue == '') {
-      selectedUseDeck = null;
+      selectedUseDeck = Deck(deck: '');
     } else {
       selectedUseDeck = Deck(deck: newValue);
       _changeItIfSelectedUseDeckInDb();
@@ -63,7 +69,7 @@ class DeckModel with ChangeNotifier {
 
   void changeSelectedOpponentDeckUsingString(String newValue) {
     if (newValue == '') {
-      selectedOpponentDeck = null;
+      selectedOpponentDeck = Deck(deck: '');
     } else {
       selectedOpponentDeck = Deck(deck: newValue);
       _changeItIfSelectedOpponentDeckInDb();

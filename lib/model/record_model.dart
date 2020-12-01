@@ -14,6 +14,7 @@ class RecordModel with ChangeNotifier {
       allRecordList.where((record) => record.gameId == game.gameId).toList();
   List<Record> tagRecordList(Tag tag) =>
       allRecordList.where((record) => record.tagId == tag.tagId).toList();
+  List<Record> showRecordList;
   final RecordRepo recordRepo;
 
   RecordModel(this.recordRepo) {
@@ -26,8 +27,12 @@ class RecordModel with ChangeNotifier {
     notifyListeners();
   }
 
-  List<Record> getGameRecordList(Game game) {
-    return allRecordList.where((record) => record.gameId == game.gameId).toList();
+  List<Record> getGameRecordList(int id) {
+    return allRecordList.where((record) => record.gameId == id).toList();
+  }
+
+  void makeShowRecordList(int id) {
+    showRecordList = getGameRecordList(id);
   }
 
   void sortAscendingOrderRecordList(List<Record> list) {
