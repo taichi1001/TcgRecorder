@@ -93,7 +93,7 @@ class Message {
   }
 
   factory Message.ja() => Message(
-        inputScreenTitle: 'データ入力',
+        inputScreenTitle: '入力',
         gameListTitle: 'ゲーム一覧',
         input: '入力',
         data: 'データ',
@@ -129,12 +129,12 @@ class Message {
         useDeckPercentageGraphTitle: 'デッキ使用率',
         opponentDeckPercentageGraphTitle: '対戦相手デッキ使用率',
         winRateGraphTitle: '勝率推移',
-        dataScreenTitle: (game) => '$gameのデータ',
+        dataScreenTitle: (game) => game,
         vsDeckDetailScreenTitle: (deck) => '$deckの対戦データ',
       );
 
   factory Message.en() => Message(
-        inputScreenTitle: 'Data Input',
+        inputScreenTitle: 'Input',
         gameListTitle: 'Game List',
         input: 'Input',
         data: 'Data',
@@ -170,7 +170,7 @@ class Message {
         useDeckPercentageGraphTitle: 'Deck Useage',
         opponentDeckPercentageGraphTitle: 'Opponent Deck Useage',
         winRateGraphTitle: 'Winning Ratios',
-        dataScreenTitle: (game) => '$game Data',
+        dataScreenTitle: (game) => game,
         vsDeckDetailScreenTitle: (deck) => '$deck\'s Matchup Data',
       );
 }

@@ -24,7 +24,7 @@ class WinRateGraph extends StatelessWidget {
               text: L10n.of(context).winRateGraphTitle,
               alignment: ChartAlignment.near,
             ),
-            palette: const [Colors.indigoAccent],
+            palette: const [Color(0xFF54745c)],
             tooltipBehavior: TooltipBehavior(enable: true),
             trackballBehavior: TrackballBehavior(
               enable: true,

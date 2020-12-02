@@ -35,7 +35,7 @@ class OkButton extends StatelessWidget {
       width: _size.width * (80 / 100),
       padding: const EdgeInsets.only(top: 10, bottom: 10),
       child: RaisedButton(
-        color: const Color(0xFFA99F44),
+        color: const Color(0xFF54745c),
         onPressed: _selectedGame.game == '' ||
                 _selectedUseDeck == null ||
                 _selectedOpponentDeck == null

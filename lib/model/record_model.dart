@@ -43,13 +43,13 @@ class RecordModel with ChangeNotifier {
     list.sort((a, b) => b.recordId.compareTo(a.recordId));
   }
 
-  void changeFirstOrSecond() {
-    firstOrSecond = firstOrSecond == true ? false : true;
+  void changeFirstOrSecond(int index) {
+    firstOrSecond = index == 0 ? false : true;
     notifyListeners();
   }
 
-  void changeWinOrLose() {
-    winOrLose = winOrLose == true ? false : true;
+  void changeWinOrLose(int index) {
+    winOrLose = index == 0 ? false : true;
     notifyListeners();
   }
 

@@ -12,8 +12,17 @@ class DataListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(L10n.of(context).gameListTitle),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(48),
+        child: AppBar(
+          title: Text(
+            L10n.of(context).gameListTitle,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
       ),
       body: const GraphListView(),
     );
@@ -32,10 +41,13 @@ class GraphListView extends StatelessWidget {
         ? Center(
             child: Text(L10n.of(context).noItem),
           )
-        : ListView.builder(
-            itemCount: _gameList.length,
-            itemBuilder: (BuildContext context, int index) => GraphListTile(
-              game: _gameList[index],
+        : Padding(
+            padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
+            child: ListView.builder(
+              itemCount: _gameList.length,
+              itemBuilder: (BuildContext context, int index) => GraphListTile(
+                game: _gameList[index],
+              ),
             ),
           );
   }

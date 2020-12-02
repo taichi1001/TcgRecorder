@@ -14,8 +14,17 @@ class InputScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(L10n.of(context).inputScreenTitle),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(48),
+        child: AppBar(
+          title: Text(
+            L10n.of(context).inputScreenTitle,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
       ),
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
@@ -30,29 +39,31 @@ class _Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
-    return Form(
-      key: _formKey,
-      child: Column(
-        children: [
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: const [
-                    InputGameRow(),
-                    InputUseDeckRow(),
-                    InputOpponentDeckRow(),
-                    // InputTagRow(),
-                    InputFirstOrSecondRow(),
-                    InputWinOrLoseRow(),
-                  ],
+    return Center(
+      child: Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: const [
+                      InputGameRow(),
+                      InputUseDeckRow(),
+                      InputOpponentDeckRow(),
+                      // InputTagRow(),
+                      InputFirstOrSecondRow(),
+                      InputWinOrLoseRow(),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          const OkButton(),
-        ],
+            const OkButton(),
+          ],
+        ),
       ),
     );
   }

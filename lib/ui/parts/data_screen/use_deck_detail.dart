@@ -26,9 +26,9 @@ class UseDeckDetail extends StatelessWidget {
             child: SfDataGridTheme(
               data: SfDataGridThemeData(
                 gridLineStrokeWidth: 0.5,
-                headerStyle: DataGridHeaderCellStyle(
-                  backgroundColor: Theme.of(context).primaryColor,
-                  textStyle: const TextStyle(
+                headerStyle: const DataGridHeaderCellStyle(
+                  backgroundColor: Color(0xFF6869a8),
+                  textStyle: TextStyle(
                     color: Colors.white,
                   ),
                 ),

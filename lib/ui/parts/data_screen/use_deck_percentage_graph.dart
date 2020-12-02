@@ -27,6 +27,7 @@ class UseDeckPercentageGraph extends StatelessWidget {
               isVisible: true,
               position: LegendPosition.right,
               overflowMode: LegendItemOverflowMode.scroll,
+              width: '40%',
             ),
             tooltipBehavior: TooltipBehavior(enable: true),
             series: <CircularSeries>[

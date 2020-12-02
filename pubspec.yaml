@@ -43,6 +43,8 @@ dependencies:
 
   flutter_screenutil: ^3.1.0
 
+  toggle_switch: ^0.1.8
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
