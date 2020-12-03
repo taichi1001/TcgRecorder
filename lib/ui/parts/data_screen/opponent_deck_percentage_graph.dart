@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:provider/provider.dart';
 import 'package:tcg_recorder/localization/l10n.dart';
 import 'package:tcg_recorder/model/graph_model.dart';
-import 'package:tcg_recorder/ui/parts/pie_chart.dart';
+import 'package:tcg_recorder/ui/parts/deck_pie_chart.dart';
 
 class OpponentDeckPercentageGraph extends StatelessWidget {
   const OpponentDeckPercentageGraph({key}) : super(key: key);
@@ -13,19 +12,9 @@ class OpponentDeckPercentageGraph extends StatelessWidget {
     final model = context.watch<GraphModel>();
     return Padding(
       padding: const EdgeInsets.only(top: 12, left: 8, right: 8),
-      child: PieChart(
+      child: DeckPieChart(
         title: L10n.of(context).opponentDeckPercentageGraphTitle,
-        series: <CircularSeries>[
-          PieSeries<DeckDetailData, String>(
-            enableTooltip: true,
-            dataSource: model.opponentDeckDetailList,
-            pointColorMapper: (DeckDetailData data, _) => data.color,
-            xValueMapper: (DeckDetailData data, _) => data.deck.deck,
-            yValueMapper: (DeckDetailData data, _) => data.useageRate,
-            animationDuration: 0,
-            radius: '90%',
-          ),
-        ],
+        source: model.opponentDeckDetailList,
       ),
     );
   }
