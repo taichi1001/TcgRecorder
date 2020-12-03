@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:tcg_recorder/entity/deck.dart';
 import 'package:tcg_recorder/entity/record.dart';
@@ -13,7 +14,6 @@ class OkButton extends StatelessWidget {
   const OkButton({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final _size = MediaQuery.of(context).size;
     final _deckModel = Provider.of<DeckModel>(context, listen: false);
     final _tagModel = Provider.of<TagModel>(context, listen: false);
     final _selectedGame = context.select((GameModel model) => model.selectedGame);
@@ -31,14 +31,19 @@ class OkButton extends StatelessWidget {
       _tagModel.gameTagList = [Tag(tag: '')];
     }
     return Container(
-      height: _size.height * (10 / 100),
-      width: _size.width * (80 / 100),
+      // height: _size.height * (10 / 100),
+      // width: _size.width * (80 / 100),
+      height: 80.h,
+      width: 300.w,
       padding: const EdgeInsets.only(top: 10, bottom: 10),
       child: RaisedButton(
         color: Theme.of(context).accentColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
         onPressed: _selectedGame.game == '' ||
-                _selectedUseDeck.deck == '' ||
-                _selectedOpponentDeck.deck == ''
+                _selectedUseDeck == null ||
+                _selectedOpponentDeck == null
             ? null
             : () async {
                 await showDialog(

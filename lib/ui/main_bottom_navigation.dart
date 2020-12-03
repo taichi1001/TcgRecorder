@@ -11,7 +11,7 @@ class MainBottomNavigation extends StatelessWidget {
     final bottomNavigationModel = Provider.of<BottomNavigationModel>(context, listen: true);
     ScreenUtil.init(
       context,
-      designSize: const Size(1125, 2001),
+      designSize: const Size(375, 812),
     );
     return Scaffold(
       body: Center(

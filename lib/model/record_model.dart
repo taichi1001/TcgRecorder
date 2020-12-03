@@ -33,6 +33,7 @@ class RecordModel with ChangeNotifier {
 
   void makeShowRecordList(int id) {
     showRecordList = getGameRecordList(id);
+    sortAscendingOrderRecordList(showRecordList);
   }
 
   void sortAscendingOrderRecordList(List<Record> list) {
@@ -44,12 +45,12 @@ class RecordModel with ChangeNotifier {
   }
 
   void changeFirstOrSecond(int index) {
-    firstOrSecond = index == 0 ? false : true;
+    firstOrSecond = index == 0 ? true : false;
     notifyListeners();
   }
 
   void changeWinOrLose(int index) {
-    winOrLose = index == 0 ? false : true;
+    winOrLose = index == 0 ? true : false;
     notifyListeners();
   }
 

@@ -6,11 +6,11 @@ class LineChart extends StatelessWidget {
     @required this.series,
     this.radius = 10,
     this.width = 400,
-    this.height = 280,
+    this.height = 200,
     this.title = '',
     this.titleAlignment = ChartAlignment.near,
     this.titleStyle,
-    this.fontSize = 14,
+    this.fontSize = 13,
     this.fontWeight = FontWeight.bold,
     this.palette,
     this.tooltipBehavior = true,
@@ -33,7 +33,7 @@ class LineChart extends StatelessWidget {
   final List<Color> palette;
   final bool tooltipBehavior;
   final TrackballBehavior trackballBehavior;
-  final int xElements;
+  final double xElements;
   final double xInterval;
   final ZoomPanBehavior zoomPanBehavior;
 
@@ -62,7 +62,9 @@ class LineChart extends StatelessWidget {
           trackballBehavior: trackballBehavior ??
               TrackballBehavior(
                 enable: true,
-                tooltipSettings: InteractiveTooltip(),
+                tooltipSettings: InteractiveTooltip(
+                  format: 'point.y%',
+                ),
               ),
           primaryYAxis: NumericAxis(
             maximum: 100,
@@ -71,21 +73,22 @@ class LineChart extends StatelessWidget {
           onAxisLabelRender: (args) {
             if (args.axisName == 'primaryXAxis') {
               args.text = args.value.floor().toString();
+              final a = args.axis.interval;
             }
           },
-          onLegendItemRender: (LegendRenderArgs args) {
-            args.text = '${args.text}%';
-          },
           primaryXAxis: NumericAxis(
-            visibleMaximum:
-                series.length.toDouble() < xElements ? xElements : series.length.toDouble(),
-            visibleMinimum:
-                series.length.toDouble() - xElements < 0 ? 0 : series.length.toDouble() - xElements,
+            maximumLabels: xElements.toInt(),
+            visibleMaximum: series.first.dataSource.length.toDouble() < xElements
+                ? xElements
+                : series.first.dataSource.length.toDouble(),
+            visibleMinimum: series.first.dataSource.length.toDouble() - xElements < 1
+                ? 1
+                : series.first.dataSource.length.toDouble() - xElements - 1,
             interval: xInterval,
           ),
           zoomPanBehavior: zoomPanBehavior ??
               ZoomPanBehavior(
-                enablePanning: true,
+                enablePanning: series.first.dataSource.length.toDouble() < xElements ? false : true,
               ),
           series: series,
         ),

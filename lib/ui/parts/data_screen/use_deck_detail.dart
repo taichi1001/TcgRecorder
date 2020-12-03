@@ -37,13 +37,17 @@ class UseDeckDetail extends StatelessWidget {
                       child: Text(
                         model.useDeckDetailList[rowIndex].deck.deck,
                         textAlign: TextAlign.left,
+                        style: const TextStyle(
+                          decoration: TextDecoration.underline,
+                          // fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   )
                 : Center(
                     child: Container(
                       width: _size.width * (35 / 100),
-                      padding: const EdgeInsets.only(right: 20, left: 20),
+                      padding: const EdgeInsets.only(right: 15, left: 15),
                       child: Text(
                         model.useDeckDetailList[rowIndex].deck.deck,
                         textAlign: TextAlign.left,

@@ -8,11 +8,11 @@ class DataGrid extends StatelessWidget {
     @required this.columns,
     this.radius = 10,
     this.width = 400,
-    this.height = 280,
+    this.height = 350,
     this.gridLineStrokeWidth = 0.5,
     this.headerBGColor,
     this.headerTextStyle,
-    this.footerFrozenRowsCount,
+    this.footerFrozenRowsCount = 1,
     this.cellBuilder,
     key,
   }) : super(key: key);

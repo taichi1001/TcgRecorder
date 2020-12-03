@@ -40,7 +40,13 @@ class DataScreen extends StatelessWidget {
                 appBar: PreferredSize(
                   preferredSize: const Size.fromHeight(80),
                   child: AppBar(
-                    title: Text(L10n.of(context).dataScreenTitle(game.game)),
+                    title: Text(
+                      L10n.of(context).dataScreenTitle(game.game),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     bottom: TabBar(
                       labelColor: Colors.white,
                       indicatorColor: Theme.of(context).buttonColor,

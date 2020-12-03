@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class InputRow extends StatelessWidget {
   const InputRow({
@@ -8,10 +9,9 @@ class InputRow extends StatelessWidget {
   final Widget child;
   @override
   Widget build(BuildContext context) {
-    final _size = MediaQuery.of(context).size;
     return Container(
-      height: _size.height * (10 / 100),
-      width: _size.width * (80 / 100),
+      height: 80.h,
+      width: 300.w,
       padding: const EdgeInsets.only(top: 8, bottom: 8),
       child: child,
     );

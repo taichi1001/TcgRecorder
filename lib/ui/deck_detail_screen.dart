@@ -16,9 +16,19 @@ class VsDeckDetailScreen extends StatelessWidget {
       providers: [ChangeNotifierProvider<GraphModel>.value(value: model)],
       builder: (context, child) {
         return Scaffold(
-          appBar: AppBar(
-            title: Text(L10n.of(context).vsDeckDetailScreenTitle(
-                context.select((GraphModel model) => model.selectedDeck.deck))),
+          appBar: PreferredSize(
+            preferredSize: const Size.fromHeight(48),
+            child: AppBar(
+              title: Text(
+                L10n.of(context).vsDeckDetailScreenTitle(
+                  context.select((GraphModel model) => model.selectedDeck.deck),
+                ),
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
           ),
           body: const _VsDeckDetail(),
         );
