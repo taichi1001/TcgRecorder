@@ -130,7 +130,7 @@ class Message {
         opponentDeckPercentageGraphTitle: '対戦相手デッキ使用率',
         winRateGraphTitle: '勝率推移',
         dataScreenTitle: (game) => game,
-        vsDeckDetailScreenTitle: (deck) => '$deckの対戦データ',
+        vsDeckDetailScreenTitle: (deck) => deck,
       );
 
   factory Message.en() => Message(

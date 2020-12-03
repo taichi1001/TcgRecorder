@@ -4,8 +4,8 @@ import 'package:tcg_recorder/localization/l10n.dart';
 import 'package:tcg_recorder/model/graph_model.dart';
 import 'package:tcg_recorder/ui/parts/deck_pie_chart.dart';
 
-class UseDeckPercentageGraph extends StatelessWidget {
-  const UseDeckPercentageGraph({key}) : super(key: key);
+class OpponentDeckPercentageChart extends StatelessWidget {
+  const OpponentDeckPercentageChart({key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,8 +13,8 @@ class UseDeckPercentageGraph extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 12, left: 8, right: 8),
       child: DeckPieChart(
-        title: L10n.of(context).useDeckPercentageGraphTitle,
-        source: model.useDeckGraphDetailList,
+        title: L10n.of(context).opponentDeckPercentageGraphTitle,
+        source: model.opponentDeckDetailList,
       ),
     );
   }

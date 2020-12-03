@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tcg_recorder/localization/l10n.dart';
 import 'package:tcg_recorder/model/graph_model.dart';
-import 'package:tcg_recorder/ui/parts/data_screen/opponent_deck_percentage_graph.dart';
+import 'package:tcg_recorder/ui/parts/data_screen/opponent_deck_percentage_chart.dart';
 import 'package:tcg_recorder/ui/parts/data_screen/use_deck_detail.dart';
-import 'package:tcg_recorder/ui/parts/data_screen/use_deck_percentage_graph.dart';
-import 'package:tcg_recorder/ui/parts/data_screen/win_rate_graph.dart';
+import 'package:tcg_recorder/ui/parts/data_screen/use_deck_percentage_chart.dart';
+import 'package:tcg_recorder/ui/parts/data_screen/game_win_rate_chart.dart';
 
 class GraphView extends StatelessWidget {
   const GraphView({
@@ -63,8 +63,8 @@ class _UseageRateView extends StatelessWidget {
         : SingleChildScrollView(
             child: Column(
               children: const [
-                UseDeckPercentageGraph(),
-                OpponentDeckPercentageGraph(),
+                UseDeckPercentageChart(),
+                OpponentDeckPercentageChart(),
               ],
             ),
           );
@@ -83,7 +83,7 @@ class _WinRateView extends StatelessWidget {
         : SingleChildScrollView(
             child: Column(
               children: const [
-                WinRateGraph(),
+                GameWinRateChart(),
                 UseDeckDetail(),
               ],
             ),

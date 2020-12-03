@@ -5,12 +5,11 @@ import 'package:tcg_recorder/ui/parts/pie_chart.dart';
 
 class DeckPieChart extends StatelessWidget {
   const DeckPieChart({
-    this.source,
+    @required this.source,
     this.title,
     key,
   }) : super(key: key);
 
-  @required
   final List<DeckDetailData> source;
   final String title;
 
