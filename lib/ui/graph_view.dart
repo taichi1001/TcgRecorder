@@ -25,12 +25,12 @@ class GraphView extends StatelessWidget {
         child: Column(
           children: [
             ColoredTabBar(
-              color: const Color(0xFF6869a8),
+              color: Theme.of(context).buttonColor,
               tabBar: TabBar(
                 labelColor: Colors.white,
                 indicatorWeight: 0.1,
                 indicatorSize: TabBarIndicatorSize.label,
-                indicatorColor: const Color(0xFF6869a8),
+                indicatorColor: Theme.of(context).buttonColor,
                 unselectedLabelColor: Colors.grey,
                 tabs: _tabs,
               ),

@@ -16,9 +16,6 @@ class InputTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      // style: const TextStyle(
-      //   fontSize: 13,
-      // ),
       decoration: InputDecoration(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
@@ -35,7 +32,6 @@ class InputTextField extends StatelessWidget {
       style: const TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.bold,
-        // color: Colors.black87,
       ),
       maxLength: 12,
       controller: controller,

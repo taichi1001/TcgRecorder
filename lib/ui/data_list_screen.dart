@@ -63,6 +63,7 @@ class GraphListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: Theme.of(context).cardColor,
       child: ListTile(
         title: Text(game.game),
         onTap: () {

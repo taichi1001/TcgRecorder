@@ -49,6 +49,7 @@ class ToggleSwitch extends StatefulWidget {
   /// Initial label index
   int initialLabelIndex;
 
+  /// Font Weight
   final FontWeight fontWeight;
 
   ToggleSwitch({

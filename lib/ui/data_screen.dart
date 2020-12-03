@@ -43,7 +43,7 @@ class DataScreen extends StatelessWidget {
                     title: Text(L10n.of(context).dataScreenTitle(game.game)),
                     bottom: TabBar(
                       labelColor: Colors.white,
-                      indicatorColor: const Color(0xFF6869a8),
+                      indicatorColor: Theme.of(context).buttonColor,
                       indicatorSize: TabBarIndicatorSize.label,
                       indicatorWeight: 0.1,
                       unselectedLabelColor: Colors.grey,

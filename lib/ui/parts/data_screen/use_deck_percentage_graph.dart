@@ -13,6 +13,7 @@ class UseDeckPercentageGraph extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 12, left: 8, right: 8),
       child: Card(
+        color: Theme.of(context).cardColor,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),

@@ -16,6 +16,7 @@ class UseDeckDetail extends StatelessWidget {
       padding:
           const EdgeInsets.only(top: 12, left: 8, right: 8), //cardはデフォルトで4のマージンがあるため、２つ目以降は16ではなく12
       child: Card(
+        color: Theme.of(context).cardColor,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
@@ -26,9 +27,9 @@ class UseDeckDetail extends StatelessWidget {
             child: SfDataGridTheme(
               data: SfDataGridThemeData(
                 gridLineStrokeWidth: 0.5,
-                headerStyle: const DataGridHeaderCellStyle(
-                  backgroundColor: Color(0xFF6869a8),
-                  textStyle: TextStyle(
+                headerStyle: DataGridHeaderCellStyle(
+                  backgroundColor: Theme.of(context).buttonColor,
+                  textStyle: const TextStyle(
                     color: Colors.white,
                   ),
                 ),

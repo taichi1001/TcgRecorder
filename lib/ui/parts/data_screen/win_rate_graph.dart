@@ -13,6 +13,7 @@ class WinRateGraph extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 16, left: 8, right: 8),
       child: Card(
+        color: Theme.of(context).cardColor,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
@@ -24,7 +25,7 @@ class WinRateGraph extends StatelessWidget {
               text: L10n.of(context).winRateGraphTitle,
               alignment: ChartAlignment.near,
             ),
-            palette: const [Color(0xFF54745c)],
+            palette: [Theme.of(context).accentColor],
             tooltipBehavior: TooltipBehavior(enable: true),
             trackballBehavior: TrackballBehavior(
               enable: true,

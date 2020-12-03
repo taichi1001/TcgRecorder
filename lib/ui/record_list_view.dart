@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
@@ -96,6 +95,7 @@ class _RecordListTile extends StatelessWidget {
         },
       ),
       child: Card(
+        color: Theme.of(context).cardColor,
         child: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
