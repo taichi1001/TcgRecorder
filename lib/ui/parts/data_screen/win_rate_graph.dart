@@ -24,8 +24,14 @@ class WinRateGraph extends StatelessWidget {
             title: ChartTitle(
               text: L10n.of(context).winRateGraphTitle,
               alignment: ChartAlignment.near,
+              textStyle: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-            palette: [Theme.of(context).accentColor],
+            palette: [
+              Theme.of(context).accentColor,
+            ],
             tooltipBehavior: TooltipBehavior(enable: true),
             trackballBehavior: TrackballBehavior(
               enable: true,
@@ -41,20 +47,17 @@ class WinRateGraph extends StatelessWidget {
               }
             },
             primaryXAxis: NumericAxis(
-              visibleMaximum: 5,
-              visibleMinimum: 1,
+              visibleMaximum: model.winRateList.length.toDouble() < 10
+                  ? 10
+                  : model.winRateList.length.toDouble(),
+              visibleMinimum: model.winRateList.length.toDouble() - 10 < 0
+                  ? 0
+                  : model.winRateList.length.toDouble() - 10,
               interval: 1,
-              // decimalPlaces: 0,
-              // isVisible: false,
             ),
             zoomPanBehavior: ZoomPanBehavior(
               enablePanning: true,
             ),
-            // margin: const EdgeInsets.only(
-            //   left: 50,
-            //   right: 50,
-            //   top: 40,
-            // ),
             series: <ChartSeries>[
               LineSeries<WinRateData, int>(
                   name: 'Win Rate',

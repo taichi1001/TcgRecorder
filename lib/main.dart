@@ -55,7 +55,6 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        title: 'Todo App Sample',
         theme: ThemeData(
           primaryColor: const Color(0xFF5660BB),
           buttonColor: const Color(0xFF6869a8),
