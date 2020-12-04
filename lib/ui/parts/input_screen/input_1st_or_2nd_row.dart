@@ -9,7 +9,6 @@ class InputFirstOrSecondRow extends StatelessWidget {
   const InputFirstOrSecondRow({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final _size = MediaQuery.of(context).size;
     final _firstOrSecond = context.select((RecordModel model) => model.firstOrSecond);
     return Padding(
       padding: const EdgeInsets.only(top: 8, right: 8, left: 8, bottom: 8),

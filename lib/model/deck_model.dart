@@ -35,6 +35,10 @@ class DeckModel with ChangeNotifier {
     notifyListeners();
   }
 
+  int getGameDeckCount(int id) {
+    return allDeckList.where((deck) => deck.gameId == id).length;
+  }
+
   void findMyDeckFromRecord(Record record) {
     record.myDeck =
         allDeckList.where((value) => value.deckId == record.myDeckId).toList().first.deck;

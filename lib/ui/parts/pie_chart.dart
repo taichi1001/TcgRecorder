@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class PieChart extends StatelessWidget {
@@ -37,8 +38,8 @@ class PieChart extends StatelessWidget {
         borderRadius: BorderRadius.all(Radius.circular(radius)),
       ),
       child: Container(
-        width: width,
-        height: height,
+        width: width.w,
+        height: height.h,
         child: SfCircularChart(
           title: ChartTitle(
             text: title,
@@ -53,8 +54,12 @@ class PieChart extends StatelessWidget {
             isVisible: legendIsVisible,
             position: legendPosition,
             overflowMode: legendOverFlowMode,
+            width: '40%',
           ),
-          tooltipBehavior: TooltipBehavior(enable: tooltipBehavior),
+          tooltipBehavior: TooltipBehavior(
+            enable: tooltipBehavior,
+            format: 'point.y%',
+          ),
           series: series,
         ),
       ),

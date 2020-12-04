@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class LineChart extends StatelessWidget {
@@ -45,8 +46,8 @@ class LineChart extends StatelessWidget {
         borderRadius: BorderRadius.all(Radius.circular(radius)),
       ),
       child: Container(
-        width: width,
-        height: height,
+        width: width.w,
+        height: height.h,
         child: SfCartesianChart(
           title: ChartTitle(
             text: title,
@@ -73,7 +74,6 @@ class LineChart extends StatelessWidget {
           onAxisLabelRender: (args) {
             if (args.axisName == 'primaryXAxis') {
               args.text = args.value.floor().toString();
-              final a = args.axis.interval;
             }
           },
           primaryXAxis: NumericAxis(

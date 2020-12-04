@@ -26,7 +26,7 @@ class UseDeckDetail extends StatelessWidget {
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => VsDeckDetailScreen(
-                            deck: model.useDeckDetailList[rowIndex].deck,
+                            // deck: model.useDeckDetailList[rowIndex].deck,
                             model: model,
                           ),
                         ),

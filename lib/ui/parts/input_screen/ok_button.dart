@@ -31,8 +31,6 @@ class OkButton extends StatelessWidget {
       _tagModel.gameTagList = [Tag(tag: '')];
     }
     return Container(
-      // height: _size.height * (10 / 100),
-      // width: _size.width * (80 / 100),
       height: 80.h,
       width: 300.w,
       padding: const EdgeInsets.only(top: 10, bottom: 10),
@@ -94,7 +92,6 @@ class OkButton extends StatelessWidget {
             color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 16,
-            // fontWeight: FontWeight.bold,
           ),
         ),
       ),

@@ -66,6 +66,10 @@ class GraphListTile extends StatelessWidget {
       color: Theme.of(context).cardColor,
       child: ListTile(
         title: Text(game.game),
+        subtitle: Text(
+          '試合数：${context.read<DeckModel>().getGameDeckCount(game.gameId).toString()}\n'
+          '使用デッキ数：${context.read<RecordModel>().getGameRecordList(game.gameId).length.toString()}',
+        ),
         onTap: () {
           context.read<DeckModel>().makeShowDeckList(game.gameId);
           context.read<RecordModel>().makeShowRecordList(game.gameId);

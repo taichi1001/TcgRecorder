@@ -6,8 +6,12 @@ import 'package:tcg_recorder/entity/deck.dart';
 import 'package:tcg_recorder/model/graph_model.dart';
 
 class VsDeckDetailScreen extends StatelessWidget {
-  const VsDeckDetailScreen({key, this.deck, this.model}) : super(key: key);
-  final Deck deck;
+  const VsDeckDetailScreen({
+    key,
+    // this.deck,
+    this.model,
+  }) : super(key: key);
+  // final Deck deck;
   final GraphModel model;
 
   @override
