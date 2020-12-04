@@ -70,16 +70,16 @@ class _RecordListTile extends StatelessWidget {
                 context: context,
                 builder: (context) {
                   return AlertDialog(
-                    title: const Text('Delete'),
-                    content: const Text('Item will be deleted'),
+                    title: const Text('確認'),
+                    content: const Text('削除してもよろしいですか？'),
                     actions: <Widget>[
                       FlatButton(
                         onPressed: () => Navigator.of(context).pop(false),
-                        child: const Text('Cancel'),
+                        child: const Text('キャンセル'),
                       ),
                       FlatButton(
                         onPressed: () => Navigator.of(context).pop(true),
-                        child: const Text('Ok'),
+                        child: const Text('はい'),
                       ),
                     ],
                   );

@@ -94,7 +94,7 @@ class Message {
 
   factory Message.ja() => Message(
         inputScreenTitle: '入力',
-        gameListTitle: 'ゲーム一覧',
+        gameListTitle: 'データ',
         input: '入力',
         data: 'データ',
         graphTabName: 'グラフ',
@@ -135,7 +135,7 @@ class Message {
 
   factory Message.en() => Message(
         inputScreenTitle: 'Input',
-        gameListTitle: 'Game List',
+        gameListTitle: 'Data',
         input: 'Input',
         data: 'Data',
         graphTabName: 'Graph',
