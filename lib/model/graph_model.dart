@@ -8,12 +8,13 @@ import 'package:tcg_recorder/repository/deck_repository.dart';
 class GraphModel with ChangeNotifier {
   Deck selectedDeck;
   UseDeckDetailDataGridSource useDeckDetailDataGridSource;
-  VsDeckDetailDataGridSource vsDeckDetailDataGridSource;
+  SelectDeckDetailDataGridSource selectDeckDetailDataGridSource;
   List<WinRateData> winRateList = [];
+  List<WinRateData> deckWinRateList = [];
   List<DeckDetailData> useDeckDetailList = [];
   List<DeckDetailData> useDeckGraphDetailList = [];
   List<DeckDetailData> opponentDeckDetailList = [];
-  List<DeckDetailData> vsDeckDetailList = [];
+  List<DeckDetailData> selectDeckDetailList = [];
 
   final RecordRepo recordRepo;
   final DeckRepo deckRepo;
@@ -54,6 +55,28 @@ class GraphModel with ChangeNotifier {
       final wins = tmpRecordList.where((record) => record.winOrLose == true).length;
       final winRate = _calcPercentage(wins, matches);
       winRateList.add(
+        WinRateData(
+          count: count,
+          winRate: winRate,
+          record: record,
+        ),
+      );
+    }
+  }
+
+  void makeSelectedDeckWinRateList() {
+    final tmpRecordList = [];
+    deckWinRateList = [];
+    var count = 0;
+    final deckRecordList =
+        recordList.where((record) => record.myDeckId == selectedDeck.deckId).toList();
+    for (final record in deckRecordList) {
+      count++;
+      tmpRecordList.add(record);
+      final matches = tmpRecordList.length;
+      final wins = tmpRecordList.where((record) => record.winOrLose == true).length;
+      final winRate = _calcPercentage(wins, matches);
+      deckWinRateList.add(
         WinRateData(
           count: count,
           winRate: winRate,
@@ -146,26 +169,26 @@ class GraphModel with ChangeNotifier {
     useDeckDetailDataGridSource = UseDeckDetailDataGridSource(useDeckDetailList);
   }
 
-  void makeVsDeckDetailList() {
-    vsDeckDetailList = [];
-    final vsDeckList =
+  void makeSelectDeckDetailList() {
+    selectDeckDetailList = [];
+    final selectDeckList =
         recordList.where((record) => record.myDeckId == selectedDeck.deckId).toList();
     for (final opponentDeck in deckList) {
-      final matches = vsDeckList
+      final matches = selectDeckList
           .where((record) => record.opponentDeckId == opponentDeck.deckId)
           .toList()
           .length;
       if (matches == 0) continue;
-      final wins = vsDeckList
+      final wins = selectDeckList
           .where((record) => record.opponentDeckId == opponentDeck.deckId)
           .toList()
           .where((record) => record.winOrLose == true)
           .toList()
           .length;
       final loses = matches - wins;
-      final useageRate = _calcPercentage(matches, vsDeckList.length);
+      final useageRate = _calcPercentage(matches, selectDeckList.length);
       final winRate = _calcPercentage(wins, matches);
-      vsDeckDetailList.add(
+      selectDeckDetailList.add(
         DeckDetailData(
           deck: opponentDeck,
           matches: matches,
@@ -176,16 +199,16 @@ class GraphModel with ChangeNotifier {
         ),
       );
     }
-    _makeAllVsDeckDetailList(vsDeckList);
-    vsDeckDetailDataGridSource = VsDeckDetailDataGridSource(vsDeckDetailList);
+    _makeAllSelectDeckDetailList(selectDeckList);
+    selectDeckDetailDataGridSource = SelectDeckDetailDataGridSource(selectDeckDetailList);
   }
 
-  void _makeAllVsDeckDetailList(List<Record> list) {
+  void _makeAllSelectDeckDetailList(List<Record> list) {
     final matches = list.length;
     final wins = list.where((record) => record.winOrLose == true).toList().length;
     final loses = matches - wins;
     final winRate = _calcPercentage(wins, matches);
-    vsDeckDetailList.add(
+    selectDeckDetailList.add(
       DeckDetailData(
         deck: Deck(deck: '合計'),
         matches: matches,
@@ -242,36 +265,36 @@ class UseDeckDetailDataGridSource extends DataGridSource {
   }
 }
 
-class VsDeckDetailDataGridSource extends DataGridSource {
-  VsDeckDetailDataGridSource(List<DeckDetailData> list) {
-    vsDeckDetailList = list;
+class SelectDeckDetailDataGridSource extends DataGridSource {
+  SelectDeckDetailDataGridSource(List<DeckDetailData> list) {
+    selectDeckDetailList = list;
   }
 
-  List<DeckDetailData> _vsDeckDetailList = [];
-  set vsDeckDetailList(List<DeckDetailData> newList) {
-    _vsDeckDetailList = newList;
+  List<DeckDetailData> _selectDeckDetailList = [];
+  set selectDeckDetailList(List<DeckDetailData> newList) {
+    _selectDeckDetailList = newList;
   }
 
   @override
-  List<Object> get dataSource => _vsDeckDetailList;
+  List<Object> get dataSource => _selectDeckDetailList;
 
   @override
   Object getCellValue(int rowIndex, String columnName) {
     switch (columnName) {
       case 'deck':
-        return _vsDeckDetailList[rowIndex].deck.deck;
+        return _selectDeckDetailList[rowIndex].deck.deck;
         break;
       case 'matches':
-        return _vsDeckDetailList[rowIndex].matches;
+        return _selectDeckDetailList[rowIndex].matches;
         break;
       case 'win':
-        return _vsDeckDetailList[rowIndex].wins;
+        return _selectDeckDetailList[rowIndex].wins;
         break;
       case 'lose':
-        return _vsDeckDetailList[rowIndex].loses;
+        return _selectDeckDetailList[rowIndex].loses;
         break;
       case 'winRate':
-        return _vsDeckDetailList[rowIndex].winRate;
+        return _selectDeckDetailList[rowIndex].winRate;
         break;
       default:
         return ' ';

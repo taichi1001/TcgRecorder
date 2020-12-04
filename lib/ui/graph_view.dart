@@ -3,15 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tcg_recorder/localization/l10n.dart';
 import 'package:tcg_recorder/model/graph_model.dart';
-import 'package:tcg_recorder/ui/parts/data_screen/opponent_deck_percentage_chart.dart';
-import 'package:tcg_recorder/ui/parts/data_screen/use_deck_detail.dart';
-import 'package:tcg_recorder/ui/parts/data_screen/use_deck_percentage_chart.dart';
-import 'package:tcg_recorder/ui/parts/data_screen/game_win_rate_chart.dart';
+import 'package:tcg_recorder/ui/parts/chart/opponent_deck_percentage_chart.dart';
+import 'package:tcg_recorder/ui/parts/chart/use_deck_detail.dart';
+import 'package:tcg_recorder/ui/parts/chart/use_deck_percentage_chart.dart';
+import 'package:tcg_recorder/ui/parts/chart/game_win_rate_chart.dart';
 
 class GraphView extends StatelessWidget {
-  const GraphView({
-    Key key,
-  }) : super(key: key);
+  const GraphView({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
