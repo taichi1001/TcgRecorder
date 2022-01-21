@@ -1,42 +1,16 @@
-# TcgRecorder
+# tcg_recorder2
 
-A new Flutter application.
+A new Flutter project.
 
-## DBテーブル
+## Getting Started
 
-- ゲーム名テーブル
+This project is a starting point for a Flutter application.
 
-| 名前       | データ型   |  属性       | NULL | デフォルト値 | コメント | その他 |
-|------------|-----------|-------------|------|-------------|----------|--------|
-| game_id    | INTEGER   | PRIMARY KEY | no   | なし         | ID      | AUTO_INCREMENT |
-| game       | TEXT      | UNIQUE      | no   | なし         | ゲーム名 |  　　|
+A few resources to get you started if this is your first Flutter project:
 
-- デッキテーブル
+- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
 
-| 名前       | データ型   |  属性       | NULL | デフォルト値 | コメント         | その他 |
-|------------|-----------|-------------|------|-------------|-----------------|--------|
-| deck_id    | INTEGER   | PRIMARY KEY | no   | なし         | ID      | AUTO_INCREMENT |
-| deck       | TEXT      | UNIQUE      | no   | なし         | デッキ名 |  　　|
-| game_Id | INTEGER   |             | no   | なし        | ゲーム名ID |      |
-
-- 記録テーブル
-
-| 名前             | データ型   |  属性       | NULL | デフォルト値 | コメント        | その他 |
-|------------------|-----------|-------------|------|------------|-----------------|--------|
-| record_id        | INTEGER   | PRIMARY KEY | no   | なし        | ID             | AUTO_INCREMENT |
-| date             | TEXT      |             | no   | なし        | 日付 　　       |  　　|
-| game_id          | INTEGER   |             | no   | なし        | ゲーム名ID　　　 |      |
-| tag_id           | INTEGER   |             | no   | なし        | タグID　　　  　 |      |
-| my_deck_id       | INTEGER   |             | no   | なし        | 使用デッキID　　 | deck_idで紐づけ 　　|
-| opponent_deck_id | INTEGER   |             | no   | なし        | 相手のデッキID   | deck_idで紐づけ 　　|
-| 1st_play         | INTEGER   |             | no   | なし        | 先攻後攻    　　 |  　　|
-| win_or_lose1     | INTEGER   |             | no   | なし        | 勝敗1　　    　　|  　　|
-| memo             | TEXT      |             | yes  | なし        | メモ 　　       |  　　|
-
-- タグテーブル
-
-| 名前    | データ型   |  属性       | NULL | デフォルト値 | コメント   | その他 |
-|---------|-----------|-------------|------|------------|------------|--------|
-| tag_Id  | INTEGER   | PRIMARY KEY | no   | なし        | ID        | AUTO_INCREMENT |
-| tag     | TEXT      |             | no   | なし        | タグ名     |  　　|
-| game_Id | INTEGER   |             | no   | なし        | ゲーム名ID |      |
+For help getting started with Flutter, view our
+[online documentation](https://flutter.dev/docs), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.
