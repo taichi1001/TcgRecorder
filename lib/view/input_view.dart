@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tcg_recorder2/provider/deck_list_provider.dart';
+import 'package:tcg_recorder2/provider/input_view_provider.dart';
+import 'package:tcg_recorder2/provider/select_game_provider.dart';
 import 'package:tcg_recorder2/view/component/custom_textfield.dart';
 
 class InputView extends HookConsumerWidget {
@@ -7,11 +11,15 @@ class InputView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final selectGame = ref.watch(selectGameNotifierProvider);
+    final inputViewNotifier = ref.read(inputViewNotifierProvider.notifier);
+    final useDeckTextController = useTextEditingController();
+    final opponentDeckTextController = useTextEditingController();
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'input',
-          style: TextStyle(
+        title: Text(
+          selectGame.selectGame != null ? selectGame.selectGame!.game : '',
+          style: const TextStyle(
             color: Colors.black,
             fontSize: 24,
           ),
@@ -58,11 +66,15 @@ class InputView extends HookConsumerWidget {
                       ],
                     ),
                     const Text('Deck'),
-                    const CustomTextField(
+                    CustomTextField(
                       labelText: '使用デッキ',
+                      onChanged: inputViewNotifier.inputUseDeck,
+                      controller: useDeckTextController,
                     ),
-                    const CustomTextField(
+                    CustomTextField(
                       labelText: '対戦相手デッキ',
+                      onChanged: inputViewNotifier.inputOpponentDeck,
+                      controller: opponentDeckTextController,
                     ),
                     const Padding(
                       padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
@@ -113,7 +125,10 @@ class InputView extends HookConsumerWidget {
                 width: 300,
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    inputViewNotifier.save();
+                    ref.read(allDeckListNotifierProvider.notifier).fetch();
+                  },
                   child: const Text('SAVE'),
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(

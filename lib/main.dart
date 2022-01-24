@@ -1,11 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tcg_recorder2/provider/game_list_provider.dart';
 import 'package:tcg_recorder2/view/bottom_navigation_view.dart';
+import 'package:tcg_recorder2/view/initial_game_registration_view.dart';
 
 void main() {
   runApp(
     const ProviderScope(
-      child: BottomNavigationView(),
+      child: MainApp(),
     ),
   );
+}
+
+class MainApp extends HookConsumerWidget {
+  const MainApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final gameListState = ref.watch(allGameListNotifierProvider);
+
+    useEffect(() {
+      Future.microtask(() => ref.read(allGameListNotifierProvider.notifier).fetch());
+      return;
+    }, const []);
+
+    if (gameListState.allGameList == null) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+    return MaterialApp(
+      home: Scaffold(
+        body: gameListState.allGameList!.isEmpty
+            ? const InitialGameRegistrationView()
+            : const BottomNavigationView(),
+      ),
+    );
+  }
 }

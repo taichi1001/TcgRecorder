@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
   const CustomTextField({
-    this.onTap,
+    this.onChanged,
     this.labelText,
     this.controller,
     Key? key,
   }) : super(key: key);
 
-  final VoidCallback? onTap;
+  final Function(String)? onChanged;
   final String? labelText;
   final TextEditingController? controller;
 
@@ -31,11 +31,12 @@ class CustomTextField extends StatelessWidget {
                 ),
               ),
               child: Align(
-                alignment: AlignmentDirectional(-1, 0),
+                alignment: const AlignmentDirectional(-1, 0),
                 child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
                   child: TextFormField(
                     controller: controller,
+                    onChanged: onChanged,
                     obscureText: false,
                     decoration: InputDecoration(
                       labelText: labelText,
@@ -44,22 +45,22 @@ class CustomTextField extends StatelessWidget {
                       //   color: Color(0xFF8B97A2),
                       //   fontWeight: FontWeight.w500,
                       // ),
-                      enabledBorder: UnderlineInputBorder(
+                      enabledBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(
                           color: Color(0x00000000),
                           width: 1,
                         ),
-                        borderRadius: const BorderRadius.only(
+                        borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(4.0),
                           topRight: Radius.circular(4.0),
                         ),
                       ),
-                      focusedBorder: UnderlineInputBorder(
+                      focusedBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(
                           color: Color(0x00000000),
                           width: 1,
                         ),
-                        borderRadius: const BorderRadius.only(
+                        borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(4.0),
                           topRight: Radius.circular(4.0),
                         ),
