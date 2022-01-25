@@ -11,8 +11,18 @@ import 'package:tcg_recorder2/selector/game_tag_list_selector.dart';
 import 'package:tcg_recorder2/state/input_view_state.dart';
 
 class InputViewNotifier extends StateNotifier<InputViewState> {
-  InputViewNotifier(this.read) : super(InputViewState());
+  InputViewNotifier(this.read) : super(InputViewState(date: DateTime.now()));
   final Reader read;
+
+  void scrollDateTime(DateTime date) {
+    state = state.copyWith(cacheDate: date);
+  }
+
+  void setDateTime() {
+    if (state.cacheDate != null) {
+      state = state.copyWith(date: state.cacheDate!);
+    }
+  }
 
   void inputUseDeck(String name) {
     final deck = Deck(deck: name);
@@ -24,16 +34,26 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     state = state.copyWith(opponentDeck: deck);
   }
 
-  void selectUseDeck(int index) {
+  void scrollUseDeck(int index) {
     final newDeck = read(gameDeckListProvider)[index];
-    state = state.copyWith(useDeck: newDeck);
-    read(textEditingControllerNotifierProvider.notifier).setUseDeckController(newDeck.deck);
+    state = state.copyWith(cacheUseDeck: newDeck);
   }
 
-  void selectOpponentDeck(int index) {
+  void scrollOpponentDeck(int index) {
     final newDeck = read(gameDeckListProvider)[index];
-    state = state.copyWith(opponentDeck: newDeck);
-    read(textEditingControllerNotifierProvider.notifier).setOpponentDeckController(newDeck.deck);
+    state = state.copyWith(cacheOpponentDeck: newDeck);
+  }
+
+  void setUseDeck() {
+    state = state.copyWith(useDeck: state.cacheUseDeck);
+    read(textEditingControllerNotifierProvider.notifier)
+        .setUseDeckController(state.cacheUseDeck!.deck);
+  }
+
+  void setOpponentDeck() {
+    state = state.copyWith(opponentDeck: state.cacheOpponentDeck);
+    read(textEditingControllerNotifierProvider.notifier)
+        .setOpponentDeckController(state.cacheOpponentDeck!.deck);
   }
 
   void inputTag(String name) {

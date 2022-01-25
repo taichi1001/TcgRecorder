@@ -18,6 +18,7 @@ class InputView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selectGame = ref.watch(selectGameNotifierProvider);
     final gameDeck = ref.watch(gameDeckListProvider);
+    final date = ref.watch(inputViewNotifierProvider.select((value) => value.date));
     final inputViewNotifier = ref.read(inputViewNotifierProvider.notifier);
     final useDeckTextController = ref.watch(
       textEditingControllerNotifierProvider.select((value) => value.useDeckController),
@@ -63,10 +64,10 @@ class InputView extends HookConsumerWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('2022/01/18'),
+                        Text(date.toIso8601String()),
                         _DatePickerButton(
-                          submited: () {},
-                          onDateTimeChanged: (date) {},
+                          submited: inputViewNotifier.setDateTime,
+                          onDateTimeChanged: inputViewNotifier.scrollDateTime,
                         ),
                       ],
                     ),
@@ -80,10 +81,8 @@ class InputView extends HookConsumerWidget {
                           controller: useDeckTextController,
                         ),
                         _ListPickerButton(
-                          submited: () {},
-                          onSelectedItemChanged: (value) {
-                            inputViewNotifier.selectUseDeck(value);
-                          },
+                          submited: inputViewNotifier.setUseDeck,
+                          onSelectedItemChanged: inputViewNotifier.scrollUseDeck,
                           children: gameDeck.map((deck) => Text(deck.deck)).toList(),
                         ),
                       ],
@@ -97,10 +96,8 @@ class InputView extends HookConsumerWidget {
                           controller: opponentDeckTextController,
                         ),
                         _ListPickerButton(
-                          submited: () {},
-                          onSelectedItemChanged: (value) {
-                            inputViewNotifier.selectOpponentDeck(value);
-                          },
+                          submited: inputViewNotifier.setOpponentDeck,
+                          onSelectedItemChanged: inputViewNotifier.scrollOpponentDeck,
                           children: gameDeck.map((deck) => Text(deck.deck)).toList(),
                         ),
                       ],
@@ -198,7 +195,10 @@ class _DatePickerButton extends HookConsumerWidget {
             context: context,
             builder: (BuildContext context) {
               return CustomModalDatePicker(
-                submited: submited,
+                submited: () {
+                  submited();
+                  Navigator.pop(context);
+                },
                 onDateTimeChanged: onDateTimeChanged,
               );
             });
@@ -227,7 +227,10 @@ class _ListPickerButton extends StatelessWidget {
           context: context,
           builder: (BuildContext context) {
             return CustomModalListPicker(
-              submited: submited,
+              submited: () {
+                submited();
+                Navigator.pop(context);
+              },
               onSelectedItemChanged: onSelectedItemChanged,
               children: children,
             );
