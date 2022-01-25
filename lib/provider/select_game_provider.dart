@@ -6,7 +6,7 @@ import 'package:tcg_recorder2/state/select_game_state.dart';
 
 class SelectGameNotifier extends StateNotifier<SelectGameState> {
   SelectGameNotifier(this.read) : super(SelectGameState()) {
-    // 初期選択ゲームを取得する処理を書く
+    _startupGame();
   }
 
   final Reader read;
@@ -23,11 +23,10 @@ class SelectGameNotifier extends StateNotifier<SelectGameState> {
     state = state.copyWith(selectGame: null);
   }
 
-  Future startupGame() async {
+  void _startupGame() {
     final records = read(allRecordListNotifierProvider).allRecordList;
     final games = read(allGameListNotifierProvider).allGameList;
     if (games != null) {
-      print(records);
       if (records != null && records.isNotEmpty) {
         final record = records.last;
         final game = games.where((game) => game.gameId == record.gameId).last;

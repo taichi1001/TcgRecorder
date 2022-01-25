@@ -1,5 +1,5 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_recorder2/provider/deck_list_provider.dart';
 import 'package:tcg_recorder2/provider/input_view_provider.dart';
@@ -7,19 +7,15 @@ import 'package:tcg_recorder2/provider/record_list_provider.dart';
 import 'package:tcg_recorder2/provider/select_game_provider.dart';
 import 'package:tcg_recorder2/provider/text_editing_controller_provider.dart';
 import 'package:tcg_recorder2/selector/game_deck_list_selector.dart';
+import 'package:tcg_recorder2/view/component/custom_modal_date_picker.dart';
+import 'package:tcg_recorder2/view/component/custom_modal_list_picker.dart';
 import 'package:tcg_recorder2/view/component/custom_textfield.dart';
-import 'package:tcg_recorder2/view/component/show_cupertino_picker_button.dart';
 
 class InputView extends HookConsumerWidget {
   const InputView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    useEffect(() {
-      ref.read(selectGameNotifierProvider.notifier).startupGame();
-      return;
-    }, const []);
-
     final selectGame = ref.watch(selectGameNotifierProvider);
     final gameDeck = ref.watch(gameDeckListProvider);
     final inputViewNotifier = ref.read(inputViewNotifierProvider.notifier);
@@ -65,18 +61,12 @@ class InputView extends HookConsumerWidget {
                       child: Text('Day'),
                     ),
                     Row(
-                      mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         const Text('2022/01/18'),
-                        IconButton(
-                          icon: const Icon(
-                            Icons.calendar_today_rounded,
-                            color: Colors.black,
-                            size: 16,
-                          ),
-                          onPressed: () {},
+                        _DatePickerButton(
+                          submited: () {},
+                          onDateTimeChanged: (date) {},
                         ),
                       ],
                     ),
@@ -89,7 +79,8 @@ class InputView extends HookConsumerWidget {
                           onChanged: inputViewNotifier.inputUseDeck,
                           controller: useDeckTextController,
                         ),
-                        ShowCupertinoPickerButton(
+                        _ListPickerButton(
+                          submited: () {},
                           onSelectedItemChanged: (value) {
                             inputViewNotifier.selectUseDeck(value);
                           },
@@ -105,7 +96,8 @@ class InputView extends HookConsumerWidget {
                           onChanged: inputViewNotifier.inputOpponentDeck,
                           controller: opponentDeckTextController,
                         ),
-                        ShowCupertinoPickerButton(
+                        _ListPickerButton(
+                          submited: () {},
                           onSelectedItemChanged: (value) {
                             inputViewNotifier.selectOpponentDeck(value);
                           },
@@ -180,6 +172,68 @@ class InputView extends HookConsumerWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _DatePickerButton extends HookConsumerWidget {
+  const _DatePickerButton({
+    required this.submited,
+    required this.onDateTimeChanged,
+    Key? key,
+  }) : super(key: key);
+  final void Function() submited;
+  final Function(DateTime) onDateTimeChanged;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return IconButton(
+      icon: const Icon(
+        Icons.calendar_today_rounded,
+        color: Colors.black,
+        size: 16,
+      ),
+      onPressed: () {
+        showCupertinoModalPopup(
+            context: context,
+            builder: (BuildContext context) {
+              return CustomModalDatePicker(
+                submited: submited,
+                onDateTimeChanged: onDateTimeChanged,
+              );
+            });
+      },
+    );
+  }
+}
+
+class _ListPickerButton extends StatelessWidget {
+  const _ListPickerButton({
+    required this.submited,
+    required this.onSelectedItemChanged,
+    required this.children,
+    key,
+  }) : super(key: key);
+  final void Function() submited;
+  final Function(int) onSelectedItemChanged;
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: const Icon(Icons.arrow_drop_down),
+      onPressed: () {
+        showCupertinoModalPopup(
+          context: context,
+          builder: (BuildContext context) {
+            return CustomModalListPicker(
+              submited: submited,
+              onSelectedItemChanged: onSelectedItemChanged,
+              children: children,
+            );
+          },
+        );
+      },
     );
   }
 }

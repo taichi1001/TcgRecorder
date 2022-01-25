@@ -4,7 +4,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_recorder2/provider/deck_list_provider.dart';
 import 'package:tcg_recorder2/provider/game_list_provider.dart';
 import 'package:tcg_recorder2/provider/record_list_provider.dart';
-import 'package:tcg_recorder2/provider/select_game_provider.dart';
 import 'package:tcg_recorder2/provider/tag_list_provider.dart';
 import 'package:tcg_recorder2/view/bottom_navigation_view.dart';
 import 'package:tcg_recorder2/view/initial_game_registration_view.dart';
@@ -27,7 +26,6 @@ class MainApp extends HookConsumerWidget {
       Future.microtask(() => ref.read(allDeckListNotifierProvider.notifier).fetch());
       Future.microtask(() => ref.read(allRecordListNotifierProvider.notifier).fetch());
       Future.microtask(() => ref.read(allTagListNotifierProvider.notifier).fetch());
-      ref.read(selectGameNotifierProvider.notifier).startupGame();
       return;
     }, const []);
     final gameListState = ref.watch(allGameListNotifierProvider);
