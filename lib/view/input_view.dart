@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_recorder2/provider/deck_list_provider.dart';
 import 'package:tcg_recorder2/provider/input_view_provider.dart';
+import 'package:tcg_recorder2/provider/record_list_provider.dart';
 import 'package:tcg_recorder2/provider/select_game_provider.dart';
 import 'package:tcg_recorder2/view/component/custom_textfield.dart';
 
@@ -11,10 +12,17 @@ class InputView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    useEffect(() {
+      ref.read(allRecordListNotifierProvider.notifier).fetch();
+      ref.read(selectGameNotifierProvider.notifier).startupGame();
+      return;
+    }, const []);
+
     final selectGame = ref.watch(selectGameNotifierProvider);
     final inputViewNotifier = ref.read(inputViewNotifierProvider.notifier);
     final useDeckTextController = useTextEditingController();
     final opponentDeckTextController = useTextEditingController();
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
