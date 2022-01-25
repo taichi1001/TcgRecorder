@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tcg_recorder2/provider/deck_list_provider.dart';
 import 'package:tcg_recorder2/provider/game_list_provider.dart';
+import 'package:tcg_recorder2/provider/record_list_provider.dart';
 import 'package:tcg_recorder2/provider/select_game_provider.dart';
+import 'package:tcg_recorder2/provider/tag_list_provider.dart';
 import 'package:tcg_recorder2/view/bottom_navigation_view.dart';
 import 'package:tcg_recorder2/view/initial_game_registration_view.dart';
 
@@ -21,12 +24,21 @@ class MainApp extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     useEffect(() {
       Future.microtask(() => ref.read(allGameListNotifierProvider.notifier).fetch());
+      Future.microtask(() => ref.read(allDeckListNotifierProvider.notifier).fetch());
+      Future.microtask(() => ref.read(allRecordListNotifierProvider.notifier).fetch());
+      Future.microtask(() => ref.read(allTagListNotifierProvider.notifier).fetch());
       ref.read(selectGameNotifierProvider.notifier).startupGame();
       return;
     }, const []);
     final gameListState = ref.watch(allGameListNotifierProvider);
+    final deckListState = ref.watch(allDeckListNotifierProvider);
+    final recordListState = ref.watch(allRecordListNotifierProvider);
+    final tagListState = ref.watch(allTagListNotifierProvider);
 
-    if (gameListState.allGameList == null) {
+    if (gameListState.allGameList == null &&
+        deckListState.allDeckList == null &&
+        recordListState.allRecordList == null &&
+        tagListState.allTagList == null) {
       return const MaterialApp(
         home: Scaffold(
           body: Center(

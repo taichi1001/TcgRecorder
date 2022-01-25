@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:tcg_recorder2/entity/deck.dart';
 import 'package:tcg_recorder2/entity/record.dart';

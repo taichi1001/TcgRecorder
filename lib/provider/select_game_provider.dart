@@ -27,6 +27,7 @@ class SelectGameNotifier extends StateNotifier<SelectGameState> {
     final records = read(allRecordListNotifierProvider).allRecordList;
     final games = read(allGameListNotifierProvider).allGameList;
     if (games != null) {
+      print(records);
       if (records != null && records.isNotEmpty) {
         final record = records.last;
         final game = games.where((game) => game.gameId == record.gameId).last;

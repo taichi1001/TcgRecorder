@@ -3,6 +3,7 @@ import 'package:tcg_recorder2/entity/deck.dart';
 import 'package:tcg_recorder2/entity/record.dart';
 import 'package:tcg_recorder2/entity/tag.dart';
 import 'package:tcg_recorder2/provider/select_game_provider.dart';
+import 'package:tcg_recorder2/provider/text_editing_controller_provider.dart';
 import 'package:tcg_recorder2/repository/deck_repository.dart';
 import 'package:tcg_recorder2/repository/record_repository.dart';
 import 'package:tcg_recorder2/selector/game_deck_list_selector.dart';
@@ -21,6 +22,18 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
   void inputOpponentDeck(String name) {
     final deck = Deck(deck: name);
     state = state.copyWith(opponentDeck: deck);
+  }
+
+  void selectUseDeck(int index) {
+    final newDeck = read(gameDeckListProvider)[index];
+    state = state.copyWith(useDeck: newDeck);
+    read(textEditingControllerNotifierProvider.notifier).setUseDeckController(newDeck.deck);
+  }
+
+  void selectOpponentDeck(int index) {
+    final newDeck = read(gameDeckListProvider)[index];
+    state = state.copyWith(opponentDeck: newDeck);
+    read(textEditingControllerNotifierProvider.notifier).setOpponentDeckController(newDeck.deck);
   }
 
   void inputTag(String name) {
@@ -100,8 +113,8 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
         opponentDeckId: state.opponentDeck!.deckId,
       ),
     );
-    read(recordRepository).insert(state.record!);
-
+    print(state.record!);
+    await read(recordRepository).insert(state.record!);
     return true;
   }
 

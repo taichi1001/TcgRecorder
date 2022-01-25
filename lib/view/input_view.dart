@@ -5,7 +5,10 @@ import 'package:tcg_recorder2/provider/deck_list_provider.dart';
 import 'package:tcg_recorder2/provider/input_view_provider.dart';
 import 'package:tcg_recorder2/provider/record_list_provider.dart';
 import 'package:tcg_recorder2/provider/select_game_provider.dart';
+import 'package:tcg_recorder2/provider/text_editing_controller_provider.dart';
+import 'package:tcg_recorder2/selector/game_deck_list_selector.dart';
 import 'package:tcg_recorder2/view/component/custom_textfield.dart';
+import 'package:tcg_recorder2/view/component/show_cupertino_picker_button.dart';
 
 class InputView extends HookConsumerWidget {
   const InputView({Key? key}) : super(key: key);
@@ -13,15 +16,19 @@ class InputView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     useEffect(() {
-      ref.read(allRecordListNotifierProvider.notifier).fetch();
       ref.read(selectGameNotifierProvider.notifier).startupGame();
       return;
     }, const []);
 
     final selectGame = ref.watch(selectGameNotifierProvider);
+    final gameDeck = ref.watch(gameDeckListProvider);
     final inputViewNotifier = ref.read(inputViewNotifierProvider.notifier);
-    final useDeckTextController = useTextEditingController();
-    final opponentDeckTextController = useTextEditingController();
+    final useDeckTextController = ref.watch(
+      textEditingControllerNotifierProvider.select((value) => value.useDeckController),
+    );
+    final opponentDeckTextController = ref.watch(
+      textEditingControllerNotifierProvider.select((value) => value.opponentDeckController),
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -74,15 +81,37 @@ class InputView extends HookConsumerWidget {
                       ],
                     ),
                     const Text('Deck'),
-                    CustomTextField(
-                      labelText: '使用デッキ',
-                      onChanged: inputViewNotifier.inputUseDeck,
-                      controller: useDeckTextController,
+                    Stack(
+                      alignment: Alignment.centerRight,
+                      children: [
+                        CustomTextField(
+                          labelText: '使用デッキ',
+                          onChanged: inputViewNotifier.inputUseDeck,
+                          controller: useDeckTextController,
+                        ),
+                        ShowCupertinoPickerButton(
+                          onSelectedItemChanged: (value) {
+                            inputViewNotifier.selectUseDeck(value);
+                          },
+                          children: gameDeck.map((deck) => Text(deck.deck)).toList(),
+                        ),
+                      ],
                     ),
-                    CustomTextField(
-                      labelText: '対戦相手デッキ',
-                      onChanged: inputViewNotifier.inputOpponentDeck,
-                      controller: opponentDeckTextController,
+                    Stack(
+                      alignment: Alignment.centerRight,
+                      children: [
+                        CustomTextField(
+                          labelText: '対戦相手デッキ',
+                          onChanged: inputViewNotifier.inputOpponentDeck,
+                          controller: opponentDeckTextController,
+                        ),
+                        ShowCupertinoPickerButton(
+                          onSelectedItemChanged: (value) {
+                            inputViewNotifier.selectOpponentDeck(value);
+                          },
+                          children: gameDeck.map((deck) => Text(deck.deck)).toList(),
+                        ),
+                      ],
                     ),
                     const Padding(
                       padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
@@ -133,9 +162,10 @@ class InputView extends HookConsumerWidget {
                 width: 300,
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: () {
-                    inputViewNotifier.save();
-                    ref.read(allDeckListNotifierProvider.notifier).fetch();
+                  onPressed: () async {
+                    await inputViewNotifier.save();
+                    await ref.read(allDeckListNotifierProvider.notifier).fetch();
+                    await ref.read(allRecordListNotifierProvider.notifier).fetch();
                   },
                   child: const Text('SAVE'),
                   style: ElevatedButton.styleFrom(
