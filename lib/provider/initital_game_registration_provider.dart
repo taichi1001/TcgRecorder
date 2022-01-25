@@ -4,9 +4,7 @@ import 'package:tcg_recorder2/repository/game_repository.dart';
 import 'package:tcg_recorder2/state/initial_game_registration_state.dart';
 
 class InitialGameRegistrationNotifier extends StateNotifier<InitialGameRegistrationState> {
-  InitialGameRegistrationNotifier(this.read) : super(InitialGameRegistrationState()) {
-    // 初期選択ゲームを取得する処理を書く
-  }
+  InitialGameRegistrationNotifier(this.read) : super(InitialGameRegistrationState());
 
   final Reader read;
 
