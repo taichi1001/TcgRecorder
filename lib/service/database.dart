@@ -55,7 +55,8 @@ class DatabaseService {
       CREATE TABLE $gameTableName (
         game_id INTEGER PRIMARY KEY AUTOINCREMENT,
         game TEXT NOT NULL,
-        is_visible_to_picker INTEGER NOT NULL
+        is_visible_to_picker INTEGER NOT NULL,
+        unique(game)
       )
     ''');
     await database.execute(
@@ -64,7 +65,8 @@ class DatabaseService {
         deck_id INTEGER PRIMARY KEY AUTOINCREMENT,
         deck TEXT NOT NULL,
         game_id INTEGER NOT NULL,
-        is_visible_to_picker INTEGER NOT NULL
+        is_visible_to_picker INTEGER NOT NULL,
+        unique(deck, game_id)
       )
     ''');
     await database.execute(
@@ -73,7 +75,8 @@ class DatabaseService {
         tag_id INTEGER PRIMARY KEY AUTOINCREMENT,
         tag TEXT NOT NULL,
         game_id INTEGER NOT NULL,
-        is_visible_to_picker INTEGER NOT NULL
+        is_visible_to_picker INTEGER NOT NULL,
+        unique(tag, game_id)
       )
     ''');
     // await database.insert(tagTableName, Tag(tag: 'none').toDatabaseJson());

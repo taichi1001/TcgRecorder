@@ -166,7 +166,6 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     _saveDate();
     _saveFirstSecond();
     _saveWinLoss();
-    print(state.record!);
     await read(recordRepository).insert(state.record!);
     return true;
   }

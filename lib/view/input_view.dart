@@ -1,7 +1,9 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_recorder2/provider/deck_list_provider.dart';
+import 'package:tcg_recorder2/provider/game_list_provider.dart';
 import 'package:tcg_recorder2/provider/input_view_provider.dart';
 import 'package:tcg_recorder2/provider/record_list_provider.dart';
 import 'package:tcg_recorder2/provider/select_game_provider.dart';
@@ -18,12 +20,13 @@ class InputView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectGame = ref.watch(selectGameNotifierProvider);
+    final decks = ref.watch(allGameListNotifierProvider);
     final gameDeck = ref.watch(gameDeckListProvider);
     final date = ref.watch(inputViewNotifierProvider.select((value) => value.date));
     final winLoss = ref.watch(inputViewNotifierProvider.select((value) => value.winLoss));
     final firstSecond = ref.watch(inputViewNotifierProvider.select((value) => value.firstSecond));
-
     final inputViewNotifier = ref.read(inputViewNotifierProvider.notifier);
+    final selectGameNotifier = ref.read(selectGameNotifierProvider.notifier);
     final useDeckTextController = ref.watch(
       textEditingControllerNotifierProvider.select((value) => value.useDeckController),
     );
@@ -42,10 +45,20 @@ class InputView extends HookConsumerWidget {
           ),
         ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.arrow_drop_down_outlined),
-            color: Colors.black,
-            onPressed: () {},
+          _GameListPickerButton(
+            submited: selectGameNotifier.setSelectGame,
+            createNew: () async {
+              final game = await showTextInputDialog(
+                context: context,
+                title: '新規ゲーム追加',
+                textFields: [const DialogTextField()],
+              );
+              if (game != null) {
+                await selectGameNotifier.saveGame(game.first);
+              }
+            },
+            onSelectedItemChanged: selectGameNotifier.scrollSelectGame,
+            children: decks.allGameList!.map((game) => Text(game.game)).toList(),
           ),
         ],
         backgroundColor: Colors.white,
@@ -240,6 +253,62 @@ class _ListPickerButton extends StatelessWidget {
           context: context,
           builder: (BuildContext context) {
             return CustomModalListPicker(
+              submited: () {
+                submited();
+                Navigator.pop(context);
+              },
+              onSelectedItemChanged: onSelectedItemChanged,
+              children: children,
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+class _GameListPickerButton extends HookConsumerWidget {
+  const _GameListPickerButton({
+    required this.submited,
+    required this.createNew,
+    required this.onSelectedItemChanged,
+    required this.children,
+    key,
+  }) : super(key: key);
+  final void Function() submited;
+  final void Function() createNew;
+  final Function(int) onSelectedItemChanged;
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectGameNotifier = ref.read(selectGameNotifierProvider.notifier);
+    return IconButton(
+      icon: const Icon(Icons.arrow_drop_down),
+      color: Colors.black,
+      onPressed: () {
+        showCupertinoModalPopup(
+          context: context,
+          builder: (BuildContext context) {
+            return CustomModalListPicker(
+              actionButton: CupertinoButton(
+                onPressed: () async {
+                  final game = await showTextInputDialog(
+                    context: context,
+                    title: '新規ゲーム追加',
+                    textFields: [const DialogTextField()],
+                  );
+                  if (game != null) {
+                    await selectGameNotifier.saveGame(game.first);
+                    Navigator.pop(context);
+                  }
+                },
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 5,
+                ),
+                child: const Text('新規追加'),
+              ),
               submited: () {
                 submited();
                 Navigator.pop(context);

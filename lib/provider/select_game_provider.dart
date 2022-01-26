@@ -2,6 +2,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_recorder2/entity/game.dart';
 import 'package:tcg_recorder2/provider/game_list_provider.dart';
 import 'package:tcg_recorder2/provider/record_list_provider.dart';
+import 'package:tcg_recorder2/repository/game_repository.dart';
 import 'package:tcg_recorder2/state/select_game_state.dart';
 
 class SelectGameNotifier extends StateNotifier<SelectGameState> {
@@ -19,8 +20,25 @@ class SelectGameNotifier extends StateNotifier<SelectGameState> {
     state = state.copyWith(selectGame: Game(game: name));
   }
 
-  void reset() {
-    state = state.copyWith(selectGame: null);
+  void scrollSelectGame(int index) {
+    final newDeck = read(allGameListNotifierProvider).allGameList?[index];
+    state = state.copyWith(cacheSelectGame: newDeck);
+  }
+
+  void setSelectGame() {
+    state = state.copyWith(selectGame: state.cacheSelectGame);
+  }
+
+  Future<bool> saveGame(String name) async {
+    final newGame = Game(game: name);
+    if (_checkIfSelectedGamekNew(name)) {
+      await read(gameRepository).insert(newGame);
+      await read(allGameListNotifierProvider.notifier).fetch();
+      final game = read(allGameListNotifierProvider).allGameList?.last;
+      state = state.copyWith(selectGame: game);
+      return true;
+    }
+    return false;
   }
 
   void _startupGame() {
@@ -30,11 +48,21 @@ class SelectGameNotifier extends StateNotifier<SelectGameState> {
       if (records != null && records.isNotEmpty) {
         final record = records.last;
         final game = games.where((game) => game.gameId == record.gameId).last;
-        state = state.copyWith(selectGame: game);
+        state = state.copyWith(selectGame: game, cacheSelectGame: game);
       } else {
-        state = state.copyWith(selectGame: games.last);
+        state = state.copyWith(selectGame: games.last, cacheSelectGame: games.last);
       }
     }
+  }
+
+  bool _checkIfSelectedGamekNew(String name) {
+    final gameList = read(allGameListNotifierProvider).allGameList;
+    final matchList = gameList!.where((game) => game.game == name);
+    if (matchList.isNotEmpty) {
+      state = state.copyWith(selectGame: matchList.first);
+      return false;
+    }
+    return true;
   }
 }
 

@@ -7,5 +7,6 @@ part 'select_game_state.freezed.dart';
 abstract class SelectGameState with _$SelectGameState {
   factory SelectGameState({
     Game? selectGame,
+    Game? cacheSelectGame,
   }) = _SelectGameState;
 }

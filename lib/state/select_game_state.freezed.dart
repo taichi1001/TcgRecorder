@@ -18,9 +18,10 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$SelectGameStateTearOff {
   const _$SelectGameStateTearOff();
 
-  _SelectGameState call({Game? selectGame}) {
+  _SelectGameState call({Game? selectGame, Game? cacheSelectGame}) {
     return _SelectGameState(
       selectGame: selectGame,
+      cacheSelectGame: cacheSelectGame,
     );
   }
 }
@@ -31,6 +32,7 @@ const $SelectGameState = _$SelectGameStateTearOff();
 /// @nodoc
 mixin _$SelectGameState {
   Game? get selectGame => throw _privateConstructorUsedError;
+  Game? get cacheSelectGame => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $SelectGameStateCopyWith<SelectGameState> get copyWith =>
@@ -42,9 +44,10 @@ abstract class $SelectGameStateCopyWith<$Res> {
   factory $SelectGameStateCopyWith(
           SelectGameState value, $Res Function(SelectGameState) then) =
       _$SelectGameStateCopyWithImpl<$Res>;
-  $Res call({Game? selectGame});
+  $Res call({Game? selectGame, Game? cacheSelectGame});
 
   $GameCopyWith<$Res>? get selectGame;
+  $GameCopyWith<$Res>? get cacheSelectGame;
 }
 
 /// @nodoc
@@ -59,11 +62,16 @@ class _$SelectGameStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? selectGame = freezed,
+    Object? cacheSelectGame = freezed,
   }) {
     return _then(_value.copyWith(
       selectGame: selectGame == freezed
           ? _value.selectGame
           : selectGame // ignore: cast_nullable_to_non_nullable
+              as Game?,
+      cacheSelectGame: cacheSelectGame == freezed
+          ? _value.cacheSelectGame
+          : cacheSelectGame // ignore: cast_nullable_to_non_nullable
               as Game?,
     ));
   }
@@ -78,6 +86,17 @@ class _$SelectGameStateCopyWithImpl<$Res>
       return _then(_value.copyWith(selectGame: value));
     });
   }
+
+  @override
+  $GameCopyWith<$Res>? get cacheSelectGame {
+    if (_value.cacheSelectGame == null) {
+      return null;
+    }
+
+    return $GameCopyWith<$Res>(_value.cacheSelectGame!, (value) {
+      return _then(_value.copyWith(cacheSelectGame: value));
+    });
+  }
 }
 
 /// @nodoc
@@ -87,10 +106,12 @@ abstract class _$SelectGameStateCopyWith<$Res>
           _SelectGameState value, $Res Function(_SelectGameState) then) =
       __$SelectGameStateCopyWithImpl<$Res>;
   @override
-  $Res call({Game? selectGame});
+  $Res call({Game? selectGame, Game? cacheSelectGame});
 
   @override
   $GameCopyWith<$Res>? get selectGame;
+  @override
+  $GameCopyWith<$Res>? get cacheSelectGame;
 }
 
 /// @nodoc
@@ -107,11 +128,16 @@ class __$SelectGameStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? selectGame = freezed,
+    Object? cacheSelectGame = freezed,
   }) {
     return _then(_SelectGameState(
       selectGame: selectGame == freezed
           ? _value.selectGame
           : selectGame // ignore: cast_nullable_to_non_nullable
+              as Game?,
+      cacheSelectGame: cacheSelectGame == freezed
+          ? _value.cacheSelectGame
+          : cacheSelectGame // ignore: cast_nullable_to_non_nullable
               as Game?,
     ));
   }
@@ -120,14 +146,16 @@ class __$SelectGameStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_SelectGameState implements _SelectGameState {
-  _$_SelectGameState({this.selectGame});
+  _$_SelectGameState({this.selectGame, this.cacheSelectGame});
 
   @override
   final Game? selectGame;
+  @override
+  final Game? cacheSelectGame;
 
   @override
   String toString() {
-    return 'SelectGameState(selectGame: $selectGame)';
+    return 'SelectGameState(selectGame: $selectGame, cacheSelectGame: $cacheSelectGame)';
   }
 
   @override
@@ -136,12 +164,16 @@ class _$_SelectGameState implements _SelectGameState {
         (other.runtimeType == runtimeType &&
             other is _SelectGameState &&
             const DeepCollectionEquality()
-                .equals(other.selectGame, selectGame));
+                .equals(other.selectGame, selectGame) &&
+            const DeepCollectionEquality()
+                .equals(other.cacheSelectGame, cacheSelectGame));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(selectGame));
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(selectGame),
+      const DeepCollectionEquality().hash(cacheSelectGame));
 
   @JsonKey(ignore: true)
   @override
@@ -150,10 +182,13 @@ class _$_SelectGameState implements _SelectGameState {
 }
 
 abstract class _SelectGameState implements SelectGameState {
-  factory _SelectGameState({Game? selectGame}) = _$_SelectGameState;
+  factory _SelectGameState({Game? selectGame, Game? cacheSelectGame}) =
+      _$_SelectGameState;
 
   @override
   Game? get selectGame;
+  @override
+  Game? get cacheSelectGame;
   @override
   @JsonKey(ignore: true)
   _$SelectGameStateCopyWith<_SelectGameState> get copyWith =>

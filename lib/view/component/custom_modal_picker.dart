@@ -4,10 +4,12 @@ class CustomModalPicker extends StatelessWidget {
   const CustomModalPicker({
     required this.child,
     this.submitedAction,
+    this.actionButton,
     Key? key,
   }) : super(key: key);
   final Widget child;
   final void Function()? submitedAction;
+  final Widget? actionButton;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +18,10 @@ class CustomModalPicker extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          _ModalButton(submitedAction: submitedAction != null ? submitedAction! : null),
+          _ModalButton(
+            submitedAction: submitedAction != null ? submitedAction! : null,
+            actionButton: actionButton,
+          ),
           Expanded(
             child: Container(
               padding: const EdgeInsets.only(top: 6),
@@ -42,10 +47,11 @@ class CustomModalPicker extends StatelessWidget {
 class _ModalButton extends StatelessWidget {
   const _ModalButton({
     this.submitedAction,
+    this.actionButton,
     key,
   }) : super(key: key);
   final void Function()? submitedAction;
-
+  final Widget? actionButton;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -59,18 +65,10 @@ class _ModalButton extends StatelessWidget {
         ),
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment:
+            actionButton != null ? MainAxisAlignment.spaceBetween : MainAxisAlignment.end,
         children: <Widget>[
-          CupertinoButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 5,
-            ),
-            child: const Text('キャンセル'),
-          ),
+          if (actionButton != null) actionButton!,
           CupertinoButton(
             onPressed: submitedAction != null ? submitedAction! : null,
             padding: const EdgeInsets.symmetric(

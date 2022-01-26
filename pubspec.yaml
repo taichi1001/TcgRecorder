@@ -24,6 +24,8 @@ dependencies:
   sqflite: ^2.0.2
   path_provider: ^2.0.8
 
+  adaptive_dialog: ^1.3.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
