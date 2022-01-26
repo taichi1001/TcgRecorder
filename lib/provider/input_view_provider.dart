@@ -26,12 +26,12 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
 
   void inputUseDeck(String name) {
     final deck = Deck(deck: name);
-    state = state.copyWith(useDeck: deck);
+    state = state.copyWith(useDeck: deck, cacheUseDeck: deck);
   }
 
   void inputOpponentDeck(String name) {
     final deck = Deck(deck: name);
-    state = state.copyWith(opponentDeck: deck);
+    state = state.copyWith(opponentDeck: deck, cacheOpponentDeck: deck);
   }
 
   void scrollUseDeck(int index) {
@@ -46,14 +46,18 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
 
   void setUseDeck() {
     state = state.copyWith(useDeck: state.cacheUseDeck);
-    read(textEditingControllerNotifierProvider.notifier)
-        .setUseDeckController(state.cacheUseDeck!.deck);
+    if (state.cacheUseDeck != null) {
+      read(textEditingControllerNotifierProvider.notifier)
+          .setUseDeckController(state.cacheUseDeck!.deck);
+    }
   }
 
   void setOpponentDeck() {
     state = state.copyWith(opponentDeck: state.cacheOpponentDeck);
-    read(textEditingControllerNotifierProvider.notifier)
-        .setOpponentDeckController(state.cacheOpponentDeck!.deck);
+    if (state.cacheOpponentDeck != null) {
+      read(textEditingControllerNotifierProvider.notifier)
+          .setOpponentDeckController(state.cacheOpponentDeck!.deck);
+    }
   }
 
   void inputTag(String name) {
@@ -162,7 +166,7 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     _saveDate();
     _saveFirstSecond();
     _saveWinLoss();
-    print(state.record);
+    print(state.record!);
     await read(recordRepository).insert(state.record!);
     return true;
   }
@@ -171,7 +175,7 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     final gameDeckList = read(gameDeckListProvider);
     final matchList = gameDeckList.where((deck) => deck.deck == state.useDeck!.deck);
     if (matchList.isNotEmpty) {
-      state.copyWith(useDeck: matchList.first);
+      state = state.copyWith(useDeck: matchList.first);
       return false;
     }
     return true;
@@ -181,7 +185,7 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     final gameDeckList = read(gameDeckListProvider);
     final matchList = gameDeckList.where((deck) => deck.deck == state.opponentDeck!.deck);
     if (matchList.isNotEmpty) {
-      state.copyWith(opponentDeck: matchList.first);
+      state = state.copyWith(opponentDeck: matchList.first);
       return false;
     }
     return true;
@@ -191,7 +195,7 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     final gameTagList = read(gameTagListProvider);
     final matchList = gameTagList.where((tag) => tag.tag == state.tag!.tag);
     if (matchList.isNotEmpty) {
-      state.copyWith(tag: matchList.first);
+      state = state.copyWith(tag: matchList.first);
       return false;
     }
     return true;

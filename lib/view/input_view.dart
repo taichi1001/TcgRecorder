@@ -33,6 +33,7 @@ class InputView extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
+        centerTitle: false,
         title: Text(
           selectGame.selectGame != null ? selectGame.selectGame!.game : '',
           style: const TextStyle(
