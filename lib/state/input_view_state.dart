@@ -5,6 +5,10 @@ import 'package:tcg_recorder2/entity/tag.dart';
 
 part 'input_view_state.freezed.dart';
 
+enum WinLoss { win, loss }
+
+enum FirstSecond { first, second }
+
 @freezed
 abstract class InputViewState with _$InputViewState {
   factory InputViewState({
@@ -17,7 +21,7 @@ abstract class InputViewState with _$InputViewState {
     Deck? cacheOpponentDeck,
     Tag? tag,
     Tag? cacheTag,
-    @Default(true) bool winLoss,
-    @Default(true) bool firstSecond,
+    @Default(WinLoss.win) WinLoss winLoss,
+    @Default(FirstSecond.first) FirstSecond firstSecond,
   }) = _InputViewState;
 }

@@ -61,12 +61,37 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     state = state.copyWith(tag: tag);
   }
 
-  void selectWinLoss(bool winloss) {
-    state = state.copyWith(winLoss: winloss);
+  void selectWinLoss(WinLoss? winloss) {
+    if (winloss != null) {
+      state = state.copyWith(winLoss: winloss);
+    }
   }
 
-  void selectFirstSecond(bool firstSecond) {
-    state = state.copyWith(firstSecond: firstSecond);
+  void selectFirstSecond(FirstSecond? firstSecond) {
+    if (firstSecond != null) {
+      state = state.copyWith(firstSecond: firstSecond);
+    }
+  }
+
+  void _saveDate() {
+    final newRecord = state.record!.copyWith(date: state.date);
+    state = state.copyWith(record: newRecord);
+  }
+
+  void _saveFirstSecond() {
+    if (state.firstSecond == FirstSecond.first) {
+      state = state.copyWith(record: state.record!.copyWith(firstSecond: true));
+    } else if (state.firstSecond == FirstSecond.second) {
+      state = state.copyWith(record: state.record!.copyWith(firstSecond: false));
+    }
+  }
+
+  void _saveWinLoss() {
+    if (state.winLoss == WinLoss.win) {
+      state = state.copyWith(record: state.record!.copyWith(winLoss: true));
+    } else if (state.winLoss == WinLoss.loss) {
+      state = state.copyWith(record: state.record!.copyWith(winLoss: false));
+    }
   }
 
   Future<bool> save() async {
@@ -133,7 +158,11 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
         opponentDeckId: state.opponentDeck!.deckId,
       ),
     );
-    print(state.record!);
+
+    _saveDate();
+    _saveFirstSecond();
+    _saveWinLoss();
+    print(state.record);
     await read(recordRepository).insert(state.record!);
     return true;
   }

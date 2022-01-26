@@ -7,6 +7,7 @@ import 'package:tcg_recorder2/provider/record_list_provider.dart';
 import 'package:tcg_recorder2/provider/select_game_provider.dart';
 import 'package:tcg_recorder2/provider/text_editing_controller_provider.dart';
 import 'package:tcg_recorder2/selector/game_deck_list_selector.dart';
+import 'package:tcg_recorder2/state/input_view_state.dart';
 import 'package:tcg_recorder2/view/component/custom_modal_date_picker.dart';
 import 'package:tcg_recorder2/view/component/custom_modal_list_picker.dart';
 import 'package:tcg_recorder2/view/component/custom_textfield.dart';
@@ -19,6 +20,9 @@ class InputView extends HookConsumerWidget {
     final selectGame = ref.watch(selectGameNotifierProvider);
     final gameDeck = ref.watch(gameDeckListProvider);
     final date = ref.watch(inputViewNotifierProvider.select((value) => value.date));
+    final winLoss = ref.watch(inputViewNotifierProvider.select((value) => value.winLoss));
+    final firstSecond = ref.watch(inputViewNotifierProvider.select((value) => value.firstSecond));
+
     final inputViewNotifier = ref.read(inputViewNotifierProvider.notifier);
     final useDeckTextController = ref.watch(
       textEditingControllerNotifierProvider.select((value) => value.useDeckController),
@@ -108,17 +112,21 @@ class InputView extends HookConsumerWidget {
                     ),
                     RadioListTile(
                       title: const Text('先攻'),
-                      value: 1,
-                      groupValue: 1,
-                      onChanged: (value) {},
+                      value: FirstSecond.first,
+                      groupValue: firstSecond,
+                      onChanged: (FirstSecond? value) {
+                        inputViewNotifier.selectFirstSecond(value);
+                      },
                       contentPadding: const EdgeInsets.symmetric(horizontal: 0),
                       dense: true,
                     ),
                     RadioListTile(
                       title: const Text('後攻'),
-                      value: 2,
-                      groupValue: 1,
-                      onChanged: (value) {},
+                      value: FirstSecond.second,
+                      groupValue: firstSecond,
+                      onChanged: (FirstSecond? value) {
+                        inputViewNotifier.selectFirstSecond(value);
+                      },
                       contentPadding: const EdgeInsets.symmetric(horizontal: 0),
                       dense: true,
                     ),
@@ -128,17 +136,21 @@ class InputView extends HookConsumerWidget {
                     ),
                     RadioListTile(
                       title: const Text('勝ち'),
-                      value: 1,
-                      groupValue: 1,
-                      onChanged: (value) {},
+                      value: WinLoss.win,
+                      groupValue: winLoss,
+                      onChanged: (WinLoss? value) {
+                        inputViewNotifier.selectWinLoss(value);
+                      },
                       contentPadding: const EdgeInsets.symmetric(horizontal: 0),
                       dense: true,
                     ),
                     RadioListTile(
                       title: const Text('負け'),
-                      value: 2,
-                      groupValue: 1,
-                      onChanged: (value) {},
+                      value: WinLoss.loss,
+                      groupValue: winLoss,
+                      onChanged: (WinLoss? value) {
+                        inputViewNotifier.selectWinLoss(value);
+                      },
                       contentPadding: const EdgeInsets.symmetric(horizontal: 0),
                       dense: true,
                     ),

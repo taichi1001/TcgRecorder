@@ -28,8 +28,8 @@ class _$InputViewStateTearOff {
       Deck? cacheOpponentDeck,
       Tag? tag,
       Tag? cacheTag,
-      bool winLoss = true,
-      bool firstSecond = true}) {
+      WinLoss winLoss = WinLoss.win,
+      FirstSecond firstSecond = FirstSecond.first}) {
     return _InputViewState(
       record: record,
       date: date,
@@ -60,8 +60,8 @@ mixin _$InputViewState {
   Deck? get cacheOpponentDeck => throw _privateConstructorUsedError;
   Tag? get tag => throw _privateConstructorUsedError;
   Tag? get cacheTag => throw _privateConstructorUsedError;
-  bool get winLoss => throw _privateConstructorUsedError;
-  bool get firstSecond => throw _privateConstructorUsedError;
+  WinLoss get winLoss => throw _privateConstructorUsedError;
+  FirstSecond get firstSecond => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $InputViewStateCopyWith<InputViewState> get copyWith =>
@@ -83,8 +83,8 @@ abstract class $InputViewStateCopyWith<$Res> {
       Deck? cacheOpponentDeck,
       Tag? tag,
       Tag? cacheTag,
-      bool winLoss,
-      bool firstSecond});
+      WinLoss winLoss,
+      FirstSecond firstSecond});
 
   $RecordCopyWith<$Res>? get record;
   $DeckCopyWith<$Res>? get useDeck;
@@ -158,11 +158,11 @@ class _$InputViewStateCopyWithImpl<$Res>
       winLoss: winLoss == freezed
           ? _value.winLoss
           : winLoss // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as WinLoss,
       firstSecond: firstSecond == freezed
           ? _value.firstSecond
           : firstSecond // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as FirstSecond,
     ));
   }
 
@@ -261,8 +261,8 @@ abstract class _$InputViewStateCopyWith<$Res>
       Deck? cacheOpponentDeck,
       Tag? tag,
       Tag? cacheTag,
-      bool winLoss,
-      bool firstSecond});
+      WinLoss winLoss,
+      FirstSecond firstSecond});
 
   @override
   $RecordCopyWith<$Res>? get record;
@@ -345,11 +345,11 @@ class __$InputViewStateCopyWithImpl<$Res>
       winLoss: winLoss == freezed
           ? _value.winLoss
           : winLoss // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as WinLoss,
       firstSecond: firstSecond == freezed
           ? _value.firstSecond
           : firstSecond // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as FirstSecond,
     ));
   }
 }
@@ -367,8 +367,8 @@ class _$_InputViewState implements _InputViewState {
       this.cacheOpponentDeck,
       this.tag,
       this.cacheTag,
-      this.winLoss = true,
-      this.firstSecond = true});
+      this.winLoss = WinLoss.win,
+      this.firstSecond = FirstSecond.first});
 
   @override
   final Record? record;
@@ -390,10 +390,10 @@ class _$_InputViewState implements _InputViewState {
   final Tag? cacheTag;
   @JsonKey()
   @override
-  final bool winLoss;
+  final WinLoss winLoss;
   @JsonKey()
   @override
-  final bool firstSecond;
+  final FirstSecond firstSecond;
 
   @override
   String toString() {
@@ -454,8 +454,8 @@ abstract class _InputViewState implements InputViewState {
       Deck? cacheOpponentDeck,
       Tag? tag,
       Tag? cacheTag,
-      bool winLoss,
-      bool firstSecond}) = _$_InputViewState;
+      WinLoss winLoss,
+      FirstSecond firstSecond}) = _$_InputViewState;
 
   @override
   Record? get record;
@@ -476,9 +476,9 @@ abstract class _InputViewState implements InputViewState {
   @override
   Tag? get cacheTag;
   @override
-  bool get winLoss;
+  WinLoss get winLoss;
   @override
-  bool get firstSecond;
+  FirstSecond get firstSecond;
   @override
   @JsonKey(ignore: true)
   _$InputViewStateCopyWith<_InputViewState> get copyWith =>
