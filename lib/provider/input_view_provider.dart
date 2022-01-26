@@ -98,6 +98,16 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     }
   }
 
+  void resetView() {
+    print('a');
+    state = InputViewState(
+      date: state.date,
+      winLoss: state.winLoss,
+      firstSecond: state.firstSecond,
+    );
+    read(textEditingControllerNotifierProvider.notifier).resetInputViewController();
+  }
+
   Future<bool> save() async {
     // if (state.useDeck == null || state.opponentDeck == null || state.tag == null) return false;
     if (state.useDeck == null || state.opponentDeck == null) return false;

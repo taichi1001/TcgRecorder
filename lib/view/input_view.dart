@@ -46,16 +46,9 @@ class InputView extends HookConsumerWidget {
         ),
         actions: [
           _GameListPickerButton(
-            submited: selectGameNotifier.setSelectGame,
-            createNew: () async {
-              final game = await showTextInputDialog(
-                context: context,
-                title: '新規ゲーム追加',
-                textFields: [const DialogTextField()],
-              );
-              if (game != null) {
-                await selectGameNotifier.saveGame(game.first);
-              }
+            submited: () {
+              selectGameNotifier.setSelectGame();
+              inputViewNotifier.resetView();
             },
             onSelectedItemChanged: selectGameNotifier.scrollSelectGame,
             children: decks.allGameList!.map((game) => Text(game.game)).toList(),
@@ -270,19 +263,18 @@ class _ListPickerButton extends StatelessWidget {
 class _GameListPickerButton extends HookConsumerWidget {
   const _GameListPickerButton({
     required this.submited,
-    required this.createNew,
     required this.onSelectedItemChanged,
     required this.children,
     key,
   }) : super(key: key);
   final void Function() submited;
-  final void Function() createNew;
   final Function(int) onSelectedItemChanged;
   final List<Widget> children;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectGameNotifier = ref.read(selectGameNotifierProvider.notifier);
+    final inputViewNotifier = ref.read(inputViewNotifierProvider.notifier);
     return IconButton(
       icon: const Icon(Icons.arrow_drop_down),
       color: Colors.black,
@@ -300,6 +292,7 @@ class _GameListPickerButton extends HookConsumerWidget {
                   );
                   if (game != null) {
                     await selectGameNotifier.saveGame(game.first);
+                    inputViewNotifier.resetView();
                     Navigator.pop(context);
                   }
                 },

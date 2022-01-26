@@ -23,6 +23,14 @@ class TextEditingControllerNotifier extends StateNotifier<TextEditingControllerS
   void setTagController(String value) {
     state = state.copyWith(tagController: TextEditingController(text: value));
   }
+
+  void resetInputViewController() {
+    state = state.copyWith(
+      useDeckController: TextEditingController(),
+      opponentDeckController: TextEditingController(),
+      tagController: TextEditingController(),
+    );
+  }
 }
 
 final textEditingControllerNotifierProvider =
