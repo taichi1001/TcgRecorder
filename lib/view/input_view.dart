@@ -285,13 +285,13 @@ class _GameListPickerButton extends HookConsumerWidget {
             return CustomModalListPicker(
               actionButton: CupertinoButton(
                 onPressed: () async {
-                  final game = await showTextInputDialog(
+                  final games = await showTextInputDialog(
                     context: context,
                     title: '新規ゲーム追加',
                     textFields: [const DialogTextField()],
                   );
-                  if (game != null) {
-                    await selectGameNotifier.saveGame(game.first);
+                  if (games != null && games.first != '') {
+                    await selectGameNotifier.saveGame(games.first);
                     inputViewNotifier.resetView();
                     Navigator.pop(context);
                   }

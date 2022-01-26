@@ -99,7 +99,6 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
   }
 
   void resetView() {
-    print('a');
     state = InputViewState(
       date: state.date,
       winLoss: state.winLoss,
