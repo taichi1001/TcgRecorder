@@ -11,10 +11,12 @@ class CustomScaffold extends HookConsumerWidget {
   const CustomScaffold({
     required this.body,
     this.rightButton,
+    this.appBarBottom,
     key,
   }) : super(key: key);
   final Widget body;
   final Widget? rightButton;
+  final PreferredSizeWidget? appBarBottom;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectGame = ref.watch(selectGameNotifierProvider);
@@ -43,6 +45,7 @@ class CustomScaffold extends HookConsumerWidget {
           ),
           if (rightButton != null) rightButton!,
         ],
+        bottom: appBarBottom != null ? appBarBottom! : null,
         backgroundColor: Colors.white,
         elevation: 0.0,
       ),

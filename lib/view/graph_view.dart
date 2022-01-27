@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import 'package:tcg_recorder2/view/component/custom_scaffold.dart';
 
 class GraphView extends HookConsumerWidget {
@@ -7,8 +8,40 @@ class GraphView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return const CustomScaffold(
-      body: Text('graph'),
+    return DefaultTabController(
+      length: 2,
+      child: CustomScaffold(
+        appBarBottom: TabBar(
+          indicator: MaterialIndicator(
+            color: Colors.black,
+            horizontalPadding: 16,
+          ),
+          tabs: const [
+            Tab(
+              icon: Icon(
+                Icons.timer_off,
+                color: Colors.black,
+              ),
+            ),
+            Tab(
+              icon: Icon(
+                Icons.timer_off,
+                color: Colors.black,
+              ),
+            )
+          ],
+        ),
+        body: const TabBarView(
+          children: [
+            Center(
+              child: Text('表'),
+            ),
+            Center(
+              child: Text('グラフ'),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
