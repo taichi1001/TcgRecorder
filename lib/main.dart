@@ -1,3 +1,5 @@
+import 'package:device_preview/device_preview.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -10,8 +12,11 @@ import 'package:tcg_recorder2/view/initial_game_registration_view.dart';
 
 void main() {
   runApp(
-    const ProviderScope(
-      child: MainApp(),
+    DevicePreview(
+      enabled: !kReleaseMode,
+      builder: (context) => const ProviderScope(
+        child: MainApp(),
+      ),
     ),
   );
 }
@@ -37,8 +42,11 @@ class MainApp extends HookConsumerWidget {
         deckListState.allDeckList == null &&
         recordListState.allRecordList == null &&
         tagListState.allTagList == null) {
-      return const MaterialApp(
-        home: Scaffold(
+      return MaterialApp(
+        useInheritedMediaQuery: true,
+        locale: DevicePreview.locale(context),
+        builder: DevicePreview.appBuilder,
+        home: const Scaffold(
           body: Center(
             child: CircularProgressIndicator(),
           ),
@@ -46,6 +54,9 @@ class MainApp extends HookConsumerWidget {
       );
     }
     return MaterialApp(
+      useInheritedMediaQuery: true,
+      locale: DevicePreview.locale(context),
+      builder: DevicePreview.appBuilder,
       home: Scaffold(
         body: gameListState.allGameList!.isEmpty
             ? const InitialGameRegistrationView()
