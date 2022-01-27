@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tcg_recorder2/entity/record.dart';
+import 'package:tcg_recorder2/entity/marged_record.dart';
 import 'package:tcg_recorder2/provider/select_game_provider.dart';
-import 'package:tcg_recorder2/selector/game_record_list_selector.dart';
+import 'package:tcg_recorder2/selector/marged_record_list_selector.dart';
 
 class RecordListView extends HookConsumerWidget {
   const RecordListView({Key? key}) : super(key: key);
@@ -10,7 +10,7 @@ class RecordListView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectGame = ref.watch(selectGameNotifierProvider);
-    final recordList = ref.watch(gameRecordListProvider);
+    final recordList = ref.watch(margedRecordListProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -52,7 +52,16 @@ class RecordListView extends HookConsumerWidget {
   }
 }
 
-final currentRecord = Provider<Record>((ref) => Record());
+final currentRecord = Provider<MargedRecord>((ref) => MargedRecord(
+      recordId: 0,
+      game: '',
+      useDeck: '',
+      opponentDeck: '',
+      tag: '',
+      firstSecond: true,
+      winLoss: true,
+      date: DateTime.now(),
+    ));
 
 class _BrandListTile extends HookConsumerWidget {
   const _BrandListTile({
@@ -64,8 +73,8 @@ class _BrandListTile extends HookConsumerWidget {
     final record = ref.watch(currentRecord);
 
     return ListTile(
-      title: Text(record.recordId.toString()),
-      subtitle: Text(record.gameId.toString()),
+      title: Text(record.game.toString()),
+      subtitle: Text(record.useDeck.toString()),
     );
   }
 }
