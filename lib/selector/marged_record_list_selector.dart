@@ -3,17 +3,20 @@ import 'package:tcg_recorder2/entity/marged_record.dart';
 import 'package:tcg_recorder2/entity/record.dart';
 import 'package:tcg_recorder2/provider/deck_list_provider.dart';
 import 'package:tcg_recorder2/provider/game_list_provider.dart';
-import 'package:tcg_recorder2/provider/record_list_provider.dart';
 import 'package:tcg_recorder2/provider/tag_list_provider.dart';
+import 'package:tcg_recorder2/selector/game_record_list_selector.dart';
 
 final margedRecordListProvider = StateProvider<List<MargedRecord>>((ref) {
-  final allRecordList = ref.watch(allRecordListNotifierProvider).allRecordList;
+  final selectGameRecordList = ref.watch(gameRecordListProvider);
   final allGameList = ref.read(allGameListNotifierProvider).allGameList;
   final allDeckList = ref.read(allDeckListNotifierProvider).allDeckList;
   final allTagList = ref.read(allTagListNotifierProvider).allTagList;
 
-  if (allRecordList != null && allGameList != null && allDeckList != null && allTagList != null) {
-    final list = allRecordList.map((Record record) {
+  if (selectGameRecordList != null &&
+      allGameList != null &&
+      allDeckList != null &&
+      allTagList != null) {
+    final list = selectGameRecordList.map((Record record) {
       final game = allGameList.singleWhere((value) => value.gameId == record.gameId);
       final useDeck = allDeckList.singleWhere((value) => value.deckId == record.useDeckId);
       final opponentDeck =
