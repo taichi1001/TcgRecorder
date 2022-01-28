@@ -42,12 +42,37 @@ class GameWinRateDataSource extends DataGridSource {
     return DataGridRowAdapter(
       cells: row.getCells().map<Widget>(
         (dataGridCell) {
-          return Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text(dataGridCell.value.toString()),
+          return Center(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: _buildChild(dataGridCell),
+            ),
           );
         },
       ).toList(),
     );
+  }
+
+  Widget _buildChild(DataGridCell cell) {
+    if (cell.columnName == 'デッキ名') {
+      return Text(cell.value.toString());
+    }
+    if (cell.columnName == '勝') {
+      return Text(cell.value.toString());
+    }
+    if (cell.columnName == '負') {
+      return Text(cell.value.toString());
+    }
+    if (cell.columnName == '勝率') {
+      return Text(cell.value.toString() + '%');
+    }
+    if (cell.columnName == '先攻勝率') {
+      return Text(cell.value.toString() + '%');
+    }
+    if (cell.columnName == '後攻勝率') {
+      return Text(cell.value.toString() + '%');
+    }
+
+    return const Text('test');
   }
 }

@@ -18,31 +18,38 @@ class GameDataGrid extends HookConsumerWidget {
             columns: [
               GridColumn(
                 columnName: 'デッキ名',
-                label: const Text('デッキ名'),
+                label: const Center(child: Text('デッキ名')),
+                width: 100,
               ),
               GridColumn(
                 columnName: '試合数',
-                label: const Text('試合数'),
+                label: const Center(child: Text('試合数')),
+                width: 75,
               ),
               GridColumn(
                 columnName: '勝',
-                label: const Text('勝'),
+                label: const Center(child: Text('勝')),
+                width: 60,
               ),
               GridColumn(
                 columnName: '負',
-                label: const Text('負'),
+                label: const Center(child: Text('負')),
+                width: 60,
               ),
               GridColumn(
                 columnName: '勝率',
-                label: const Text('勝率'),
+                label: const Center(child: Text('勝率')),
+                width: 80,
               ),
               GridColumn(
                 columnName: '先攻勝率',
-                label: const Text('先攻勝率'),
+                label: const Center(child: Text('先攻勝率')),
+                width: 80,
               ),
               GridColumn(
                 columnName: '後攻勝率',
-                label: const Text('後攻勝率'),
+                label: const Center(child: Text('後攻勝率')),
+                width: 80,
               ),
             ],
           );

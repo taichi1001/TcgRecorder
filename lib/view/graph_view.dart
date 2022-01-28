@@ -20,13 +20,13 @@ class GraphView extends HookConsumerWidget {
           tabs: const [
             Tab(
               icon: Icon(
-                Icons.timer_off,
+                Icons.table_rows,
                 color: Colors.black,
               ),
             ),
             Tab(
               icon: Icon(
-                Icons.timer_off,
+                Icons.pie_chart_outline,
                 color: Colors.black,
               ),
             )

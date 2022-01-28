@@ -62,7 +62,7 @@ class RecordListNotifier extends StateNotifier<RecordListState> {
     if (state.allRecordList != null) {
       final win = countWins(deck);
       final matches = countMatches(deck);
-      return win.toDouble() / matches.toDouble();
+      return double.parse((win.toDouble() / matches.toDouble() * 100).toStringAsFixed(1));
     }
     return 0;
   }
@@ -74,7 +74,7 @@ class RecordListNotifier extends StateNotifier<RecordListState> {
       final firstRecords = recordList.where((record) => record.firstSecond == true).toList();
       final win = firstRecords.where((record) => record.winLoss == true).length;
       final matches = countFirstMatches(deck);
-      return win.toDouble() / matches.toDouble();
+      return double.parse((win.toDouble() / matches.toDouble() * 100).toStringAsFixed(1));
     }
     return 0;
   }
@@ -86,7 +86,7 @@ class RecordListNotifier extends StateNotifier<RecordListState> {
       final secondRecords = recordList.where((record) => record.firstSecond == false).toList();
       final win = secondRecords.where((record) => record.winLoss == true).length;
       final matches = countSecondMatches(deck);
-      return win.toDouble() / matches.toDouble();
+      return double.parse((win.toDouble() / matches.toDouble() * 100).toStringAsFixed(1));
     }
     return 0;
   }
