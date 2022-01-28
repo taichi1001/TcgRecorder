@@ -47,16 +47,14 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
   void setUseDeck() {
     state = state.copyWith(useDeck: state.cacheUseDeck);
     if (state.cacheUseDeck != null) {
-      read(textEditingControllerNotifierProvider.notifier)
-          .setUseDeckController(state.cacheUseDeck!.deck);
+      read(textEditingControllerNotifierProvider.notifier).setUseDeckController(state.cacheUseDeck!.deck);
     }
   }
 
   void setOpponentDeck() {
     state = state.copyWith(opponentDeck: state.cacheOpponentDeck);
     if (state.cacheOpponentDeck != null) {
-      read(textEditingControllerNotifierProvider.notifier)
-          .setOpponentDeckController(state.cacheOpponentDeck!.deck);
+      read(textEditingControllerNotifierProvider.notifier).setOpponentDeckController(state.cacheOpponentDeck!.deck);
     }
   }
 

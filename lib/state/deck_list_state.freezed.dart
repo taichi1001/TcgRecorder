@@ -33,21 +33,18 @@ mixin _$DeckListState {
   List<Deck>? get allDeckList => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $DeckListStateCopyWith<DeckListState> get copyWith =>
-      throw _privateConstructorUsedError;
+  $DeckListStateCopyWith<DeckListState> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $DeckListStateCopyWith<$Res> {
-  factory $DeckListStateCopyWith(
-          DeckListState value, $Res Function(DeckListState) then) =
+  factory $DeckListStateCopyWith(DeckListState value, $Res Function(DeckListState) then) =
       _$DeckListStateCopyWithImpl<$Res>;
   $Res call({List<Deck>? allDeckList});
 }
 
 /// @nodoc
-class _$DeckListStateCopyWithImpl<$Res>
-    implements $DeckListStateCopyWith<$Res> {
+class _$DeckListStateCopyWithImpl<$Res> implements $DeckListStateCopyWith<$Res> {
   _$DeckListStateCopyWithImpl(this._value, this._then);
 
   final DeckListState _value;
@@ -68,21 +65,17 @@ class _$DeckListStateCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$DeckListStateCopyWith<$Res>
-    implements $DeckListStateCopyWith<$Res> {
-  factory _$DeckListStateCopyWith(
-          _DeckListState value, $Res Function(_DeckListState) then) =
+abstract class _$DeckListStateCopyWith<$Res> implements $DeckListStateCopyWith<$Res> {
+  factory _$DeckListStateCopyWith(_DeckListState value, $Res Function(_DeckListState) then) =
       __$DeckListStateCopyWithImpl<$Res>;
   @override
   $Res call({List<Deck>? allDeckList});
 }
 
 /// @nodoc
-class __$DeckListStateCopyWithImpl<$Res>
-    extends _$DeckListStateCopyWithImpl<$Res>
+class __$DeckListStateCopyWithImpl<$Res> extends _$DeckListStateCopyWithImpl<$Res>
     implements _$DeckListStateCopyWith<$Res> {
-  __$DeckListStateCopyWithImpl(
-      _DeckListState _value, $Res Function(_DeckListState) _then)
+  __$DeckListStateCopyWithImpl(_DeckListState _value, $Res Function(_DeckListState) _then)
       : super(_value, (v) => _then(v as _DeckListState));
 
   @override
@@ -119,13 +112,11 @@ class _$_DeckListState implements _DeckListState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _DeckListState &&
-            const DeepCollectionEquality()
-                .equals(other.allDeckList, allDeckList));
+            const DeepCollectionEquality().equals(other.allDeckList, allDeckList));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(allDeckList));
+  int get hashCode => Object.hash(runtimeType, const DeepCollectionEquality().hash(allDeckList));
 
   @JsonKey(ignore: true)
   @override
@@ -140,6 +131,5 @@ abstract class _DeckListState implements DeckListState {
   List<Deck>? get allDeckList;
   @override
   @JsonKey(ignore: true)
-  _$DeckListStateCopyWith<_DeckListState> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$DeckListStateCopyWith<_DeckListState> get copyWith => throw _privateConstructorUsedError;
 }

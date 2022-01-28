@@ -65,8 +65,7 @@ class _ModalButton extends StatelessWidget {
         ),
       ),
       child: Row(
-        mainAxisAlignment:
-            actionButton != null ? MainAxisAlignment.spaceBetween : MainAxisAlignment.end,
+        mainAxisAlignment: actionButton != null ? MainAxisAlignment.spaceBetween : MainAxisAlignment.end,
         children: <Widget>[
           if (actionButton != null) actionButton!,
           CupertinoButton(

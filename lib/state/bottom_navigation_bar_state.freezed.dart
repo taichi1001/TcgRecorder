@@ -18,8 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$BottomNavigationBarStateTearOff {
   const _$BottomNavigationBarStateTearOff();
 
-  _BottomNavigationBarState call(
-      {BottomTabItem viewItem = BottomTabItem.inputScreen}) {
+  _BottomNavigationBarState call({BottomTabItem viewItem = BottomTabItem.inputScreen}) {
     return _BottomNavigationBarState(
       viewItem: viewItem,
     );
@@ -34,21 +33,19 @@ mixin _$BottomNavigationBarState {
   BottomTabItem get viewItem => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $BottomNavigationBarStateCopyWith<BottomNavigationBarState> get copyWith =>
-      throw _privateConstructorUsedError;
+  $BottomNavigationBarStateCopyWith<BottomNavigationBarState> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $BottomNavigationBarStateCopyWith<$Res> {
-  factory $BottomNavigationBarStateCopyWith(BottomNavigationBarState value,
-          $Res Function(BottomNavigationBarState) then) =
+  factory $BottomNavigationBarStateCopyWith(
+          BottomNavigationBarState value, $Res Function(BottomNavigationBarState) then) =
       _$BottomNavigationBarStateCopyWithImpl<$Res>;
   $Res call({BottomTabItem viewItem});
 }
 
 /// @nodoc
-class _$BottomNavigationBarStateCopyWithImpl<$Res>
-    implements $BottomNavigationBarStateCopyWith<$Res> {
+class _$BottomNavigationBarStateCopyWithImpl<$Res> implements $BottomNavigationBarStateCopyWith<$Res> {
   _$BottomNavigationBarStateCopyWithImpl(this._value, this._then);
 
   final BottomNavigationBarState _value;
@@ -69,26 +66,23 @@ class _$BottomNavigationBarStateCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$BottomNavigationBarStateCopyWith<$Res>
-    implements $BottomNavigationBarStateCopyWith<$Res> {
-  factory _$BottomNavigationBarStateCopyWith(_BottomNavigationBarState value,
-          $Res Function(_BottomNavigationBarState) then) =
+abstract class _$BottomNavigationBarStateCopyWith<$Res> implements $BottomNavigationBarStateCopyWith<$Res> {
+  factory _$BottomNavigationBarStateCopyWith(
+          _BottomNavigationBarState value, $Res Function(_BottomNavigationBarState) then) =
       __$BottomNavigationBarStateCopyWithImpl<$Res>;
   @override
   $Res call({BottomTabItem viewItem});
 }
 
 /// @nodoc
-class __$BottomNavigationBarStateCopyWithImpl<$Res>
-    extends _$BottomNavigationBarStateCopyWithImpl<$Res>
+class __$BottomNavigationBarStateCopyWithImpl<$Res> extends _$BottomNavigationBarStateCopyWithImpl<$Res>
     implements _$BottomNavigationBarStateCopyWith<$Res> {
-  __$BottomNavigationBarStateCopyWithImpl(_BottomNavigationBarState _value,
-      $Res Function(_BottomNavigationBarState) _then)
+  __$BottomNavigationBarStateCopyWithImpl(
+      _BottomNavigationBarState _value, $Res Function(_BottomNavigationBarState) _then)
       : super(_value, (v) => _then(v as _BottomNavigationBarState));
 
   @override
-  _BottomNavigationBarState get _value =>
-      super._value as _BottomNavigationBarState;
+  _BottomNavigationBarState get _value => super._value as _BottomNavigationBarState;
 
   @override
   $Res call({
@@ -126,24 +120,20 @@ class _$_BottomNavigationBarState implements _BottomNavigationBarState {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(viewItem));
+  int get hashCode => Object.hash(runtimeType, const DeepCollectionEquality().hash(viewItem));
 
   @JsonKey(ignore: true)
   @override
   _$BottomNavigationBarStateCopyWith<_BottomNavigationBarState> get copyWith =>
-      __$BottomNavigationBarStateCopyWithImpl<_BottomNavigationBarState>(
-          this, _$identity);
+      __$BottomNavigationBarStateCopyWithImpl<_BottomNavigationBarState>(this, _$identity);
 }
 
 abstract class _BottomNavigationBarState implements BottomNavigationBarState {
-  factory _BottomNavigationBarState({BottomTabItem viewItem}) =
-      _$_BottomNavigationBarState;
+  factory _BottomNavigationBarState({BottomTabItem viewItem}) = _$_BottomNavigationBarState;
 
   @override
   BottomTabItem get viewItem;
   @override
   @JsonKey(ignore: true)
-  _$BottomNavigationBarStateCopyWith<_BottomNavigationBarState> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$BottomNavigationBarStateCopyWith<_BottomNavigationBarState> get copyWith => throw _privateConstructorUsedError;
 }

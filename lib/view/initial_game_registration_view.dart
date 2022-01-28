@@ -11,8 +11,7 @@ class InitialGameRegistrationView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final gameTextEditingController = useTextEditingController();
-    final initialGameRegistrationNotifier =
-        ref.read(initialGameRegistrationNotifierProvider.notifier);
+    final initialGameRegistrationNotifier = ref.read(initialGameRegistrationNotifierProvider.notifier);
     final initialGameState = ref.watch(initialGameRegistrationNotifierProvider);
     return Scaffold(
       body: Center(

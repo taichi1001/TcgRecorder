@@ -16,8 +16,7 @@ class GameWinRateDataNotifier extends StateNotifier<GameWinRateDataState> {
   }
 }
 
-final gameWinRateDataNotifierProvider =
-    StateNotifierProvider<GameWinRateDataNotifier, GameWinRateDataState>(
+final gameWinRateDataNotifierProvider = StateNotifierProvider<GameWinRateDataNotifier, GameWinRateDataState>(
   (ref) {
     final gameDataGridNotifier = GameWinRateDataNotifier(ref.read);
     final gameRecordList = ref.watch(gameRecordListProvider);
@@ -39,10 +38,8 @@ final gameWinRateDataNotifierProvider =
       final win = ref.read(allRecordListNotifierProvider.notifier).countWins(useDeck);
       final loss = ref.read(allRecordListNotifierProvider.notifier).countLoss(useDeck);
       final winRate = ref.read(allRecordListNotifierProvider.notifier).calcWinRate(useDeck);
-      final winRateOfFirst =
-          ref.read(allRecordListNotifierProvider.notifier).calcWinRateOfFirst(useDeck);
-      final winRateOfSecond =
-          ref.read(allRecordListNotifierProvider.notifier).calcWinRateOfSecond(useDeck);
+      final winRateOfFirst = ref.read(allRecordListNotifierProvider.notifier).calcWinRateOfFirst(useDeck);
+      final winRateOfSecond = ref.read(allRecordListNotifierProvider.notifier).calcWinRateOfSecond(useDeck);
 
       return WinRateData(
         deck: deck,

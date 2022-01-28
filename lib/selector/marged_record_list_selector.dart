@@ -48,9 +48,7 @@ class MargedRecordListNotifier extends StateNotifier<MargedRecordListState> {
 
   double calcWinRateOfFirst() {
     if (state.margedRecordList != null) {
-      final firstRecords = state.margedRecordList!
-          .where((margedRecord) => margedRecord.firstSecond == true)
-          .toList();
+      final firstRecords = state.margedRecordList!.where((margedRecord) => margedRecord.firstSecond == true).toList();
       final win = firstRecords.where((margedRecord) => margedRecord.winLoss == true).length;
       final matches = countMatches();
       return win.toDouble() / matches.toDouble();
@@ -60,9 +58,7 @@ class MargedRecordListNotifier extends StateNotifier<MargedRecordListState> {
 
   double calcWinRateOfSecond() {
     if (state.margedRecordList != null) {
-      final secondRecords = state.margedRecordList!
-          .where((margedRecord) => margedRecord.firstSecond == false)
-          .toList();
+      final secondRecords = state.margedRecordList!.where((margedRecord) => margedRecord.firstSecond == false).toList();
       final win = secondRecords.where((margedRecord) => margedRecord.winLoss == true).length;
       final matches = countMatches();
       return win.toDouble() / matches.toDouble();
@@ -71,23 +67,18 @@ class MargedRecordListNotifier extends StateNotifier<MargedRecordListState> {
   }
 }
 
-final margedRecordListProvider =
-    StateNotifierProvider<MargedRecordListNotifier, MargedRecordListState>((ref) {
+final margedRecordListProvider = StateNotifierProvider<MargedRecordListNotifier, MargedRecordListState>((ref) {
   final margedRecordListNotifier = MargedRecordListNotifier(ref.read);
   final selectGameRecordList = ref.watch(gameRecordListProvider);
   final allGameList = ref.read(allGameListNotifierProvider).allGameList;
   final allDeckList = ref.read(allDeckListNotifierProvider).allDeckList;
   final allTagList = ref.read(allTagListNotifierProvider).allTagList;
 
-  if (selectGameRecordList != null &&
-      allGameList != null &&
-      allDeckList != null &&
-      allTagList != null) {
+  if (selectGameRecordList != null && allGameList != null && allDeckList != null && allTagList != null) {
     final list = selectGameRecordList.map((Record record) {
       final game = allGameList.singleWhere((value) => value.gameId == record.gameId);
       final useDeck = allDeckList.singleWhere((value) => value.deckId == record.useDeckId);
-      final opponentDeck =
-          allDeckList.singleWhere((value) => value.deckId == record.opponentDeckId);
+      final opponentDeck = allDeckList.singleWhere((value) => value.deckId == record.opponentDeckId);
       // final tag = allTagList.singleWhere((value) => value.tagId == record.tagId);
       return MargedRecord(
         recordId: record.recordId!,

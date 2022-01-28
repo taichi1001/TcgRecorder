@@ -25,8 +25,7 @@ class DatabaseService {
     final documentsDirectory = await getApplicationDocumentsDirectory();
     final path = join(documentsDirectory.path, _databaseName);
 
-    final database =
-        await openDatabase(path, version: _databaseVersion, onCreate: initDB, onUpgrade: onUpgrade);
+    final database = await openDatabase(path, version: _databaseVersion, onCreate: initDB, onUpgrade: onUpgrade);
     return database;
   }
 

@@ -22,8 +22,7 @@ class RecordListNotifier extends StateNotifier<RecordListState> {
 
   int countFirstMatches(Deck deck) {
     if (state.allRecordList != null) {
-      final recordList =
-          state.allRecordList!.where((record) => record.useDeckId == deck.deckId).toList();
+      final recordList = state.allRecordList!.where((record) => record.useDeckId == deck.deckId).toList();
       final firstRecords = recordList.where((record) => record.firstSecond == true).toList();
       return firstRecords.where((record) => record.useDeckId == deck.deckId).length;
     }
@@ -32,8 +31,7 @@ class RecordListNotifier extends StateNotifier<RecordListState> {
 
   int countSecondMatches(Deck deck) {
     if (state.allRecordList != null) {
-      final recordList =
-          state.allRecordList!.where((record) => record.useDeckId == deck.deckId).toList();
+      final recordList = state.allRecordList!.where((record) => record.useDeckId == deck.deckId).toList();
       final secondRecords = recordList.where((record) => record.firstSecond == false).toList();
       return secondRecords.where((record) => record.useDeckId == deck.deckId).length;
     }
@@ -42,8 +40,7 @@ class RecordListNotifier extends StateNotifier<RecordListState> {
 
   int countWins(Deck deck) {
     if (state.allRecordList != null) {
-      final recordList =
-          state.allRecordList!.where((record) => record.useDeckId == deck.deckId).toList();
+      final recordList = state.allRecordList!.where((record) => record.useDeckId == deck.deckId).toList();
       return recordList.where((record) => record.winLoss == true).length;
     }
     return 0;
@@ -51,8 +48,7 @@ class RecordListNotifier extends StateNotifier<RecordListState> {
 
   int countLoss(Deck deck) {
     if (state.allRecordList != null) {
-      final recordList =
-          state.allRecordList!.where((record) => record.useDeckId == deck.deckId).toList();
+      final recordList = state.allRecordList!.where((record) => record.useDeckId == deck.deckId).toList();
       return recordList.where((record) => record.winLoss == false).length;
     }
     return 0;
@@ -69,8 +65,7 @@ class RecordListNotifier extends StateNotifier<RecordListState> {
 
   double calcWinRateOfFirst(Deck deck) {
     if (state.allRecordList != null) {
-      final recordList =
-          state.allRecordList!.where((record) => record.useDeckId == deck.deckId).toList();
+      final recordList = state.allRecordList!.where((record) => record.useDeckId == deck.deckId).toList();
       final firstRecords = recordList.where((record) => record.firstSecond == true).toList();
       final win = firstRecords.where((record) => record.winLoss == true).length;
       final matches = countFirstMatches(deck);
@@ -81,8 +76,7 @@ class RecordListNotifier extends StateNotifier<RecordListState> {
 
   double calcWinRateOfSecond(Deck deck) {
     if (state.allRecordList != null) {
-      final recordList =
-          state.allRecordList!.where((record) => record.useDeckId == deck.deckId).toList();
+      final recordList = state.allRecordList!.where((record) => record.useDeckId == deck.deckId).toList();
       final secondRecords = recordList.where((record) => record.firstSecond == false).toList();
       final win = secondRecords.where((record) => record.winLoss == true).length;
       final matches = countSecondMatches(deck);

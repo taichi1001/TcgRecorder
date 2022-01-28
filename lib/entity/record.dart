@@ -12,12 +12,8 @@ class Record with _$Record {
     @JsonKey(name: 'use_deck_id') int? useDeckId,
     @JsonKey(name: 'opponent_deck_id') int? opponentDeckId,
     @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson) DateTime? date,
-    @Default(true)
-    @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'first_second')
-        bool firstSecond,
-    @Default(true)
-    @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'win_loss')
-        bool winLoss,
+    @Default(true) @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'first_second') bool firstSecond,
+    @Default(true) @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'win_loss') bool winLoss,
     String? memo,
   }) = _Record;
   factory Record.fromJson(Map<String, dynamic> json) => _$RecordFromJson(json);

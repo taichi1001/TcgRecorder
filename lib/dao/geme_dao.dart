@@ -14,15 +14,13 @@ class GameDao {
   Future<List<Game>> getAll() async {
     final db = await dbProvider.database;
     final result = await db.query(tableName);
-    final List<Game> games =
-        result.isNotEmpty ? result.map((item) => Game.fromJson(item)).toList() : [];
+    final List<Game> games = result.isNotEmpty ? result.map((item) => Game.fromJson(item)).toList() : [];
     return games;
   }
 
   Future<int> update(Game game) async {
     final db = await dbProvider.database;
-    final result =
-        await db.update(tableName, game.toJson(), where: 'game_id = ?', whereArgs: [game.gameId]);
+    final result = await db.update(tableName, game.toJson(), where: 'game_id = ?', whereArgs: [game.gameId]);
     return result;
   }
 

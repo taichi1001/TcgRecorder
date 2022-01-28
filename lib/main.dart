@@ -58,9 +58,7 @@ class MainApp extends HookConsumerWidget {
       locale: DevicePreview.locale(context),
       builder: DevicePreview.appBuilder,
       home: Scaffold(
-        body: gameListState.allGameList!.isEmpty
-            ? const InitialGameRegistrationView()
-            : const BottomNavigationView(),
+        body: gameListState.allGameList!.isEmpty ? const InitialGameRegistrationView() : const BottomNavigationView(),
       ),
     );
   }
