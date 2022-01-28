@@ -15,7 +15,7 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
+      padding: const EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
       child: Row(
         mainAxisSize: MainAxisSize.max,
         children: [
@@ -27,7 +27,7 @@ class CustomTextField extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(
-                  color: Color(0xFFE6E6E6),
+                  color: const Color(0xFFE6E6E6),
                 ),
               ),
               child: Align(
@@ -38,13 +38,10 @@ class CustomTextField extends StatelessWidget {
                     controller: controller,
                     onChanged: onChanged,
                     obscureText: false,
+                    cursorColor: const Color(0xFF18204E),
                     decoration: InputDecoration(
                       labelText: labelText,
-                      // labelStyle: FlutterFlowTheme.bodyText2.override(
-                      //   fontFamily: 'Montserrat',
-                      //   color: Color(0xFF8B97A2),
-                      //   fontWeight: FontWeight.w500,
-                      // ),
+                      floatingLabelStyle: const TextStyle(color: Color(0xFF18204E)),
                       enabledBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(
                           color: Color(0x00000000),

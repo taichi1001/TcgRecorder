@@ -12,11 +12,13 @@ class CustomScaffold extends HookConsumerWidget {
     required this.body,
     this.rightButton,
     this.appBarBottom,
+    this.padding,
     key,
   }) : super(key: key);
   final Widget body;
   final Widget? rightButton;
   final PreferredSizeWidget? appBarBottom;
+  final EdgeInsetsGeometry? padding;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectGame = ref.watch(selectGameNotifierProvider);
@@ -51,7 +53,7 @@ class CustomScaffold extends HookConsumerWidget {
       ),
       backgroundColor: Colors.white,
       body: Padding(
-        padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 0),
+        padding: padding != null ? padding! : const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 0),
         child: body,
       ),
     );

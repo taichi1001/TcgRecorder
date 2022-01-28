@@ -13,7 +13,8 @@ import 'package:tcg_recorder2/view/initial_game_registration_view.dart';
 void main() {
   runApp(
     DevicePreview(
-      enabled: !kReleaseMode,
+      // enabled: !kReleaseMode,
+      enabled: false,
       builder: (context) => const ProviderScope(
         child: MainApp(),
       ),
