@@ -30,8 +30,6 @@ dependencies:
 
   syncfusion_flutter_datagrid: ^19.4.47
 
-  ndialog: ^4.1.0
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
