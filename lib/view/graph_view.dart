@@ -13,21 +13,23 @@ class GraphView extends HookConsumerWidget {
       length: 2,
       child: CustomScaffold(
         appBarBottom: TabBar(
+          labelColor: const Color(0xFF18204E),
+          unselectedLabelColor: Colors.black38,
           indicator: MaterialIndicator(
-            color: Colors.black,
+            color: const Color(0xFF18204E),
             horizontalPadding: 16,
           ),
           tabs: const [
             Tab(
               icon: Icon(
                 Icons.table_rows,
-                color: Colors.black,
+                // color: Colors.black,
               ),
             ),
             Tab(
               icon: Icon(
                 Icons.pie_chart_outline,
-                color: Colors.black,
+                // color: Colors.black,
               ),
             )
           ],

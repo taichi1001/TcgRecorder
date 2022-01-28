@@ -94,6 +94,7 @@ class InputView extends HookConsumerWidget {
                     title: const Text('先攻'),
                     value: FirstSecond.first,
                     groupValue: firstSecond,
+                    activeColor: const Color(0xFF18204E),
                     onChanged: (FirstSecond? value) {
                       inputViewNotifier.selectFirstSecond(value);
                     },
@@ -104,6 +105,7 @@ class InputView extends HookConsumerWidget {
                     title: const Text('後攻'),
                     value: FirstSecond.second,
                     groupValue: firstSecond,
+                    activeColor: const Color(0xFF18204E),
                     onChanged: (FirstSecond? value) {
                       inputViewNotifier.selectFirstSecond(value);
                     },
@@ -118,6 +120,7 @@ class InputView extends HookConsumerWidget {
                     title: const Text('勝ち'),
                     value: WinLoss.win,
                     groupValue: winLoss,
+                    activeColor: const Color(0xFF18204E),
                     onChanged: (WinLoss? value) {
                       inputViewNotifier.selectWinLoss(value);
                     },
@@ -128,6 +131,7 @@ class InputView extends HookConsumerWidget {
                     title: const Text('負け'),
                     value: WinLoss.loss,
                     groupValue: winLoss,
+                    activeColor: const Color(0xFF18204E),
                     onChanged: (WinLoss? value) {
                       inputViewNotifier.selectWinLoss(value);
                     },
@@ -159,6 +163,7 @@ class InputView extends HookConsumerWidget {
                       },
                 child: const Text('SAVE'),
                 style: ElevatedButton.styleFrom(
+                  primary: const Color(0xFF18204E),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -187,7 +192,7 @@ class _DatePickerButton extends HookConsumerWidget {
     return IconButton(
       icon: const Icon(
         Icons.calendar_today_rounded,
-        color: Colors.black,
+        color: Color(0xFF18204E),
         size: 16,
       ),
       onPressed: () {

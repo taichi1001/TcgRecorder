@@ -27,9 +27,12 @@ class BottomNavigationView extends HookConsumerWidget {
       home: Scaffold(
         body: _views[currentIndex],
         bottomNavigationBar: BottomNavigationBar(
+          selectedItemColor: const Color(0xFF18204E),
           items: const [
             BottomNavigationBarItem(
-              icon: Icon(Icons.border_color),
+              icon: Icon(
+                Icons.border_color,
+              ),
               label: '入力',
             ),
             BottomNavigationBarItem(
