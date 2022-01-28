@@ -25,8 +25,10 @@ class GameWinRateDataSource extends DataGridSource {
               DataGridCell(columnName: '勝', value: winRateData.win),
               DataGridCell(columnName: '負', value: winRateData.loss),
               DataGridCell(columnName: '勝率', value: winRateData.winRate),
-              DataGridCell(columnName: '先攻勝率', value: winRateData.winRateOfFirst),
-              DataGridCell(columnName: '後攻勝率', value: winRateData.winRateOfSecond),
+              DataGridCell(
+                  columnName: '先攻勝率', value: winRateData.winRateOfFirst),
+              DataGridCell(
+                  columnName: '後攻勝率', value: winRateData.winRateOfSecond),
             ],
           ),
         )
@@ -55,6 +57,9 @@ class GameWinRateDataSource extends DataGridSource {
 
   Widget _buildChild(DataGridCell cell) {
     if (cell.columnName == 'デッキ名') {
+      return Text(cell.value.toString());
+    }
+    if (cell.columnName == '試合数') {
       return Text(cell.value.toString());
     }
     if (cell.columnName == '勝') {

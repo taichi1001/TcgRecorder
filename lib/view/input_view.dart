@@ -1,3 +1,4 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -21,6 +22,8 @@ class InputView extends HookConsumerWidget {
     final date = ref.watch(inputViewNotifierProvider.select((value) => value.date));
     final winLoss = ref.watch(inputViewNotifierProvider.select((value) => value.winLoss));
     final firstSecond = ref.watch(inputViewNotifierProvider.select((value) => value.firstSecond));
+    final useDeck = ref.watch(inputViewNotifierProvider.select((value) => value.useDeck));
+    final opponentDeck = ref.watch(inputViewNotifierProvider.select((value) => value.opponentDeck));
     final inputViewNotifier = ref.read(inputViewNotifierProvider.notifier);
     final useDeckTextController = ref.watch(
       textEditingControllerNotifierProvider.select((value) => value.useDeckController),
@@ -140,11 +143,20 @@ class InputView extends HookConsumerWidget {
               width: 300,
               height: 50,
               child: ElevatedButton(
-                onPressed: () async {
-                  await inputViewNotifier.save();
-                  await ref.read(allDeckListNotifierProvider.notifier).fetch();
-                  await ref.read(allRecordListNotifierProvider.notifier).fetch();
-                },
+                onPressed: useDeck == null || opponentDeck == null
+                    ? null
+                    : () async {
+                        final okCancelResult = await showOkCancelAlertDialog(
+                          context: context,
+                          message: '保存してもいいですか？',
+                          isDestructiveAction: true,
+                        );
+                        if (okCancelResult == OkCancelResult.ok) {
+                          await inputViewNotifier.save();
+                          await ref.read(allDeckListNotifierProvider.notifier).fetch();
+                          await ref.read(allRecordListNotifierProvider.notifier).fetch();
+                        }
+                      },
                 child: const Text('SAVE'),
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(

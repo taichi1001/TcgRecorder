@@ -8,7 +8,8 @@ class GameDataGrid extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final source = ref.watch(gameWinRateDataSourceNotifierProvider).gameWinRateDataSource;
+    final source =
+        ref.watch(gameWinRateDataSourceNotifierProvider).gameWinRateDataSource;
     return source == null
         ? const Center(
             child: CircularProgressIndicator(),
@@ -39,12 +40,12 @@ class GameDataGrid extends HookConsumerWidget {
               GridColumn(
                 columnName: '勝率',
                 label: const Center(child: Text('勝率')),
-                width: 80,
+                width: 85,
               ),
               GridColumn(
                 columnName: '先攻勝率',
                 label: const Center(child: Text('先攻勝率')),
-                width: 80,
+                width: 85,
               ),
               GridColumn(
                 columnName: '後攻勝率',
