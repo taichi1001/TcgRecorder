@@ -5,8 +5,75 @@ import 'package:tcg_recorder2/provider/deck_list_provider.dart';
 import 'package:tcg_recorder2/provider/game_list_provider.dart';
 import 'package:tcg_recorder2/provider/tag_list_provider.dart';
 import 'package:tcg_recorder2/selector/game_record_list_selector.dart';
+import 'package:tcg_recorder2/state/marged_record_list_state.dart';
 
-final margedRecordListProvider = StateProvider<List<MargedRecord>>((ref) {
+class MargedRecordListNotifier extends StateNotifier<MargedRecordListState> {
+  MargedRecordListNotifier(this.read) : super(MargedRecordListState());
+
+  final Reader read;
+
+  void setMargedRecordList(List<MargedRecord> list) {
+    state = state.copyWith(margedRecordList: list);
+  }
+
+  int countMatches() {
+    if (state.margedRecordList != null) {
+      return state.margedRecordList!.length;
+    }
+    return 0;
+  }
+
+  int countWins() {
+    if (state.margedRecordList != null) {
+      return state.margedRecordList!.where((margedRecord) => margedRecord.winLoss == true).length;
+    }
+    return 0;
+  }
+
+  int countLoss() {
+    if (state.margedRecordList != null) {
+      return state.margedRecordList!.where((margedRecord) => margedRecord.winLoss == false).length;
+    }
+    return 0;
+  }
+
+  double calcWinRate() {
+    if (state.margedRecordList != null) {
+      final win = countWins();
+      final matches = countMatches();
+      return win.toDouble() / matches.toDouble();
+    }
+    return 0;
+  }
+
+  double calcWinRateOfFirst() {
+    if (state.margedRecordList != null) {
+      final firstRecords = state.margedRecordList!
+          .where((margedRecord) => margedRecord.firstSecond == true)
+          .toList();
+      final win = firstRecords.where((margedRecord) => margedRecord.winLoss == true).length;
+      final matches = countMatches();
+      return win.toDouble() / matches.toDouble();
+    }
+    return 0;
+  }
+
+  double calcWinRateOfSecond() {
+    if (state.margedRecordList != null) {
+      final secondRecords = state.margedRecordList!
+          .where((margedRecord) => margedRecord.firstSecond == false)
+          .toList();
+      final win = secondRecords.where((margedRecord) => margedRecord.winLoss == true).length;
+      final matches = countMatches();
+      return win.toDouble() / matches.toDouble();
+    }
+    return 0;
+  }
+}
+
+final margedRecordListProvider =
+    StateNotifierProvider<MargedRecordListNotifier, MargedRecordListState>((ref) {
+  final margedRecordListNotifier = MargedRecordListNotifier(ref.read);
   final selectGameRecordList = ref.watch(gameRecordListProvider);
   final allGameList = ref.read(allGameListNotifierProvider).allGameList;
   final allDeckList = ref.read(allDeckListNotifierProvider).allDeckList;
@@ -33,7 +100,10 @@ final margedRecordListProvider = StateProvider<List<MargedRecord>>((ref) {
         date: record.date!,
       );
     }).toList();
-    return list;
+
+    margedRecordListNotifier.setMargedRecordList(list);
+    return margedRecordListNotifier;
   }
-  return List.empty();
+  margedRecordListNotifier.setMargedRecordList(List.empty());
+  return margedRecordListNotifier;
 });

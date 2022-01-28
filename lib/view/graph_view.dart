@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import 'package:tcg_recorder2/view/component/custom_scaffold.dart';
+import 'package:tcg_recorder2/view/game_data_grid.dart';
 
 class GraphView extends HookConsumerWidget {
   const GraphView({Key? key}) : super(key: key);
@@ -34,7 +35,7 @@ class GraphView extends HookConsumerWidget {
         body: const TabBarView(
           children: [
             Center(
-              child: Text('表'),
+              child: GameDataGrid(),
             ),
             Center(
               child: Text('グラフ'),

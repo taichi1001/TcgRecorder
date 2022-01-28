@@ -9,7 +9,7 @@ class RecordListView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final recordList = ref.watch(margedRecordListProvider);
+    final recordList = ref.watch(margedRecordListProvider).margedRecordList;
 
     return CustomScaffold(
       rightButton: IconButton(
@@ -17,13 +17,17 @@ class RecordListView extends HookConsumerWidget {
         color: Colors.black,
         onPressed: () {},
       ),
-      body: ListView.builder(
-        itemCount: recordList.length,
-        itemBuilder: (context, index) => ProviderScope(
-          overrides: [currentRecord.overrideWithValue(recordList[index])],
-          child: const _BrandListTile(),
-        ),
-      ),
+      body: recordList == null
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : ListView.builder(
+              itemCount: recordList.length,
+              itemBuilder: (context, index) => ProviderScope(
+                overrides: [currentRecord.overrideWithValue(recordList[index])],
+                child: const _BrandListTile(),
+              ),
+            ),
     );
   }
 }

@@ -28,6 +28,8 @@ dependencies:
 
   tab_indicator_styler: ^2.0.0
 
+  syncfusion_flutter_datagrid: ^19.4.47
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
