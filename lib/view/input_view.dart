@@ -35,10 +35,11 @@ class InputView extends HookConsumerWidget {
     final outputFormat = DateFormat('yyyy年 MM月 dd日');
 
     return CustomScaffold(
-      body: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Column(
+          children: [
+            SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -143,38 +144,38 @@ class InputView extends HookConsumerWidget {
                 ],
               ),
             ),
-          ),
-          Center(
-            child: SizedBox(
-              width: 300,
-              height: 50,
-              child: ElevatedButton(
-                onPressed: useDeck == null || opponentDeck == null
-                    ? null
-                    : () async {
-                        final okCancelResult = await showOkCancelAlertDialog(
-                          context: context,
-                          message: '保存してもいいですか？',
-                          isDestructiveAction: true,
-                        );
-                        if (okCancelResult == OkCancelResult.ok) {
-                          await inputViewNotifier.save();
-                          await ref.read(allDeckListNotifierProvider.notifier).fetch();
-                          await ref.read(allRecordListNotifierProvider.notifier).fetch();
-                        }
-                      },
-                child: const Text('SAVE'),
-                style: ElevatedButton.styleFrom(
-                  primary: const Color(0xFF18204E),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+            Center(
+              child: SizedBox(
+                width: 300,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: useDeck == null || opponentDeck == null
+                      ? null
+                      : () async {
+                          final okCancelResult = await showOkCancelAlertDialog(
+                            context: context,
+                            message: '保存してもいいですか？',
+                            isDestructiveAction: true,
+                          );
+                          if (okCancelResult == OkCancelResult.ok) {
+                            await inputViewNotifier.save();
+                            await ref.read(allDeckListNotifierProvider.notifier).fetch();
+                            await ref.read(allRecordListNotifierProvider.notifier).fetch();
+                          }
+                        },
+                  child: const Text('SAVE'),
+                  style: ElevatedButton.styleFrom(
+                    primary: const Color(0xFF18204E),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          const SizedBox(height: 24),
-        ],
+            const SizedBox(height: 24),
+          ],
+        ),
       ),
     );
   }
