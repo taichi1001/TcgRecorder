@@ -50,7 +50,6 @@ class InputView extends HookConsumerWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // Text(date.toIso8601String()),
                       Text(outputFormat.format(date)),
                       _DatePickerButton(
                         submited: inputViewNotifier.setDateTime,
