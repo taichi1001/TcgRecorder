@@ -230,21 +230,23 @@ class _ListPickerButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       icon: const Icon(Icons.arrow_drop_down),
-      onPressed: () {
-        showCupertinoModalPopup(
-          context: context,
-          builder: (BuildContext context) {
-            return CustomModalListPicker(
-              submited: () {
-                submited();
-                Navigator.pop(context);
-              },
-              onSelectedItemChanged: onSelectedItemChanged,
-              children: children,
-            );
-          },
-        );
-      },
+      onPressed: children.isEmpty
+          ? null
+          : () {
+              showCupertinoModalPopup(
+                context: context,
+                builder: (BuildContext context) {
+                  return CustomModalListPicker(
+                    submited: () {
+                      submited();
+                      Navigator.pop(context);
+                    },
+                    onSelectedItemChanged: onSelectedItemChanged,
+                    children: children,
+                  );
+                },
+              );
+            },
     );
   }
 }
