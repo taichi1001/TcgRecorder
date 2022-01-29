@@ -14,16 +14,19 @@ class InitialGameRegistrationView extends HookConsumerWidget {
     final initialGameRegistrationNotifier = ref.read(initialGameRegistrationNotifierProvider.notifier);
     final initialGameState = ref.watch(initialGameRegistrationNotifierProvider);
     return Scaffold(
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text('記録したいゲーム名を入力してください'),
+            const SizedBox(height: 16),
             CustomTextField(
               labelText: 'ゲーム名',
               controller: gameTextEditingController,
               onChanged: initialGameRegistrationNotifier.changeGameForString,
             ),
+            const SizedBox(height: 16),
             SizedBox(
               width: 300,
               height: 50,
@@ -38,6 +41,7 @@ class InitialGameRegistrationView extends HookConsumerWidget {
                 },
                 child: const Text('SAVE'),
                 style: ElevatedButton.styleFrom(
+                  primary: const Color(0xFF18204E),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
