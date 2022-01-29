@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
+import 'package:tcg_recorder2/selector/game_record_list_selector.dart';
 import 'package:tcg_recorder2/view/component/custom_scaffold.dart';
 import 'package:tcg_recorder2/view/game_data_grid.dart';
 
@@ -9,6 +10,7 @@ class GraphView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final recordList = ref.watch(gameRecordListProvider);
     return DefaultTabController(
       length: 2,
       child: CustomScaffold(
@@ -36,13 +38,13 @@ class GraphView extends HookConsumerWidget {
             )
           ],
         ),
-        body: const TabBarView(
+        body: TabBarView(
           children: [
             Center(
-              child: GameDataGrid(),
+              child: recordList.isEmpty ? const Center(child: Text('このゲームの記録はありません')) : const GameDataGrid(),
             ),
             Center(
-              child: Text('グラフ'),
+              child: recordList.isEmpty ? const Center(child: Text('このゲームの記録はありません')) : const Text('グラフ'),
             ),
           ],
         ),

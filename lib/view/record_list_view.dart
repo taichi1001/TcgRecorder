@@ -21,13 +21,15 @@ class RecordListView extends HookConsumerWidget {
           ? const Center(
               child: CircularProgressIndicator(),
             )
-          : ListView.builder(
-              itemCount: recordList.length,
-              itemBuilder: (context, index) => ProviderScope(
-                overrides: [currentRecord.overrideWithValue(recordList[index])],
-                child: const _BrandListTile(),
-              ),
-            ),
+          : recordList.isEmpty
+              ? const Center(child: Text('このゲームの記録はありません'))
+              : ListView.builder(
+                  itemCount: recordList.length,
+                  itemBuilder: (context, index) => ProviderScope(
+                    overrides: [currentRecord.overrideWithValue(recordList[index])],
+                    child: const _BrandListTile(),
+                  ),
+                ),
     );
   }
 }
