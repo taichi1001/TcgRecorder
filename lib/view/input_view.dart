@@ -2,6 +2,7 @@ import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:tcg_recorder2/provider/deck_list_provider.dart';
 import 'package:tcg_recorder2/provider/input_view_provider.dart';
 import 'package:tcg_recorder2/provider/record_list_provider.dart';
@@ -31,6 +32,7 @@ class InputView extends HookConsumerWidget {
     final opponentDeckTextController = ref.watch(
       textEditingControllerNotifierProvider.select((value) => value.opponentDeckController),
     );
+    final outputFormat = DateFormat('yyyy年 MM月 dd日');
 
     return CustomScaffold(
       body: Column(
@@ -48,7 +50,8 @@ class InputView extends HookConsumerWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(date.toIso8601String()),
+                      // Text(date.toIso8601String()),
+                      Text(outputFormat.format(date)),
                       _DatePickerButton(
                         submited: inputViewNotifier.setDateTime,
                         onDateTimeChanged: inputViewNotifier.scrollDateTime,
