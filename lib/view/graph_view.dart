@@ -10,7 +10,7 @@ class GraphView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final recordList = ref.watch(gameRecordListProvider);
+    final recordList = ref.watch(gameRecordListNotifierProvider.select((value) => value.gameRecordList));
     return DefaultTabController(
       length: 2,
       child: CustomScaffold(
@@ -27,13 +27,11 @@ class GraphView extends HookConsumerWidget {
             Tab(
               icon: Icon(
                 Icons.table_rows,
-                // color: Colors.black,
               ),
             ),
             Tab(
               icon: Icon(
                 Icons.pie_chart_outline,
-                // color: Colors.black,
               ),
             )
           ],
@@ -41,7 +39,7 @@ class GraphView extends HookConsumerWidget {
         body: TabBarView(
           children: [
             Center(
-              child: recordList.isEmpty ? const Center(child: Text('このゲームの記録はありません')) : const GameDataGrid(),
+              child: recordList!.isEmpty ? const Center(child: Text('このゲームの記録はありません')) : const GameDataGrid(),
             ),
             Center(
               child: recordList.isEmpty ? const Center(child: Text('このゲームの記録はありません')) : const Text('グラフ'),

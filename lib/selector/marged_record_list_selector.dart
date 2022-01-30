@@ -69,7 +69,7 @@ class MargedRecordListNotifier extends StateNotifier<MargedRecordListState> {
 
 final margedRecordListProvider = StateNotifierProvider<MargedRecordListNotifier, MargedRecordListState>((ref) {
   final margedRecordListNotifier = MargedRecordListNotifier(ref.read);
-  final selectGameRecordList = ref.watch(gameRecordListProvider);
+  final selectGameRecordList = ref.watch(gameRecordListNotifierProvider).gameRecordList;
   final allGameList = ref.read(allGameListNotifierProvider).allGameList;
   final allDeckList = ref.read(allDeckListNotifierProvider).allDeckList;
   final allTagList = ref.read(allTagListNotifierProvider).allTagList;
