@@ -20,6 +20,7 @@ class GameDataGrid extends HookConsumerWidget {
             ),
             child: SfDataGrid(
               source: source,
+              frozenColumnsCount: 1,
               columns: [
                 GridColumn(
                   columnName: 'デッキ名',
