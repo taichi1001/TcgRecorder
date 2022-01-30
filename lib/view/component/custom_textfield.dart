@@ -37,11 +37,16 @@ class CustomTextField extends StatelessWidget {
                   child: TextFormField(
                     controller: controller,
                     onChanged: onChanged,
+                    style: const TextStyle(fontSize: 16),
                     obscureText: false,
                     cursorColor: const Color(0xFF18204E),
                     decoration: InputDecoration(
                       labelText: labelText,
-                      floatingLabelStyle: const TextStyle(color: Color(0xFF18204E)),
+                      labelStyle: const TextStyle(fontSize: 12),
+                      floatingLabelStyle: const TextStyle(
+                        color: Color(0xFF18204E),
+                        fontSize: 10,
+                      ),
                       enabledBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(
                           color: Color(0x00000000),
