@@ -14,14 +14,16 @@ class RecordListView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final recordList = ref.watch(margedRecordListProvider).margedRecordList;
+    // レコードが古い順に表示されるため、リストを逆にして新しい順にしている
+    final reverseRecordList = List.from(recordList!.reversed);
     final recordListNotifier = ref.read(allRecordListNotifierProvider.notifier);
 
     return CustomScaffold(
-      rightButton: IconButton(
-        icon: const Icon(Icons.filter_list),
-        color: Colors.black,
-        onPressed: () {},
-      ),
+      // rightButton: IconButton(
+      //   icon: const Icon(Icons.filter_list),
+      //   color: Colors.black,
+      //   onPressed: () {},
+      // ),
       body: recordList == null
           ? const Center(
               child: CircularProgressIndicator(),
@@ -29,9 +31,9 @@ class RecordListView extends HookConsumerWidget {
           : recordList.isEmpty
               ? const Center(child: Text('このゲームの記録はありません'))
               : ListView.builder(
-                  itemCount: recordList.length,
+                  itemCount: reverseRecordList.length,
                   itemBuilder: (context, index) => ProviderScope(
-                    overrides: [currentRecord.overrideWithValue(recordList[index])],
+                    overrides: [currentRecord.overrideWithValue(reverseRecordList[index])],
                     child: Dismissible(
                       direction: DismissDirection.endToStart,
                       background: Container(
