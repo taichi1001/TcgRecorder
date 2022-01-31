@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:tcg_recorder2/provider/game_win_rate_data_source_provider.dart';
 
 class GameDataGrid extends HookConsumerWidget {
@@ -17,6 +17,8 @@ class GameDataGrid extends HookConsumerWidget {
         : SfDataGridTheme(
             data: SfDataGridThemeData(
               headerColor: const Color(0xFF18204E),
+              frozenPaneElevation: 0,
+              frozenPaneLineWidth: 1.5,
             ),
             child: SfDataGrid(
               source: source,
