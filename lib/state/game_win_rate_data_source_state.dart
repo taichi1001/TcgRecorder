@@ -65,7 +65,14 @@ class GameWinRateDataSource extends DataGridSource {
           onPressed: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) => DeckDataGrid(deck: cell.value)));
           },
-          child: Text(cell.value.toString()),
+          child: Text(
+            cell.value.toString(),
+            style: const TextStyle(
+              decoration: TextDecoration.underline,
+              color: Colors.black,
+              fontSize: 12,
+            ),
+          ),
         );
       }
     }
