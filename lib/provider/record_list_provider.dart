@@ -13,6 +13,11 @@ class RecordListNotifier extends StateNotifier<RecordListState> {
     state = state.copyWith(allRecordList: recordList);
   }
 
+  Future delete(int i) async {
+    await read(recordRepository).deleteById(i);
+    await fetch();
+  }
+
   int countUseDeckMatches(Deck deck) {
     if (state.allRecordList != null) {
       return state.allRecordList!.where((record) => record.useDeckId == deck.deckId).length;
