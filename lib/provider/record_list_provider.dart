@@ -41,9 +41,7 @@ class RecordListNotifier extends StateNotifier<RecordListState> {
     if (state.allRecordList != null) {
       final useDeckRecordList = state.allRecordList!.where((record) => record.useDeckId == useDeck.deckId);
       final recordList = useDeckRecordList.where((record) => record.opponentDeckId == opponentDeck.deckId);
-      // final firstRecords = recordList.where((record) => record.firstSecond == true);
       return recordList.where((record) => record.firstSecond == true).length;
-      // return firstRecords.where((record) => record.opponentDeckId == deck.deckId).length;
     }
     return 0;
   }
@@ -61,10 +59,7 @@ class RecordListNotifier extends StateNotifier<RecordListState> {
     if (state.allRecordList != null) {
       final useDeckRecordList = state.allRecordList!.where((record) => record.useDeckId == useDeck.deckId);
       final recordList = useDeckRecordList.where((record) => record.opponentDeckId == opponentDeck.deckId);
-      // final secondRecords = recordList.where((record) => record.firstSecond == false);
       return recordList.where((record) => record.firstSecond == false).length;
-
-      // return secondRecords.where((record) => record.opponentDeckId == deck.deckId).length;
     }
     return 0;
   }
