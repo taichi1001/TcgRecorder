@@ -54,7 +54,7 @@ class RecordListView extends HookConsumerWidget {
                         }
                       },
                       onDismissed: (direction) async {
-                        await recordListNotifier.delete(recordList[index].recordId);
+                        await recordListNotifier.delete(reverseRecordList[index].recordId);
                       },
                       key: UniqueKey(),
                       child: const _BrandListTile(),
