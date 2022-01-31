@@ -2,21 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:tcg_recorder2/entity/win_rate_data.dart';
-import 'package:tcg_recorder2/view/deck_data_grid.dart';
 
-part 'game_win_rate_data_source_state.freezed.dart';
+part 'deck_win_rate_data_source_state.freezed.dart';
 
 @freezed
-abstract class GameWinRateDataSourceState with _$GameWinRateDataSourceState {
-  factory GameWinRateDataSourceState({
-    GameWinRateDataSource? gameWinRateDataSource,
-  }) = _GameWinRateDataSourceState;
+abstract class DeckWinRateDataSourceState with _$DeckWinRateDataSourceState {
+  factory DeckWinRateDataSourceState({
+    DeckWinRateDataSource? deckWinRateDataSource,
+  }) = _DeckWinRateDataSourceState;
 }
 
-class GameWinRateDataSource extends DataGridSource {
-  GameWinRateDataSource({
+class DeckWinRateDataSource extends DataGridSource {
+  DeckWinRateDataSource({
     required List<WinRateData> winRateDataList,
-    required this.context,
   }) {
     dataGridRows = winRateDataList
         .map<DataGridRow>(
@@ -35,7 +33,6 @@ class GameWinRateDataSource extends DataGridSource {
         .toList();
   }
   List<DataGridRow> dataGridRows = [];
-  final BuildContext context;
 
   @override
   List<DataGridRow> get rows => dataGridRows;
@@ -58,17 +55,7 @@ class GameWinRateDataSource extends DataGridSource {
 
   Widget _buildChild(DataGridCell cell) {
     if (cell.columnName == 'デッキ名') {
-      if (cell.value == '合計') {
-        return Text(cell.value.toString());
-      } else {
-        return TextButton(
-          onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => DeckDataGrid(deck: cell.value)));
-          },
-          // style: TextButton.styleFrom(primary: Colors.black),
-          child: Text(cell.value.toString()),
-        );
-      }
+      return Text(cell.value.toString());
     }
     if (cell.columnName == '試合数') {
       return Text(cell.value.toString());

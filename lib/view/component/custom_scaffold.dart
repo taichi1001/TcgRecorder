@@ -28,6 +28,7 @@ class CustomScaffold extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.black),
         centerTitle: false,
         title: Text(
           selectGame.selectGame != null ? selectGame.selectGame!.game : '',

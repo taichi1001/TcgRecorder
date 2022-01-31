@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_recorder2/provider/game_win_rate_data_provider.dart';
 import 'package:tcg_recorder2/state/game_win_rate_data_source_state.dart';
@@ -13,10 +14,10 @@ class GameWinRateDataSourceNotifier extends StateNotifier<GameWinRateDataSourceS
 }
 
 final gameWinRateDataSourceNotifierProvider =
-    StateNotifierProvider<GameWinRateDataSourceNotifier, GameWinRateDataSourceState>(
-  (ref) {
+    StateNotifierProvider.family<GameWinRateDataSourceNotifier, GameWinRateDataSourceState, BuildContext>(
+  (ref, context) {
     final gameWinRateDataList = ref.watch(gameWinRateDataNotifierProvider).winRateDataList;
-    final gameWinRateDataSource = GameWinRateDataSource(winRateDataList: gameWinRateDataList!);
+    final gameWinRateDataSource = GameWinRateDataSource(winRateDataList: gameWinRateDataList!, context: context);
     final gameWinRateDataSourceNotifier = GameWinRateDataSourceNotifier(ref.read);
     gameWinRateDataSourceNotifier.setWinRateDataSourceList(gameWinRateDataSource);
     return gameWinRateDataSourceNotifier;

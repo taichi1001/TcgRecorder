@@ -9,7 +9,7 @@ class GameDataGrid extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final source = ref.watch(gameWinRateDataSourceNotifierProvider).gameWinRateDataSource;
+    final source = ref.watch(gameWinRateDataSourceNotifierProvider(context)).gameWinRateDataSource;
     return source == null
         ? const Center(
             child: CircularProgressIndicator(),

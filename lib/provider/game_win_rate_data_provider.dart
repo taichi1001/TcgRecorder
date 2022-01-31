@@ -18,8 +18,6 @@ class GameWinRateDataNotifier extends StateNotifier<GameWinRateDataState> {
 
 final gameWinRateDataNotifierProvider = StateNotifierProvider<GameWinRateDataNotifier, GameWinRateDataState>(
   (ref) {
-    final gameDataGridNotifier = GameWinRateDataNotifier(ref.read);
-    final allRecordListNotifier = ref.read(allRecordListNotifierProvider.notifier);
     final gameRecordListNotifier = ref.read(gameRecordListNotifierProvider.notifier);
     final gameRecordList = ref.watch(gameRecordListNotifierProvider.select((value) => value.gameRecordList));
     final gameDeckList = ref.watch(gameDeckListProvider);
@@ -34,14 +32,15 @@ final gameWinRateDataNotifierProvider = StateNotifierProvider<GameWinRateDataNot
       }
     }
 
+    final allRecordListNotifier = ref.read(allRecordListNotifierProvider.notifier);
     final winRateData = gameUseDeckList.map((useDeck) {
       final deck = useDeck.deck;
-      final matchs = allRecordListNotifier.countDeckMatches(useDeck);
-      final win = allRecordListNotifier.countDeckWins(useDeck);
-      final loss = allRecordListNotifier.countDeckLoss(useDeck);
-      final winRate = allRecordListNotifier.calcDeckWinRate(useDeck);
-      final winRateOfFirst = allRecordListNotifier.calcDeckWinRateOfFirst(useDeck);
-      final winRateOfSecond = allRecordListNotifier.calcDeckWinRateOfSecond(useDeck);
+      final matchs = allRecordListNotifier.countUseDeckMatches(useDeck);
+      final win = allRecordListNotifier.countUseDeckWins(useDeck);
+      final loss = allRecordListNotifier.countUseDeckLoss(useDeck);
+      final winRate = allRecordListNotifier.calcUseDeckWinRate(useDeck);
+      final winRateOfFirst = allRecordListNotifier.calcUseDeckWinRateOfFirst(useDeck);
+      final winRateOfSecond = allRecordListNotifier.calcUseDeckWinRateOfSecond(useDeck);
 
       return WinRateData(
         deck: deck,
@@ -54,6 +53,7 @@ final gameWinRateDataNotifierProvider = StateNotifierProvider<GameWinRateDataNot
       );
     }).toList();
 
+    final gameDataGridNotifier = GameWinRateDataNotifier(ref.read);
     winRateData.add(
       WinRateData(
         deck: '合計',
