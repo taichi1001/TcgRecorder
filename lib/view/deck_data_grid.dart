@@ -20,7 +20,6 @@ class DeckDataGrid extends HookConsumerWidget {
             child: CircularProgressIndicator(),
           )
         : Scaffold(
-            // padding: const EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
             appBar: AppBar(
               iconTheme: const IconThemeData(color: Colors.black),
               centerTitle: false,

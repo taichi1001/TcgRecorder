@@ -68,11 +68,6 @@ class CustomTextField extends StatelessWidget {
                         ),
                       ),
                     ),
-                    // style: FlutterFlowTheme.bodyText2.override(
-                    //   fontFamily: 'Montserrat',
-                    //   color: Color(0xFF8B97A2),
-                    //   fontWeight: FontWeight.w500,
-                    // ),
                     textAlign: TextAlign.start,
                   ),
                 ),
