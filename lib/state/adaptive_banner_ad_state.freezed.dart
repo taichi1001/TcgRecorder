@@ -18,9 +18,8 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$AdaptiveBannerAdStateTearOff {
   const _$AdaptiveBannerAdStateTearOff();
 
-  _AdaptiveBannerAdState call({BannerAd? ad, AdSize? adSize}) {
+  _AdaptiveBannerAdState call({AdSize? adSize}) {
     return _AdaptiveBannerAdState(
-      ad: ad,
       adSize: adSize,
     );
   }
@@ -31,7 +30,6 @@ const $AdaptiveBannerAdState = _$AdaptiveBannerAdStateTearOff();
 
 /// @nodoc
 mixin _$AdaptiveBannerAdState {
-  BannerAd? get ad => throw _privateConstructorUsedError;
   AdSize? get adSize => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -44,7 +42,7 @@ abstract class $AdaptiveBannerAdStateCopyWith<$Res> {
   factory $AdaptiveBannerAdStateCopyWith(AdaptiveBannerAdState value,
           $Res Function(AdaptiveBannerAdState) then) =
       _$AdaptiveBannerAdStateCopyWithImpl<$Res>;
-  $Res call({BannerAd? ad, AdSize? adSize});
+  $Res call({AdSize? adSize});
 }
 
 /// @nodoc
@@ -58,14 +56,9 @@ class _$AdaptiveBannerAdStateCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? ad = freezed,
     Object? adSize = freezed,
   }) {
     return _then(_value.copyWith(
-      ad: ad == freezed
-          ? _value.ad
-          : ad // ignore: cast_nullable_to_non_nullable
-              as BannerAd?,
       adSize: adSize == freezed
           ? _value.adSize
           : adSize // ignore: cast_nullable_to_non_nullable
@@ -81,7 +74,7 @@ abstract class _$AdaptiveBannerAdStateCopyWith<$Res>
           $Res Function(_AdaptiveBannerAdState) then) =
       __$AdaptiveBannerAdStateCopyWithImpl<$Res>;
   @override
-  $Res call({BannerAd? ad, AdSize? adSize});
+  $Res call({AdSize? adSize});
 }
 
 /// @nodoc
@@ -97,14 +90,9 @@ class __$AdaptiveBannerAdStateCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? ad = freezed,
     Object? adSize = freezed,
   }) {
     return _then(_AdaptiveBannerAdState(
-      ad: ad == freezed
-          ? _value.ad
-          : ad // ignore: cast_nullable_to_non_nullable
-              as BannerAd?,
       adSize: adSize == freezed
           ? _value.adSize
           : adSize // ignore: cast_nullable_to_non_nullable
@@ -116,16 +104,14 @@ class __$AdaptiveBannerAdStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_AdaptiveBannerAdState implements _AdaptiveBannerAdState {
-  _$_AdaptiveBannerAdState({this.ad, this.adSize});
+  _$_AdaptiveBannerAdState({this.adSize});
 
-  @override
-  final BannerAd? ad;
   @override
   final AdSize? adSize;
 
   @override
   String toString() {
-    return 'AdaptiveBannerAdState(ad: $ad, adSize: $adSize)';
+    return 'AdaptiveBannerAdState(adSize: $adSize)';
   }
 
   @override
@@ -133,15 +119,12 @@ class _$_AdaptiveBannerAdState implements _AdaptiveBannerAdState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _AdaptiveBannerAdState &&
-            const DeepCollectionEquality().equals(other.ad, ad) &&
             const DeepCollectionEquality().equals(other.adSize, adSize));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(ad),
-      const DeepCollectionEquality().hash(adSize));
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(adSize));
 
   @JsonKey(ignore: true)
   @override
@@ -151,11 +134,8 @@ class _$_AdaptiveBannerAdState implements _AdaptiveBannerAdState {
 }
 
 abstract class _AdaptiveBannerAdState implements AdaptiveBannerAdState {
-  factory _AdaptiveBannerAdState({BannerAd? ad, AdSize? adSize}) =
-      _$_AdaptiveBannerAdState;
+  factory _AdaptiveBannerAdState({AdSize? adSize}) = _$_AdaptiveBannerAdState;
 
-  @override
-  BannerAd? get ad;
   @override
   AdSize? get adSize;
   @override

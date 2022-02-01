@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:tcg_manager/entity/marged_record.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/selector/marged_record_list_selector.dart';
+import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
 import 'package:tcg_manager/view/component/custom_scaffold.dart';
 
 class RecordListView extends HookConsumerWidget {
@@ -18,47 +19,54 @@ class RecordListView extends HookConsumerWidget {
     final reverseRecordList = List.from(recordList!.reversed);
     final recordListNotifier = ref.read(allRecordListNotifierProvider.notifier);
 
-    return CustomScaffold(
-      // rightButton: IconButton(
-      //   icon: const Icon(Icons.filter_list),
-      //   color: Colors.black,
-      //   onPressed: () {},
-      // ),
-      body: recordList.isEmpty
-          ? const Center(child: Text('このゲームの記録はありません'))
-          : ListView.separated(
-              separatorBuilder: (context, index) => const SizedBox(height: 8, child: Divider(height: 1)),
-              itemCount: reverseRecordList.length,
-              itemBuilder: (context, index) {
-                return ProviderScope(
-                  overrides: [currentRecord.overrideWithValue(reverseRecordList[index])],
-                  child: Dismissible(
-                    direction: DismissDirection.endToStart,
-                    background: Container(
-                      color: Colors.red,
-                      child: const Icon(
-                        Icons.delete,
-                        color: Colors.white,
-                      ),
-                    ),
-                    confirmDismiss: (direction) async {
-                      final okCancelResult = await showOkCancelAlertDialog(
-                        context: context,
-                        message: '削除してもいいですか？',
-                        isDestructiveAction: true,
+    return Column(
+      children: [
+        Expanded(
+          child: CustomScaffold(
+            // rightButton: IconButton(
+            //   icon: const Icon(Icons.filter_list),
+            //   color: Colors.black,
+            //   onPressed: () {},
+            // ),
+            body: recordList.isEmpty
+                ? const Center(child: Text('このゲームの記録はありません'))
+                : ListView.separated(
+                    separatorBuilder: (context, index) => const SizedBox(height: 8, child: Divider(height: 1)),
+                    itemCount: reverseRecordList.length,
+                    itemBuilder: (context, index) {
+                      return ProviderScope(
+                        overrides: [currentRecord.overrideWithValue(reverseRecordList[index])],
+                        child: Dismissible(
+                          direction: DismissDirection.endToStart,
+                          background: Container(
+                            color: Colors.red,
+                            child: const Icon(
+                              Icons.delete,
+                              color: Colors.white,
+                            ),
+                          ),
+                          confirmDismiss: (direction) async {
+                            final okCancelResult = await showOkCancelAlertDialog(
+                              context: context,
+                              message: '削除してもいいですか？',
+                              isDestructiveAction: true,
+                            );
+                            if (okCancelResult == OkCancelResult.ok) {
+                              return true;
+                            }
+                          },
+                          onDismissed: (direction) async {
+                            await recordListNotifier.delete(reverseRecordList[index].recordId);
+                          },
+                          key: UniqueKey(),
+                          child: const _BrandListTile(),
+                        ),
                       );
-                      if (okCancelResult == OkCancelResult.ok) {
-                        return true;
-                      }
-                    },
-                    onDismissed: (direction) async {
-                      await recordListNotifier.delete(reverseRecordList[index].recordId);
-                    },
-                    key: UniqueKey(),
-                    child: const _BrandListTile(),
-                  ),
-                );
-              }),
+                    }),
+          ),
+        ),
+        const AdaptiveBannerAd(),
+      ],
     );
   }
 }

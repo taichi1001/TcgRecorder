@@ -9,6 +9,7 @@ import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
 import 'package:tcg_manager/state/input_view_state.dart';
+import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
 import 'package:tcg_manager/view/component/custom_modal_date_picker.dart';
 import 'package:tcg_manager/view/component/custom_modal_list_picker.dart';
 import 'package:tcg_manager/view/component/custom_scaffold.dart';
@@ -41,132 +42,141 @@ class InputView extends HookConsumerWidget {
             child: CustomScaffold(
               body: GestureDetector(
                 onTap: () => FocusScope.of(context).unfocus(),
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Column(
-                        mainAxisSize: MainAxisSize.max,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                child: Stack(
+                  alignment: AlignmentDirectional.bottomCenter,
+                  children: [
+                    SingleChildScrollView(
+                      child: Column(
                         children: [
-                          const Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
-                            child: Text('Day'),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          Column(
+                            mainAxisSize: MainAxisSize.max,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(outputFormat.format(date)),
-                              _DatePickerButton(
-                                submited: inputViewNotifier.setDateTime,
-                                onDateTimeChanged: inputViewNotifier.scrollDateTime,
+                              const Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
+                                child: Text('Day'),
                               ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(outputFormat.format(date)),
+                                  _DatePickerButton(
+                                    submited: inputViewNotifier.setDateTime,
+                                    onDateTimeChanged: inputViewNotifier.scrollDateTime,
+                                  ),
+                                ],
+                              ),
+                              const Text('Deck'),
+                              Stack(
+                                alignment: Alignment.centerRight,
+                                children: [
+                                  CustomTextField(
+                                    labelText: '使用デッキ',
+                                    onChanged: inputViewNotifier.inputUseDeck,
+                                    controller: useDeckTextController,
+                                  ),
+                                  _ListPickerButton(
+                                    submited: inputViewNotifier.setUseDeck,
+                                    onSelectedItemChanged: inputViewNotifier.scrollUseDeck,
+                                    children: gameDeck
+                                        .map((deck) => Padding(
+                                              padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                                              child: Text(
+                                                deck.deck,
+                                                softWrap: false,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ))
+                                        .toList(),
+                                  ),
+                                ],
+                              ),
+                              Stack(
+                                alignment: Alignment.centerRight,
+                                children: [
+                                  CustomTextField(
+                                    labelText: '対戦デッキ',
+                                    onChanged: inputViewNotifier.inputOpponentDeck,
+                                    controller: opponentDeckTextController,
+                                  ),
+                                  _ListPickerButton(
+                                    submited: inputViewNotifier.setOpponentDeck,
+                                    onSelectedItemChanged: inputViewNotifier.scrollOpponentDeck,
+                                    children: gameDeck
+                                        .map((deck) => Padding(
+                                              padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                                              child: Text(
+                                                deck.deck,
+                                                softWrap: false,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ))
+                                        .toList(),
+                                  ),
+                                ],
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
+                                child: Text('First or Second'),
+                              ),
+                              RadioListTile(
+                                title: const Text('先攻'),
+                                value: FirstSecond.first,
+                                groupValue: firstSecond,
+                                activeColor: const Color(0xFF18204E),
+                                onChanged: (FirstSecond? value) {
+                                  inputViewNotifier.selectFirstSecond(value);
+                                },
+                                contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                dense: true,
+                              ),
+                              RadioListTile(
+                                title: const Text('後攻'),
+                                value: FirstSecond.second,
+                                groupValue: firstSecond,
+                                activeColor: const Color(0xFF18204E),
+                                onChanged: (FirstSecond? value) {
+                                  inputViewNotifier.selectFirstSecond(value);
+                                },
+                                contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                dense: true,
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
+                                child: Text('Win/Loss'),
+                              ),
+                              RadioListTile(
+                                title: const Text('勝ち'),
+                                value: WinLoss.win,
+                                groupValue: winLoss,
+                                activeColor: const Color(0xFF18204E),
+                                onChanged: (WinLoss? value) {
+                                  inputViewNotifier.selectWinLoss(value);
+                                },
+                                contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                dense: true,
+                              ),
+                              RadioListTile(
+                                title: const Text('負け'),
+                                value: WinLoss.loss,
+                                groupValue: winLoss,
+                                activeColor: const Color(0xFF18204E),
+                                onChanged: (WinLoss? value) {
+                                  inputViewNotifier.selectWinLoss(value);
+                                },
+                                contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                dense: true,
+                              ),
+                              const SizedBox(height: 58),
                             ],
-                          ),
-                          const Text('Deck'),
-                          Stack(
-                            alignment: Alignment.centerRight,
-                            children: [
-                              CustomTextField(
-                                labelText: '使用デッキ',
-                                onChanged: inputViewNotifier.inputUseDeck,
-                                controller: useDeckTextController,
-                              ),
-                              _ListPickerButton(
-                                submited: inputViewNotifier.setUseDeck,
-                                onSelectedItemChanged: inputViewNotifier.scrollUseDeck,
-                                children: gameDeck
-                                    .map((deck) => Padding(
-                                          padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                                          child: Text(
-                                            deck.deck,
-                                            softWrap: false,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ))
-                                    .toList(),
-                              ),
-                            ],
-                          ),
-                          Stack(
-                            alignment: Alignment.centerRight,
-                            children: [
-                              CustomTextField(
-                                labelText: '対戦デッキ',
-                                onChanged: inputViewNotifier.inputOpponentDeck,
-                                controller: opponentDeckTextController,
-                              ),
-                              _ListPickerButton(
-                                submited: inputViewNotifier.setOpponentDeck,
-                                onSelectedItemChanged: inputViewNotifier.scrollOpponentDeck,
-                                children: gameDeck
-                                    .map((deck) => Padding(
-                                          padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                                          child: Text(
-                                            deck.deck,
-                                            softWrap: false,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ))
-                                    .toList(),
-                              ),
-                            ],
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
-                            child: Text('First or Second'),
-                          ),
-                          RadioListTile(
-                            title: const Text('先攻'),
-                            value: FirstSecond.first,
-                            groupValue: firstSecond,
-                            activeColor: const Color(0xFF18204E),
-                            onChanged: (FirstSecond? value) {
-                              inputViewNotifier.selectFirstSecond(value);
-                            },
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 0),
-                            dense: true,
-                          ),
-                          RadioListTile(
-                            title: const Text('後攻'),
-                            value: FirstSecond.second,
-                            groupValue: firstSecond,
-                            activeColor: const Color(0xFF18204E),
-                            onChanged: (FirstSecond? value) {
-                              inputViewNotifier.selectFirstSecond(value);
-                            },
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 0),
-                            dense: true,
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
-                            child: Text('Win/Loss'),
-                          ),
-                          RadioListTile(
-                            title: const Text('勝ち'),
-                            value: WinLoss.win,
-                            groupValue: winLoss,
-                            activeColor: const Color(0xFF18204E),
-                            onChanged: (WinLoss? value) {
-                              inputViewNotifier.selectWinLoss(value);
-                            },
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 0),
-                            dense: true,
-                          ),
-                          RadioListTile(
-                            title: const Text('負け'),
-                            value: WinLoss.loss,
-                            groupValue: winLoss,
-                            activeColor: const Color(0xFF18204E),
-                            onChanged: (WinLoss? value) {
-                              inputViewNotifier.selectWinLoss(value);
-                            },
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 0),
-                            dense: true,
                           ),
                         ],
                       ),
-                      Center(
-                        child: SizedBox(
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        SizedBox(
                           width: 300,
                           height: 50,
                           child: ElevatedButton(
@@ -193,15 +203,15 @@ class InputView extends HookConsumerWidget {
                             ),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 24),
-                    ],
-                  ),
+                        const SizedBox(height: 8),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ),
           ),
-          // const AdaptiveBannerAd(), //一意のAdWidgetオブジェクトを使用するように修正必要
+          const AdaptiveBannerAd(),
         ],
       ),
     );

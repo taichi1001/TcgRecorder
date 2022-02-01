@@ -6,7 +6,6 @@ part 'adaptive_banner_ad_state.freezed.dart';
 @freezed
 abstract class AdaptiveBannerAdState with _$AdaptiveBannerAdState {
   factory AdaptiveBannerAdState({
-    final BannerAd? ad,
     final AdSize? adSize,
   }) = _AdaptiveBannerAdState;
 }

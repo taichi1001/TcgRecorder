@@ -8,7 +8,7 @@ import 'package:tcg_manager/state/adaptive_banner_ad_state.dart';
 class AdaptiveBannerAdNotifier extends StateNotifier<AdaptiveBannerAdState> {
   AdaptiveBannerAdNotifier() : super(AdaptiveBannerAdState());
 
-  String _getBannerAdUnitId() {
+  String getBannerAdUnitId() {
     if (Platform.isAndroid) {
       return "ca-app-pub-3940256099942544/6300978111";
     } else if (Platform.isIOS) {
@@ -19,23 +19,11 @@ class AdaptiveBannerAdNotifier extends StateNotifier<AdaptiveBannerAdState> {
   }
 
   Future getAd(BuildContext context) async {
-    if (state.adSize != null) {
-      return state.adSize;
-    }
-
     final adSize = await AdSize.getAnchoredAdaptiveBannerAdSize(
         MediaQuery.of(context).orientation == Orientation.portrait ? Orientation.portrait : Orientation.landscape,
         MediaQuery.of(context).size.width.toInt()) as AdSize;
 
-    final ad = BannerAd(
-      size: adSize,
-      adUnitId: _getBannerAdUnitId(),
-      listener: const BannerAdListener(),
-      request: const AdRequest(),
-    );
-
-    state = state.copyWith(ad: ad, adSize: adSize);
-    state.ad!.load();
+    state = state.copyWith(adSize: adSize);
   }
 }
 

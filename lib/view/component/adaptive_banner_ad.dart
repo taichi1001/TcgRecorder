@@ -10,20 +10,20 @@ class AdaptiveBannerAd extends HookConsumerWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final adaptiveBannerAdNotifier = ref.read(adaptiveBannerAdNotifierProvider.notifier);
     final adSize = ref.read(adaptiveBannerAdNotifierProvider).adSize;
-    final ad = ref.watch(adaptiveBannerAdNotifierProvider.select((value) => value.ad));
-
-    useEffect(() {
-      Future.microtask(() => adaptiveBannerAdNotifier.getAd(context));
-      return;
-    }, const []);
+    final ad = BannerAd(
+      size: adSize!,
+      adUnitId: ref.read(adaptiveBannerAdNotifierProvider.notifier).getBannerAdUnitId(),
+      listener: const BannerAdListener(),
+      request: const AdRequest(),
+    );
+    ad.load();
 
     return Container(
       alignment: Alignment.center,
-      height: adSize != null ? adSize.height.toDouble() : 0,
-      width: adSize != null ? adSize.width.toDouble() : 0,
-      child: ad == null ? Container() : AdWidget(ad: ad),
+      height: adSize.height.toDouble(),
+      width: adSize.width.toDouble(),
+      child: AdWidget(ad: ad),
     );
   }
 }

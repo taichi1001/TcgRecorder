@@ -16,6 +16,7 @@ class InitialGameRegistrationView extends HookConsumerWidget {
     final initialGameState = ref.watch(initialGameRegistrationNotifierProvider);
 
     return SafeArea(
+      top: false,
       child: Column(
         children: [
           Expanded(

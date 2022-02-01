@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import 'package:tcg_manager/selector/game_record_list_selector.dart';
+import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
 import 'package:tcg_manager/view/component/custom_scaffold.dart';
 import 'package:tcg_manager/view/game_data_grid.dart';
 
@@ -39,10 +40,24 @@ class GraphView extends HookConsumerWidget {
         body: TabBarView(
           children: [
             Center(
-              child: recordList!.isEmpty ? const Center(child: Text('このゲームの記録はありません')) : const GameDataGrid(),
+              child: recordList!.isEmpty
+                  ? const Center(child: Text('このゲームの記録はありません'))
+                  : Column(
+                      children: const [
+                        Expanded(child: GameDataGrid()),
+                        AdaptiveBannerAd(),
+                      ],
+                    ),
             ),
             Center(
-              child: recordList.isEmpty ? const Center(child: Text('このゲームの記録はありません')) : const Text('グラフ'),
+              child: recordList.isEmpty
+                  ? const Center(child: Text('このゲームの記録はありません'))
+                  : Column(
+                      children: const [
+                        Expanded(child: Center(child: Text('グラフ'))),
+                        AdaptiveBannerAd(),
+                      ],
+                    ),
             ),
           ],
         ),

@@ -6,6 +6,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tcg_manager/provider/adaptive_banner_ad_provider.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
@@ -18,10 +19,10 @@ void main() {
   MobileAds.instance.initialize();
   runApp(
     DevicePreview(
-      enabled: !kReleaseMode,
-      // enabled: false,
+      // enabled: !kReleaseMode,
+      enabled: false,
       builder: (context) => const ProviderScope(
-        child: MainApp(),
+        child: MaterialApp(home: MainApp()),
       ),
     ),
   );
@@ -33,12 +34,16 @@ class MainApp extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     useEffect(() {
-      Future.microtask(() => ref.read(allGameListNotifierProvider.notifier).fetch());
-      Future.microtask(() => ref.read(allDeckListNotifierProvider.notifier).fetch());
-      Future.microtask(() => ref.read(allRecordListNotifierProvider.notifier).fetch());
-      Future.microtask(() => ref.read(allTagListNotifierProvider.notifier).fetch());
+      Future.microtask(() {
+        ref.read(adaptiveBannerAdNotifierProvider.notifier).getAd(context);
+        ref.read(allGameListNotifierProvider.notifier).fetch();
+        ref.read(allDeckListNotifierProvider.notifier).fetch();
+        ref.read(allRecordListNotifierProvider.notifier).fetch();
+        ref.read(allTagListNotifierProvider.notifier).fetch();
+      });
       return;
     }, const []);
+
     final allGameList = ref.watch(allGameListNotifierProvider).allGameList;
     final allDeckList = ref.watch(allDeckListNotifierProvider).allDeckList;
     final allRecordList = ref.watch(allRecordListNotifierProvider).allRecordList;
