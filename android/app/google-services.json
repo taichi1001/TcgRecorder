@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "105648170735",
+    "project_id": "tcg-manager-63768",
+    "storage_bucket": "tcg-manager-63768.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:105648170735:android:898163e9818ab116365d1a",
+        "android_client_info": {
+          "package_name": "com.taichi1001.tcg_manager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "105648170735-jm8ljir4adcp4e6m1sj8qfmr493i28oa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQyZttoGbkAslTlxclVXSZOb8wsvu9l6M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "105648170735-jm8ljir4adcp4e6m1sj8qfmr493i28oa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
