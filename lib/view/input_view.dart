@@ -78,7 +78,7 @@ class InputView extends HookConsumerWidget {
                     alignment: Alignment.centerRight,
                     children: [
                       CustomTextField(
-                        labelText: '対戦相手デッキ',
+                        labelText: '対戦デッキ',
                         onChanged: inputViewNotifier.inputOpponentDeck,
                         controller: opponentDeckTextController,
                       ),
