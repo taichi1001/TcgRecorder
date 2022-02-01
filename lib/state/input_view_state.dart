@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:tcg_recorder2/entity/deck.dart';
-import 'package:tcg_recorder2/entity/record.dart';
-import 'package:tcg_recorder2/entity/tag.dart';
+import 'package:tcg_manager/entity/deck.dart';
+import 'package:tcg_manager/entity/record.dart';
+import 'package:tcg_manager/entity/tag.dart';
 
 part 'input_view_state.freezed.dart';
 

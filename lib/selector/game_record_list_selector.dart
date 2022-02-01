@@ -1,8 +1,8 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tcg_recorder2/entity/record.dart';
-import 'package:tcg_recorder2/provider/record_list_provider.dart';
-import 'package:tcg_recorder2/provider/select_game_provider.dart';
-import 'package:tcg_recorder2/state/game_record_list_state.dart';
+import 'package:tcg_manager/entity/record.dart';
+import 'package:tcg_manager/provider/record_list_provider.dart';
+import 'package:tcg_manager/provider/select_game_provider.dart';
+import 'package:tcg_manager/state/game_record_list_state.dart';
 
 class GameRecordListNotifier extends StateNotifier<GameRecordListState> {
   GameRecordListNotifier(this.read) : super(GameRecordListState());

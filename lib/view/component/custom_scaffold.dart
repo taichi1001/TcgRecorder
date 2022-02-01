@@ -2,10 +2,10 @@ import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tcg_recorder2/provider/game_list_provider.dart';
-import 'package:tcg_recorder2/provider/input_view_provider.dart';
-import 'package:tcg_recorder2/provider/select_game_provider.dart';
-import 'package:tcg_recorder2/view/component/custom_modal_list_picker.dart';
+import 'package:tcg_manager/provider/game_list_provider.dart';
+import 'package:tcg_manager/provider/input_view_provider.dart';
+import 'package:tcg_manager/provider/select_game_provider.dart';
+import 'package:tcg_manager/view/component/custom_modal_list_picker.dart';
 
 class CustomScaffold extends HookConsumerWidget {
   const CustomScaffold({

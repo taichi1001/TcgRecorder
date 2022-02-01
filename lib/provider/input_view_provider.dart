@@ -1,14 +1,14 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tcg_recorder2/entity/deck.dart';
-import 'package:tcg_recorder2/entity/record.dart';
-import 'package:tcg_recorder2/entity/tag.dart';
-import 'package:tcg_recorder2/provider/select_game_provider.dart';
-import 'package:tcg_recorder2/provider/text_editing_controller_provider.dart';
-import 'package:tcg_recorder2/repository/deck_repository.dart';
-import 'package:tcg_recorder2/repository/record_repository.dart';
-import 'package:tcg_recorder2/selector/game_deck_list_selector.dart';
-import 'package:tcg_recorder2/selector/game_tag_list_selector.dart';
-import 'package:tcg_recorder2/state/input_view_state.dart';
+import 'package:tcg_manager/entity/deck.dart';
+import 'package:tcg_manager/entity/record.dart';
+import 'package:tcg_manager/entity/tag.dart';
+import 'package:tcg_manager/provider/select_game_provider.dart';
+import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
+import 'package:tcg_manager/repository/deck_repository.dart';
+import 'package:tcg_manager/repository/record_repository.dart';
+import 'package:tcg_manager/selector/game_deck_list_selector.dart';
+import 'package:tcg_manager/selector/game_tag_list_selector.dart';
+import 'package:tcg_manager/state/input_view_state.dart';
 
 class InputViewNotifier extends StateNotifier<InputViewState> {
   InputViewNotifier(this.read) : super(InputViewState(date: DateTime.now()));

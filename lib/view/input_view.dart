@@ -3,16 +3,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:tcg_recorder2/provider/deck_list_provider.dart';
-import 'package:tcg_recorder2/provider/input_view_provider.dart';
-import 'package:tcg_recorder2/provider/record_list_provider.dart';
-import 'package:tcg_recorder2/provider/text_editing_controller_provider.dart';
-import 'package:tcg_recorder2/selector/game_deck_list_selector.dart';
-import 'package:tcg_recorder2/state/input_view_state.dart';
-import 'package:tcg_recorder2/view/component/custom_modal_date_picker.dart';
-import 'package:tcg_recorder2/view/component/custom_modal_list_picker.dart';
-import 'package:tcg_recorder2/view/component/custom_scaffold.dart';
-import 'package:tcg_recorder2/view/component/custom_textfield.dart';
+import 'package:tcg_manager/provider/deck_list_provider.dart';
+import 'package:tcg_manager/provider/input_view_provider.dart';
+import 'package:tcg_manager/provider/record_list_provider.dart';
+import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
+import 'package:tcg_manager/selector/game_deck_list_selector.dart';
+import 'package:tcg_manager/state/input_view_state.dart';
+import 'package:tcg_manager/view/component/custom_modal_date_picker.dart';
+import 'package:tcg_manager/view/component/custom_modal_list_picker.dart';
+import 'package:tcg_manager/view/component/custom_scaffold.dart';
+import 'package:tcg_manager/view/component/custom_textfield.dart';
 
 class InputView extends HookConsumerWidget {
   const InputView({Key? key}) : super(key: key);

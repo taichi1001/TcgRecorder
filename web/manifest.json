@@ -1,6 +1,6 @@
 {
-    "name": "tcg_recorder2",
-    "short_name": "tcg_recorder2",
+    "name": "tcg_manager",
+    "short_name": "tcg_manager",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

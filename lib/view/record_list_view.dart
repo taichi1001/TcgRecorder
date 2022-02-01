@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:tcg_recorder2/entity/marged_record.dart';
-import 'package:tcg_recorder2/provider/record_list_provider.dart';
-import 'package:tcg_recorder2/selector/marged_record_list_selector.dart';
-import 'package:tcg_recorder2/view/component/custom_scaffold.dart';
+import 'package:tcg_manager/entity/marged_record.dart';
+import 'package:tcg_manager/provider/record_list_provider.dart';
+import 'package:tcg_manager/selector/marged_record_list_selector.dart';
+import 'package:tcg_manager/view/component/custom_scaffold.dart';
 
 class RecordListView extends HookConsumerWidget {
   const RecordListView({Key? key}) : super(key: key);

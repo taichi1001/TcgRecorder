@@ -1,4 +1,4 @@
-# tcg_recorder2
+# tcg_manager
 
 A new Flutter project.
 

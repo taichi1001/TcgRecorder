@@ -1,10 +1,10 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tcg_recorder2/entity/deck.dart';
-import 'package:tcg_recorder2/entity/win_rate_data.dart';
-import 'package:tcg_recorder2/provider/record_list_provider.dart';
-import 'package:tcg_recorder2/selector/game_deck_list_selector.dart';
-import 'package:tcg_recorder2/selector/game_record_list_selector.dart';
-import 'package:tcg_recorder2/state/deck_win_rate_data_state.dart';
+import 'package:tcg_manager/entity/deck.dart';
+import 'package:tcg_manager/entity/win_rate_data.dart';
+import 'package:tcg_manager/provider/record_list_provider.dart';
+import 'package:tcg_manager/selector/game_deck_list_selector.dart';
+import 'package:tcg_manager/selector/game_record_list_selector.dart';
+import 'package:tcg_manager/state/deck_win_rate_data_state.dart';
 
 class DeckWinRateDataNotifier extends StateNotifier<DeckWinRateDataState> {
   DeckWinRateDataNotifier(this.read) : super(DeckWinRateDataState());

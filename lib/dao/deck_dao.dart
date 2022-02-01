@@ -1,5 +1,5 @@
-import 'package:tcg_recorder2/entity/deck.dart';
-import 'package:tcg_recorder2/service/database.dart';
+import 'package:tcg_manager/entity/deck.dart';
+import 'package:tcg_manager/service/database.dart';
 
 class DeckDao {
   final dbProvider = DatabaseService.dbProvider;

@@ -1,6 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tcg_recorder2/repository/deck_repository.dart';
-import 'package:tcg_recorder2/state/deck_list_state.dart';
+import 'package:tcg_manager/repository/deck_repository.dart';
+import 'package:tcg_manager/state/deck_list_state.dart';
 
 class DeckListNotifier extends StateNotifier<DeckListState> {
   DeckListNotifier(this.read) : super(DeckListState());

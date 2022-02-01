@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tcg_recorder2/provider/game_list_provider.dart';
-import 'package:tcg_recorder2/provider/initital_game_registration_provider.dart';
-import 'package:tcg_recorder2/view/component/custom_textfield.dart';
+import 'package:tcg_manager/provider/game_list_provider.dart';
+import 'package:tcg_manager/provider/initital_game_registration_provider.dart';
+import 'package:tcg_manager/view/component/custom_textfield.dart';
 
 class InitialGameRegistrationView extends HookConsumerWidget {
   const InitialGameRegistrationView({Key? key}) : super(key: key);

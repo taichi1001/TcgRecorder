@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:tcg_recorder2/view/component/custom_modal_picker.dart';
+import 'package:tcg_manager/view/component/custom_modal_picker.dart';
 
 /// showCupertinoModalPopupから呼び出して使用するDatePicker
 class CustomModalDatePicker extends HookWidget {

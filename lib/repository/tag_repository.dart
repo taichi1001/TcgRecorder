@@ -1,6 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tcg_recorder2/dao/tag_dao.dart';
-import 'package:tcg_recorder2/entity/tag.dart';
+import 'package:tcg_manager/dao/tag_dao.dart';
+import 'package:tcg_manager/entity/tag.dart';
 
 final tagRepository = Provider.autoDispose<TagRepository>((ref) => TagRepositoryImpl(ref.read));
 

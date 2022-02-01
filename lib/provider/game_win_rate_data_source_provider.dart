@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tcg_recorder2/provider/game_win_rate_data_provider.dart';
-import 'package:tcg_recorder2/state/game_win_rate_data_source_state.dart';
+import 'package:tcg_manager/provider/game_win_rate_data_provider.dart';
+import 'package:tcg_manager/state/game_win_rate_data_source_state.dart';
 
 class GameWinRateDataSourceNotifier extends StateNotifier<GameWinRateDataSourceState> {
   GameWinRateDataSourceNotifier(this.read) : super(GameWinRateDataSourceState());

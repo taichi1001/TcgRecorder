@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
-import 'package:tcg_recorder2/provider/deck_win_rate_data_source_provider.dart';
+import 'package:tcg_manager/provider/deck_win_rate_data_source_provider.dart';
 
 class DeckDataGrid extends HookConsumerWidget {
   const DeckDataGrid({

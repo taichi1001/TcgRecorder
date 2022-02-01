@@ -1,6 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tcg_recorder2/provider/deck_win_rate_data_provider.dart';
-import 'package:tcg_recorder2/state/deck_win_rate_data_source_state.dart';
+import 'package:tcg_manager/provider/deck_win_rate_data_provider.dart';
+import 'package:tcg_manager/state/deck_win_rate_data_source_state.dart';
 
 class DeckWinRateDataSourceNotifier extends StateNotifier<DeckWinRateDataSourceState> {
   DeckWinRateDataSourceNotifier(this.read) : super(DeckWinRateDataSourceState());

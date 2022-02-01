@@ -1,16 +1,16 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tcg_recorder2/provider/deck_list_provider.dart';
-import 'package:tcg_recorder2/provider/game_list_provider.dart';
-import 'package:tcg_recorder2/provider/record_list_provider.dart';
-import 'package:tcg_recorder2/provider/tag_list_provider.dart';
-import 'package:tcg_recorder2/view/bottom_navigation_view.dart';
-import 'package:tcg_recorder2/view/initial_game_registration_view.dart';
+import 'package:tcg_manager/provider/deck_list_provider.dart';
+import 'package:tcg_manager/provider/game_list_provider.dart';
+import 'package:tcg_manager/provider/record_list_provider.dart';
+import 'package:tcg_manager/provider/tag_list_provider.dart';
+import 'package:tcg_manager/view/bottom_navigation_view.dart';
+import 'package:tcg_manager/view/initial_game_registration_view.dart';
 
 void main() {
   runApp(

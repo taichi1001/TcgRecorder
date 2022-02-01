@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:tcg_recorder2/entity/game.dart';
+import 'package:tcg_manager/entity/game.dart';
 
 part 'game_list_state.freezed.dart';
 

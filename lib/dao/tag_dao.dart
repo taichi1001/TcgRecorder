@@ -1,5 +1,5 @@
-import 'package:tcg_recorder2/entity/tag.dart';
-import 'package:tcg_recorder2/service/database.dart';
+import 'package:tcg_manager/entity/tag.dart';
+import 'package:tcg_manager/service/database.dart';
 
 class TagDao {
   final dbProvider = DatabaseService.dbProvider;

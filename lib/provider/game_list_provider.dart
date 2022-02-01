@@ -1,6 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tcg_recorder2/repository/game_repository.dart';
-import 'package:tcg_recorder2/state/game_list_state.dart';
+import 'package:tcg_manager/repository/game_repository.dart';
+import 'package:tcg_manager/state/game_list_state.dart';
 
 class GameListNotifier extends StateNotifier<GameListState> {
   GameListNotifier(this.read) : super(GameListState());

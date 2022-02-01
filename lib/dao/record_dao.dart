@@ -1,5 +1,5 @@
-import 'package:tcg_recorder2/entity/record.dart';
-import 'package:tcg_recorder2/service/database.dart';
+import 'package:tcg_manager/entity/record.dart';
+import 'package:tcg_manager/service/database.dart';
 
 class RecordDao {
   final dbProvider = DatabaseService.dbProvider;

@@ -1,5 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tcg_recorder2/state/bottom_navigation_bar_state.dart';
+import 'package:tcg_manager/state/bottom_navigation_bar_state.dart';
 
 class BottomNavigationBarNotifier extends StateNotifier<BottomNavigationBarState> {
   BottomNavigationBarNotifier() : super(BottomNavigationBarState());

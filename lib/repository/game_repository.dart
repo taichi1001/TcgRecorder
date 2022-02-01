@@ -1,6 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tcg_recorder2/dao/geme_dao.dart';
-import 'package:tcg_recorder2/entity/game.dart';
+import 'package:tcg_manager/dao/geme_dao.dart';
+import 'package:tcg_manager/entity/game.dart';
 
 final gameRepository = Provider.autoDispose<GameRepository>((ref) => GameRepositoryImpl(ref.read));
 

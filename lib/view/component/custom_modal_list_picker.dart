@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:tcg_recorder2/view/component/custom_modal_picker.dart';
+import 'package:tcg_manager/view/component/custom_modal_picker.dart';
 
 class CustomModalListPicker extends StatelessWidget {
   const CustomModalListPicker({

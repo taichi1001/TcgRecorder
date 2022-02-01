@@ -1,6 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tcg_recorder2/dao/deck_dao.dart';
-import 'package:tcg_recorder2/entity/deck.dart';
+import 'package:tcg_manager/dao/deck_dao.dart';
+import 'package:tcg_manager/entity/deck.dart';
 
 final deckRepository = Provider.autoDispose<DeckRepository>((ref) => DeckRepositoryImpl(ref.read));
 

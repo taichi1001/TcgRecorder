@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
-import 'package:tcg_recorder2/entity/win_rate_data.dart';
+import 'package:tcg_manager/entity/win_rate_data.dart';
 
 part 'deck_win_rate_data_source_state.freezed.dart';
 

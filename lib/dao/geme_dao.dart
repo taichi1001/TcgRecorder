@@ -1,5 +1,5 @@
-import 'package:tcg_recorder2/entity/game.dart';
-import 'package:tcg_recorder2/service/database.dart';
+import 'package:tcg_manager/entity/game.dart';
+import 'package:tcg_manager/service/database.dart';
 
 class GameDao {
   final dbProvider = DatabaseService.dbProvider;

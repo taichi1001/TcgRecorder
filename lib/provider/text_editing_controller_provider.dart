@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tcg_recorder2/state/text_editing_controller_state.dart';
+import 'package:tcg_manager/state/text_editing_controller_state.dart';
 
 class TextEditingControllerNotifier extends StateNotifier<TextEditingControllerState> {
   TextEditingControllerNotifier(this.read)

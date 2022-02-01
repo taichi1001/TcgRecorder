@@ -1,7 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tcg_recorder2/entity/deck.dart';
-import 'package:tcg_recorder2/repository/record_repository.dart';
-import 'package:tcg_recorder2/state/record_list_state.dart';
+import 'package:tcg_manager/entity/deck.dart';
+import 'package:tcg_manager/repository/record_repository.dart';
+import 'package:tcg_manager/state/record_list_state.dart';
 
 class RecordListNotifier extends StateNotifier<RecordListState> {
   RecordListNotifier(this.read) : super(RecordListState());

@@ -1,4 +1,4 @@
-package com.example.tcg_recorder2
+package com.taichi1001.tcg_manager
 
 import io.flutter.embedding.android.FlutterActivity
 

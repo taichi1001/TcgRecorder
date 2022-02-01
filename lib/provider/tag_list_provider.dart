@@ -1,6 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tcg_recorder2/repository/tag_repository.dart';
-import 'package:tcg_recorder2/state/tag_list_state.dart';
+import 'package:tcg_manager/repository/tag_repository.dart';
+import 'package:tcg_manager/state/tag_list_state.dart';
 
 class TagListNotifier extends StateNotifier<TagListState> {
   TagListNotifier(this.read) : super(TagListState());

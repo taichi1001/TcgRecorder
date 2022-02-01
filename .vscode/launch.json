@@ -5,12 +5,12 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "tcg_recorder2",
+            "name": "tcg_manager",
             "request": "launch",
             "type": "dart"
         },
         {
-            "name": "tcg_recorder2 (profile mode)",
+            "name": "tcg_manager (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"

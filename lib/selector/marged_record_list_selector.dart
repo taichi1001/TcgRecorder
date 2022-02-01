@@ -1,11 +1,11 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tcg_recorder2/entity/marged_record.dart';
-import 'package:tcg_recorder2/entity/record.dart';
-import 'package:tcg_recorder2/provider/deck_list_provider.dart';
-import 'package:tcg_recorder2/provider/game_list_provider.dart';
-import 'package:tcg_recorder2/provider/tag_list_provider.dart';
-import 'package:tcg_recorder2/selector/game_record_list_selector.dart';
-import 'package:tcg_recorder2/state/marged_record_list_state.dart';
+import 'package:tcg_manager/entity/marged_record.dart';
+import 'package:tcg_manager/entity/record.dart';
+import 'package:tcg_manager/provider/deck_list_provider.dart';
+import 'package:tcg_manager/provider/game_list_provider.dart';
+import 'package:tcg_manager/provider/tag_list_provider.dart';
+import 'package:tcg_manager/selector/game_record_list_selector.dart';
+import 'package:tcg_manager/state/marged_record_list_state.dart';
 
 class MargedRecordListNotifier extends StateNotifier<MargedRecordListState> {
   MargedRecordListNotifier(this.read) : super(MargedRecordListState());
