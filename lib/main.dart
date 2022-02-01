@@ -18,8 +18,8 @@ void main() {
   MobileAds.instance.initialize();
   runApp(
     DevicePreview(
-      // enabled: !kReleaseMode,
-      enabled: false,
+      enabled: !kReleaseMode,
+      // enabled: false,
       builder: (context) => const ProviderScope(
         child: MainApp(),
       ),
