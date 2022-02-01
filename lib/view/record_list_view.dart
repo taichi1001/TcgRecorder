@@ -24,43 +24,41 @@ class RecordListView extends HookConsumerWidget {
       //   color: Colors.black,
       //   onPressed: () {},
       // ),
-      body: recordList == null
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : recordList.isEmpty
-              ? const Center(child: Text('このゲームの記録はありません'))
-              : ListView.builder(
-                  itemCount: reverseRecordList.length,
-                  itemBuilder: (context, index) => ProviderScope(
-                    overrides: [currentRecord.overrideWithValue(reverseRecordList[index])],
-                    child: Dismissible(
-                      direction: DismissDirection.endToStart,
-                      background: Container(
-                        color: Colors.red,
-                        child: const Icon(
-                          Icons.delete,
-                          color: Colors.white,
-                        ),
+      body: recordList.isEmpty
+          ? const Center(child: Text('このゲームの記録はありません'))
+          : ListView.separated(
+              separatorBuilder: (context, index) => const SizedBox(height: 8, child: Divider(height: 1)),
+              itemCount: reverseRecordList.length,
+              itemBuilder: (context, index) {
+                return ProviderScope(
+                  overrides: [currentRecord.overrideWithValue(reverseRecordList[index])],
+                  child: Dismissible(
+                    direction: DismissDirection.endToStart,
+                    background: Container(
+                      color: Colors.red,
+                      child: const Icon(
+                        Icons.delete,
+                        color: Colors.white,
                       ),
-                      confirmDismiss: (direction) async {
-                        final okCancelResult = await showOkCancelAlertDialog(
-                          context: context,
-                          message: '削除してもいいですか？',
-                          isDestructiveAction: true,
-                        );
-                        if (okCancelResult == OkCancelResult.ok) {
-                          return true;
-                        }
-                      },
-                      onDismissed: (direction) async {
-                        await recordListNotifier.delete(reverseRecordList[index].recordId);
-                      },
-                      key: UniqueKey(),
-                      child: const _BrandListTile(),
                     ),
+                    confirmDismiss: (direction) async {
+                      final okCancelResult = await showOkCancelAlertDialog(
+                        context: context,
+                        message: '削除してもいいですか？',
+                        isDestructiveAction: true,
+                      );
+                      if (okCancelResult == OkCancelResult.ok) {
+                        return true;
+                      }
+                    },
+                    onDismissed: (direction) async {
+                      await recordListNotifier.delete(reverseRecordList[index].recordId);
+                    },
+                    key: UniqueKey(),
+                    child: const _BrandListTile(),
                   ),
-                ),
+                );
+              }),
     );
   }
 }
@@ -87,35 +85,53 @@ class _BrandListTile extends HookConsumerWidget {
     final outputFormat = DateFormat('yyyy年 MM月 dd日');
 
     return ListTile(
+      trailing: Text(
+        record.winLoss ? 'Win' : 'Loss',
+        style: GoogleFonts.bangers(
+          fontSize: 34,
+          color: record.winLoss ? const Color(0xFFA21F16) : const Color(0xFF3547AC),
+        ),
+      ),
+      subtitle: Text(
+        outputFormat.format(record.date),
+        style: const TextStyle(fontSize: 14, color: Colors.black54),
+      ),
       title: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('使用デッキ: ' + record.useDeck),
-                  Text('対戦デッキ: ' + record.opponentDeck),
-                  const SizedBox(height: 4),
-                  Text(
-                    outputFormat.format(record.date),
-                    style: const TextStyle(fontSize: 14, color: Colors.black54),
-                  )
-                ],
+              const Text(
+                '使用デッキ: ',
+                style: TextStyle(fontSize: 12, color: Colors.black45),
               ),
-              Text(
-                record.winLoss ? 'Win' : 'Loss',
-                style: GoogleFonts.bangers(
-                  fontSize: 34,
-                  color: record.winLoss ? const Color(0xFFA21F16) : const Color(0xFF3547AC),
+              const SizedBox(width: 4),
+              Flexible(
+                child: Text(
+                  record.useDeck,
+                  softWrap: false,
+                  overflow: TextOverflow.ellipsis,
                 ),
-              )
+              ),
             ],
           ),
-          const Divider(
-            height: 1,
-          )
+          const SizedBox(height: 4),
+          Row(
+            children: [
+              const Text(
+                '対戦デッキ: ',
+                style: TextStyle(fontSize: 12, color: Colors.black45),
+              ),
+              const SizedBox(width: 4),
+              Flexible(
+                child: Text(
+                  record.opponentDeck,
+                  softWrap: false,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
