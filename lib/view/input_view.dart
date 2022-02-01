@@ -70,7 +70,16 @@ class InputView extends HookConsumerWidget {
                       _ListPickerButton(
                         submited: inputViewNotifier.setUseDeck,
                         onSelectedItemChanged: inputViewNotifier.scrollUseDeck,
-                        children: gameDeck.map((deck) => Text(deck.deck)).toList(),
+                        children: gameDeck
+                            .map((deck) => Padding(
+                                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                                  child: Text(
+                                    deck.deck,
+                                    softWrap: false,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ))
+                            .toList(),
                       ),
                     ],
                   ),
@@ -85,7 +94,16 @@ class InputView extends HookConsumerWidget {
                       _ListPickerButton(
                         submited: inputViewNotifier.setOpponentDeck,
                         onSelectedItemChanged: inputViewNotifier.scrollOpponentDeck,
-                        children: gameDeck.map((deck) => Text(deck.deck)).toList(),
+                        children: gameDeck
+                            .map((deck) => Padding(
+                                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                                  child: Text(
+                                    deck.deck,
+                                    softWrap: false,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ))
+                            .toList(),
                       ),
                     ],
                   ),

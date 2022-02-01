@@ -44,7 +44,16 @@ class CustomScaffold extends HookConsumerWidget {
               inputViewNotifier.resetView();
             },
             onSelectedItemChanged: selectGameNotifier.scrollSelectGame,
-            children: decks.allGameList!.map((game) => Text(game.game)).toList(),
+            children: decks.allGameList!
+                .map((game) => Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                      child: Text(
+                        game.game,
+                        softWrap: false,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ))
+                .toList(),
           ),
           if (rightButton != null) rightButton!,
         ],
