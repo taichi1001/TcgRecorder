@@ -111,7 +111,12 @@ class _BrandListTile extends HookConsumerWidget {
             children: [
               const Text(
                 '使用デッキ: ',
-                style: TextStyle(fontSize: 12, color: Colors.black45),
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.black45,
+                  leadingDistribution: TextLeadingDistribution.even,
+                  height: 1,
+                ),
               ),
               const SizedBox(width: 4),
               Flexible(
@@ -119,16 +124,26 @@ class _BrandListTile extends HookConsumerWidget {
                   record.useDeck,
                   softWrap: false,
                   overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    leadingDistribution: TextLeadingDistribution.even,
+                    height: 1,
+                  ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 6),
           Row(
             children: [
               const Text(
                 '対戦デッキ: ',
-                style: TextStyle(fontSize: 12, color: Colors.black45),
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.black45,
+                  leadingDistribution: TextLeadingDistribution.even,
+                  height: 1,
+                ),
               ),
               const SizedBox(width: 4),
               Flexible(
@@ -136,10 +151,16 @@ class _BrandListTile extends HookConsumerWidget {
                   record.opponentDeck,
                   softWrap: false,
                   overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    leadingDistribution: TextLeadingDistribution.even,
+                    height: 1,
+                  ),
                 ),
               ),
             ],
           ),
+          const SizedBox(height: 8),
         ],
       ),
     );
