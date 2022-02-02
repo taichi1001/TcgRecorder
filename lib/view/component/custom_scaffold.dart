@@ -33,14 +33,16 @@ class CustomScaffold extends HookConsumerWidget {
         centerTitle: false,
         title: Text(
           selectGame.selectGame != null ? selectGame.selectGame!.game : '',
-          style: GoogleFonts.dotGothic16(
-            fontSize: 34,
-            color: Colors.black,
-          ),
-          // style: const TextStyle(
+          // style: GoogleFonts.dotGothic16(
+          //   fontSize: 30,
+          //   fontWeight: FontWeight.bold,
           //   color: Colors.black,
-          //   fontSize: 24,
           // ),
+          style: const TextStyle(
+            color: Colors.black,
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         actions: [
           _GameListPickerButton(
