@@ -41,6 +41,8 @@ dependencies:
 
   google_mobile_ads: ^1.0.1
 
+  settings_ui: ^2.0.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
