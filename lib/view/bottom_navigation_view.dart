@@ -36,8 +36,8 @@ class BottomNavigationView extends HookConsumerWidget {
               label: '入力',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.pie_chart),
-              label: 'グラフ',
+              icon: Icon(Icons.analytics_outlined),
+              label: 'データ',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.import_contacts),

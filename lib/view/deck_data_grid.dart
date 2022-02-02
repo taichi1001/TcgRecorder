@@ -49,7 +49,7 @@ class DeckDataGrid extends HookConsumerWidget {
                     columnName: 'デッキ名',
                     label: const Center(
                       child: Text(
-                        'デッキ名',
+                        '対戦デッキ名',
                         style: TextStyle(
                           color: Colors.white,
                         ),

@@ -49,16 +49,22 @@ class GraphView extends HookConsumerWidget {
                       ],
                     ),
             ),
-            Center(
-              child: recordList.isEmpty
-                  ? const Center(child: Text('このゲームの記録はありません'))
-                  : Column(
-                      children: const [
-                        Expanded(child: Center(child: Text('グラフ'))),
-                        AdaptiveBannerAd(),
-                      ],
-                    ),
-            ),
+            recordList.isEmpty
+                ? const Center(child: Text('このゲームの記録はありません'))
+                : Column(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Text('グラフ機能はまだ実装されていません。'),
+                            Text('今後実装予定ですので応援よろしくお願いします。'),
+                          ],
+                        ),
+                      ),
+                      const AdaptiveBannerAd(),
+                    ],
+                  ),
           ],
         ),
       ),
