@@ -66,7 +66,9 @@ class MainApp extends HookConsumerWidget {
       home: allGameList == null && allDeckList == null && allRecordList == null && allTagList == null
           ? const Scaffold(
               body: Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(
+                  color: Color(0xFF18204E),
+                ),
               ),
             )
           : allGameList!.isEmpty
