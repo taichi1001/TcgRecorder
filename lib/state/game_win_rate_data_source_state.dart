@@ -81,10 +81,12 @@ class GameWinRateDataSource extends DataGridSource {
           },
           child: Text(
             cell.value.toString(),
+            maxLines: 2,
             style: const TextStyle(
               decoration: TextDecoration.underline,
               color: Colors.black,
               fontSize: 12,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
         );

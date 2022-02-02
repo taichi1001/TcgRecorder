@@ -55,7 +55,14 @@ class DeckWinRateDataSource extends DataGridSource {
 
   Widget _buildChild(DataGridCell cell) {
     if (cell.columnName == 'デッキ名') {
-      return Text(cell.value.toString());
+      return Text(
+        cell.value.toString(),
+        maxLines: 2,
+        style: const TextStyle(
+          fontSize: 12,
+          overflow: TextOverflow.ellipsis,
+        ),
+      );
     }
     if (cell.columnName == '試合数') {
       return Text(cell.value.toString());
