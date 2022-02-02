@@ -54,19 +54,35 @@ class InputView extends HookConsumerWidget {
                             children: [
                               const Padding(
                                 padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
-                                child: Text('Day'),
+                                child: Text(
+                                  '日付',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    leadingDistribution: TextLeadingDistribution.even,
+                                    height: 1,
+                                  ),
+                                ),
                               ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(outputFormat.format(date)),
+                                  Text(
+                                    outputFormat.format(date),
+                                  ),
                                   _DatePickerButton(
                                     submited: inputViewNotifier.setDateTime,
                                     onDateTimeChanged: inputViewNotifier.scrollDateTime,
                                   ),
                                 ],
                               ),
-                              const Text('Deck'),
+                              const Text(
+                                'デッキ',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  leadingDistribution: TextLeadingDistribution.even,
+                                  height: 1,
+                                ),
+                              ),
                               Stack(
                                 alignment: Alignment.centerRight,
                                 children: [
@@ -117,7 +133,14 @@ class InputView extends HookConsumerWidget {
                               ),
                               const Padding(
                                 padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
-                                child: Text('First or Second'),
+                                child: Text(
+                                  '手番',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    leadingDistribution: TextLeadingDistribution.even,
+                                    height: 1,
+                                  ),
+                                ),
                               ),
                               RadioListTile(
                                 title: const Text('先攻'),
@@ -143,7 +166,14 @@ class InputView extends HookConsumerWidget {
                               ),
                               const Padding(
                                 padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
-                                child: Text('Win/Loss'),
+                                child: Text(
+                                  '勝敗',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    leadingDistribution: TextLeadingDistribution.even,
+                                    height: 1,
+                                  ),
+                                ),
                               ),
                               RadioListTile(
                                 title: const Text('勝ち'),
