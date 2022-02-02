@@ -19,10 +19,24 @@ void main() {
   MobileAds.instance.initialize();
   runApp(
     DevicePreview(
-      enabled: !kReleaseMode,
-      // enabled: false,
-      builder: (context) => const ProviderScope(
-        child: MaterialApp(home: MainApp()),
+      // enabled: !kReleaseMode,
+      enabled: false,
+      builder: (context) => ProviderScope(
+        child: MaterialApp(
+            useInheritedMediaQuery: true,
+            locale: DevicePreview.locale(context),
+            builder: DevicePreview.appBuilder,
+            localizationsDelegates: const [
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              DefaultCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [
+              Locale('en', 'US'),
+              Locale('ja', 'JP'),
+            ],
+            home: MainApp()),
       ),
     ),
   );
@@ -49,31 +63,16 @@ class MainApp extends HookConsumerWidget {
     final allRecordList = ref.watch(allRecordListNotifierProvider).allRecordList;
     final allTagList = ref.watch(allTagListNotifierProvider).allTagList;
 
-    return MaterialApp(
-      useInheritedMediaQuery: true,
-      locale: DevicePreview.locale(context),
-      builder: DevicePreview.appBuilder,
-      localizationsDelegates: const [
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        DefaultCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [
-        Locale('en', 'US'),
-        Locale('ja', 'JP'),
-      ],
-      home: allGameList == null && allDeckList == null && allRecordList == null && allTagList == null
-          ? const Scaffold(
-              body: Center(
-                child: CircularProgressIndicator(
-                  color: Color(0xFF18204E),
-                ),
+    return allGameList == null && allDeckList == null && allRecordList == null && allTagList == null
+        ? const Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(
+                color: Color(0xFF18204E),
               ),
-            )
-          : allGameList!.isEmpty
-              ? const InitialGameRegistrationView()
-              : const BottomNavigationView(),
-    );
+            ),
+          )
+        : allGameList!.isEmpty
+            ? const InitialGameRegistrationView()
+            : const BottomNavigationView();
   }
 }
