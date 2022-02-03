@@ -87,6 +87,8 @@ class GameWinRateDataSource extends DataGridSource {
               color: Colors.black,
               fontSize: 12,
               overflow: TextOverflow.ellipsis,
+              leadingDistribution: TextLeadingDistribution.even,
+              height: 1,
             ),
           ),
         );

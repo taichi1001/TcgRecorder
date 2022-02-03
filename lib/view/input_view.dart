@@ -215,7 +215,7 @@ class InputView extends HookConsumerWidget {
                                 : () async {
                                     final okCancelResult = await showOkCancelAlertDialog(
                                       context: context,
-                                      message: '保存してもいいですか？',
+                                      message: '保存しますか？',
                                       isDestructiveAction: true,
                                     );
                                     if (okCancelResult == OkCancelResult.ok) {
@@ -223,6 +223,7 @@ class InputView extends HookConsumerWidget {
                                       await ref.read(allDeckListNotifierProvider.notifier).fetch();
                                       await ref.read(allRecordListNotifierProvider.notifier).fetch();
                                     }
+                                    FocusScope.of(context).unfocus();
                                   },
                             child: const Text('SAVE'),
                             style: ElevatedButton.styleFrom(
@@ -307,6 +308,7 @@ class _ListPickerButton extends StatelessWidget {
                     submited: () {
                       submited();
                       Navigator.pop(context);
+                      FocusScope.of(context).unfocus();
                     },
                     onSelectedItemChanged: onSelectedItemChanged,
                     children: children,
