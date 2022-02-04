@@ -127,7 +127,7 @@ class DeckDataGrid extends HookConsumerWidget {
                         ),
                       ),
                     ),
-                    width: 80,
+                    width: 85,
                   ),
                 ],
               ),
