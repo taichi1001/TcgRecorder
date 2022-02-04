@@ -7,7 +7,7 @@ import 'package:tcg_manager/state/select_game_state.dart';
 
 class SelectGameNotifier extends StateNotifier<SelectGameState> {
   SelectGameNotifier(this.read) : super(SelectGameState()) {
-    _startupGame();
+    startupGame();
   }
 
   final Reader read;
@@ -41,7 +41,7 @@ class SelectGameNotifier extends StateNotifier<SelectGameState> {
     return false;
   }
 
-  void _startupGame() {
+  void startupGame() {
     final records = read(allRecordListNotifierProvider).allRecordList;
     final games = read(allGameListNotifierProvider).allGameList;
     if (games != null) {

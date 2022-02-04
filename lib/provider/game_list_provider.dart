@@ -11,6 +11,13 @@ class GameListNotifier extends StateNotifier<GameListState> {
     final gameList = await read(gameRepository).getAll();
     state = state.copyWith(allGameList: gameList);
   }
+
+  Future updateName(String name, int index) async {
+    final game = state.allGameList![index];
+    final newGame = game.copyWith(game: name);
+    await read(gameRepository).update(newGame);
+    await fetch();
+  }
 }
 
 final allGameListNotifierProvider = StateNotifierProvider<GameListNotifier, GameListState>(

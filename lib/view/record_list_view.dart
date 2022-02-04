@@ -15,8 +15,6 @@ class RecordListView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final recordList = ref.watch(margedRecordListProvider).margedRecordList;
-    // レコードが古い順に表示されるため、リストを逆にして新しい順にしている
-    // final reverseRecordList = List.from(recordList!.reversed);
     final recordListNotifier = ref.read(allRecordListNotifierProvider.notifier);
 
     return Column(
