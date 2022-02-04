@@ -19,8 +19,8 @@ void main() {
   MobileAds.instance.initialize();
   runApp(
     DevicePreview(
-      // enabled: !kReleaseMode,
-      enabled: false,
+      enabled: !kReleaseMode,
+      // enabled: false,
       builder: (context) => ProviderScope(
         child: MaterialApp(
             useInheritedMediaQuery: true,
@@ -36,7 +36,7 @@ void main() {
               Locale('en', 'US'),
               Locale('ja', 'JP'),
             ],
-            home: MainApp()),
+            home: const MainApp()),
       ),
     ),
   );
