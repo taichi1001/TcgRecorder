@@ -1,4 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/repository/game_repository.dart';
 import 'package:tcg_manager/state/game_list_state.dart';
 
@@ -17,6 +18,10 @@ class GameListNotifier extends StateNotifier<GameListState> {
     final newGame = game.copyWith(game: name);
     await read(gameRepository).update(newGame);
     await fetch();
+    // 編集したゲームがselectGameと同じだった場合の処理
+    if (read(selectGameNotifierProvider).selectGame!.gameId == newGame.gameId) {
+      read(selectGameNotifierProvider.notifier).changeGame(newGame);
+    }
   }
 }
 
