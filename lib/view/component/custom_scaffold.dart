@@ -1,7 +1,6 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/input_view_provider.dart';
@@ -33,11 +32,6 @@ class CustomScaffold extends HookConsumerWidget {
         centerTitle: false,
         title: Text(
           selectGame.selectGame != null ? selectGame.selectGame!.game : '',
-          // style: GoogleFonts.dotGothic16(
-          //   fontSize: 30,
-          //   fontWeight: FontWeight.bold,
-          //   color: Colors.black,
-          // ),
           style: const TextStyle(
             color: Colors.black,
             fontSize: 30,

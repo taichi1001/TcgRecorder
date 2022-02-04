@@ -6,6 +6,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/provider/adaptive_banner_ad_provider.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
@@ -50,10 +51,7 @@ class MainApp extends HookConsumerWidget {
     useEffect(() {
       Future.microtask(() {
         ref.read(adaptiveBannerAdNotifierProvider.notifier).getAd(context);
-        ref.read(allGameListNotifierProvider.notifier).fetch();
-        ref.read(allDeckListNotifierProvider.notifier).fetch();
-        ref.read(allRecordListNotifierProvider.notifier).fetch();
-        ref.read(allTagListNotifierProvider.notifier).fetch();
+        ref.read(dbHelper).fetchAll();
       });
       return;
     }, const []);
