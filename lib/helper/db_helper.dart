@@ -14,17 +14,17 @@ class DbHelper {
 
   Future deleteAll() async {
     await read(recordRepository).deleteAll();
-    await read(deckRepository).deleteAll();
     await read(tagRepository).deleteAll();
+    await read(deckRepository).deleteAll();
     await read(gameRepository).deleteAll();
     await fetchAll();
   }
 
   Future fetchAll() async {
-    await read(allRecordListNotifierProvider.notifier).fetch();
     await read(allGameListNotifierProvider.notifier).fetch();
     await read(allDeckListNotifierProvider.notifier).fetch();
     await read(allTagListNotifierProvider.notifier).fetch();
+    await read(allRecordListNotifierProvider.notifier).fetch();
   }
 }
 
