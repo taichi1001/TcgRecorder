@@ -1,7 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/record.dart';
-import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
+import 'package:tcg_manager/selector/sorted_record_list_selector.dart';
 import 'package:tcg_manager/state/game_record_list_state.dart';
 
 class GameRecordListNotifier extends StateNotifier<GameRecordListState> {
@@ -55,8 +55,8 @@ class GameRecordListNotifier extends StateNotifier<GameRecordListState> {
 
 final gameRecordListNotifierProvider = StateNotifierProvider<GameRecordListNotifier, GameRecordListState>((ref) {
   final selectGame = ref.watch(selectGameNotifierProvider).selectGame;
-  final allRecordList = ref.watch(allRecordListNotifierProvider).allRecordList;
-  final gameRecordList = allRecordList!.where((record) => record.gameId! == selectGame!.gameId).toList();
+  final sortedRecordList = ref.watch(sortedRecordListProvider);
+  final gameRecordList = sortedRecordList.where((record) => record.gameId! == selectGame!.gameId).toList();
   final notifier = GameRecordListNotifier(ref.read);
   notifier.setGameRecordList(gameRecordList);
   return notifier;

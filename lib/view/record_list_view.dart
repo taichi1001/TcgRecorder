@@ -16,7 +16,7 @@ class RecordListView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final recordList = ref.watch(margedRecordListProvider).margedRecordList;
     // レコードが古い順に表示されるため、リストを逆にして新しい順にしている
-    final reverseRecordList = List.from(recordList!.reversed);
+    // final reverseRecordList = List.from(recordList!.reversed);
     final recordListNotifier = ref.read(allRecordListNotifierProvider.notifier);
 
     return Column(
@@ -28,14 +28,14 @@ class RecordListView extends HookConsumerWidget {
             //   color: Colors.black,
             //   onPressed: () {},
             // ),
-            body: recordList.isEmpty
+            body: recordList!.isEmpty
                 ? const Center(child: Text('このゲームの記録はありません'))
                 : ListView.separated(
                     separatorBuilder: (context, index) => const SizedBox(height: 8, child: Divider(height: 1)),
-                    itemCount: reverseRecordList.length,
+                    itemCount: recordList.length,
                     itemBuilder: (context, index) {
                       return ProviderScope(
-                        overrides: [currentRecord.overrideWithValue(reverseRecordList[index])],
+                        overrides: [currentRecord.overrideWithValue(recordList[index])],
                         child: Dismissible(
                           direction: DismissDirection.endToStart,
                           background: Container(
@@ -56,7 +56,7 @@ class RecordListView extends HookConsumerWidget {
                             }
                           },
                           onDismissed: (direction) async {
-                            await recordListNotifier.delete(reverseRecordList[index].recordId);
+                            await recordListNotifier.delete(recordList[index].recordId);
                           },
                           key: UniqueKey(),
                           child: const _BrandListTile(),
