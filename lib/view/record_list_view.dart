@@ -51,6 +51,8 @@ class RecordListView extends HookConsumerWidget {
                             );
                             if (okCancelResult == OkCancelResult.ok) {
                               return true;
+                            } else {
+                              return false;
                             }
                           },
                           onDismissed: (direction) async {

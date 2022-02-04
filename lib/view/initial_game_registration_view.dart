@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/initital_game_registration_provider.dart';
+import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
 import 'package:tcg_manager/view/component/custom_textfield.dart';
 
@@ -38,12 +39,13 @@ class InitialGameRegistrationView extends HookConsumerWidget {
                       width: 300,
                       height: 50,
                       child: ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           if (initialGameState.initialGame == null) {
                             null;
                           } else {
                             initialGameRegistrationNotifier.save();
-                            ref.read(allGameListNotifierProvider.notifier).fetch();
+                            await ref.read(allGameListNotifierProvider.notifier).fetch();
+                            ref.read(selectGameNotifierProvider.notifier).startupGame();
                           }
                         },
                         child: const Text('SAVE'),
