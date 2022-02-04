@@ -17,8 +17,9 @@ class CustomModalDatePicker extends HookWidget {
       submitedAction: submited,
       child: CupertinoDatePicker(
         mode: CupertinoDatePickerMode.date,
-        minimumYear: 2000,
+        initialDateTime: DateTime.now(),
         maximumDate: DateTime.now(),
+        minimumYear: 2000,
         onDateTimeChanged: onDateTimeChanged,
       ),
     );
