@@ -36,6 +36,7 @@ class InputView extends HookConsumerWidget {
     final outputFormat = DateFormat('yyyy年 MM月 dd日');
 
     return SafeArea(
+      top: false,
       child: Column(
         children: [
           Expanded(
