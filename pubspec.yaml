@@ -45,6 +45,8 @@ dependencies:
 
   app_review: ^2.1.1+1
 
+  flutter_launcher_icons: ^0.9.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -55,6 +57,12 @@ dev_dependencies:
   freezed: ^1.1.1
 
   device_preview: ^1.0.0
+
+flutter_icons:
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/images/icon.png"
 
 flutter:
   fonts:
