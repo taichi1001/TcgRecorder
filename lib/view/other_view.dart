@@ -2,6 +2,7 @@ import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:settings_ui/settings_ui.dart';
+import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/provider/bottom_navigation_bar_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
@@ -16,9 +17,9 @@ class OtherView extends HookConsumerWidget {
         backgroundColor: Colors.white,
         centerTitle: false,
         elevation: 0.0,
-        title: const Text(
-          'その他',
-          style: TextStyle(
+        title: Text(
+          S.of(context).otherTitle,
+          style: const TextStyle(
             color: Colors.black,
             fontSize: 30,
             fontWeight: FontWeight.bold,
@@ -32,10 +33,10 @@ class OtherView extends HookConsumerWidget {
         ),
         sections: [
           SettingsSection(
-            title: const Text('編集'),
+            title: Text(S.of(context).editSection),
             tiles: [
               SettingsTile(
-                title: const Text('ゲーム名編集'),
+                title: Text(S.of(context).gameEdit),
                 leading: const Icon(Icons.edit),
                 onPressed: (context) {
                   Navigator.push(
@@ -47,9 +48,9 @@ class OtherView extends HookConsumerWidget {
                 },
               ),
               SettingsTile(
-                title: const Text(
-                  '全データ削除',
-                  style: TextStyle(
+                title: Text(
+                  S.of(context).allDelete,
+                  style: const TextStyle(
                     color: Colors.red,
                   ),
                 ),
@@ -60,8 +61,8 @@ class OtherView extends HookConsumerWidget {
                 onPressed: (context) async {
                   final okCancelResult = await showOkCancelAlertDialog(
                     context: context,
-                    title: '全データを削除します',
-                    message: '全てのデータが削除され元に戻らなくなりますがよろしいですか？',
+                    title: S.of(context).allDeleteDialog,
+                    message: S.of(context).allDeleteMessage,
                     isDestructiveAction: true,
                   );
                   if (okCancelResult == OkCancelResult.ok) {
@@ -73,10 +74,10 @@ class OtherView extends HookConsumerWidget {
             ],
           ),
           SettingsSection(
-            title: const Text('その他'),
+            title: Text(S.of(context).otherSection),
             tiles: [
               SettingsTile(
-                title: const Text('アプリをレビュー'),
+                title: Text(S.of(context).review),
                 leading: const Icon(Icons.reviews),
                 onPressed: (context) async {
                   // await AppReview.requestReview.then((value) => print(value));
@@ -102,9 +103,9 @@ class _GameListView extends HookConsumerWidget {
         backgroundColor: Colors.white,
         centerTitle: false,
         elevation: 0.0,
-        title: const Text(
-          'ゲーム編集',
-          style: TextStyle(
+        title: Text(
+          S.of(context).gameEdit,
+          style: const TextStyle(
             color: Colors.black,
             fontSize: 30,
             fontWeight: FontWeight.bold,
@@ -129,7 +130,7 @@ class _GameListView extends HookConsumerWidget {
                     onPressed: () async {
                       final newName = await showTextInputDialog(
                         context: context,
-                        title: 'ゲーム名編集',
+                        title: S.of(context).gameEdit,
                         textFields: [DialogTextField(initialText: gameList[index].game)],
                       );
                       if (newName != null && newName.first != '') {

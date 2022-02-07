@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:tcg_manager/generated/l10n.dart';
 
 class CustomModalPicker extends StatelessWidget {
   const CustomModalPicker({
@@ -74,7 +75,7 @@ class _ModalButton extends StatelessWidget {
               horizontal: 16,
               vertical: 5,
             ),
-            child: const Text('決定'),
+            child: Text(S.of(context).submit),
           )
         ],
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/provider/bottom_navigation_bar_provider.dart';
 import 'package:tcg_manager/state/bottom_navigation_bar_state.dart';
 import 'package:tcg_manager/view/graph_view.dart';
@@ -25,33 +26,31 @@ class BottomNavigationView extends HookConsumerWidget {
     final bottomTabState = ref.watch(bottomNavigationBarNotifierProvider);
     final bottomTabNotifier = ref.watch(bottomNavigationBarNotifierProvider.notifier);
     final int currentIndex = _items.indexOf(bottomTabState.viewItem);
-    return MaterialApp(
-      home: Scaffold(
-        body: _views[currentIndex],
-        bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          selectedItemColor: const Color(0xFF18204E),
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.border_color),
-              label: '入力',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.analytics_outlined),
-              label: 'データ',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.import_contacts),
-              label: '一覧',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'その他',
-            ),
-          ],
-          onTap: bottomTabNotifier.select,
-          currentIndex: currentIndex,
-        ),
+    return Scaffold(
+      body: _views[currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: const Color(0xFF18204E),
+        items: [
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.border_color),
+            label: S.of(context).bottomInput,
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.analytics_outlined),
+            label: S.of(context).bottomData,
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.import_contacts),
+            label: S.of(context).bottomList,
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.settings),
+            label: S.of(context).bottomOther,
+          ),
+        ],
+        onTap: bottomTabNotifier.select,
+        currentIndex: currentIndex,
       ),
     );
   }

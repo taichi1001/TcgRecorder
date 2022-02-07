@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
+import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/selector/game_record_list_selector.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
 import 'package:tcg_manager/view/component/custom_scaffold.dart';
@@ -41,7 +42,7 @@ class GraphView extends HookConsumerWidget {
           children: [
             Center(
               child: recordList!.isEmpty
-                  ? const Center(child: Text('このゲームの記録はありません'))
+                  ? Center(child: Text(S.of(context).noDataMessage))
                   : Column(
                       children: const [
                         Expanded(child: GameDataGrid()),
@@ -50,15 +51,15 @@ class GraphView extends HookConsumerWidget {
                     ),
             ),
             recordList.isEmpty
-                ? const Center(child: Text('このゲームの記録はありません'))
+                ? Center(child: Text(S.of(context).noDataMessage))
                 : Column(
                     children: [
                       Expanded(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Text('グラフ機能はまだ実装されていません。'),
-                            Text('今後実装予定ですので応援よろしくお願いします。'),
+                          children: [
+                            Text(S.of(context).nextFunctionAnnounce1),
+                            Text(S.of(context).nextFunctionAnnounce2),
                           ],
                         ),
                       ),

@@ -2,6 +2,7 @@ import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/input_view_provider.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
@@ -98,7 +99,7 @@ class _GameListPickerButton extends HookConsumerWidget {
                 onPressed: () async {
                   final games = await showTextInputDialog(
                     context: context,
-                    title: '新規ゲーム追加',
+                    title: S.of(context).newGameDialog,
                     textFields: [const DialogTextField()],
                   );
                   if (games != null && games.first != '') {
@@ -111,7 +112,7 @@ class _GameListPickerButton extends HookConsumerWidget {
                   horizontal: 16,
                   vertical: 5,
                 ),
-                child: const Text('新規追加'),
+                child: Text(S.of(context).newGame),
               ),
               submited: () {
                 submited();

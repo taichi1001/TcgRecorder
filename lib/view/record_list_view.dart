@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:tcg_manager/entity/marged_record.dart';
+import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/selector/marged_record_list_selector.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
@@ -27,7 +28,7 @@ class RecordListView extends HookConsumerWidget {
             //   onPressed: () {},
             // ),
             body: recordList!.isEmpty
-                ? const Center(child: Text('このゲームの記録はありません'))
+                ? Center(child: Text(S.of(context).noDataMessage))
                 : ListView.separated(
                     separatorBuilder: (context, index) => const SizedBox(height: 8, child: Divider(height: 1)),
                     itemCount: recordList.length,
@@ -46,7 +47,7 @@ class RecordListView extends HookConsumerWidget {
                           confirmDismiss: (direction) async {
                             final okCancelResult = await showOkCancelAlertDialog(
                               context: context,
-                              message: '削除してもいいですか？',
+                              message: S.of(context).deleteMessage,
                               isDestructiveAction: true,
                             );
                             if (okCancelResult == OkCancelResult.ok) {
@@ -109,9 +110,9 @@ class _BrandListTile extends HookConsumerWidget {
         children: [
           Row(
             children: [
-              const Text(
-                '使用デッキ: ',
-                style: TextStyle(
+              Text(
+                S.of(context).listUseDeck,
+                style: const TextStyle(
                   fontSize: 12,
                   color: Colors.black45,
                   leadingDistribution: TextLeadingDistribution.even,
@@ -136,9 +137,9 @@ class _BrandListTile extends HookConsumerWidget {
           const SizedBox(height: 6),
           Row(
             children: [
-              const Text(
-                '対戦デッキ: ',
-                style: TextStyle(
+              Text(
+                S.of(context).listOpponentDeck,
+                style: const TextStyle(
                   fontSize: 12,
                   color: Colors.black45,
                   leadingDistribution: TextLeadingDistribution.even,

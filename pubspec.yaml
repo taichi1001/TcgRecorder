@@ -6,12 +6,10 @@ publish_to: 'none'
 environment:
   sdk: ">=2.15.1 <3.0.0"
 
-
-
 dependencies:
   flutter:
     sdk: flutter
-  
+
   flutter_localizations:
     sdk: flutter
 
@@ -21,7 +19,7 @@ dependencies:
   flutter_hooks: ^0.18.2
 
   state_notifier: ^0.7.2+1
-  
+
   freezed_annotation: ^1.1.0
   json_annotation: ^4.4.0
   json_serializable: ^6.1.4
@@ -69,6 +67,7 @@ flutter:
     - family: NotoSansJP
       fonts:
         - asset: assets/fonts/NotoSansJP-Regular.otf
-  
-  uses-material-design: true
 
+  uses-material-design: true
+flutter_intl:
+  enabled: true

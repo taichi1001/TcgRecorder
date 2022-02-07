@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/initital_game_registration_provider.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
@@ -27,10 +28,10 @@ class InitialGameRegistrationView extends HookConsumerWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text('記録したいゲーム名を入力してください'),
+                    Text(S.of(context).initializeGame),
                     const SizedBox(height: 16),
                     CustomTextField(
-                      labelText: 'ゲーム名',
+                      labelText: S.of(context).isSave,
                       controller: gameTextEditingController,
                       onChanged: initialGameRegistrationNotifier.changeGameForString,
                     ),
@@ -48,7 +49,7 @@ class InitialGameRegistrationView extends HookConsumerWidget {
                             ref.read(selectGameNotifierProvider.notifier).startupGame();
                           }
                         },
-                        child: const Text('SAVE'),
+                        child: Text(S.of(context).save),
                         style: ElevatedButton.styleFrom(
                           primary: const Color(0xFF18204E),
                           shape: RoundedRectangleBorder(

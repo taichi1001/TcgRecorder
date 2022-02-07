@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/input_view_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
@@ -50,11 +51,11 @@ class InputView extends HookConsumerWidget {
                         mainAxisSize: MainAxisSize.max,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
+                          Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
                             child: Text(
-                              '日付',
-                              style: TextStyle(
+                              S.of(context).date,
+                              style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 leadingDistribution: TextLeadingDistribution.even,
                                 height: 1,
@@ -73,9 +74,9 @@ class InputView extends HookConsumerWidget {
                               ),
                             ],
                           ),
-                          const Text(
-                            'デッキ',
-                            style: TextStyle(
+                          Text(
+                            S.of(context).deck,
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               leadingDistribution: TextLeadingDistribution.even,
                               height: 1,
@@ -85,7 +86,7 @@ class InputView extends HookConsumerWidget {
                             alignment: Alignment.centerRight,
                             children: [
                               CustomTextField(
-                                labelText: '使用デッキ',
+                                labelText: S.of(context).useDeck,
                                 onChanged: inputViewNotifier.inputUseDeck,
                                 controller: useDeckTextController,
                               ),
@@ -109,7 +110,7 @@ class InputView extends HookConsumerWidget {
                             alignment: Alignment.centerRight,
                             children: [
                               CustomTextField(
-                                labelText: '対戦デッキ',
+                                labelText: S.of(context).opponentDeck,
                                 onChanged: inputViewNotifier.inputOpponentDeck,
                                 controller: opponentDeckTextController,
                               ),
@@ -129,11 +130,11 @@ class InputView extends HookConsumerWidget {
                               ),
                             ],
                           ),
-                          const Padding(
-                            padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
                             child: Text(
-                              '手番',
-                              style: TextStyle(
+                              S.of(context).order,
+                              style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 leadingDistribution: TextLeadingDistribution.even,
                                 height: 1,
@@ -141,7 +142,7 @@ class InputView extends HookConsumerWidget {
                             ),
                           ),
                           RadioListTile(
-                            title: const Text('先攻'),
+                            title: Text(S.of(context).first),
                             value: FirstSecond.first,
                             groupValue: firstSecond,
                             activeColor: const Color(0xFF18204E),
@@ -152,7 +153,7 @@ class InputView extends HookConsumerWidget {
                             dense: true,
                           ),
                           RadioListTile(
-                            title: const Text('後攻'),
+                            title: Text(S.of(context).second),
                             value: FirstSecond.second,
                             groupValue: firstSecond,
                             activeColor: const Color(0xFF18204E),
@@ -162,11 +163,11 @@ class InputView extends HookConsumerWidget {
                             contentPadding: const EdgeInsets.symmetric(horizontal: 0),
                             dense: true,
                           ),
-                          const Padding(
-                            padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
                             child: Text(
-                              '勝敗',
-                              style: TextStyle(
+                              S.of(context).winOrLoss,
+                              style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 leadingDistribution: TextLeadingDistribution.even,
                                 height: 1,
@@ -174,7 +175,7 @@ class InputView extends HookConsumerWidget {
                             ),
                           ),
                           RadioListTile(
-                            title: const Text('勝ち'),
+                            title: Text(S.of(context).win),
                             value: WinLoss.win,
                             groupValue: winLoss,
                             activeColor: const Color(0xFF18204E),
@@ -185,7 +186,7 @@ class InputView extends HookConsumerWidget {
                             dense: true,
                           ),
                           RadioListTile(
-                            title: const Text('負け'),
+                            title: Text(S.of(context).loss),
                             value: WinLoss.loss,
                             groupValue: winLoss,
                             activeColor: const Color(0xFF18204E),
@@ -208,7 +209,7 @@ class InputView extends HookConsumerWidget {
                                         : () async {
                                             final okCancelResult = await showOkCancelAlertDialog(
                                               context: context,
-                                              message: '保存しますか？',
+                                              message: S.of(context).isSave,
                                               isDestructiveAction: true,
                                             );
                                             if (okCancelResult == OkCancelResult.ok) {
@@ -218,7 +219,7 @@ class InputView extends HookConsumerWidget {
                                             }
                                             FocusScope.of(context).unfocus();
                                           },
-                                    child: const Text('SAVE'),
+                                    child: Text(S.of(context).save),
                                     style: ElevatedButton.styleFrom(
                                       primary: const Color(0xFF18204E),
                                       shape: RoundedRectangleBorder(
