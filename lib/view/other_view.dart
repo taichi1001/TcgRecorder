@@ -35,7 +35,7 @@ class OtherView extends HookConsumerWidget {
             title: const Text('編集'),
             tiles: [
               SettingsTile(
-                title: const Text('ゲーム編集'),
+                title: const Text('ゲーム名編集'),
                 leading: const Icon(Icons.edit),
                 onPressed: (context) {
                   Navigator.push(
