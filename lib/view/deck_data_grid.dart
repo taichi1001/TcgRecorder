@@ -44,6 +44,8 @@ class DeckDataGrid extends HookConsumerWidget {
               child: SfDataGrid(
                 source: source,
                 frozenColumnsCount: 1,
+                verticalScrollPhysics: const ClampingScrollPhysics(),
+                horizontalScrollPhysics: const ClampingScrollPhysics(),
                 columns: [
                   GridColumn(
                     columnName: 'デッキ名',
