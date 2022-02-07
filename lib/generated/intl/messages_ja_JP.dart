@@ -54,6 +54,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "order": MessageLookupByLibrary.simpleMessage("手番"),
         "otherSection": MessageLookupByLibrary.simpleMessage("その他"),
         "otherTitle": MessageLookupByLibrary.simpleMessage("その他"),
+        "privacyPolicy": MessageLookupByLibrary.simpleMessage("プライバシーポリシー"),
         "review": MessageLookupByLibrary.simpleMessage("アプリをレビュー"),
         "save": MessageLookupByLibrary.simpleMessage("保存"),
         "second": MessageLookupByLibrary.simpleMessage("後攻"),

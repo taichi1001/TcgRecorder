@@ -1,4 +1,5 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:app_review/app_review.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:settings_ui/settings_ui.dart';
@@ -6,6 +7,7 @@ import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/provider/bottom_navigation_bar_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class OtherView extends HookConsumerWidget {
   const OtherView({Key? key}) : super(key: key);
@@ -28,8 +30,11 @@ class OtherView extends HookConsumerWidget {
       ),
       backgroundColor: Colors.white,
       body: SettingsList(
-        lightTheme: const SettingsThemeData(
+        lightTheme: SettingsThemeData(
           settingsListBackground: Colors.white,
+          settingsSectionBackground: Theme.of(context).canvasColor,
+          dividerColor: Colors.black12,
+          leadingIconsColor: const Color(0xFF18204E),
         ),
         sections: [
           SettingsSection(
@@ -81,6 +86,16 @@ class OtherView extends HookConsumerWidget {
                 leading: const Icon(Icons.reviews),
                 onPressed: (context) async {
                   // await AppReview.requestReview.then((value) => print(value));
+                },
+              ),
+              SettingsTile(
+                title: Text(S.of(context).privacyPolicy),
+                leading: const Icon(Icons.privacy_tip),
+                onPressed: (context) async {
+                  if (!await launch(
+                      'https://phrygian-jellyfish-595.notion.site/Privacy-Policy-057b29da8fb74d76bccd700d80db53e1')) {
+                    throw 'Could not launch URL';
+                  }
                 },
               ),
             ],

@@ -52,5 +52,10 @@
           <string>cstr6suwn9.skadnetwork</string>
         </dict>
       </array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+    	<string>https</string>
+    	<string>http</string>
+  	</array>
 </dict>
 </plist>
