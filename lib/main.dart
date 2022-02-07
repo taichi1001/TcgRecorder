@@ -22,8 +22,8 @@ void main() {
   MobileAds.instance.initialize();
   runApp(
     DevicePreview(
-      enabled: !kReleaseMode,
-      // enabled: false,
+      // enabled: !kReleaseMode,
+      enabled: false,
       builder: (context) => ProviderScope(
         child: MaterialApp(
           useInheritedMediaQuery: true,
