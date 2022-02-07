@@ -25,13 +25,21 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
   }
 
   void inputUseDeck(String name) {
-    final deck = Deck(deck: name);
-    state = state.copyWith(useDeck: deck, cacheUseDeck: deck);
+    if (name == '') {
+      state = state.copyWith(useDeck: null);
+    } else {
+      final deck = Deck(deck: name);
+      state = state.copyWith(useDeck: deck, cacheUseDeck: deck);
+    }
   }
 
   void inputOpponentDeck(String name) {
-    final deck = Deck(deck: name);
-    state = state.copyWith(opponentDeck: deck, cacheOpponentDeck: deck);
+    if (name == '') {
+      state = state.copyWith(opponentDeck: null);
+    } else {
+      final deck = Deck(deck: name);
+      state = state.copyWith(opponentDeck: deck, cacheOpponentDeck: deck);
+    }
   }
 
   void scrollUseDeck(int index) {
