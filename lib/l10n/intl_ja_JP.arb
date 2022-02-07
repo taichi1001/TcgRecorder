@@ -38,9 +38,9 @@
     "otherSection": "その他",
     "review": "アプリをレビュー",
     "allDeleteDialog": "全データを削除します",
-    "allDeleteMessage": "全てのデータが削除され元に戻らなくなりますがよろしいですか？",
+    "allDeleteMessage": "元に戻らなくなりますがよろしいですか？",
     "noDataMessage": "このゲームの記録はありません",
-    "deleteMessage": "削除してもいいですか？",
+    "deleteMessage": "削除しますか？",
     "nextFunctionAnnounce1": "グラフ機能はまだ実装されていません。",
     "nextFunctionAnnounce2": "今後実装予定ですので応援よろしくお願いします。",
     "privacyPolicy": "プライバシーポリシー"

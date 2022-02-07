@@ -24,15 +24,15 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "allDelete": MessageLookupByLibrary.simpleMessage("全データ削除"),
         "allDeleteDialog": MessageLookupByLibrary.simpleMessage("全データを削除します"),
-        "allDeleteMessage": MessageLookupByLibrary.simpleMessage(
-            "全てのデータが削除され元に戻らなくなりますがよろしいですか？"),
+        "allDeleteMessage":
+            MessageLookupByLibrary.simpleMessage("元に戻らなくなりますがよろしいですか？"),
         "bottomData": MessageLookupByLibrary.simpleMessage("データ"),
         "bottomInput": MessageLookupByLibrary.simpleMessage("入力"),
         "bottomList": MessageLookupByLibrary.simpleMessage("一覧"),
         "bottomOther": MessageLookupByLibrary.simpleMessage("その他"),
         "date": MessageLookupByLibrary.simpleMessage("日付"),
         "deck": MessageLookupByLibrary.simpleMessage("デッキ"),
-        "deleteMessage": MessageLookupByLibrary.simpleMessage("削除してもいいですか？"),
+        "deleteMessage": MessageLookupByLibrary.simpleMessage("削除しますか？"),
         "editSection": MessageLookupByLibrary.simpleMessage("編集"),
         "first": MessageLookupByLibrary.simpleMessage("先攻"),
         "gameEdit": MessageLookupByLibrary.simpleMessage("ゲーム編集"),
