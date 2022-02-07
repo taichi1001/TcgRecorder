@@ -74,12 +74,15 @@ class DeckWinRateDataSource extends DataGridSource {
       return Text(cell.value.toString());
     }
     if (cell.columnName == '勝率') {
+      if (cell.value.isNaN) return const Text('-');
       return Text(cell.value.toString() + '%');
     }
     if (cell.columnName == '先攻勝率') {
+      if (cell.value.isNaN) return const Text('-');
       return Text(cell.value.toString() + '%');
     }
     if (cell.columnName == '後攻勝率') {
+      if (cell.value.isNaN) return const Text('-');
       return Text(cell.value.toString() + '%');
     }
 
