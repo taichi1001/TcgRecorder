@@ -4,9 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:tcg_manager/generated/l10n.dart';
-import 'package:tcg_manager/provider/deck_list_provider.dart';
+import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/provider/input_view_provider.dart';
-import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
 import 'package:tcg_manager/state/input_view_state.dart';
@@ -214,8 +213,7 @@ class InputView extends HookConsumerWidget {
                                             );
                                             if (okCancelResult == OkCancelResult.ok) {
                                               await inputViewNotifier.save();
-                                              await ref.read(allDeckListNotifierProvider.notifier).fetch();
-                                              await ref.read(allRecordListNotifierProvider.notifier).fetch();
+                                              await ref.read(dbHelper).fetchAll();
                                             }
                                             FocusScope.of(context).unfocus();
                                           },

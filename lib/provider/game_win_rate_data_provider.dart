@@ -19,9 +19,8 @@ class GameWinRateDataNotifier extends StateNotifier<GameWinRateDataState> {
 final gameWinRateDataNotifierProvider = StateNotifierProvider<GameWinRateDataNotifier, GameWinRateDataState>(
   (ref) {
     final gameRecordListNotifier = ref.read(gameRecordListNotifierProvider.notifier);
-    final gameRecordList = ref.watch(gameRecordListNotifierProvider.select((value) => value.gameRecordList));
+    final gameRecordList = ref.watch(gameRecordListNotifierProvider).gameRecordList;
     final gameDeckList = ref.watch(gameDeckListProvider);
-
     final List<Deck> gameUseDeckList = [];
     for (final deck in gameDeckList) {
       for (final record in gameRecordList!) {
