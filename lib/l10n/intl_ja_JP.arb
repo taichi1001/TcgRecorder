@@ -17,7 +17,7 @@
     "tableOpponentDeckName": "対戦デッキ名",
     "tableGames": "試合数",
     "tableWin": "勝",
-    "tableLoss": "負け",
+    "tableLoss": "負",
     "tableWinRate": "勝率",
     "tableFirstWinRate": "先攻勝率",
     "tableSecondWinRate": "後攻勝率",

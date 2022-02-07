@@ -62,7 +62,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "tableDeckName": MessageLookupByLibrary.simpleMessage("デッキ名"),
         "tableFirstWinRate": MessageLookupByLibrary.simpleMessage("先攻勝率"),
         "tableGames": MessageLookupByLibrary.simpleMessage("試合数"),
-        "tableLoss": MessageLookupByLibrary.simpleMessage("負け"),
+        "tableLoss": MessageLookupByLibrary.simpleMessage("負"),
         "tableOpponentDeckName": MessageLookupByLibrary.simpleMessage("対戦デッキ名"),
         "tableSecondWinRate": MessageLookupByLibrary.simpleMessage("後攻勝率"),
         "tableSum": MessageLookupByLibrary.simpleMessage("合計"),
