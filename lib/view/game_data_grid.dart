@@ -25,6 +25,8 @@ class GameDataGrid extends HookConsumerWidget {
               source: source,
               frozenColumnsCount: 1,
               footerFrozenRowsCount: 1,
+              verticalScrollPhysics: const ClampingScrollPhysics(),
+              horizontalScrollPhysics: const ClampingScrollPhysics(),
               columns: [
                 GridColumn(
                   columnName: 'デッキ名',
