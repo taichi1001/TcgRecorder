@@ -40,15 +40,18 @@ class InitialGameRegistrationView extends HookConsumerWidget {
                       width: 300,
                       height: 50,
                       child: ElevatedButton(
-                        onPressed: () async {
-                          if (initialGameState.initialGame == null) {
-                            null;
-                          } else {
-                            initialGameRegistrationNotifier.save();
-                            await ref.read(allGameListNotifierProvider.notifier).fetch();
-                            ref.read(selectGameNotifierProvider.notifier).startupGame();
-                          }
-                        },
+                        onPressed: initialGameState.initialGame == null
+                            ? null
+                            : () async {
+                                if (initialGameState.initialGame == null) {
+                                  null;
+                                } else {
+                                  initialGameRegistrationNotifier.save();
+                                  initialGameRegistrationNotifier.reset();
+                                  await ref.read(allGameListNotifierProvider.notifier).fetch();
+                                  ref.read(selectGameNotifierProvider.notifier).startupGame();
+                                }
+                              },
                         child: Text(S.of(context).save),
                         style: ElevatedButton.styleFrom(
                           primary: const Color(0xFF18204E),

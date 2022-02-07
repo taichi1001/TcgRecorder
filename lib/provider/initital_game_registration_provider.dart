@@ -12,6 +12,10 @@ class InitialGameRegistrationNotifier extends StateNotifier<InitialGameRegistrat
     state = state.copyWith(initialGame: Game(game: name));
   }
 
+  void reset() {
+    state = state.copyWith(initialGame: null);
+  }
+
   Future save() async {
     if (state.initialGame != null) read(gameRepository).insert(state.initialGame!);
   }
