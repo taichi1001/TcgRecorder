@@ -1,5 +1,4 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:app_review/app_review.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:settings_ui/settings_ui.dart';
@@ -8,6 +7,7 @@ import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/provider/bottom_navigation_bar_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:launch_review/launch_review.dart';
 
 class OtherView extends HookConsumerWidget {
   const OtherView({Key? key}) : super(key: key);
@@ -85,7 +85,7 @@ class OtherView extends HookConsumerWidget {
                 title: Text(S.of(context).review),
                 leading: const Icon(Icons.reviews),
                 onPressed: (context) async {
-                  // await AppReview.requestReview.then((value) => print(value));
+                  LaunchReview.launch();
                 },
               ),
               SettingsTile(
