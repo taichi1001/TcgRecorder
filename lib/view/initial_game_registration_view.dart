@@ -31,7 +31,7 @@ class InitialGameRegistrationView extends HookConsumerWidget {
                     Text(S.of(context).initializeGame),
                     const SizedBox(height: 16),
                     CustomTextField(
-                      labelText: S.of(context).isSave,
+                      labelText: S.of(context).inputgame,
                       controller: gameTextEditingController,
                       onChanged: initialGameRegistrationNotifier.changeGameForString,
                     ),
@@ -49,7 +49,7 @@ class InitialGameRegistrationView extends HookConsumerWidget {
                             ref.read(selectGameNotifierProvider.notifier).startupGame();
                           }
                         },
-                        child: Text(S.of(context).useDeck),
+                        child: Text(S.of(context).save),
                         style: ElevatedButton.styleFrom(
                           primary: const Color(0xFF18204E),
                           shape: RoundedRectangleBorder(
