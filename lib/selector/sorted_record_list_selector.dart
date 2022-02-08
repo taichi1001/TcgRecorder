@@ -11,9 +11,21 @@ final sortedRecordListProvider = StateProvider<List<Record>>((ref) {
 
   if (sort == Sort.date) {
     if (order == Order.descending) {
-      recordList!.sort((a, b) => a.date!.compareTo(b.date!));
+      recordList!.sort((a, b) {
+        int result = a.date!.compareTo(b.date!);
+        if (result == 0) {
+          result = a.recordId!.compareTo(b.recordId!);
+        }
+        return result;
+      });
     } else if (order == Order.ascending) {
-      recordList!.sort((a, b) => b.date!.compareTo(a.date!));
+      recordList!.sort((a, b) {
+        int result = -a.date!.compareTo(b.date!);
+        if (result == 0) {
+          result = -a.recordId!.compareTo(b.recordId!);
+        }
+        return result;
+      });
     }
   }
   if (recordList != null) return recordList;
