@@ -7,6 +7,7 @@ import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/provider/bottom_navigation_bar_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
+import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 import 'package:tcg_manager/view/component/web_view_screen.dart';
 
 class OtherView extends HookConsumerWidget {
@@ -72,6 +73,7 @@ class OtherView extends HookConsumerWidget {
                   );
                   if (okCancelResult == OkCancelResult.ok) {
                     ref.read(bottomNavigationBarNotifierProvider.notifier).select(0);
+                    ref.read(textEditingControllerNotifierProvider.notifier).resetInputViewController();
                     await ref.read(dbHelper).deleteAll();
                   }
                 },
