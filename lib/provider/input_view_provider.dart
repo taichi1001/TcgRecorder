@@ -11,7 +11,13 @@ import 'package:tcg_manager/selector/game_tag_list_selector.dart';
 import 'package:tcg_manager/state/input_view_state.dart';
 
 class InputViewNotifier extends StateNotifier<InputViewState> {
-  InputViewNotifier(this.read) : super(InputViewState(date: DateTime.now()));
+  InputViewNotifier(this.read)
+      : super(
+          InputViewState(
+            date: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
+          ),
+        );
+
   final Reader read;
 
   void scrollDateTime(DateTime date) {
