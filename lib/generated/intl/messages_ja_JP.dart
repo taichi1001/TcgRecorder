@@ -30,6 +30,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "bottomInput": MessageLookupByLibrary.simpleMessage("入力"),
         "bottomList": MessageLookupByLibrary.simpleMessage("一覧"),
         "bottomOther": MessageLookupByLibrary.simpleMessage("その他"),
+        "contactForm": MessageLookupByLibrary.simpleMessage("お問い合わせ"),
         "date": MessageLookupByLibrary.simpleMessage("日付"),
         "deck": MessageLookupByLibrary.simpleMessage("デッキ"),
         "deleteMessage": MessageLookupByLibrary.simpleMessage("削除しますか？"),

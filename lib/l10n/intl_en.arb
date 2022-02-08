@@ -43,5 +43,6 @@
     "deleteMessage": "Can I delete it?",
     "nextFunctionAnnounce1": "Graph function is not yet implemented.。",
     "nextFunctionAnnounce2": "We are planning to implement this in the future, so please support us.",
-    "privacyPolicy": "Privacy Policy"
+    "privacyPolicy": "Privacy Policy",
+    "contactForm": "Contact"
 }

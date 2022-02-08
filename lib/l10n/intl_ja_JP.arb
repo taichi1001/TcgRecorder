@@ -43,5 +43,6 @@
     "deleteMessage": "削除しますか？",
     "nextFunctionAnnounce1": "グラフ機能はまだ実装されていません。",
     "nextFunctionAnnounce2": "今後実装予定ですので応援よろしくお願いします。",
-    "privacyPolicy": "プライバシーポリシー"
+    "privacyPolicy": "プライバシーポリシー",
+    "contactForm": "お問い合わせ"
 }

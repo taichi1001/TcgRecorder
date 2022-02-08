@@ -31,6 +31,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "bottomInput": MessageLookupByLibrary.simpleMessage("Input"),
         "bottomList": MessageLookupByLibrary.simpleMessage("List"),
         "bottomOther": MessageLookupByLibrary.simpleMessage("Other"),
+        "contactForm": MessageLookupByLibrary.simpleMessage("Contact"),
         "date": MessageLookupByLibrary.simpleMessage("Date"),
         "deck": MessageLookupByLibrary.simpleMessage("Deck"),
         "deleteMessage":

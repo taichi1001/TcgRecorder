@@ -1,13 +1,13 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:launch_review/launch_review.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/provider/bottom_navigation_bar_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:launch_review/launch_review.dart';
+import 'package:tcg_manager/view/component/web_view_screen.dart';
 
 class OtherView extends HookConsumerWidget {
   const OtherView({Key? key}) : super(key: key);
@@ -89,13 +89,33 @@ class OtherView extends HookConsumerWidget {
                 },
               ),
               SettingsTile(
+                title: Text(S.of(context).contactForm),
+                leading: const Icon(Icons.mail),
+                onPressed: (context) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const WebViewScreen(
+                        url:
+                            'https://docs.google.com/forms/d/e/1FAIpQLSd5ilK8mF76ZnLIPirTFPo0A5fQucYTMf9uDkdD--SkRbczjA/viewform',
+                      ),
+                    ),
+                  );
+                },
+              ),
+              SettingsTile(
                 title: Text(S.of(context).privacyPolicy),
                 leading: const Icon(Icons.privacy_tip),
-                onPressed: (context) async {
-                  if (!await launch(
-                      'https://phrygian-jellyfish-595.notion.site/Privacy-Policy-057b29da8fb74d76bccd700d80db53e1')) {
-                    throw 'Could not launch URL';
-                  }
+                onPressed: (context) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const WebViewScreen(
+                        url:
+                            'https://phrygian-jellyfish-595.notion.site/Privacy-Policy-057b29da8fb74d76bccd700d80db53e1',
+                      ),
+                    ),
+                  );
                 },
               ),
             ],
