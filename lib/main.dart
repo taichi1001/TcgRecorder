@@ -26,6 +26,7 @@ void main() {
       enabled: false,
       builder: (context) => ProviderScope(
         child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           useInheritedMediaQuery: true,
           locale: DevicePreview.locale(context),
           builder: DevicePreview.appBuilder,
