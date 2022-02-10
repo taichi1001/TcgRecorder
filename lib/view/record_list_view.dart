@@ -5,10 +5,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:tcg_manager/entity/marged_record.dart';
 import 'package:tcg_manager/generated/l10n.dart';
+import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/selector/marged_record_list_selector.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
 import 'package:tcg_manager/view/component/custom_scaffold.dart';
+import 'package:tcg_manager/view/record_detail_view.dart';
 
 class RecordListView extends HookConsumerWidget {
   const RecordListView({Key? key}) : super(key: key);
@@ -17,6 +19,7 @@ class RecordListView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final recordList = ref.watch(margedRecordListProvider).margedRecordList;
     final recordListNotifier = ref.read(allRecordListNotifierProvider.notifier);
+    final isLoaded = ref.watch(allRecordListNotifierProvider.select((value) => value.isLoaded));
 
     return Column(
       children: [
@@ -29,41 +32,47 @@ class RecordListView extends HookConsumerWidget {
             // ),
             body: recordList!.isEmpty
                 ? Center(child: Text(S.of(context).noDataMessage))
-                : ListView.separated(
-                    separatorBuilder: (context, index) => const SizedBox(height: 8, child: Divider(height: 1)),
-                    itemCount: recordList.length,
-                    itemBuilder: (context, index) {
-                      return ProviderScope(
-                        overrides: [currentRecord.overrideWithValue(recordList[index])],
-                        child: Dismissible(
-                          direction: DismissDirection.endToStart,
-                          background: Container(
-                            color: Colors.red,
-                            child: const Icon(
-                              Icons.delete,
-                              color: Colors.white,
-                            ),
-                          ),
-                          confirmDismiss: (direction) async {
-                            final okCancelResult = await showOkCancelAlertDialog(
-                              context: context,
-                              message: S.of(context).deleteMessage,
-                              isDestructiveAction: true,
-                            );
-                            if (okCancelResult == OkCancelResult.ok) {
-                              return true;
-                            } else {
-                              return false;
-                            }
-                          },
-                          onDismissed: (direction) async {
-                            await recordListNotifier.delete(recordList[index].recordId);
-                          },
-                          key: UniqueKey(),
-                          child: const _BrandListTile(),
+                : isLoaded
+                    ? const Center(
+                        child: CircularProgressIndicator(
+                          color: Color(0xFF18204E),
                         ),
-                      );
-                    }),
+                      )
+                    : ListView.separated(
+                        separatorBuilder: (context, index) => const SizedBox(height: 8, child: Divider(height: 1)),
+                        itemCount: recordList.length,
+                        itemBuilder: (context, index) {
+                          return ProviderScope(
+                            overrides: [currentRecord.overrideWithValue(recordList[index])],
+                            child: Dismissible(
+                              direction: DismissDirection.endToStart,
+                              background: Container(
+                                color: Colors.red,
+                                child: const Icon(
+                                  Icons.delete,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              confirmDismiss: (direction) async {
+                                final okCancelResult = await showOkCancelAlertDialog(
+                                  context: context,
+                                  message: S.of(context).deleteMessage,
+                                  isDestructiveAction: true,
+                                );
+                                if (okCancelResult == OkCancelResult.ok) {
+                                  return true;
+                                } else {
+                                  return false;
+                                }
+                              },
+                              onDismissed: (direction) async {
+                                await recordListNotifier.delete(recordList[index].recordId);
+                              },
+                              key: UniqueKey(),
+                              child: const _BrandListTile(),
+                            ),
+                          );
+                        }),
           ),
         ),
         const AdaptiveBannerAd(),
@@ -91,6 +100,7 @@ class _BrandListTile extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final record = ref.watch(currentRecord);
+    final recordListNotifier = ref.watch(allRecordListNotifierProvider.notifier);
     final outputFormat = DateFormat('yyyy年 MM月 dd日');
 
     return ListTile(
@@ -164,6 +174,19 @@ class _BrandListTile extends HookConsumerWidget {
           const SizedBox(height: 8),
         ],
       ),
+      onTap: () async {
+        await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => RecordDetailView(
+              margedRecord: record,
+            ),
+          ),
+        );
+        recordListNotifier.changeIsLoaded();
+        await ref.read(dbHelper).fetchAll();
+        recordListNotifier.changeIsLoaded();
+      },
     );
   }
 }

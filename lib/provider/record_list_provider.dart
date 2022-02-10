@@ -8,6 +8,10 @@ class RecordListNotifier extends StateNotifier<RecordListState> {
 
   final Reader read;
 
+  void changeIsLoaded() {
+    state = state.copyWith(isLoaded: !state.isLoaded);
+  }
+
   Future fetch() async {
     final recordList = await read(recordRepository).getAll();
     state = state.copyWith(allRecordList: recordList);
