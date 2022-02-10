@@ -7,5 +7,6 @@ part 'record_list_state.freezed.dart';
 abstract class RecordListState with _$RecordListState {
   factory RecordListState({
     List<Record>? allRecordList,
+    @Default(false) bool isLoaded,
   }) = _RecordListState;
 }

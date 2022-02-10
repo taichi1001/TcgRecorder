@@ -18,9 +18,10 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$RecordListStateTearOff {
   const _$RecordListStateTearOff();
 
-  _RecordListState call({List<Record>? allRecordList}) {
+  _RecordListState call({List<Record>? allRecordList, bool isLoaded = false}) {
     return _RecordListState(
       allRecordList: allRecordList,
+      isLoaded: isLoaded,
     );
   }
 }
@@ -31,6 +32,7 @@ const $RecordListState = _$RecordListStateTearOff();
 /// @nodoc
 mixin _$RecordListState {
   List<Record>? get allRecordList => throw _privateConstructorUsedError;
+  bool get isLoaded => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $RecordListStateCopyWith<RecordListState> get copyWith =>
@@ -42,7 +44,7 @@ abstract class $RecordListStateCopyWith<$Res> {
   factory $RecordListStateCopyWith(
           RecordListState value, $Res Function(RecordListState) then) =
       _$RecordListStateCopyWithImpl<$Res>;
-  $Res call({List<Record>? allRecordList});
+  $Res call({List<Record>? allRecordList, bool isLoaded});
 }
 
 /// @nodoc
@@ -57,12 +59,17 @@ class _$RecordListStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? allRecordList = freezed,
+    Object? isLoaded = freezed,
   }) {
     return _then(_value.copyWith(
       allRecordList: allRecordList == freezed
           ? _value.allRecordList
           : allRecordList // ignore: cast_nullable_to_non_nullable
               as List<Record>?,
+      isLoaded: isLoaded == freezed
+          ? _value.isLoaded
+          : isLoaded // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -74,7 +81,7 @@ abstract class _$RecordListStateCopyWith<$Res>
           _RecordListState value, $Res Function(_RecordListState) then) =
       __$RecordListStateCopyWithImpl<$Res>;
   @override
-  $Res call({List<Record>? allRecordList});
+  $Res call({List<Record>? allRecordList, bool isLoaded});
 }
 
 /// @nodoc
@@ -91,12 +98,17 @@ class __$RecordListStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? allRecordList = freezed,
+    Object? isLoaded = freezed,
   }) {
     return _then(_RecordListState(
       allRecordList: allRecordList == freezed
           ? _value.allRecordList
           : allRecordList // ignore: cast_nullable_to_non_nullable
               as List<Record>?,
+      isLoaded: isLoaded == freezed
+          ? _value.isLoaded
+          : isLoaded // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -104,14 +116,17 @@ class __$RecordListStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_RecordListState implements _RecordListState {
-  _$_RecordListState({this.allRecordList});
+  _$_RecordListState({this.allRecordList, this.isLoaded = false});
 
   @override
   final List<Record>? allRecordList;
+  @JsonKey()
+  @override
+  final bool isLoaded;
 
   @override
   String toString() {
-    return 'RecordListState(allRecordList: $allRecordList)';
+    return 'RecordListState(allRecordList: $allRecordList, isLoaded: $isLoaded)';
   }
 
   @override
@@ -120,12 +135,15 @@ class _$_RecordListState implements _RecordListState {
         (other.runtimeType == runtimeType &&
             other is _RecordListState &&
             const DeepCollectionEquality()
-                .equals(other.allRecordList, allRecordList));
+                .equals(other.allRecordList, allRecordList) &&
+            const DeepCollectionEquality().equals(other.isLoaded, isLoaded));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(allRecordList));
+      runtimeType,
+      const DeepCollectionEquality().hash(allRecordList),
+      const DeepCollectionEquality().hash(isLoaded));
 
   @JsonKey(ignore: true)
   @override
@@ -134,10 +152,13 @@ class _$_RecordListState implements _RecordListState {
 }
 
 abstract class _RecordListState implements RecordListState {
-  factory _RecordListState({List<Record>? allRecordList}) = _$_RecordListState;
+  factory _RecordListState({List<Record>? allRecordList, bool isLoaded}) =
+      _$_RecordListState;
 
   @override
   List<Record>? get allRecordList;
+  @override
+  bool get isLoaded;
   @override
   @JsonKey(ignore: true)
   _$RecordListStateCopyWith<_RecordListState> get copyWith =>
