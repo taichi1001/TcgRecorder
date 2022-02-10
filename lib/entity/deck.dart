@@ -1,23 +1,25 @@
-class Deck {
-  int deckId;
-  String deck;
-  int gameId;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  Deck({
-    this.deckId,
-    this.deck,
-    this.gameId
-  });
+part 'deck.freezed.dart';
+part 'deck.g.dart';
 
-  factory Deck.fromDatabaseJson(Map<String, dynamic> data) => Deck(
-        deckId: data['deck_id'],
-        deck: data['deck'],
-        gameId: data['game_id']
-      );
+@freezed
+class Deck with _$Deck {
+  factory Deck({
+    @JsonKey(name: 'deck_id') int? deckId,
+    required String deck,
+    @JsonKey(name: 'game_id') int? gameId,
+    @Default(true)
+    @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker')
+        bool isVisibleToPicker,
+  }) = _Deck;
+  factory Deck.fromJson(Map<String, dynamic> json) => _$DeckFromJson(json);
+}
 
-  Map<String, dynamic> toDatabaseJson() => {
-        'deck_id': deckId,
-        'deck': deck,
-        'game_id': gameId
-      };
+bool _boolFromJson(value) {
+  return value == 0 ? false : true;
+}
+
+int _boolToJson(bool value) {
+  return value ? 1 : 0;
 }

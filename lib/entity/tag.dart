@@ -1,24 +1,25 @@
-class Tag {
-  int tagId;
-  String tag;
-  int gameId;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  Tag({
-    this.tagId,
-    this.tag,
-    this.gameId
-  });
+part 'tag.freezed.dart';
+part 'tag.g.dart';
 
-  factory Tag.fromDatabaseJson(Map<String, dynamic> data) => Tag(
-        tagId: data['tag_id'],
-        tag: data['tag'],
-        gameId: data['game_id'],
+@freezed
+class Tag with _$Tag {
+  factory Tag({
+    @JsonKey(name: 'tag_id') int? tagId,
+    required String tag,
+    @JsonKey(name: 'game_id') int? gameId,
+    @Default(true)
+    @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker')
+        bool isVisibleToPicker,
+  }) = _Tag;
+  factory Tag.fromJson(Map<String, dynamic> json) => _$TagFromJson(json);
+}
 
-      );
+bool _boolFromJson(value) {
+  return value == 0 ? false : true;
+}
 
-  Map<String, dynamic> toDatabaseJson() => {
-        'tag_id': tagId,
-        'tag': tag,
-        'game_id': gameId,
-      };
+int _boolToJson(bool value) {
+  return value ? 1 : 0;
 }

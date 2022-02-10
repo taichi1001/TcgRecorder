@@ -1,5 +1,5 @@
-import 'package:tcg_recorder/entity/game.dart';
-import 'package:tcg_recorder/service/database.dart';
+import 'package:tcg_manager/entity/game.dart';
+import 'package:tcg_manager/service/database.dart';
 
 class GameDao {
   final dbProvider = DatabaseService.dbProvider;
@@ -7,30 +7,26 @@ class GameDao {
 
   Future<int> create(Game game) async {
     final db = await dbProvider.database;
-    final result = db.insert(tableName, game.toDatabaseJson());
+    final result = db.insert(tableName, game.toJson());
     return result;
   }
 
   Future<List<Game>> getAll() async {
     final db = await dbProvider.database;
-    final List<Map<String, dynamic>> result = await db.query(tableName);
-    final List<Game> games = result.isNotEmpty
-        ? result.map((item) => Game.fromDatabaseJson(item)).toList()
-        : [];
+    final result = await db.query(tableName);
+    final List<Game> games = result.isNotEmpty ? result.map((item) => Game.fromJson(item)).toList() : [];
     return games;
   }
 
   Future<int> update(Game game) async {
     final db = await dbProvider.database;
-    final result = await db.update(tableName, game.toDatabaseJson(),
-        where: 'game_id = ?', whereArgs: [game.gameId]);
+    final result = await db.update(tableName, game.toJson(), where: 'game_id = ?', whereArgs: [game.gameId]);
     return result;
   }
 
   Future<int> delete(int id) async {
     final db = await dbProvider.database;
-    final result =
-        await db.delete(tableName, where: 'game_id = ?', whereArgs: [id]);
+    final result = await db.delete(tableName, where: 'game_id = ?', whereArgs: [id]);
     return result;
   }
 

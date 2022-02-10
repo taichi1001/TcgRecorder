@@ -1,9 +1,9 @@
 import 'dart:async';
-import 'dart:io';
+
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:tcg_recorder/entity/tag.dart';
+// import 'package:tcg_recorder/entity/tag.dart';
 
 class DatabaseService {
   static const _databaseVersion = 1;
@@ -17,23 +17,15 @@ class DatabaseService {
 
   static final DatabaseService dbProvider = DatabaseService();
 
-  Database _database;
-
   Future<Database> get database async {
-    if (_database != null) {
-      return _database;
-    }
-    _database = await createDatabase();
-    return _database;
+    return await createDatabase();
   }
 
   Future createDatabase() async {
-    final Directory documentsDirectory =
-        await getApplicationDocumentsDirectory();
-    final String path = join(documentsDirectory.path, _databaseName);
+    final documentsDirectory = await getApplicationDocumentsDirectory();
+    final path = join(documentsDirectory.path, _databaseName);
 
-    final database = await openDatabase(path,
-        version: _databaseVersion, onCreate: initDB, onUpgrade: onUpgrade);
+    final database = await openDatabase(path, version: _databaseVersion, onCreate: initDB, onUpgrade: onUpgrade);
     return database;
   }
 
@@ -43,39 +35,49 @@ class DatabaseService {
   }
 
   Future initDB(Database database, int version) async {
-    await database.execute('''
+    await database.execute(
+        '''
       CREATE TABLE $recordTableName (
         record_id INTEGER PRIMARY KEY AUTOINCREMENT,
         date TEXT NOT NULL,
         game_id INTEGER NOT NULL,
-        tag_id INTEGER NOT NULL ,
-        my_deck_id INTEGER NOT NULL,
+        tag_id INTEGER,
+        use_deck_id INTEGER NOT NULL,
         opponent_deck_id INTEGER NOT NULL,
-        first_or_seconde INTEGER NOT NULL,
-        win_or_lose INTEGER NOT NULL,
+        first_second INTEGER NOT NULL,
+        win_loss INTEGER NOT NULL,
         memo TEXT
       )
     ''');
-    await database.execute('''
+    await database.execute(
+        '''
       CREATE TABLE $gameTableName (
         game_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        game TEXT NOT NULL
+        game TEXT NOT NULL,
+        is_visible_to_picker INTEGER NOT NULL,
+        unique(game)
       )
     ''');
-    await database.execute('''
+    await database.execute(
+        '''
       CREATE TABLE $deckTableName (
         deck_id INTEGER PRIMARY KEY AUTOINCREMENT,
         deck TEXT NOT NULL,
-        game_id INTEGER NOT NULL
+        game_id INTEGER NOT NULL,
+        is_visible_to_picker INTEGER NOT NULL,
+        unique(deck, game_id)
       )
     ''');
-    await database.execute('''
+    await database.execute(
+        '''
       CREATE TABLE $tagTableName (
         tag_id INTEGER PRIMARY KEY AUTOINCREMENT,
         tag TEXT NOT NULL,
-        game_id INTEGER NOT NULL
+        game_id INTEGER NOT NULL,
+        is_visible_to_picker INTEGER NOT NULL,
+        unique(tag, game_id)
       )
     ''');
-    await database.insert(tagTableName, Tag(tag: 'default').toDatabaseJson());
+    // await database.insert(tagTableName, Tag(tag: 'none').toDatabaseJson());
   }
 }

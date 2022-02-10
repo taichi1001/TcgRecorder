@@ -1,19 +1,44 @@
-import 'package:tcg_recorder/dao/deck_dao.dart';
-import 'package:tcg_recorder/entity/deck.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tcg_manager/dao/deck_dao.dart';
+import 'package:tcg_manager/entity/deck.dart';
 
-class DeckRepo {
+final deckRepository = Provider.autoDispose<DeckRepository>((ref) => DeckRepositoryImpl(ref.read));
+
+abstract class DeckRepository {
+  Future<List<Deck>> getAll();
+
+  Future<List<Deck>> getGameDeck(int id);
+
+  Future<int> insert(Deck deck);
+
+  Future<int> update(Deck deck);
+
+  Future<int> deleteById(int id);
+
+  Future deleteAll();
+}
+
+class DeckRepositoryImpl implements DeckRepository {
+  DeckRepositoryImpl(this.read);
+
+  final Reader read;
   final deckDao = DeckDao();
 
-  Future getAll() => deckDao.getAll();
+  @override
+  Future<List<Deck>> getAll() => deckDao.getAll();
 
-  Future getGameDeck(int id) => deckDao.getGameDeck(id);
+  @override
+  Future<List<Deck>> getGameDeck(int id) => deckDao.getGameDeck(id);
 
-  Future insert(Deck deck) => deckDao.create(deck);
+  @override
+  Future<int> insert(Deck deck) => deckDao.create(deck);
 
-  Future update(Deck deck) => deckDao.update(deck);
+  @override
+  Future<int> update(Deck deck) => deckDao.update(deck);
 
-  Future deleteById(int id) => deckDao.delete(id);
+  @override
+  Future<int> deleteById(int id) => deckDao.delete(id);
 
-  //not use this
+  @override
   Future deleteAll() => deckDao.deleteAll();
 }

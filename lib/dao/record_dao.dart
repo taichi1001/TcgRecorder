@@ -1,6 +1,5 @@
-import 'package:tcg_recorder/entity/game.dart';
-import 'package:tcg_recorder/entity/record.dart';
-import 'package:tcg_recorder/service/database.dart';
+import 'package:tcg_manager/entity/record.dart';
+import 'package:tcg_manager/service/database.dart';
 
 class RecordDao {
   final dbProvider = DatabaseService.dbProvider;
@@ -8,50 +7,40 @@ class RecordDao {
 
   Future<int> create(Record record) async {
     final db = await dbProvider.database;
-    final result = db.insert(tableName, record.toDatabaseJson());
+    final result = db.insert(tableName, record.toJson());
     return result;
   }
 
   Future<List<Record>> getAll() async {
     final db = await dbProvider.database;
-    final List<Map<String, dynamic>> result = await db.query(tableName);
-    final List<Record> records = result.isNotEmpty
-        ? result.map((item) => Game.fromDatabaseJson(item)).toList()
-        : [];
+    final result = await db.query(tableName);
+    final List<Record> records = result.isNotEmpty ? result.map((item) => Record.fromJson(item)).toList() : [];
     return records;
   }
 
   Future<List<Record>> getGameRecord(int id) async {
     final db = await dbProvider.database;
-    final List<Map<String, dynamic>> result =
-        await db.query(tableName, where: 'game_id = ?', whereArgs: [id]);
-    final List<Record> records = result.isNotEmpty
-        ? result.map((item) => Game.fromDatabaseJson(item)).toList()
-        : [];
+    final result = await db.query(tableName, where: 'game_id = ?', whereArgs: [id]);
+    final List<Record> records = result.isNotEmpty ? result.map((item) => Record.fromJson(item)).toList() : [];
     return records;
   }
 
-  Future<List<Record>> getGameTag(int id) async {
+  Future<List<Record>> getTagRecord(int id) async {
     final db = await dbProvider.database;
-    final List<Map<String, dynamic>> result =
-        await db.query(tableName, where: 'tag_id = ?', whereArgs: [id]);
-    final List<Record> records = result.isNotEmpty
-        ? result.map((item) => Game.fromDatabaseJson(item)).toList()
-        : [];
+    final result = await db.query(tableName, where: 'tag_id = ?', whereArgs: [id]);
+    final List<Record> records = result.isNotEmpty ? result.map((item) => Record.fromJson(item)).toList() : [];
     return records;
   }
 
   Future<int> update(Record record) async {
     final db = await dbProvider.database;
-    final result = await db.update(tableName, record.toDatabaseJson(),
-        where: 'record_id = ?', whereArgs: [record.recordId]);
+    final result = await db.update(tableName, record.toJson(), where: 'record_id = ?', whereArgs: [record.recordId]);
     return result;
   }
 
   Future<int> delete(int id) async {
     final db = await dbProvider.database;
-    final result =
-        await db.delete(tableName, where: 'record_id = ?', whereArgs: [id]);
+    final result = await db.delete(tableName, where: 'record_id = ?', whereArgs: [id]);
     return result;
   }
 

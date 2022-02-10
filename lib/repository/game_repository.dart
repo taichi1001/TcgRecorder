@@ -1,17 +1,39 @@
-import 'package:tcg_recorder/dao/geme_dao.dart';
-import 'package:tcg_recorder/entity/game.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tcg_manager/dao/geme_dao.dart';
+import 'package:tcg_manager/entity/game.dart';
 
-class GameRepo {
+final gameRepository = Provider.autoDispose<GameRepository>((ref) => GameRepositoryImpl(ref.read));
+
+abstract class GameRepository {
+  Future<List<Game>> getAll();
+
+  Future<int> insert(Game game);
+
+  Future<int> update(Game game);
+
+  Future<int> deleteById(int id);
+
+  Future deleteAll();
+}
+
+class GameRepositoryImpl implements GameRepository {
+  GameRepositoryImpl(this.read);
+
+  final Reader read;
   final gameDao = GameDao();
 
-  Future getAllTag() => gameDao.getAll();
+  @override
+  Future<List<Game>> getAll() => gameDao.getAll();
 
-  Future insert(Game game) => gameDao.create(game);
+  @override
+  Future<int> insert(Game game) => gameDao.create(game);
 
-  Future update(Game game) => gameDao.update(game);
+  @override
+  Future<int> update(Game game) => gameDao.update(game);
 
-  Future deleteById(int id) => gameDao.delete(id);
+  @override
+  Future<int> deleteById(int id) => gameDao.delete(id);
 
-  //not use this
+  @override
   Future deleteAll() => gameDao.deleteAll();
 }

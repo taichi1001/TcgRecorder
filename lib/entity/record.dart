@@ -1,48 +1,39 @@
-import 'package:flutter/material.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class Record with ChangeNotifier {
-  int recordId;
-  DateTime date;
-  int gameId;
-  int tagId;
-  int myDeckId;
-  int opponentDeckId;
-  int firstOrSecond;
-  int winOrLose;
-  String memo;
+part 'record.freezed.dart';
+part 'record.g.dart';
 
-  Record(
-      {this.recordId,
-      this.date,
-      this.gameId,
-      this.tagId,
-      this.myDeckId,
-      this.opponentDeckId,
-      this.firstOrSecond,
-      this.winOrLose,
-      this.memo});
+@freezed
+class Record with _$Record {
+  factory Record({
+    @JsonKey(name: 'record_id') int? recordId,
+    @JsonKey(name: 'game_id') int? gameId,
+    @JsonKey(name: 'tag_id') int? tagId,
+    @JsonKey(name: 'use_deck_id') int? useDeckId,
+    @JsonKey(name: 'opponent_deck_id') int? opponentDeckId,
+    @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson) DateTime? date,
+    @Default(true) @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'first_second') bool firstSecond,
+    @Default(true) @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'win_loss') bool winLoss,
+    String? memo,
+  }) = _Record;
+  factory Record.fromJson(Map<String, dynamic> json) => _$RecordFromJson(json);
+}
 
-  factory Record.fromDatabaseJson(Map<String, dynamic> data) => Record(
-        recordId: data['record_id'],
-        date: DateTime.parse(data['date']).toLocal(),
-        gameId: data['game_id'],
-        tagId: data['tag_id'],
-        myDeckId: data['my_deck_id'],
-        opponentDeckId: data['opponent_deck_id'],
-        firstOrSecond: data['first_or_seconde'],
-        winOrLose: data['win_or_lose'],
-        memo: data['memo'],
-      );
+bool _boolFromJson(int value) {
+  return value == 0 ? false : true;
+}
 
-  Map<String, dynamic> toDatabaseJson() => {
-        'record__id': recordId,
-        'date': date.toUtc().toIso8601String(),
-        'game_id': gameId,
-        'tag_id': tagId,
-        'my_deck_id': myDeckId,
-        'opponent_deck_id': opponentDeckId,
-        'first_or_second': firstOrSecond,
-        'win_or_lose': winOrLose,
-        'memo': memo,
-      };
+int _boolToJson(bool value) {
+  return value ? 1 : 0;
+}
+
+DateTime _dateTimeFromJson(String value) {
+  return DateTime.parse(value).toLocal();
+}
+
+String _dateTimeToJson(DateTime? value) {
+  if (value == null) {
+    return DateTime.now().toUtc().toIso8601String();
+  }
+  return value.toUtc().toIso8601String();
 }
