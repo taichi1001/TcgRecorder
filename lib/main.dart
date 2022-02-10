@@ -6,6 +6,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tcg_manager/helper/att.dart';
 import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/provider/adaptive_banner_ad_provider.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
@@ -19,6 +20,10 @@ import 'generated/l10n.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  ATT.instance.requestPermission().then((result) {
+    MobileAds.instance.initialize();
+  });
+
   MobileAds.instance.initialize();
   runApp(
     DevicePreview(
