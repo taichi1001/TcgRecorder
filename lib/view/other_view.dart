@@ -100,7 +100,7 @@ class OtherView extends HookConsumerWidget {
                 title: Text(S.of(context).review),
                 leading: const Icon(Icons.reviews),
                 onPressed: (context) async {
-                  LaunchReview.launch();
+                  LaunchReview.launch(iOSAppId: '1609073371');
                 },
               ),
               SettingsTile(
