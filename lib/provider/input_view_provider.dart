@@ -137,21 +137,24 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
         ),
       );
     }
-    // opponentDeckが新規だった場合,opponentDeckにgameIDを設定
-    if (_checkIfSelectedOpponentDeckNew()) {
-      state = state.copyWith(
-        opponentDeck: state.opponentDeck!.copyWith(
-          gameId: selectGameId,
-        ),
-      );
-      final opponentDeckId = await read(deckRepository).insert(state.opponentDeck!);
-      state = state.copyWith(
-        opponentDeck: state.opponentDeck!.copyWith(
-          deckId: opponentDeckId,
-        ),
-      );
+    if (state.useDeck!.deck == state.opponentDeck!.deck) {
+      state = state.copyWith(opponentDeck: state.useDeck);
+    } else {
+      // opponentDeckが新規だった場合,opponentDeckにgameIDを設定
+      if (_checkIfSelectedOpponentDeckNew()) {
+        state = state.copyWith(
+          opponentDeck: state.opponentDeck!.copyWith(
+            gameId: selectGameId,
+          ),
+        );
+        final opponentDeckId = await read(deckRepository).insert(state.opponentDeck!);
+        state = state.copyWith(
+          opponentDeck: state.opponentDeck!.copyWith(
+            deckId: opponentDeckId,
+          ),
+        );
+      }
     }
-
     // // Tagが新規だった場合,opponentDeckにgameIDを設定
     // if (_checkIfSelectedTagNew()) {
     //   state = state.copyWith(

@@ -174,19 +174,20 @@ class _BrandListTile extends HookConsumerWidget {
           const SizedBox(height: 8),
         ],
       ),
-      onTap: () async {
-        await Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => RecordDetailView(
-              margedRecord: record,
-            ),
-          ),
-        );
-        recordListNotifier.changeIsLoaded();
-        await ref.read(dbHelper).fetchAll();
-        recordListNotifier.changeIsLoaded();
-      },
+      onTap: null,
+      // onTap: () async {
+      //   await Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //       builder: (context) => RecordDetailView(
+      //         margedRecord: record,
+      //       ),
+      //     ),
+      //   );
+      //   recordListNotifier.changeIsLoaded();
+      //   await ref.read(dbHelper).fetchAll();
+      //   recordListNotifier.changeIsLoaded();
+      // },
     );
   }
 }

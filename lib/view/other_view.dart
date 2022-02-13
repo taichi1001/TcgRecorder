@@ -54,18 +54,18 @@ class OtherView extends HookConsumerWidget {
                   );
                 },
               ),
-              SettingsTile(
-                title: const Text('デッキ編集'),
-                leading: const Icon(Icons.edit),
-                onPressed: (context) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const _DeckListView(),
-                    ),
-                  );
-                },
-              ),
+              // SettingsTile(
+              //   title: const Text('デッキ編集'),
+              //   leading: const Icon(Icons.edit),
+              //   onPressed: (context) {
+              //     Navigator.push(
+              //       context,
+              //       MaterialPageRoute(
+              //         builder: (context) => const _DeckListView(),
+              //       ),
+              //     );
+              //   },
+              // ),
               SettingsTile(
                 title: Text(
                   S.of(context).allDelete,
@@ -100,7 +100,7 @@ class OtherView extends HookConsumerWidget {
                 title: Text(S.of(context).review),
                 leading: const Icon(Icons.reviews),
                 onPressed: (context) async {
-                  LaunchReview.launch();
+                  LaunchReview.launch(iOSAppId: '1609073371');
                 },
               ),
               SettingsTile(
