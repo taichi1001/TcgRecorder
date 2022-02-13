@@ -10,6 +10,7 @@ import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/selector/marged_record_list_selector.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
 import 'package:tcg_manager/view/component/custom_scaffold.dart';
+import 'package:tcg_manager/view/component/fade_page_route.dart';
 import 'package:tcg_manager/view/record_detail_view.dart';
 
 class RecordListView extends HookConsumerWidget {
@@ -177,7 +178,8 @@ class _BrandListTile extends HookConsumerWidget {
       onTap: () async {
         await Navigator.push(
           context,
-          MaterialPageRoute(
+          FadePageRoute(
+            fullscreenDialog: true,
             builder: (context) => RecordDetailView(
               margedRecord: record,
             ),

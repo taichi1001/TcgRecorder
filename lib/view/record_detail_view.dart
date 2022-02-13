@@ -27,12 +27,23 @@ class RecordDetailView extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(marged.useDeck),
+        iconTheme: const IconThemeData(color: Colors.black),
+        backgroundColor: Colors.white,
+        centerTitle: false,
+        elevation: 0.0,
+        title: Text(
+          marged.useDeck,
+          style: const TextStyle(
+            color: Colors.black,
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         actions: [
           CupertinoButton(
             child: Text(
               isEdit ? '完了' : '編集',
-              style: const TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.black),
             ),
             onPressed: isEdit
                 ? () {
@@ -45,6 +56,7 @@ class RecordDetailView extends HookConsumerWidget {
           ),
         ],
       ),
+      backgroundColor: Colors.white,
       body: isEdit
           ? Column(
               children: [
