@@ -2,15 +2,18 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/marged_record.dart';
 import 'package:tcg_manager/entity/record.dart';
+import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/helper/edit_record_helper.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
+import 'package:tcg_manager/state/input_view_state.dart';
 import 'package:tcg_manager/state/record_detail_state.dart';
 
 class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
   RecordDetailNotifier(this.ref, this.record, this.margedRecord)
-      : super(RecordDetailState(record: record, margedRecord: margedRecord));
+      : super(RecordDetailState(
+            record: record, margedRecord: margedRecord, cacheDate: record.date, editMargedRecord: margedRecord));
 
   final Ref ref;
   final Record record;
@@ -21,27 +24,64 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
   }
 
   void editUseDeck(String name) {
-    state = state.copyWith(editMargedRecord: state.margedRecord.copyWith(useDeck: name));
+    state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(useDeck: name));
   }
 
   void editOpponentDeck(String name) {
-    state = state.copyWith(editMargedRecord: state.margedRecord.copyWith(opponentDeck: name));
+    state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(opponentDeck: name));
+  }
+
+  void scrollDate(DateTime date) {
+    state = state.copyWith(cacheDate: date);
+  }
+
+  void editDate() {
+    if (state.cacheDate != null) {
+      state = state.copyWith(
+        editMargedRecord: state.editMargedRecord.copyWith(
+          date: state.cacheDate!,
+        ),
+      );
+    }
+  }
+
+  void editWinLoss(WinLoss winnLoss) {
+    if (winnLoss == WinLoss.win) {
+      state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(winLoss: true));
+    } else if (winnLoss == WinLoss.loss) {
+      state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(winLoss: false));
+    }
+  }
+
+  void editFirstSecond(FirstSecond firstSecond) {
+    if (firstSecond == FirstSecond.first) {
+      state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(firstSecond: true));
+    } else if (firstSecond == FirstSecond.second) {
+      state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(firstSecond: false));
+    }
   }
 
   Future saveEdit() async {
-    // 変更が無かった場合に何もしない
-    if (state.editMargedRecord == null) return;
     // 編集したrecord(EditMargedRecord)を表示用のrecord(MargedRecord)に設定
-    state = state.copyWith(margedRecord: state.editMargedRecord!);
+    state = state.copyWith(margedRecord: state.editMargedRecord);
 
     // 各種値の保存、ID取得、recordへのID設定
     // ここの処理は各種値が編集済みが未編集かに関わらず実行される
     // 編集済みのみ実行するようにすればパフォーマンスは上がるかも
     await _saveEditUseDeck();
     await _saveEditOpponentDeck();
+    state = state.copyWith(
+      record: state.record.copyWith(
+        date: state.editMargedRecord.date,
+        winLoss: state.editMargedRecord.winLoss,
+        firstSecond: state.editMargedRecord.firstSecond,
+      ),
+    );
 
     // recordを上書き
     await ref.read(recordRepository).update(state.record);
+
+    await ref.read(dbHelper).fetchAll();
   }
 
   Future _saveEditUseDeck() async {

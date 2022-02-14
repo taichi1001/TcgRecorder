@@ -44,7 +44,9 @@ class RecordListView extends HookConsumerWidget {
                         itemCount: recordList.length,
                         itemBuilder: (context, index) {
                           return ProviderScope(
-                            overrides: [currentRecord.overrideWithValue(recordList[index])],
+                            overrides: [
+                              currentRecord.overrideWithValue(recordList[index]),
+                            ],
                             child: Dismissible(
                               direction: DismissDirection.endToStart,
                               background: Container(
@@ -102,6 +104,7 @@ class _BrandListTile extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final record = ref.watch(currentRecord);
     final recordListNotifier = ref.watch(allRecordListNotifierProvider.notifier);
+    final dbHelp = ref.watch(dbHelper);
     final outputFormat = DateFormat('yyyy年 MM月 dd日');
 
     return ListTile(
@@ -112,9 +115,19 @@ class _BrandListTile extends HookConsumerWidget {
           color: record.winLoss ? const Color(0xFFA21F16) : const Color(0xFF3547AC),
         ),
       ),
-      subtitle: Text(
-        outputFormat.format(record.date),
-        style: const TextStyle(fontSize: 14, color: Colors.black54),
+      subtitle: Stack(
+        children: [
+          Hero(
+            tag: 'subtitle' + record.recordId.toString(),
+            child: Material(
+              color: Colors.transparent,
+              child: Text(
+                outputFormat.format(record.date),
+                style: const TextStyle(fontSize: 14, color: Colors.black54),
+              ),
+            ),
+          ),
+        ],
       ),
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -180,14 +193,17 @@ class _BrandListTile extends HookConsumerWidget {
           context,
           FadePageRoute(
             fullscreenDialog: true,
-            builder: (context) => RecordDetailView(
-              margedRecord: record,
+            builder: (context) => ProviderScope(
+              overrides: [currentRecord.overrideWithValue(record)],
+              child: RecordDetailView(
+                margedRecord: record,
+              ),
             ),
           ),
         );
-        recordListNotifier.changeIsLoaded();
-        await ref.read(dbHelper).fetchAll();
-        recordListNotifier.changeIsLoaded();
+        // recordListNotifier.changeIsLoaded();
+        // await dbHelp.fetchAll();
+        // recordListNotifier.changeIsLoaded();
       },
     );
   }

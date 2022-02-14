@@ -10,6 +10,7 @@ abstract class RecordDetailState with _$RecordDetailState {
     @Default(false) bool isEdit,
     required Record record,
     required MargedRecord margedRecord,
-    MargedRecord? editMargedRecord,
+    required MargedRecord editMargedRecord,
+    DateTime? cacheDate,
   }) = _RecordDetailState;
 }
