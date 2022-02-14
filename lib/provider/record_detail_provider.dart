@@ -132,7 +132,8 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
 final recordDetailNotifierProvider =
     StateNotifierProvider.family.autoDispose<RecordDetailNotifier, RecordDetailState, MargedRecord>(
   (ref, margedRecord) {
-    final recordList = ref.watch(allRecordListNotifierProvider).allRecordList;
+    // 一覧からレコードを選択した瞬間の値のみがほしいため、watchで監視せずにreadで読み取っている
+    final recordList = ref.read(allRecordListNotifierProvider).allRecordList;
     final record = recordList!.firstWhere((record) => record.recordId == margedRecord.recordId);
     final notifier = RecordDetailNotifier(ref, record, margedRecord);
     return notifier;

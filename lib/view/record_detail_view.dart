@@ -22,7 +22,6 @@ class RecordDetailView extends HookConsumerWidget {
     final marged = ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.margedRecord));
     final isEdit = ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.isEdit));
     final recordDetailNotifier = ref.watch(recordDetailNotifierProvider(margedRecord).notifier);
-    print(marged);
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.black),
