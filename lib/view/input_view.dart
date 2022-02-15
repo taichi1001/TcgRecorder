@@ -230,6 +230,9 @@ class InputView extends HookConsumerWidget {
                                               await inputViewNotifier.save();
                                               await ref.read(dbHelper).fetchAll();
                                             }
+                                            ref
+                                                .read(textEditingControllerNotifierProvider.notifier)
+                                                .resetInputViewController();
                                             FocusScope.of(context).unfocus();
                                           },
                                     child: Text(S.of(context).save),

@@ -34,6 +34,7 @@ class TextEditingControllerNotifier extends StateNotifier<TextEditingControllerS
       useDeckController: TextEditingController(),
       opponentDeckController: TextEditingController(),
       tagController: TextEditingController(),
+      memoController: TextEditingController(),
     );
   }
 }
