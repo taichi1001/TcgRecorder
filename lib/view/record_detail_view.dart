@@ -15,7 +15,7 @@ class RecordDetailView extends HookConsumerWidget {
     required this.margedRecord,
   }) : super(key: key);
 
-  final MargedRecord margedRecord; // 編集した後もここが更新されないためリビルド後に編集前の値がひょうじされてしまっている?
+  final MargedRecord margedRecord;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -92,26 +92,42 @@ class _DetailView extends HookConsumerWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Stack(
-              children: [
-                Hero(
-                  tag: 'subtitle' + marged.recordId.toString(),
-                  child: Material(
-                    color: Colors.transparent,
-                    child: Text(
-                      outputFormat.format(marged.date),
-                    ),
-                  ),
+            Hero(
+              tag: 'date' + marged.recordId.toString(),
+              child: Material(
+                color: Colors.transparent,
+                child: Text(
+                  outputFormat.format(marged.date),
                 ),
-              ],
+              ),
             ),
           ],
         ),
-        // Text(record.recordId.toString()),
-        // Text(marged.useDeck),
-        // Text(record.useDeckId.toString()),
-        // Text(marged.opponentDeck),
-        // Text(record.opponentDeckId.toString()),
+        Text(
+          S.of(context).deck,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            leadingDistribution: TextLeadingDistribution.even,
+            height: 1,
+          ),
+        ),
+        Hero(
+          tag: 'useDeck' + marged.recordId.toString(),
+          child: Material(
+            color: Colors.transparent,
+            child: Text(marged.useDeck),
+          ),
+        ),
+        Hero(
+          tag: 'opponentDeck' + marged.recordId.toString(),
+          child: Material(
+            color: Colors.transparent,
+            child: Text(
+              marged.opponentDeck,
+            ),
+          ),
+        ),
+        marged.memo == null ? const Text('メモ無し') : Text(marged.memo!),
       ],
     );
   }

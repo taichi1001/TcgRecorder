@@ -5,12 +5,16 @@ class CustomTextField extends StatelessWidget {
     this.onChanged,
     this.labelText,
     this.controller,
+    this.keyboardType,
+    this.maxLines = 1,
     Key? key,
   }) : super(key: key);
 
   final Function(String)? onChanged;
   final String? labelText;
   final TextEditingController? controller;
+  final TextInputType? keyboardType;
+  final int? maxLines;
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +25,8 @@ class CustomTextField extends StatelessWidget {
         children: [
           Expanded(
             child: Container(
-              width: 330,
-              height: 60,
+              // width: 330,
+              // height: 60,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(8),
@@ -37,6 +41,8 @@ class CustomTextField extends StatelessWidget {
                   child: TextFormField(
                     controller: controller,
                     onChanged: onChanged,
+                    keyboardType: keyboardType,
+                    maxLines: maxLines,
                     style: const TextStyle(fontSize: 16),
                     obscureText: false,
                     cursorColor: const Color(0xFF18204E),

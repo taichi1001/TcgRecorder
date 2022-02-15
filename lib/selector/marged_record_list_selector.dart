@@ -89,6 +89,7 @@ final margedRecordListProvider = StateNotifierProvider<MargedRecordListNotifier,
         firstSecond: record.firstSecond,
         winLoss: record.winLoss,
         date: record.date!,
+        memo: record.memo,
       );
     }).toList();
 

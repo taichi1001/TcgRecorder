@@ -115,19 +115,15 @@ class _BrandListTile extends HookConsumerWidget {
           color: record.winLoss ? const Color(0xFFA21F16) : const Color(0xFF3547AC),
         ),
       ),
-      subtitle: Stack(
-        children: [
-          Hero(
-            tag: 'subtitle' + record.recordId.toString(),
-            child: Material(
-              color: Colors.transparent,
-              child: Text(
-                outputFormat.format(record.date),
-                style: const TextStyle(fontSize: 14, color: Colors.black54),
-              ),
-            ),
+      subtitle: Hero(
+        tag: 'date' + record.recordId.toString(),
+        child: Material(
+          color: Colors.transparent,
+          child: Text(
+            outputFormat.format(record.date),
+            style: const TextStyle(fontSize: 14, color: Colors.black54),
           ),
-        ],
+        ),
       ),
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -145,14 +141,20 @@ class _BrandListTile extends HookConsumerWidget {
               ),
               const SizedBox(width: 4),
               Flexible(
-                child: Text(
-                  record.useDeck,
-                  softWrap: false,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontSize: 15,
-                    leadingDistribution: TextLeadingDistribution.even,
-                    height: 1,
+                child: Hero(
+                  tag: 'useDeck' + record.recordId.toString(),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: Text(
+                      record.useDeck,
+                      softWrap: false,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        leadingDistribution: TextLeadingDistribution.even,
+                        height: 1,
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -172,14 +174,20 @@ class _BrandListTile extends HookConsumerWidget {
               ),
               const SizedBox(width: 4),
               Flexible(
-                child: Text(
-                  record.opponentDeck,
-                  softWrap: false,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontSize: 15,
-                    leadingDistribution: TextLeadingDistribution.even,
-                    height: 1,
+                child: Hero(
+                  tag: 'opponentDeck' + record.recordId.toString(),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: Text(
+                      record.opponentDeck,
+                      softWrap: false,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        leadingDistribution: TextLeadingDistribution.even,
+                        height: 1,
+                      ),
+                    ),
                   ),
                 ),
               ),

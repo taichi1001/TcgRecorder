@@ -8,6 +8,7 @@ class TextEditingControllerNotifier extends StateNotifier<TextEditingControllerS
           useDeckController: TextEditingController(),
           opponentDeckController: TextEditingController(),
           tagController: TextEditingController(),
+          memoController: TextEditingController(),
         ));
 
   final Reader read;
@@ -22,6 +23,10 @@ class TextEditingControllerNotifier extends StateNotifier<TextEditingControllerS
 
   void setTagController(String value) {
     state = state.copyWith(tagController: TextEditingController(text: value));
+  }
+
+  void setMemoController(String value) {
+    state = state.copyWith(memoController: TextEditingController(text: value));
   }
 
   void resetInputViewController() {

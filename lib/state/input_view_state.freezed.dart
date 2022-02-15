@@ -28,6 +28,7 @@ class _$InputViewStateTearOff {
       Deck? cacheOpponentDeck,
       Tag? tag,
       Tag? cacheTag,
+      String? memo,
       WinLoss winLoss = WinLoss.win,
       FirstSecond firstSecond = FirstSecond.first}) {
     return _InputViewState(
@@ -40,6 +41,7 @@ class _$InputViewStateTearOff {
       cacheOpponentDeck: cacheOpponentDeck,
       tag: tag,
       cacheTag: cacheTag,
+      memo: memo,
       winLoss: winLoss,
       firstSecond: firstSecond,
     );
@@ -60,6 +62,7 @@ mixin _$InputViewState {
   Deck? get cacheOpponentDeck => throw _privateConstructorUsedError;
   Tag? get tag => throw _privateConstructorUsedError;
   Tag? get cacheTag => throw _privateConstructorUsedError;
+  String? get memo => throw _privateConstructorUsedError;
   WinLoss get winLoss => throw _privateConstructorUsedError;
   FirstSecond get firstSecond => throw _privateConstructorUsedError;
 
@@ -83,6 +86,7 @@ abstract class $InputViewStateCopyWith<$Res> {
       Deck? cacheOpponentDeck,
       Tag? tag,
       Tag? cacheTag,
+      String? memo,
       WinLoss winLoss,
       FirstSecond firstSecond});
 
@@ -115,6 +119,7 @@ class _$InputViewStateCopyWithImpl<$Res>
     Object? cacheOpponentDeck = freezed,
     Object? tag = freezed,
     Object? cacheTag = freezed,
+    Object? memo = freezed,
     Object? winLoss = freezed,
     Object? firstSecond = freezed,
   }) {
@@ -155,6 +160,10 @@ class _$InputViewStateCopyWithImpl<$Res>
           ? _value.cacheTag
           : cacheTag // ignore: cast_nullable_to_non_nullable
               as Tag?,
+      memo: memo == freezed
+          ? _value.memo
+          : memo // ignore: cast_nullable_to_non_nullable
+              as String?,
       winLoss: winLoss == freezed
           ? _value.winLoss
           : winLoss // ignore: cast_nullable_to_non_nullable
@@ -261,6 +270,7 @@ abstract class _$InputViewStateCopyWith<$Res>
       Deck? cacheOpponentDeck,
       Tag? tag,
       Tag? cacheTag,
+      String? memo,
       WinLoss winLoss,
       FirstSecond firstSecond});
 
@@ -302,6 +312,7 @@ class __$InputViewStateCopyWithImpl<$Res>
     Object? cacheOpponentDeck = freezed,
     Object? tag = freezed,
     Object? cacheTag = freezed,
+    Object? memo = freezed,
     Object? winLoss = freezed,
     Object? firstSecond = freezed,
   }) {
@@ -342,6 +353,10 @@ class __$InputViewStateCopyWithImpl<$Res>
           ? _value.cacheTag
           : cacheTag // ignore: cast_nullable_to_non_nullable
               as Tag?,
+      memo: memo == freezed
+          ? _value.memo
+          : memo // ignore: cast_nullable_to_non_nullable
+              as String?,
       winLoss: winLoss == freezed
           ? _value.winLoss
           : winLoss // ignore: cast_nullable_to_non_nullable
@@ -367,6 +382,7 @@ class _$_InputViewState implements _InputViewState {
       this.cacheOpponentDeck,
       this.tag,
       this.cacheTag,
+      this.memo,
       this.winLoss = WinLoss.win,
       this.firstSecond = FirstSecond.first});
 
@@ -388,6 +404,8 @@ class _$_InputViewState implements _InputViewState {
   final Tag? tag;
   @override
   final Tag? cacheTag;
+  @override
+  final String? memo;
   @JsonKey()
   @override
   final WinLoss winLoss;
@@ -397,7 +415,7 @@ class _$_InputViewState implements _InputViewState {
 
   @override
   String toString() {
-    return 'InputViewState(record: $record, date: $date, cacheDate: $cacheDate, useDeck: $useDeck, cacheUseDeck: $cacheUseDeck, opponentDeck: $opponentDeck, cacheOpponentDeck: $cacheOpponentDeck, tag: $tag, cacheTag: $cacheTag, winLoss: $winLoss, firstSecond: $firstSecond)';
+    return 'InputViewState(record: $record, date: $date, cacheDate: $cacheDate, useDeck: $useDeck, cacheUseDeck: $cacheUseDeck, opponentDeck: $opponentDeck, cacheOpponentDeck: $cacheOpponentDeck, tag: $tag, cacheTag: $cacheTag, memo: $memo, winLoss: $winLoss, firstSecond: $firstSecond)';
   }
 
   @override
@@ -417,6 +435,7 @@ class _$_InputViewState implements _InputViewState {
                 .equals(other.cacheOpponentDeck, cacheOpponentDeck) &&
             const DeepCollectionEquality().equals(other.tag, tag) &&
             const DeepCollectionEquality().equals(other.cacheTag, cacheTag) &&
+            const DeepCollectionEquality().equals(other.memo, memo) &&
             const DeepCollectionEquality().equals(other.winLoss, winLoss) &&
             const DeepCollectionEquality()
                 .equals(other.firstSecond, firstSecond));
@@ -434,6 +453,7 @@ class _$_InputViewState implements _InputViewState {
       const DeepCollectionEquality().hash(cacheOpponentDeck),
       const DeepCollectionEquality().hash(tag),
       const DeepCollectionEquality().hash(cacheTag),
+      const DeepCollectionEquality().hash(memo),
       const DeepCollectionEquality().hash(winLoss),
       const DeepCollectionEquality().hash(firstSecond));
 
@@ -454,6 +474,7 @@ abstract class _InputViewState implements InputViewState {
       Deck? cacheOpponentDeck,
       Tag? tag,
       Tag? cacheTag,
+      String? memo,
       WinLoss winLoss,
       FirstSecond firstSecond}) = _$_InputViewState;
 
@@ -475,6 +496,8 @@ abstract class _InputViewState implements InputViewState {
   Tag? get tag;
   @override
   Tag? get cacheTag;
+  @override
+  String? get memo;
   @override
   WinLoss get winLoss;
   @override

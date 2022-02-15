@@ -27,12 +27,11 @@ class InputView extends HookConsumerWidget {
     final useDeck = ref.watch(inputViewNotifierProvider.select((value) => value.useDeck));
     final opponentDeck = ref.watch(inputViewNotifierProvider.select((value) => value.opponentDeck));
     final inputViewNotifier = ref.read(inputViewNotifierProvider.notifier);
-    final useDeckTextController = ref.watch(
-      textEditingControllerNotifierProvider.select((value) => value.useDeckController),
-    );
-    final opponentDeckTextController = ref.watch(
-      textEditingControllerNotifierProvider.select((value) => value.opponentDeckController),
-    );
+    final useDeckTextController =
+        ref.watch(textEditingControllerNotifierProvider.select((value) => value.useDeckController));
+    final opponentDeckTextController =
+        ref.watch(textEditingControllerNotifierProvider.select((value) => value.opponentDeckController));
+    final memoTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.memoController));
     final outputFormat = DateFormat('yyyy年 MM月 dd日');
 
     return SafeArea(
@@ -195,6 +194,22 @@ class InputView extends HookConsumerWidget {
                             contentPadding: const EdgeInsets.symmetric(horizontal: 0),
                             dense: true,
                           ),
+                          const Text(
+                            'メモ',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              leadingDistribution: TextLeadingDistribution.even,
+                              height: 1,
+                            ),
+                          ),
+                          CustomTextField(
+                            controller: memoTextController,
+                            onChanged: inputViewNotifier.inputMemo,
+                            labelText: '改行もできます',
+                            keyboardType: TextInputType.multiline,
+                            maxLines: null,
+                          ),
+                          const SizedBox(height: 8),
                           Center(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.end,

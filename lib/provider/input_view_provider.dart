@@ -89,6 +89,10 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     }
   }
 
+  void inputMemo(String memo) {
+    state = state.copyWith(memo: memo);
+  }
+
   void _saveDate() {
     final newRecord = state.record!.copyWith(date: state.date);
     state = state.copyWith(record: newRecord);
@@ -174,16 +178,12 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     final newRecord = Record(gameId: selectGameId);
     state = state.copyWith(record: newRecord);
 
-    // recordにuseDeckIdを設定
+    // recordに各種データを設定
     state = state.copyWith(
       record: state.record!.copyWith(
         useDeckId: state.useDeck!.deckId,
-      ),
-    );
-    // recordにopponentDeckId設定
-    state = state.copyWith(
-      record: state.record!.copyWith(
         opponentDeckId: state.opponentDeck!.deckId,
+        memo: state.memo,
       ),
     );
 

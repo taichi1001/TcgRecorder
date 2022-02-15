@@ -21,6 +21,7 @@ abstract class InputViewState with _$InputViewState {
     Deck? cacheOpponentDeck,
     Tag? tag,
     Tag? cacheTag,
+    String? memo,
     @Default(WinLoss.win) WinLoss winLoss,
     @Default(FirstSecond.first) FirstSecond firstSecond,
   }) = _InputViewState;

@@ -21,11 +21,13 @@ class _$TextEditingControllerStateTearOff {
   _TextEditingControllerState call(
       {required TextEditingController useDeckController,
       required TextEditingController opponentDeckController,
-      required TextEditingController tagController}) {
+      required TextEditingController tagController,
+      required TextEditingController memoController}) {
     return _TextEditingControllerState(
       useDeckController: useDeckController,
       opponentDeckController: opponentDeckController,
       tagController: tagController,
+      memoController: memoController,
     );
   }
 }
@@ -40,6 +42,8 @@ mixin _$TextEditingControllerState {
   TextEditingController get opponentDeckController =>
       throw _privateConstructorUsedError;
   TextEditingController get tagController => throw _privateConstructorUsedError;
+  TextEditingController get memoController =>
+      throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $TextEditingControllerStateCopyWith<TextEditingControllerState>
@@ -54,7 +58,8 @@ abstract class $TextEditingControllerStateCopyWith<$Res> {
   $Res call(
       {TextEditingController useDeckController,
       TextEditingController opponentDeckController,
-      TextEditingController tagController});
+      TextEditingController tagController,
+      TextEditingController memoController});
 }
 
 /// @nodoc
@@ -71,6 +76,7 @@ class _$TextEditingControllerStateCopyWithImpl<$Res>
     Object? useDeckController = freezed,
     Object? opponentDeckController = freezed,
     Object? tagController = freezed,
+    Object? memoController = freezed,
   }) {
     return _then(_value.copyWith(
       useDeckController: useDeckController == freezed
@@ -84,6 +90,10 @@ class _$TextEditingControllerStateCopyWithImpl<$Res>
       tagController: tagController == freezed
           ? _value.tagController
           : tagController // ignore: cast_nullable_to_non_nullable
+              as TextEditingController,
+      memoController: memoController == freezed
+          ? _value.memoController
+          : memoController // ignore: cast_nullable_to_non_nullable
               as TextEditingController,
     ));
   }
@@ -100,7 +110,8 @@ abstract class _$TextEditingControllerStateCopyWith<$Res>
   $Res call(
       {TextEditingController useDeckController,
       TextEditingController opponentDeckController,
-      TextEditingController tagController});
+      TextEditingController tagController,
+      TextEditingController memoController});
 }
 
 /// @nodoc
@@ -120,6 +131,7 @@ class __$TextEditingControllerStateCopyWithImpl<$Res>
     Object? useDeckController = freezed,
     Object? opponentDeckController = freezed,
     Object? tagController = freezed,
+    Object? memoController = freezed,
   }) {
     return _then(_TextEditingControllerState(
       useDeckController: useDeckController == freezed
@@ -134,6 +146,10 @@ class __$TextEditingControllerStateCopyWithImpl<$Res>
           ? _value.tagController
           : tagController // ignore: cast_nullable_to_non_nullable
               as TextEditingController,
+      memoController: memoController == freezed
+          ? _value.memoController
+          : memoController // ignore: cast_nullable_to_non_nullable
+              as TextEditingController,
     ));
   }
 }
@@ -144,7 +160,8 @@ class _$_TextEditingControllerState implements _TextEditingControllerState {
   _$_TextEditingControllerState(
       {required this.useDeckController,
       required this.opponentDeckController,
-      required this.tagController});
+      required this.tagController,
+      required this.memoController});
 
   @override
   final TextEditingController useDeckController;
@@ -152,10 +169,12 @@ class _$_TextEditingControllerState implements _TextEditingControllerState {
   final TextEditingController opponentDeckController;
   @override
   final TextEditingController tagController;
+  @override
+  final TextEditingController memoController;
 
   @override
   String toString() {
-    return 'TextEditingControllerState(useDeckController: $useDeckController, opponentDeckController: $opponentDeckController, tagController: $tagController)';
+    return 'TextEditingControllerState(useDeckController: $useDeckController, opponentDeckController: $opponentDeckController, tagController: $tagController, memoController: $memoController)';
   }
 
   @override
@@ -168,7 +187,9 @@ class _$_TextEditingControllerState implements _TextEditingControllerState {
             const DeepCollectionEquality()
                 .equals(other.opponentDeckController, opponentDeckController) &&
             const DeepCollectionEquality()
-                .equals(other.tagController, tagController));
+                .equals(other.tagController, tagController) &&
+            const DeepCollectionEquality()
+                .equals(other.memoController, memoController));
   }
 
   @override
@@ -176,7 +197,8 @@ class _$_TextEditingControllerState implements _TextEditingControllerState {
       runtimeType,
       const DeepCollectionEquality().hash(useDeckController),
       const DeepCollectionEquality().hash(opponentDeckController),
-      const DeepCollectionEquality().hash(tagController));
+      const DeepCollectionEquality().hash(tagController),
+      const DeepCollectionEquality().hash(memoController));
 
   @JsonKey(ignore: true)
   @override
@@ -190,7 +212,8 @@ abstract class _TextEditingControllerState
   factory _TextEditingControllerState(
           {required TextEditingController useDeckController,
           required TextEditingController opponentDeckController,
-          required TextEditingController tagController}) =
+          required TextEditingController tagController,
+          required TextEditingController memoController}) =
       _$_TextEditingControllerState;
 
   @override
@@ -199,6 +222,8 @@ abstract class _TextEditingControllerState
   TextEditingController get opponentDeckController;
   @override
   TextEditingController get tagController;
+  @override
+  TextEditingController get memoController;
   @override
   @JsonKey(ignore: true)
   _$TextEditingControllerStateCopyWith<_TextEditingControllerState>
