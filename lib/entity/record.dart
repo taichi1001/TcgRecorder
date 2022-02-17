@@ -22,14 +22,6 @@ class Record with _$Record {
   factory Record.fromJson(Map<String, dynamic> json) => _$RecordFromJson(json);
 }
 
-bool _boolFromJson(int value) {
-  return value == 0 ? false : true;
-}
-
-int _boolToJson(bool value) {
-  return value ? 1 : 0;
-}
-
 FirstSecond _firstSecondFromJson(int value) {
   return value == 1 ? FirstSecond.first : FirstSecond.second;
 }

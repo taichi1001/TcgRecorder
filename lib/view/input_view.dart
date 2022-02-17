@@ -8,6 +8,7 @@ import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/provider/input_view_provider.dart';
 import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
+import 'package:tcg_manager/selector/game_tag_list_selector.dart';
 import 'package:tcg_manager/state/input_view_state.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
 import 'package:tcg_manager/view/component/custom_modal_date_picker.dart';
@@ -21,6 +22,7 @@ class InputView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final gameDeck = ref.watch(gameDeckListProvider);
+    final gameTag = ref.watch(gameTagListProvider);
     final date = ref.watch(inputViewNotifierProvider.select((value) => value.date));
     final winLoss = ref.watch(inputViewNotifierProvider.select((value) => value.winLoss));
     final firstSecond = ref.watch(inputViewNotifierProvider.select((value) => value.firstSecond));
@@ -29,6 +31,7 @@ class InputView extends HookConsumerWidget {
     final inputViewNotifier = ref.read(inputViewNotifierProvider.notifier);
     final useDeckTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.useDeckController));
     final opponentDeckTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.opponentDeckController));
+    final tagTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.tagController));
     final memoTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.memoController));
     final outputFormat = DateFormat('yyyy年 MM月 dd日');
 
@@ -118,6 +121,39 @@ class InputView extends HookConsumerWidget {
                                           padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
                                           child: Text(
                                             deck.deck,
+                                            softWrap: false,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ))
+                                    .toList(),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 16),
+                          const Text(
+                            'タグ',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              leadingDistribution: TextLeadingDistribution.even,
+                              height: 1,
+                            ),
+                          ),
+                          Stack(
+                            alignment: Alignment.centerRight,
+                            children: [
+                              CustomTextField(
+                                labelText: 'タグ',
+                                onChanged: inputViewNotifier.inputTag,
+                                controller: tagTextController,
+                              ),
+                              _ListPickerButton(
+                                submited: inputViewNotifier.setUseDeck,
+                                onSelectedItemChanged: inputViewNotifier.scrollUseDeck,
+                                children: gameTag
+                                    .map((tag) => Padding(
+                                          padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                                          child: Text(
+                                            tag.tag,
                                             softWrap: false,
                                             overflow: TextOverflow.ellipsis,
                                           ),
