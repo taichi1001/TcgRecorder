@@ -15,56 +15,6 @@ class MargedRecordListNotifier extends StateNotifier<MargedRecordListState> {
   void setMargedRecordList(List<MargedRecord> list) {
     state = state.copyWith(margedRecordList: list);
   }
-
-  int countMatches() {
-    if (state.margedRecordList != null) {
-      return state.margedRecordList!.length;
-    }
-    return 0;
-  }
-
-  int countWins() {
-    if (state.margedRecordList != null) {
-      return state.margedRecordList!.where((margedRecord) => margedRecord.winLoss == true).length;
-    }
-    return 0;
-  }
-
-  int countLoss() {
-    if (state.margedRecordList != null) {
-      return state.margedRecordList!.where((margedRecord) => margedRecord.winLoss == false).length;
-    }
-    return 0;
-  }
-
-  double calcWinRate() {
-    if (state.margedRecordList != null) {
-      final win = countWins();
-      final matches = countMatches();
-      return win.toDouble() / matches.toDouble();
-    }
-    return 0;
-  }
-
-  double calcWinRateOfFirst() {
-    if (state.margedRecordList != null) {
-      final firstRecords = state.margedRecordList!.where((margedRecord) => margedRecord.firstSecond == true).toList();
-      final win = firstRecords.where((margedRecord) => margedRecord.winLoss == true).length;
-      final matches = countMatches();
-      return win.toDouble() / matches.toDouble();
-    }
-    return 0;
-  }
-
-  double calcWinRateOfSecond() {
-    if (state.margedRecordList != null) {
-      final secondRecords = state.margedRecordList!.where((margedRecord) => margedRecord.firstSecond == false).toList();
-      final win = secondRecords.where((margedRecord) => margedRecord.winLoss == true).length;
-      final matches = countMatches();
-      return win.toDouble() / matches.toDouble();
-    }
-    return 0;
-  }
 }
 
 final margedRecordListProvider = StateNotifierProvider<MargedRecordListNotifier, MargedRecordListState>((ref) {

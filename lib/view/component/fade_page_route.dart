@@ -60,8 +60,7 @@ class FadePageRoute<T> extends PageRoute<T> {
   }
 
   @override
-  Widget buildTransitions(
-      BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
+  Widget buildTransitions(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
 //    final PageTransitionsTheme theme = Theme.of(context).pageTransitionsTheme;
     return _FadeInPageTransition(routeAnimation: animation, child: child);
   }

@@ -33,21 +33,18 @@ mixin _$DeckWinRateDataState {
   List<WinRateData>? get winRateDataList => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $DeckWinRateDataStateCopyWith<DeckWinRateDataState> get copyWith =>
-      throw _privateConstructorUsedError;
+  $DeckWinRateDataStateCopyWith<DeckWinRateDataState> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $DeckWinRateDataStateCopyWith<$Res> {
-  factory $DeckWinRateDataStateCopyWith(DeckWinRateDataState value,
-          $Res Function(DeckWinRateDataState) then) =
+  factory $DeckWinRateDataStateCopyWith(DeckWinRateDataState value, $Res Function(DeckWinRateDataState) then) =
       _$DeckWinRateDataStateCopyWithImpl<$Res>;
   $Res call({List<WinRateData>? winRateDataList});
 }
 
 /// @nodoc
-class _$DeckWinRateDataStateCopyWithImpl<$Res>
-    implements $DeckWinRateDataStateCopyWith<$Res> {
+class _$DeckWinRateDataStateCopyWithImpl<$Res> implements $DeckWinRateDataStateCopyWith<$Res> {
   _$DeckWinRateDataStateCopyWithImpl(this._value, this._then);
 
   final DeckWinRateDataState _value;
@@ -68,21 +65,17 @@ class _$DeckWinRateDataStateCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$DeckWinRateDataStateCopyWith<$Res>
-    implements $DeckWinRateDataStateCopyWith<$Res> {
-  factory _$DeckWinRateDataStateCopyWith(_DeckWinRateDataState value,
-          $Res Function(_DeckWinRateDataState) then) =
+abstract class _$DeckWinRateDataStateCopyWith<$Res> implements $DeckWinRateDataStateCopyWith<$Res> {
+  factory _$DeckWinRateDataStateCopyWith(_DeckWinRateDataState value, $Res Function(_DeckWinRateDataState) then) =
       __$DeckWinRateDataStateCopyWithImpl<$Res>;
   @override
   $Res call({List<WinRateData>? winRateDataList});
 }
 
 /// @nodoc
-class __$DeckWinRateDataStateCopyWithImpl<$Res>
-    extends _$DeckWinRateDataStateCopyWithImpl<$Res>
+class __$DeckWinRateDataStateCopyWithImpl<$Res> extends _$DeckWinRateDataStateCopyWithImpl<$Res>
     implements _$DeckWinRateDataStateCopyWith<$Res> {
-  __$DeckWinRateDataStateCopyWithImpl(
-      _DeckWinRateDataState _value, $Res Function(_DeckWinRateDataState) _then)
+  __$DeckWinRateDataStateCopyWithImpl(_DeckWinRateDataState _value, $Res Function(_DeckWinRateDataState) _then)
       : super(_value, (v) => _then(v as _DeckWinRateDataState));
 
   @override
@@ -119,29 +112,24 @@ class _$_DeckWinRateDataState implements _DeckWinRateDataState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _DeckWinRateDataState &&
-            const DeepCollectionEquality()
-                .equals(other.winRateDataList, winRateDataList));
+            const DeepCollectionEquality().equals(other.winRateDataList, winRateDataList));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(winRateDataList));
+  int get hashCode => Object.hash(runtimeType, const DeepCollectionEquality().hash(winRateDataList));
 
   @JsonKey(ignore: true)
   @override
   _$DeckWinRateDataStateCopyWith<_DeckWinRateDataState> get copyWith =>
-      __$DeckWinRateDataStateCopyWithImpl<_DeckWinRateDataState>(
-          this, _$identity);
+      __$DeckWinRateDataStateCopyWithImpl<_DeckWinRateDataState>(this, _$identity);
 }
 
 abstract class _DeckWinRateDataState implements DeckWinRateDataState {
-  factory _DeckWinRateDataState({List<WinRateData>? winRateDataList}) =
-      _$_DeckWinRateDataState;
+  factory _DeckWinRateDataState({List<WinRateData>? winRateDataList}) = _$_DeckWinRateDataState;
 
   @override
   List<WinRateData>? get winRateDataList;
   @override
   @JsonKey(ignore: true)
-  _$DeckWinRateDataStateCopyWith<_DeckWinRateDataState> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$DeckWinRateDataStateCopyWith<_DeckWinRateDataState> get copyWith => throw _privateConstructorUsedError;
 }

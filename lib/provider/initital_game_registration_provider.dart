@@ -21,7 +21,6 @@ class InitialGameRegistrationNotifier extends StateNotifier<InitialGameRegistrat
   }
 }
 
-final initialGameRegistrationNotifierProvider =
-    StateNotifierProvider<InitialGameRegistrationNotifier, InitialGameRegistrationState>(
+final initialGameRegistrationNotifierProvider = StateNotifierProvider<InitialGameRegistrationNotifier, InitialGameRegistrationState>(
   (ref) => InitialGameRegistrationNotifier(ref.read),
 );

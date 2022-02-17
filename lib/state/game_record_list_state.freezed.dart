@@ -33,21 +33,18 @@ mixin _$GameRecordListState {
   List<Record>? get gameRecordList => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $GameRecordListStateCopyWith<GameRecordListState> get copyWith =>
-      throw _privateConstructorUsedError;
+  $GameRecordListStateCopyWith<GameRecordListState> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $GameRecordListStateCopyWith<$Res> {
-  factory $GameRecordListStateCopyWith(
-          GameRecordListState value, $Res Function(GameRecordListState) then) =
+  factory $GameRecordListStateCopyWith(GameRecordListState value, $Res Function(GameRecordListState) then) =
       _$GameRecordListStateCopyWithImpl<$Res>;
   $Res call({List<Record>? gameRecordList});
 }
 
 /// @nodoc
-class _$GameRecordListStateCopyWithImpl<$Res>
-    implements $GameRecordListStateCopyWith<$Res> {
+class _$GameRecordListStateCopyWithImpl<$Res> implements $GameRecordListStateCopyWith<$Res> {
   _$GameRecordListStateCopyWithImpl(this._value, this._then);
 
   final GameRecordListState _value;
@@ -68,21 +65,17 @@ class _$GameRecordListStateCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$GameRecordListStateCopyWith<$Res>
-    implements $GameRecordListStateCopyWith<$Res> {
-  factory _$GameRecordListStateCopyWith(_GameRecordListState value,
-          $Res Function(_GameRecordListState) then) =
+abstract class _$GameRecordListStateCopyWith<$Res> implements $GameRecordListStateCopyWith<$Res> {
+  factory _$GameRecordListStateCopyWith(_GameRecordListState value, $Res Function(_GameRecordListState) then) =
       __$GameRecordListStateCopyWithImpl<$Res>;
   @override
   $Res call({List<Record>? gameRecordList});
 }
 
 /// @nodoc
-class __$GameRecordListStateCopyWithImpl<$Res>
-    extends _$GameRecordListStateCopyWithImpl<$Res>
+class __$GameRecordListStateCopyWithImpl<$Res> extends _$GameRecordListStateCopyWithImpl<$Res>
     implements _$GameRecordListStateCopyWith<$Res> {
-  __$GameRecordListStateCopyWithImpl(
-      _GameRecordListState _value, $Res Function(_GameRecordListState) _then)
+  __$GameRecordListStateCopyWithImpl(_GameRecordListState _value, $Res Function(_GameRecordListState) _then)
       : super(_value, (v) => _then(v as _GameRecordListState));
 
   @override
@@ -119,29 +112,24 @@ class _$_GameRecordListState implements _GameRecordListState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _GameRecordListState &&
-            const DeepCollectionEquality()
-                .equals(other.gameRecordList, gameRecordList));
+            const DeepCollectionEquality().equals(other.gameRecordList, gameRecordList));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(gameRecordList));
+  int get hashCode => Object.hash(runtimeType, const DeepCollectionEquality().hash(gameRecordList));
 
   @JsonKey(ignore: true)
   @override
   _$GameRecordListStateCopyWith<_GameRecordListState> get copyWith =>
-      __$GameRecordListStateCopyWithImpl<_GameRecordListState>(
-          this, _$identity);
+      __$GameRecordListStateCopyWithImpl<_GameRecordListState>(this, _$identity);
 }
 
 abstract class _GameRecordListState implements GameRecordListState {
-  factory _GameRecordListState({List<Record>? gameRecordList}) =
-      _$_GameRecordListState;
+  factory _GameRecordListState({List<Record>? gameRecordList}) = _$_GameRecordListState;
 
   @override
   List<Record>? get gameRecordList;
   @override
   @JsonKey(ignore: true)
-  _$GameRecordListStateCopyWith<_GameRecordListState> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$GameRecordListStateCopyWith<_GameRecordListState> get copyWith => throw _privateConstructorUsedError;
 }

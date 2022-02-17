@@ -111,8 +111,7 @@ class OtherView extends HookConsumerWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => const WebViewScreen(
-                        url:
-                            'https://docs.google.com/forms/d/e/1FAIpQLSd5ilK8mF76ZnLIPirTFPo0A5fQucYTMf9uDkdD--SkRbczjA/viewform',
+                        url: 'https://docs.google.com/forms/d/e/1FAIpQLSd5ilK8mF76ZnLIPirTFPo0A5fQucYTMf9uDkdD--SkRbczjA/viewform',
                       ),
                     ),
                   );
@@ -126,8 +125,7 @@ class OtherView extends HookConsumerWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => const WebViewScreen(
-                        url:
-                            'https://phrygian-jellyfish-595.notion.site/Privacy-Policy-057b29da8fb74d76bccd700d80db53e1',
+                        url: 'https://phrygian-jellyfish-595.notion.site/Privacy-Policy-057b29da8fb74d76bccd700d80db53e1',
                       ),
                     ),
                   );

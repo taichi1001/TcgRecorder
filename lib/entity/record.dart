@@ -16,9 +16,7 @@ class Record with _$Record {
     @Default(FirstSecond.first)
     @JsonKey(fromJson: _firstSecondFromJson, toJson: _firstSecondToJson, name: 'first_second')
         FirstSecond firstSecond,
-    @Default(WinLoss.win)
-    @JsonKey(fromJson: _winLossFromJson, toJson: _winLossToJson, name: 'win_loss')
-        WinLoss winLoss,
+    @Default(WinLoss.win) @JsonKey(fromJson: _winLossFromJson, toJson: _winLossToJson, name: 'win_loss') WinLoss winLoss,
     String? memo,
   }) = _Record;
   factory Record.fromJson(Map<String, dynamic> json) => _$RecordFromJson(json);

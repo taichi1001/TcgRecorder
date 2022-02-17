@@ -17,8 +17,7 @@ final deckWinRateDataSourceNotifierProvider =
   (ref, deckName) {
     final gameWinRateDataList = ref.watch(deckWinRateDataNotifierProvider(deckName)).winRateDataList;
     final gameWinRateDataSourceNotifier = DeckWinRateDataSourceNotifier(ref.read);
-    gameWinRateDataSourceNotifier
-        .setWinRateDataSourceList(DeckWinRateDataSource(winRateDataList: gameWinRateDataList!));
+    gameWinRateDataSourceNotifier.setWinRateDataSourceList(DeckWinRateDataSource(winRateDataList: gameWinRateDataList!));
     return gameWinRateDataSourceNotifier;
   },
 );

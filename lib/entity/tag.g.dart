@@ -10,9 +10,7 @@ _$_Tag _$$_TagFromJson(Map<String, dynamic> json) => _$_Tag(
       tagId: json['tag_id'] as int?,
       tag: json['tag'] as String,
       gameId: json['game_id'] as int?,
-      isVisibleToPicker: json['is_visible_to_picker'] == null
-          ? true
-          : _boolFromJson(json['is_visible_to_picker']),
+      isVisibleToPicker: json['is_visible_to_picker'] == null ? true : _boolFromJson(json['is_visible_to_picker']),
     );
 
 Map<String, dynamic> _$$_TagToJson(_$_Tag instance) => <String, dynamic>{

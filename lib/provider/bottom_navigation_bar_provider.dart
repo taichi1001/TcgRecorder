@@ -9,7 +9,6 @@ class BottomNavigationBarNotifier extends StateNotifier<BottomNavigationBarState
   }
 }
 
-final bottomNavigationBarNotifierProvider =
-    StateNotifierProvider<BottomNavigationBarNotifier, BottomNavigationBarState>(
+final bottomNavigationBarNotifierProvider = StateNotifierProvider<BottomNavigationBarNotifier, BottomNavigationBarState>(
   (ref) => BottomNavigationBarNotifier(),
 );

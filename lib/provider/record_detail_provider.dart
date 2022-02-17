@@ -12,8 +12,7 @@ import 'package:tcg_manager/state/record_detail_state.dart';
 
 class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
   RecordDetailNotifier(this.ref, this.record, this.margedRecord)
-      : super(RecordDetailState(
-            record: record, margedRecord: margedRecord, cacheDate: record.date, editMargedRecord: margedRecord));
+      : super(RecordDetailState(record: record, margedRecord: margedRecord, cacheDate: record.date, editMargedRecord: margedRecord));
 
   final Ref ref;
   final Record record;
@@ -38,30 +37,17 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
   void editDate() {
     if (state.cacheDate != null) {
       state = state.copyWith(
-        editMargedRecord: state.editMargedRecord.copyWith(
-          date: state.cacheDate!,
-        ),
+        editMargedRecord: state.editMargedRecord.copyWith(date: state.cacheDate!),
       );
     }
   }
 
   void editWinLoss(WinLoss winnLoss) {
     state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(winLoss: winnLoss));
-    // if (winnLoss == WinLoss.win) {
-    //   state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(winLoss: true));
-    // } else if (winnLoss == WinLoss.loss) {
-    //   state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(winLoss: false));
-    // }
   }
 
   void editFirstSecond(FirstSecond firstSecond) {
-    state = state.copyWith(
-        editMargedRecord:
-            state.editMargedRecord.copyWith(firstSecond: firstSecond)); // if (firstSecond == FirstSecond.first) {
-    //   state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(firstSecond: true));
-    // } else if (firstSecond == FirstSecond.second) {
-    //   state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(firstSecond: false));
-    // }
+    state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(firstSecond: firstSecond));
   }
 
   void editMemo(String memo) {
@@ -137,8 +123,7 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
   }
 }
 
-final recordDetailNotifierProvider =
-    StateNotifierProvider.family.autoDispose<RecordDetailNotifier, RecordDetailState, MargedRecord>(
+final recordDetailNotifierProvider = StateNotifierProvider.family.autoDispose<RecordDetailNotifier, RecordDetailState, MargedRecord>(
   (ref, margedRecord) {
     // 一覧からレコードを選択した瞬間の値のみがほしいため、watchで監視せずにreadで読み取っている
     final recordList = ref.read(allRecordListNotifierProvider).allRecordList;

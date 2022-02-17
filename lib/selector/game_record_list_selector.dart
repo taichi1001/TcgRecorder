@@ -3,6 +3,7 @@ import 'package:tcg_manager/entity/record.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/selector/sorted_record_list_selector.dart';
 import 'package:tcg_manager/state/game_record_list_state.dart';
+import 'package:tcg_manager/state/input_view_state.dart';
 
 class GameRecordListNotifier extends StateNotifier<GameRecordListState> {
   GameRecordListNotifier(this.read) : super(GameRecordListState());
@@ -17,19 +18,19 @@ class GameRecordListNotifier extends StateNotifier<GameRecordListState> {
   }
 
   int countGameFirstMatches() {
-    return state.gameRecordList!.where((record) => record.firstSecond == true).length;
+    return state.gameRecordList!.where((record) => record.firstSecond == FirstSecond.first).length;
   }
 
   int countGameSecondMatches() {
-    return state.gameRecordList!.where((record) => record.firstSecond == false).length;
+    return state.gameRecordList!.where((record) => record.firstSecond == FirstSecond.second).length;
   }
 
   int countGameWins() {
-    return state.gameRecordList!.where((record) => record.winLoss == true).length;
+    return state.gameRecordList!.where((record) => record.winLoss == WinLoss.win).length;
   }
 
   int countGameLoss() {
-    return state.gameRecordList!.where((record) => record.winLoss == false).length;
+    return state.gameRecordList!.where((record) => record.winLoss == WinLoss.loss).length;
   }
 
   double calcGameWinRate() {
@@ -39,15 +40,15 @@ class GameRecordListNotifier extends StateNotifier<GameRecordListState> {
   }
 
   double calcGameWinRateOfFirst() {
-    final firstRecord = state.gameRecordList!.where((record) => record.firstSecond == true).toList();
-    final win = firstRecord.where((record) => record.winLoss == true).length;
+    final firstRecord = state.gameRecordList!.where((record) => record.firstSecond == FirstSecond.first).toList();
+    final win = firstRecord.where((record) => record.winLoss == WinLoss.win).length;
     final matches = countGameFirstMatches();
     return double.parse((win.toDouble() / matches.toDouble() * 100).toStringAsFixed(1));
   }
 
   double calcGameWinRateOfSecond() {
-    final firstRecord = state.gameRecordList!.where((record) => record.firstSecond == false).toList();
-    final win = firstRecord.where((record) => record.winLoss == true).length;
+    final firstRecord = state.gameRecordList!.where((record) => record.firstSecond == FirstSecond.second).toList();
+    final win = firstRecord.where((record) => record.winLoss == WinLoss.win).length;
     final matches = countGameSecondMatches();
     return double.parse((win.toDouble() / matches.toDouble() * 100).toStringAsFixed(1));
   }

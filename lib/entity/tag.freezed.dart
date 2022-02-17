@@ -23,13 +23,10 @@ class _$TagTearOff {
   const _$TagTearOff();
 
   _Tag call(
-      {@JsonKey(name: 'tag_id')
-          int? tagId,
+      {@JsonKey(name: 'tag_id') int? tagId,
       required String tag,
-      @JsonKey(name: 'game_id')
-          int? gameId,
-      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker')
-          bool isVisibleToPicker = true}) {
+      @JsonKey(name: 'game_id') int? gameId,
+      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker') bool isVisibleToPicker = true}) {
     return _Tag(
       tagId: tagId,
       tag: tag,
@@ -53,10 +50,7 @@ mixin _$Tag {
   String get tag => throw _privateConstructorUsedError;
   @JsonKey(name: 'game_id')
   int? get gameId => throw _privateConstructorUsedError;
-  @JsonKey(
-      fromJson: _boolFromJson,
-      toJson: _boolToJson,
-      name: 'is_visible_to_picker')
+  @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker')
   bool get isVisibleToPicker => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -66,16 +60,12 @@ mixin _$Tag {
 
 /// @nodoc
 abstract class $TagCopyWith<$Res> {
-  factory $TagCopyWith(Tag value, $Res Function(Tag) then) =
-      _$TagCopyWithImpl<$Res>;
+  factory $TagCopyWith(Tag value, $Res Function(Tag) then) = _$TagCopyWithImpl<$Res>;
   $Res call(
-      {@JsonKey(name: 'tag_id')
-          int? tagId,
+      {@JsonKey(name: 'tag_id') int? tagId,
       String tag,
-      @JsonKey(name: 'game_id')
-          int? gameId,
-      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker')
-          bool isVisibleToPicker});
+      @JsonKey(name: 'game_id') int? gameId,
+      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker') bool isVisibleToPicker});
 }
 
 /// @nodoc
@@ -116,24 +106,18 @@ class _$TagCopyWithImpl<$Res> implements $TagCopyWith<$Res> {
 
 /// @nodoc
 abstract class _$TagCopyWith<$Res> implements $TagCopyWith<$Res> {
-  factory _$TagCopyWith(_Tag value, $Res Function(_Tag) then) =
-      __$TagCopyWithImpl<$Res>;
+  factory _$TagCopyWith(_Tag value, $Res Function(_Tag) then) = __$TagCopyWithImpl<$Res>;
   @override
   $Res call(
-      {@JsonKey(name: 'tag_id')
-          int? tagId,
+      {@JsonKey(name: 'tag_id') int? tagId,
       String tag,
-      @JsonKey(name: 'game_id')
-          int? gameId,
-      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker')
-          bool isVisibleToPicker});
+      @JsonKey(name: 'game_id') int? gameId,
+      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker') bool isVisibleToPicker});
 }
 
 /// @nodoc
-class __$TagCopyWithImpl<$Res> extends _$TagCopyWithImpl<$Res>
-    implements _$TagCopyWith<$Res> {
-  __$TagCopyWithImpl(_Tag _value, $Res Function(_Tag) _then)
-      : super(_value, (v) => _then(v as _Tag));
+class __$TagCopyWithImpl<$Res> extends _$TagCopyWithImpl<$Res> implements _$TagCopyWith<$Res> {
+  __$TagCopyWithImpl(_Tag _value, $Res Function(_Tag) _then) : super(_value, (v) => _then(v as _Tag));
 
   @override
   _Tag get _value => super._value as _Tag;
@@ -170,13 +154,10 @@ class __$TagCopyWithImpl<$Res> extends _$TagCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_Tag implements _Tag {
   _$_Tag(
-      {@JsonKey(name: 'tag_id')
-          this.tagId,
+      {@JsonKey(name: 'tag_id') this.tagId,
       required this.tag,
-      @JsonKey(name: 'game_id')
-          this.gameId,
-      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker')
-          this.isVisibleToPicker = true});
+      @JsonKey(name: 'game_id') this.gameId,
+      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker') this.isVisibleToPicker = true});
 
   factory _$_Tag.fromJson(Map<String, dynamic> json) => _$$_TagFromJson(json);
 
@@ -189,10 +170,7 @@ class _$_Tag implements _Tag {
   @JsonKey(name: 'game_id')
   final int? gameId;
   @override
-  @JsonKey(
-      fromJson: _boolFromJson,
-      toJson: _boolToJson,
-      name: 'is_visible_to_picker')
+  @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker')
   final bool isVisibleToPicker;
 
   @override
@@ -208,22 +186,16 @@ class _$_Tag implements _Tag {
             const DeepCollectionEquality().equals(other.tagId, tagId) &&
             const DeepCollectionEquality().equals(other.tag, tag) &&
             const DeepCollectionEquality().equals(other.gameId, gameId) &&
-            const DeepCollectionEquality()
-                .equals(other.isVisibleToPicker, isVisibleToPicker));
+            const DeepCollectionEquality().equals(other.isVisibleToPicker, isVisibleToPicker));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(tagId),
-      const DeepCollectionEquality().hash(tag),
-      const DeepCollectionEquality().hash(gameId),
-      const DeepCollectionEquality().hash(isVisibleToPicker));
+  int get hashCode => Object.hash(runtimeType, const DeepCollectionEquality().hash(tagId), const DeepCollectionEquality().hash(tag),
+      const DeepCollectionEquality().hash(gameId), const DeepCollectionEquality().hash(isVisibleToPicker));
 
   @JsonKey(ignore: true)
   @override
-  _$TagCopyWith<_Tag> get copyWith =>
-      __$TagCopyWithImpl<_Tag>(this, _$identity);
+  _$TagCopyWith<_Tag> get copyWith => __$TagCopyWithImpl<_Tag>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -233,13 +205,10 @@ class _$_Tag implements _Tag {
 
 abstract class _Tag implements Tag {
   factory _Tag(
-      {@JsonKey(name: 'tag_id')
-          int? tagId,
+      {@JsonKey(name: 'tag_id') int? tagId,
       required String tag,
-      @JsonKey(name: 'game_id')
-          int? gameId,
-      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker')
-          bool isVisibleToPicker}) = _$_Tag;
+      @JsonKey(name: 'game_id') int? gameId,
+      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker') bool isVisibleToPicker}) = _$_Tag;
 
   factory _Tag.fromJson(Map<String, dynamic> json) = _$_Tag.fromJson;
 
@@ -252,10 +221,7 @@ abstract class _Tag implements Tag {
   @JsonKey(name: 'game_id')
   int? get gameId;
   @override
-  @JsonKey(
-      fromJson: _boolFromJson,
-      toJson: _boolToJson,
-      name: 'is_visible_to_picker')
+  @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker')
   bool get isVisibleToPicker;
   @override
   @JsonKey(ignore: true)

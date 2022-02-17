@@ -143,14 +143,11 @@ class _EditView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final editMargedRecord =
-        ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.editMargedRecord));
+    final editMargedRecord = ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.editMargedRecord));
     final recordDetailNotifier = ref.watch(recordDetailNotifierProvider(margedRecord).notifier);
 
-    final firstSecond =
-        ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.editMargedRecord.firstSecond));
-    final winLoss =
-        ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.editMargedRecord.winLoss));
+    final firstSecond = ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.editMargedRecord.firstSecond));
+    final winLoss = ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.editMargedRecord.winLoss));
 
     final useDeckTextController = useTextEditingController(text: editMargedRecord.useDeck);
     final opponentDeckTextController = useTextEditingController(text: editMargedRecord.opponentDeck);

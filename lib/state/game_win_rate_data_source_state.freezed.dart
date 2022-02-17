@@ -18,8 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$GameWinRateDataSourceStateTearOff {
   const _$GameWinRateDataSourceStateTearOff();
 
-  _GameWinRateDataSourceState call(
-      {GameWinRateDataSource? gameWinRateDataSource}) {
+  _GameWinRateDataSourceState call({GameWinRateDataSource? gameWinRateDataSource}) {
     return _GameWinRateDataSourceState(
       gameWinRateDataSource: gameWinRateDataSource,
     );
@@ -31,25 +30,21 @@ const $GameWinRateDataSourceState = _$GameWinRateDataSourceStateTearOff();
 
 /// @nodoc
 mixin _$GameWinRateDataSourceState {
-  GameWinRateDataSource? get gameWinRateDataSource =>
-      throw _privateConstructorUsedError;
+  GameWinRateDataSource? get gameWinRateDataSource => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $GameWinRateDataSourceStateCopyWith<GameWinRateDataSourceState>
-      get copyWith => throw _privateConstructorUsedError;
+  $GameWinRateDataSourceStateCopyWith<GameWinRateDataSourceState> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $GameWinRateDataSourceStateCopyWith<$Res> {
-  factory $GameWinRateDataSourceStateCopyWith(GameWinRateDataSourceState value,
-          $Res Function(GameWinRateDataSourceState) then) =
+  factory $GameWinRateDataSourceStateCopyWith(GameWinRateDataSourceState value, $Res Function(GameWinRateDataSourceState) then) =
       _$GameWinRateDataSourceStateCopyWithImpl<$Res>;
   $Res call({GameWinRateDataSource? gameWinRateDataSource});
 }
 
 /// @nodoc
-class _$GameWinRateDataSourceStateCopyWithImpl<$Res>
-    implements $GameWinRateDataSourceStateCopyWith<$Res> {
+class _$GameWinRateDataSourceStateCopyWithImpl<$Res> implements $GameWinRateDataSourceStateCopyWith<$Res> {
   _$GameWinRateDataSourceStateCopyWithImpl(this._value, this._then);
 
   final GameWinRateDataSourceState _value;
@@ -70,27 +65,21 @@ class _$GameWinRateDataSourceStateCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$GameWinRateDataSourceStateCopyWith<$Res>
-    implements $GameWinRateDataSourceStateCopyWith<$Res> {
-  factory _$GameWinRateDataSourceStateCopyWith(
-          _GameWinRateDataSourceState value,
-          $Res Function(_GameWinRateDataSourceState) then) =
+abstract class _$GameWinRateDataSourceStateCopyWith<$Res> implements $GameWinRateDataSourceStateCopyWith<$Res> {
+  factory _$GameWinRateDataSourceStateCopyWith(_GameWinRateDataSourceState value, $Res Function(_GameWinRateDataSourceState) then) =
       __$GameWinRateDataSourceStateCopyWithImpl<$Res>;
   @override
   $Res call({GameWinRateDataSource? gameWinRateDataSource});
 }
 
 /// @nodoc
-class __$GameWinRateDataSourceStateCopyWithImpl<$Res>
-    extends _$GameWinRateDataSourceStateCopyWithImpl<$Res>
+class __$GameWinRateDataSourceStateCopyWithImpl<$Res> extends _$GameWinRateDataSourceStateCopyWithImpl<$Res>
     implements _$GameWinRateDataSourceStateCopyWith<$Res> {
-  __$GameWinRateDataSourceStateCopyWithImpl(_GameWinRateDataSourceState _value,
-      $Res Function(_GameWinRateDataSourceState) _then)
+  __$GameWinRateDataSourceStateCopyWithImpl(_GameWinRateDataSourceState _value, $Res Function(_GameWinRateDataSourceState) _then)
       : super(_value, (v) => _then(v as _GameWinRateDataSourceState));
 
   @override
-  _GameWinRateDataSourceState get _value =>
-      super._value as _GameWinRateDataSourceState;
+  _GameWinRateDataSourceState get _value => super._value as _GameWinRateDataSourceState;
 
   @override
   $Res call({
@@ -123,31 +112,24 @@ class _$_GameWinRateDataSourceState implements _GameWinRateDataSourceState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _GameWinRateDataSourceState &&
-            const DeepCollectionEquality()
-                .equals(other.gameWinRateDataSource, gameWinRateDataSource));
+            const DeepCollectionEquality().equals(other.gameWinRateDataSource, gameWinRateDataSource));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(gameWinRateDataSource));
+  int get hashCode => Object.hash(runtimeType, const DeepCollectionEquality().hash(gameWinRateDataSource));
 
   @JsonKey(ignore: true)
   @override
-  _$GameWinRateDataSourceStateCopyWith<_GameWinRateDataSourceState>
-      get copyWith => __$GameWinRateDataSourceStateCopyWithImpl<
-          _GameWinRateDataSourceState>(this, _$identity);
+  _$GameWinRateDataSourceStateCopyWith<_GameWinRateDataSourceState> get copyWith =>
+      __$GameWinRateDataSourceStateCopyWithImpl<_GameWinRateDataSourceState>(this, _$identity);
 }
 
-abstract class _GameWinRateDataSourceState
-    implements GameWinRateDataSourceState {
-  factory _GameWinRateDataSourceState(
-          {GameWinRateDataSource? gameWinRateDataSource}) =
-      _$_GameWinRateDataSourceState;
+abstract class _GameWinRateDataSourceState implements GameWinRateDataSourceState {
+  factory _GameWinRateDataSourceState({GameWinRateDataSource? gameWinRateDataSource}) = _$_GameWinRateDataSourceState;
 
   @override
   GameWinRateDataSource? get gameWinRateDataSource;
   @override
   @JsonKey(ignore: true)
-  _$GameWinRateDataSourceStateCopyWith<_GameWinRateDataSourceState>
-      get copyWith => throw _privateConstructorUsedError;
+  _$GameWinRateDataSourceStateCopyWith<_GameWinRateDataSourceState> get copyWith => throw _privateConstructorUsedError;
 }

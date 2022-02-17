@@ -9,9 +9,7 @@ class Deck with _$Deck {
     @JsonKey(name: 'deck_id') int? deckId,
     required String deck,
     @JsonKey(name: 'game_id') int? gameId,
-    @Default(true)
-    @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker')
-        bool isVisibleToPicker,
+    @Default(true) @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker') bool isVisibleToPicker,
   }) = _Deck;
   factory Deck.fromJson(Map<String, dynamic> json) => _$DeckFromJson(json);
 }

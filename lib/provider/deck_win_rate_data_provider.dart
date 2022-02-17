@@ -16,8 +16,7 @@ class DeckWinRateDataNotifier extends StateNotifier<DeckWinRateDataState> {
   }
 }
 
-final deckWinRateDataNotifierProvider =
-    StateNotifierProvider.family.autoDispose<DeckWinRateDataNotifier, DeckWinRateDataState, String>(
+final deckWinRateDataNotifierProvider = StateNotifierProvider.family.autoDispose<DeckWinRateDataNotifier, DeckWinRateDataState, String>(
   (ref, useDeckName) {
     final gameRecordList = ref.watch(gameRecordListNotifierProvider.select((value) => value.gameRecordList));
     final gameDeckList = ref.watch(gameDeckListProvider);

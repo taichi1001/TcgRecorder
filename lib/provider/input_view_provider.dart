@@ -100,20 +100,10 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
 
   void _saveFirstSecond() {
     state = state.copyWith(record: state.record!.copyWith(firstSecond: state.firstSecond));
-    // if (state.firstSecond == FirstSecond.first) {
-    //   state = state.copyWith(record: state.record!.copyWith(firstSecond: true));
-    // } else if (state.firstSecond == FirstSecond.second) {
-    //   state = state.copyWith(record: state.record!.copyWith(firstSecond: false));
-    // }
   }
 
   void _saveWinLoss() {
     state = state.copyWith(record: state.record!.copyWith(winLoss: state.winLoss));
-    // if (state.winLoss == WinLoss.win) {
-    //   state = state.copyWith(record: state.record!.copyWith(winLoss: true));
-    // } else if (state.winLoss == WinLoss.loss) {
-    //   state = state.copyWith(record: state.record!.copyWith(winLoss: false));
-    // }
   }
 
   void resetView() {

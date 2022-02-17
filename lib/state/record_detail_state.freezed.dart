@@ -46,21 +46,14 @@ mixin _$RecordDetailState {
   DateTime? get cacheDate => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $RecordDetailStateCopyWith<RecordDetailState> get copyWith =>
-      throw _privateConstructorUsedError;
+  $RecordDetailStateCopyWith<RecordDetailState> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $RecordDetailStateCopyWith<$Res> {
-  factory $RecordDetailStateCopyWith(
-          RecordDetailState value, $Res Function(RecordDetailState) then) =
+  factory $RecordDetailStateCopyWith(RecordDetailState value, $Res Function(RecordDetailState) then) =
       _$RecordDetailStateCopyWithImpl<$Res>;
-  $Res call(
-      {bool isEdit,
-      Record record,
-      MargedRecord margedRecord,
-      MargedRecord editMargedRecord,
-      DateTime? cacheDate});
+  $Res call({bool isEdit, Record record, MargedRecord margedRecord, MargedRecord editMargedRecord, DateTime? cacheDate});
 
   $RecordCopyWith<$Res> get record;
   $MargedRecordCopyWith<$Res> get margedRecord;
@@ -68,8 +61,7 @@ abstract class $RecordDetailStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$RecordDetailStateCopyWithImpl<$Res>
-    implements $RecordDetailStateCopyWith<$Res> {
+class _$RecordDetailStateCopyWithImpl<$Res> implements $RecordDetailStateCopyWith<$Res> {
   _$RecordDetailStateCopyWithImpl(this._value, this._then);
 
   final RecordDetailState _value;
@@ -131,18 +123,11 @@ class _$RecordDetailStateCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$RecordDetailStateCopyWith<$Res>
-    implements $RecordDetailStateCopyWith<$Res> {
-  factory _$RecordDetailStateCopyWith(
-          _RecordDetailState value, $Res Function(_RecordDetailState) then) =
+abstract class _$RecordDetailStateCopyWith<$Res> implements $RecordDetailStateCopyWith<$Res> {
+  factory _$RecordDetailStateCopyWith(_RecordDetailState value, $Res Function(_RecordDetailState) then) =
       __$RecordDetailStateCopyWithImpl<$Res>;
   @override
-  $Res call(
-      {bool isEdit,
-      Record record,
-      MargedRecord margedRecord,
-      MargedRecord editMargedRecord,
-      DateTime? cacheDate});
+  $Res call({bool isEdit, Record record, MargedRecord margedRecord, MargedRecord editMargedRecord, DateTime? cacheDate});
 
   @override
   $RecordCopyWith<$Res> get record;
@@ -153,11 +138,8 @@ abstract class _$RecordDetailStateCopyWith<$Res>
 }
 
 /// @nodoc
-class __$RecordDetailStateCopyWithImpl<$Res>
-    extends _$RecordDetailStateCopyWithImpl<$Res>
-    implements _$RecordDetailStateCopyWith<$Res> {
-  __$RecordDetailStateCopyWithImpl(
-      _RecordDetailState _value, $Res Function(_RecordDetailState) _then)
+class __$RecordDetailStateCopyWithImpl<$Res> extends _$RecordDetailStateCopyWithImpl<$Res> implements _$RecordDetailStateCopyWith<$Res> {
+  __$RecordDetailStateCopyWithImpl(_RecordDetailState _value, $Res Function(_RecordDetailState) _then)
       : super(_value, (v) => _then(v as _RecordDetailState));
 
   @override
@@ -200,11 +182,7 @@ class __$RecordDetailStateCopyWithImpl<$Res>
 
 class _$_RecordDetailState implements _RecordDetailState {
   _$_RecordDetailState(
-      {this.isEdit = false,
-      required this.record,
-      required this.margedRecord,
-      required this.editMargedRecord,
-      this.cacheDate});
+      {this.isEdit = false, required this.record, required this.margedRecord, required this.editMargedRecord, this.cacheDate});
 
   @JsonKey()
   @override
@@ -230,10 +208,8 @@ class _$_RecordDetailState implements _RecordDetailState {
             other is _RecordDetailState &&
             const DeepCollectionEquality().equals(other.isEdit, isEdit) &&
             const DeepCollectionEquality().equals(other.record, record) &&
-            const DeepCollectionEquality()
-                .equals(other.margedRecord, margedRecord) &&
-            const DeepCollectionEquality()
-                .equals(other.editMargedRecord, editMargedRecord) &&
+            const DeepCollectionEquality().equals(other.margedRecord, margedRecord) &&
+            const DeepCollectionEquality().equals(other.editMargedRecord, editMargedRecord) &&
             const DeepCollectionEquality().equals(other.cacheDate, cacheDate));
   }
 
@@ -248,8 +224,7 @@ class _$_RecordDetailState implements _RecordDetailState {
 
   @JsonKey(ignore: true)
   @override
-  _$RecordDetailStateCopyWith<_RecordDetailState> get copyWith =>
-      __$RecordDetailStateCopyWithImpl<_RecordDetailState>(this, _$identity);
+  _$RecordDetailStateCopyWith<_RecordDetailState> get copyWith => __$RecordDetailStateCopyWithImpl<_RecordDetailState>(this, _$identity);
 }
 
 abstract class _RecordDetailState implements RecordDetailState {
@@ -272,6 +247,5 @@ abstract class _RecordDetailState implements RecordDetailState {
   DateTime? get cacheDate;
   @override
   @JsonKey(ignore: true)
-  _$RecordDetailStateCopyWith<_RecordDetailState> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$RecordDetailStateCopyWith<_RecordDetailState> get copyWith => throw _privateConstructorUsedError;
 }

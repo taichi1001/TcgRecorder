@@ -39,7 +39,6 @@ class TextEditingControllerNotifier extends StateNotifier<TextEditingControllerS
   }
 }
 
-final textEditingControllerNotifierProvider =
-    StateNotifierProvider<TextEditingControllerNotifier, TextEditingControllerState>(
+final textEditingControllerNotifierProvider = StateNotifierProvider<TextEditingControllerNotifier, TextEditingControllerState>(
   (ref) => TextEditingControllerNotifier(ref.read),
 );

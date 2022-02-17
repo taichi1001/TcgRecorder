@@ -33,15 +33,12 @@ mixin _$InitialGameRegistrationState {
   Game? get initialGame => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $InitialGameRegistrationStateCopyWith<InitialGameRegistrationState>
-      get copyWith => throw _privateConstructorUsedError;
+  $InitialGameRegistrationStateCopyWith<InitialGameRegistrationState> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $InitialGameRegistrationStateCopyWith<$Res> {
-  factory $InitialGameRegistrationStateCopyWith(
-          InitialGameRegistrationState value,
-          $Res Function(InitialGameRegistrationState) then) =
+  factory $InitialGameRegistrationStateCopyWith(InitialGameRegistrationState value, $Res Function(InitialGameRegistrationState) then) =
       _$InitialGameRegistrationStateCopyWithImpl<$Res>;
   $Res call({Game? initialGame});
 
@@ -49,8 +46,7 @@ abstract class $InitialGameRegistrationStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$InitialGameRegistrationStateCopyWithImpl<$Res>
-    implements $InitialGameRegistrationStateCopyWith<$Res> {
+class _$InitialGameRegistrationStateCopyWithImpl<$Res> implements $InitialGameRegistrationStateCopyWith<$Res> {
   _$InitialGameRegistrationStateCopyWithImpl(this._value, this._then);
 
   final InitialGameRegistrationState _value;
@@ -82,11 +78,8 @@ class _$InitialGameRegistrationStateCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$InitialGameRegistrationStateCopyWith<$Res>
-    implements $InitialGameRegistrationStateCopyWith<$Res> {
-  factory _$InitialGameRegistrationStateCopyWith(
-          _InitialGameRegistrationState value,
-          $Res Function(_InitialGameRegistrationState) then) =
+abstract class _$InitialGameRegistrationStateCopyWith<$Res> implements $InitialGameRegistrationStateCopyWith<$Res> {
+  factory _$InitialGameRegistrationStateCopyWith(_InitialGameRegistrationState value, $Res Function(_InitialGameRegistrationState) then) =
       __$InitialGameRegistrationStateCopyWithImpl<$Res>;
   @override
   $Res call({Game? initialGame});
@@ -96,17 +89,13 @@ abstract class _$InitialGameRegistrationStateCopyWith<$Res>
 }
 
 /// @nodoc
-class __$InitialGameRegistrationStateCopyWithImpl<$Res>
-    extends _$InitialGameRegistrationStateCopyWithImpl<$Res>
+class __$InitialGameRegistrationStateCopyWithImpl<$Res> extends _$InitialGameRegistrationStateCopyWithImpl<$Res>
     implements _$InitialGameRegistrationStateCopyWith<$Res> {
-  __$InitialGameRegistrationStateCopyWithImpl(
-      _InitialGameRegistrationState _value,
-      $Res Function(_InitialGameRegistrationState) _then)
+  __$InitialGameRegistrationStateCopyWithImpl(_InitialGameRegistrationState _value, $Res Function(_InitialGameRegistrationState) _then)
       : super(_value, (v) => _then(v as _InitialGameRegistrationState));
 
   @override
-  _InitialGameRegistrationState get _value =>
-      super._value as _InitialGameRegistrationState;
+  _InitialGameRegistrationState get _value => super._value as _InitialGameRegistrationState;
 
   @override
   $Res call({
@@ -139,30 +128,24 @@ class _$_InitialGameRegistrationState implements _InitialGameRegistrationState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _InitialGameRegistrationState &&
-            const DeepCollectionEquality()
-                .equals(other.initialGame, initialGame));
+            const DeepCollectionEquality().equals(other.initialGame, initialGame));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(initialGame));
+  int get hashCode => Object.hash(runtimeType, const DeepCollectionEquality().hash(initialGame));
 
   @JsonKey(ignore: true)
   @override
-  _$InitialGameRegistrationStateCopyWith<_InitialGameRegistrationState>
-      get copyWith => __$InitialGameRegistrationStateCopyWithImpl<
-          _InitialGameRegistrationState>(this, _$identity);
+  _$InitialGameRegistrationStateCopyWith<_InitialGameRegistrationState> get copyWith =>
+      __$InitialGameRegistrationStateCopyWithImpl<_InitialGameRegistrationState>(this, _$identity);
 }
 
-abstract class _InitialGameRegistrationState
-    implements InitialGameRegistrationState {
-  factory _InitialGameRegistrationState({Game? initialGame}) =
-      _$_InitialGameRegistrationState;
+abstract class _InitialGameRegistrationState implements InitialGameRegistrationState {
+  factory _InitialGameRegistrationState({Game? initialGame}) = _$_InitialGameRegistrationState;
 
   @override
   Game? get initialGame;
   @override
   @JsonKey(ignore: true)
-  _$InitialGameRegistrationStateCopyWith<_InitialGameRegistrationState>
-      get copyWith => throw _privateConstructorUsedError;
+  _$InitialGameRegistrationStateCopyWith<_InitialGameRegistrationState> get copyWith => throw _privateConstructorUsedError;
 }

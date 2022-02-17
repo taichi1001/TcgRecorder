@@ -77,10 +77,7 @@ mixin _$Record {
   DateTime? get date =>
       throw _privateConstructorUsedError; // @Default(true) @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'first_second') bool firstSecond,
 // @Default(true) @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'win_loss') bool winLoss,
-  @JsonKey(
-      fromJson: _firstSecondFromJson,
-      toJson: _firstSecondToJson,
-      name: 'first_second')
+  @JsonKey(fromJson: _firstSecondFromJson, toJson: _firstSecondToJson, name: 'first_second')
   FirstSecond get firstSecond => throw _privateConstructorUsedError;
   @JsonKey(fromJson: _winLossFromJson, toJson: _winLossToJson, name: 'win_loss')
   WinLoss get winLoss => throw _privateConstructorUsedError;
@@ -93,25 +90,16 @@ mixin _$Record {
 
 /// @nodoc
 abstract class $RecordCopyWith<$Res> {
-  factory $RecordCopyWith(Record value, $Res Function(Record) then) =
-      _$RecordCopyWithImpl<$Res>;
+  factory $RecordCopyWith(Record value, $Res Function(Record) then) = _$RecordCopyWithImpl<$Res>;
   $Res call(
-      {@JsonKey(name: 'record_id')
-          int? recordId,
-      @JsonKey(name: 'game_id')
-          int? gameId,
-      @JsonKey(name: 'tag_id')
-          int? tagId,
-      @JsonKey(name: 'use_deck_id')
-          int? useDeckId,
-      @JsonKey(name: 'opponent_deck_id')
-          int? opponentDeckId,
-      @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson)
-          DateTime? date,
-      @JsonKey(fromJson: _firstSecondFromJson, toJson: _firstSecondToJson, name: 'first_second')
-          FirstSecond firstSecond,
-      @JsonKey(fromJson: _winLossFromJson, toJson: _winLossToJson, name: 'win_loss')
-          WinLoss winLoss,
+      {@JsonKey(name: 'record_id') int? recordId,
+      @JsonKey(name: 'game_id') int? gameId,
+      @JsonKey(name: 'tag_id') int? tagId,
+      @JsonKey(name: 'use_deck_id') int? useDeckId,
+      @JsonKey(name: 'opponent_deck_id') int? opponentDeckId,
+      @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson) DateTime? date,
+      @JsonKey(fromJson: _firstSecondFromJson, toJson: _firstSecondToJson, name: 'first_second') FirstSecond firstSecond,
+      @JsonKey(fromJson: _winLossFromJson, toJson: _winLossToJson, name: 'win_loss') WinLoss winLoss,
       String? memo});
 }
 
@@ -178,34 +166,23 @@ class _$RecordCopyWithImpl<$Res> implements $RecordCopyWith<$Res> {
 
 /// @nodoc
 abstract class _$RecordCopyWith<$Res> implements $RecordCopyWith<$Res> {
-  factory _$RecordCopyWith(_Record value, $Res Function(_Record) then) =
-      __$RecordCopyWithImpl<$Res>;
+  factory _$RecordCopyWith(_Record value, $Res Function(_Record) then) = __$RecordCopyWithImpl<$Res>;
   @override
   $Res call(
-      {@JsonKey(name: 'record_id')
-          int? recordId,
-      @JsonKey(name: 'game_id')
-          int? gameId,
-      @JsonKey(name: 'tag_id')
-          int? tagId,
-      @JsonKey(name: 'use_deck_id')
-          int? useDeckId,
-      @JsonKey(name: 'opponent_deck_id')
-          int? opponentDeckId,
-      @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson)
-          DateTime? date,
-      @JsonKey(fromJson: _firstSecondFromJson, toJson: _firstSecondToJson, name: 'first_second')
-          FirstSecond firstSecond,
-      @JsonKey(fromJson: _winLossFromJson, toJson: _winLossToJson, name: 'win_loss')
-          WinLoss winLoss,
+      {@JsonKey(name: 'record_id') int? recordId,
+      @JsonKey(name: 'game_id') int? gameId,
+      @JsonKey(name: 'tag_id') int? tagId,
+      @JsonKey(name: 'use_deck_id') int? useDeckId,
+      @JsonKey(name: 'opponent_deck_id') int? opponentDeckId,
+      @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson) DateTime? date,
+      @JsonKey(fromJson: _firstSecondFromJson, toJson: _firstSecondToJson, name: 'first_second') FirstSecond firstSecond,
+      @JsonKey(fromJson: _winLossFromJson, toJson: _winLossToJson, name: 'win_loss') WinLoss winLoss,
       String? memo});
 }
 
 /// @nodoc
-class __$RecordCopyWithImpl<$Res> extends _$RecordCopyWithImpl<$Res>
-    implements _$RecordCopyWith<$Res> {
-  __$RecordCopyWithImpl(_Record _value, $Res Function(_Record) _then)
-      : super(_value, (v) => _then(v as _Record));
+class __$RecordCopyWithImpl<$Res> extends _$RecordCopyWithImpl<$Res> implements _$RecordCopyWith<$Res> {
+  __$RecordCopyWithImpl(_Record _value, $Res Function(_Record) _then) : super(_value, (v) => _then(v as _Record));
 
   @override
   _Record get _value => super._value as _Record;
@@ -267,26 +244,17 @@ class __$RecordCopyWithImpl<$Res> extends _$RecordCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_Record implements _Record {
   _$_Record(
-      {@JsonKey(name: 'record_id')
-          this.recordId,
-      @JsonKey(name: 'game_id')
-          this.gameId,
-      @JsonKey(name: 'tag_id')
-          this.tagId,
-      @JsonKey(name: 'use_deck_id')
-          this.useDeckId,
-      @JsonKey(name: 'opponent_deck_id')
-          this.opponentDeckId,
-      @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson)
-          this.date,
-      @JsonKey(fromJson: _firstSecondFromJson, toJson: _firstSecondToJson, name: 'first_second')
-          this.firstSecond = FirstSecond.first,
-      @JsonKey(fromJson: _winLossFromJson, toJson: _winLossToJson, name: 'win_loss')
-          this.winLoss = WinLoss.win,
+      {@JsonKey(name: 'record_id') this.recordId,
+      @JsonKey(name: 'game_id') this.gameId,
+      @JsonKey(name: 'tag_id') this.tagId,
+      @JsonKey(name: 'use_deck_id') this.useDeckId,
+      @JsonKey(name: 'opponent_deck_id') this.opponentDeckId,
+      @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson) this.date,
+      @JsonKey(fromJson: _firstSecondFromJson, toJson: _firstSecondToJson, name: 'first_second') this.firstSecond = FirstSecond.first,
+      @JsonKey(fromJson: _winLossFromJson, toJson: _winLossToJson, name: 'win_loss') this.winLoss = WinLoss.win,
       this.memo});
 
-  factory _$_Record.fromJson(Map<String, dynamic> json) =>
-      _$$_RecordFromJson(json);
+  factory _$_Record.fromJson(Map<String, dynamic> json) => _$$_RecordFromJson(json);
 
   @override
   @JsonKey(name: 'record_id')
@@ -308,10 +276,7 @@ class _$_Record implements _Record {
   final DateTime? date;
   @override // @Default(true) @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'first_second') bool firstSecond,
 // @Default(true) @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'win_loss') bool winLoss,
-  @JsonKey(
-      fromJson: _firstSecondFromJson,
-      toJson: _firstSecondToJson,
-      name: 'first_second')
+  @JsonKey(fromJson: _firstSecondFromJson, toJson: _firstSecondToJson, name: 'first_second')
   final FirstSecond firstSecond;
   @override
   @JsonKey(fromJson: _winLossFromJson, toJson: _winLossToJson, name: 'win_loss')
@@ -333,11 +298,9 @@ class _$_Record implements _Record {
             const DeepCollectionEquality().equals(other.gameId, gameId) &&
             const DeepCollectionEquality().equals(other.tagId, tagId) &&
             const DeepCollectionEquality().equals(other.useDeckId, useDeckId) &&
-            const DeepCollectionEquality()
-                .equals(other.opponentDeckId, opponentDeckId) &&
+            const DeepCollectionEquality().equals(other.opponentDeckId, opponentDeckId) &&
             const DeepCollectionEquality().equals(other.date, date) &&
-            const DeepCollectionEquality()
-                .equals(other.firstSecond, firstSecond) &&
+            const DeepCollectionEquality().equals(other.firstSecond, firstSecond) &&
             const DeepCollectionEquality().equals(other.winLoss, winLoss) &&
             const DeepCollectionEquality().equals(other.memo, memo));
   }
@@ -357,8 +320,7 @@ class _$_Record implements _Record {
 
   @JsonKey(ignore: true)
   @override
-  _$RecordCopyWith<_Record> get copyWith =>
-      __$RecordCopyWithImpl<_Record>(this, _$identity);
+  _$RecordCopyWith<_Record> get copyWith => __$RecordCopyWithImpl<_Record>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -368,22 +330,14 @@ class _$_Record implements _Record {
 
 abstract class _Record implements Record {
   factory _Record(
-      {@JsonKey(name: 'record_id')
-          int? recordId,
-      @JsonKey(name: 'game_id')
-          int? gameId,
-      @JsonKey(name: 'tag_id')
-          int? tagId,
-      @JsonKey(name: 'use_deck_id')
-          int? useDeckId,
-      @JsonKey(name: 'opponent_deck_id')
-          int? opponentDeckId,
-      @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson)
-          DateTime? date,
-      @JsonKey(fromJson: _firstSecondFromJson, toJson: _firstSecondToJson, name: 'first_second')
-          FirstSecond firstSecond,
-      @JsonKey(fromJson: _winLossFromJson, toJson: _winLossToJson, name: 'win_loss')
-          WinLoss winLoss,
+      {@JsonKey(name: 'record_id') int? recordId,
+      @JsonKey(name: 'game_id') int? gameId,
+      @JsonKey(name: 'tag_id') int? tagId,
+      @JsonKey(name: 'use_deck_id') int? useDeckId,
+      @JsonKey(name: 'opponent_deck_id') int? opponentDeckId,
+      @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson) DateTime? date,
+      @JsonKey(fromJson: _firstSecondFromJson, toJson: _firstSecondToJson, name: 'first_second') FirstSecond firstSecond,
+      @JsonKey(fromJson: _winLossFromJson, toJson: _winLossToJson, name: 'win_loss') WinLoss winLoss,
       String? memo}) = _$_Record;
 
   factory _Record.fromJson(Map<String, dynamic> json) = _$_Record.fromJson;
@@ -408,10 +362,7 @@ abstract class _Record implements Record {
   DateTime? get date;
   @override // @Default(true) @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'first_second') bool firstSecond,
 // @Default(true) @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'win_loss') bool winLoss,
-  @JsonKey(
-      fromJson: _firstSecondFromJson,
-      toJson: _firstSecondToJson,
-      name: 'first_second')
+  @JsonKey(fromJson: _firstSecondFromJson, toJson: _firstSecondToJson, name: 'first_second')
   FirstSecond get firstSecond;
   @override
   @JsonKey(fromJson: _winLossFromJson, toJson: _winLossToJson, name: 'win_loss')
