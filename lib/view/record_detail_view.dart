@@ -20,7 +20,6 @@ class RecordDetailView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final marged = ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.margedRecord));
     final isEdit = ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.isEdit));
     final recordDetailNotifier = ref.watch(recordDetailNotifierProvider(margedRecord).notifier);
     return Scaffold(
@@ -212,7 +211,6 @@ class _EditView extends HookConsumerWidget {
             groupValue: firstSecond,
             activeColor: const Color(0xFF18204E),
             onChanged: (FirstSecond? value) {
-              // inputViewNotifier.selectFirstSecond(value);
               if (value != null) {
                 recordDetailNotifier.editFirstSecond(value);
               }
