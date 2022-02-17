@@ -14,11 +14,11 @@ _$_Record _$$_RecordFromJson(Map<String, dynamic> json) => _$_Record(
       opponentDeckId: json['opponent_deck_id'] as int?,
       date: _dateTimeFromJson(json['date'] as String),
       firstSecond: json['first_second'] == null
-          ? true
-          : _boolFromJson(json['first_second'] as int),
+          ? FirstSecond.first
+          : _firstSecondFromJson(json['first_second'] as int),
       winLoss: json['win_loss'] == null
-          ? true
-          : _boolFromJson(json['win_loss'] as int),
+          ? WinLoss.win
+          : _winLossFromJson(json['win_loss'] as int),
       memo: json['memo'] as String?,
     );
 
@@ -29,7 +29,7 @@ Map<String, dynamic> _$$_RecordToJson(_$_Record instance) => <String, dynamic>{
       'use_deck_id': instance.useDeckId,
       'opponent_deck_id': instance.opponentDeckId,
       'date': _dateTimeToJson(instance.date),
-      'first_second': _boolToJson(instance.firstSecond),
-      'win_loss': _boolToJson(instance.winLoss),
+      'first_second': _firstSecondToJson(instance.firstSecond),
+      'win_loss': _winLossToJson(instance.winLoss),
       'memo': instance.memo,
     };

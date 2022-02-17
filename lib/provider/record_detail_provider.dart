@@ -46,19 +46,26 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
   }
 
   void editWinLoss(WinLoss winnLoss) {
-    if (winnLoss == WinLoss.win) {
-      state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(winLoss: true));
-    } else if (winnLoss == WinLoss.loss) {
-      state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(winLoss: false));
-    }
+    state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(winLoss: winnLoss));
+    // if (winnLoss == WinLoss.win) {
+    //   state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(winLoss: true));
+    // } else if (winnLoss == WinLoss.loss) {
+    //   state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(winLoss: false));
+    // }
   }
 
   void editFirstSecond(FirstSecond firstSecond) {
-    if (firstSecond == FirstSecond.first) {
-      state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(firstSecond: true));
-    } else if (firstSecond == FirstSecond.second) {
-      state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(firstSecond: false));
-    }
+    state = state.copyWith(
+        editMargedRecord:
+            state.editMargedRecord.copyWith(firstSecond: firstSecond)); // if (firstSecond == FirstSecond.first) {
+    //   state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(firstSecond: true));
+    // } else if (firstSecond == FirstSecond.second) {
+    //   state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(firstSecond: false));
+    // }
+  }
+
+  void editMemo(String memo) {
+    state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(memo: memo));
   }
 
   Future saveEdit() async {
@@ -75,6 +82,7 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
         date: state.editMargedRecord.date,
         winLoss: state.editMargedRecord.winLoss,
         firstSecond: state.editMargedRecord.firstSecond,
+        memo: state.editMargedRecord.memo,
       ),
     );
 

@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:tcg_manager/entity/marged_record.dart';
 import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/provider/record_detail_provider.dart';
+import 'package:tcg_manager/state/input_view_state.dart';
 import 'package:tcg_manager/view/component/custom_modal_date_picker.dart';
 import 'package:tcg_manager/view/component/custom_textfield.dart';
 
@@ -29,7 +30,7 @@ class RecordDetailView extends HookConsumerWidget {
         centerTitle: false,
         elevation: 0.0,
         title: Text(
-          marged.useDeck,
+          isEdit ? '詳細' : '編集',
           style: const TextStyle(
             color: Colors.black,
             fontSize: 30,
@@ -147,47 +148,145 @@ class _EditView extends HookConsumerWidget {
         ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.editMargedRecord));
     final recordDetailNotifier = ref.watch(recordDetailNotifierProvider(margedRecord).notifier);
 
+    final firstSecond =
+        ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.editMargedRecord.firstSecond));
+    final winLoss =
+        ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.editMargedRecord.winLoss));
+
     final useDeckTextController = useTextEditingController(text: editMargedRecord.useDeck);
     final opponentDeckTextController = useTextEditingController(text: editMargedRecord.opponentDeck);
+    final memoTextController = useTextEditingController(text: editMargedRecord.memo);
     final outputFormat = DateFormat('yyyy年 MM月 dd日');
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
-          child: Text(
-            S.of(context).date,
-            style: const TextStyle(
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
+            child: Text(
+              S.of(context).date,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                leadingDistribution: TextLeadingDistribution.even,
+                height: 1,
+              ),
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                outputFormat.format(editMargedRecord.date),
+              ),
+              _DatePickerButton(
+                submited: recordDetailNotifier.editDate,
+                onDateTimeChanged: recordDetailNotifier.scrollDate,
+              ),
+            ],
+          ),
+          CustomTextField(
+            labelText: S.of(context).useDeck,
+            onChanged: recordDetailNotifier.editUseDeck,
+            controller: useDeckTextController,
+          ),
+          CustomTextField(
+            labelText: S.of(context).opponentDeck,
+            onChanged: recordDetailNotifier.editOpponentDeck,
+            controller: opponentDeckTextController,
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
+            child: Text(
+              S.of(context).order,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                leadingDistribution: TextLeadingDistribution.even,
+                height: 1,
+              ),
+            ),
+          ),
+          RadioListTile(
+            title: Text(S.of(context).first),
+            value: FirstSecond.first,
+            groupValue: firstSecond,
+            activeColor: const Color(0xFF18204E),
+            onChanged: (FirstSecond? value) {
+              // inputViewNotifier.selectFirstSecond(value);
+              if (value != null) {
+                recordDetailNotifier.editFirstSecond(value);
+              }
+            },
+            contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+            dense: true,
+          ),
+          RadioListTile(
+            title: Text(S.of(context).second),
+            value: FirstSecond.second,
+            groupValue: firstSecond,
+            activeColor: const Color(0xFF18204E),
+            onChanged: (FirstSecond? value) {
+              if (value != null) {
+                recordDetailNotifier.editFirstSecond(value);
+              }
+            },
+            contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+            dense: true,
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
+            child: Text(
+              S.of(context).winOrLoss,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                leadingDistribution: TextLeadingDistribution.even,
+                height: 1,
+              ),
+            ),
+          ),
+          RadioListTile(
+            title: Text(S.of(context).win),
+            value: WinLoss.win,
+            groupValue: winLoss,
+            activeColor: const Color(0xFF18204E),
+            onChanged: (WinLoss? value) {
+              if (value != null) {
+                recordDetailNotifier.editWinLoss(value);
+              }
+            },
+            contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+            dense: true,
+          ),
+          RadioListTile(
+            title: Text(S.of(context).loss),
+            value: WinLoss.loss,
+            groupValue: winLoss,
+            activeColor: const Color(0xFF18204E),
+            onChanged: (WinLoss? value) {
+              if (value != null) {
+                recordDetailNotifier.editWinLoss(value);
+              }
+            },
+            contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+            dense: true,
+          ),
+          const Text(
+            'メモ',
+            style: TextStyle(
               fontWeight: FontWeight.bold,
               leadingDistribution: TextLeadingDistribution.even,
               height: 1,
             ),
           ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              outputFormat.format(editMargedRecord.date),
-            ),
-            _DatePickerButton(
-              submited: recordDetailNotifier.editDate,
-              onDateTimeChanged: recordDetailNotifier.scrollDate,
-            ),
-          ],
-        ),
-        CustomTextField(
-          labelText: S.of(context).useDeck,
-          onChanged: recordDetailNotifier.editUseDeck,
-          controller: useDeckTextController,
-        ),
-        CustomTextField(
-          labelText: S.of(context).opponentDeck,
-          onChanged: recordDetailNotifier.editOpponentDeck,
-          controller: opponentDeckTextController,
-        ),
-      ],
+          CustomTextField(
+            controller: memoTextController,
+            onChanged: recordDetailNotifier.editMemo,
+            labelText: '改行もできます',
+            keyboardType: TextInputType.multiline,
+            maxLines: null,
+          ),
+        ],
+      ),
     );
   }
 }

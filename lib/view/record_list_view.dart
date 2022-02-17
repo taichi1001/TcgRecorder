@@ -5,9 +5,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:tcg_manager/entity/marged_record.dart';
 import 'package:tcg_manager/generated/l10n.dart';
-import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/selector/marged_record_list_selector.dart';
+import 'package:tcg_manager/state/input_view_state.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
 import 'package:tcg_manager/view/component/custom_scaffold.dart';
 import 'package:tcg_manager/view/component/fade_page_route.dart';
@@ -90,8 +90,8 @@ final currentRecord = Provider<MargedRecord>((ref) => MargedRecord(
       useDeck: '',
       opponentDeck: '',
       tag: '',
-      firstSecond: true,
-      winLoss: true,
+      firstSecond: FirstSecond.first,
+      winLoss: WinLoss.win,
       date: DateTime.now(),
     ));
 
@@ -103,16 +103,14 @@ class _BrandListTile extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final record = ref.watch(currentRecord);
-    final recordListNotifier = ref.watch(allRecordListNotifierProvider.notifier);
-    final dbHelp = ref.watch(dbHelper);
     final outputFormat = DateFormat('yyyy年 MM月 dd日');
 
     return ListTile(
       trailing: Text(
-        record.winLoss ? 'Win' : 'Loss',
+        record.winLoss == WinLoss.win ? 'Win' : 'Loss',
         style: GoogleFonts.bangers(
           fontSize: 34,
-          color: record.winLoss ? const Color(0xFFA21F16) : const Color(0xFF3547AC),
+          color: record.winLoss == WinLoss.win ? const Color(0xFFA21F16) : const Color(0xFF3547AC),
         ),
       ),
       subtitle: Hero(
@@ -209,9 +207,6 @@ class _BrandListTile extends HookConsumerWidget {
             ),
           ),
         );
-        // recordListNotifier.changeIsLoaded();
-        // await dbHelp.fetchAll();
-        // recordListNotifier.changeIsLoaded();
       },
     );
   }
