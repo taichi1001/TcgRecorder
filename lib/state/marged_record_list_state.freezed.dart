@@ -30,21 +30,25 @@ const $MargedRecordListState = _$MargedRecordListStateTearOff();
 
 /// @nodoc
 mixin _$MargedRecordListState {
-  List<MargedRecord>? get margedRecordList => throw _privateConstructorUsedError;
+  List<MargedRecord>? get margedRecordList =>
+      throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $MargedRecordListStateCopyWith<MargedRecordListState> get copyWith => throw _privateConstructorUsedError;
+  $MargedRecordListStateCopyWith<MargedRecordListState> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $MargedRecordListStateCopyWith<$Res> {
-  factory $MargedRecordListStateCopyWith(MargedRecordListState value, $Res Function(MargedRecordListState) then) =
+  factory $MargedRecordListStateCopyWith(MargedRecordListState value,
+          $Res Function(MargedRecordListState) then) =
       _$MargedRecordListStateCopyWithImpl<$Res>;
   $Res call({List<MargedRecord>? margedRecordList});
 }
 
 /// @nodoc
-class _$MargedRecordListStateCopyWithImpl<$Res> implements $MargedRecordListStateCopyWith<$Res> {
+class _$MargedRecordListStateCopyWithImpl<$Res>
+    implements $MargedRecordListStateCopyWith<$Res> {
   _$MargedRecordListStateCopyWithImpl(this._value, this._then);
 
   final MargedRecordListState _value;
@@ -65,17 +69,21 @@ class _$MargedRecordListStateCopyWithImpl<$Res> implements $MargedRecordListStat
 }
 
 /// @nodoc
-abstract class _$MargedRecordListStateCopyWith<$Res> implements $MargedRecordListStateCopyWith<$Res> {
-  factory _$MargedRecordListStateCopyWith(_MargedRecordListState value, $Res Function(_MargedRecordListState) then) =
+abstract class _$MargedRecordListStateCopyWith<$Res>
+    implements $MargedRecordListStateCopyWith<$Res> {
+  factory _$MargedRecordListStateCopyWith(_MargedRecordListState value,
+          $Res Function(_MargedRecordListState) then) =
       __$MargedRecordListStateCopyWithImpl<$Res>;
   @override
   $Res call({List<MargedRecord>? margedRecordList});
 }
 
 /// @nodoc
-class __$MargedRecordListStateCopyWithImpl<$Res> extends _$MargedRecordListStateCopyWithImpl<$Res>
+class __$MargedRecordListStateCopyWithImpl<$Res>
+    extends _$MargedRecordListStateCopyWithImpl<$Res>
     implements _$MargedRecordListStateCopyWith<$Res> {
-  __$MargedRecordListStateCopyWithImpl(_MargedRecordListState _value, $Res Function(_MargedRecordListState) _then)
+  __$MargedRecordListStateCopyWithImpl(_MargedRecordListState _value,
+      $Res Function(_MargedRecordListState) _then)
       : super(_value, (v) => _then(v as _MargedRecordListState));
 
   @override
@@ -112,24 +120,29 @@ class _$_MargedRecordListState implements _MargedRecordListState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _MargedRecordListState &&
-            const DeepCollectionEquality().equals(other.margedRecordList, margedRecordList));
+            const DeepCollectionEquality()
+                .equals(other.margedRecordList, margedRecordList));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, const DeepCollectionEquality().hash(margedRecordList));
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(margedRecordList));
 
   @JsonKey(ignore: true)
   @override
   _$MargedRecordListStateCopyWith<_MargedRecordListState> get copyWith =>
-      __$MargedRecordListStateCopyWithImpl<_MargedRecordListState>(this, _$identity);
+      __$MargedRecordListStateCopyWithImpl<_MargedRecordListState>(
+          this, _$identity);
 }
 
 abstract class _MargedRecordListState implements MargedRecordListState {
-  factory _MargedRecordListState({List<MargedRecord>? margedRecordList}) = _$_MargedRecordListState;
+  factory _MargedRecordListState({List<MargedRecord>? margedRecordList}) =
+      _$_MargedRecordListState;
 
   @override
   List<MargedRecord>? get margedRecordList;
   @override
   @JsonKey(ignore: true)
-  _$MargedRecordListStateCopyWith<_MargedRecordListState> get copyWith => throw _privateConstructorUsedError;
+  _$MargedRecordListStateCopyWith<_MargedRecordListState> get copyWith =>
+      throw _privateConstructorUsedError;
 }

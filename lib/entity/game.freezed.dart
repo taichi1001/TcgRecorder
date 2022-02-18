@@ -23,9 +23,11 @@ class _$GameTearOff {
   const _$GameTearOff();
 
   _Game call(
-      {@JsonKey(name: 'game_id') int? gameId,
+      {@JsonKey(name: 'game_id')
+          int? gameId,
       required String game,
-      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker') bool isVisibleToPicker = true}) {
+      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker')
+          bool isVisibleToPicker = true}) {
     return _Game(
       gameId: gameId,
       game: game,
@@ -46,7 +48,10 @@ mixin _$Game {
   @JsonKey(name: 'game_id')
   int? get gameId => throw _privateConstructorUsedError;
   String get game => throw _privateConstructorUsedError;
-  @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker')
+  @JsonKey(
+      fromJson: _boolFromJson,
+      toJson: _boolToJson,
+      name: 'is_visible_to_picker')
   bool get isVisibleToPicker => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -56,11 +61,14 @@ mixin _$Game {
 
 /// @nodoc
 abstract class $GameCopyWith<$Res> {
-  factory $GameCopyWith(Game value, $Res Function(Game) then) = _$GameCopyWithImpl<$Res>;
+  factory $GameCopyWith(Game value, $Res Function(Game) then) =
+      _$GameCopyWithImpl<$Res>;
   $Res call(
-      {@JsonKey(name: 'game_id') int? gameId,
+      {@JsonKey(name: 'game_id')
+          int? gameId,
       String game,
-      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker') bool isVisibleToPicker});
+      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker')
+          bool isVisibleToPicker});
 }
 
 /// @nodoc
@@ -96,17 +104,22 @@ class _$GameCopyWithImpl<$Res> implements $GameCopyWith<$Res> {
 
 /// @nodoc
 abstract class _$GameCopyWith<$Res> implements $GameCopyWith<$Res> {
-  factory _$GameCopyWith(_Game value, $Res Function(_Game) then) = __$GameCopyWithImpl<$Res>;
+  factory _$GameCopyWith(_Game value, $Res Function(_Game) then) =
+      __$GameCopyWithImpl<$Res>;
   @override
   $Res call(
-      {@JsonKey(name: 'game_id') int? gameId,
+      {@JsonKey(name: 'game_id')
+          int? gameId,
       String game,
-      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker') bool isVisibleToPicker});
+      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker')
+          bool isVisibleToPicker});
 }
 
 /// @nodoc
-class __$GameCopyWithImpl<$Res> extends _$GameCopyWithImpl<$Res> implements _$GameCopyWith<$Res> {
-  __$GameCopyWithImpl(_Game _value, $Res Function(_Game) _then) : super(_value, (v) => _then(v as _Game));
+class __$GameCopyWithImpl<$Res> extends _$GameCopyWithImpl<$Res>
+    implements _$GameCopyWith<$Res> {
+  __$GameCopyWithImpl(_Game _value, $Res Function(_Game) _then)
+      : super(_value, (v) => _then(v as _Game));
 
   @override
   _Game get _value => super._value as _Game;
@@ -138,9 +151,11 @@ class __$GameCopyWithImpl<$Res> extends _$GameCopyWithImpl<$Res> implements _$Ga
 @JsonSerializable()
 class _$_Game implements _Game {
   _$_Game(
-      {@JsonKey(name: 'game_id') this.gameId,
+      {@JsonKey(name: 'game_id')
+          this.gameId,
       required this.game,
-      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker') this.isVisibleToPicker = true});
+      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker')
+          this.isVisibleToPicker = true});
 
   factory _$_Game.fromJson(Map<String, dynamic> json) => _$$_GameFromJson(json);
 
@@ -150,7 +165,10 @@ class _$_Game implements _Game {
   @override
   final String game;
   @override
-  @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker')
+  @JsonKey(
+      fromJson: _boolFromJson,
+      toJson: _boolToJson,
+      name: 'is_visible_to_picker')
   final bool isVisibleToPicker;
 
   @override
@@ -165,16 +183,21 @@ class _$_Game implements _Game {
             other is _Game &&
             const DeepCollectionEquality().equals(other.gameId, gameId) &&
             const DeepCollectionEquality().equals(other.game, game) &&
-            const DeepCollectionEquality().equals(other.isVisibleToPicker, isVisibleToPicker));
+            const DeepCollectionEquality()
+                .equals(other.isVisibleToPicker, isVisibleToPicker));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, const DeepCollectionEquality().hash(gameId), const DeepCollectionEquality().hash(game),
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(gameId),
+      const DeepCollectionEquality().hash(game),
       const DeepCollectionEquality().hash(isVisibleToPicker));
 
   @JsonKey(ignore: true)
   @override
-  _$GameCopyWith<_Game> get copyWith => __$GameCopyWithImpl<_Game>(this, _$identity);
+  _$GameCopyWith<_Game> get copyWith =>
+      __$GameCopyWithImpl<_Game>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -184,9 +207,11 @@ class _$_Game implements _Game {
 
 abstract class _Game implements Game {
   factory _Game(
-      {@JsonKey(name: 'game_id') int? gameId,
+      {@JsonKey(name: 'game_id')
+          int? gameId,
       required String game,
-      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker') bool isVisibleToPicker}) = _$_Game;
+      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker')
+          bool isVisibleToPicker}) = _$_Game;
 
   factory _Game.fromJson(Map<String, dynamic> json) = _$_Game.fromJson;
 
@@ -196,7 +221,10 @@ abstract class _Game implements Game {
   @override
   String get game;
   @override
-  @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker')
+  @JsonKey(
+      fromJson: _boolFromJson,
+      toJson: _boolToJson,
+      name: 'is_visible_to_picker')
   bool get isVisibleToPicker;
   @override
   @JsonKey(ignore: true)

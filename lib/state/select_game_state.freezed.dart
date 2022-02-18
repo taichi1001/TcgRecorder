@@ -35,12 +35,15 @@ mixin _$SelectGameState {
   Game? get cacheSelectGame => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $SelectGameStateCopyWith<SelectGameState> get copyWith => throw _privateConstructorUsedError;
+  $SelectGameStateCopyWith<SelectGameState> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $SelectGameStateCopyWith<$Res> {
-  factory $SelectGameStateCopyWith(SelectGameState value, $Res Function(SelectGameState) then) = _$SelectGameStateCopyWithImpl<$Res>;
+  factory $SelectGameStateCopyWith(
+          SelectGameState value, $Res Function(SelectGameState) then) =
+      _$SelectGameStateCopyWithImpl<$Res>;
   $Res call({Game? selectGame, Game? cacheSelectGame});
 
   $GameCopyWith<$Res>? get selectGame;
@@ -48,7 +51,8 @@ abstract class $SelectGameStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$SelectGameStateCopyWithImpl<$Res> implements $SelectGameStateCopyWith<$Res> {
+class _$SelectGameStateCopyWithImpl<$Res>
+    implements $SelectGameStateCopyWith<$Res> {
   _$SelectGameStateCopyWithImpl(this._value, this._then);
 
   final SelectGameState _value;
@@ -96,8 +100,11 @@ class _$SelectGameStateCopyWithImpl<$Res> implements $SelectGameStateCopyWith<$R
 }
 
 /// @nodoc
-abstract class _$SelectGameStateCopyWith<$Res> implements $SelectGameStateCopyWith<$Res> {
-  factory _$SelectGameStateCopyWith(_SelectGameState value, $Res Function(_SelectGameState) then) = __$SelectGameStateCopyWithImpl<$Res>;
+abstract class _$SelectGameStateCopyWith<$Res>
+    implements $SelectGameStateCopyWith<$Res> {
+  factory _$SelectGameStateCopyWith(
+          _SelectGameState value, $Res Function(_SelectGameState) then) =
+      __$SelectGameStateCopyWithImpl<$Res>;
   @override
   $Res call({Game? selectGame, Game? cacheSelectGame});
 
@@ -108,8 +115,11 @@ abstract class _$SelectGameStateCopyWith<$Res> implements $SelectGameStateCopyWi
 }
 
 /// @nodoc
-class __$SelectGameStateCopyWithImpl<$Res> extends _$SelectGameStateCopyWithImpl<$Res> implements _$SelectGameStateCopyWith<$Res> {
-  __$SelectGameStateCopyWithImpl(_SelectGameState _value, $Res Function(_SelectGameState) _then)
+class __$SelectGameStateCopyWithImpl<$Res>
+    extends _$SelectGameStateCopyWithImpl<$Res>
+    implements _$SelectGameStateCopyWith<$Res> {
+  __$SelectGameStateCopyWithImpl(
+      _SelectGameState _value, $Res Function(_SelectGameState) _then)
       : super(_value, (v) => _then(v as _SelectGameState));
 
   @override
@@ -153,21 +163,27 @@ class _$_SelectGameState implements _SelectGameState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _SelectGameState &&
-            const DeepCollectionEquality().equals(other.selectGame, selectGame) &&
-            const DeepCollectionEquality().equals(other.cacheSelectGame, cacheSelectGame));
+            const DeepCollectionEquality()
+                .equals(other.selectGame, selectGame) &&
+            const DeepCollectionEquality()
+                .equals(other.cacheSelectGame, cacheSelectGame));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(selectGame), const DeepCollectionEquality().hash(cacheSelectGame));
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(selectGame),
+      const DeepCollectionEquality().hash(cacheSelectGame));
 
   @JsonKey(ignore: true)
   @override
-  _$SelectGameStateCopyWith<_SelectGameState> get copyWith => __$SelectGameStateCopyWithImpl<_SelectGameState>(this, _$identity);
+  _$SelectGameStateCopyWith<_SelectGameState> get copyWith =>
+      __$SelectGameStateCopyWithImpl<_SelectGameState>(this, _$identity);
 }
 
 abstract class _SelectGameState implements SelectGameState {
-  factory _SelectGameState({Game? selectGame, Game? cacheSelectGame}) = _$_SelectGameState;
+  factory _SelectGameState({Game? selectGame, Game? cacheSelectGame}) =
+      _$_SelectGameState;
 
   @override
   Game? get selectGame;
@@ -175,5 +191,6 @@ abstract class _SelectGameState implements SelectGameState {
   Game? get cacheSelectGame;
   @override
   @JsonKey(ignore: true)
-  _$SelectGameStateCopyWith<_SelectGameState> get copyWith => throw _privateConstructorUsedError;
+  _$SelectGameStateCopyWith<_SelectGameState> get copyWith =>
+      throw _privateConstructorUsedError;
 }

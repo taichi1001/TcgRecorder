@@ -13,8 +13,12 @@ _$_Record _$$_RecordFromJson(Map<String, dynamic> json) => _$_Record(
       useDeckId: json['use_deck_id'] as int?,
       opponentDeckId: json['opponent_deck_id'] as int?,
       date: _dateTimeFromJson(json['date'] as String),
-      firstSecond: json['first_second'] == null ? FirstSecond.first : _firstSecondFromJson(json['first_second'] as int),
-      winLoss: json['win_loss'] == null ? WinLoss.win : _winLossFromJson(json['win_loss'] as int),
+      firstSecond: json['first_second'] == null
+          ? FirstSecond.first
+          : _firstSecondFromJson(json['first_second'] as int),
+      winLoss: json['win_loss'] == null
+          ? WinLoss.win
+          : _winLossFromJson(json['win_loss'] as int),
       memo: json['memo'] as String?,
     );
 

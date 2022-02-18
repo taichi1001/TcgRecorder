@@ -33,18 +33,21 @@ mixin _$AdaptiveBannerAdState {
   AdSize? get adSize => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $AdaptiveBannerAdStateCopyWith<AdaptiveBannerAdState> get copyWith => throw _privateConstructorUsedError;
+  $AdaptiveBannerAdStateCopyWith<AdaptiveBannerAdState> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $AdaptiveBannerAdStateCopyWith<$Res> {
-  factory $AdaptiveBannerAdStateCopyWith(AdaptiveBannerAdState value, $Res Function(AdaptiveBannerAdState) then) =
+  factory $AdaptiveBannerAdStateCopyWith(AdaptiveBannerAdState value,
+          $Res Function(AdaptiveBannerAdState) then) =
       _$AdaptiveBannerAdStateCopyWithImpl<$Res>;
   $Res call({AdSize? adSize});
 }
 
 /// @nodoc
-class _$AdaptiveBannerAdStateCopyWithImpl<$Res> implements $AdaptiveBannerAdStateCopyWith<$Res> {
+class _$AdaptiveBannerAdStateCopyWithImpl<$Res>
+    implements $AdaptiveBannerAdStateCopyWith<$Res> {
   _$AdaptiveBannerAdStateCopyWithImpl(this._value, this._then);
 
   final AdaptiveBannerAdState _value;
@@ -65,17 +68,21 @@ class _$AdaptiveBannerAdStateCopyWithImpl<$Res> implements $AdaptiveBannerAdStat
 }
 
 /// @nodoc
-abstract class _$AdaptiveBannerAdStateCopyWith<$Res> implements $AdaptiveBannerAdStateCopyWith<$Res> {
-  factory _$AdaptiveBannerAdStateCopyWith(_AdaptiveBannerAdState value, $Res Function(_AdaptiveBannerAdState) then) =
+abstract class _$AdaptiveBannerAdStateCopyWith<$Res>
+    implements $AdaptiveBannerAdStateCopyWith<$Res> {
+  factory _$AdaptiveBannerAdStateCopyWith(_AdaptiveBannerAdState value,
+          $Res Function(_AdaptiveBannerAdState) then) =
       __$AdaptiveBannerAdStateCopyWithImpl<$Res>;
   @override
   $Res call({AdSize? adSize});
 }
 
 /// @nodoc
-class __$AdaptiveBannerAdStateCopyWithImpl<$Res> extends _$AdaptiveBannerAdStateCopyWithImpl<$Res>
+class __$AdaptiveBannerAdStateCopyWithImpl<$Res>
+    extends _$AdaptiveBannerAdStateCopyWithImpl<$Res>
     implements _$AdaptiveBannerAdStateCopyWith<$Res> {
-  __$AdaptiveBannerAdStateCopyWithImpl(_AdaptiveBannerAdState _value, $Res Function(_AdaptiveBannerAdState) _then)
+  __$AdaptiveBannerAdStateCopyWithImpl(_AdaptiveBannerAdState _value,
+      $Res Function(_AdaptiveBannerAdState) _then)
       : super(_value, (v) => _then(v as _AdaptiveBannerAdState));
 
   @override
@@ -116,12 +123,14 @@ class _$_AdaptiveBannerAdState implements _AdaptiveBannerAdState {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, const DeepCollectionEquality().hash(adSize));
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(adSize));
 
   @JsonKey(ignore: true)
   @override
   _$AdaptiveBannerAdStateCopyWith<_AdaptiveBannerAdState> get copyWith =>
-      __$AdaptiveBannerAdStateCopyWithImpl<_AdaptiveBannerAdState>(this, _$identity);
+      __$AdaptiveBannerAdStateCopyWithImpl<_AdaptiveBannerAdState>(
+          this, _$identity);
 }
 
 abstract class _AdaptiveBannerAdState implements AdaptiveBannerAdState {
@@ -131,5 +140,6 @@ abstract class _AdaptiveBannerAdState implements AdaptiveBannerAdState {
   AdSize? get adSize;
   @override
   @JsonKey(ignore: true)
-  _$AdaptiveBannerAdStateCopyWith<_AdaptiveBannerAdState> get copyWith => throw _privateConstructorUsedError;
+  _$AdaptiveBannerAdStateCopyWith<_AdaptiveBannerAdState> get copyWith =>
+      throw _privateConstructorUsedError;
 }

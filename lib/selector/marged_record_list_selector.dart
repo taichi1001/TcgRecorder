@@ -4,7 +4,7 @@ import 'package:tcg_manager/entity/record.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
-import 'package:tcg_manager/selector/game_record_list_selector.dart';
+import 'package:tcg_manager/selector/filter_record_list_selector.dart';
 import 'package:tcg_manager/state/marged_record_list_state.dart';
 
 class MargedRecordListNotifier extends StateNotifier<MargedRecordListState> {
@@ -19,7 +19,7 @@ class MargedRecordListNotifier extends StateNotifier<MargedRecordListState> {
 
 final margedRecordListProvider = StateNotifierProvider<MargedRecordListNotifier, MargedRecordListState>((ref) {
   final margedRecordListNotifier = MargedRecordListNotifier(ref.read);
-  final selectGameRecordList = ref.watch(gameRecordListNotifierProvider).gameRecordList;
+  final selectGameRecordList = ref.watch(filterRecordListProvider);
   final allGameList = ref.read(allGameListNotifierProvider).allGameList;
   final allDeckList = ref.read(allDeckListNotifierProvider).allDeckList;
   final allTagList = ref.read(allTagListNotifierProvider).allTagList;

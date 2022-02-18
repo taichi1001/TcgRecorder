@@ -18,7 +18,8 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$DeckWinRateDataSourceStateTearOff {
   const _$DeckWinRateDataSourceStateTearOff();
 
-  _DeckWinRateDataSourceState call({DeckWinRateDataSource? deckWinRateDataSource}) {
+  _DeckWinRateDataSourceState call(
+      {DeckWinRateDataSource? deckWinRateDataSource}) {
     return _DeckWinRateDataSourceState(
       deckWinRateDataSource: deckWinRateDataSource,
     );
@@ -30,21 +31,25 @@ const $DeckWinRateDataSourceState = _$DeckWinRateDataSourceStateTearOff();
 
 /// @nodoc
 mixin _$DeckWinRateDataSourceState {
-  DeckWinRateDataSource? get deckWinRateDataSource => throw _privateConstructorUsedError;
+  DeckWinRateDataSource? get deckWinRateDataSource =>
+      throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $DeckWinRateDataSourceStateCopyWith<DeckWinRateDataSourceState> get copyWith => throw _privateConstructorUsedError;
+  $DeckWinRateDataSourceStateCopyWith<DeckWinRateDataSourceState>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $DeckWinRateDataSourceStateCopyWith<$Res> {
-  factory $DeckWinRateDataSourceStateCopyWith(DeckWinRateDataSourceState value, $Res Function(DeckWinRateDataSourceState) then) =
+  factory $DeckWinRateDataSourceStateCopyWith(DeckWinRateDataSourceState value,
+          $Res Function(DeckWinRateDataSourceState) then) =
       _$DeckWinRateDataSourceStateCopyWithImpl<$Res>;
   $Res call({DeckWinRateDataSource? deckWinRateDataSource});
 }
 
 /// @nodoc
-class _$DeckWinRateDataSourceStateCopyWithImpl<$Res> implements $DeckWinRateDataSourceStateCopyWith<$Res> {
+class _$DeckWinRateDataSourceStateCopyWithImpl<$Res>
+    implements $DeckWinRateDataSourceStateCopyWith<$Res> {
   _$DeckWinRateDataSourceStateCopyWithImpl(this._value, this._then);
 
   final DeckWinRateDataSourceState _value;
@@ -65,21 +70,27 @@ class _$DeckWinRateDataSourceStateCopyWithImpl<$Res> implements $DeckWinRateData
 }
 
 /// @nodoc
-abstract class _$DeckWinRateDataSourceStateCopyWith<$Res> implements $DeckWinRateDataSourceStateCopyWith<$Res> {
-  factory _$DeckWinRateDataSourceStateCopyWith(_DeckWinRateDataSourceState value, $Res Function(_DeckWinRateDataSourceState) then) =
+abstract class _$DeckWinRateDataSourceStateCopyWith<$Res>
+    implements $DeckWinRateDataSourceStateCopyWith<$Res> {
+  factory _$DeckWinRateDataSourceStateCopyWith(
+          _DeckWinRateDataSourceState value,
+          $Res Function(_DeckWinRateDataSourceState) then) =
       __$DeckWinRateDataSourceStateCopyWithImpl<$Res>;
   @override
   $Res call({DeckWinRateDataSource? deckWinRateDataSource});
 }
 
 /// @nodoc
-class __$DeckWinRateDataSourceStateCopyWithImpl<$Res> extends _$DeckWinRateDataSourceStateCopyWithImpl<$Res>
+class __$DeckWinRateDataSourceStateCopyWithImpl<$Res>
+    extends _$DeckWinRateDataSourceStateCopyWithImpl<$Res>
     implements _$DeckWinRateDataSourceStateCopyWith<$Res> {
-  __$DeckWinRateDataSourceStateCopyWithImpl(_DeckWinRateDataSourceState _value, $Res Function(_DeckWinRateDataSourceState) _then)
+  __$DeckWinRateDataSourceStateCopyWithImpl(_DeckWinRateDataSourceState _value,
+      $Res Function(_DeckWinRateDataSourceState) _then)
       : super(_value, (v) => _then(v as _DeckWinRateDataSourceState));
 
   @override
-  _DeckWinRateDataSourceState get _value => super._value as _DeckWinRateDataSourceState;
+  _DeckWinRateDataSourceState get _value =>
+      super._value as _DeckWinRateDataSourceState;
 
   @override
   $Res call({
@@ -112,24 +123,31 @@ class _$_DeckWinRateDataSourceState implements _DeckWinRateDataSourceState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _DeckWinRateDataSourceState &&
-            const DeepCollectionEquality().equals(other.deckWinRateDataSource, deckWinRateDataSource));
+            const DeepCollectionEquality()
+                .equals(other.deckWinRateDataSource, deckWinRateDataSource));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, const DeepCollectionEquality().hash(deckWinRateDataSource));
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(deckWinRateDataSource));
 
   @JsonKey(ignore: true)
   @override
-  _$DeckWinRateDataSourceStateCopyWith<_DeckWinRateDataSourceState> get copyWith =>
-      __$DeckWinRateDataSourceStateCopyWithImpl<_DeckWinRateDataSourceState>(this, _$identity);
+  _$DeckWinRateDataSourceStateCopyWith<_DeckWinRateDataSourceState>
+      get copyWith => __$DeckWinRateDataSourceStateCopyWithImpl<
+          _DeckWinRateDataSourceState>(this, _$identity);
 }
 
-abstract class _DeckWinRateDataSourceState implements DeckWinRateDataSourceState {
-  factory _DeckWinRateDataSourceState({DeckWinRateDataSource? deckWinRateDataSource}) = _$_DeckWinRateDataSourceState;
+abstract class _DeckWinRateDataSourceState
+    implements DeckWinRateDataSourceState {
+  factory _DeckWinRateDataSourceState(
+          {DeckWinRateDataSource? deckWinRateDataSource}) =
+      _$_DeckWinRateDataSourceState;
 
   @override
   DeckWinRateDataSource? get deckWinRateDataSource;
   @override
   @JsonKey(ignore: true)
-  _$DeckWinRateDataSourceStateCopyWith<_DeckWinRateDataSourceState> get copyWith => throw _privateConstructorUsedError;
+  _$DeckWinRateDataSourceStateCopyWith<_DeckWinRateDataSourceState>
+      get copyWith => throw _privateConstructorUsedError;
 }

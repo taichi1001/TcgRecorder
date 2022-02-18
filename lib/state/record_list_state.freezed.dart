@@ -35,17 +35,21 @@ mixin _$RecordListState {
   bool get isLoaded => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $RecordListStateCopyWith<RecordListState> get copyWith => throw _privateConstructorUsedError;
+  $RecordListStateCopyWith<RecordListState> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $RecordListStateCopyWith<$Res> {
-  factory $RecordListStateCopyWith(RecordListState value, $Res Function(RecordListState) then) = _$RecordListStateCopyWithImpl<$Res>;
+  factory $RecordListStateCopyWith(
+          RecordListState value, $Res Function(RecordListState) then) =
+      _$RecordListStateCopyWithImpl<$Res>;
   $Res call({List<Record>? allRecordList, bool isLoaded});
 }
 
 /// @nodoc
-class _$RecordListStateCopyWithImpl<$Res> implements $RecordListStateCopyWith<$Res> {
+class _$RecordListStateCopyWithImpl<$Res>
+    implements $RecordListStateCopyWith<$Res> {
   _$RecordListStateCopyWithImpl(this._value, this._then);
 
   final RecordListState _value;
@@ -71,15 +75,21 @@ class _$RecordListStateCopyWithImpl<$Res> implements $RecordListStateCopyWith<$R
 }
 
 /// @nodoc
-abstract class _$RecordListStateCopyWith<$Res> implements $RecordListStateCopyWith<$Res> {
-  factory _$RecordListStateCopyWith(_RecordListState value, $Res Function(_RecordListState) then) = __$RecordListStateCopyWithImpl<$Res>;
+abstract class _$RecordListStateCopyWith<$Res>
+    implements $RecordListStateCopyWith<$Res> {
+  factory _$RecordListStateCopyWith(
+          _RecordListState value, $Res Function(_RecordListState) then) =
+      __$RecordListStateCopyWithImpl<$Res>;
   @override
   $Res call({List<Record>? allRecordList, bool isLoaded});
 }
 
 /// @nodoc
-class __$RecordListStateCopyWithImpl<$Res> extends _$RecordListStateCopyWithImpl<$Res> implements _$RecordListStateCopyWith<$Res> {
-  __$RecordListStateCopyWithImpl(_RecordListState _value, $Res Function(_RecordListState) _then)
+class __$RecordListStateCopyWithImpl<$Res>
+    extends _$RecordListStateCopyWithImpl<$Res>
+    implements _$RecordListStateCopyWith<$Res> {
+  __$RecordListStateCopyWithImpl(
+      _RecordListState _value, $Res Function(_RecordListState) _then)
       : super(_value, (v) => _then(v as _RecordListState));
 
   @override
@@ -124,21 +134,26 @@ class _$_RecordListState implements _RecordListState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _RecordListState &&
-            const DeepCollectionEquality().equals(other.allRecordList, allRecordList) &&
+            const DeepCollectionEquality()
+                .equals(other.allRecordList, allRecordList) &&
             const DeepCollectionEquality().equals(other.isLoaded, isLoaded));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(allRecordList), const DeepCollectionEquality().hash(isLoaded));
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(allRecordList),
+      const DeepCollectionEquality().hash(isLoaded));
 
   @JsonKey(ignore: true)
   @override
-  _$RecordListStateCopyWith<_RecordListState> get copyWith => __$RecordListStateCopyWithImpl<_RecordListState>(this, _$identity);
+  _$RecordListStateCopyWith<_RecordListState> get copyWith =>
+      __$RecordListStateCopyWithImpl<_RecordListState>(this, _$identity);
 }
 
 abstract class _RecordListState implements RecordListState {
-  factory _RecordListState({List<Record>? allRecordList, bool isLoaded}) = _$_RecordListState;
+  factory _RecordListState({List<Record>? allRecordList, bool isLoaded}) =
+      _$_RecordListState;
 
   @override
   List<Record>? get allRecordList;
@@ -146,5 +161,6 @@ abstract class _RecordListState implements RecordListState {
   bool get isLoaded;
   @override
   @JsonKey(ignore: true)
-  _$RecordListStateCopyWith<_RecordListState> get copyWith => throw _privateConstructorUsedError;
+  _$RecordListStateCopyWith<_RecordListState> get copyWith =>
+      throw _privateConstructorUsedError;
 }

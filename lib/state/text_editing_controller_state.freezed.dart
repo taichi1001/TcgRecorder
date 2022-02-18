@@ -37,18 +37,23 @@ const $TextEditingControllerState = _$TextEditingControllerStateTearOff();
 
 /// @nodoc
 mixin _$TextEditingControllerState {
-  TextEditingController get useDeckController => throw _privateConstructorUsedError;
-  TextEditingController get opponentDeckController => throw _privateConstructorUsedError;
+  TextEditingController get useDeckController =>
+      throw _privateConstructorUsedError;
+  TextEditingController get opponentDeckController =>
+      throw _privateConstructorUsedError;
   TextEditingController get tagController => throw _privateConstructorUsedError;
-  TextEditingController get memoController => throw _privateConstructorUsedError;
+  TextEditingController get memoController =>
+      throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $TextEditingControllerStateCopyWith<TextEditingControllerState> get copyWith => throw _privateConstructorUsedError;
+  $TextEditingControllerStateCopyWith<TextEditingControllerState>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $TextEditingControllerStateCopyWith<$Res> {
-  factory $TextEditingControllerStateCopyWith(TextEditingControllerState value, $Res Function(TextEditingControllerState) then) =
+  factory $TextEditingControllerStateCopyWith(TextEditingControllerState value,
+          $Res Function(TextEditingControllerState) then) =
       _$TextEditingControllerStateCopyWithImpl<$Res>;
   $Res call(
       {TextEditingController useDeckController,
@@ -58,7 +63,8 @@ abstract class $TextEditingControllerStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$TextEditingControllerStateCopyWithImpl<$Res> implements $TextEditingControllerStateCopyWith<$Res> {
+class _$TextEditingControllerStateCopyWithImpl<$Res>
+    implements $TextEditingControllerStateCopyWith<$Res> {
   _$TextEditingControllerStateCopyWithImpl(this._value, this._then);
 
   final TextEditingControllerState _value;
@@ -94,8 +100,11 @@ class _$TextEditingControllerStateCopyWithImpl<$Res> implements $TextEditingCont
 }
 
 /// @nodoc
-abstract class _$TextEditingControllerStateCopyWith<$Res> implements $TextEditingControllerStateCopyWith<$Res> {
-  factory _$TextEditingControllerStateCopyWith(_TextEditingControllerState value, $Res Function(_TextEditingControllerState) then) =
+abstract class _$TextEditingControllerStateCopyWith<$Res>
+    implements $TextEditingControllerStateCopyWith<$Res> {
+  factory _$TextEditingControllerStateCopyWith(
+          _TextEditingControllerState value,
+          $Res Function(_TextEditingControllerState) then) =
       __$TextEditingControllerStateCopyWithImpl<$Res>;
   @override
   $Res call(
@@ -106,13 +115,16 @@ abstract class _$TextEditingControllerStateCopyWith<$Res> implements $TextEditin
 }
 
 /// @nodoc
-class __$TextEditingControllerStateCopyWithImpl<$Res> extends _$TextEditingControllerStateCopyWithImpl<$Res>
+class __$TextEditingControllerStateCopyWithImpl<$Res>
+    extends _$TextEditingControllerStateCopyWithImpl<$Res>
     implements _$TextEditingControllerStateCopyWith<$Res> {
-  __$TextEditingControllerStateCopyWithImpl(_TextEditingControllerState _value, $Res Function(_TextEditingControllerState) _then)
+  __$TextEditingControllerStateCopyWithImpl(_TextEditingControllerState _value,
+      $Res Function(_TextEditingControllerState) _then)
       : super(_value, (v) => _then(v as _TextEditingControllerState));
 
   @override
-  _TextEditingControllerState get _value => super._value as _TextEditingControllerState;
+  _TextEditingControllerState get _value =>
+      super._value as _TextEditingControllerState;
 
   @override
   $Res call({
@@ -146,7 +158,10 @@ class __$TextEditingControllerStateCopyWithImpl<$Res> extends _$TextEditingContr
 
 class _$_TextEditingControllerState implements _TextEditingControllerState {
   _$_TextEditingControllerState(
-      {required this.useDeckController, required this.opponentDeckController, required this.tagController, required this.memoController});
+      {required this.useDeckController,
+      required this.opponentDeckController,
+      required this.tagController,
+      required this.memoController});
 
   @override
   final TextEditingController useDeckController;
@@ -167,10 +182,14 @@ class _$_TextEditingControllerState implements _TextEditingControllerState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _TextEditingControllerState &&
-            const DeepCollectionEquality().equals(other.useDeckController, useDeckController) &&
-            const DeepCollectionEquality().equals(other.opponentDeckController, opponentDeckController) &&
-            const DeepCollectionEquality().equals(other.tagController, tagController) &&
-            const DeepCollectionEquality().equals(other.memoController, memoController));
+            const DeepCollectionEquality()
+                .equals(other.useDeckController, useDeckController) &&
+            const DeepCollectionEquality()
+                .equals(other.opponentDeckController, opponentDeckController) &&
+            const DeepCollectionEquality()
+                .equals(other.tagController, tagController) &&
+            const DeepCollectionEquality()
+                .equals(other.memoController, memoController));
   }
 
   @override
@@ -183,16 +202,19 @@ class _$_TextEditingControllerState implements _TextEditingControllerState {
 
   @JsonKey(ignore: true)
   @override
-  _$TextEditingControllerStateCopyWith<_TextEditingControllerState> get copyWith =>
-      __$TextEditingControllerStateCopyWithImpl<_TextEditingControllerState>(this, _$identity);
+  _$TextEditingControllerStateCopyWith<_TextEditingControllerState>
+      get copyWith => __$TextEditingControllerStateCopyWithImpl<
+          _TextEditingControllerState>(this, _$identity);
 }
 
-abstract class _TextEditingControllerState implements TextEditingControllerState {
+abstract class _TextEditingControllerState
+    implements TextEditingControllerState {
   factory _TextEditingControllerState(
-      {required TextEditingController useDeckController,
-      required TextEditingController opponentDeckController,
-      required TextEditingController tagController,
-      required TextEditingController memoController}) = _$_TextEditingControllerState;
+          {required TextEditingController useDeckController,
+          required TextEditingController opponentDeckController,
+          required TextEditingController tagController,
+          required TextEditingController memoController}) =
+      _$_TextEditingControllerState;
 
   @override
   TextEditingController get useDeckController;
@@ -204,5 +226,6 @@ abstract class _TextEditingControllerState implements TextEditingControllerState
   TextEditingController get memoController;
   @override
   @JsonKey(ignore: true)
-  _$TextEditingControllerStateCopyWith<_TextEditingControllerState> get copyWith => throw _privateConstructorUsedError;
+  _$TextEditingControllerStateCopyWith<_TextEditingControllerState>
+      get copyWith => throw _privateConstructorUsedError;
 }

@@ -18,7 +18,8 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$RecordSortStateTearOff {
   const _$RecordSortStateTearOff();
 
-  _RecordSortState call({Sort sort = Sort.date, Order order = Order.ascending}) {
+  _RecordSortState call(
+      {Sort sort = Sort.date, Order order = Order.ascending}) {
     return _RecordSortState(
       sort: sort,
       order: order,
@@ -35,17 +36,21 @@ mixin _$RecordSortState {
   Order get order => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $RecordSortStateCopyWith<RecordSortState> get copyWith => throw _privateConstructorUsedError;
+  $RecordSortStateCopyWith<RecordSortState> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $RecordSortStateCopyWith<$Res> {
-  factory $RecordSortStateCopyWith(RecordSortState value, $Res Function(RecordSortState) then) = _$RecordSortStateCopyWithImpl<$Res>;
+  factory $RecordSortStateCopyWith(
+          RecordSortState value, $Res Function(RecordSortState) then) =
+      _$RecordSortStateCopyWithImpl<$Res>;
   $Res call({Sort sort, Order order});
 }
 
 /// @nodoc
-class _$RecordSortStateCopyWithImpl<$Res> implements $RecordSortStateCopyWith<$Res> {
+class _$RecordSortStateCopyWithImpl<$Res>
+    implements $RecordSortStateCopyWith<$Res> {
   _$RecordSortStateCopyWithImpl(this._value, this._then);
 
   final RecordSortState _value;
@@ -71,15 +76,21 @@ class _$RecordSortStateCopyWithImpl<$Res> implements $RecordSortStateCopyWith<$R
 }
 
 /// @nodoc
-abstract class _$RecordSortStateCopyWith<$Res> implements $RecordSortStateCopyWith<$Res> {
-  factory _$RecordSortStateCopyWith(_RecordSortState value, $Res Function(_RecordSortState) then) = __$RecordSortStateCopyWithImpl<$Res>;
+abstract class _$RecordSortStateCopyWith<$Res>
+    implements $RecordSortStateCopyWith<$Res> {
+  factory _$RecordSortStateCopyWith(
+          _RecordSortState value, $Res Function(_RecordSortState) then) =
+      __$RecordSortStateCopyWithImpl<$Res>;
   @override
   $Res call({Sort sort, Order order});
 }
 
 /// @nodoc
-class __$RecordSortStateCopyWithImpl<$Res> extends _$RecordSortStateCopyWithImpl<$Res> implements _$RecordSortStateCopyWith<$Res> {
-  __$RecordSortStateCopyWithImpl(_RecordSortState _value, $Res Function(_RecordSortState) _then)
+class __$RecordSortStateCopyWithImpl<$Res>
+    extends _$RecordSortStateCopyWithImpl<$Res>
+    implements _$RecordSortStateCopyWith<$Res> {
+  __$RecordSortStateCopyWithImpl(
+      _RecordSortState _value, $Res Function(_RecordSortState) _then)
       : super(_value, (v) => _then(v as _RecordSortState));
 
   @override
@@ -130,11 +141,15 @@ class _$_RecordSortState implements _RecordSortState {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, const DeepCollectionEquality().hash(sort), const DeepCollectionEquality().hash(order));
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(sort),
+      const DeepCollectionEquality().hash(order));
 
   @JsonKey(ignore: true)
   @override
-  _$RecordSortStateCopyWith<_RecordSortState> get copyWith => __$RecordSortStateCopyWithImpl<_RecordSortState>(this, _$identity);
+  _$RecordSortStateCopyWith<_RecordSortState> get copyWith =>
+      __$RecordSortStateCopyWithImpl<_RecordSortState>(this, _$identity);
 }
 
 abstract class _RecordSortState implements RecordSortState {
@@ -146,5 +161,6 @@ abstract class _RecordSortState implements RecordSortState {
   Order get order;
   @override
   @JsonKey(ignore: true)
-  _$RecordSortStateCopyWith<_RecordSortState> get copyWith => throw _privateConstructorUsedError;
+  _$RecordSortStateCopyWith<_RecordSortState> get copyWith =>
+      throw _privateConstructorUsedError;
 }

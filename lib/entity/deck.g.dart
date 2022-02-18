@@ -10,7 +10,9 @@ _$_Deck _$$_DeckFromJson(Map<String, dynamic> json) => _$_Deck(
       deckId: json['deck_id'] as int?,
       deck: json['deck'] as String,
       gameId: json['game_id'] as int?,
-      isVisibleToPicker: json['is_visible_to_picker'] == null ? true : _boolFromJson(json['is_visible_to_picker']),
+      isVisibleToPicker: json['is_visible_to_picker'] == null
+          ? true
+          : _boolFromJson(json['is_visible_to_picker']),
     );
 
 Map<String, dynamic> _$$_DeckToJson(_$_Deck instance) => <String, dynamic>{

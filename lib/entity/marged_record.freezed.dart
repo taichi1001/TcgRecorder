@@ -52,9 +52,7 @@ mixin _$MargedRecord {
   String? get tag => throw _privateConstructorUsedError;
   String get useDeck => throw _privateConstructorUsedError;
   String get opponentDeck => throw _privateConstructorUsedError;
-  DateTime get date =>
-      throw _privateConstructorUsedError; // required bool firstSecond,
-// required bool winLoss,
+  DateTime get date => throw _privateConstructorUsedError;
   FirstSecond get firstSecond => throw _privateConstructorUsedError;
   WinLoss get winLoss => throw _privateConstructorUsedError;
   String? get memo => throw _privateConstructorUsedError;
@@ -251,8 +249,7 @@ class _$_MargedRecord implements _MargedRecord {
   final String opponentDeck;
   @override
   final DateTime date;
-  @override // required bool firstSecond,
-// required bool winLoss,
+  @override
   final FirstSecond firstSecond;
   @override
   final WinLoss winLoss;
@@ -325,8 +322,7 @@ abstract class _MargedRecord implements MargedRecord {
   String get opponentDeck;
   @override
   DateTime get date;
-  @override // required bool firstSecond,
-// required bool winLoss,
+  @override
   FirstSecond get firstSecond;
   @override
   WinLoss get winLoss;

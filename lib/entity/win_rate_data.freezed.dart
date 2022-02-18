@@ -52,13 +52,23 @@ mixin _$WinRateData {
   double get winRateOfSecond => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $WinRateDataCopyWith<WinRateData> get copyWith => throw _privateConstructorUsedError;
+  $WinRateDataCopyWith<WinRateData> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $WinRateDataCopyWith<$Res> {
-  factory $WinRateDataCopyWith(WinRateData value, $Res Function(WinRateData) then) = _$WinRateDataCopyWithImpl<$Res>;
-  $Res call({String deck, int matches, int win, int loss, double winRate, double winRateOfFirst, double winRateOfSecond});
+  factory $WinRateDataCopyWith(
+          WinRateData value, $Res Function(WinRateData) then) =
+      _$WinRateDataCopyWithImpl<$Res>;
+  $Res call(
+      {String deck,
+      int matches,
+      int win,
+      int loss,
+      double winRate,
+      double winRateOfFirst,
+      double winRateOfSecond});
 }
 
 /// @nodoc
@@ -113,15 +123,28 @@ class _$WinRateDataCopyWithImpl<$Res> implements $WinRateDataCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$WinRateDataCopyWith<$Res> implements $WinRateDataCopyWith<$Res> {
-  factory _$WinRateDataCopyWith(_WinRateData value, $Res Function(_WinRateData) then) = __$WinRateDataCopyWithImpl<$Res>;
+abstract class _$WinRateDataCopyWith<$Res>
+    implements $WinRateDataCopyWith<$Res> {
+  factory _$WinRateDataCopyWith(
+          _WinRateData value, $Res Function(_WinRateData) then) =
+      __$WinRateDataCopyWithImpl<$Res>;
   @override
-  $Res call({String deck, int matches, int win, int loss, double winRate, double winRateOfFirst, double winRateOfSecond});
+  $Res call(
+      {String deck,
+      int matches,
+      int win,
+      int loss,
+      double winRate,
+      double winRateOfFirst,
+      double winRateOfSecond});
 }
 
 /// @nodoc
-class __$WinRateDataCopyWithImpl<$Res> extends _$WinRateDataCopyWithImpl<$Res> implements _$WinRateDataCopyWith<$Res> {
-  __$WinRateDataCopyWithImpl(_WinRateData _value, $Res Function(_WinRateData) _then) : super(_value, (v) => _then(v as _WinRateData));
+class __$WinRateDataCopyWithImpl<$Res> extends _$WinRateDataCopyWithImpl<$Res>
+    implements _$WinRateDataCopyWith<$Res> {
+  __$WinRateDataCopyWithImpl(
+      _WinRateData _value, $Res Function(_WinRateData) _then)
+      : super(_value, (v) => _then(v as _WinRateData));
 
   @override
   _WinRateData get _value => super._value as _WinRateData;
@@ -173,7 +196,13 @@ class __$WinRateDataCopyWithImpl<$Res> extends _$WinRateDataCopyWithImpl<$Res> i
 
 class _$_WinRateData implements _WinRateData {
   _$_WinRateData(
-      {this.deck = '', this.matches = 0, this.win = 0, this.loss = 0, this.winRate = 0, this.winRateOfFirst = 0, this.winRateOfSecond = 0});
+      {this.deck = '',
+      this.matches = 0,
+      this.win = 0,
+      this.loss = 0,
+      this.winRate = 0,
+      this.winRateOfFirst = 0,
+      this.winRateOfSecond = 0});
 
   @JsonKey()
   @override
@@ -212,8 +241,10 @@ class _$_WinRateData implements _WinRateData {
             const DeepCollectionEquality().equals(other.win, win) &&
             const DeepCollectionEquality().equals(other.loss, loss) &&
             const DeepCollectionEquality().equals(other.winRate, winRate) &&
-            const DeepCollectionEquality().equals(other.winRateOfFirst, winRateOfFirst) &&
-            const DeepCollectionEquality().equals(other.winRateOfSecond, winRateOfSecond));
+            const DeepCollectionEquality()
+                .equals(other.winRateOfFirst, winRateOfFirst) &&
+            const DeepCollectionEquality()
+                .equals(other.winRateOfSecond, winRateOfSecond));
   }
 
   @override
@@ -229,12 +260,19 @@ class _$_WinRateData implements _WinRateData {
 
   @JsonKey(ignore: true)
   @override
-  _$WinRateDataCopyWith<_WinRateData> get copyWith => __$WinRateDataCopyWithImpl<_WinRateData>(this, _$identity);
+  _$WinRateDataCopyWith<_WinRateData> get copyWith =>
+      __$WinRateDataCopyWithImpl<_WinRateData>(this, _$identity);
 }
 
 abstract class _WinRateData implements WinRateData {
-  factory _WinRateData({String deck, int matches, int win, int loss, double winRate, double winRateOfFirst, double winRateOfSecond}) =
-      _$_WinRateData;
+  factory _WinRateData(
+      {String deck,
+      int matches,
+      int win,
+      int loss,
+      double winRate,
+      double winRateOfFirst,
+      double winRateOfSecond}) = _$_WinRateData;
 
   @override
   String get deck;
@@ -252,5 +290,6 @@ abstract class _WinRateData implements WinRateData {
   double get winRateOfSecond;
   @override
   @JsonKey(ignore: true)
-  _$WinRateDataCopyWith<_WinRateData> get copyWith => throw _privateConstructorUsedError;
+  _$WinRateDataCopyWith<_WinRateData> get copyWith =>
+      throw _privateConstructorUsedError;
 }

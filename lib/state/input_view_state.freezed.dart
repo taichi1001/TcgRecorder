@@ -67,12 +67,15 @@ mixin _$InputViewState {
   FirstSecond get firstSecond => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $InputViewStateCopyWith<InputViewState> get copyWith => throw _privateConstructorUsedError;
+  $InputViewStateCopyWith<InputViewState> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $InputViewStateCopyWith<$Res> {
-  factory $InputViewStateCopyWith(InputViewState value, $Res Function(InputViewState) then) = _$InputViewStateCopyWithImpl<$Res>;
+  factory $InputViewStateCopyWith(
+          InputViewState value, $Res Function(InputViewState) then) =
+      _$InputViewStateCopyWithImpl<$Res>;
   $Res call(
       {Record? record,
       DateTime date,
@@ -97,7 +100,8 @@ abstract class $InputViewStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$InputViewStateCopyWithImpl<$Res> implements $InputViewStateCopyWith<$Res> {
+class _$InputViewStateCopyWithImpl<$Res>
+    implements $InputViewStateCopyWith<$Res> {
   _$InputViewStateCopyWithImpl(this._value, this._then);
 
   final InputViewState _value;
@@ -250,8 +254,11 @@ class _$InputViewStateCopyWithImpl<$Res> implements $InputViewStateCopyWith<$Res
 }
 
 /// @nodoc
-abstract class _$InputViewStateCopyWith<$Res> implements $InputViewStateCopyWith<$Res> {
-  factory _$InputViewStateCopyWith(_InputViewState value, $Res Function(_InputViewState) then) = __$InputViewStateCopyWithImpl<$Res>;
+abstract class _$InputViewStateCopyWith<$Res>
+    implements $InputViewStateCopyWith<$Res> {
+  factory _$InputViewStateCopyWith(
+          _InputViewState value, $Res Function(_InputViewState) then) =
+      __$InputViewStateCopyWithImpl<$Res>;
   @override
   $Res call(
       {Record? record,
@@ -284,8 +291,11 @@ abstract class _$InputViewStateCopyWith<$Res> implements $InputViewStateCopyWith
 }
 
 /// @nodoc
-class __$InputViewStateCopyWithImpl<$Res> extends _$InputViewStateCopyWithImpl<$Res> implements _$InputViewStateCopyWith<$Res> {
-  __$InputViewStateCopyWithImpl(_InputViewState _value, $Res Function(_InputViewState) _then)
+class __$InputViewStateCopyWithImpl<$Res>
+    extends _$InputViewStateCopyWithImpl<$Res>
+    implements _$InputViewStateCopyWith<$Res> {
+  __$InputViewStateCopyWithImpl(
+      _InputViewState _value, $Res Function(_InputViewState) _then)
       : super(_value, (v) => _then(v as _InputViewState));
 
   @override
@@ -417,14 +427,18 @@ class _$_InputViewState implements _InputViewState {
             const DeepCollectionEquality().equals(other.date, date) &&
             const DeepCollectionEquality().equals(other.cacheDate, cacheDate) &&
             const DeepCollectionEquality().equals(other.useDeck, useDeck) &&
-            const DeepCollectionEquality().equals(other.cacheUseDeck, cacheUseDeck) &&
-            const DeepCollectionEquality().equals(other.opponentDeck, opponentDeck) &&
-            const DeepCollectionEquality().equals(other.cacheOpponentDeck, cacheOpponentDeck) &&
+            const DeepCollectionEquality()
+                .equals(other.cacheUseDeck, cacheUseDeck) &&
+            const DeepCollectionEquality()
+                .equals(other.opponentDeck, opponentDeck) &&
+            const DeepCollectionEquality()
+                .equals(other.cacheOpponentDeck, cacheOpponentDeck) &&
             const DeepCollectionEquality().equals(other.tag, tag) &&
             const DeepCollectionEquality().equals(other.cacheTag, cacheTag) &&
             const DeepCollectionEquality().equals(other.memo, memo) &&
             const DeepCollectionEquality().equals(other.winLoss, winLoss) &&
-            const DeepCollectionEquality().equals(other.firstSecond, firstSecond));
+            const DeepCollectionEquality()
+                .equals(other.firstSecond, firstSecond));
   }
 
   @override
@@ -445,7 +459,8 @@ class _$_InputViewState implements _InputViewState {
 
   @JsonKey(ignore: true)
   @override
-  _$InputViewStateCopyWith<_InputViewState> get copyWith => __$InputViewStateCopyWithImpl<_InputViewState>(this, _$identity);
+  _$InputViewStateCopyWith<_InputViewState> get copyWith =>
+      __$InputViewStateCopyWithImpl<_InputViewState>(this, _$identity);
 }
 
 abstract class _InputViewState implements InputViewState {
@@ -489,5 +504,6 @@ abstract class _InputViewState implements InputViewState {
   FirstSecond get firstSecond;
   @override
   @JsonKey(ignore: true)
-  _$InputViewStateCopyWith<_InputViewState> get copyWith => throw _privateConstructorUsedError;
+  _$InputViewStateCopyWith<_InputViewState> get copyWith =>
+      throw _privateConstructorUsedError;
 }
