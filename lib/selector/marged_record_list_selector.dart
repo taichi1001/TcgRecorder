@@ -17,25 +17,26 @@ class MargedRecordListNotifier extends StateNotifier<MargedRecordListState> {
   }
 }
 
-final margedRecordListProvider = StateNotifierProvider<MargedRecordListNotifier, MargedRecordListState>((ref) {
+final margedRecordListProvider = StateNotifierProvider.autoDispose<MargedRecordListNotifier, MargedRecordListState>((ref) {
   final margedRecordListNotifier = MargedRecordListNotifier(ref.read);
-  final selectGameRecordList = ref.watch(filterRecordListProvider);
+  final filterRecordList = ref.watch(filterRecordListProvider);
   final allGameList = ref.read(allGameListNotifierProvider).allGameList;
   final allDeckList = ref.read(allDeckListNotifierProvider).allDeckList;
   final allTagList = ref.read(allTagListNotifierProvider).allTagList;
 
-  if (selectGameRecordList != null && allGameList != null && allDeckList != null && allTagList != null) {
-    final list = selectGameRecordList.map((Record record) {
+  if (filterRecordList != null && allGameList != null && allDeckList != null && allTagList != null) {
+    final list = filterRecordList.map((Record record) {
       final game = allGameList.singleWhere((value) => value.gameId == record.gameId);
       final useDeck = allDeckList.singleWhere((value) => value.deckId == record.useDeckId);
       final opponentDeck = allDeckList.singleWhere((value) => value.deckId == record.opponentDeckId);
-      // final tag = allTagList.singleWhere((value) => value.tagId == record.tagId);
+      final tagList = allTagList.where((value) => value.tagId == record.tagId).toList();
       return MargedRecord(
         recordId: record.recordId!,
         game: game.game,
         useDeck: useDeck.deck,
         opponentDeck: opponentDeck.deck,
-        tag: '',
+        // tag: tag.tag,
+        tag: tagList.isEmpty ? null : tagList.first.tag,
         firstSecond: record.firstSecond,
         winLoss: record.winLoss,
         date: record.date!,

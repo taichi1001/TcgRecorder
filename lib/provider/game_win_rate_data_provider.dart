@@ -1,9 +1,8 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/win_rate_data.dart';
-import 'package:tcg_manager/provider/record_list_provider.dart';
+import 'package:tcg_manager/selector/filter_record_list_selector.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
-import 'package:tcg_manager/selector/game_record_list_selector.dart';
 import 'package:tcg_manager/state/game_win_rate_data_state.dart';
 
 class GameWinRateDataNotifier extends StateNotifier<GameWinRateDataState> {
@@ -16,14 +15,14 @@ class GameWinRateDataNotifier extends StateNotifier<GameWinRateDataState> {
   }
 }
 
-final gameWinRateDataNotifierProvider = StateNotifierProvider<GameWinRateDataNotifier, GameWinRateDataState>(
+final gameWinRateDataNotifierProvider = StateNotifierProvider.autoDispose<GameWinRateDataNotifier, GameWinRateDataState>(
   (ref) {
-    final gameRecordListNotifier = ref.read(gameRecordListNotifierProvider.notifier);
-    final gameRecordList = ref.watch(gameRecordListNotifierProvider).gameRecordList;
+    final filterRecordListNotifier = ref.read(filterRecordListController);
+    final filterRecordList = ref.watch(filterRecordListProvider);
     final gameDeckList = ref.watch(gameDeckListProvider);
     final List<Deck> gameUseDeckList = [];
     for (final deck in gameDeckList) {
-      for (final record in gameRecordList!) {
+      for (final record in filterRecordList) {
         if (record.useDeckId == deck.deckId) {
           gameUseDeckList.add(deck);
           break;
@@ -31,15 +30,14 @@ final gameWinRateDataNotifierProvider = StateNotifierProvider<GameWinRateDataNot
       }
     }
 
-    final allRecordListNotifier = ref.read(allRecordListNotifierProvider.notifier);
     final winRateData = gameUseDeckList.map((useDeck) {
       final deck = useDeck.deck;
-      final matchs = allRecordListNotifier.countUseDeckMatches(useDeck);
-      final win = allRecordListNotifier.countUseDeckWins(useDeck);
-      final loss = allRecordListNotifier.countUseDeckLoss(useDeck);
-      final winRate = allRecordListNotifier.calcUseDeckWinRate(useDeck);
-      final winRateOfFirst = allRecordListNotifier.calcUseDeckWinRateOfFirst(useDeck);
-      final winRateOfSecond = allRecordListNotifier.calcUseDeckWinRateOfSecond(useDeck);
+      final matchs = filterRecordListNotifier.countUseDeckMatches(useDeck);
+      final win = filterRecordListNotifier.countUseDeckWins(useDeck);
+      final loss = filterRecordListNotifier.countUseDeckLoss(useDeck);
+      final winRate = filterRecordListNotifier.calcUseDeckWinRate(useDeck);
+      final winRateOfFirst = filterRecordListNotifier.calcUseDeckWinRateOfFirst(useDeck);
+      final winRateOfSecond = filterRecordListNotifier.calcUseDeckWinRateOfSecond(useDeck);
 
       return WinRateData(
         deck: deck,
@@ -56,12 +54,12 @@ final gameWinRateDataNotifierProvider = StateNotifierProvider<GameWinRateDataNot
     winRateData.add(
       WinRateData(
         deck: '合計',
-        matches: gameRecordListNotifier.countGameMatches(),
-        win: gameRecordListNotifier.countGameWins(),
-        loss: gameRecordListNotifier.countGameLoss(),
-        winRate: gameRecordListNotifier.calcGameWinRate(),
-        winRateOfFirst: gameRecordListNotifier.calcGameWinRateOfFirst(),
-        winRateOfSecond: gameRecordListNotifier.calcGameWinRateOfSecond(),
+        matches: filterRecordListNotifier.countMatches(),
+        win: filterRecordListNotifier.countWins(),
+        loss: filterRecordListNotifier.countLoss(),
+        winRate: filterRecordListNotifier.calcWinRate(),
+        winRateOfFirst: filterRecordListNotifier.calcWinRateOfFirst(),
+        winRateOfSecond: filterRecordListNotifier.calcWinRateOfSecond(),
       ),
     );
     gameDataGridNotifier.setWinRateDataList(winRateData);

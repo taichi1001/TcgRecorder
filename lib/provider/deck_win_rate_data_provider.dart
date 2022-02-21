@@ -1,9 +1,8 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/win_rate_data.dart';
-import 'package:tcg_manager/provider/record_list_provider.dart';
+import 'package:tcg_manager/selector/filter_record_list_selector.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
-import 'package:tcg_manager/selector/game_record_list_selector.dart';
 import 'package:tcg_manager/state/deck_win_rate_data_state.dart';
 
 class DeckWinRateDataNotifier extends StateNotifier<DeckWinRateDataState> {
@@ -18,10 +17,10 @@ class DeckWinRateDataNotifier extends StateNotifier<DeckWinRateDataState> {
 
 final deckWinRateDataNotifierProvider = StateNotifierProvider.family.autoDispose<DeckWinRateDataNotifier, DeckWinRateDataState, String>(
   (ref, useDeckName) {
-    final gameRecordList = ref.watch(gameRecordListNotifierProvider.select((value) => value.gameRecordList));
+    final filterRecordList = ref.watch(filterRecordListProvider);
     final gameDeckList = ref.watch(gameDeckListProvider);
     final useDeck = gameDeckList.firstWhere((deck) => deck.deck == useDeckName);
-    final useDeckRecord = gameRecordList!.where((record) => record.useDeckId == useDeck.deckId).toList();
+    final useDeckRecord = filterRecordList.where((record) => record.useDeckId == useDeck.deckId).toList();
     final List<Deck> opponentDeckList = [];
     for (final deck in gameDeckList) {
       for (final record in useDeckRecord) {
@@ -32,15 +31,15 @@ final deckWinRateDataNotifierProvider = StateNotifierProvider.family.autoDispose
       }
     }
 
-    final allRecordListNotifier = ref.read(allRecordListNotifierProvider.notifier);
+    final filterRecordListNotifier = ref.read(filterRecordListController);
     final winRateData = opponentDeckList.map((opponentDeck) {
       final deck = opponentDeck.deck;
-      final matchs = allRecordListNotifier.countOpponentDeckMatches(useDeck, opponentDeck);
-      final win = allRecordListNotifier.countOpponentDeckWins(useDeck, opponentDeck);
-      final loss = allRecordListNotifier.countOpponentDeckLoss(useDeck, opponentDeck);
-      final winRate = allRecordListNotifier.calcOpponentDeckWinRate(useDeck, opponentDeck);
-      final winRateOfFirst = allRecordListNotifier.calcOpponentDeckWinRateOfFirst(useDeck, opponentDeck);
-      final winRateOfSecond = allRecordListNotifier.calcOpponentDeckWinRateOfSecond(useDeck, opponentDeck);
+      final matchs = filterRecordListNotifier.countOpponentDeckMatches(useDeck, opponentDeck);
+      final win = filterRecordListNotifier.countOpponentDeckWins(useDeck, opponentDeck);
+      final loss = filterRecordListNotifier.countOpponentDeckLoss(useDeck, opponentDeck);
+      final winRate = filterRecordListNotifier.calcOpponentDeckWinRate(useDeck, opponentDeck);
+      final winRateOfFirst = filterRecordListNotifier.calcOpponentDeckWinRateOfFirst(useDeck, opponentDeck);
+      final winRateOfSecond = filterRecordListNotifier.calcOpponentDeckWinRateOfSecond(useDeck, opponentDeck);
       return WinRateData(
         deck: deck,
         matches: matchs,

@@ -14,7 +14,7 @@ class GameWinRateDataSourceNotifier extends StateNotifier<GameWinRateDataSourceS
 }
 
 final gameWinRateDataSourceNotifierProvider =
-    StateNotifierProvider.family<GameWinRateDataSourceNotifier, GameWinRateDataSourceState, BuildContext>(
+    StateNotifierProvider.family.autoDispose<GameWinRateDataSourceNotifier, GameWinRateDataSourceState, BuildContext>(
   (ref, context) {
     final gameWinRateDataList = ref.watch(gameWinRateDataNotifierProvider).winRateDataList;
     final gameWinRateDataSource = GameWinRateDataSource(winRateDataList: gameWinRateDataList!, context: context);

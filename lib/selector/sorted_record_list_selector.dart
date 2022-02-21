@@ -4,7 +4,7 @@ import 'package:tcg_manager/enum/Sort.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/record_list_view_provider.dart';
 
-final sortedRecordListProvider = StateProvider<List<Record>>((ref) {
+final sortedRecordListProvider = StateProvider.autoDispose<List<Record>>((ref) {
   final recordList = ref.watch(allRecordListNotifierProvider).allRecordList;
   final sort = ref.watch(recordListViewNotifierProvider.select((value) => value.sort));
 

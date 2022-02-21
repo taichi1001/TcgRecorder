@@ -18,17 +18,9 @@ class RecordListViewNotifier extends StateNotifier<RecordListViewState> {
     state = state.copyWith(sort: state.cacheOrder);
   }
 
-  // void scrollStartDate(DateTime day) {
-  //   state = state.copyWith(cacheStartDate: day);
-  // }
-
   void setStartDate(DateTime day) {
     state = state.copyWith(startDate: day);
   }
-
-  // void scrollEndDate(DateTime day) {
-  //   state = state.copyWith(cacheEndDate: day);
-  // }
 
   void setEndDate(DateTime? day) {
     if (day == null) {
@@ -90,6 +82,6 @@ class RecordListViewNotifier extends StateNotifier<RecordListViewState> {
   }
 }
 
-final recordListViewNotifierProvider = StateNotifierProvider<RecordListViewNotifier, RecordListViewState>((ref) {
+final recordListViewNotifierProvider = StateNotifierProvider.autoDispose<RecordListViewNotifier, RecordListViewState>((ref) {
   return RecordListViewNotifier(ref.read);
 });
