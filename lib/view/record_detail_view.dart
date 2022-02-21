@@ -30,7 +30,7 @@ class RecordDetailView extends HookConsumerWidget {
         centerTitle: false,
         elevation: 0.0,
         title: Text(
-          isEdit ? '詳細' : '編集',
+          isEdit ? '編集' : '詳細',
           style: const TextStyle(
             color: Colors.black,
             fontSize: 30,
