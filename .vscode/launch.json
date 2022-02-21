@@ -24,6 +24,15 @@
             ]
         },
         {
+            "name": "Run dev profile",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile",
+            "args": [
+                "--dart-define=FLAVOR=dev"
+            ]
+        },
+        {
             "name": "Run stg",
             "request": "launch",
             "type": "dart",

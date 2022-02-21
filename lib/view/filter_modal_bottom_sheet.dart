@@ -47,18 +47,26 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   CupertinoButton(
+                    padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
                     onPressed: recordListViewNotifier.resetFilter,
                     child: const Text('リセット'),
                   ),
                 ],
               ),
+              const Padding(
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 8),
+                child: Divider(height: 0),
+              ),
               if (showSort)
-                const Text(
-                  '並び替え',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    leadingDistribution: TextLeadingDistribution.even,
-                    height: 1,
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+                  child: Text(
+                    '並び替え',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      leadingDistribution: TextLeadingDistribution.even,
+                      height: 1,
+                    ),
                   ),
                 ),
               if (showSort)
@@ -118,7 +126,8 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                               showActionButtons: true,
                               minDate: DateTime(2000, 01, 01),
                               maxDate: DateTime.now(),
-                              initialSelectedRange: PickerDateRange(recordListViewState.startDate, recordListViewState.endDate),
+                              initialSelectedRange:
+                                  PickerDateRange(recordListViewState.startDate, recordListViewState.endDate),
                               onSubmit: (value) {
                                 if (value is PickerDateRange) {
                                   recordListViewNotifier.setStartDate(value.startDate!);
@@ -185,7 +194,9 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        recordListViewState.useDeck == null ? const Text('全て') : Text(recordListViewState.useDeck!.deck),
+                        recordListViewState.useDeck == null
+                            ? const Text('全て')
+                            : Text(recordListViewState.useDeck!.deck),
                         const Icon(Icons.arrow_drop_down),
                       ],
                     ),
@@ -224,7 +235,9 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        recordListViewState.opponentDeck == null ? const Text('全て') : Text(recordListViewState.opponentDeck!.deck),
+                        recordListViewState.opponentDeck == null
+                            ? const Text('全て')
+                            : Text(recordListViewState.opponentDeck!.deck),
                         const Icon(Icons.arrow_drop_down),
                       ],
                     ),

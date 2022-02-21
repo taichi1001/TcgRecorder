@@ -17,7 +17,8 @@ class MargedRecordListNotifier extends StateNotifier<MargedRecordListState> {
   }
 }
 
-final margedRecordListProvider = StateNotifierProvider.autoDispose<MargedRecordListNotifier, MargedRecordListState>((ref) {
+final margedRecordListProvider =
+    StateNotifierProvider.autoDispose<MargedRecordListNotifier, MargedRecordListState>((ref) {
   final margedRecordListNotifier = MargedRecordListNotifier(ref.read);
   final filterRecordList = ref.watch(filterRecordListProvider);
   final allGameList = ref.read(allGameListNotifierProvider).allGameList;
@@ -35,7 +36,6 @@ final margedRecordListProvider = StateNotifierProvider.autoDispose<MargedRecordL
         game: game.game,
         useDeck: useDeck.deck,
         opponentDeck: opponentDeck.deck,
-        // tag: tag.tag,
         tag: tagList.isEmpty ? null : tagList.first.tag,
         firstSecond: record.firstSecond,
         winLoss: record.winLoss,

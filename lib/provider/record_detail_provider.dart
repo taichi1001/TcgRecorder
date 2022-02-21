@@ -13,7 +13,8 @@ import 'package:tcg_manager/state/record_detail_state.dart';
 
 class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
   RecordDetailNotifier(this.ref, this.record, this.margedRecord)
-      : super(RecordDetailState(record: record, margedRecord: margedRecord, cacheDate: record.date, editMargedRecord: margedRecord));
+      : super(RecordDetailState(
+            record: record, margedRecord: margedRecord, cacheDate: record.date, editMargedRecord: margedRecord));
 
   final Ref ref;
   final Record record;
@@ -29,6 +30,10 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
 
   void editOpponentDeck(String name) {
     state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(opponentDeck: name));
+  }
+
+  void editTag(String name) {
+    state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(tag: name));
   }
 
   void scrollDate(DateTime date) {
@@ -124,7 +129,8 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
   }
 }
 
-final recordDetailNotifierProvider = StateNotifierProvider.family.autoDispose<RecordDetailNotifier, RecordDetailState, MargedRecord>(
+final recordDetailNotifierProvider =
+    StateNotifierProvider.family.autoDispose<RecordDetailNotifier, RecordDetailState, MargedRecord>(
   (ref, margedRecord) {
     // 一覧からレコードを選択した瞬間の値のみがほしいため、watchで監視せずにreadで読み取っている
     final recordList = ref.read(allRecordListNotifierProvider).allRecordList;

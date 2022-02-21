@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:tcg_manager/entity/marged_record.dart';
@@ -79,20 +80,10 @@ class _DetailView extends HookConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
-          child: Text(
-            S.of(context).date,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              leadingDistribution: TextLeadingDistribution.even,
-              height: 1,
-            ),
-          ),
-        ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            const Icon(Icons.watch_later_outlined),
+            const SizedBox(width: 8),
             Hero(
               tag: 'date' + marged.recordId.toString(),
               child: Material(
@@ -104,31 +95,91 @@ class _DetailView extends HookConsumerWidget {
             ),
           ],
         ),
-        Text(
-          S.of(context).deck,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            leadingDistribution: TextLeadingDistribution.even,
-            height: 1,
-          ),
-        ),
-        Hero(
-          tag: 'useDeck' + marged.recordId.toString(),
-          child: Material(
-            color: Colors.transparent,
-            child: Text(marged.useDeck),
-          ),
-        ),
-        Hero(
-          tag: 'opponentDeck' + marged.recordId.toString(),
-          child: Material(
-            color: Colors.transparent,
-            child: Text(
-              marged.opponentDeck,
+        const SizedBox(height: 16),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Container(
+              color: Colors.black12,
+              child: Column(
+                children: [
+                  Text(
+                    S.of(context).useDeck,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      leadingDistribution: TextLeadingDistribution.even,
+                      height: 1,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Stack(
+                    alignment: AlignmentDirectional.center,
+                    children: [
+                      Opacity(
+                        opacity: 0.1,
+                        child: Text(
+                          'Win',
+                          style: GoogleFonts.bangers(
+                            fontSize: 100,
+                            color: const Color(0xFFA21F16),
+                          ),
+                        ),
+                      ),
+                      Hero(
+                        tag: 'useDeck' + marged.recordId.toString(),
+                        child: Material(
+                          color: Colors.transparent,
+                          child: Text(marged.useDeck),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
+            Container(
+              color: Colors.black12,
+              child: Column(
+                children: [
+                  Text(
+                    S.of(context).opponentDeck,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      leadingDistribution: TextLeadingDistribution.even,
+                      height: 1,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Stack(
+                    alignment: AlignmentDirectional.center,
+                    children: [
+                      Opacity(
+                        opacity: 0,
+                        child: Text(
+                          'Win',
+                          style: GoogleFonts.bangers(
+                            fontSize: 100,
+                            color: const Color(0xFFA21F16),
+                          ),
+                        ),
+                      ),
+                      Hero(
+                        tag: 'opponentDeck' + marged.recordId.toString(),
+                        child: Material(
+                          color: Colors.transparent,
+                          child: Text(
+                            marged.opponentDeck,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
-        marged.memo == null ? const Text('メモ無し') : Text(marged.memo!),
+        // marged.memo == null ? const Text('メモ無し') : Text(marged.memo!),
       ],
     );
   }
@@ -144,14 +195,18 @@ class _EditView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final editMargedRecord = ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.editMargedRecord));
+    final editMargedRecord =
+        ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.editMargedRecord));
     final recordDetailNotifier = ref.watch(recordDetailNotifierProvider(margedRecord).notifier);
 
-    final firstSecond = ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.editMargedRecord.firstSecond));
-    final winLoss = ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.editMargedRecord.winLoss));
+    final firstSecond =
+        ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.editMargedRecord.firstSecond));
+    final winLoss =
+        ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.editMargedRecord.winLoss));
 
     final useDeckTextController = useTextEditingController(text: editMargedRecord.useDeck);
     final opponentDeckTextController = useTextEditingController(text: editMargedRecord.opponentDeck);
+    final tagTextController = useTextEditingController(text: editMargedRecord.tag);
     final memoTextController = useTextEditingController(text: editMargedRecord.memo);
     final outputFormat = DateFormat('yyyy年 MM月 dd日');
 
@@ -182,6 +237,14 @@ class _EditView extends HookConsumerWidget {
               ),
             ],
           ),
+          const Text(
+            'デッキ',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              leadingDistribution: TextLeadingDistribution.even,
+              height: 1,
+            ),
+          ),
           CustomTextField(
             labelText: S.of(context).useDeck,
             onChanged: recordDetailNotifier.editUseDeck,
@@ -191,6 +254,20 @@ class _EditView extends HookConsumerWidget {
             labelText: S.of(context).opponentDeck,
             onChanged: recordDetailNotifier.editOpponentDeck,
             controller: opponentDeckTextController,
+          ),
+          const SizedBox(height: 16),
+          const Text(
+            'タグ',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              leadingDistribution: TextLeadingDistribution.even,
+              height: 1,
+            ),
+          ),
+          CustomTextField(
+            labelText: 'タグ',
+            onChanged: recordDetailNotifier.editTag,
+            controller: tagTextController,
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
@@ -281,6 +358,7 @@ class _EditView extends HookConsumerWidget {
             keyboardType: TextInputType.multiline,
             maxLines: null,
           ),
+          const SizedBox(height: 48),
         ],
       ),
     );
