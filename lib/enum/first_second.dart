@@ -1,0 +1,4 @@
+enum FirstSecond {
+  first,
+  second,
+}

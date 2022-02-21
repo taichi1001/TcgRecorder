@@ -3,13 +3,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:tcg_manager/enum/first_second.dart';
+import 'package:tcg_manager/enum/win_loss.dart';
 import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/provider/input_view_provider.dart';
 import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
 import 'package:tcg_manager/selector/game_tag_list_selector.dart';
-import 'package:tcg_manager/state/input_view_state.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
 import 'package:tcg_manager/view/component/custom_modal_date_picker.dart';
 import 'package:tcg_manager/view/component/custom_modal_list_picker.dart';
@@ -147,8 +148,8 @@ class InputView extends HookConsumerWidget {
                                 controller: tagTextController,
                               ),
                               _ListPickerButton(
-                                submited: inputViewNotifier.setUseDeck,
-                                onSelectedItemChanged: inputViewNotifier.scrollUseDeck,
+                                submited: inputViewNotifier.setTag,
+                                onSelectedItemChanged: inputViewNotifier.scrollTag,
                                 children: gameTag
                                     .map((tag) => Padding(
                                           padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),

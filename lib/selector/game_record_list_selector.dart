@@ -1,9 +1,10 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/record.dart';
+import 'package:tcg_manager/enum/first_second.dart';
+import 'package:tcg_manager/enum/win_loss.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/selector/sorted_record_list_selector.dart';
 import 'package:tcg_manager/state/game_record_list_state.dart';
-import 'package:tcg_manager/state/input_view_state.dart';
 
 class GameRecordListNotifier extends StateNotifier<GameRecordListState> {
   GameRecordListNotifier(this.read) : super(GameRecordListState());

@@ -6,11 +6,13 @@ class CustomModalPicker extends StatelessWidget {
     required this.child,
     this.submitedAction,
     this.actionButton,
+    this.shoModalButton = true,
     Key? key,
   }) : super(key: key);
   final Widget child;
   final void Function()? submitedAction;
   final Widget? actionButton;
+  final bool shoModalButton;
 
   @override
   Widget build(BuildContext context) {
@@ -19,10 +21,11 @@ class CustomModalPicker extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          _ModalButton(
-            submitedAction: submitedAction != null ? submitedAction! : null,
-            actionButton: actionButton,
-          ),
+          if (shoModalButton)
+            _ModalButton(
+              submitedAction: submitedAction != null ? submitedAction! : null,
+              actionButton: actionButton,
+            ),
           Expanded(
             child: Container(
               padding: const EdgeInsets.only(top: 6),

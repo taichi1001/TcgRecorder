@@ -7,12 +7,16 @@ import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:tcg_manager/entity/marged_record.dart';
+import 'package:tcg_manager/enum/Sort.dart';
+import 'package:tcg_manager/enum/first_second.dart';
+import 'package:tcg_manager/enum/win_loss.dart';
 import 'package:tcg_manager/generated/l10n.dart';
+import 'package:tcg_manager/helper/convert_sort_string.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/record_list_view_provider.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
+import 'package:tcg_manager/selector/game_tag_list_selector.dart';
 import 'package:tcg_manager/selector/marged_record_list_selector.dart';
-import 'package:tcg_manager/state/input_view_state.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
 import 'package:tcg_manager/view/component/custom_modal_list_picker.dart';
 import 'package:tcg_manager/view/component/custom_modal_picker.dart';
@@ -235,6 +239,9 @@ class _FilterModalBottomSheet extends HookConsumerWidget {
     final recordListViewState = ref.watch(recordListViewNotifierProvider);
     final recordListViewNotifier = ref.watch(recordListViewNotifierProvider.notifier);
     final gameDeck = ref.watch(gameDeckListProvider);
+    final gameTag = ref.watch(gameTagListProvider);
+    final outputFormat = DateFormat('yyyy/MM/dd');
+
     return Material(
       child: SafeArea(
         top: false,
@@ -261,16 +268,29 @@ class _FilterModalBottomSheet extends HookConsumerWidget {
                   height: 1,
                 ),
               ),
-              GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () => Navigator.of(context).pop(),
+              _SelectableRow(
+                submited: recordListViewNotifier.setSort,
+                onSelectedItemChanged: recordListViewNotifier.scrollSort,
+                showAlooButton: false,
+                selectableList: Sort.values
+                    .map(
+                      (sort) => Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                        child: Text(
+                          ConvertSortString.convert(context, sort),
+                          softWrap: false,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    )
+                    .toList(),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text('新しい順'),
-                      Icon(Icons.arrow_drop_down),
+                    children: [
+                      Text(ConvertSortString.convert(context, recordListViewState.sort)),
+                      const Icon(Icons.arrow_drop_down),
                     ],
                   ),
                 ),
@@ -293,20 +313,22 @@ class _FilterModalBottomSheet extends HookConsumerWidget {
                       return SizedBox(
                         height: 350,
                         child: CustomModalPicker(
+                          shoModalButton: false,
                           child: SfDateRangePicker(
                             selectionMode: DateRangePickerSelectionMode.range,
                             view: DateRangePickerView.month,
                             showActionButtons: true,
                             minDate: DateTime(2000, 01, 01),
                             maxDate: DateTime.now(),
-                            onSelectionChanged: (args) {},
+                            initialSelectedRange: PickerDateRange(recordListViewState.startDate, recordListViewState.endDate),
                             onSubmit: (value) {
                               if (value is PickerDateRange) {
                                 recordListViewNotifier.setStartDate(value.startDate!);
-                                recordListViewNotifier.setEndDate(value.endDate!);
+                                recordListViewNotifier.setEndDate(value.endDate);
                                 Navigator.pop(context);
                               }
                             },
+                            onCancel: () => Navigator.pop(context),
                           ),
                         ),
                       );
@@ -317,9 +339,17 @@ class _FilterModalBottomSheet extends HookConsumerWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text('全て'),
-                      Icon(Icons.arrow_drop_down),
+                    children: [
+                      recordListViewState.startDate == null && recordListViewState.endDate == null
+                          ? const Text('全て')
+                          : Row(
+                              children: [
+                                Text(outputFormat.format(recordListViewState.startDate!)),
+                                const Text(' - '),
+                                Text(outputFormat.format(recordListViewState.endDate!)),
+                              ],
+                            ),
+                      const Icon(Icons.arrow_drop_down),
                     ],
                   ),
                 ),
@@ -403,16 +433,28 @@ class _FilterModalBottomSheet extends HookConsumerWidget {
                   height: 1,
                 ),
               ),
-              GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () => Navigator.of(context).pop(),
+              _SelectableRow(
+                submited: recordListViewNotifier.setTag,
+                onSelectedItemChanged: recordListViewNotifier.scrollTag,
+                selectableList: gameTag
+                    .map(
+                      (tag) => Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                        child: Text(
+                          tag.tag,
+                          softWrap: false,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    )
+                    .toList(),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text('全て'),
-                      Icon(Icons.arrow_drop_down),
+                    children: [
+                      recordListViewState.tag == null ? const Text('全て') : Text(recordListViewState.tag!.tag),
+                      const Icon(Icons.arrow_drop_down),
                     ],
                   ),
                 ),
@@ -431,26 +473,30 @@ class _SelectableRow extends StatelessWidget {
     required this.onSelectedItemChanged,
     required this.selectableList,
     required this.child,
+    this.showAlooButton = true,
     key,
   }) : super(key: key);
   final void Function() submited;
   final Function(int) onSelectedItemChanged;
   final List<Widget> selectableList;
   final Widget child;
+  final bool showAlooButton;
 
   @override
   Widget build(BuildContext context) {
-    selectableList.insert(
-      0,
-      const Padding(
-        padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
-        child: Text(
-          '全て',
-          softWrap: false,
-          overflow: TextOverflow.ellipsis,
+    if (showAlooButton) {
+      selectableList.insert(
+        0,
+        const Padding(
+          padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
+          child: Text(
+            '全て',
+            softWrap: false,
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
-      ),
-    );
+      );
+    }
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {

@@ -44,5 +44,7 @@
     "nextFunctionAnnounce1": "グラフ機能はまだ実装されていません。",
     "nextFunctionAnnounce2": "今後実装予定ですので応援よろしくお願いします。",
     "privacyPolicy": "プライバシーポリシー",
-    "contactForm": "お問い合わせ"
+    "contactForm": "お問い合わせ",
+    "newest": "新しい順",
+    "oldest": "古い順"
 }

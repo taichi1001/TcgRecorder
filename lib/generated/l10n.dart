@@ -509,6 +509,26 @@ class S {
       args: [],
     );
   }
+
+  /// `newest`
+  String get newest {
+    return Intl.message(
+      'newest',
+      name: 'newest',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `oldest`
+  String get oldest {
+    return Intl.message(
+      'oldest',
+      name: 'oldest',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

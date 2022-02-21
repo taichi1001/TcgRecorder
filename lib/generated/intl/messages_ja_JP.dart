@@ -46,11 +46,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "loss": MessageLookupByLibrary.simpleMessage("負け"),
         "newGame": MessageLookupByLibrary.simpleMessage("新規作成"),
         "newGameDialog": MessageLookupByLibrary.simpleMessage("新規ゲーム追加"),
+        "newest": MessageLookupByLibrary.simpleMessage("新しい順"),
         "nextFunctionAnnounce1":
             MessageLookupByLibrary.simpleMessage("グラフ機能はまだ実装されていません。"),
         "nextFunctionAnnounce2":
             MessageLookupByLibrary.simpleMessage("今後実装予定ですので応援よろしくお願いします。"),
         "noDataMessage": MessageLookupByLibrary.simpleMessage("このゲームの記録はありません"),
+        "oldest": MessageLookupByLibrary.simpleMessage("古い順"),
         "opponentDeck": MessageLookupByLibrary.simpleMessage("対戦相手デッキ"),
         "order": MessageLookupByLibrary.simpleMessage("手番"),
         "otherSection": MessageLookupByLibrary.simpleMessage("その他"),

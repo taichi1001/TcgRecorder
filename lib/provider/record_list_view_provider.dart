@@ -1,8 +1,8 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tcg_manager/enum/Sort.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
 import 'package:tcg_manager/selector/game_tag_list_selector.dart';
 import 'package:tcg_manager/state/record_list_view_state.dart';
-import 'package:tcg_manager/state/record_sort_state.dart';
 
 class RecordListViewNotifier extends StateNotifier<RecordListViewState> {
   RecordListViewNotifier(
@@ -11,11 +11,11 @@ class RecordListViewNotifier extends StateNotifier<RecordListViewState> {
   final Reader read;
 
   void scrollSort(int index) {
-    state = state.copyWith(cacheOrder: Order.values[index + 1]);
+    state = state.copyWith(cacheOrder: Sort.values[index]);
   }
 
   void setSort() {
-    state = state.copyWith(order: state.cacheOrder);
+    state = state.copyWith(sort: state.cacheOrder);
   }
 
   // void scrollStartDate(DateTime day) {
@@ -30,15 +30,19 @@ class RecordListViewNotifier extends StateNotifier<RecordListViewState> {
   //   state = state.copyWith(cacheEndDate: day);
   // }
 
-  void setEndDate(DateTime day) {
-    state = state.copyWith(endDate: day);
+  void setEndDate(DateTime? day) {
+    if (day == null) {
+      state = state.copyWith(endDate: state.startDate);
+    } else {
+      state = state.copyWith(endDate: day);
+    }
   }
 
   void scrollUseDeck(int index) {
     if (index == 0) {
       state = state.copyWith(cacheUseDeck: null);
     } else {
-      state = state.copyWith(cacheUseDeck: read(gameDeckListProvider)[index + 1]);
+      state = state.copyWith(cacheUseDeck: read(gameDeckListProvider)[index - 1]);
     }
   }
 
@@ -50,7 +54,7 @@ class RecordListViewNotifier extends StateNotifier<RecordListViewState> {
     if (index == 0) {
       state = state.copyWith(cacheOpponentDeck: null);
     } else {
-      state = state.copyWith(cacheOpponentDeck: read(gameDeckListProvider)[index + 1]);
+      state = state.copyWith(cacheOpponentDeck: read(gameDeckListProvider)[index - 1]);
     }
   }
 
@@ -62,7 +66,7 @@ class RecordListViewNotifier extends StateNotifier<RecordListViewState> {
     if (index == 0) {
       state = state.copyWith(cacheTag: null);
     } else {
-      state = state.copyWith(cacheTag: read(gameTagListProvider)[index + 1]);
+      state = state.copyWith(cacheTag: read(gameTagListProvider)[index - 1]);
     }
   }
 

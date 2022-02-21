@@ -2,12 +2,10 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/record.dart';
 import 'package:tcg_manager/entity/tag.dart';
+import 'package:tcg_manager/enum/first_second.dart';
+import 'package:tcg_manager/enum/win_loss.dart';
 
 part 'input_view_state.freezed.dart';
-
-enum WinLoss { win, loss }
-
-enum FirstSecond { first, second }
 
 @freezed
 abstract class InputViewState with _$InputViewState {

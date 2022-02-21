@@ -1,7 +1,8 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/deck.dart';
+import 'package:tcg_manager/enum/first_second.dart';
+import 'package:tcg_manager/enum/win_loss.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
-import 'package:tcg_manager/state/input_view_state.dart';
 import 'package:tcg_manager/state/record_list_state.dart';
 
 class RecordListNotifier extends StateNotifier<RecordListState> {

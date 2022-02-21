@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tcg_manager/enum/bottom_tab_item.dart';
 import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/provider/bottom_navigation_bar_provider.dart';
-import 'package:tcg_manager/state/bottom_navigation_bar_state.dart';
 import 'package:tcg_manager/view/graph_view.dart';
 import 'package:tcg_manager/view/input_view.dart';
 import 'package:tcg_manager/view/other_view.dart';

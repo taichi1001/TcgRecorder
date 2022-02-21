@@ -19,20 +19,20 @@ class _$RecordListViewStateTearOff {
   const _$RecordListViewStateTearOff();
 
   _RecordListViewState call(
-      {Order order = Order.ascending,
+      {Sort sort = Sort.newest,
       DateTime? startDate,
       DateTime? endDate,
       Deck? useDeck,
       Deck? opponentDeck,
       Tag? tag,
-      Order cacheOrder = Order.ascending,
+      Sort cacheOrder = Sort.newest,
       DateTime? cacheStartDate,
       DateTime? cacheEndDate,
       Deck? cacheUseDeck,
       Deck? cacheOpponentDeck,
       Tag? cacheTag}) {
     return _RecordListViewState(
-      order: order,
+      sort: sort,
       startDate: startDate,
       endDate: endDate,
       useDeck: useDeck,
@@ -53,13 +53,13 @@ const $RecordListViewState = _$RecordListViewStateTearOff();
 
 /// @nodoc
 mixin _$RecordListViewState {
-  Order get order => throw _privateConstructorUsedError;
+  Sort get sort => throw _privateConstructorUsedError;
   DateTime? get startDate => throw _privateConstructorUsedError;
   DateTime? get endDate => throw _privateConstructorUsedError;
   Deck? get useDeck => throw _privateConstructorUsedError;
   Deck? get opponentDeck => throw _privateConstructorUsedError;
   Tag? get tag => throw _privateConstructorUsedError;
-  Order get cacheOrder => throw _privateConstructorUsedError;
+  Sort get cacheOrder => throw _privateConstructorUsedError;
   DateTime? get cacheStartDate => throw _privateConstructorUsedError;
   DateTime? get cacheEndDate => throw _privateConstructorUsedError;
   Deck? get cacheUseDeck => throw _privateConstructorUsedError;
@@ -77,13 +77,13 @@ abstract class $RecordListViewStateCopyWith<$Res> {
           RecordListViewState value, $Res Function(RecordListViewState) then) =
       _$RecordListViewStateCopyWithImpl<$Res>;
   $Res call(
-      {Order order,
+      {Sort sort,
       DateTime? startDate,
       DateTime? endDate,
       Deck? useDeck,
       Deck? opponentDeck,
       Tag? tag,
-      Order cacheOrder,
+      Sort cacheOrder,
       DateTime? cacheStartDate,
       DateTime? cacheEndDate,
       Deck? cacheUseDeck,
@@ -109,7 +109,7 @@ class _$RecordListViewStateCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? order = freezed,
+    Object? sort = freezed,
     Object? startDate = freezed,
     Object? endDate = freezed,
     Object? useDeck = freezed,
@@ -123,10 +123,10 @@ class _$RecordListViewStateCopyWithImpl<$Res>
     Object? cacheTag = freezed,
   }) {
     return _then(_value.copyWith(
-      order: order == freezed
-          ? _value.order
-          : order // ignore: cast_nullable_to_non_nullable
-              as Order,
+      sort: sort == freezed
+          ? _value.sort
+          : sort // ignore: cast_nullable_to_non_nullable
+              as Sort,
       startDate: startDate == freezed
           ? _value.startDate
           : startDate // ignore: cast_nullable_to_non_nullable
@@ -150,7 +150,7 @@ class _$RecordListViewStateCopyWithImpl<$Res>
       cacheOrder: cacheOrder == freezed
           ? _value.cacheOrder
           : cacheOrder // ignore: cast_nullable_to_non_nullable
-              as Order,
+              as Sort,
       cacheStartDate: cacheStartDate == freezed
           ? _value.cacheStartDate
           : cacheStartDate // ignore: cast_nullable_to_non_nullable
@@ -249,13 +249,13 @@ abstract class _$RecordListViewStateCopyWith<$Res>
       __$RecordListViewStateCopyWithImpl<$Res>;
   @override
   $Res call(
-      {Order order,
+      {Sort sort,
       DateTime? startDate,
       DateTime? endDate,
       Deck? useDeck,
       Deck? opponentDeck,
       Tag? tag,
-      Order cacheOrder,
+      Sort cacheOrder,
       DateTime? cacheStartDate,
       DateTime? cacheEndDate,
       Deck? cacheUseDeck,
@@ -289,7 +289,7 @@ class __$RecordListViewStateCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? order = freezed,
+    Object? sort = freezed,
     Object? startDate = freezed,
     Object? endDate = freezed,
     Object? useDeck = freezed,
@@ -303,10 +303,10 @@ class __$RecordListViewStateCopyWithImpl<$Res>
     Object? cacheTag = freezed,
   }) {
     return _then(_RecordListViewState(
-      order: order == freezed
-          ? _value.order
-          : order // ignore: cast_nullable_to_non_nullable
-              as Order,
+      sort: sort == freezed
+          ? _value.sort
+          : sort // ignore: cast_nullable_to_non_nullable
+              as Sort,
       startDate: startDate == freezed
           ? _value.startDate
           : startDate // ignore: cast_nullable_to_non_nullable
@@ -330,7 +330,7 @@ class __$RecordListViewStateCopyWithImpl<$Res>
       cacheOrder: cacheOrder == freezed
           ? _value.cacheOrder
           : cacheOrder // ignore: cast_nullable_to_non_nullable
-              as Order,
+              as Sort,
       cacheStartDate: cacheStartDate == freezed
           ? _value.cacheStartDate
           : cacheStartDate // ignore: cast_nullable_to_non_nullable
@@ -359,13 +359,13 @@ class __$RecordListViewStateCopyWithImpl<$Res>
 
 class _$_RecordListViewState implements _RecordListViewState {
   _$_RecordListViewState(
-      {this.order = Order.ascending,
+      {this.sort = Sort.newest,
       this.startDate,
       this.endDate,
       this.useDeck,
       this.opponentDeck,
       this.tag,
-      this.cacheOrder = Order.ascending,
+      this.cacheOrder = Sort.newest,
       this.cacheStartDate,
       this.cacheEndDate,
       this.cacheUseDeck,
@@ -374,7 +374,7 @@ class _$_RecordListViewState implements _RecordListViewState {
 
   @JsonKey()
   @override
-  final Order order;
+  final Sort sort;
   @override
   final DateTime? startDate;
   @override
@@ -387,7 +387,7 @@ class _$_RecordListViewState implements _RecordListViewState {
   final Tag? tag;
   @JsonKey()
   @override
-  final Order cacheOrder;
+  final Sort cacheOrder;
   @override
   final DateTime? cacheStartDate;
   @override
@@ -401,7 +401,7 @@ class _$_RecordListViewState implements _RecordListViewState {
 
   @override
   String toString() {
-    return 'RecordListViewState(order: $order, startDate: $startDate, endDate: $endDate, useDeck: $useDeck, opponentDeck: $opponentDeck, tag: $tag, cacheOrder: $cacheOrder, cacheStartDate: $cacheStartDate, cacheEndDate: $cacheEndDate, cacheUseDeck: $cacheUseDeck, cacheOpponentDeck: $cacheOpponentDeck, cacheTag: $cacheTag)';
+    return 'RecordListViewState(sort: $sort, startDate: $startDate, endDate: $endDate, useDeck: $useDeck, opponentDeck: $opponentDeck, tag: $tag, cacheOrder: $cacheOrder, cacheStartDate: $cacheStartDate, cacheEndDate: $cacheEndDate, cacheUseDeck: $cacheUseDeck, cacheOpponentDeck: $cacheOpponentDeck, cacheTag: $cacheTag)';
   }
 
   @override
@@ -409,7 +409,7 @@ class _$_RecordListViewState implements _RecordListViewState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _RecordListViewState &&
-            const DeepCollectionEquality().equals(other.order, order) &&
+            const DeepCollectionEquality().equals(other.sort, sort) &&
             const DeepCollectionEquality().equals(other.startDate, startDate) &&
             const DeepCollectionEquality().equals(other.endDate, endDate) &&
             const DeepCollectionEquality().equals(other.useDeck, useDeck) &&
@@ -432,7 +432,7 @@ class _$_RecordListViewState implements _RecordListViewState {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(order),
+      const DeepCollectionEquality().hash(sort),
       const DeepCollectionEquality().hash(startDate),
       const DeepCollectionEquality().hash(endDate),
       const DeepCollectionEquality().hash(useDeck),
@@ -454,13 +454,13 @@ class _$_RecordListViewState implements _RecordListViewState {
 
 abstract class _RecordListViewState implements RecordListViewState {
   factory _RecordListViewState(
-      {Order order,
+      {Sort sort,
       DateTime? startDate,
       DateTime? endDate,
       Deck? useDeck,
       Deck? opponentDeck,
       Tag? tag,
-      Order cacheOrder,
+      Sort cacheOrder,
       DateTime? cacheStartDate,
       DateTime? cacheEndDate,
       Deck? cacheUseDeck,
@@ -468,7 +468,7 @@ abstract class _RecordListViewState implements RecordListViewState {
       Tag? cacheTag}) = _$_RecordListViewState;
 
   @override
-  Order get order;
+  Sort get sort;
   @override
   DateTime? get startDate;
   @override
@@ -480,7 +480,7 @@ abstract class _RecordListViewState implements RecordListViewState {
   @override
   Tag? get tag;
   @override
-  Order get cacheOrder;
+  Sort get cacheOrder;
   @override
   DateTime? get cacheStartDate;
   @override

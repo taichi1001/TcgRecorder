@@ -50,12 +50,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "loss": MessageLookupByLibrary.simpleMessage("Loss"),
         "newGame": MessageLookupByLibrary.simpleMessage("New"),
         "newGameDialog": MessageLookupByLibrary.simpleMessage("Input New Game"),
+        "newest": MessageLookupByLibrary.simpleMessage("newest"),
         "nextFunctionAnnounce1": MessageLookupByLibrary.simpleMessage(
             "Graph function is not yet implemented.。"),
         "nextFunctionAnnounce2": MessageLookupByLibrary.simpleMessage(
             "We are planning to implement this in the future, so please support us."),
         "noDataMessage": MessageLookupByLibrary.simpleMessage(
             "There is no record of this game."),
+        "oldest": MessageLookupByLibrary.simpleMessage("oldest"),
         "opponentDeck": MessageLookupByLibrary.simpleMessage("Opponent Deck"),
         "order": MessageLookupByLibrary.simpleMessage("First/Second"),
         "otherSection": MessageLookupByLibrary.simpleMessage("Other"),
