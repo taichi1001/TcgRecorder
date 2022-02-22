@@ -34,6 +34,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "date": MessageLookupByLibrary.simpleMessage("日付"),
         "deck": MessageLookupByLibrary.simpleMessage("デッキ"),
         "deleteMessage": MessageLookupByLibrary.simpleMessage("削除しますか？"),
+        "editButton": MessageLookupByLibrary.simpleMessage("編集"),
         "editSection": MessageLookupByLibrary.simpleMessage("編集"),
         "first": MessageLookupByLibrary.simpleMessage("先攻"),
         "gameEdit": MessageLookupByLibrary.simpleMessage("ゲーム編集"),
@@ -44,6 +45,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "listOpponentDeck": MessageLookupByLibrary.simpleMessage("対戦デッキ: "),
         "listUseDeck": MessageLookupByLibrary.simpleMessage("使用デッキ: "),
         "loss": MessageLookupByLibrary.simpleMessage("負け"),
+        "memo": MessageLookupByLibrary.simpleMessage("メモ"),
+        "memoTag": MessageLookupByLibrary.simpleMessage("振り返るためのメモを残しておきましょう"),
         "newGame": MessageLookupByLibrary.simpleMessage("新規作成"),
         "newGameDialog": MessageLookupByLibrary.simpleMessage("新規ゲーム追加"),
         "newest": MessageLookupByLibrary.simpleMessage("新しい順"),
@@ -52,6 +55,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "nextFunctionAnnounce2":
             MessageLookupByLibrary.simpleMessage("今後実装予定ですので応援よろしくお願いします。"),
         "noDataMessage": MessageLookupByLibrary.simpleMessage("このゲームの記録はありません"),
+        "noMemo": MessageLookupByLibrary.simpleMessage("メモ無し"),
+        "noTag": MessageLookupByLibrary.simpleMessage("タグ無し"),
         "oldest": MessageLookupByLibrary.simpleMessage("古い順"),
         "opponentDeck": MessageLookupByLibrary.simpleMessage("対戦相手デッキ"),
         "order": MessageLookupByLibrary.simpleMessage("手番"),
@@ -71,6 +76,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "tableSum": MessageLookupByLibrary.simpleMessage("合計"),
         "tableWin": MessageLookupByLibrary.simpleMessage("勝"),
         "tableWinRate": MessageLookupByLibrary.simpleMessage("勝率"),
+        "tag": MessageLookupByLibrary.simpleMessage("タグ"),
         "useDeck": MessageLookupByLibrary.simpleMessage("使用デッキ"),
         "win": MessageLookupByLibrary.simpleMessage("勝ち"),
         "winOrLoss": MessageLookupByLibrary.simpleMessage("勝敗")

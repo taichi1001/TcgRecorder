@@ -131,9 +131,9 @@ class InputView extends HookConsumerWidget {
                             ],
                           ),
                           const SizedBox(height: 16),
-                          const Text(
-                            'タグ',
-                            style: TextStyle(
+                          Text(
+                            S.of(context).tag,
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               leadingDistribution: TextLeadingDistribution.even,
                               height: 1,
@@ -143,7 +143,7 @@ class InputView extends HookConsumerWidget {
                             alignment: Alignment.centerRight,
                             children: [
                               CustomTextField(
-                                labelText: 'タグ',
+                                labelText: S.of(context).tag,
                                 onChanged: inputViewNotifier.inputTag,
                                 controller: tagTextController,
                               ),
@@ -229,9 +229,9 @@ class InputView extends HookConsumerWidget {
                             contentPadding: const EdgeInsets.symmetric(horizontal: 0),
                             dense: true,
                           ),
-                          const Text(
-                            'メモ',
-                            style: TextStyle(
+                          Text(
+                            S.of(context).memo,
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               leadingDistribution: TextLeadingDistribution.even,
                               height: 1,
@@ -240,7 +240,7 @@ class InputView extends HookConsumerWidget {
                           CustomTextField(
                             controller: memoTextController,
                             onChanged: inputViewNotifier.inputMemo,
-                            labelText: '改行もできます',
+                            labelText: S.of(context).memoTag,
                             keyboardType: TextInputType.multiline,
                             maxLines: null,
                           ),

@@ -36,6 +36,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "deck": MessageLookupByLibrary.simpleMessage("Deck"),
         "deleteMessage":
             MessageLookupByLibrary.simpleMessage("Can I delete it?"),
+        "editButton": MessageLookupByLibrary.simpleMessage("Edit"),
         "editSection": MessageLookupByLibrary.simpleMessage("Edit"),
         "first": MessageLookupByLibrary.simpleMessage("First"),
         "gameEdit": MessageLookupByLibrary.simpleMessage("Edit Game"),
@@ -48,16 +49,21 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Opponent Deck: "),
         "listUseDeck": MessageLookupByLibrary.simpleMessage("Use Deck: "),
         "loss": MessageLookupByLibrary.simpleMessage("Loss"),
+        "memo": MessageLookupByLibrary.simpleMessage("Memo"),
+        "memoTag":
+            MessageLookupByLibrary.simpleMessage("Keep notes to look back on."),
         "newGame": MessageLookupByLibrary.simpleMessage("New"),
         "newGameDialog": MessageLookupByLibrary.simpleMessage("Input New Game"),
-        "newest": MessageLookupByLibrary.simpleMessage("newest"),
+        "newest": MessageLookupByLibrary.simpleMessage("Newest"),
         "nextFunctionAnnounce1": MessageLookupByLibrary.simpleMessage(
             "Graph function is not yet implemented.。"),
         "nextFunctionAnnounce2": MessageLookupByLibrary.simpleMessage(
             "We are planning to implement this in the future, so please support us."),
         "noDataMessage": MessageLookupByLibrary.simpleMessage(
             "There is no record of this game."),
-        "oldest": MessageLookupByLibrary.simpleMessage("oldest"),
+        "noMemo": MessageLookupByLibrary.simpleMessage("No memo"),
+        "noTag": MessageLookupByLibrary.simpleMessage("No tag"),
+        "oldest": MessageLookupByLibrary.simpleMessage("Oldest"),
         "opponentDeck": MessageLookupByLibrary.simpleMessage("Opponent Deck"),
         "order": MessageLookupByLibrary.simpleMessage("First/Second"),
         "otherSection": MessageLookupByLibrary.simpleMessage("Other"),
@@ -79,6 +85,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "tableSum": MessageLookupByLibrary.simpleMessage("Sum"),
         "tableWin": MessageLookupByLibrary.simpleMessage("Win"),
         "tableWinRate": MessageLookupByLibrary.simpleMessage("Win Rate"),
+        "tag": MessageLookupByLibrary.simpleMessage("Tag"),
         "useDeck": MessageLookupByLibrary.simpleMessage("Use Deck"),
         "win": MessageLookupByLibrary.simpleMessage("Win"),
         "winOrLoss": MessageLookupByLibrary.simpleMessage("Win/Loss")

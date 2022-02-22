@@ -35,7 +35,7 @@ class RecordDetailView extends HookConsumerWidget {
         centerTitle: false,
         elevation: 0.0,
         title: Text(
-          isEdit ? '編集' : '詳細',
+          isEdit ? S.of(context).editButton : '',
           style: const TextStyle(
             color: Colors.black,
             fontSize: 30,
@@ -45,7 +45,7 @@ class RecordDetailView extends HookConsumerWidget {
         actions: [
           CupertinoButton(
             child: Text(
-              isEdit ? '完了' : '編集',
+              isEdit ? S.of(context).submit : S.of(context).editButton,
               style: const TextStyle(color: Colors.black),
             ),
             onPressed: isEdit
@@ -84,7 +84,6 @@ class _DetailView extends HookConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(height: 32),
         Row(
           children: [
             const Icon(Icons.watch_later_outlined),
@@ -145,13 +144,19 @@ class _DetailView extends HookConsumerWidget {
                   Stack(
                     alignment: AlignmentDirectional.center,
                     children: [
-                      Opacity(
-                        opacity: 0.1,
-                        child: Text(
-                          'Win',
-                          style: GoogleFonts.bangers(
-                            fontSize: 100.sp,
-                            color: const Color(0xFFA21F16),
+                      Hero(
+                        tag: 'winloss' + margedRecord.recordId.toString(),
+                        child: Material(
+                          color: Colors.transparent,
+                          child: Opacity(
+                            opacity: 0.1,
+                            child: Text(
+                              margedRecord.winLoss == WinLoss.win ? 'Win' : 'Loss',
+                              style: GoogleFonts.bangers(
+                                fontSize: 80.sp,
+                                color: margedRecord.winLoss == WinLoss.win ? const Color(0xFFA21F16) : const Color(0xFF3547AC),
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -199,7 +204,7 @@ class _DetailView extends HookConsumerWidget {
                         child: Text(
                           'Win',
                           style: GoogleFonts.bangers(
-                            fontSize: 100.sp,
+                            fontSize: 80.sp,
                             color: const Color(0xFFA21F16),
                           ),
                         ),
@@ -230,13 +235,13 @@ class _DetailView extends HookConsumerWidget {
           children: [
             const Icon(Icons.tag),
             const SizedBox(width: 8),
-            Text(marged.tag == null ? '未分類' : marged.tag!),
+            Text(marged.tag == null ? S.of(context).noTag : marged.tag!),
           ],
         ),
         const SizedBox(height: 16),
-        const Text(
-          'メモ',
-          style: TextStyle(
+        Text(
+          S.of(context).tag,
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
             leadingDistribution: TextLeadingDistribution.even,
             height: 1,
@@ -253,7 +258,7 @@ class _DetailView extends HookConsumerWidget {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: SingleChildScrollView(
-              child: marged.memo == null ? const Text('メモ無し') : Text(marged.memo!),
+              child: marged.memo == null ? Text(S.of(context).noMemo) : Text(marged.memo!),
             ),
           ),
         ),
@@ -336,9 +341,9 @@ class _EditView extends HookConsumerWidget {
               ),
             ],
           ),
-          const Text(
-            'デッキ',
-            style: TextStyle(
+          Text(
+            S.of(context).deck,
+            style: const TextStyle(
               fontWeight: FontWeight.bold,
               leadingDistribution: TextLeadingDistribution.even,
               height: 1,
@@ -393,9 +398,9 @@ class _EditView extends HookConsumerWidget {
             ],
           ),
           const SizedBox(height: 16),
-          const Text(
-            'タグ',
-            style: TextStyle(
+          Text(
+            S.of(context).tag,
+            style: const TextStyle(
               fontWeight: FontWeight.bold,
               leadingDistribution: TextLeadingDistribution.even,
               height: 1,
@@ -405,7 +410,7 @@ class _EditView extends HookConsumerWidget {
             alignment: Alignment.centerRight,
             children: [
               CustomTextField(
-                labelText: 'タグ',
+                labelText: S.of(context).tag,
                 onChanged: recordDetailNotifier.editTag,
                 controller: tagTextController,
               ),
@@ -499,9 +504,9 @@ class _EditView extends HookConsumerWidget {
             contentPadding: const EdgeInsets.symmetric(horizontal: 0),
             dense: true,
           ),
-          const Text(
-            'メモ',
-            style: TextStyle(
+          Text(
+            S.of(context).memo,
+            style: const TextStyle(
               fontWeight: FontWeight.bold,
               leadingDistribution: TextLeadingDistribution.even,
               height: 1,
@@ -510,7 +515,7 @@ class _EditView extends HookConsumerWidget {
           CustomTextField(
             controller: memoTextController,
             onChanged: recordDetailNotifier.editMemo,
-            labelText: '改行もできます',
+            labelText: S.of(context).memoTag,
             keyboardType: TextInputType.multiline,
             maxLines: null,
           ),

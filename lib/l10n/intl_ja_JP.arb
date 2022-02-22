@@ -4,6 +4,8 @@
     "deck": "デッキ",
     "useDeck": "使用デッキ",
     "opponentDeck": "対戦相手デッキ",
+    "tag": "タグ",
+    "memo": "メモ",
     "order": "手番",
     "winOrLoss": "勝敗",
     "save": "保存",
@@ -46,5 +48,9 @@
     "privacyPolicy": "プライバシーポリシー",
     "contactForm": "お問い合わせ",
     "newest": "新しい順",
-    "oldest": "古い順"
+    "oldest": "古い順",
+    "memoTag": "振り返るためのメモを残しておきましょう",
+    "editButton": "編集",
+    "noTag": "タグ無し",
+    "noMemo": "メモ無し"
 }

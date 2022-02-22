@@ -4,6 +4,8 @@
     "deck": "Deck",
     "useDeck": "Use Deck",
     "opponentDeck": "Opponent Deck",
+    "tag": "Tag",
+    "memo": "Memo",
     "order": "First/Second",
     "winOrLoss": "Win/Loss",
     "save": "Save",
@@ -45,6 +47,10 @@
     "nextFunctionAnnounce2": "We are planning to implement this in the future, so please support us.",
     "privacyPolicy": "Privacy Policy",
     "contactForm": "Contact",
-    "newest": "newest",
-    "oldest": "oldest"
+    "newest": "Newest",
+    "oldest": "Oldest",
+    "memoTag": "Keep notes to look back on.",
+    "editButton": "Edit",
+    "noTag": "No tag",
+    "noMemo": "No memo"
 }

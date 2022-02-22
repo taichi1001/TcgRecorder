@@ -115,11 +115,17 @@ class _BrandListTile extends HookConsumerWidget {
     final outputFormat = DateFormat('yyyy年 MM月 dd日');
 
     return ListTile(
-      trailing: Text(
-        record.winLoss == WinLoss.win ? 'Win' : 'Loss',
-        style: GoogleFonts.bangers(
-          fontSize: 34,
-          color: record.winLoss == WinLoss.win ? const Color(0xFFA21F16) : const Color(0xFF3547AC),
+      trailing: Hero(
+        tag: 'winloss' + record.recordId.toString(),
+        child: Material(
+          color: Colors.transparent,
+          child: Text(
+            record.winLoss == WinLoss.win ? 'Win' : 'Loss',
+            style: GoogleFonts.bangers(
+              fontSize: 34,
+              color: record.winLoss == WinLoss.win ? const Color(0xFFA21F16) : const Color(0xFF3547AC),
+            ),
+          ),
         ),
       ),
       subtitle: Hero(

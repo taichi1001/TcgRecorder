@@ -100,6 +100,26 @@ class S {
     );
   }
 
+  /// `Tag`
+  String get tag {
+    return Intl.message(
+      'Tag',
+      name: 'tag',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Memo`
+  String get memo {
+    return Intl.message(
+      'Memo',
+      name: 'memo',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `First/Second`
   String get order {
     return Intl.message(
@@ -510,21 +530,61 @@ class S {
     );
   }
 
-  /// `newest`
+  /// `Newest`
   String get newest {
     return Intl.message(
-      'newest',
+      'Newest',
       name: 'newest',
       desc: '',
       args: [],
     );
   }
 
-  /// `oldest`
+  /// `Oldest`
   String get oldest {
     return Intl.message(
-      'oldest',
+      'Oldest',
       name: 'oldest',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Keep notes to look back on.`
+  String get memoTag {
+    return Intl.message(
+      'Keep notes to look back on.',
+      name: 'memoTag',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit`
+  String get editButton {
+    return Intl.message(
+      'Edit',
+      name: 'editButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No tag`
+  String get noTag {
+    return Intl.message(
+      'No tag',
+      name: 'noTag',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No memo`
+  String get noMemo {
+    return Intl.message(
+      'No memo',
+      name: 'noMemo',
       desc: '',
       args: [],
     );
