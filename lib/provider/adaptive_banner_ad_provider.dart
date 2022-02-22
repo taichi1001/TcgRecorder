@@ -9,14 +9,24 @@ class AdaptiveBannerAdNotifier extends StateNotifier<AdaptiveBannerAdState> {
   AdaptiveBannerAdNotifier() : super(AdaptiveBannerAdState());
 
   String getBannerAdUnitId() {
-    if (Platform.isAndroid) {
-      return "ca-app-pub-3940256099942544/6300978111"; // テスト用
-      // return 'ca-app-pub-2720030553523537/6556965640'; // 本番用
-    } else if (Platform.isIOS) {
-      return "ca-app-pub-3940256099942544/2934735716"; // テスト用
-      // return 'ca-app-pub-2720030553523537/8651278967'; // 本番用
+    bool isDebug = false;
+    assert(isDebug = true);
+    if (isDebug) {
+      if (Platform.isAndroid) {
+        return "ca-app-pub-3940256099942544/6300978111"; // テスト用
+      } else if (Platform.isIOS) {
+        return "ca-app-pub-3940256099942544/2934735716"; // テスト用
+      } else {
+        throw UnsupportedError("Unsupported platform");
+      }
     } else {
-      throw UnsupportedError("Unsupported platform");
+      if (Platform.isAndroid) {
+        return 'ca-app-pub-2720030553523537/6556965640'; // 本番用
+      } else if (Platform.isIOS) {
+        return 'ca-app-pub-2720030553523537/8651278967'; // 本番用
+      } else {
+        throw UnsupportedError("Unsupported platform");
+      }
     }
   }
 
