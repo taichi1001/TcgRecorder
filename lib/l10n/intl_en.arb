@@ -36,6 +36,8 @@
     "otherTitle": "Other",
     "editSection": "Edit",
     "gameEdit": "Edit Game",
+    "deckEdit": "Edit Deck",
+    "tagEdit": "Edit Tag",
     "allDelete": "Delete All Data",
     "otherSection": "Other",
     "review": "App Review",

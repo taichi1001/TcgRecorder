@@ -34,6 +34,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "contactForm": MessageLookupByLibrary.simpleMessage("Contact"),
         "date": MessageLookupByLibrary.simpleMessage("Date"),
         "deck": MessageLookupByLibrary.simpleMessage("Deck"),
+        "deckEdit": MessageLookupByLibrary.simpleMessage("Edit Deck"),
         "deleteMessage":
             MessageLookupByLibrary.simpleMessage("Can I delete it?"),
         "editButton": MessageLookupByLibrary.simpleMessage("Edit"),
@@ -86,6 +87,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "tableWin": MessageLookupByLibrary.simpleMessage("Win"),
         "tableWinRate": MessageLookupByLibrary.simpleMessage("Win Rate"),
         "tag": MessageLookupByLibrary.simpleMessage("Tag"),
+        "tagEdit": MessageLookupByLibrary.simpleMessage("Edit Tag"),
         "useDeck": MessageLookupByLibrary.simpleMessage("Use Deck"),
         "win": MessageLookupByLibrary.simpleMessage("Win"),
         "winOrLoss": MessageLookupByLibrary.simpleMessage("Win/Loss")

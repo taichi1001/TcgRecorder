@@ -8,6 +8,7 @@ import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/provider/bottom_navigation_bar_provider.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
+import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 import 'package:tcg_manager/view/component/web_view_screen.dart';
 
@@ -55,13 +56,25 @@ class OtherView extends HookConsumerWidget {
                 },
               ),
               SettingsTile(
-                title: const Text('デッキ編集'),
+                title: Text(S.of(context).deckEdit),
                 leading: const Icon(Icons.edit),
                 onPressed: (context) {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => const _DeckListView(),
+                    ),
+                  );
+                },
+              ),
+              SettingsTile(
+                title: Text(S.of(context).tagEdit),
+                leading: const Icon(Icons.edit),
+                onPressed: (context) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const _TagListView(),
                     ),
                   );
                 },
@@ -237,6 +250,60 @@ class _DeckListView extends HookConsumerWidget {
                       );
                       if (newName != null && newName.first != '') {
                         ref.read(allDeckListNotifierProvider.notifier).updateName(newName.first, index);
+                      }
+                    },
+                  ),
+                );
+              },
+            ),
+    );
+  }
+}
+
+class _TagListView extends HookConsumerWidget {
+  const _TagListView({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final tagList = ref.watch(allTagListNotifierProvider).allTagList;
+    return Scaffold(
+      appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.black),
+        backgroundColor: Colors.white,
+        centerTitle: false,
+        elevation: 0.0,
+        title: Text(
+          S.of(context).gameEdit,
+          style: const TextStyle(
+            color: Colors.black,
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+      backgroundColor: Colors.white,
+      body: tagList == null
+          ? const Center(
+              child: CircularProgressIndicator(
+                color: Color(0xFF18204E),
+              ),
+            )
+          : ListView.separated(
+              itemCount: tagList.length,
+              separatorBuilder: (context, index) => const SizedBox(height: 8, child: Divider(height: 1)),
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(tagList[index].tag),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.edit),
+                    onPressed: () async {
+                      final newName = await showTextInputDialog(
+                        context: context,
+                        title: S.of(context).gameEdit,
+                        textFields: [DialogTextField(initialText: tagList[index].tag)],
+                      );
+                      if (newName != null && newName.first != '') {
+                        ref.read(allTagListNotifierProvider.notifier).updateName(newName.first, index);
                       }
                     },
                   ),

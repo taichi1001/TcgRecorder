@@ -420,6 +420,26 @@ class S {
     );
   }
 
+  /// `Edit Deck`
+  String get deckEdit {
+    return Intl.message(
+      'Edit Deck',
+      name: 'deckEdit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit Tag`
+  String get tagEdit {
+    return Intl.message(
+      'Edit Tag',
+      name: 'tagEdit',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Delete All Data`
   String get allDelete {
     return Intl.message(

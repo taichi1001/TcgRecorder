@@ -33,6 +33,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "contactForm": MessageLookupByLibrary.simpleMessage("お問い合わせ"),
         "date": MessageLookupByLibrary.simpleMessage("日付"),
         "deck": MessageLookupByLibrary.simpleMessage("デッキ"),
+        "deckEdit": MessageLookupByLibrary.simpleMessage("デッキ編集"),
         "deleteMessage": MessageLookupByLibrary.simpleMessage("削除しますか？"),
         "editButton": MessageLookupByLibrary.simpleMessage("編集"),
         "editSection": MessageLookupByLibrary.simpleMessage("編集"),
@@ -77,6 +78,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "tableWin": MessageLookupByLibrary.simpleMessage("勝"),
         "tableWinRate": MessageLookupByLibrary.simpleMessage("勝率"),
         "tag": MessageLookupByLibrary.simpleMessage("タグ"),
+        "tagEdit": MessageLookupByLibrary.simpleMessage("タグ編集"),
         "useDeck": MessageLookupByLibrary.simpleMessage("使用デッキ"),
         "win": MessageLookupByLibrary.simpleMessage("勝ち"),
         "winOrLoss": MessageLookupByLibrary.simpleMessage("勝敗")

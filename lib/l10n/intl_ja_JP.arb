@@ -36,6 +36,8 @@
     "otherTitle": "その他",
     "editSection": "編集",
     "gameEdit": "ゲーム編集",
+    "deckEdit": "デッキ編集",
+    "tagEdit": "タグ編集",
     "allDelete": "全データ削除",
     "otherSection": "その他",
     "review": "アプリをレビュー",
