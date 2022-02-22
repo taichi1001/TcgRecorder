@@ -131,7 +131,7 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
   }
 
   Future<bool> save() async {
-    if (state.useDeck == null || state.opponentDeck == null || state.tag == null) return false;
+    if (state.useDeck == null || state.opponentDeck == null) return false;
     // if (state.useDeck == null || state.opponentDeck == null) return false;
     final selectGameId = read(selectGameNotifierProvider).selectGame!.gameId;
     // useDeckが新規だった場合、useDeckにgameIDを設定
@@ -166,19 +166,21 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
         );
       }
     }
-    // Tagが新規だった場合,opponentDeckにgameIDを設定
-    if (_checkIfSelectedTagNew()) {
-      state = state.copyWith(
-        tag: state.tag!.copyWith(
-          gameId: selectGameId,
-        ),
-      );
-      final tagId = await read(tagRepository).insert(state.tag!);
-      state = state.copyWith(
-        tag: state.tag!.copyWith(
-          tagId: tagId,
-        ),
-      );
+    if (state.tag != null) {
+      // Tagが新規だった場合,opponentDeckにgameIDを設定
+      if (_checkIfSelectedTagNew()) {
+        state = state.copyWith(
+          tag: state.tag!.copyWith(
+            gameId: selectGameId,
+          ),
+        );
+        final tagId = await read(tagRepository).insert(state.tag!);
+        state = state.copyWith(
+          tag: state.tag!.copyWith(
+            tagId: tagId,
+          ),
+        );
+      }
     }
 
     // record登録

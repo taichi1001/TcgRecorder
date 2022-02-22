@@ -56,6 +56,8 @@ dependencies:
 
   modal_bottom_sheet: ^2.0.0
 
+  flutter_screenutil: ^5.3.1
+
 flutter_native_splash:
   image: "assets/images/icon.png"
   color: "FFFFFF"
