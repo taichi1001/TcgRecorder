@@ -19,25 +19,19 @@ class OtherView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
         centerTitle: false,
         elevation: 0.0,
         title: Text(
           S.of(context).otherTitle,
           style: const TextStyle(
-            color: Colors.black,
             fontSize: 30,
             fontWeight: FontWeight.bold,
           ),
         ),
       ),
-      backgroundColor: Colors.white,
       body: SettingsList(
         lightTheme: SettingsThemeData(
-          settingsListBackground: Colors.white,
           settingsSectionBackground: Theme.of(context).canvasColor,
-          dividerColor: Colors.black12,
-          leadingIconsColor: const Color(0xFF18204E),
         ),
         sections: [
           SettingsSection(
@@ -160,25 +154,19 @@ class _GameListView extends HookConsumerWidget {
     final gameList = ref.watch(allGameListNotifierProvider).allGameList;
     return Scaffold(
       appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.black),
-        backgroundColor: Colors.white,
         centerTitle: false,
         elevation: 0.0,
         title: Text(
           S.of(context).gameEdit,
           style: const TextStyle(
-            color: Colors.black,
             fontSize: 30,
             fontWeight: FontWeight.bold,
           ),
         ),
       ),
-      backgroundColor: Colors.white,
       body: gameList == null
           ? const Center(
-              child: CircularProgressIndicator(
-                color: Color(0xFF18204E),
-              ),
+              child: CircularProgressIndicator(),
             )
           : ListView.separated(
               itemCount: gameList.length,
@@ -214,25 +202,19 @@ class _DeckListView extends HookConsumerWidget {
     final deckList = ref.watch(allDeckListNotifierProvider).allDeckList;
     return Scaffold(
       appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.black),
-        backgroundColor: Colors.white,
         centerTitle: false,
         elevation: 0.0,
         title: Text(
           S.of(context).gameEdit,
           style: const TextStyle(
-            color: Colors.black,
             fontSize: 30,
             fontWeight: FontWeight.bold,
           ),
         ),
       ),
-      backgroundColor: Colors.white,
       body: deckList == null
           ? const Center(
-              child: CircularProgressIndicator(
-                color: Color(0xFF18204E),
-              ),
+              child: CircularProgressIndicator(),
             )
           : ListView.separated(
               itemCount: deckList.length,
@@ -268,25 +250,19 @@ class _TagListView extends HookConsumerWidget {
     final tagList = ref.watch(allTagListNotifierProvider).allTagList;
     return Scaffold(
       appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.black),
-        backgroundColor: Colors.white,
         centerTitle: false,
         elevation: 0.0,
         title: Text(
           S.of(context).gameEdit,
           style: const TextStyle(
-            color: Colors.black,
             fontSize: 30,
             fontWeight: FontWeight.bold,
           ),
         ),
       ),
-      backgroundColor: Colors.white,
       body: tagList == null
           ? const Center(
-              child: CircularProgressIndicator(
-                color: Color(0xFF18204E),
-              ),
+              child: CircularProgressIndicator(),
             )
           : ListView.separated(
               itemCount: tagList.length,

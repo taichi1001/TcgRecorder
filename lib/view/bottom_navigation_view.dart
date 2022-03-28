@@ -30,7 +30,6 @@ class BottomNavigationView extends HookConsumerWidget {
       body: _views[currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: const Color(0xFF18204E),
         items: [
           BottomNavigationBarItem(
             icon: const Icon(Icons.border_color),

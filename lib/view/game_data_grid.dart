@@ -17,7 +17,6 @@ class GameDataGrid extends HookConsumerWidget {
           )
         : SfDataGridTheme(
             data: SfDataGridThemeData(
-              headerColor: const Color(0xFF18204E),
               frozenPaneElevation: 0,
               frozenPaneLineWidth: 1.5,
             ),
@@ -33,9 +32,7 @@ class GameDataGrid extends HookConsumerWidget {
                   label: Center(
                     child: Text(
                       S.of(context).tableDeckName,
-                      style: const TextStyle(
-                        color: Colors.white,
-                      ),
+                      style: const TextStyle(),
                     ),
                   ),
                   width: 100,
@@ -45,9 +42,7 @@ class GameDataGrid extends HookConsumerWidget {
                   label: Center(
                     child: Text(
                       S.of(context).tableGames,
-                      style: const TextStyle(
-                        color: Colors.white,
-                      ),
+                      style: const TextStyle(),
                     ),
                   ),
                   width: 75,
@@ -57,9 +52,7 @@ class GameDataGrid extends HookConsumerWidget {
                   label: Center(
                     child: Text(
                       S.of(context).tableWin,
-                      style: const TextStyle(
-                        color: Colors.white,
-                      ),
+                      style: const TextStyle(),
                     ),
                   ),
                   width: 60,
@@ -69,9 +62,7 @@ class GameDataGrid extends HookConsumerWidget {
                   label: Center(
                     child: Text(
                       S.of(context).tableLoss,
-                      style: const TextStyle(
-                        color: Colors.white,
-                      ),
+                      style: const TextStyle(),
                     ),
                   ),
                   width: 60,
@@ -81,9 +72,7 @@ class GameDataGrid extends HookConsumerWidget {
                   label: Center(
                     child: Text(
                       S.of(context).tableWinRate,
-                      style: const TextStyle(
-                        color: Colors.white,
-                      ),
+                      style: const TextStyle(),
                     ),
                   ),
                   width: 85,
@@ -93,9 +82,7 @@ class GameDataGrid extends HookConsumerWidget {
                   label: Center(
                     child: Text(
                       S.of(context).tableFirstWinRate,
-                      style: const TextStyle(
-                        color: Colors.white,
-                      ),
+                      style: const TextStyle(),
                     ),
                   ),
                   width: 85,
@@ -105,9 +92,7 @@ class GameDataGrid extends HookConsumerWidget {
                   label: Center(
                     child: Text(
                       S.of(context).tableSecondWinRate,
-                      style: const TextStyle(
-                        color: Colors.white,
-                      ),
+                      style: const TextStyle(),
                     ),
                   ),
                   width: 85,

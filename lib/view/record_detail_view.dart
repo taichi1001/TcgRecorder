@@ -30,14 +30,11 @@ class RecordDetailView extends HookConsumerWidget {
     final recordDetailNotifier = ref.watch(recordDetailNotifierProvider(margedRecord).notifier);
     return Scaffold(
       appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.black),
-        backgroundColor: Colors.white,
         centerTitle: false,
         elevation: 0.0,
         title: Text(
           isEdit ? S.of(context).editButton : '',
           style: const TextStyle(
-            color: Colors.black,
             fontSize: 30,
             fontWeight: FontWeight.bold,
           ),
@@ -46,7 +43,6 @@ class RecordDetailView extends HookConsumerWidget {
           CupertinoButton(
             child: Text(
               isEdit ? S.of(context).submit : S.of(context).editButton,
-              style: const TextStyle(color: Colors.black),
             ),
             onPressed: isEdit
                 ? () {
@@ -59,7 +55,6 @@ class RecordDetailView extends HookConsumerWidget {
           ),
         ],
       ),
-      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 0),
         child: isEdit ? _EditView(margedRecord: margedRecord) : _DetailView(margedRecord: margedRecord),
@@ -91,7 +86,6 @@ class _DetailView extends HookConsumerWidget {
             Hero(
               tag: 'date' + marged.recordId.toString(),
               child: Material(
-                color: Colors.transparent,
                 child: Text(
                   outputFormat.format(marged.date),
                 ),
@@ -147,7 +141,6 @@ class _DetailView extends HookConsumerWidget {
                       Hero(
                         tag: 'winloss' + margedRecord.recordId.toString(),
                         child: Material(
-                          color: Colors.transparent,
                           child: Opacity(
                             opacity: 0.1,
                             child: Text(
@@ -163,7 +156,6 @@ class _DetailView extends HookConsumerWidget {
                       Hero(
                         tag: 'useDeck' + marged.recordId.toString(),
                         child: Material(
-                          color: Colors.transparent,
                           child: Text(
                             marged.useDeck,
                             maxLines: 4,
@@ -212,7 +204,6 @@ class _DetailView extends HookConsumerWidget {
                       Hero(
                         tag: 'opponentDeck' + marged.recordId.toString(),
                         child: Material(
-                          color: Colors.transparent,
                           child: Text(
                             marged.opponentDeck,
                             maxLines: 4,
@@ -252,7 +243,7 @@ class _DetailView extends HookConsumerWidget {
           width: 500.w,
           height: 300.h,
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.black12, width: 2),
+            border: Border.all(width: 2),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Padding(
@@ -445,7 +436,6 @@ class _EditView extends HookConsumerWidget {
             title: Text(S.of(context).first),
             value: FirstSecond.first,
             groupValue: firstSecond,
-            activeColor: const Color(0xFF18204E),
             onChanged: (FirstSecond? value) {
               if (value != null) {
                 recordDetailNotifier.editFirstSecond(value);
@@ -458,7 +448,6 @@ class _EditView extends HookConsumerWidget {
             title: Text(S.of(context).second),
             value: FirstSecond.second,
             groupValue: firstSecond,
-            activeColor: const Color(0xFF18204E),
             onChanged: (FirstSecond? value) {
               if (value != null) {
                 recordDetailNotifier.editFirstSecond(value);
@@ -482,7 +471,6 @@ class _EditView extends HookConsumerWidget {
             title: Text(S.of(context).win),
             value: WinLoss.win,
             groupValue: winLoss,
-            activeColor: const Color(0xFF18204E),
             onChanged: (WinLoss? value) {
               if (value != null) {
                 recordDetailNotifier.editWinLoss(value);
@@ -495,7 +483,6 @@ class _EditView extends HookConsumerWidget {
             title: Text(S.of(context).loss),
             value: WinLoss.loss,
             groupValue: winLoss,
-            activeColor: const Color(0xFF18204E),
             onChanged: (WinLoss? value) {
               if (value != null) {
                 recordDetailNotifier.editWinLoss(value);
@@ -540,7 +527,6 @@ class _DatePickerButton extends HookConsumerWidget {
     return IconButton(
       icon: const Icon(
         Icons.calendar_today_rounded,
-        color: Color(0xFF18204E),
         size: 16,
       ),
       onPressed: () {

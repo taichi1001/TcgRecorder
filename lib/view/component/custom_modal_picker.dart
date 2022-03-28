@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:tcg_manager/generated/l10n.dart';
 
 class CustomModalPicker extends StatelessWidget {
@@ -29,16 +30,10 @@ class CustomModalPicker extends StatelessWidget {
           Expanded(
             child: Container(
               padding: const EdgeInsets.only(top: 6),
-              color: CupertinoColors.white,
-              child: DefaultTextStyle(
-                style: const TextStyle(
-                  color: CupertinoColors.black,
-                  fontSize: 22,
-                ),
-                child: SafeArea(
-                  top: false,
-                  child: child,
-                ),
+              color: Theme.of(context).canvasColor,
+              child: SafeArea(
+                top: false,
+                child: child,
               ),
             ),
           ),
@@ -59,9 +54,9 @@ class _ModalButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        color: Color(0xffffffff),
-        border: Border(
+      decoration: BoxDecoration(
+        color: Theme.of(context).canvasColor,
+        border: const Border(
           bottom: BorderSide(
             color: Color(0xff999999),
             width: 0,

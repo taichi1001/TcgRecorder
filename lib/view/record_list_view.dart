@@ -31,7 +31,6 @@ class RecordListView extends HookConsumerWidget {
           child: CustomScaffold(
             rightButton: IconButton(
               icon: const Icon(Icons.filter_list),
-              color: Colors.black,
               onPressed: () {
                 showCupertinoModalBottomSheet(
                   expand: false,
@@ -44,9 +43,7 @@ class RecordListView extends HookConsumerWidget {
                 ? Center(child: Text(S.of(context).noDataMessage))
                 : isLoaded
                     ? const Center(
-                        child: CircularProgressIndicator(
-                          color: Color(0xFF18204E),
-                        ),
+                        child: CircularProgressIndicator(),
                       )
                     : ListView.separated(
                         separatorBuilder: (context, index) => const SizedBox(height: 8, child: Divider(height: 1)),
@@ -62,7 +59,6 @@ class RecordListView extends HookConsumerWidget {
                                 color: Colors.red,
                                 child: const Icon(
                                   Icons.delete,
-                                  color: Colors.white,
                                 ),
                               ),
                               confirmDismiss: (direction) async {
@@ -118,7 +114,6 @@ class _BrandListTile extends HookConsumerWidget {
       trailing: Hero(
         tag: 'winloss' + record.recordId.toString(),
         child: Material(
-          color: Colors.transparent,
           child: Text(
             record.winLoss == WinLoss.win ? 'Win' : 'Loss',
             style: GoogleFonts.bangers(
@@ -131,10 +126,9 @@ class _BrandListTile extends HookConsumerWidget {
       subtitle: Hero(
         tag: 'date' + record.recordId.toString(),
         child: Material(
-          color: Colors.transparent,
           child: Text(
             outputFormat.format(record.date),
-            style: const TextStyle(fontSize: 14, color: Colors.black54),
+            style: const TextStyle(fontSize: 14),
           ),
         ),
       ),
@@ -147,7 +141,6 @@ class _BrandListTile extends HookConsumerWidget {
                 S.of(context).listUseDeck,
                 style: const TextStyle(
                   fontSize: 12,
-                  color: Colors.black45,
                   leadingDistribution: TextLeadingDistribution.even,
                   height: 1,
                 ),
@@ -157,7 +150,6 @@ class _BrandListTile extends HookConsumerWidget {
                 child: Hero(
                   tag: 'useDeck' + record.recordId.toString(),
                   child: Material(
-                    color: Colors.transparent,
                     child: Text(
                       record.useDeck,
                       softWrap: false,
@@ -180,7 +172,6 @@ class _BrandListTile extends HookConsumerWidget {
                 S.of(context).listOpponentDeck,
                 style: const TextStyle(
                   fontSize: 12,
-                  color: Colors.black45,
                   leadingDistribution: TextLeadingDistribution.even,
                   height: 1,
                 ),
@@ -190,7 +181,6 @@ class _BrandListTile extends HookConsumerWidget {
                 child: Hero(
                   tag: 'opponentDeck' + record.recordId.toString(),
                   child: Material(
-                    color: Colors.transparent,
                     child: Text(
                       record.opponentDeck,
                       softWrap: false,

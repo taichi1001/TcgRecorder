@@ -54,7 +54,6 @@ class InitialGameRegistrationView extends HookConsumerWidget {
                               },
                         child: Text(S.of(context).save),
                         style: ElevatedButton.styleFrom(
-                          primary: const Color(0xFF18204E),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),

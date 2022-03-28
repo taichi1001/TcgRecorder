@@ -20,7 +20,6 @@ class GraphView extends HookConsumerWidget {
       child: CustomScaffold(
         rightButton: IconButton(
           icon: const Icon(Icons.filter_list),
-          color: Colors.black,
           onPressed: () {
             showCupertinoModalBottomSheet(
               expand: false,
@@ -34,10 +33,7 @@ class GraphView extends HookConsumerWidget {
         ),
         padding: const EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
         appBarBottom: TabBar(
-          labelColor: const Color(0xFF18204E),
-          unselectedLabelColor: Colors.black38,
           indicator: MaterialIndicator(
-            color: const Color(0xFF18204E),
             horizontalPadding: 16,
             height: 3,
           ),

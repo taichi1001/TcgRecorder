@@ -1,4 +1,5 @@
 import 'package:device_preview/device_preview.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -46,6 +47,76 @@ void main() {
               DefaultCupertinoLocalizations.delegate,
             ],
             supportedLocales: S.delegate.supportedLocales,
+            theme: FlexThemeData.light(
+              scheme: FlexScheme.deepBlue,
+              surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
+              blendLevel: 10,
+              appBarStyle: FlexAppBarStyle.material,
+              appBarOpacity: 0.95,
+              appBarElevation: 0,
+              transparentStatusBar: true,
+              tabBarStyle: FlexTabBarStyle.forAppBar,
+              tooltipsMatchBackground: true,
+              swapColors: false,
+              lightIsWhite: true,
+              useSubThemes: true,
+              visualDensity: FlexColorScheme.comfortablePlatformDensity,
+              // To use playground font, add GoogleFonts package and uncomment:
+              // fontFamily: GoogleFonts.notoSans().fontFamily,
+              subThemesData: const FlexSubThemesData(
+                useTextTheme: true,
+                fabUseShape: true,
+                interactionEffects: true,
+                bottomNavigationBarElevation: 0.5,
+                bottomNavigationBarOpacity: 0.95,
+                navigationBarOpacity: 0.95,
+                navigationBarMutedUnselectedText: true,
+                navigationBarMutedUnselectedIcon: true,
+                inputDecoratorIsFilled: false,
+                inputDecoratorBorderType: FlexInputBorderType.outline,
+                inputDecoratorUnfocusedHasBorder: true,
+                blendOnColors: true,
+                blendTextTheme: true,
+                popupMenuOpacity: 0.95,
+              ),
+            ),
+            darkTheme: FlexThemeData.dark(
+              scheme: FlexScheme.deepBlue,
+              surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
+              blendLevel: 10,
+              appBarStyle: FlexAppBarStyle.primary,
+              appBarOpacity: 0.95,
+              appBarElevation: 0.5,
+              transparentStatusBar: true,
+              tabBarStyle: FlexTabBarStyle.forAppBar,
+              tooltipsMatchBackground: true,
+              swapColors: false,
+              darkIsTrueBlack: false,
+              useSubThemes: true,
+              visualDensity: FlexColorScheme.comfortablePlatformDensity,
+              // To use playground font, add GoogleFonts package and uncomment:
+              // fontFamily: GoogleFonts.notoSans().fontFamily,
+              subThemesData: const FlexSubThemesData(
+                useTextTheme: true,
+                fabUseShape: true,
+                interactionEffects: true,
+                bottomNavigationBarElevation: 0.5,
+                bottomNavigationBarOpacity: 0.95,
+                navigationBarOpacity: 0.95,
+                navigationBarMutedUnselectedText: true,
+                navigationBarMutedUnselectedIcon: true,
+                inputDecoratorIsFilled: false,
+                inputDecoratorBorderType: FlexInputBorderType.outline,
+                inputDecoratorUnfocusedHasBorder: true,
+                blendOnColors: true,
+                blendTextTheme: true,
+                popupMenuOpacity: 0.95,
+              ),
+            ),
+// If you do not have a themeMode switch, uncomment this line
+// to let the device system mode control the theme mode:
+            themeMode: ThemeMode.dark,
+
             home: const MainApp(),
           ),
         ),
@@ -75,9 +146,7 @@ class MainApp extends HookConsumerWidget {
     return allGameList == null && allDeckList == null && allRecordList == null && allTagList == null
         ? const Scaffold(
             body: Center(
-              child: CircularProgressIndicator(
-                color: Color(0xFF18204E),
-              ),
+              child: CircularProgressIndicator(),
             ),
           )
         : allGameList!.isEmpty

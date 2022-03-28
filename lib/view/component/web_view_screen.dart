@@ -33,8 +33,6 @@ class _WebViewScreenState extends State<WebViewScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.black),
-        backgroundColor: Colors.white,
         elevation: 0.0,
       ),
       body: _buildBody(),
@@ -44,11 +42,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
   Widget _buildBody() {
     return Column(
       children: [
-        if (_isLoading)
-          const LinearProgressIndicator(
-            color: Color(0xFF18204E),
-            backgroundColor: Color(0xFFD0D5F1),
-          ),
+        if (_isLoading) const LinearProgressIndicator(),
         Expanded(
           child: _buildWebView(),
         ),

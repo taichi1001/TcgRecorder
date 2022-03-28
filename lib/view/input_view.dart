@@ -51,84 +51,90 @@ class InputView extends HookConsumerWidget {
                         mainAxisSize: MainAxisSize.max,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
-                            child: Text(
-                              S.of(context).date,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                leadingDistribution: TextLeadingDistribution.even,
-                                height: 1,
-                              ),
+                          Card(
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
+                                  child: Text(
+                                    S.of(context).date,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      leadingDistribution: TextLeadingDistribution.even,
+                                      height: 1,
+                                    ),
+                                  ),
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      outputFormat.format(date),
+                                    ),
+                                    _DatePickerButton(
+                                      submited: inputViewNotifier.setDateTime,
+                                      onDateTimeChanged: inputViewNotifier.scrollDateTime,
+                                    ),
+                                  ],
+                                ),
+                                Text(
+                                  S.of(context).deck,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    leadingDistribution: TextLeadingDistribution.even,
+                                    height: 1,
+                                  ),
+                                ),
+                                Stack(
+                                  alignment: Alignment.centerRight,
+                                  children: [
+                                    CustomTextField(
+                                      labelText: S.of(context).useDeck,
+                                      onChanged: inputViewNotifier.inputUseDeck,
+                                      controller: useDeckTextController,
+                                    ),
+                                    _ListPickerButton(
+                                      submited: inputViewNotifier.setUseDeck,
+                                      onSelectedItemChanged: inputViewNotifier.scrollUseDeck,
+                                      children: gameDeck
+                                          .map((deck) => Padding(
+                                                padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                                                child: Text(
+                                                  deck.deck,
+                                                  softWrap: false,
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
+                                              ))
+                                          .toList(),
+                                    ),
+                                  ],
+                                ),
+                                Stack(
+                                  alignment: Alignment.centerRight,
+                                  children: [
+                                    CustomTextField(
+                                      labelText: S.of(context).opponentDeck,
+                                      onChanged: inputViewNotifier.inputOpponentDeck,
+                                      controller: opponentDeckTextController,
+                                    ),
+                                    _ListPickerButton(
+                                      submited: inputViewNotifier.setOpponentDeck,
+                                      onSelectedItemChanged: inputViewNotifier.scrollOpponentDeck,
+                                      children: gameDeck
+                                          .map((deck) => Padding(
+                                                padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                                                child: Text(
+                                                  deck.deck,
+                                                  softWrap: false,
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
+                                              ))
+                                          .toList(),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                outputFormat.format(date),
-                              ),
-                              _DatePickerButton(
-                                submited: inputViewNotifier.setDateTime,
-                                onDateTimeChanged: inputViewNotifier.scrollDateTime,
-                              ),
-                            ],
-                          ),
-                          Text(
-                            S.of(context).deck,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              leadingDistribution: TextLeadingDistribution.even,
-                              height: 1,
-                            ),
-                          ),
-                          Stack(
-                            alignment: Alignment.centerRight,
-                            children: [
-                              CustomTextField(
-                                labelText: S.of(context).useDeck,
-                                onChanged: inputViewNotifier.inputUseDeck,
-                                controller: useDeckTextController,
-                              ),
-                              _ListPickerButton(
-                                submited: inputViewNotifier.setUseDeck,
-                                onSelectedItemChanged: inputViewNotifier.scrollUseDeck,
-                                children: gameDeck
-                                    .map((deck) => Padding(
-                                          padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                                          child: Text(
-                                            deck.deck,
-                                            softWrap: false,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ))
-                                    .toList(),
-                              ),
-                            ],
-                          ),
-                          Stack(
-                            alignment: Alignment.centerRight,
-                            children: [
-                              CustomTextField(
-                                labelText: S.of(context).opponentDeck,
-                                onChanged: inputViewNotifier.inputOpponentDeck,
-                                controller: opponentDeckTextController,
-                              ),
-                              _ListPickerButton(
-                                submited: inputViewNotifier.setOpponentDeck,
-                                onSelectedItemChanged: inputViewNotifier.scrollOpponentDeck,
-                                children: gameDeck
-                                    .map((deck) => Padding(
-                                          padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                                          child: Text(
-                                            deck.deck,
-                                            softWrap: false,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ))
-                                    .toList(),
-                              ),
-                            ],
                           ),
                           const SizedBox(height: 16),
                           Text(
@@ -178,7 +184,6 @@ class InputView extends HookConsumerWidget {
                             title: Text(S.of(context).first),
                             value: FirstSecond.first,
                             groupValue: firstSecond,
-                            activeColor: const Color(0xFF18204E),
                             onChanged: (FirstSecond? value) {
                               inputViewNotifier.selectFirstSecond(value);
                             },
@@ -189,7 +194,6 @@ class InputView extends HookConsumerWidget {
                             title: Text(S.of(context).second),
                             value: FirstSecond.second,
                             groupValue: firstSecond,
-                            activeColor: const Color(0xFF18204E),
                             onChanged: (FirstSecond? value) {
                               inputViewNotifier.selectFirstSecond(value);
                             },
@@ -211,7 +215,6 @@ class InputView extends HookConsumerWidget {
                             title: Text(S.of(context).win),
                             value: WinLoss.win,
                             groupValue: winLoss,
-                            activeColor: const Color(0xFF18204E),
                             onChanged: (WinLoss? value) {
                               inputViewNotifier.selectWinLoss(value);
                             },
@@ -222,7 +225,6 @@ class InputView extends HookConsumerWidget {
                             title: Text(S.of(context).loss),
                             value: WinLoss.loss,
                             groupValue: winLoss,
-                            activeColor: const Color(0xFF18204E),
                             onChanged: (WinLoss? value) {
                               inputViewNotifier.selectWinLoss(value);
                             },
@@ -270,7 +272,6 @@ class InputView extends HookConsumerWidget {
                                           },
                                     child: Text(S.of(context).save),
                                     style: ElevatedButton.styleFrom(
-                                      primary: const Color(0xFF18204E),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(8),
                                       ),
@@ -310,7 +311,6 @@ class _DatePickerButton extends HookConsumerWidget {
     return IconButton(
       icon: const Icon(
         Icons.calendar_today_rounded,
-        color: Color(0xFF18204E),
         size: 16,
       ),
       onPressed: () {

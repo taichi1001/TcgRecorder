@@ -29,12 +29,10 @@ class CustomScaffold extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.black),
         centerTitle: false,
         title: Text(
           selectGame.selectGame != null ? selectGame.selectGame!.game : '',
           style: const TextStyle(
-            color: Colors.black,
             fontSize: 30,
             fontWeight: FontWeight.bold,
           ),
@@ -60,12 +58,9 @@ class CustomScaffold extends HookConsumerWidget {
           if (rightButton != null) rightButton!,
         ],
         bottom: appBarBottom != null ? appBarBottom! : null,
-        backgroundColor: Colors.white,
-        elevation: 0.0,
       ),
-      backgroundColor: Colors.white,
       body: Padding(
-        padding: padding != null ? padding! : const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 0),
+        padding: padding != null ? padding! : const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
         child: body,
       ),
     );
@@ -89,7 +84,6 @@ class _GameListPickerButton extends HookConsumerWidget {
     final inputViewNotifier = ref.read(inputViewNotifierProvider.notifier);
     return IconButton(
       icon: const Icon(Icons.arrow_drop_down),
-      color: Colors.black,
       onPressed: () {
         showCupertinoModalPopup(
           context: context,

@@ -84,7 +84,6 @@ class GameWinRateDataSource extends DataGridSource {
             maxLines: 2,
             style: const TextStyle(
               decoration: TextDecoration.underline,
-              color: Colors.black,
               fontSize: 12,
               overflow: TextOverflow.ellipsis,
               leadingDistribution: TextLeadingDistribution.even,
