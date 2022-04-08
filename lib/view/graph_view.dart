@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
+import 'package:tcg_manager/entity/win_rate_data.dart';
 import 'package:tcg_manager/generated/l10n.dart';
+import 'package:tcg_manager/provider/game_win_rate_data_provider.dart';
 import 'package:tcg_manager/selector/game_record_list_selector.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
 import 'package:tcg_manager/view/component/custom_scaffold.dart';
@@ -15,6 +18,7 @@ class GraphView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final recordList = ref.watch(gameRecordListProvider);
+    final data = ref.watch(gameWinRateDataNotifierProvider).winRateDataList;
     return DefaultTabController(
       length: 2,
       child: CustomScaffold(
@@ -68,10 +72,19 @@ class GraphView extends HookConsumerWidget {
                     children: [
                       Expanded(
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(S.of(context).nextFunctionAnnounce1),
-                            Text(S.of(context).nextFunctionAnnounce2),
+                            SfCircularChart(
+                              legend: Legend(
+                                isVisible: true,
+                              ),
+                              series: [
+                                PieSeries<WinRateData, String>(
+                                  dataSource: data,
+                                  xValueMapper: (data, index) => data.deck,
+                                  yValueMapper: (data, index) => data.useRate,
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                       ),

@@ -33,8 +33,9 @@ dependencies:
 
   tab_indicator_styler: ^2.0.0
 
-  syncfusion_flutter_datagrid: ^19.4.47
-  syncfusion_flutter_datepicker: ^19.4.52
+  syncfusion_flutter_datagrid: ^20.1.47
+  syncfusion_flutter_datepicker: ^20.1.47
+  syncfusion_flutter_charts: ^20.1.47+1
 
   intl: ^0.17.0
 

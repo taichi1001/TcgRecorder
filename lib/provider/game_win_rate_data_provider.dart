@@ -32,9 +32,10 @@ final gameWinRateDataNotifierProvider = StateNotifierProvider.autoDispose<GameWi
 
     final winRateData = gameUseDeckList.map((useDeck) {
       final deck = useDeck.deck;
-      final matchs = filterRecordListNotifier.countUseDeckMatches(useDeck);
+      final matchs = filterRecordListNotifier.countDeckMatches(useDeck);
       final win = filterRecordListNotifier.countUseDeckWins(useDeck);
       final loss = filterRecordListNotifier.countUseDeckLoss(useDeck);
+      final useRate = filterRecordListNotifier.calcDeckUseRate(useDeck);
       final winRate = filterRecordListNotifier.calcUseDeckWinRate(useDeck);
       final winRateOfFirst = filterRecordListNotifier.calcUseDeckWinRateOfFirst(useDeck);
       final winRateOfSecond = filterRecordListNotifier.calcUseDeckWinRateOfSecond(useDeck);
@@ -44,6 +45,7 @@ final gameWinRateDataNotifierProvider = StateNotifierProvider.autoDispose<GameWi
         matches: matchs,
         win: win,
         loss: loss,
+        useRate: useRate,
         winRate: winRate,
         winRateOfFirst: winRateOfFirst,
         winRateOfSecond: winRateOfSecond,
