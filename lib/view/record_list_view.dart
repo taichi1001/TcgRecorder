@@ -111,26 +111,16 @@ class _BrandListTile extends HookConsumerWidget {
     final outputFormat = DateFormat('yyyy年 MM月 dd日');
 
     return ListTile(
-      trailing: Hero(
-        tag: 'winloss' + record.recordId.toString(),
-        child: Material(
-          child: Text(
-            record.winLoss == WinLoss.win ? 'Win' : 'Loss',
-            style: GoogleFonts.bangers(
-              fontSize: 34,
-              color: record.winLoss == WinLoss.win ? const Color(0xFFA21F16) : const Color(0xFF3547AC),
-            ),
-          ),
+      trailing: Text(
+        record.winLoss == WinLoss.win ? 'Win' : 'Loss',
+        style: GoogleFonts.bangers(
+          fontSize: 34,
+          color: record.winLoss == WinLoss.win ? const Color(0xFFA21F16) : const Color(0xFF3547AC),
         ),
       ),
-      subtitle: Hero(
-        tag: 'date' + record.recordId.toString(),
-        child: Material(
-          child: Text(
-            outputFormat.format(record.date),
-            style: const TextStyle(fontSize: 14),
-          ),
-        ),
+      subtitle: Text(
+        outputFormat.format(record.date),
+        style: const TextStyle(fontSize: 14),
       ),
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -146,21 +136,14 @@ class _BrandListTile extends HookConsumerWidget {
                 ),
               ),
               const SizedBox(width: 4),
-              Flexible(
-                child: Hero(
-                  tag: 'useDeck' + record.recordId.toString(),
-                  child: Material(
-                    child: Text(
-                      record.useDeck,
-                      softWrap: false,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontSize: 15,
-                        leadingDistribution: TextLeadingDistribution.even,
-                        height: 1,
-                      ),
-                    ),
-                  ),
+              Text(
+                record.useDeck,
+                softWrap: false,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: 15,
+                  leadingDistribution: TextLeadingDistribution.even,
+                  height: 1,
                 ),
               ),
             ],
@@ -177,21 +160,14 @@ class _BrandListTile extends HookConsumerWidget {
                 ),
               ),
               const SizedBox(width: 4),
-              Flexible(
-                child: Hero(
-                  tag: 'opponentDeck' + record.recordId.toString(),
-                  child: Material(
-                    child: Text(
-                      record.opponentDeck,
-                      softWrap: false,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontSize: 15,
-                        leadingDistribution: TextLeadingDistribution.even,
-                        height: 1,
-                      ),
-                    ),
-                  ),
+              Text(
+                record.opponentDeck,
+                softWrap: false,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: 15,
+                  leadingDistribution: TextLeadingDistribution.even,
+                  height: 1,
                 ),
               ),
             ],

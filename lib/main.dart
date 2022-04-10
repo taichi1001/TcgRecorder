@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/helper/att.dart';
@@ -32,7 +33,7 @@ void main() {
       // enabled: !kReleaseMode,
       enabled: false,
       builder: (context) => ScreenUtilInit(
-        designSize: const Size(390, 844),
+        designSize: const Size(428, 926),
         builder: () => ProviderScope(
           child: MaterialApp(
             debugShowCheckedModeBanner: false,
@@ -48,31 +49,31 @@ void main() {
             ],
             supportedLocales: S.delegate.supportedLocales,
             theme: FlexThemeData.light(
-              scheme: FlexScheme.deepBlue,
-              surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
-              blendLevel: 10,
-              appBarStyle: FlexAppBarStyle.material,
+              scheme: FlexScheme.ebonyClay,
+              surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
+              blendLevel: 9,
+              appBarStyle: FlexAppBarStyle.primary,
               appBarOpacity: 0.95,
-              appBarElevation: 0,
+              appBarElevation: 0.5,
               transparentStatusBar: true,
               tabBarStyle: FlexTabBarStyle.forAppBar,
               tooltipsMatchBackground: true,
               swapColors: false,
-              lightIsWhite: true,
+              lightIsWhite: false,
               useSubThemes: true,
               visualDensity: FlexColorScheme.comfortablePlatformDensity,
               // To use playground font, add GoogleFonts package and uncomment:
-              // fontFamily: GoogleFonts.notoSans().fontFamily,
+              // fontFamily: GoogleFonts.mPlus1p().fontFamily,
               subThemesData: const FlexSubThemesData(
                 useTextTheme: true,
                 fabUseShape: true,
                 interactionEffects: true,
-                bottomNavigationBarElevation: 0.5,
+                bottomNavigationBarElevation: 0,
                 bottomNavigationBarOpacity: 0.95,
                 navigationBarOpacity: 0.95,
                 navigationBarMutedUnselectedText: true,
                 navigationBarMutedUnselectedIcon: true,
-                inputDecoratorIsFilled: false,
+                inputDecoratorIsFilled: true,
                 inputDecoratorBorderType: FlexInputBorderType.outline,
                 inputDecoratorUnfocusedHasBorder: true,
                 blendOnColors: true,
@@ -81,9 +82,9 @@ void main() {
               ),
             ),
             darkTheme: FlexThemeData.dark(
-              scheme: FlexScheme.deepBlue,
-              surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
-              blendLevel: 10,
+              scheme: FlexScheme.ebonyClay,
+              surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
+              blendLevel: 9,
               appBarStyle: FlexAppBarStyle.primary,
               appBarOpacity: 0.95,
               appBarElevation: 0.5,
@@ -95,17 +96,17 @@ void main() {
               useSubThemes: true,
               visualDensity: FlexColorScheme.comfortablePlatformDensity,
               // To use playground font, add GoogleFonts package and uncomment:
-              // fontFamily: GoogleFonts.notoSans().fontFamily,
+              // fontFamily: GoogleFonts.mPlus1p().fontFamily,
               subThemesData: const FlexSubThemesData(
                 useTextTheme: true,
                 fabUseShape: true,
                 interactionEffects: true,
-                bottomNavigationBarElevation: 0.5,
+                bottomNavigationBarElevation: 0,
                 bottomNavigationBarOpacity: 0.95,
                 navigationBarOpacity: 0.95,
                 navigationBarMutedUnselectedText: true,
                 navigationBarMutedUnselectedIcon: true,
-                inputDecoratorIsFilled: false,
+                inputDecoratorIsFilled: true,
                 inputDecoratorBorderType: FlexInputBorderType.outline,
                 inputDecoratorUnfocusedHasBorder: true,
                 blendOnColors: true,

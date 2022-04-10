@@ -18,30 +18,27 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          Expanded(
-            child: Align(
-              alignment: const AlignmentDirectional(-1, 0),
-              child: TextFormField(
-                controller: controller,
-                onChanged: onChanged,
-                keyboardType: keyboardType,
-                maxLines: maxLines,
-                obscureText: false,
-                decoration: InputDecoration(
-                  labelText: labelText,
-                  labelStyle: Theme.of(context).textTheme.caption,
-                ),
-                textAlign: TextAlign.start,
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        Expanded(
+          child: Align(
+            alignment: const AlignmentDirectional(-1, 0),
+            child: TextFormField(
+              controller: controller,
+              onChanged: onChanged,
+              keyboardType: keyboardType,
+              maxLines: maxLines,
+              obscureText: false,
+              decoration: InputDecoration(
+                labelText: labelText,
+                labelStyle: Theme.of(context).textTheme.caption,
               ),
+              textAlign: TextAlign.start,
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

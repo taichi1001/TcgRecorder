@@ -51,6 +51,7 @@ class CustomScaffold extends HookConsumerWidget {
                         game.game,
                         softWrap: false,
                         overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.headline6,
                       ),
                     ))
                 .toList(),

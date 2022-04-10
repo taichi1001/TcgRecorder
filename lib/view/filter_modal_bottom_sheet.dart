@@ -82,6 +82,7 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                             ConvertSortString.convert(context, sort),
                             softWrap: false,
                             overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.headline6,
                           ),
                         ),
                       )
@@ -185,6 +186,7 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                             deck.deck,
                             softWrap: false,
                             overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.headline6,
                           ),
                         ),
                       )
@@ -226,6 +228,7 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                             deck.deck,
                             softWrap: false,
                             overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.headline6,
                           ),
                         ),
                       )
@@ -267,6 +270,7 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                             tag.tag,
                             softWrap: false,
                             overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.headline6,
                           ),
                         ),
                       )
@@ -310,12 +314,13 @@ class _SelectableRow extends StatelessWidget {
     if (showAlooButton) {
       selectableList.insert(
         0,
-        const Padding(
-          padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
           child: Text(
             '全て',
             softWrap: false,
             overflow: TextOverflow.ellipsis,
+            style: Theme.of(context).textTheme.headline6,
           ),
         ),
       );
