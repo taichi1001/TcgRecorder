@@ -1,10 +1,9 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:tcg_manager/enum/first_second.dart';
 import 'package:tcg_manager/enum/win_loss.dart';
 import 'package:tcg_manager/generated/l10n.dart';
@@ -32,10 +31,8 @@ class InputView extends HookConsumerWidget {
     final useDeck = ref.watch(inputViewNotifierProvider.select((value) => value.useDeck));
     final opponentDeck = ref.watch(inputViewNotifierProvider.select((value) => value.opponentDeck));
     final inputViewNotifier = ref.read(inputViewNotifierProvider.notifier);
-    final useDeckTextController =
-        ref.watch(textEditingControllerNotifierProvider.select((value) => value.useDeckController));
-    final opponentDeckTextController =
-        ref.watch(textEditingControllerNotifierProvider.select((value) => value.opponentDeckController));
+    final useDeckTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.useDeckController));
+    final opponentDeckTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.opponentDeckController));
     final tagTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.tagController));
     final memoTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.memoController));
     final outputFormat = DateFormat('yyyy年 MM月 dd日');
@@ -253,9 +250,7 @@ class InputView extends HookConsumerWidget {
                                           await inputViewNotifier.save();
                                           await ref.read(dbHelper).fetchAll();
                                         }
-                                        ref
-                                            .read(textEditingControllerNotifierProvider.notifier)
-                                            .resetInputViewController();
+                                        ref.read(textEditingControllerNotifierProvider.notifier).resetInputViewController();
                                         FocusScope.of(context).unfocus();
                                       },
                                 child: Text(S.of(context).save),

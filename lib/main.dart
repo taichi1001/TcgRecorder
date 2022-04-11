@@ -1,4 +1,3 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -6,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/helper/att.dart';
@@ -29,98 +27,10 @@ void main() {
 
   MobileAds.instance.initialize();
   runApp(
-    DevicePreview(
-      // enabled: !kReleaseMode,
-      enabled: false,
-      builder: (context) => ScreenUtilInit(
-        designSize: const Size(428, 926),
-        builder: () => ProviderScope(
-          child: MaterialApp(
-            debugShowCheckedModeBanner: false,
-            useInheritedMediaQuery: true,
-            locale: DevicePreview.locale(context),
-            builder: DevicePreview.appBuilder,
-            localizationsDelegates: const [
-              S.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              DefaultCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: S.delegate.supportedLocales,
-            theme: FlexThemeData.light(
-              scheme: FlexScheme.ebonyClay,
-              surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
-              blendLevel: 9,
-              appBarStyle: FlexAppBarStyle.primary,
-              appBarOpacity: 0.95,
-              appBarElevation: 0.5,
-              transparentStatusBar: true,
-              tabBarStyle: FlexTabBarStyle.forAppBar,
-              tooltipsMatchBackground: true,
-              swapColors: false,
-              lightIsWhite: false,
-              useSubThemes: true,
-              visualDensity: FlexColorScheme.comfortablePlatformDensity,
-              // To use playground font, add GoogleFonts package and uncomment:
-              // fontFamily: GoogleFonts.mPlus1p().fontFamily,
-              subThemesData: const FlexSubThemesData(
-                useTextTheme: true,
-                fabUseShape: true,
-                interactionEffects: true,
-                bottomNavigationBarElevation: 0,
-                bottomNavigationBarOpacity: 0.95,
-                navigationBarOpacity: 0.95,
-                navigationBarMutedUnselectedText: true,
-                navigationBarMutedUnselectedIcon: true,
-                inputDecoratorIsFilled: true,
-                inputDecoratorBorderType: FlexInputBorderType.outline,
-                inputDecoratorUnfocusedHasBorder: true,
-                blendOnColors: true,
-                blendTextTheme: true,
-                popupMenuOpacity: 0.95,
-              ),
-            ),
-            darkTheme: FlexThemeData.dark(
-              scheme: FlexScheme.ebonyClay,
-              surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
-              blendLevel: 9,
-              appBarStyle: FlexAppBarStyle.primary,
-              appBarOpacity: 0.95,
-              appBarElevation: 0.5,
-              transparentStatusBar: true,
-              tabBarStyle: FlexTabBarStyle.forAppBar,
-              tooltipsMatchBackground: true,
-              swapColors: false,
-              darkIsTrueBlack: false,
-              useSubThemes: true,
-              visualDensity: FlexColorScheme.comfortablePlatformDensity,
-              // To use playground font, add GoogleFonts package and uncomment:
-              // fontFamily: GoogleFonts.mPlus1p().fontFamily,
-              subThemesData: const FlexSubThemesData(
-                useTextTheme: true,
-                fabUseShape: true,
-                interactionEffects: true,
-                bottomNavigationBarElevation: 0,
-                bottomNavigationBarOpacity: 0.95,
-                navigationBarOpacity: 0.95,
-                navigationBarMutedUnselectedText: true,
-                navigationBarMutedUnselectedIcon: true,
-                inputDecoratorIsFilled: true,
-                inputDecoratorBorderType: FlexInputBorderType.outline,
-                inputDecoratorUnfocusedHasBorder: true,
-                blendOnColors: true,
-                blendTextTheme: true,
-                popupMenuOpacity: 0.95,
-              ),
-            ),
-// If you do not have a themeMode switch, uncomment this line
-// to let the device system mode control the theme mode:
-            themeMode: ThemeMode.dark,
-
-            home: const MainApp(),
-          ),
-        ),
+    ScreenUtilInit(
+      designSize: const Size(428, 926),
+      builder: () => const ProviderScope(
+        child: MainApp(),
       ),
     ),
   );
@@ -144,14 +54,95 @@ class MainApp extends HookConsumerWidget {
     final allRecordList = ref.watch(allRecordListNotifierProvider).allRecordList;
     final allTagList = ref.watch(allTagListNotifierProvider).allTagList;
 
-    return allGameList == null && allDeckList == null && allRecordList == null && allTagList == null
-        ? const Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
-          )
-        : allGameList!.isEmpty
-            ? const InitialGameRegistrationView()
-            : const BottomNavigationView();
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      localizationsDelegates: const [
+        S.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        DefaultCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: S.delegate.supportedLocales,
+      theme: FlexThemeData.light(
+        scheme: FlexScheme.ebonyClay,
+        surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
+        blendLevel: 9,
+        appBarStyle: FlexAppBarStyle.primary,
+        appBarOpacity: 0.95,
+        appBarElevation: 0.5,
+        transparentStatusBar: true,
+        tabBarStyle: FlexTabBarStyle.forAppBar,
+        tooltipsMatchBackground: true,
+        swapColors: false,
+        lightIsWhite: false,
+        useSubThemes: true,
+        visualDensity: FlexColorScheme.comfortablePlatformDensity,
+        // To use playground font, add GoogleFonts package and uncomment:
+        // fontFamily: GoogleFonts.mPlus1p().fontFamily,
+        subThemesData: const FlexSubThemesData(
+          useTextTheme: true,
+          fabUseShape: true,
+          interactionEffects: true,
+          bottomNavigationBarElevation: 0,
+          bottomNavigationBarOpacity: 0.95,
+          navigationBarOpacity: 0.95,
+          navigationBarMutedUnselectedText: true,
+          navigationBarMutedUnselectedIcon: true,
+          inputDecoratorIsFilled: true,
+          inputDecoratorBorderType: FlexInputBorderType.outline,
+          inputDecoratorUnfocusedHasBorder: true,
+          blendOnColors: true,
+          blendTextTheme: true,
+          popupMenuOpacity: 0.95,
+        ),
+      ),
+      darkTheme: FlexThemeData.dark(
+        scheme: FlexScheme.ebonyClay,
+        surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
+        blendLevel: 9,
+        appBarStyle: FlexAppBarStyle.primary,
+        appBarOpacity: 0.95,
+        appBarElevation: 0.5,
+        transparentStatusBar: true,
+        tabBarStyle: FlexTabBarStyle.forAppBar,
+        tooltipsMatchBackground: true,
+        swapColors: false,
+        darkIsTrueBlack: false,
+        useSubThemes: true,
+        visualDensity: FlexColorScheme.comfortablePlatformDensity,
+        // To use playground font, add GoogleFonts package and uncomment:
+        // fontFamily: GoogleFonts.mPlus1p().fontFamily,
+        subThemesData: const FlexSubThemesData(
+          useTextTheme: true,
+          fabUseShape: true,
+          interactionEffects: true,
+          bottomNavigationBarElevation: 0,
+          bottomNavigationBarOpacity: 0.95,
+          navigationBarOpacity: 0.95,
+          navigationBarMutedUnselectedText: true,
+          navigationBarMutedUnselectedIcon: true,
+          inputDecoratorIsFilled: true,
+          inputDecoratorBorderType: FlexInputBorderType.outline,
+          inputDecoratorUnfocusedHasBorder: true,
+          blendOnColors: true,
+          blendTextTheme: true,
+          popupMenuOpacity: 0.95,
+        ),
+      ),
+      // If you do not have a themeMode switch, uncomment this line
+      // to let the device system mode control the theme mode:
+      themeMode: ThemeMode.system,
+
+      home: allGameList == null && allDeckList == null && allRecordList == null && allTagList == null
+          ? const Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            )
+          : allGameList!.isEmpty
+              ? const InitialGameRegistrationView()
+              : const BottomNavigationView(),
+    );
   }
 }
