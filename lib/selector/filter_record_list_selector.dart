@@ -95,8 +95,12 @@ class FilterRecordListController {
     return double.parse((win.toDouble() / matches.toDouble() * 100).toStringAsFixed(1));
   }
 
-  int countDeckMatches(Deck deck) {
+  int countUseDeckMatches(Deck deck) {
     return read(filterRecordListProvider).where((record) => record.useDeckId == deck.deckId).length;
+  }
+
+  int countOpponentDeckMatches2(Deck deck) {
+    return read(filterRecordListProvider).where((record) => record.opponentDeckId == deck.deckId).length;
   }
 
   int countOpponentDeckMatches(Deck useDeck, Deck opponentDeck) {
@@ -150,13 +154,17 @@ class FilterRecordListController {
     return recordList.where((record) => record.winLoss == WinLoss.loss).length;
   }
 
-  double calcDeckUseRate(Deck useDeck) {
-    return countDeckMatches(useDeck) / countMatches();
+  double calcUseDeckUseRate(Deck useDeck) {
+    return countUseDeckMatches(useDeck) / countMatches();
+  }
+
+  double calcOpponentDeckUseRate(Deck useDeck) {
+    return countOpponentDeckMatches2(useDeck) / countMatches();
   }
 
   double calcUseDeckWinRate(Deck deck) {
     final win = countUseDeckWins(deck);
-    final matches = countDeckMatches(deck);
+    final matches = countUseDeckMatches(deck);
     return double.parse((win.toDouble() / matches.toDouble() * 100).toStringAsFixed(1));
   }
 

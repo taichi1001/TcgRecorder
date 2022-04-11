@@ -48,7 +48,7 @@ class GameWinRateDataSource extends DataGridSource {
         (dataGridCell) {
           return Center(
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 8),
               child: _buildChild(dataGridCell),
             ),
           );
@@ -63,6 +63,11 @@ class GameWinRateDataSource extends DataGridSource {
         return Text(cell.value.toString());
       } else {
         return TextButton(
+          style: ButtonStyle(
+            padding: MaterialStateProperty.all(EdgeInsets.zero),
+            minimumSize: MaterialStateProperty.all(Size.zero),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          ),
           onPressed: () {
             Navigator.push(
               context,
@@ -82,13 +87,20 @@ class GameWinRateDataSource extends DataGridSource {
           child: Text(
             cell.value.toString(),
             maxLines: 2,
-            style: const TextStyle(
-              decoration: TextDecoration.underline,
-              fontSize: 12,
-              overflow: TextOverflow.ellipsis,
-              leadingDistribution: TextLeadingDistribution.even,
-              height: 1,
-            ),
+            style: Theme.of(context).textTheme.caption?.copyWith(
+                  fontSize: 10,
+                  decoration: TextDecoration.underline,
+                  overflow: TextOverflow.ellipsis,
+                  leadingDistribution: TextLeadingDistribution.even,
+                  height: 1,
+                ),
+            // style: const TextStyle(
+            //   decoration: TextDecoration.underline,
+            //   fontSize: 12,
+            //   overflow: TextOverflow.ellipsis,
+            //   leadingDistribution: TextLeadingDistribution.even,
+            //   height: 1,
+            // ),
           ),
         );
       }

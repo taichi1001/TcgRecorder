@@ -6,7 +6,8 @@ import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import 'package:tcg_manager/entity/win_rate_data.dart';
 import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/provider/game_win_rate_data_provider.dart';
-import 'package:tcg_manager/selector/game_record_list_selector.dart';
+import 'package:tcg_manager/provider/opponent_deck_data_by_game_provider.dart';
+import 'package:tcg_manager/selector/filter_record_list_selector.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
 import 'package:tcg_manager/view/component/custom_scaffold.dart';
 import 'package:tcg_manager/view/filter_modal_bottom_sheet.dart';
@@ -17,8 +18,9 @@ class GraphView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final recordList = ref.watch(gameRecordListProvider);
-    final data = ref.watch(gameWinRateDataNotifierProvider).winRateDataList;
+    final recordList = ref.watch(filterRecordListProvider);
+    final useDeckData = ref.watch(gameWinRateDataNotifierProvider).winRateDataList;
+    final opponentDeckData = ref.watch(opponentDeckDataByGameProvider);
     return DefaultTabController(
       length: 2,
       child: CustomScaffold(
@@ -43,14 +45,10 @@ class GraphView extends HookConsumerWidget {
           ),
           tabs: const [
             Tab(
-              icon: Icon(
-                Icons.table_rows,
-              ),
+              icon: Icon(Icons.table_rows),
             ),
             Tab(
-              icon: Icon(
-                Icons.pie_chart_outline,
-              ),
+              icon: Icon(Icons.pie_chart_outline),
             )
           ],
         ),
@@ -66,31 +64,95 @@ class GraphView extends HookConsumerWidget {
                       ],
                     ),
             ),
-            recordList.isEmpty
-                ? Center(child: Text(S.of(context).noDataMessage))
-                : Column(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          children: [
-                            SfCircularChart(
-                              legend: Legend(
-                                isVisible: true,
-                              ),
-                              series: [
-                                PieSeries<WinRateData, String>(
-                                  dataSource: data,
-                                  xValueMapper: (data, index) => data.deck,
-                                  yValueMapper: (data, index) => data.useRate,
+            Center(
+              child: recordList.isEmpty
+                  ? Text(S.of(context).noDataMessage)
+                  : Column(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
+                                child: _UseRateChart(
+                                  data: useDeckData!,
+                                  title: '使用デッキ分布',
                                 ),
-                              ],
-                            ),
-                          ],
+                              ),
+                              const SizedBox(height: 16),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+                                child: _UseRateChart(
+                                  data: opponentDeckData,
+                                  title: '対戦デッキ分布',
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      const AdaptiveBannerAd(),
-                    ],
-                  ),
+                        const AdaptiveBannerAd(),
+                      ],
+                    ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _UseRateChart extends StatelessWidget {
+  const _UseRateChart({
+    required this.data,
+    required this.title,
+    key,
+  }) : super(key: key);
+
+  final List<WinRateData> data;
+  final String title;
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: EdgeInsets.zero,
+      child: SizedBox(
+        height: 210,
+        child: SfCircularChart(
+          margin: const EdgeInsets.all(0),
+          onLegendItemRender: (args) {
+            if (args.text == 'Others') {
+              args.text = 'その他';
+            }
+          },
+          legend: Legend(
+            width: '30%',
+            isVisible: true,
+            itemPadding: 8,
+            overflowMode: LegendItemOverflowMode.scroll,
+            textStyle: Theme.of(context).textTheme.caption?.copyWith(fontSize: 10),
+          ),
+          annotations: [
+            CircularChartAnnotation(
+              widget: Text(
+                title,
+                style: Theme.of(context).textTheme.overline?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+            ),
+          ],
+          series: [
+            DoughnutSeries<WinRateData, String>(
+              dataSource: data,
+              animationDuration: 0,
+              sortingOrder: SortingOrder.descending,
+              enableTooltip: true,
+              sortFieldValueMapper: (data, index) => data.useRate.toString(),
+              xValueMapper: (data, index) => data.deck,
+              yValueMapper: (data, index) => data.useRate,
+              groupMode: CircularChartGroupMode.point,
+              groupTo: 5,
+              innerRadius: '60%',
+            ),
           ],
         ),
       ),

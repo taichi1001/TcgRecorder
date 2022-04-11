@@ -12,7 +12,6 @@ import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/selector/marged_record_list_selector.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
 import 'package:tcg_manager/view/component/custom_scaffold.dart';
-import 'package:tcg_manager/view/component/fade_page_route.dart';
 import 'package:tcg_manager/view/filter_modal_bottom_sheet.dart';
 import 'package:tcg_manager/view/record_detail_view.dart';
 
@@ -178,7 +177,7 @@ class _BrandListTile extends HookConsumerWidget {
       onTap: () async {
         await Navigator.push(
           context,
-          FadePageRoute(
+          MaterialPageRoute(
             fullscreenDialog: true,
             builder: (context) => ProviderScope(
               overrides: [currentRecord.overrideWithValue(record)],

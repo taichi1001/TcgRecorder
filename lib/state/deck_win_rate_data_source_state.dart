@@ -44,7 +44,7 @@ class DeckWinRateDataSource extends DataGridSource {
         (dataGridCell) {
           return Center(
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 8),
               child: _buildChild(dataGridCell),
             ),
           );
