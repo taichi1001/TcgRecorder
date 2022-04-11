@@ -144,8 +144,9 @@ class _UseRateChart extends StatelessWidget {
           onTooltipRender: (args) {
             // args.textの中身は test : 0.333 みたいな形で入ってる
             final reg = RegExp('^.* '); // test : を抽出する正規表現
-            final firstString = reg.firstMatch(args.text!)!.group(0)!;
+            var firstString = reg.firstMatch(args.text!)!.group(0)!;
             final secondString = args.text!.replaceAll(firstString, '');
+            if (firstString.contains('Others')) firstString = 'その他 : ';
             final doubleArgs = double.parse(secondString);
             args.text = firstString + (doubleArgs * 100).toStringAsFixed(1) + '%';
           },
