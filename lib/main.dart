@@ -131,7 +131,7 @@ class MainApp extends HookConsumerWidget {
       ),
       // If you do not have a themeMode switch, uncomment this line
       // to let the device system mode control the theme mode:
-      themeMode: ThemeMode.dark,
+      themeMode: ThemeMode.system,
 
       home: allGameList == null && allDeckList == null && allRecordList == null && allTagList == null
           ? const Scaffold(

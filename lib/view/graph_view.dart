@@ -12,6 +12,7 @@ import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
 import 'package:tcg_manager/view/component/custom_scaffold.dart';
 import 'package:tcg_manager/view/filter_modal_bottom_sheet.dart';
 import 'package:tcg_manager/view/game_data_grid.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class GraphView extends HookConsumerWidget {
   const GraphView({Key? key}) : super(key: key);
@@ -115,7 +116,7 @@ class _UseRateChart extends StatelessWidget {
     return Card(
       margin: EdgeInsets.zero,
       child: SizedBox(
-        height: 210,
+        height: 250.h,
         child: SfCircularChart(
           margin: const EdgeInsets.all(0),
           onLegendItemRender: (args) {
@@ -140,6 +141,15 @@ class _UseRateChart extends StatelessWidget {
               ),
             ),
           ],
+          onTooltipRender: (args) {
+            // args.textの中身は test : 0.333 みたいな形で入ってる
+            final reg = RegExp('^.* '); // test : を抽出する正規表現
+            final firstString = reg.firstMatch(args.text!)!.group(0)!;
+            final secondString = args.text!.replaceAll(firstString, '');
+            final doubleArgs = double.parse(secondString);
+            args.text = firstString + (doubleArgs * 100).toStringAsFixed(1) + '%';
+          },
+          tooltipBehavior: TooltipBehavior(enable: true),
           series: [
             DoughnutSeries<WinRateData, String>(
               dataSource: data,

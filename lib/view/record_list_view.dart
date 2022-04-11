@@ -44,42 +44,45 @@ class RecordListView extends HookConsumerWidget {
                     ? const Center(
                         child: CircularProgressIndicator(),
                       )
-                    : ListView.separated(
-                        separatorBuilder: (context, index) => const SizedBox(height: 8, child: Divider(height: 1)),
-                        itemCount: recordList.length,
-                        itemBuilder: (context, index) {
-                          return ProviderScope(
-                            overrides: [
-                              currentRecord.overrideWithValue(recordList[index]),
-                            ],
-                            child: Dismissible(
-                              direction: DismissDirection.endToStart,
-                              background: Container(
-                                color: Colors.red,
-                                child: const Icon(
-                                  Icons.delete,
+                    : Padding(
+                        padding: const EdgeInsets.only(top: 8),
+                        child: ListView.separated(
+                            separatorBuilder: (context, index) => const SizedBox(height: 8, child: Divider(height: 1)),
+                            itemCount: recordList.length,
+                            itemBuilder: (context, index) {
+                              return ProviderScope(
+                                overrides: [
+                                  currentRecord.overrideWithValue(recordList[index]),
+                                ],
+                                child: Dismissible(
+                                  direction: DismissDirection.endToStart,
+                                  background: Container(
+                                    color: Colors.red,
+                                    child: const Icon(
+                                      Icons.delete,
+                                    ),
+                                  ),
+                                  confirmDismiss: (direction) async {
+                                    final okCancelResult = await showOkCancelAlertDialog(
+                                      context: context,
+                                      message: S.of(context).deleteMessage,
+                                      isDestructiveAction: true,
+                                    );
+                                    if (okCancelResult == OkCancelResult.ok) {
+                                      return true;
+                                    } else {
+                                      return false;
+                                    }
+                                  },
+                                  onDismissed: (direction) async {
+                                    await recordListNotifier.delete(recordList[index].recordId);
+                                  },
+                                  key: UniqueKey(),
+                                  child: const _BrandListTile(),
                                 ),
-                              ),
-                              confirmDismiss: (direction) async {
-                                final okCancelResult = await showOkCancelAlertDialog(
-                                  context: context,
-                                  message: S.of(context).deleteMessage,
-                                  isDestructiveAction: true,
-                                );
-                                if (okCancelResult == OkCancelResult.ok) {
-                                  return true;
-                                } else {
-                                  return false;
-                                }
-                              },
-                              onDismissed: (direction) async {
-                                await recordListNotifier.delete(recordList[index].recordId);
-                              },
-                              key: UniqueKey(),
-                              child: const _BrandListTile(),
-                            ),
-                          );
-                        }),
+                              );
+                            }),
+                      ),
           ),
         ),
         const AdaptiveBannerAd(),
