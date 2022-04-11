@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:tcg_manager/view/component/custom_modal_picker.dart';
 
 class CustomModalListPicker extends StatelessWidget {
@@ -19,10 +20,13 @@ class CustomModalListPicker extends StatelessWidget {
     return CustomModalPicker(
       submitedAction: submited,
       actionButton: actionButton,
-      child: CupertinoPicker(
-        itemExtent: 40,
-        onSelectedItemChanged: onSelectedItemChanged,
-        children: children,
+      child: CupertinoTheme(
+        data: CupertinoThemeData(brightness: Theme.of(context).brightness),
+        child: CupertinoPicker(
+          itemExtent: 40,
+          onSelectedItemChanged: onSelectedItemChanged,
+          children: children,
+        ),
       ),
     );
   }

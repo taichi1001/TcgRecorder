@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:tcg_manager/view/component/custom_modal_picker.dart';
 
@@ -15,12 +16,15 @@ class CustomModalDatePicker extends HookWidget {
   Widget build(BuildContext context) {
     return CustomModalPicker(
       submitedAction: submited,
-      child: CupertinoDatePicker(
-        mode: CupertinoDatePickerMode.date,
-        initialDateTime: DateTime.now(),
-        maximumDate: DateTime.now(),
-        minimumYear: 2000,
-        onDateTimeChanged: onDateTimeChanged,
+      child: CupertinoTheme(
+        data: CupertinoThemeData(brightness: Theme.of(context).brightness),
+        child: CupertinoDatePicker(
+          mode: CupertinoDatePickerMode.date,
+          initialDateTime: DateTime.now(),
+          maximumDate: DateTime.now(),
+          minimumYear: 2000,
+          onDateTimeChanged: onDateTimeChanged,
+        ),
       ),
     );
   }
