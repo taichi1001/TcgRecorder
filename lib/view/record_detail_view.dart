@@ -1,3 +1,4 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -28,37 +29,52 @@ class RecordDetailView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isEdit = ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.isEdit));
     final recordDetailNotifier = ref.watch(recordDetailNotifierProvider(margedRecord).notifier);
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: false,
-        elevation: 0.0,
-        title: Text(
-          isEdit ? S.of(context).editButton : '',
-          style: const TextStyle(
-            fontSize: 30,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        actions: [
-          CupertinoButton(
-            child: Text(
-              isEdit ? S.of(context).submit : S.of(context).editButton,
-              style: Theme.of(context).primaryTextTheme.bodyText1,
+    return WillPopScope(
+      onWillPop: (() async {
+        if (isEdit) {
+          final okCancelResult = await showOkCancelAlertDialog(
+            context: context,
+            message: '編集中の内容が保存されませんが戻ってもよろしいですか？',
+            isDestructiveAction: true,
+          );
+          if (okCancelResult == OkCancelResult.ok) return true;
+          return false;
+        } else {
+          return true;
+        }
+      }),
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: false,
+          elevation: 0.0,
+          title: Text(
+            isEdit ? S.of(context).editButton : '',
+            style: const TextStyle(
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
             ),
-            onPressed: isEdit
-                ? () {
-                    recordDetailNotifier.saveEdit();
-                    recordDetailNotifier.changeIsEdit();
-                  }
-                : () {
-                    recordDetailNotifier.changeIsEdit();
-                  },
           ),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 0),
-        child: isEdit ? _EditView(margedRecord: margedRecord) : _DetailView(margedRecord: margedRecord),
+          actions: [
+            CupertinoButton(
+              child: Text(
+                isEdit ? S.of(context).submit : S.of(context).editButton,
+                style: Theme.of(context).primaryTextTheme.bodyText1,
+              ),
+              onPressed: isEdit
+                  ? () {
+                      recordDetailNotifier.saveEdit();
+                      recordDetailNotifier.changeIsEdit();
+                    }
+                  : () {
+                      recordDetailNotifier.changeIsEdit();
+                    },
+            ),
+          ],
+        ),
+        body: Padding(
+          padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 0),
+          child: isEdit ? _EditView(margedRecord: margedRecord) : _DetailView(margedRecord: margedRecord),
+        ),
       ),
     );
   }
