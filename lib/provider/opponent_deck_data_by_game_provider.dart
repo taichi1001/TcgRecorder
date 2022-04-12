@@ -9,6 +9,7 @@ final opponentDeckDataByGameProvider = StateProvider.autoDispose<List<WinRateDat
     final filterRecordListNotifier = ref.read(filterRecordListController);
     final filterRecordList = ref.watch(filterRecordListProvider);
     final gameDeckList = ref.watch(gameDeckListProvider);
+
     final List<Deck> opponentDeckList = [];
     for (final deck in gameDeckList) {
       for (final record in filterRecordList) {

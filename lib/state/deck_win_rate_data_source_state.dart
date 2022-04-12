@@ -1,16 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:tcg_manager/entity/win_rate_data.dart';
-
-part 'deck_win_rate_data_source_state.freezed.dart';
-
-@freezed
-abstract class DeckWinRateDataSourceState with _$DeckWinRateDataSourceState {
-  factory DeckWinRateDataSourceState({
-    DeckWinRateDataSource? deckWinRateDataSource,
-  }) = _DeckWinRateDataSourceState;
-}
 
 class DeckWinRateDataSource extends DataGridSource {
   DeckWinRateDataSource({

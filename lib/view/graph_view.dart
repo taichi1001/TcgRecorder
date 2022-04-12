@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import 'package:tcg_manager/entity/win_rate_data.dart';
 import 'package:tcg_manager/generated/l10n.dart';
-import 'package:tcg_manager/provider/game_win_rate_data_provider.dart';
 import 'package:tcg_manager/provider/opponent_deck_data_by_game_provider.dart';
+import 'package:tcg_manager/provider/use_deck_data_by_game_provider.dart';
 import 'package:tcg_manager/selector/filter_record_list_selector.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
 import 'package:tcg_manager/view/component/custom_scaffold.dart';
 import 'package:tcg_manager/view/filter_modal_bottom_sheet.dart';
 import 'package:tcg_manager/view/game_data_grid.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class GraphView extends HookConsumerWidget {
   const GraphView({Key? key}) : super(key: key);
@@ -20,7 +20,7 @@ class GraphView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final recordList = ref.watch(filterRecordListProvider);
-    final useDeckData = ref.watch(gameWinRateDataNotifierProvider).winRateDataList;
+    final useDeckData = ref.watch(useDeckDataByGameProvider);
     final opponentDeckData = ref.watch(opponentDeckDataByGameProvider);
     return DefaultTabController(
       length: 2,
@@ -76,7 +76,7 @@ class GraphView extends HookConsumerWidget {
                               Padding(
                                 padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
                                 child: _UseRateChart(
-                                  data: useDeckData!,
+                                  data: useDeckData,
                                   title: '使用デッキ分布',
                                 ),
                               ),

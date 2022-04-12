@@ -10,95 +10,91 @@ class GameDataGrid extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final source = ref.watch(gameWinRateDataSourceNotifierProvider(context)).gameWinRateDataSource;
-    return source == null
-        ? const Center(
-            child: CircularProgressIndicator(),
-          )
-        : SfDataGridTheme(
-            data: SfDataGridThemeData(
-              frozenPaneElevation: 0,
-              frozenPaneLineWidth: 1.5,
+    final source = ref.watch(gameWinRateDataSourceProvider(context));
+    return SfDataGridTheme(
+      data: SfDataGridThemeData(
+        frozenPaneElevation: 0,
+        frozenPaneLineWidth: 1.5,
+      ),
+      child: SfDataGrid(
+        source: source,
+        frozenColumnsCount: 1,
+        footerFrozenRowsCount: 1,
+        verticalScrollPhysics: const ClampingScrollPhysics(),
+        horizontalScrollPhysics: const ClampingScrollPhysics(),
+        columns: [
+          GridColumn(
+            columnName: 'デッキ名',
+            label: Center(
+              child: Text(
+                S.of(context).tableDeckName,
+                style: const TextStyle(),
+              ),
             ),
-            child: SfDataGrid(
-              source: source,
-              frozenColumnsCount: 1,
-              footerFrozenRowsCount: 1,
-              verticalScrollPhysics: const ClampingScrollPhysics(),
-              horizontalScrollPhysics: const ClampingScrollPhysics(),
-              columns: [
-                GridColumn(
-                  columnName: 'デッキ名',
-                  label: Center(
-                    child: Text(
-                      S.of(context).tableDeckName,
-                      style: const TextStyle(),
-                    ),
-                  ),
-                  width: 100,
-                ),
-                GridColumn(
-                  columnName: '試合数',
-                  label: Center(
-                    child: Text(
-                      S.of(context).tableGames,
-                      style: const TextStyle(),
-                    ),
-                  ),
-                  width: 75,
-                ),
-                GridColumn(
-                  columnName: '勝',
-                  label: Center(
-                    child: Text(
-                      S.of(context).tableWin,
-                      style: const TextStyle(),
-                    ),
-                  ),
-                  width: 60,
-                ),
-                GridColumn(
-                  columnName: '負',
-                  label: Center(
-                    child: Text(
-                      S.of(context).tableLoss,
-                      style: const TextStyle(),
-                    ),
-                  ),
-                  width: 60,
-                ),
-                GridColumn(
-                  columnName: '勝率',
-                  label: Center(
-                    child: Text(
-                      S.of(context).tableWinRate,
-                      style: const TextStyle(),
-                    ),
-                  ),
-                  width: 85,
-                ),
-                GridColumn(
-                  columnName: '先攻勝率',
-                  label: Center(
-                    child: Text(
-                      S.of(context).tableFirstWinRate,
-                      style: const TextStyle(),
-                    ),
-                  ),
-                  width: 85,
-                ),
-                GridColumn(
-                  columnName: '後攻勝率',
-                  label: Center(
-                    child: Text(
-                      S.of(context).tableSecondWinRate,
-                      style: const TextStyle(),
-                    ),
-                  ),
-                  width: 85,
-                ),
-              ],
+            width: 100,
+          ),
+          GridColumn(
+            columnName: '試合数',
+            label: Center(
+              child: Text(
+                S.of(context).tableGames,
+                style: const TextStyle(),
+              ),
             ),
-          );
+            width: 75,
+          ),
+          GridColumn(
+            columnName: '勝',
+            label: Center(
+              child: Text(
+                S.of(context).tableWin,
+                style: const TextStyle(),
+              ),
+            ),
+            width: 60,
+          ),
+          GridColumn(
+            columnName: '負',
+            label: Center(
+              child: Text(
+                S.of(context).tableLoss,
+                style: const TextStyle(),
+              ),
+            ),
+            width: 60,
+          ),
+          GridColumn(
+            columnName: '勝率',
+            label: Center(
+              child: Text(
+                S.of(context).tableWinRate,
+                style: const TextStyle(),
+              ),
+            ),
+            width: 85,
+          ),
+          GridColumn(
+            columnName: '先攻勝率',
+            label: Center(
+              child: Text(
+                S.of(context).tableFirstWinRate,
+                style: const TextStyle(),
+              ),
+            ),
+            width: 85,
+          ),
+          GridColumn(
+            columnName: '後攻勝率',
+            label: Center(
+              child: Text(
+                S.of(context).tableSecondWinRate,
+                style: const TextStyle(),
+              ),
+            ),
+            width: 85,
+          ),
+        ],
+      ),
+    );
   }
 }

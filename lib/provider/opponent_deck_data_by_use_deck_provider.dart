@@ -3,19 +3,8 @@ import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/win_rate_data.dart';
 import 'package:tcg_manager/selector/filter_record_list_selector.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
-import 'package:tcg_manager/state/deck_win_rate_data_state.dart';
 
-class DeckWinRateDataNotifier extends StateNotifier<DeckWinRateDataState> {
-  DeckWinRateDataNotifier(this.read) : super(DeckWinRateDataState());
-
-  final Reader read;
-
-  void setWinRateDataList(List<WinRateData> list) {
-    state = state.copyWith(winRateDataList: list);
-  }
-}
-
-final deckWinRateDataNotifierProvider = StateNotifierProvider.family.autoDispose<DeckWinRateDataNotifier, DeckWinRateDataState, String>(
+final opponentDeckDataByUseDeckProvider = StateProvider.family.autoDispose<List<WinRateData>, String>(
   (ref, useDeckName) {
     final filterRecordList = ref.watch(filterRecordListProvider);
     final gameDeckList = ref.watch(gameDeckListProvider);
@@ -32,7 +21,7 @@ final deckWinRateDataNotifierProvider = StateNotifierProvider.family.autoDispose
     }
 
     final filterRecordListNotifier = ref.read(filterRecordListController);
-    final winRateData = opponentDeckList.map((opponentDeck) {
+    return opponentDeckList.map((opponentDeck) {
       final deck = opponentDeck.deck;
       final matchs = filterRecordListNotifier.countOpponentDeckMatches(useDeck, opponentDeck);
       final win = filterRecordListNotifier.countOpponentDeckWins(useDeck, opponentDeck);
@@ -50,9 +39,5 @@ final deckWinRateDataNotifierProvider = StateNotifierProvider.family.autoDispose
         winRateOfSecond: winRateOfSecond,
       );
     }).toList();
-
-    final deckDataGridNotifier = DeckWinRateDataNotifier(ref.read);
-    deckDataGridNotifier.setWinRateDataList(winRateData);
-    return deckDataGridNotifier;
   },
 );
