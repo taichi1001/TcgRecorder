@@ -43,6 +43,7 @@ class RecordDetailView extends HookConsumerWidget {
           CupertinoButton(
             child: Text(
               isEdit ? S.of(context).submit : S.of(context).editButton,
+              style: Theme.of(context).primaryTextTheme.bodyText1,
             ),
             onPressed: isEdit
                 ? () {
@@ -139,8 +140,7 @@ class _DetailView extends HookConsumerWidget {
                           margedRecord.winLoss == WinLoss.win ? 'Win' : 'Loss',
                           style: GoogleFonts.bangers(
                             fontSize: 80.sp,
-                            color:
-                                margedRecord.winLoss == WinLoss.win ? const Color(0xFFA21F16) : const Color(0xFF3547AC),
+                            color: margedRecord.winLoss == WinLoss.win ? const Color(0xFFA21F16) : const Color(0xFF3547AC),
                           ),
                         ),
                       ),
@@ -251,14 +251,11 @@ class _EditView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final gameDeck = ref.watch(gameDeckListProvider);
     final gameTag = ref.watch(gameTagListProvider);
-    final editMargedRecord =
-        ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.editMargedRecord));
+    final editMargedRecord = ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.editMargedRecord));
     final recordDetailNotifier = ref.watch(recordDetailNotifierProvider(margedRecord).notifier);
 
-    final firstSecond =
-        ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.editMargedRecord.firstSecond));
-    final winLoss =
-        ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.editMargedRecord.winLoss));
+    final firstSecond = ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.editMargedRecord.firstSecond));
+    final winLoss = ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.editMargedRecord.winLoss));
     final useDeckTextController = useTextEditingController(text: editMargedRecord.useDeck);
     final opponentDeckTextController = useTextEditingController(text: editMargedRecord.opponentDeck);
     final tagTextController = useTextEditingController(text: editMargedRecord.tag);

@@ -163,6 +163,7 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
   }
 
   Future _saveEditTag() async {
+    if (state.margedRecord.tag == null) return;
     // 入力されたタグが新規のものかどうかを判定
     final checkTag = ref.read(editRecordHelper).checkIfSelectedTagIsNew(state.margedRecord.tag!);
 
