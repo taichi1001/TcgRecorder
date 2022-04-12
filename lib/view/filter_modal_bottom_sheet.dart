@@ -82,7 +82,7 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                             ConvertSortString.convert(context, sort),
                             softWrap: false,
                             overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.headline6,
+                            style: Theme.of(context).textTheme.headline6?.copyWith(height: 1.2),
                           ),
                         ),
                       )
@@ -127,8 +127,7 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                               showActionButtons: true,
                               minDate: DateTime(2000, 01, 01),
                               maxDate: DateTime.now(),
-                              initialSelectedRange:
-                                  PickerDateRange(recordListViewState.startDate, recordListViewState.endDate),
+                              initialSelectedRange: PickerDateRange(recordListViewState.startDate, recordListViewState.endDate),
                               onSubmit: (value) {
                                 if (value is PickerDateRange) {
                                   recordListViewNotifier.setStartDate(value.startDate!);
@@ -186,7 +185,7 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                             deck.deck,
                             softWrap: false,
                             overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.headline6,
+                            style: Theme.of(context).textTheme.headline6?.copyWith(height: 1.2),
                           ),
                         ),
                       )
@@ -196,9 +195,7 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        recordListViewState.useDeck == null
-                            ? const Text('全て')
-                            : Text(recordListViewState.useDeck!.deck),
+                        recordListViewState.useDeck == null ? const Text('全て') : Text(recordListViewState.useDeck!.deck),
                         const Icon(Icons.arrow_drop_down),
                       ],
                     ),
@@ -228,7 +225,7 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                             deck.deck,
                             softWrap: false,
                             overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.headline6,
+                            style: Theme.of(context).textTheme.headline6?.copyWith(height: 1.2),
                           ),
                         ),
                       )
@@ -238,9 +235,7 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        recordListViewState.opponentDeck == null
-                            ? const Text('全て')
-                            : Text(recordListViewState.opponentDeck!.deck),
+                        recordListViewState.opponentDeck == null ? const Text('全て') : Text(recordListViewState.opponentDeck!.deck),
                         const Icon(Icons.arrow_drop_down),
                       ],
                     ),
@@ -270,7 +265,7 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                             tag.tag,
                             softWrap: false,
                             overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.headline6,
+                            style: Theme.of(context).textTheme.headline6?.copyWith(height: 1.2),
                           ),
                         ),
                       )
@@ -320,7 +315,7 @@ class _SelectableRow extends StatelessWidget {
             '全て',
             softWrap: false,
             overflow: TextOverflow.ellipsis,
-            style: Theme.of(context).textTheme.headline6,
+            style: Theme.of(context).textTheme.headline6?.copyWith(height: 1.2),
           ),
         ),
       );
