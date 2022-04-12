@@ -122,30 +122,31 @@ class _BrandListTile extends HookConsumerWidget {
       ),
       subtitle: Text(
         outputFormat.format(record.date),
-        style: const TextStyle(fontSize: 14),
+        style: Theme.of(context).textTheme.overline,
       ),
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Text(
                 S.of(context).listUseDeck,
-                style: const TextStyle(
-                  fontSize: 12,
-                  leadingDistribution: TextLeadingDistribution.even,
-                  height: 1,
-                ),
+                style: Theme.of(context).textTheme.overline?.copyWith(
+                      leadingDistribution: TextLeadingDistribution.even,
+                      height: 1,
+                    ),
               ),
               const SizedBox(width: 4),
-              Text(
-                record.useDeck,
-                softWrap: false,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  fontSize: 15,
-                  leadingDistribution: TextLeadingDistribution.even,
-                  height: 1,
+              Flexible(
+                child: Text(
+                  record.useDeck,
+                  softWrap: false,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                        leadingDistribution: TextLeadingDistribution.even,
+                        height: 1,
+                      ),
                 ),
               ),
             ],
@@ -155,21 +156,21 @@ class _BrandListTile extends HookConsumerWidget {
             children: [
               Text(
                 S.of(context).listOpponentDeck,
-                style: const TextStyle(
-                  fontSize: 12,
-                  leadingDistribution: TextLeadingDistribution.even,
-                  height: 1,
-                ),
+                style: Theme.of(context).textTheme.overline?.copyWith(
+                      leadingDistribution: TextLeadingDistribution.even,
+                      height: 1,
+                    ),
               ),
               const SizedBox(width: 4),
-              Text(
-                record.opponentDeck,
-                softWrap: false,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  fontSize: 15,
-                  leadingDistribution: TextLeadingDistribution.even,
-                  height: 1,
+              Flexible(
+                child: Text(
+                  record.opponentDeck,
+                  softWrap: false,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                        leadingDistribution: TextLeadingDistribution.even,
+                        height: 1,
+                      ),
                 ),
               ),
             ],
