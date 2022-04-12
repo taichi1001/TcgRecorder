@@ -82,7 +82,7 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                             ConvertSortString.convert(context, sort),
                             softWrap: false,
                             overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.headline6?.copyWith(height: 1.2),
+                            style: Theme.of(context).textTheme.headline6?.copyWith(height: 1),
                           ),
                         ),
                       )
@@ -185,7 +185,7 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                             deck.deck,
                             softWrap: false,
                             overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.headline6?.copyWith(height: 1.2),
+                            style: Theme.of(context).textTheme.headline6?.copyWith(height: 1),
                           ),
                         ),
                       )
@@ -225,7 +225,7 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                             deck.deck,
                             softWrap: false,
                             overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.headline6?.copyWith(height: 1.2),
+                            style: Theme.of(context).textTheme.headline6?.copyWith(height: 1),
                           ),
                         ),
                       )
@@ -265,7 +265,7 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                             tag.tag,
                             softWrap: false,
                             overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.headline6?.copyWith(height: 1.2),
+                            style: Theme.of(context).textTheme.headline6?.copyWith(height: 1),
                           ),
                         ),
                       )
@@ -315,7 +315,7 @@ class _SelectableRow extends StatelessWidget {
             '全て',
             softWrap: false,
             overflow: TextOverflow.ellipsis,
-            style: Theme.of(context).textTheme.headline6?.copyWith(height: 1.2),
+            style: Theme.of(context).textTheme.headline6?.copyWith(height: 1),
           ),
         ),
       );

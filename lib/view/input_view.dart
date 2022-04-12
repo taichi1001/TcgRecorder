@@ -161,7 +161,7 @@ class InputView extends HookConsumerWidget {
                                                 deck.deck,
                                                 softWrap: false,
                                                 overflow: TextOverflow.ellipsis,
-                                                style: Theme.of(context).textTheme.headline6?.copyWith(height: 1.2),
+                                                style: Theme.of(context).textTheme.headline6?.copyWith(height: 1),
                                               ),
                                             ))
                                         .toList(),
@@ -187,7 +187,7 @@ class InputView extends HookConsumerWidget {
                                                 deck.deck,
                                                 softWrap: false,
                                                 overflow: TextOverflow.ellipsis,
-                                                style: Theme.of(context).textTheme.headline6?.copyWith(height: 1.2),
+                                                style: Theme.of(context).textTheme.headline6?.copyWith(height: 1),
                                               ),
                                             ))
                                         .toList(),
@@ -213,7 +213,7 @@ class InputView extends HookConsumerWidget {
                                                 tag.tag,
                                                 softWrap: false,
                                                 overflow: TextOverflow.ellipsis,
-                                                style: Theme.of(context).textTheme.headline6?.copyWith(height: 1.2),
+                                                style: Theme.of(context).textTheme.headline6?.copyWith(height: 1),
                                               ),
                                             ))
                                         .toList(),
