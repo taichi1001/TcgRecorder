@@ -40,9 +40,10 @@ final useDeckDataByGameProvider = StateProvider.autoDispose<List<WinRateData>>(
 final totalAddedtToUseDeckDataByGameProvider = StateProvider.autoDispose<List<WinRateData>>(
   (ref) {
     final useDeckDataByGame = ref.watch(useDeckDataByGameProvider);
+    final copyUseDeckDataByGame = [...useDeckDataByGame];
     final filterRecordListNotifier = ref.read(filterRecordListController);
 
-    useDeckDataByGame.add(
+    copyUseDeckDataByGame.add(
       WinRateData(
         deck: '合計',
         matches: filterRecordListNotifier.countMatches(),
@@ -53,6 +54,6 @@ final totalAddedtToUseDeckDataByGameProvider = StateProvider.autoDispose<List<Wi
         winRateOfSecond: filterRecordListNotifier.calcWinRateOfSecond(),
       ),
     );
-    return useDeckDataByGame;
+    return copyUseDeckDataByGame;
   },
 );
