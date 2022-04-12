@@ -302,209 +302,202 @@ class _EditView extends HookConsumerWidget {
       return;
     }, [editMargedRecord.memo]);
 
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
-            child: Text(
-              S.of(context).date,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                leadingDistribution: TextLeadingDistribution.even,
-                height: 1,
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 8),
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      outputFormat.format(editMargedRecord.date),
+                    ),
+                    _DatePickerButton(
+                      submited: recordDetailNotifier.setDate,
+                      onDateTimeChanged: recordDetailNotifier.scrollDate,
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                outputFormat.format(editMargedRecord.date),
-              ),
-              _DatePickerButton(
-                submited: recordDetailNotifier.setDate,
-                onDateTimeChanged: recordDetailNotifier.scrollDate,
-              ),
-            ],
-          ),
-          Text(
-            S.of(context).deck,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              leadingDistribution: TextLeadingDistribution.even,
-              height: 1,
-            ),
-          ),
-          Stack(
-            alignment: Alignment.centerRight,
-            children: [
-              CustomTextField(
-                labelText: S.of(context).useDeck,
-                onChanged: recordDetailNotifier.editUseDeck,
-                controller: useDeckTextController,
-              ),
-              _ListPickerButton(
-                submited: recordDetailNotifier.setUseDeck,
-                onSelectedItemChanged: recordDetailNotifier.scrollUseDeck,
-                children: gameDeck
-                    .map((deck) => Padding(
-                          padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                          child: Text(
-                            deck.deck,
-                            softWrap: false,
-                            overflow: TextOverflow.ellipsis,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  width: 195.w,
+                  child: Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        children: [
+                          RadioListTile(
+                            title: Text(S.of(context).first),
+                            value: FirstSecond.first,
+                            groupValue: firstSecond,
+                            onChanged: (FirstSecond? value) {
+                              if (value != null) {
+                                recordDetailNotifier.editFirstSecond(value);
+                              }
+                            },
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                            dense: true,
                           ),
-                        ))
-                    .toList(),
-              ),
-            ],
-          ),
-          Stack(
-            alignment: Alignment.centerRight,
-            children: [
-              CustomTextField(
-                labelText: S.of(context).opponentDeck,
-                onChanged: recordDetailNotifier.editOpponentDeck,
-                controller: opponentDeckTextController,
-              ),
-              _ListPickerButton(
-                submited: recordDetailNotifier.setOpponentDeck,
-                onSelectedItemChanged: recordDetailNotifier.scrollOpponentDeck,
-                children: gameDeck
-                    .map((deck) => Padding(
-                          padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                          child: Text(
-                            deck.deck,
-                            softWrap: false,
-                            overflow: TextOverflow.ellipsis,
+                          RadioListTile(
+                            title: Text(S.of(context).second),
+                            value: FirstSecond.second,
+                            groupValue: firstSecond,
+                            onChanged: (FirstSecond? value) {
+                              if (value != null) {
+                                recordDetailNotifier.editFirstSecond(value);
+                              }
+                            },
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                            dense: true,
                           ),
-                        ))
-                    .toList(),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          Text(
-            S.of(context).tag,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              leadingDistribution: TextLeadingDistribution.even,
-              height: 1,
-            ),
-          ),
-          Stack(
-            alignment: Alignment.centerRight,
-            children: [
-              CustomTextField(
-                labelText: S.of(context).tag,
-                onChanged: recordDetailNotifier.editTag,
-                controller: tagTextController,
-              ),
-              _ListPickerButton(
-                submited: recordDetailNotifier.setTag,
-                onSelectedItemChanged: recordDetailNotifier.scrollTag,
-                children: gameTag
-                    .map((tag) => Padding(
-                          padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                          child: Text(
-                            tag.tag,
-                            softWrap: false,
-                            overflow: TextOverflow.ellipsis,
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 195.w,
+                  child: Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        children: [
+                          RadioListTile(
+                            title: Text(S.of(context).win),
+                            value: WinLoss.win,
+                            groupValue: winLoss,
+                            onChanged: (WinLoss? value) {
+                              if (value != null) {
+                                recordDetailNotifier.editWinLoss(value);
+                              }
+                            },
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                            dense: true,
                           ),
-                        ))
-                    .toList(),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
-            child: Text(
-              S.of(context).order,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                leadingDistribution: TextLeadingDistribution.even,
-                height: 1,
+                          RadioListTile(
+                            title: Text(S.of(context).loss),
+                            value: WinLoss.loss,
+                            groupValue: winLoss,
+                            onChanged: (WinLoss? value) {
+                              if (value != null) {
+                                recordDetailNotifier.editWinLoss(value);
+                              }
+                            },
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                            dense: true,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 32, 16, 32),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Stack(
+                      alignment: Alignment.centerRight,
+                      children: [
+                        CustomTextField(
+                          labelText: S.of(context).useDeck,
+                          onChanged: recordDetailNotifier.editUseDeck,
+                          controller: useDeckTextController,
+                        ),
+                        _ListPickerButton(
+                          submited: recordDetailNotifier.setUseDeck,
+                          onSelectedItemChanged: recordDetailNotifier.scrollUseDeck,
+                          children: gameDeck
+                              .map((deck) => Padding(
+                                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                                    child: Text(
+                                      deck.deck,
+                                      softWrap: false,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ))
+                              .toList(),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    Stack(
+                      alignment: Alignment.centerRight,
+                      children: [
+                        CustomTextField(
+                          labelText: S.of(context).opponentDeck,
+                          onChanged: recordDetailNotifier.editOpponentDeck,
+                          controller: opponentDeckTextController,
+                        ),
+                        _ListPickerButton(
+                          submited: recordDetailNotifier.setOpponentDeck,
+                          onSelectedItemChanged: recordDetailNotifier.scrollOpponentDeck,
+                          children: gameDeck
+                              .map((deck) => Padding(
+                                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                                    child: Text(
+                                      deck.deck,
+                                      softWrap: false,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ))
+                              .toList(),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    Stack(
+                      alignment: Alignment.centerRight,
+                      children: [
+                        CustomTextField(
+                          labelText: S.of(context).tag,
+                          onChanged: recordDetailNotifier.editTag,
+                          controller: tagTextController,
+                        ),
+                        _ListPickerButton(
+                          submited: recordDetailNotifier.setTag,
+                          onSelectedItemChanged: recordDetailNotifier.scrollTag,
+                          children: gameTag
+                              .map((tag) => Padding(
+                                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                                    child: Text(
+                                      tag.tag,
+                                      softWrap: false,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ))
+                              .toList(),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    CustomTextField(
+                      controller: memoTextController,
+                      onChanged: recordDetailNotifier.editMemo,
+                      labelText: S.of(context).memoTag,
+                      keyboardType: TextInputType.multiline,
+                      maxLines: null,
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          RadioListTile(
-            title: Text(S.of(context).first),
-            value: FirstSecond.first,
-            groupValue: firstSecond,
-            onChanged: (FirstSecond? value) {
-              if (value != null) {
-                recordDetailNotifier.editFirstSecond(value);
-              }
-            },
-            contentPadding: const EdgeInsets.symmetric(horizontal: 0),
-            dense: true,
-          ),
-          RadioListTile(
-            title: Text(S.of(context).second),
-            value: FirstSecond.second,
-            groupValue: firstSecond,
-            onChanged: (FirstSecond? value) {
-              if (value != null) {
-                recordDetailNotifier.editFirstSecond(value);
-              }
-            },
-            contentPadding: const EdgeInsets.symmetric(horizontal: 0),
-            dense: true,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
-            child: Text(
-              S.of(context).winOrLoss,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                leadingDistribution: TextLeadingDistribution.even,
-                height: 1,
-              ),
-            ),
-          ),
-          RadioListTile(
-            title: Text(S.of(context).win),
-            value: WinLoss.win,
-            groupValue: winLoss,
-            onChanged: (WinLoss? value) {
-              if (value != null) {
-                recordDetailNotifier.editWinLoss(value);
-              }
-            },
-            contentPadding: const EdgeInsets.symmetric(horizontal: 0),
-            dense: true,
-          ),
-          RadioListTile(
-            title: Text(S.of(context).loss),
-            value: WinLoss.loss,
-            groupValue: winLoss,
-            onChanged: (WinLoss? value) {
-              if (value != null) {
-                recordDetailNotifier.editWinLoss(value);
-              }
-            },
-            contentPadding: const EdgeInsets.symmetric(horizontal: 0),
-            dense: true,
-          ),
-          Text(
-            S.of(context).memo,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              leadingDistribution: TextLeadingDistribution.even,
-              height: 1,
-            ),
-          ),
-          CustomTextField(
-            controller: memoTextController,
-            onChanged: recordDetailNotifier.editMemo,
-            labelText: S.of(context).memoTag,
-            keyboardType: TextInputType.multiline,
-            maxLines: null,
-          ),
-          const SizedBox(height: 48),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -522,6 +515,8 @@ class _DatePickerButton extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return IconButton(
+      padding: const EdgeInsets.all(0),
+      constraints: const BoxConstraints(),
       icon: const Icon(
         Icons.calendar_today_rounded,
         size: 16,
