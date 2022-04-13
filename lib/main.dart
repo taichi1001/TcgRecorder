@@ -13,6 +13,7 @@ import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
+import 'package:tcg_manager/provider/theme_provider.dart';
 import 'package:tcg_manager/view/bottom_navigation_view.dart';
 import 'package:tcg_manager/view/initial_game_registration_view.dart';
 
@@ -52,6 +53,8 @@ class MainApp extends HookConsumerWidget {
     final allDeckList = ref.watch(allDeckListNotifierProvider).allDeckList;
     final allRecordList = ref.watch(allRecordListNotifierProvider).allRecordList;
     final allTagList = ref.watch(allTagListNotifierProvider).allTagList;
+    final scheme = ref.watch(themeNotifierProvider.select((value) => value.scheme));
+    // print(FlexThemeData.light(scheme: FlexScheme.aquaBlue).primaryColor);
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -64,7 +67,7 @@ class MainApp extends HookConsumerWidget {
       ],
       supportedLocales: S.delegate.supportedLocales,
       theme: FlexThemeData.light(
-        scheme: FlexScheme.ebonyClay,
+        scheme: scheme,
         surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
         blendLevel: 9,
         appBarStyle: FlexAppBarStyle.primary,

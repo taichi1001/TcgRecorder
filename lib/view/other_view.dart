@@ -1,4 +1,5 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:launch_review/launch_review.dart';
@@ -10,6 +11,7 @@ import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
+import 'package:tcg_manager/provider/theme_provider.dart';
 import 'package:tcg_manager/view/component/web_view_screen.dart';
 
 class OtherView extends HookConsumerWidget {
@@ -109,6 +111,18 @@ class OtherView extends HookConsumerWidget {
             title: Text(S.of(context).otherSection),
             tiles: [
               SettingsTile(
+                title: const Text('テーマ変更'),
+                leading: const Icon(Icons.palette),
+                onPressed: (context) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const _ThemeChangeView(),
+                    ),
+                  );
+                },
+              ),
+              SettingsTile(
                 title: Text(S.of(context).review),
                 leading: const Icon(Icons.reviews),
                 onPressed: (context) async {
@@ -123,8 +137,7 @@ class OtherView extends HookConsumerWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => const WebViewScreen(
-                        url:
-                            'https://docs.google.com/forms/d/e/1FAIpQLSd5ilK8mF76ZnLIPirTFPo0A5fQucYTMf9uDkdD--SkRbczjA/viewform',
+                        url: 'https://docs.google.com/forms/d/e/1FAIpQLSd5ilK8mF76ZnLIPirTFPo0A5fQucYTMf9uDkdD--SkRbczjA/viewform',
                       ),
                     ),
                   );
@@ -138,8 +151,7 @@ class OtherView extends HookConsumerWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => const WebViewScreen(
-                        url:
-                            'https://phrygian-jellyfish-595.notion.site/Privacy-Policy-057b29da8fb74d76bccd700d80db53e1',
+                        url: 'https://phrygian-jellyfish-595.notion.site/Privacy-Policy-057b29da8fb74d76bccd700d80db53e1',
                       ),
                     ),
                   );
@@ -293,6 +305,26 @@ class _TagListView extends HookConsumerWidget {
                 );
               },
             ),
+    );
+  }
+}
+
+class _ThemeChangeView extends HookConsumerWidget {
+  const _ThemeChangeView({key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themeNotifier = ref.watch(themeNotifierProvider.notifier);
+    return Scaffold(
+      appBar: AppBar(),
+      body: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: FlexScheme.values.length,
+        itemBuilder: ((context, index) => TextButton(
+              onPressed: () => themeNotifier.changeTheme(FlexScheme.values[index]),
+              child: Text(FlexScheme.values[index].name),
+            )),
+      ),
     );
   }
 }
