@@ -277,30 +277,15 @@ class _EditView extends HookConsumerWidget {
     final tagTextController = useTextEditingController(text: editMargedRecord.tag);
     final memoTextController = useTextEditingController(text: editMargedRecord.memo);
     final outputFormat = DateFormat('yyyy年 MM月 dd日');
+    final isSelectPicker = useState(false);
 
-    useEffect(() {
+    if (isSelectPicker.value) {
       useDeckTextController.text = editMargedRecord.useDeck;
-      return;
-    }, [editMargedRecord.useDeck]);
-
-    useEffect(() {
       opponentDeckTextController.text = editMargedRecord.opponentDeck;
-      return;
-    }, [editMargedRecord.opponentDeck]);
-
-    useEffect(() {
-      if (editMargedRecord.tag != null) {
-        tagTextController.text = editMargedRecord.tag!;
-      }
-      return;
-    }, [editMargedRecord.tag]);
-
-    useEffect(() {
-      if (editMargedRecord.memo != null) {
-        memoTextController.text = editMargedRecord.memo!;
-      }
-      return;
-    }, [editMargedRecord.memo]);
+      tagTextController.text = editMargedRecord.tag ?? '';
+      memoTextController.text = editMargedRecord.memo ?? '';
+      isSelectPicker.value = false;
+    }
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -419,7 +404,10 @@ class _EditView extends HookConsumerWidget {
                           controller: useDeckTextController,
                         ),
                         _ListPickerButton(
-                          submited: recordDetailNotifier.setUseDeck,
+                          submited: () {
+                            recordDetailNotifier.setUseDeck();
+                            isSelectPicker.value = true;
+                          },
                           onSelectedItemChanged: recordDetailNotifier.scrollUseDeck,
                           children: gameDeck
                               .map((deck) => Padding(
@@ -428,6 +416,7 @@ class _EditView extends HookConsumerWidget {
                                       deck.deck,
                                       softWrap: false,
                                       overflow: TextOverflow.ellipsis,
+                                      style: Theme.of(context).textTheme.headline6?.copyWith(height: 1),
                                     ),
                                   ))
                               .toList(),
@@ -444,7 +433,10 @@ class _EditView extends HookConsumerWidget {
                           controller: opponentDeckTextController,
                         ),
                         _ListPickerButton(
-                          submited: recordDetailNotifier.setOpponentDeck,
+                          submited: () {
+                            recordDetailNotifier.setOpponentDeck();
+                            isSelectPicker.value = true;
+                          },
                           onSelectedItemChanged: recordDetailNotifier.scrollOpponentDeck,
                           children: gameDeck
                               .map((deck) => Padding(
@@ -453,6 +445,7 @@ class _EditView extends HookConsumerWidget {
                                       deck.deck,
                                       softWrap: false,
                                       overflow: TextOverflow.ellipsis,
+                                      style: Theme.of(context).textTheme.headline6?.copyWith(height: 1),
                                     ),
                                   ))
                               .toList(),
@@ -469,7 +462,10 @@ class _EditView extends HookConsumerWidget {
                           controller: tagTextController,
                         ),
                         _ListPickerButton(
-                          submited: recordDetailNotifier.setTag,
+                          submited: () {
+                            recordDetailNotifier.setTag();
+                            isSelectPicker.value = true;
+                          },
                           onSelectedItemChanged: recordDetailNotifier.scrollTag,
                           children: gameTag
                               .map((tag) => Padding(
@@ -478,6 +474,7 @@ class _EditView extends HookConsumerWidget {
                                       tag.tag,
                                       softWrap: false,
                                       overflow: TextOverflow.ellipsis,
+                                      style: Theme.of(context).textTheme.headline6?.copyWith(height: 1),
                                     ),
                                   ))
                               .toList(),
