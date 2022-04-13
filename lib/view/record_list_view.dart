@@ -132,9 +132,10 @@ class _BrandListTile extends HookConsumerWidget {
             children: [
               Text(
                 S.of(context).listUseDeck,
-                style: Theme.of(context).textTheme.overline?.copyWith(
+                style: Theme.of(context).textTheme.caption?.copyWith(
                       leadingDistribution: TextLeadingDistribution.even,
                       height: 1,
+                      fontSize: 10,
                     ),
               ),
               const SizedBox(width: 4),
@@ -156,9 +157,10 @@ class _BrandListTile extends HookConsumerWidget {
             children: [
               Text(
                 S.of(context).listOpponentDeck,
-                style: Theme.of(context).textTheme.overline?.copyWith(
+                style: Theme.of(context).textTheme.caption?.copyWith(
                       leadingDistribution: TextLeadingDistribution.even,
                       height: 1,
+                      fontSize: 10,
                     ),
               ),
               const SizedBox(width: 4),
