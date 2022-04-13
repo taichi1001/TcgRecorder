@@ -128,6 +128,10 @@ class MainApp extends HookConsumerWidget {
           blendTextTheme: true,
           popupMenuOpacity: 0.95,
         ),
+      ).copyWith(
+        cupertinoOverrideTheme: const CupertinoThemeData(
+          textTheme: CupertinoTextThemeData(),
+        ),
       ),
       // If you do not have a themeMode switch, uncomment this line
       // to let the device system mode control the theme mode:
