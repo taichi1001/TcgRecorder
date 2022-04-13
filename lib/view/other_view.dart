@@ -317,13 +317,20 @@ class _ThemeChangeView extends HookConsumerWidget {
     final themeNotifier = ref.watch(themeNotifierProvider.notifier);
     return Scaffold(
       appBar: AppBar(),
-      body: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: FlexScheme.values.length,
-        itemBuilder: ((context, index) => TextButton(
-              onPressed: () => themeNotifier.changeTheme(FlexScheme.values[index]),
-              child: Text(FlexScheme.values[index].name),
-            )),
+      body: SizedBox(
+        height: 100,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: FlexScheme.values.length - 1, // 最後の要素はカスタムカラーのため取り除く
+          itemBuilder: ((context, index) => ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: FlexThemeData.light(scheme: FlexScheme.values[index]).primaryColor,
+                  shape: const CircleBorder(),
+                ),
+                onPressed: () => themeNotifier.changeTheme(FlexScheme.values[index]),
+                child: const Text(''),
+              )),
+        ),
       ),
     );
   }
