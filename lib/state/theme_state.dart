@@ -7,5 +7,6 @@ part 'theme_state.freezed.dart';
 abstract class ThemeState with _$ThemeState {
   factory ThemeState({
     @Default(FlexScheme.ebonyClay) final FlexScheme scheme,
+    @Default(FlexScheme.ebonyClay) final FlexScheme previewScheme,
   }) = _ThemeState;
 }

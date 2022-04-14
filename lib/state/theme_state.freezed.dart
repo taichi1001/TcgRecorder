@@ -18,9 +18,12 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$ThemeStateTearOff {
   const _$ThemeStateTearOff();
 
-  _ThemeState call({FlexScheme scheme = FlexScheme.ebonyClay}) {
+  _ThemeState call(
+      {FlexScheme scheme = FlexScheme.ebonyClay,
+      FlexScheme previewScheme = FlexScheme.ebonyClay}) {
     return _ThemeState(
       scheme: scheme,
+      previewScheme: previewScheme,
     );
   }
 }
@@ -31,6 +34,7 @@ const $ThemeState = _$ThemeStateTearOff();
 /// @nodoc
 mixin _$ThemeState {
   FlexScheme get scheme => throw _privateConstructorUsedError;
+  FlexScheme get previewScheme => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ThemeStateCopyWith<ThemeState> get copyWith =>
@@ -42,7 +46,7 @@ abstract class $ThemeStateCopyWith<$Res> {
   factory $ThemeStateCopyWith(
           ThemeState value, $Res Function(ThemeState) then) =
       _$ThemeStateCopyWithImpl<$Res>;
-  $Res call({FlexScheme scheme});
+  $Res call({FlexScheme scheme, FlexScheme previewScheme});
 }
 
 /// @nodoc
@@ -56,11 +60,16 @@ class _$ThemeStateCopyWithImpl<$Res> implements $ThemeStateCopyWith<$Res> {
   @override
   $Res call({
     Object? scheme = freezed,
+    Object? previewScheme = freezed,
   }) {
     return _then(_value.copyWith(
       scheme: scheme == freezed
           ? _value.scheme
           : scheme // ignore: cast_nullable_to_non_nullable
+              as FlexScheme,
+      previewScheme: previewScheme == freezed
+          ? _value.previewScheme
+          : previewScheme // ignore: cast_nullable_to_non_nullable
               as FlexScheme,
     ));
   }
@@ -72,7 +81,7 @@ abstract class _$ThemeStateCopyWith<$Res> implements $ThemeStateCopyWith<$Res> {
           _ThemeState value, $Res Function(_ThemeState) then) =
       __$ThemeStateCopyWithImpl<$Res>;
   @override
-  $Res call({FlexScheme scheme});
+  $Res call({FlexScheme scheme, FlexScheme previewScheme});
 }
 
 /// @nodoc
@@ -88,11 +97,16 @@ class __$ThemeStateCopyWithImpl<$Res> extends _$ThemeStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? scheme = freezed,
+    Object? previewScheme = freezed,
   }) {
     return _then(_ThemeState(
       scheme: scheme == freezed
           ? _value.scheme
           : scheme // ignore: cast_nullable_to_non_nullable
+              as FlexScheme,
+      previewScheme: previewScheme == freezed
+          ? _value.previewScheme
+          : previewScheme // ignore: cast_nullable_to_non_nullable
               as FlexScheme,
     ));
   }
@@ -101,15 +115,20 @@ class __$ThemeStateCopyWithImpl<$Res> extends _$ThemeStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_ThemeState implements _ThemeState {
-  _$_ThemeState({this.scheme = FlexScheme.ebonyClay});
+  _$_ThemeState(
+      {this.scheme = FlexScheme.ebonyClay,
+      this.previewScheme = FlexScheme.ebonyClay});
 
   @JsonKey()
   @override
   final FlexScheme scheme;
+  @JsonKey()
+  @override
+  final FlexScheme previewScheme;
 
   @override
   String toString() {
-    return 'ThemeState(scheme: $scheme)';
+    return 'ThemeState(scheme: $scheme, previewScheme: $previewScheme)';
   }
 
   @override
@@ -117,12 +136,16 @@ class _$_ThemeState implements _ThemeState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _ThemeState &&
-            const DeepCollectionEquality().equals(other.scheme, scheme));
+            const DeepCollectionEquality().equals(other.scheme, scheme) &&
+            const DeepCollectionEquality()
+                .equals(other.previewScheme, previewScheme));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(scheme));
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(scheme),
+      const DeepCollectionEquality().hash(previewScheme));
 
   @JsonKey(ignore: true)
   @override
@@ -131,10 +154,13 @@ class _$_ThemeState implements _ThemeState {
 }
 
 abstract class _ThemeState implements ThemeState {
-  factory _ThemeState({FlexScheme scheme}) = _$_ThemeState;
+  factory _ThemeState({FlexScheme scheme, FlexScheme previewScheme}) =
+      _$_ThemeState;
 
   @override
   FlexScheme get scheme;
+  @override
+  FlexScheme get previewScheme;
   @override
   @JsonKey(ignore: true)
   _$ThemeStateCopyWith<_ThemeState> get copyWith =>

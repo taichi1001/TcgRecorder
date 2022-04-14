@@ -12,12 +12,19 @@ class ThemeNotifier extends StateNotifier<ThemeState> {
   Future themeInitialize() async {
     final themeName = await _getTheme();
     if (themeName == null) return;
-    state = state.copyWith(scheme: FlexScheme.values.byName(themeName));
+    state = state.copyWith(
+      scheme: FlexScheme.values.byName(themeName),
+      previewScheme: FlexScheme.values.byName(themeName),
+    );
   }
 
-  Future changeTheme(FlexScheme scheme) async {
-    await _save(scheme);
-    state = state.copyWith(scheme: scheme);
+  void changePreview(FlexScheme scheme) {
+    state = state.copyWith(previewScheme: scheme);
+  }
+
+  Future changeTheme() async {
+    await _save(state.previewScheme);
+    state = state.copyWith(scheme: state.previewScheme);
   }
 
   Future<String?> _getTheme() async {

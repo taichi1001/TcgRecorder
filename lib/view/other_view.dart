@@ -6,12 +6,14 @@ import 'package:launch_review/launch_review.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/helper/db_helper.dart';
+import 'package:tcg_manager/helper/theme_data.dart';
 import 'package:tcg_manager/provider/bottom_navigation_bar_provider.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 import 'package:tcg_manager/provider/theme_provider.dart';
+import 'package:tcg_manager/view/component/custom_textfield.dart';
 import 'package:tcg_manager/view/component/web_view_screen.dart';
 
 class OtherView extends HookConsumerWidget {
@@ -315,21 +317,226 @@ class _ThemeChangeView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeNotifier = ref.watch(themeNotifierProvider.notifier);
-    return Scaffold(
-      appBar: AppBar(),
-      body: SizedBox(
-        height: 100,
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: FlexScheme.values.length - 1, // 最後の要素はカスタムカラーのため取り除く
-          itemBuilder: ((context, index) => ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: FlexThemeData.light(scheme: FlexScheme.values[index]).primaryColor,
-                  shape: const CircleBorder(),
+    final currentScheme = ref.watch(themeNotifierProvider.select((value) => value.scheme));
+    return WillPopScope(
+      onWillPop: () async {
+        themeNotifier.changePreview(currentScheme);
+        return true;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          actions: [
+            TextButton(
+              onPressed: () => themeNotifier.changeTheme(),
+              child: Text(
+                '決定',
+                style: Theme.of(context).primaryTextTheme.bodyText1,
+              ),
+            ),
+          ],
+        ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Stack(
+              children: [
+                Container(
+                  height: 500,
+                  width: 300,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.black,
+                      width: 2,
+                    ),
+                  ),
+                  child: const _InputViewMock(),
                 ),
-                onPressed: () => themeNotifier.changeTheme(FlexScheme.values[index]),
-                child: const Text(''),
-              )),
+                Container(
+                  height: 500,
+                  width: 300,
+                  color: Colors.transparent,
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 100,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: FlexScheme.values.length - 1, // 最後の要素はカスタムカラーのため取り除く
+                itemBuilder: ((context, index) => ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: FlexThemeData.light(scheme: FlexScheme.values[index]).primaryColor,
+                        shape: const CircleBorder(),
+                      ),
+                      onPressed: () => themeNotifier.changePreview(FlexScheme.values[index]),
+                      child: const Text(''),
+                    )),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _InputViewMock extends HookConsumerWidget {
+  const _InputViewMock({key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final lightThemeData = ref.watch(previewLightThemeDataProvider);
+    final darkThemeData = ref.watch(previewDarkThemeDataProvider);
+    final isDarkMode = MediaQuery.of(context).platformBrightness == Brightness.dark;
+    return Theme(
+      data: isDarkMode ? darkThemeData : lightThemeData,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('プレビュー'),
+          automaticallyImplyLeading: false,
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 8),
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: const [
+                      Text('2022年 01月 01日'),
+                      Icon(Icons.calendar_today_rounded),
+                    ],
+                  ),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    width: 145,
+                    child: Card(
+                      child: Column(
+                        children: [
+                          RadioListTile(
+                            title: Text(S.of(context).first),
+                            value: 1,
+                            groupValue: 1,
+                            onChanged: (value) {},
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                            dense: true,
+                          ),
+                          RadioListTile(
+                            title: Text(S.of(context).second),
+                            value: 2,
+                            groupValue: int,
+                            onChanged: (value) {},
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                            dense: true,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 145,
+                    child: Card(
+                      child: Column(
+                        children: [
+                          RadioListTile(
+                            title: Text(S.of(context).win),
+                            value: 1,
+                            groupValue: 1,
+                            onChanged: (value) {},
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                            dense: true,
+                          ),
+                          RadioListTile(
+                            title: Text(S.of(context).loss),
+                            value: 2,
+                            groupValue: int,
+                            onChanged: (value) {},
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                            dense: true,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 32, 16, 32),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Stack(
+                        alignment: Alignment.centerRight,
+                        children: [
+                          CustomTextField(
+                            labelText: S.of(context).useDeck,
+                          ),
+                          const Icon(Icons.arrow_drop_down)
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      Stack(
+                        alignment: Alignment.centerRight,
+                        children: [
+                          CustomTextField(
+                            labelText: S.of(context).opponentDeck,
+                          ),
+                          const Icon(Icons.arrow_drop_down),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      Stack(
+                        alignment: Alignment.centerRight,
+                        children: [
+                          CustomTextField(
+                            labelText: S.of(context).tag,
+                          ),
+                          const Icon(Icons.arrow_drop_down)
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      CustomTextField(
+                        labelText: S.of(context).memoTag,
+                        keyboardType: TextInputType.multiline,
+                        maxLines: null,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    SizedBox(
+                      width: 300,
+                      height: 50,
+                      child: ElevatedButton(
+                        onPressed: () async {},
+                        child: Text(S.of(context).save),
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
