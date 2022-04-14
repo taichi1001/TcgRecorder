@@ -1,14 +1,33 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tcg_manager/state/theme_state.dart';
 
 class ThemeNotifier extends StateNotifier<ThemeState> {
   ThemeNotifier(this.read) : super(ThemeState());
 
   final Reader read;
+  static const themePrefsKey = 'selectedTheme';
 
-  void changeTheme(FlexScheme scheme) {
+  Future themeInitialize() async {
+    final themeName = await _getTheme();
+    if (themeName == null) return;
+    state = state.copyWith(scheme: FlexScheme.values.byName(themeName));
+  }
+
+  Future changeTheme(FlexScheme scheme) async {
+    await _save(scheme);
     state = state.copyWith(scheme: scheme);
+  }
+
+  Future<String?> _getTheme() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(themePrefsKey);
+  }
+
+  Future _save(FlexScheme scheme) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString(themePrefsKey, scheme.name);
   }
 }
 

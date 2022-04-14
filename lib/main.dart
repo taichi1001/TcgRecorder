@@ -45,6 +45,7 @@ class MainApp extends HookConsumerWidget {
       Future.microtask(() {
         ref.read(adaptiveBannerAdNotifierProvider.notifier).getAd(context);
         ref.read(dbHelper).fetchAll();
+        ref.read(themeNotifierProvider.notifier).themeInitialize();
       });
       return;
     }, const []);
@@ -54,7 +55,6 @@ class MainApp extends HookConsumerWidget {
     final allRecordList = ref.watch(allRecordListNotifierProvider).allRecordList;
     final allTagList = ref.watch(allTagListNotifierProvider).allTagList;
     final scheme = ref.watch(themeNotifierProvider.select((value) => value.scheme));
-    // print(FlexThemeData.light(scheme: FlexScheme.aquaBlue).primaryColor);
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
