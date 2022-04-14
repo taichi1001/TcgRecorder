@@ -100,7 +100,7 @@ class MainApp extends HookConsumerWidget {
         ),
       ),
       darkTheme: FlexThemeData.dark(
-        scheme: FlexScheme.ebonyClay,
+        scheme: scheme,
         surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
         blendLevel: 9,
         appBarStyle: FlexAppBarStyle.primary,
