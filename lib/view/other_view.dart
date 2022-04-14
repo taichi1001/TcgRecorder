@@ -336,40 +336,55 @@ class _ThemeChangeView extends HookConsumerWidget {
           ],
         ),
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Stack(
-              children: [
-                Container(
-                  height: 500,
-                  width: 300,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.black,
-                      width: 2,
-                    ),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Stack(
+                    children: [
+                      Container(
+                        height: 500,
+                        width: 300,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.black,
+                            width: 2,
+                          ),
+                        ),
+                        child: const _InputViewMock(),
+                      ),
+                      Container(
+                        height: 500,
+                        width: 300,
+                        color: Colors.transparent,
+                      ),
+                    ],
                   ),
-                  child: const _InputViewMock(),
-                ),
-                Container(
-                  height: 500,
-                  width: 300,
-                  color: Colors.transparent,
-                ),
-              ],
+                ],
+              ),
             ),
-            SizedBox(
+            Container(
               height: 100,
+              color: Theme.of(context).dividerColor,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: FlexScheme.values.length - 1, // 最後の要素はカスタムカラーのため取り除く
-                itemBuilder: ((context, index) => ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: FlexThemeData.light(scheme: FlexScheme.values[index]).primaryColor,
-                        shape: const CircleBorder(),
+                itemBuilder: ((context, index) => Padding(
+                      padding: const EdgeInsets.only(left: 8, right: 8),
+                      child: SizedBox(
+                        width: 55,
+                        height: 55,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: FlexThemeData.light(scheme: FlexScheme.values[index]).primaryColor,
+                            shape: const CircleBorder(),
+                          ),
+                          onPressed: () => themeNotifier.changePreview(FlexScheme.values[index]),
+                          child: const Text(''),
+                        ),
                       ),
-                      onPressed: () => themeNotifier.changePreview(FlexScheme.values[index]),
-                      child: const Text(''),
                     )),
               ),
             ),
