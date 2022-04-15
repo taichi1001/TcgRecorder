@@ -45,19 +45,15 @@ class GraphView extends HookConsumerWidget {
             height: 3,
           ),
           tabs: const [
-            Tab(
-              icon: Icon(Icons.table_rows),
-            ),
-            Tab(
-              icon: Icon(Icons.pie_chart_outline),
-            )
+            Tab(icon: Icon(Icons.table_rows)),
+            Tab(icon: Icon(Icons.pie_chart_outline)),
           ],
         ),
         body: TabBarView(
           children: [
             Center(
               child: recordList.isEmpty
-                  ? Center(child: Text(S.of(context).noDataMessage))
+                  ? Text(S.of(context).noDataMessage)
                   : Column(
                       children: const [
                         Expanded(child: GameDataGrid()),
@@ -113,56 +109,96 @@ class _UseRateChart extends StatelessWidget {
   final String title;
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.zero,
-      child: SizedBox(
-        height: 250.h,
-        child: SfCircularChart(
-          margin: const EdgeInsets.all(0),
-          onLegendItemRender: (args) {
-            if (args.text == 'Others') {
-              args.text = 'その他';
-            }
-          },
-          legend: Legend(
-            width: '30%',
-            isVisible: true,
-            itemPadding: 8,
-            overflowMode: LegendItemOverflowMode.scroll,
-            textStyle: Theme.of(context).textTheme.caption?.copyWith(fontSize: 10),
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => _UseRateDetailChart(data: data, title: title),
           ),
-          annotations: [
-            CircularChartAnnotation(
-              widget: Text(
-                title,
-                style: Theme.of(context).textTheme.overline?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-              ),
+        );
+      },
+      child: Card(
+        margin: EdgeInsets.zero,
+        child: SizedBox(
+          height: 250.h,
+          child: SfCircularChart(
+            margin: const EdgeInsets.all(0),
+            onLegendItemRender: (args) {
+              if (args.text == 'Others') {
+                args.text = 'その他';
+              }
+            },
+            legend: Legend(
+              width: '30%',
+              isVisible: true,
+              itemPadding: 8,
+              overflowMode: LegendItemOverflowMode.scroll,
+              textStyle: Theme.of(context).textTheme.caption?.copyWith(fontSize: 10),
             ),
-          ],
-          onTooltipRender: (args) {
-            // args.textの中身は test : 0.333 みたいな形で入ってる
-            final reg = RegExp('^.* '); // test : を抽出する正規表現
-            var firstString = reg.firstMatch(args.text!)!.group(0)!;
-            final secondString = args.text!.replaceAll(firstString, '');
-            if (firstString.contains('Others')) firstString = 'その他 : ';
-            final doubleArgs = double.parse(secondString);
-            args.text = firstString + (doubleArgs * 100).toStringAsFixed(1) + '%';
-          },
-          tooltipBehavior: TooltipBehavior(enable: true),
+            annotations: [
+              CircularChartAnnotation(
+                widget: Text(
+                  title,
+                  style: Theme.of(context).textTheme.overline?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+              ),
+            ],
+            onTooltipRender: (args) {
+              // args.textの中身は test : 0.333 みたいな形で入ってる
+              final reg = RegExp('^.* '); // test : を抽出する正規表現
+              var firstString = reg.firstMatch(args.text!)!.group(0)!;
+              final secondString = args.text!.replaceAll(firstString, '');
+              if (firstString.contains('Others')) firstString = 'その他 : ';
+              final doubleArgs = double.parse(secondString);
+              args.text = firstString + (doubleArgs * 100).toStringAsFixed(1) + '%';
+            },
+            tooltipBehavior: TooltipBehavior(enable: true),
+            series: [
+              DoughnutSeries<WinRateData, String>(
+                dataSource: data,
+                animationDuration: 0,
+                sortingOrder: SortingOrder.descending,
+                enableTooltip: true,
+                sortFieldValueMapper: (data, index) => data.useRate.toString(),
+                xValueMapper: (data, index) => data.deck,
+                yValueMapper: (data, index) => data.useRate,
+                groupMode: CircularChartGroupMode.point,
+                groupTo: 5,
+                innerRadius: '60%',
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _UseRateDetailChart extends HookConsumerWidget {
+  const _UseRateDetailChart({
+    required this.data,
+    required this.title,
+    key,
+  }) : super(key: key);
+
+  final List<WinRateData> data;
+  final String title;
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: Center(
+        child: SfCartesianChart(
+          primaryXAxis: CategoryAxis(),
           series: [
-            DoughnutSeries<WinRateData, String>(
+            BarSeries<WinRateData, String>(
               dataSource: data,
-              animationDuration: 0,
-              sortingOrder: SortingOrder.descending,
-              enableTooltip: true,
-              sortFieldValueMapper: (data, index) => data.useRate.toString(),
               xValueMapper: (data, index) => data.deck,
               yValueMapper: (data, index) => data.useRate,
-              groupMode: CircularChartGroupMode.point,
-              groupTo: 5,
-              innerRadius: '60%',
+              width: 0.1,
             ),
           ],
         ),

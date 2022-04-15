@@ -1,8 +1,10 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:launch_review/launch_review.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/helper/db_helper.dart';
@@ -320,6 +322,12 @@ class _ThemeChangeView extends HookConsumerWidget {
     final currentScheme = ref.watch(themeNotifierProvider.select((value) => value.scheme));
     final previewScheme = ref.watch(themeNotifierProvider.select((value) => value.previewScheme));
     final isDarkMode = MediaQuery.of(context).platformBrightness == Brightness.dark;
+    final itemScrollController = ItemScrollController();
+
+    useEffect(() {
+      WidgetsBinding.instance?.addPostFrameCallback((_) => itemScrollController.jumpTo(index: currentScheme.index));
+      return;
+    }, const []);
 
     return WillPopScope(
       onWillPop: () async {
@@ -330,7 +338,10 @@ class _ThemeChangeView extends HookConsumerWidget {
         appBar: AppBar(
           leadingWidth: 115,
           leading: TextButton(
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () {
+              themeNotifier.changePreview(currentScheme);
+              Navigator.of(context).pop();
+            },
             child: Text(
               'キャンセル',
               style: Theme.of(context).primaryTextTheme.bodyText1,
@@ -338,7 +349,10 @@ class _ThemeChangeView extends HookConsumerWidget {
           ),
           actions: [
             TextButton(
-              onPressed: () => themeNotifier.changeTheme(),
+              onPressed: () {
+                themeNotifier.changeTheme();
+                Navigator.of(context).pop();
+              },
               child: Text(
                 '決定',
                 style: Theme.of(context).primaryTextTheme.bodyText1,
@@ -380,9 +394,9 @@ class _ThemeChangeView extends HookConsumerWidget {
                 height: 100,
                 color: Theme.of(context).dividerColor,
                 child: Scrollbar(
-                  isAlwaysShown: true,
                   controller: ScrollController(),
-                  child: ListView.builder(
+                  child: ScrollablePositionedList.builder(
+                    itemScrollController: itemScrollController,
                     scrollDirection: Axis.horizontal,
                     itemCount: FlexScheme.values.length - 1, // 最後の要素はカスタムカラーのため取り除く
                     itemBuilder: ((context, index) => Padding(

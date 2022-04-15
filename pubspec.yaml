@@ -63,6 +63,8 @@ dependencies:
 
   flex_color_scheme: ^4.2.0
 
+  scrollable_positioned_list: ^0.2.3
+
 flutter_native_splash:
   image: "assets/images/icon.png"
   color: "FFFFFF"
