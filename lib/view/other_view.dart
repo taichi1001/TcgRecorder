@@ -318,6 +318,9 @@ class _ThemeChangeView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final themeNotifier = ref.watch(themeNotifierProvider.notifier);
     final currentScheme = ref.watch(themeNotifierProvider.select((value) => value.scheme));
+    final previewScheme = ref.watch(themeNotifierProvider.select((value) => value.previewScheme));
+    final isDarkMode = MediaQuery.of(context).platformBrightness == Brightness.dark;
+
     return WillPopScope(
       onWillPop: () async {
         themeNotifier.changePreview(currentScheme);
@@ -325,6 +328,14 @@ class _ThemeChangeView extends HookConsumerWidget {
       },
       child: Scaffold(
         appBar: AppBar(
+          leadingWidth: 115,
+          leading: TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(
+              'キャンセル',
+              style: Theme.of(context).primaryTextTheme.bodyText1,
+            ),
+          ),
           actions: [
             TextButton(
               onPressed: () => themeNotifier.changeTheme(),
@@ -336,7 +347,6 @@ class _ThemeChangeView extends HookConsumerWidget {
           ],
         ),
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
               child: Column(
@@ -349,7 +359,7 @@ class _ThemeChangeView extends HookConsumerWidget {
                         width: 300,
                         decoration: BoxDecoration(
                           border: Border.all(
-                            color: Colors.black,
+                            color: isDarkMode ? Colors.white : Colors.black,
                             width: 2,
                           ),
                         ),
@@ -365,27 +375,40 @@ class _ThemeChangeView extends HookConsumerWidget {
                 ],
               ),
             ),
-            Container(
-              height: 100,
-              color: Theme.of(context).dividerColor,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: FlexScheme.values.length - 1, // 最後の要素はカスタムカラーのため取り除く
-                itemBuilder: ((context, index) => Padding(
-                      padding: const EdgeInsets.only(left: 8, right: 8),
-                      child: SizedBox(
-                        width: 55,
-                        height: 55,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: FlexThemeData.light(scheme: FlexScheme.values[index]).primaryColor,
-                            shape: const CircleBorder(),
+            SafeArea(
+              child: Container(
+                height: 100,
+                color: Theme.of(context).dividerColor,
+                child: Scrollbar(
+                  isAlwaysShown: true,
+                  controller: ScrollController(),
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: FlexScheme.values.length - 1, // 最後の要素はカスタムカラーのため取り除く
+                    itemBuilder: ((context, index) => Padding(
+                          padding: const EdgeInsets.only(left: 8, right: 8),
+                          child: SizedBox(
+                            width: 55,
+                            height: 55,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: FlexThemeData.light(scheme: FlexScheme.values[index]).primaryColor,
+                                shape: CircleBorder(
+                                  side: previewScheme == FlexScheme.values[index]
+                                      ? BorderSide(
+                                          color: isDarkMode ? Colors.white : Colors.black,
+                                          width: 2,
+                                        )
+                                      : BorderSide.none,
+                                ),
+                              ),
+                              onPressed: () => themeNotifier.changePreview(FlexScheme.values[index]),
+                              child: const Text(''),
+                            ),
                           ),
-                          onPressed: () => themeNotifier.changePreview(FlexScheme.values[index]),
-                          child: const Text(''),
-                        ),
-                      ),
-                    )),
+                        )),
+                  ),
+                ),
               ),
             ),
           ],
