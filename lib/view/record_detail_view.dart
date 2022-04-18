@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:tcg_manager/entity/marged_record.dart';
 import 'package:tcg_manager/enum/first_second.dart';
 import 'package:tcg_manager/enum/win_loss.dart';
@@ -279,6 +280,11 @@ class _EditView extends HookConsumerWidget {
     final outputFormat = DateFormat('yyyy年 MM月 dd日');
     final isSelectPicker = useState(false);
 
+    final _useDeckFocusnode = useFocusNode();
+    final _opponentDeckFocusnode = useFocusNode();
+    final _tagFocusnode = useFocusNode();
+    final _memoFocusnode = useFocusNode();
+
     if (isSelectPicker.value) {
       useDeckTextController.text = editMargedRecord.useDeck;
       opponentDeckTextController.text = editMargedRecord.opponentDeck;
@@ -287,8 +293,20 @@ class _EditView extends HookConsumerWidget {
       isSelectPicker.value = false;
     }
 
-    return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
+    return KeyboardActions(
+      tapOutsideBehavior: TapOutsideBehavior.opaqueDismiss,
+      config: KeyboardActionsConfig(
+        keyboardBarColor: Theme.of(context).canvasColor,
+        keyboardSeparatorColor: Theme.of(context).dividerColor,
+        keyboardActionsPlatform: KeyboardActionsPlatform.ALL,
+        nextFocus: true,
+        actions: [
+          KeyboardActionsItem(focusNode: _useDeckFocusnode),
+          KeyboardActionsItem(focusNode: _opponentDeckFocusnode),
+          KeyboardActionsItem(focusNode: _tagFocusnode),
+          KeyboardActionsItem(focusNode: _memoFocusnode),
+        ],
+      ),
       child: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.max,
@@ -402,6 +420,7 @@ class _EditView extends HookConsumerWidget {
                           labelText: S.of(context).useDeck,
                           onChanged: recordDetailNotifier.editUseDeck,
                           controller: useDeckTextController,
+                          focusNode: _useDeckFocusnode,
                         ),
                         _ListPickerButton(
                           submited: () {
@@ -431,6 +450,7 @@ class _EditView extends HookConsumerWidget {
                           labelText: S.of(context).opponentDeck,
                           onChanged: recordDetailNotifier.editOpponentDeck,
                           controller: opponentDeckTextController,
+                          focusNode: _opponentDeckFocusnode,
                         ),
                         _ListPickerButton(
                           submited: () {
@@ -460,6 +480,7 @@ class _EditView extends HookConsumerWidget {
                           labelText: S.of(context).tag,
                           onChanged: recordDetailNotifier.editTag,
                           controller: tagTextController,
+                          focusNode: _tagFocusnode,
                         ),
                         _ListPickerButton(
                           submited: () {
@@ -488,6 +509,7 @@ class _EditView extends HookConsumerWidget {
                       labelText: S.of(context).memoTag,
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
+                      focusNode: _memoFocusnode,
                     ),
                   ],
                 ),

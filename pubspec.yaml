@@ -65,6 +65,11 @@ dependencies:
 
   scrollable_positioned_list: ^0.2.3
 
+  keyboard_actions: ^3.4.7
+
+  flutter_keyboard_visibility: ^5.2.0
+
+
 flutter_native_splash:
   image: "assets/images/icon.png"
   color: "FFFFFF"

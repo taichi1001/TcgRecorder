@@ -5,6 +5,7 @@ class CustomTextField extends StatelessWidget {
     this.onChanged,
     this.labelText,
     this.controller,
+    this.focusNode,
     this.keyboardType,
     this.maxLines = 1,
     Key? key,
@@ -13,6 +14,7 @@ class CustomTextField extends StatelessWidget {
   final Function(String)? onChanged;
   final String? labelText;
   final TextEditingController? controller;
+  final FocusNode? focusNode;
   final TextInputType? keyboardType;
   final int? maxLines;
 
@@ -26,6 +28,7 @@ class CustomTextField extends StatelessWidget {
             alignment: const AlignmentDirectional(-1, 0),
             child: TextFormField(
               controller: controller,
+              focusNode: focusNode,
               onChanged: onChanged,
               keyboardType: keyboardType,
               maxLines: maxLines,
