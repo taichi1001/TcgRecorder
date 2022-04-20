@@ -228,26 +228,15 @@ class _DetailView extends HookConsumerWidget {
           ],
         ),
         const SizedBox(height: 16),
-        Text(
-          S.of(context).tag,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            leadingDistribution: TextLeadingDistribution.even,
-            height: 1,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Container(
-          width: 500.w,
-          height: 300.h,
-          decoration: BoxDecoration(
-            border: Border.all(width: 2),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SingleChildScrollView(
-              child: marged.memo == null ? Text(S.of(context).noMemo) : Text(marged.memo!),
+        Card(
+          child: SizedBox(
+            width: 500.w,
+            height: 300.h,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SingleChildScrollView(
+                child: marged.memo == '' || marged.memo == null ? Text(S.of(context).noMemo) : Text(marged.memo!),
+              ),
             ),
           ),
         ),
