@@ -49,7 +49,7 @@ class InputView extends HookConsumerWidget {
         Expanded(
           child: CustomScaffold(
             body: KeyboardActions(
-              tapOutsideBehavior: TapOutsideBehavior.opaqueDismiss,
+              tapOutsideBehavior: TapOutsideBehavior.translucentDismiss,
               config: KeyboardActionsConfig(
                 keyboardBarColor: Theme.of(context).canvasColor,
                 keyboardSeparatorColor: Theme.of(context).dividerColor,
@@ -156,7 +156,7 @@ class InputView extends HookConsumerWidget {
                     ),
                     Card(
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 32, 16, 32),
+                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -186,7 +186,7 @@ class InputView extends HookConsumerWidget {
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 16),
+                            const SizedBox(height: 8),
                             Stack(
                               alignment: Alignment.centerRight,
                               children: [
@@ -213,7 +213,7 @@ class InputView extends HookConsumerWidget {
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 16),
+                            const SizedBox(height: 8),
                             Stack(
                               alignment: Alignment.centerRight,
                               children: [
@@ -240,7 +240,7 @@ class InputView extends HookConsumerWidget {
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 16),
+                            const SizedBox(height: 8),
                             CustomTextField(
                               controller: memoTextController,
                               focusNode: _memoFocusnode,

@@ -25,15 +25,9 @@ class OtherView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: false,
+        centerTitle: true,
         elevation: 0.0,
-        title: Text(
-          S.of(context).otherTitle,
-          style: const TextStyle(
-            fontSize: 30,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        title: Text(S.of(context).otherTitle, style: Theme.of(context).primaryTextTheme.titleLarge),
       ),
       body: SettingsList(
         lightTheme: SettingsThemeData(

@@ -26,16 +26,13 @@ class CustomScaffold extends HookConsumerWidget {
     final decks = ref.watch(allGameListNotifierProvider);
     final selectGameNotifier = ref.read(selectGameNotifierProvider.notifier);
     final inputViewNotifier = ref.read(inputViewNotifierProvider.notifier);
-
+    print(selectGame);
     return Scaffold(
       appBar: AppBar(
-        centerTitle: false,
+        centerTitle: true,
         title: Text(
           selectGame.selectGame != null ? selectGame.selectGame!.game : '',
-          style: const TextStyle(
-            fontSize: 30,
-            fontWeight: FontWeight.bold,
-          ),
+          style: Theme.of(context).primaryTextTheme.titleLarge,
         ),
         actions: [
           _GameListPickerButton(
@@ -49,7 +46,7 @@ class CustomScaffold extends HookConsumerWidget {
                       padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
                       child: Text(
                         game.game,
-                        softWrap: false,
+                        // softWrap: false,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.headline6?.copyWith(height: 1),
                       ),
