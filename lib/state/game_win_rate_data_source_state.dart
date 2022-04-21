@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:tcg_manager/entity/win_rate_data.dart';
-import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
-import 'package:tcg_manager/view/deck_data_grid.dart';
 
 class GameWinRateDataSource extends DataGridSource {
   GameWinRateDataSource({
@@ -52,38 +50,14 @@ class GameWinRateDataSource extends DataGridSource {
       if (cell.value == '合計') {
         return Text(cell.value.toString());
       } else {
-        return TextButton(
-          style: ButtonStyle(
-            padding: MaterialStateProperty.all(EdgeInsets.zero),
-            minimumSize: MaterialStateProperty.all(Size.zero),
-            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          ),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => SafeArea(
-                  top: false,
-                  child: Column(
-                    children: [
-                      Expanded(child: DeckDataGrid(deck: cell.value)),
-                      const AdaptiveBannerAd(),
-                    ],
-                  ),
-                ),
+        return Text(
+          cell.value.toString(),
+          maxLines: 2,
+          style: Theme.of(context).textTheme.overline?.copyWith(
+                overflow: TextOverflow.ellipsis,
+                leadingDistribution: TextLeadingDistribution.even,
+                height: 1,
               ),
-            );
-          },
-          child: Text(
-            cell.value.toString(),
-            maxLines: 2,
-            style: Theme.of(context).textTheme.overline?.copyWith(
-                  decoration: TextDecoration.underline,
-                  overflow: TextOverflow.ellipsis,
-                  leadingDistribution: TextLeadingDistribution.even,
-                  height: 1,
-                ),
-          ),
         );
       }
     }

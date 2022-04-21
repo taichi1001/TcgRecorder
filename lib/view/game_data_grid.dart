@@ -4,6 +4,8 @@ import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/provider/game_win_rate_data_source_provider.dart';
+import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
+import 'package:tcg_manager/view/deck_data_grid.dart';
 
 class GameDataGrid extends HookConsumerWidget {
   const GameDataGrid({Key? key}) : super(key: key);
@@ -22,6 +24,24 @@ class GameDataGrid extends HookConsumerWidget {
         footerFrozenRowsCount: 1,
         verticalScrollPhysics: const ClampingScrollPhysics(),
         horizontalScrollPhysics: const ClampingScrollPhysics(),
+        onCellTap: (details) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SafeArea(
+                top: false,
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: DeckDataGrid(deck: source.effectiveRows[details.rowColumnIndex.rowIndex - 1].getCells().first.value),
+                    ),
+                    const AdaptiveBannerAd(),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
         columns: [
           GridColumn(
             columnName: 'デッキ名',
