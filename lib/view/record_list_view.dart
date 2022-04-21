@@ -8,7 +8,9 @@ import 'package:tcg_manager/entity/marged_record.dart';
 import 'package:tcg_manager/enum/first_second.dart';
 import 'package:tcg_manager/enum/win_loss.dart';
 import 'package:tcg_manager/generated/l10n.dart';
+import 'package:tcg_manager/helper/convert_sort_string.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
+import 'package:tcg_manager/provider/record_list_view_provider.dart';
 import 'package:tcg_manager/selector/marged_record_list_selector.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
 import 'package:tcg_manager/view/component/custom_scaffold.dart';
@@ -22,6 +24,8 @@ class RecordListView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final recordList = ref.watch(margedRecordListProvider).margedRecordList;
     final recordListNotifier = ref.read(allRecordListNotifierProvider.notifier);
+    final recordListViewNotifier = ref.read(recordListViewNotifierProvider.notifier);
+    final sort = ref.watch(recordListViewNotifierProvider.select((value) => value.sort));
     final isLoaded = ref.watch(allRecordListNotifierProvider.select((value) => value.isLoaded));
 
     return Column(
@@ -34,9 +38,26 @@ class RecordListView extends HookConsumerWidget {
                 showCupertinoModalBottomSheet(
                   expand: false,
                   context: context,
-                  builder: (context) => const FilterModalBottomSheet(),
+                  builder: (context) => const FilterModalBottomSheet(showSort: false),
                 );
               },
+            ),
+            appBarBottom: PreferredSize(
+              preferredSize: const Size.fromHeight(40),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      recordListViewNotifier.toggleSort();
+                    },
+                    child: Text(
+                      ConvertSortString.convert(context, sort),
+                      style: Theme.of(context).primaryTextTheme.bodyText2,
+                    ),
+                  ),
+                ],
+              ),
             ),
             body: recordList!.isEmpty
                 ? Center(child: Text(S.of(context).noDataMessage))

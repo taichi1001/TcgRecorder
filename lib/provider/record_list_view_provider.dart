@@ -18,6 +18,10 @@ class RecordListViewNotifier extends StateNotifier<RecordListViewState> {
     state = state.copyWith(sort: state.cacheOrder);
   }
 
+  void toggleSort() {
+    state.sort == Sort.newest ? state = state.copyWith(sort: Sort.oldest) : state = state.copyWith(sort: Sort.newest);
+  }
+
   void setStartDate(DateTime day) {
     state = state.copyWith(startDate: day);
   }
