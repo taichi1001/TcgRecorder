@@ -168,6 +168,64 @@ class OtherView extends HookConsumerWidget {
   }
 }
 
+class _SlidableTile extends StatelessWidget {
+  const _SlidableTile({
+    required this.title,
+    this.deleteFunc,
+    this.renameFunc,
+    key,
+  }) : super(key: key);
+
+  final String title;
+  final Future Function()? deleteFunc;
+  final Future Function()? renameFunc;
+  @override
+  Widget build(BuildContext context) {
+    return Slidable(
+      key: key,
+      endActionPane: ActionPane(
+        motion: const ScrollMotion(),
+        children: [
+          if (deleteFunc != null)
+            SlidableAction(
+              label: '削除',
+              icon: Icons.delete,
+              backgroundColor: Theme.of(context).errorColor,
+              autoClose: false,
+              onPressed: (context) {
+                Slidable.of(context)?.dismiss(
+                  ResizeRequest(
+                    const Duration(microseconds: 300),
+                    () async => await deleteFunc!(),
+                  ),
+                );
+              },
+            ),
+          if (renameFunc != null)
+            SlidableAction(
+              label: '名前変更',
+              autoClose: false,
+              icon: Icons.edit,
+              backgroundColor: Theme.of(context).toggleableActiveColor,
+              onPressed: (context) async => await renameFunc!(),
+            ),
+        ],
+      ),
+      child: Builder(builder: (context) {
+        return ListTile(
+          title: Text(title),
+          trailing: IconButton(
+            icon: const Icon(Icons.navigate_before),
+            onPressed: () {
+              Slidable.of(context)?.openEndActionPane();
+            },
+          ),
+        );
+      }),
+    );
+  }
+}
+
 class _GameListView extends HookConsumerWidget {
   const _GameListView({Key? key}) : super(key: key);
 
@@ -191,56 +249,20 @@ class _GameListView extends HookConsumerWidget {
               itemCount: gameList.length,
               separatorBuilder: (context, index) => const SizedBox(height: 8, child: Divider(height: 1)),
               itemBuilder: (context, index) {
-                return Slidable(
+                return _SlidableTile(
                   key: ObjectKey(gameList[index]),
-                  endActionPane: ActionPane(
-                    motion: const ScrollMotion(),
-                    children: [
-                      SlidableAction(
-                        label: '削除',
-                        icon: Icons.delete,
-                        backgroundColor: Theme.of(context).errorColor,
-                        autoClose: false,
-                        onPressed: (context) {
-                          Slidable.of(context)?.dismiss(
-                            ResizeRequest(
-                              const Duration(microseconds: 300),
-                              () {
-                                print('dismiss!!');
-                              },
-                            ),
-                          );
-                        },
-                      ),
-                      SlidableAction(
-                        label: '名前変更',
-                        autoClose: false,
-                        icon: Icons.edit,
-                        backgroundColor: Theme.of(context).toggleableActiveColor,
-                        onPressed: (context) async {
-                          final newName = await showTextInputDialog(
-                            context: context,
-                            title: S.of(context).gameEdit,
-                            textFields: [DialogTextField(initialText: gameList[index].game)],
-                          );
-                          if (newName != null && newName.first != '') {
-                            ref.read(allGameListNotifierProvider.notifier).updateName(newName.first, index);
-                          }
-                        },
-                      ),
-                    ],
-                  ),
-                  child: Builder(builder: (context) {
-                    return ListTile(
-                      title: Text(gameList[index].game),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.navigate_before),
-                        onPressed: () {
-                          Slidable.of(context)?.openEndActionPane();
-                        },
-                      ),
+                  title: gameList[index].game,
+                  deleteFunc: () async => await ref.read(dbHelper).deleteGame(gameList[index]),
+                  renameFunc: () async {
+                    final newName = await showTextInputDialog(
+                      context: context,
+                      title: S.of(context).gameEdit,
+                      textFields: [DialogTextField(initialText: gameList[index].game)],
                     );
-                  }),
+                    if (newName != null && newName.first != '') {
+                      ref.read(allGameListNotifierProvider.notifier).updateName(newName.first, index);
+                    }
+                  },
                 );
               },
             ),
@@ -271,21 +293,20 @@ class _DeckListView extends HookConsumerWidget {
               itemCount: deckList.length,
               separatorBuilder: (context, index) => const SizedBox(height: 8, child: Divider(height: 1)),
               itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(deckList[index].deck),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.edit),
-                    onPressed: () async {
-                      final newName = await showTextInputDialog(
-                        context: context,
-                        title: S.of(context).gameEdit,
-                        textFields: [DialogTextField(initialText: deckList[index].deck)],
-                      );
-                      if (newName != null && newName.first != '') {
-                        ref.read(allDeckListNotifierProvider.notifier).updateName(newName.first, index);
-                      }
-                    },
-                  ),
+                return _SlidableTile(
+                  key: ObjectKey(deckList[index]),
+                  title: deckList[index].deck,
+                  deleteFunc: () async => await ref.read(dbHelper).deleteDeck(deckList[index]),
+                  renameFunc: () async {
+                    final newName = await showTextInputDialog(
+                      context: context,
+                      title: S.of(context).gameEdit,
+                      textFields: [DialogTextField(initialText: deckList[index].deck)],
+                    );
+                    if (newName != null && newName.first != '') {
+                      ref.read(allDeckListNotifierProvider.notifier).updateName(newName.first, index);
+                    }
+                  },
                 );
               },
             ),

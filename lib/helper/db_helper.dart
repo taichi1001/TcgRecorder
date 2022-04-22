@@ -1,4 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tcg_manager/entity/deck.dart';
+import 'package:tcg_manager/entity/game.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
@@ -18,6 +20,53 @@ class DbHelper {
     await read(deckRepository).deleteAll();
     await read(gameRepository).deleteAll();
     await fetchAll();
+  }
+
+  Future deleteGame(Game game) async {
+    await _deleteGameRecord(game);
+    await _deleteGameDeck(game);
+    await _deleteGameTag(game);
+    await read(gameRepository).deleteById(game.gameId!);
+    await fetchAll();
+  }
+
+  Future deleteDeck(Deck deck) async {
+    await _deleteDeckRecord(deck);
+    await read(deckRepository).deleteById(deck.deckId!);
+    await fetchAll();
+  }
+
+  Future _deleteGameRecord(Game game) async {
+    final allRecord = read(allRecordListNotifierProvider);
+    final gameRecord = allRecord.allRecordList!.where((record) => record.gameId == game.gameId).toList();
+    for (final record in gameRecord) {
+      await read(recordRepository).deleteById(record.recordId!);
+    }
+  }
+
+  Future _deleteGameDeck(Game game) async {
+    final allDeck = read(allDeckListNotifierProvider);
+    final gameDeck = allDeck.allDeckList!.where((deck) => deck.gameId == game.gameId).toList();
+    for (final deck in gameDeck) {
+      await read(deckRepository).deleteById(deck.deckId!);
+    }
+  }
+
+  Future _deleteGameTag(Game game) async {
+    final allTag = read(allTagListNotifierProvider);
+    final gameTag = allTag.allTagList!.where((tag) => tag.gameId == game.gameId).toList();
+    for (final tag in gameTag) {
+      await read(tagRepository).deleteById(tag.tagId!);
+    }
+  }
+
+  Future _deleteDeckRecord(Deck deck) async {
+    final allRecord = read(allRecordListNotifierProvider);
+    final deckRecord =
+        allRecord.allRecordList!.where((record) => record.useDeckId == deck.deckId || record.opponentDeckId == deck.deckId).toList();
+    for (final record in deckRecord) {
+      await read(tagRepository).deleteById(record.recordId!);
+    }
   }
 
   Future fetchAll() async {
