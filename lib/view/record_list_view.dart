@@ -27,7 +27,6 @@ class RecordListView extends HookConsumerWidget {
     final recordListViewNotifier = ref.read(recordListViewNotifierProvider.notifier);
     final sort = ref.watch(recordListViewNotifierProvider.select((value) => value.sort));
     final isLoaded = ref.watch(allRecordListNotifierProvider.select((value) => value.isLoaded));
-
     return Column(
       children: [
         Expanded(
@@ -43,7 +42,7 @@ class RecordListView extends HookConsumerWidget {
               },
             ),
             appBarBottom: PreferredSize(
-              preferredSize: const Size.fromHeight(40),
+              preferredSize: const Size.fromHeight(50),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [

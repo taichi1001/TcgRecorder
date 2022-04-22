@@ -49,7 +49,10 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                   CupertinoButton(
                     padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
                     onPressed: recordListViewNotifier.resetFilter,
-                    child: const Text('リセット'),
+                    child: Text(
+                      'リセット',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
                   ),
                 ],
               ),
@@ -102,7 +105,7 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                 const Padding(
                   padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
                   child: Text(
-                    '日付',
+                    '期間',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       leadingDistribution: TextLeadingDistribution.even,

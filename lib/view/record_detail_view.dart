@@ -50,10 +50,7 @@ class RecordDetailView extends HookConsumerWidget {
           elevation: 0.0,
           title: Text(
             isEdit ? S.of(context).editButton : '',
-            style: const TextStyle(
-              fontSize: 30,
-              fontWeight: FontWeight.bold,
-            ),
+            style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
           ),
           actions: [
             CupertinoButton(

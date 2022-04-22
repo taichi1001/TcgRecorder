@@ -24,6 +24,7 @@ class GameDataGrid extends HookConsumerWidget {
         footerFrozenRowsCount: 1,
         verticalScrollPhysics: const ClampingScrollPhysics(),
         horizontalScrollPhysics: const ClampingScrollPhysics(),
+        isScrollbarAlwaysShown: true,
         onCellTap: (details) {
           Navigator.push(
             context,

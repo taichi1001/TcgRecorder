@@ -3,6 +3,7 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -26,9 +27,12 @@ class OtherView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
+        centerTitle: false,
         elevation: 0.0,
-        title: Text(S.of(context).otherTitle, style: Theme.of(context).primaryTextTheme.titleLarge),
+        title: Text(
+          S.of(context).otherTitle,
+          style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+        ),
       ),
       body: SettingsList(
         lightTheme: SettingsThemeData(
@@ -176,10 +180,7 @@ class _GameListView extends HookConsumerWidget {
         elevation: 0.0,
         title: Text(
           S.of(context).gameEdit,
-          style: const TextStyle(
-            fontSize: 30,
-            fontWeight: FontWeight.bold,
-          ),
+          style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
         ),
       ),
       body: gameList == null
@@ -190,21 +191,56 @@ class _GameListView extends HookConsumerWidget {
               itemCount: gameList.length,
               separatorBuilder: (context, index) => const SizedBox(height: 8, child: Divider(height: 1)),
               itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(gameList[index].game),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.edit),
-                    onPressed: () async {
-                      final newName = await showTextInputDialog(
-                        context: context,
-                        title: S.of(context).gameEdit,
-                        textFields: [DialogTextField(initialText: gameList[index].game)],
-                      );
-                      if (newName != null && newName.first != '') {
-                        ref.read(allGameListNotifierProvider.notifier).updateName(newName.first, index);
-                      }
-                    },
+                return Slidable(
+                  key: ObjectKey(gameList[index]),
+                  endActionPane: ActionPane(
+                    motion: const ScrollMotion(),
+                    children: [
+                      SlidableAction(
+                        label: '削除',
+                        icon: Icons.delete,
+                        backgroundColor: Theme.of(context).errorColor,
+                        autoClose: false,
+                        onPressed: (context) {
+                          Slidable.of(context)?.dismiss(
+                            ResizeRequest(
+                              const Duration(microseconds: 300),
+                              () {
+                                print('dismiss!!');
+                              },
+                            ),
+                          );
+                        },
+                      ),
+                      SlidableAction(
+                        label: '名前変更',
+                        autoClose: false,
+                        icon: Icons.edit,
+                        backgroundColor: Theme.of(context).toggleableActiveColor,
+                        onPressed: (context) async {
+                          final newName = await showTextInputDialog(
+                            context: context,
+                            title: S.of(context).gameEdit,
+                            textFields: [DialogTextField(initialText: gameList[index].game)],
+                          );
+                          if (newName != null && newName.first != '') {
+                            ref.read(allGameListNotifierProvider.notifier).updateName(newName.first, index);
+                          }
+                        },
+                      ),
+                    ],
                   ),
+                  child: Builder(builder: (context) {
+                    return ListTile(
+                      title: Text(gameList[index].game),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.navigate_before),
+                        onPressed: () {
+                          Slidable.of(context)?.openEndActionPane();
+                        },
+                      ),
+                    );
+                  }),
                 );
               },
             ),
@@ -224,10 +260,7 @@ class _DeckListView extends HookConsumerWidget {
         elevation: 0.0,
         title: Text(
           S.of(context).gameEdit,
-          style: const TextStyle(
-            fontSize: 30,
-            fontWeight: FontWeight.bold,
-          ),
+          style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
         ),
       ),
       body: deckList == null
@@ -272,10 +305,7 @@ class _TagListView extends HookConsumerWidget {
         elevation: 0.0,
         title: Text(
           S.of(context).gameEdit,
-          style: const TextStyle(
-            fontSize: 30,
-            fontWeight: FontWeight.bold,
-          ),
+          style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
         ),
       ),
       body: tagList == null

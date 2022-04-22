@@ -21,9 +21,7 @@ class DeckDataGrid extends HookConsumerWidget {
         centerTitle: false,
         title: Text(
           deck,
-          style: const TextStyle(
-            fontSize: 24,
-          ),
+          style: Theme.of(context).primaryTextTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
         ),
         elevation: 0.0,
       ),
@@ -37,6 +35,7 @@ class DeckDataGrid extends HookConsumerWidget {
           frozenColumnsCount: 1,
           verticalScrollPhysics: const ClampingScrollPhysics(),
           horizontalScrollPhysics: const ClampingScrollPhysics(),
+          isScrollbarAlwaysShown: true,
           columns: [
             GridColumn(
               columnName: 'デッキ名',
