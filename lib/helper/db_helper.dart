@@ -65,7 +65,7 @@ class DbHelper {
     final deckRecord =
         allRecord.allRecordList!.where((record) => record.useDeckId == deck.deckId || record.opponentDeckId == deck.deckId).toList();
     for (final record in deckRecord) {
-      await read(tagRepository).deleteById(record.recordId!);
+      await read(recordRepository).deleteById(record.recordId!);
     }
   }
 
