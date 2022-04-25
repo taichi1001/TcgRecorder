@@ -27,7 +27,7 @@ class OtherView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: false,
+        centerTitle: true,
         elevation: 0.0,
         title: Text(
           S.of(context).otherTitle,
@@ -234,7 +234,7 @@ class _GameListView extends HookConsumerWidget {
     final gameList = ref.watch(allGameListNotifierProvider).allGameList;
     return Scaffold(
       appBar: AppBar(
-        centerTitle: false,
+        centerTitle: true,
         elevation: 0.0,
         title: Text(
           S.of(context).gameEdit,
@@ -278,7 +278,7 @@ class _DeckListView extends HookConsumerWidget {
     final deckList = ref.watch(allDeckListNotifierProvider).allDeckList;
     return Scaffold(
       appBar: AppBar(
-        centerTitle: false,
+        centerTitle: true,
         elevation: 0.0,
         title: Text(
           S.of(context).gameEdit,
@@ -322,7 +322,7 @@ class _TagListView extends HookConsumerWidget {
     final tagList = ref.watch(allTagListNotifierProvider).allTagList;
     return Scaffold(
       appBar: AppBar(
-        centerTitle: false,
+        centerTitle: true,
         elevation: 0.0,
         title: Text(
           S.of(context).gameEdit,

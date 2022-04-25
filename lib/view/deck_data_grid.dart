@@ -18,7 +18,7 @@ class DeckDataGrid extends HookConsumerWidget {
     final source = ref.watch(deckWinRateDataSourceNotifierProvider(deck));
     return Scaffold(
       appBar: AppBar(
-        centerTitle: false,
+        centerTitle: true,
         title: Text(
           deck,
           style: Theme.of(context).primaryTextTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),

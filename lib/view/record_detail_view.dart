@@ -46,7 +46,7 @@ class RecordDetailView extends HookConsumerWidget {
       }),
       child: Scaffold(
         appBar: AppBar(
-          centerTitle: false,
+          centerTitle: true,
           elevation: 0.0,
           title: Text(
             isEdit ? S.of(context).editButton : '',

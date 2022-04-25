@@ -28,7 +28,7 @@ class CustomScaffold extends HookConsumerWidget {
     final inputViewNotifier = ref.read(inputViewNotifierProvider.notifier);
     return Scaffold(
       appBar: AppBar(
-        centerTitle: false,
+        centerTitle: true,
         title: Text(
           selectGame.selectGame != null ? selectGame.selectGame!.game : '',
           style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
