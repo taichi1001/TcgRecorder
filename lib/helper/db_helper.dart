@@ -1,6 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/game.dart';
+import 'package:tcg_manager/entity/tag.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
@@ -36,6 +37,12 @@ class DbHelper {
     await fetchAll();
   }
 
+  Future deleteTag(Tag tag) async {
+    await _removeTagFromRecord(tag);
+    await read(tagRepository).deleteById(tag.tagId!);
+    await fetchAll();
+  }
+
   Future _deleteGameRecord(Game game) async {
     final allRecord = read(allRecordListNotifierProvider);
     final gameRecord = allRecord.allRecordList!.where((record) => record.gameId == game.gameId).toList();
@@ -66,6 +73,15 @@ class DbHelper {
         allRecord.allRecordList!.where((record) => record.useDeckId == deck.deckId || record.opponentDeckId == deck.deckId).toList();
     for (final record in deckRecord) {
       await read(recordRepository).deleteById(record.recordId!);
+    }
+  }
+
+  Future _removeTagFromRecord(Tag tag) async {
+    final allRecord = read(allRecordListNotifierProvider);
+    final tagRecord = allRecord.allRecordList!.where((record) => record.tagId == tag.tagId).toList();
+    for (var record in tagRecord) {
+      record = record.copyWith(tagId: null);
+      await read(recordRepository).update(record);
     }
   }
 

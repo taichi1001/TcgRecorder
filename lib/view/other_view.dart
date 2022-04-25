@@ -337,21 +337,20 @@ class _TagListView extends HookConsumerWidget {
               itemCount: tagList.length,
               separatorBuilder: (context, index) => const SizedBox(height: 8, child: Divider(height: 1)),
               itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(tagList[index].tag),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.edit),
-                    onPressed: () async {
-                      final newName = await showTextInputDialog(
-                        context: context,
-                        title: S.of(context).gameEdit,
-                        textFields: [DialogTextField(initialText: tagList[index].tag)],
-                      );
-                      if (newName != null && newName.first != '') {
-                        ref.read(allTagListNotifierProvider.notifier).updateName(newName.first, index);
-                      }
-                    },
-                  ),
+                return _SlidableTile(
+                  key: ObjectKey(tagList[index]),
+                  title: tagList[index].tag,
+                  deleteFunc: () async => await ref.read(dbHelper).deleteTag(tagList[index]),
+                  renameFunc: () async {
+                    final newName = await showTextInputDialog(
+                      context: context,
+                      title: S.of(context).gameEdit,
+                      textFields: [DialogTextField(initialText: tagList[index].tag)],
+                    );
+                    if (newName != null && newName.first != '') {
+                      ref.read(allTagListNotifierProvider.notifier).updateName(newName.first, index);
+                    }
+                  },
                 );
               },
             ),
