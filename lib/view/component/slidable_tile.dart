@@ -74,6 +74,7 @@ class SlidableTile extends StatelessWidget {
                   Slidable.of(context)?.openEndActionPane();
                 },
               ),
+          onTap: onTap,
         );
       }),
     );

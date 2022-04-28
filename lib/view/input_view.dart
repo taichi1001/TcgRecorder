@@ -92,7 +92,7 @@ class InputView extends HookConsumerWidget {
                           width: 195.w,
                           child: Card(
                             child: Padding(
-                              padding: const EdgeInsets.all(16.0),
+                              padding: const EdgeInsets.all(8),
                               child: Column(
                                 children: [
                                   RadioListTile(
@@ -124,7 +124,7 @@ class InputView extends HookConsumerWidget {
                           width: 195.w,
                           child: Card(
                             child: Padding(
-                              padding: const EdgeInsets.all(16.0),
+                              padding: const EdgeInsets.all(8),
                               child: Column(
                                 children: [
                                   RadioListTile(
