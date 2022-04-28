@@ -3,7 +3,6 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -18,6 +17,7 @@ import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 import 'package:tcg_manager/provider/theme_provider.dart';
 import 'package:tcg_manager/view/component/custom_textfield.dart';
+import 'package:tcg_manager/view/component/slidable_tile.dart';
 import 'package:tcg_manager/view/component/web_view_screen.dart';
 
 class OtherView extends HookConsumerWidget {
@@ -168,76 +168,6 @@ class OtherView extends HookConsumerWidget {
   }
 }
 
-class _SlidableTile extends StatelessWidget {
-  const _SlidableTile({
-    required this.title,
-    this.alertTitle = '選択データを削除します',
-    required this.alertMessage,
-    this.deleteFunc,
-    this.renameFunc,
-    key,
-  }) : super(key: key);
-
-  final String title;
-  final String alertTitle;
-  final String alertMessage;
-  final Future Function()? deleteFunc;
-  final Future Function()? renameFunc;
-  @override
-  Widget build(BuildContext context) {
-    return Slidable(
-      key: key,
-      endActionPane: ActionPane(
-        motion: const ScrollMotion(),
-        children: [
-          if (deleteFunc != null)
-            SlidableAction(
-              label: '削除',
-              icon: Icons.delete,
-              backgroundColor: Theme.of(context).errorColor,
-              autoClose: false,
-              onPressed: (context) async {
-                final okCancelResult = await showOkCancelAlertDialog(
-                  context: context,
-                  title: alertTitle,
-                  message: alertMessage,
-                  isDestructiveAction: true,
-                );
-                if (okCancelResult == OkCancelResult.ok) {
-                  Slidable.of(context)?.dismiss(
-                    ResizeRequest(
-                      const Duration(microseconds: 300),
-                      () async => await deleteFunc!(),
-                    ),
-                  );
-                }
-              },
-            ),
-          if (renameFunc != null)
-            SlidableAction(
-              label: '名前変更',
-              autoClose: false,
-              icon: Icons.edit,
-              backgroundColor: Theme.of(context).toggleableActiveColor,
-              onPressed: (context) async => await renameFunc!(),
-            ),
-        ],
-      ),
-      child: Builder(builder: (context) {
-        return ListTile(
-          title: Text(title),
-          trailing: IconButton(
-            icon: const Icon(Icons.navigate_before),
-            onPressed: () {
-              Slidable.of(context)?.openEndActionPane();
-            },
-          ),
-        );
-      }),
-    );
-  }
-}
-
 class _GameListView extends HookConsumerWidget {
   const _GameListView({Key? key}) : super(key: key);
 
@@ -261,12 +191,12 @@ class _GameListView extends HookConsumerWidget {
               itemCount: gameList.length,
               separatorBuilder: (context, index) => const SizedBox(height: 8, child: Divider(height: 1)),
               itemBuilder: (context, index) {
-                return _SlidableTile(
+                return SlidableTile(
                   key: ObjectKey(gameList[index]),
-                  title: gameList[index].game,
+                  title: Text(gameList[index].game),
                   alertMessage: '削除したゲームのデータが全て削除されます。(デッキ名やタグ名も削除されます。)',
                   deleteFunc: () async => await ref.read(dbHelper).deleteGame(gameList[index]),
-                  renameFunc: () async {
+                  editFunc: () async {
                     final newName = await showTextInputDialog(
                       context: context,
                       title: S.of(context).gameEdit,
@@ -306,12 +236,12 @@ class _DeckListView extends HookConsumerWidget {
               itemCount: deckList.length,
               separatorBuilder: (context, index) => const SizedBox(height: 8, child: Divider(height: 1)),
               itemBuilder: (context, index) {
-                return _SlidableTile(
+                return SlidableTile(
                   key: ObjectKey(deckList[index]),
-                  title: deckList[index].deck,
+                  title: Text(deckList[index].deck),
                   alertMessage: '選択したデッキのデータが全て削除されます。',
                   deleteFunc: () async => await ref.read(dbHelper).deleteDeck(deckList[index]),
-                  renameFunc: () async {
+                  editFunc: () async {
                     final newName = await showTextInputDialog(
                       context: context,
                       title: S.of(context).gameEdit,
@@ -351,12 +281,12 @@ class _TagListView extends HookConsumerWidget {
               itemCount: tagList.length,
               separatorBuilder: (context, index) => const SizedBox(height: 8, child: Divider(height: 1)),
               itemBuilder: (context, index) {
-                return _SlidableTile(
+                return SlidableTile(
                   key: ObjectKey(tagList[index]),
-                  title: tagList[index].tag,
+                  title: Text(tagList[index].tag),
                   alertMessage: '選択したタグを削除し、そのタグが設定されているデータからタグを削除します。',
                   deleteFunc: () async => await ref.read(dbHelper).deleteTag(tagList[index]),
-                  renameFunc: () async {
+                  editFunc: () async {
                     final newName = await showTextInputDialog(
                       context: context,
                       title: S.of(context).gameEdit,

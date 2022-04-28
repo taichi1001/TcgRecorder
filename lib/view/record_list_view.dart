@@ -1,4 +1,3 @@
-import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -14,6 +13,7 @@ import 'package:tcg_manager/provider/record_list_view_provider.dart';
 import 'package:tcg_manager/selector/marged_record_list_selector.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
 import 'package:tcg_manager/view/component/custom_scaffold.dart';
+import 'package:tcg_manager/view/component/slidable_tile.dart';
 import 'package:tcg_manager/view/filter_modal_bottom_sheet.dart';
 import 'package:tcg_manager/view/record_detail_view.dart';
 
@@ -23,7 +23,6 @@ class RecordListView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final recordList = ref.watch(margedRecordListProvider).margedRecordList;
-    final recordListNotifier = ref.read(allRecordListNotifierProvider.notifier);
     final recordListViewNotifier = ref.read(recordListViewNotifierProvider.notifier);
     final sort = ref.watch(recordListViewNotifierProvider.select((value) => value.sort));
     final isLoaded = ref.watch(allRecordListNotifierProvider.select((value) => value.isLoaded));
@@ -67,41 +66,17 @@ class RecordListView extends HookConsumerWidget {
                     : Padding(
                         padding: const EdgeInsets.only(top: 8),
                         child: ListView.separated(
-                            separatorBuilder: (context, index) => const SizedBox(height: 8, child: Divider(height: 1)),
-                            itemCount: recordList.length,
-                            itemBuilder: (context, index) {
-                              return ProviderScope(
-                                overrides: [
-                                  currentRecord.overrideWithValue(recordList[index]),
-                                ],
-                                child: Dismissible(
-                                  direction: DismissDirection.endToStart,
-                                  background: Container(
-                                    color: Colors.red,
-                                    child: const Icon(
-                                      Icons.delete,
-                                    ),
-                                  ),
-                                  confirmDismiss: (direction) async {
-                                    final okCancelResult = await showOkCancelAlertDialog(
-                                      context: context,
-                                      message: S.of(context).deleteMessage,
-                                      isDestructiveAction: true,
-                                    );
-                                    if (okCancelResult == OkCancelResult.ok) {
-                                      return true;
-                                    } else {
-                                      return false;
-                                    }
-                                  },
-                                  onDismissed: (direction) async {
-                                    await recordListNotifier.delete(recordList[index].recordId);
-                                  },
-                                  key: UniqueKey(),
-                                  child: const _BrandListTile(),
-                                ),
-                              );
-                            }),
+                          separatorBuilder: (context, index) => const SizedBox(height: 8, child: Divider(height: 1)),
+                          itemCount: recordList.length,
+                          itemBuilder: (context, index) {
+                            return ProviderScope(
+                              overrides: [
+                                currentRecord.overrideWithValue(recordList[index]),
+                              ],
+                              child: const _BrandListTile(),
+                            );
+                          },
+                        ),
                       ),
           ),
         ),
@@ -129,10 +104,12 @@ class _BrandListTile extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final recordListNotifier = ref.read(allRecordListNotifierProvider.notifier);
     final record = ref.watch(currentRecord);
     final outputFormat = DateFormat('yyyy年 MM月 dd日');
 
-    return ListTile(
+    return SlidableTile(
+      key: UniqueKey(),
       trailing: Text(
         record.winLoss == WinLoss.win ? 'Win' : 'Loss',
         style: GoogleFonts.bangers(
@@ -200,6 +177,9 @@ class _BrandListTile extends HookConsumerWidget {
           const SizedBox(height: 8),
         ],
       ),
+      deleteFunc: () async => await recordListNotifier.delete(record.recordId),
+      alertMessage: '',
+      alertTitle: '',
       onTap: () async {
         await Navigator.push(
           context,
