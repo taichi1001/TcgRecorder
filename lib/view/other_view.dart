@@ -86,13 +86,13 @@ class OtherView extends HookConsumerWidget {
               SettingsTile(
                 title: Text(
                   S.of(context).allDelete,
-                  style: const TextStyle(
-                    color: Colors.red,
+                  style: TextStyle(
+                    color: Theme.of(context).errorColor,
                   ),
                 ),
-                leading: const Icon(
+                leading: Icon(
                   Icons.delete_forever,
-                  color: Colors.red,
+                  color: Theme.of(context).errorColor,
                 ),
                 onPressed: (context) async {
                   final okCancelResult = await showOkCancelAlertDialog(
@@ -171,12 +171,16 @@ class OtherView extends HookConsumerWidget {
 class _SlidableTile extends StatelessWidget {
   const _SlidableTile({
     required this.title,
+    this.alertTitle = '選択データを削除します',
+    required this.alertMessage,
     this.deleteFunc,
     this.renameFunc,
     key,
   }) : super(key: key);
 
   final String title;
+  final String alertTitle;
+  final String alertMessage;
   final Future Function()? deleteFunc;
   final Future Function()? renameFunc;
   @override
@@ -192,13 +196,21 @@ class _SlidableTile extends StatelessWidget {
               icon: Icons.delete,
               backgroundColor: Theme.of(context).errorColor,
               autoClose: false,
-              onPressed: (context) {
-                Slidable.of(context)?.dismiss(
-                  ResizeRequest(
-                    const Duration(microseconds: 300),
-                    () async => await deleteFunc!(),
-                  ),
+              onPressed: (context) async {
+                final okCancelResult = await showOkCancelAlertDialog(
+                  context: context,
+                  title: alertTitle,
+                  message: alertMessage,
+                  isDestructiveAction: true,
                 );
+                if (okCancelResult == OkCancelResult.ok) {
+                  Slidable.of(context)?.dismiss(
+                    ResizeRequest(
+                      const Duration(microseconds: 300),
+                      () async => await deleteFunc!(),
+                    ),
+                  );
+                }
               },
             ),
           if (renameFunc != null)
@@ -252,6 +264,7 @@ class _GameListView extends HookConsumerWidget {
                 return _SlidableTile(
                   key: ObjectKey(gameList[index]),
                   title: gameList[index].game,
+                  alertMessage: '削除したゲームのデータが全て削除されます。(デッキ名やタグ名も削除されます。)',
                   deleteFunc: () async => await ref.read(dbHelper).deleteGame(gameList[index]),
                   renameFunc: () async {
                     final newName = await showTextInputDialog(
@@ -296,6 +309,7 @@ class _DeckListView extends HookConsumerWidget {
                 return _SlidableTile(
                   key: ObjectKey(deckList[index]),
                   title: deckList[index].deck,
+                  alertMessage: '選択したデッキのデータが全て削除されます。',
                   deleteFunc: () async => await ref.read(dbHelper).deleteDeck(deckList[index]),
                   renameFunc: () async {
                     final newName = await showTextInputDialog(
@@ -340,6 +354,7 @@ class _TagListView extends HookConsumerWidget {
                 return _SlidableTile(
                   key: ObjectKey(tagList[index]),
                   title: tagList[index].tag,
+                  alertMessage: '選択したタグを削除し、そのタグが設定されているデータからタグを削除します。',
                   deleteFunc: () async => await ref.read(dbHelper).deleteTag(tagList[index]),
                   renameFunc: () async {
                     final newName = await showTextInputDialog(
