@@ -26,6 +26,9 @@ class GameDataGrid extends HookConsumerWidget {
         horizontalScrollPhysics: const ClampingScrollPhysics(),
         isScrollbarAlwaysShown: true,
         onCellTap: (details) {
+          final dataIndex = details.rowColumnIndex.rowIndex;
+          if (dataIndex == 0) return; // カラム名が書いてある列がタップされた場合
+          if (dataIndex == source.dataGridRows.length) return; // 合計カラムがタップされた場合
           Navigator.push(
             context,
             MaterialPageRoute(
