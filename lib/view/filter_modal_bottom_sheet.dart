@@ -51,7 +51,7 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                     onPressed: recordListViewNotifier.resetFilter,
                     child: Text(
                       'リセット',
-                      style: Theme.of(context).textTheme.bodySmall,
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   ),
                 ],
