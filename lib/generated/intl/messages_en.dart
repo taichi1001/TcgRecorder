@@ -66,6 +66,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "noTag": MessageLookupByLibrary.simpleMessage("No tag"),
         "oldest": MessageLookupByLibrary.simpleMessage("Oldest"),
         "opponentDeck": MessageLookupByLibrary.simpleMessage("Opponent Deck"),
+        "opponentDeckDistribution":
+            MessageLookupByLibrary.simpleMessage("Opponent deck distribution"),
         "order": MessageLookupByLibrary.simpleMessage("First/Second"),
         "otherSection": MessageLookupByLibrary.simpleMessage("Other"),
         "otherTitle": MessageLookupByLibrary.simpleMessage("Other"),
@@ -89,6 +91,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "tag": MessageLookupByLibrary.simpleMessage("Tag"),
         "tagEdit": MessageLookupByLibrary.simpleMessage("Edit Tag"),
         "useDeck": MessageLookupByLibrary.simpleMessage("Use Deck"),
+        "useDeckDistribution":
+            MessageLookupByLibrary.simpleMessage("Use deck distribution"),
         "win": MessageLookupByLibrary.simpleMessage("Win"),
         "winOrLoss": MessageLookupByLibrary.simpleMessage("Win/Loss")
       };

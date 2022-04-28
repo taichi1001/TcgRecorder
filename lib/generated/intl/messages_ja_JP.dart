@@ -60,6 +60,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "noTag": MessageLookupByLibrary.simpleMessage("タグ無し"),
         "oldest": MessageLookupByLibrary.simpleMessage("古い順"),
         "opponentDeck": MessageLookupByLibrary.simpleMessage("対戦相手デッキ"),
+        "opponentDeckDistribution":
+            MessageLookupByLibrary.simpleMessage("対戦デッキ分布"),
         "order": MessageLookupByLibrary.simpleMessage("手番"),
         "otherSection": MessageLookupByLibrary.simpleMessage("その他"),
         "otherTitle": MessageLookupByLibrary.simpleMessage("その他"),
@@ -80,6 +82,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "tag": MessageLookupByLibrary.simpleMessage("タグ"),
         "tagEdit": MessageLookupByLibrary.simpleMessage("タグ編集"),
         "useDeck": MessageLookupByLibrary.simpleMessage("使用デッキ"),
+        "useDeckDistribution": MessageLookupByLibrary.simpleMessage("使用デッキ分布"),
         "win": MessageLookupByLibrary.simpleMessage("勝ち"),
         "winOrLoss": MessageLookupByLibrary.simpleMessage("勝敗")
       };

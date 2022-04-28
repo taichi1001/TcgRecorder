@@ -54,5 +54,7 @@
     "memoTag": "振り返るためのメモを残しておきましょう",
     "editButton": "編集",
     "noTag": "タグ無し",
-    "noMemo": "メモ無し"
+    "noMemo": "メモ無し",
+    "useDeckDistribution": "使用デッキ分布",
+    "opponentDeckDistribution": "対戦デッキ分布"
 }

@@ -54,5 +54,7 @@
     "memoTag": "Keep notes to look back on.",
     "editButton": "Edit",
     "noTag": "No tag",
-    "noMemo": "No memo"
+    "noMemo": "No memo",
+    "useDeckDistribution": "Use deck distribution",
+    "opponentDeckDistribution": "Opponent deck distribution"
 }

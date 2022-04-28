@@ -73,7 +73,7 @@ class GraphView extends HookConsumerWidget {
                                 padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
                                 child: _UseRateChart(
                                   data: useDeckData,
-                                  title: '使用デッキ分布',
+                                  title: S.of(context).useDeckDistribution,
                                 ),
                               ),
                               const SizedBox(height: 16),
@@ -81,7 +81,7 @@ class GraphView extends HookConsumerWidget {
                                 padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
                                 child: _UseRateChart(
                                   data: opponentDeckData,
-                                  title: '対戦デッキ分布',
+                                  title: S.of(context).opponentDeckDistribution,
                                 ),
                               ),
                             ],

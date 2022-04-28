@@ -609,6 +609,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Use deck distribution`
+  String get useDeckDistribution {
+    return Intl.message(
+      'Use deck distribution',
+      name: 'useDeckDistribution',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Opponent deck distribution`
+  String get opponentDeckDistribution {
+    return Intl.message(
+      'Opponent deck distribution',
+      name: 'opponentDeckDistribution',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
