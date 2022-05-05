@@ -78,4 +78,11 @@ class DeckWinRateDataSource extends DataGridSource {
 
     return const Text('test');
   }
+
+  // 合計行をソート対象から外すための処理を追加している
+  @override
+  int compare(DataGridRow? a, DataGridRow? b, SortColumnDetails sortColumn) {
+    if (a?.getCells().first.value == '合計' || b?.getCells().first.value == '合計') return 0;
+    return super.compare(a, b, sortColumn);
+  }
 }

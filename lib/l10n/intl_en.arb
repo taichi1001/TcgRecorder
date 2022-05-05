@@ -4,7 +4,7 @@
     "deck": "Deck",
     "useDeck": "Use Deck",
     "opponentDeck": "Opponent Deck",
-    "tag": "Tag",
+    "tag": "Tag (Optional)",
     "memo": "Memo",
     "order": "First/Second",
     "winOrLoss": "Win/Loss",
@@ -51,10 +51,13 @@
     "contactForm": "Contact",
     "newest": "Newest",
     "oldest": "Oldest",
-    "memoTag": "Keep notes to look back on.",
+    "memoTag": "Keep notes to look back on. (Optional)",
     "editButton": "Edit",
     "noTag": "No tag",
     "noMemo": "No memo",
     "useDeckDistribution": "Use deck distribution",
-    "opponentDeckDistribution": "Opponent deck distribution"
+    "opponentDeckDistribution": "Opponent deck distribution",
+    "settingSection": "Setting",
+    "inputViewSettings":"Input View Settings"
+
 }

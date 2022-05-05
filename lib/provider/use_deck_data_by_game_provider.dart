@@ -37,7 +37,7 @@ final useDeckDataByGameProvider = StateProvider.autoDispose<List<WinRateData>>(
   },
 );
 
-final totalAddedtToUseDeckDataByGameProvider = StateProvider.autoDispose<List<WinRateData>>(
+final totalAddedToUseDeckDataByGameProvider = StateProvider.autoDispose<List<WinRateData>>(
   (ref) {
     final useDeckDataByGame = ref.watch(useDeckDataByGameProvider);
     final copyUseDeckDataByGame = [...useDeckDataByGame];

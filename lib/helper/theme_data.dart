@@ -60,11 +60,6 @@ final darkThemeDataProvider = StateProvider<ThemeData>(
       tabBarStyle: FlexTabBarStyle.forAppBar,
       tooltipsMatchBackground: true,
       swapColors: false,
-      darkIsTrueBlack: false,
-      keyColors: const FlexKeyColors(
-        useSecondary: true,
-        useTertiary: true,
-      ),
       tones: FlexTones.material(Brightness.dark),
       visualDensity: FlexColorScheme.comfortablePlatformDensity,
       // fontFamily: GoogleFonts.mPlus1p().fontFamily,

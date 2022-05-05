@@ -21,7 +21,7 @@ class DeckDataGrid extends HookConsumerWidget {
         centerTitle: true,
         title: Text(
           deck,
-          style: Theme.of(context).primaryTextTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+          style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
         ),
         elevation: 0.0,
       ),
@@ -33,6 +33,10 @@ class DeckDataGrid extends HookConsumerWidget {
         child: SfDataGrid(
           source: source,
           frozenColumnsCount: 1,
+          footerFrozenRowsCount: 1,
+          allowSorting: true,
+          allowMultiColumnSorting: true,
+          allowTriStateSorting: true,
           verticalScrollPhysics: const ClampingScrollPhysics(),
           horizontalScrollPhysics: const ClampingScrollPhysics(),
           isScrollbarAlwaysShown: true,

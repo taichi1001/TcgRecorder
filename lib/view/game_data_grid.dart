@@ -22,6 +22,9 @@ class GameDataGrid extends HookConsumerWidget {
         source: source,
         frozenColumnsCount: 1,
         footerFrozenRowsCount: 1,
+        allowSorting: true,
+        allowMultiColumnSorting: true,
+        allowTriStateSorting: true,
         verticalScrollPhysics: const ClampingScrollPhysics(),
         horizontalScrollPhysics: const ClampingScrollPhysics(),
         isScrollbarAlwaysShown: true,
@@ -37,7 +40,8 @@ class GameDataGrid extends HookConsumerWidget {
                 child: Column(
                   children: [
                     Expanded(
-                      child: DeckDataGrid(deck: source.effectiveRows[details.rowColumnIndex.rowIndex - 1].getCells().first.value),
+                      child: DeckDataGrid(
+                          deck: source.effectiveRows[details.rowColumnIndex.rowIndex - 1].getCells().first.value),
                     ),
                     const AdaptiveBannerAd(),
                   ],

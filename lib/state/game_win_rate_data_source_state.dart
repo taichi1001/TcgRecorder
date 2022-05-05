@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:tcg_manager/entity/win_rate_data.dart';
+import 'package:collection/collection.dart';
 
 class GameWinRateDataSource extends DataGridSource {
   GameWinRateDataSource({
@@ -84,5 +85,12 @@ class GameWinRateDataSource extends DataGridSource {
     }
 
     return const Text('test');
+  }
+
+  // 合計行をソート対象から外すための処理を追加している
+  @override
+  int compare(DataGridRow? a, DataGridRow? b, SortColumnDetails sortColumn) {
+    if (a?.getCells().first.value == '合計' || b?.getCells().first.value == '合計') return 0;
+    return super.compare(a, b, sortColumn);
   }
 }

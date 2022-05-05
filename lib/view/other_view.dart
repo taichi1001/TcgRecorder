@@ -45,9 +45,38 @@ class OtherView extends HookConsumerWidget {
         ),
         sections: [
           SettingsSection(
+            title: Text(S.of(context).settingSection),
+            tiles: [
+              SettingsTile.navigation(
+                title: const Text('テーマ変更'),
+                leading: const Icon(Icons.palette),
+                onPressed: (context) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const _ThemeChangeView(),
+                    ),
+                  );
+                },
+              ),
+              SettingsTile.navigation(
+                title: Text(S.of(context).inputViewSettings),
+                leading: const Icon(Icons.settings_applications),
+                onPressed: (context) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const _GameListView(),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+          SettingsSection(
             title: Text(S.of(context).editSection),
             tiles: [
-              SettingsTile(
+              SettingsTile.navigation(
                 title: Text(S.of(context).gameEdit),
                 leading: const Icon(Icons.edit),
                 onPressed: (context) {
@@ -59,7 +88,7 @@ class OtherView extends HookConsumerWidget {
                   );
                 },
               ),
-              SettingsTile(
+              SettingsTile.navigation(
                 title: Text(S.of(context).deckEdit),
                 leading: const Icon(Icons.edit),
                 onPressed: (context) {
@@ -71,7 +100,7 @@ class OtherView extends HookConsumerWidget {
                   );
                 },
               ),
-              SettingsTile(
+              SettingsTile.navigation(
                 title: Text(S.of(context).tagEdit),
                 leading: const Icon(Icons.edit),
                 onPressed: (context) {
@@ -83,7 +112,7 @@ class OtherView extends HookConsumerWidget {
                   );
                 },
               ),
-              SettingsTile(
+              SettingsTile.navigation(
                 title: Text(
                   S.of(context).allDelete,
                   style: TextStyle(
@@ -113,26 +142,14 @@ class OtherView extends HookConsumerWidget {
           SettingsSection(
             title: Text(S.of(context).otherSection),
             tiles: [
-              SettingsTile(
-                title: const Text('テーマ変更'),
-                leading: const Icon(Icons.palette),
-                onPressed: (context) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const _ThemeChangeView(),
-                    ),
-                  );
-                },
-              ),
-              SettingsTile(
+              SettingsTile.navigation(
                 title: Text(S.of(context).review),
                 leading: const Icon(Icons.reviews),
                 onPressed: (context) async {
                   LaunchReview.launch(iOSAppId: '1609073371');
                 },
               ),
-              SettingsTile(
+              SettingsTile.navigation(
                 title: Text(S.of(context).contactForm),
                 leading: const Icon(Icons.mail),
                 onPressed: (context) {
@@ -140,13 +157,14 @@ class OtherView extends HookConsumerWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => const WebViewScreen(
-                        url: 'https://docs.google.com/forms/d/e/1FAIpQLSd5ilK8mF76ZnLIPirTFPo0A5fQucYTMf9uDkdD--SkRbczjA/viewform',
+                        url:
+                            'https://docs.google.com/forms/d/e/1FAIpQLSd5ilK8mF76ZnLIPirTFPo0A5fQucYTMf9uDkdD--SkRbczjA/viewform',
                       ),
                     ),
                   );
                 },
               ),
-              SettingsTile(
+              SettingsTile.navigation(
                 title: Text(S.of(context).privacyPolicy),
                 leading: const Icon(Icons.privacy_tip),
                 onPressed: (context) {
@@ -154,7 +172,8 @@ class OtherView extends HookConsumerWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => const WebViewScreen(
-                        url: 'https://phrygian-jellyfish-595.notion.site/Privacy-Policy-057b29da8fb74d76bccd700d80db53e1',
+                        url:
+                            'https://phrygian-jellyfish-595.notion.site/Privacy-Policy-057b29da8fb74d76bccd700d80db53e1',
                       ),
                     ),
                   );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -41,7 +42,7 @@ class RecordListView extends HookConsumerWidget {
               },
             ),
             appBarBottom: PreferredSize(
-              preferredSize: const Size.fromHeight(50),
+              preferredSize: const Size.fromHeight(30),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -63,17 +64,20 @@ class RecordListView extends HookConsumerWidget {
                     ? const Center(
                         child: CircularProgressIndicator(),
                       )
-                    : Padding(
-                        padding: const EdgeInsets.only(top: 8),
-                        child: ListView.separated(
-                          separatorBuilder: (context, index) => const SizedBox(height: 8, child: Divider(height: 1)),
+                    : SlidableAutoCloseBehavior(
+                        child: ListView.builder(
                           itemCount: recordList.length,
                           itemBuilder: (context, index) {
                             return ProviderScope(
                               overrides: [
-                                currentRecord.overrideWithValue(recordList[index]),
+                                currentMargedRecord.overrideWithValue(recordList[index]),
                               ],
-                              child: const _BrandListTile(),
+                              child: Padding(
+                                padding: index == recordList.length - 1 // 最後の要素だった場合
+                                    ? const EdgeInsets.only(top: 8, bottom: 8)
+                                    : const EdgeInsets.only(top: 8),
+                                child: const _BrandListTile(),
+                              ),
                             );
                           },
                         ),
@@ -86,7 +90,7 @@ class RecordListView extends HookConsumerWidget {
   }
 }
 
-final currentRecord = Provider<MargedRecord>((ref) => MargedRecord(
+final currentMargedRecord = Provider<MargedRecord>((ref) => MargedRecord(
       recordId: 0,
       game: '',
       useDeck: '',
@@ -105,21 +109,21 @@ class _BrandListTile extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final recordListNotifier = ref.read(allRecordListNotifierProvider.notifier);
-    final record = ref.watch(currentRecord);
+    final record = ref.watch(currentMargedRecord);
     final outputFormat = DateFormat('yyyy年 MM月 dd日');
 
-    return SlidableTile(
+    return SlidableExpansionTileCard(
       key: UniqueKey(),
-      trailing: Text(
-        record.winLoss == WinLoss.win ? 'Win' : 'Loss',
-        style: GoogleFonts.bangers(
-          fontSize: 34,
-          color: record.winLoss == WinLoss.win ? const Color(0xFFA21F16) : const Color(0xFF3547AC),
-        ),
-      ),
-      subtitle: Text(
-        outputFormat.format(record.date),
-        style: Theme.of(context).textTheme.overline,
+      trailing: Column(
+        children: [
+          Text(
+            record.winLoss == WinLoss.win ? 'Win' : 'Loss',
+            style: GoogleFonts.bangers(
+              fontSize: 34,
+              color: record.winLoss == WinLoss.win ? const Color(0xFFA21F16) : const Color(0xFF3547AC),
+            ),
+          ),
+        ],
       ),
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -149,7 +153,7 @@ class _BrandListTile extends HookConsumerWidget {
               ),
             ],
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 4),
           Row(
             children: [
               Text(
@@ -174,19 +178,84 @@ class _BrandListTile extends HookConsumerWidget {
               ),
             ],
           ),
+          const SizedBox(height: 4),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'タグ: ',
+                style: Theme.of(context).textTheme.caption?.copyWith(
+                      leadingDistribution: TextLeadingDistribution.even,
+                      height: 1,
+                      fontSize: 10,
+                    ),
+              ),
+              const SizedBox(width: 4),
+              Flexible(
+                child: Text(
+                  record.tag ?? 'タグ無し',
+                  softWrap: false,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                        leadingDistribution: TextLeadingDistribution.even,
+                        height: 1,
+                      ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                '先攻後攻: ',
+                style: Theme.of(context).textTheme.caption?.copyWith(
+                      leadingDistribution: TextLeadingDistribution.even,
+                      height: 1,
+                      fontSize: 10,
+                    ),
+              ),
+              const SizedBox(width: 4),
+              Flexible(
+                child: Text(
+                  '先攻',
+                  softWrap: false,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                        leadingDistribution: TextLeadingDistribution.even,
+                        height: 1,
+                      ),
+                ),
+              ),
+            ],
+          ),
           const SizedBox(height: 8),
+          Text(
+            outputFormat.format(record.date),
+            style: Theme.of(context).textTheme.overline,
+          ),
         ],
       ),
       deleteFunc: () async => await recordListNotifier.delete(record.recordId),
       alertMessage: '',
       alertTitle: '',
+      children: [
+        FractionallySizedBox(
+          widthFactor: 1,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 16),
+            child: Text(record.memo ?? ''),
+          ),
+        ),
+      ],
       onTap: () async {
         await Navigator.push(
           context,
           MaterialPageRoute(
             fullscreenDialog: true,
             builder: (context) => ProviderScope(
-              overrides: [currentRecord.overrideWithValue(record)],
+              overrides: [currentMargedRecord.overrideWithValue(record)],
               child: RecordDetailView(
                 margedRecord: record,
               ),

@@ -4,7 +4,7 @@
     "deck": "デッキ",
     "useDeck": "使用デッキ",
     "opponentDeck": "対戦相手デッキ",
-    "tag": "タグ",
+    "tag": "タグ (任意)",
     "memo": "メモ",
     "order": "手番",
     "winOrLoss": "勝敗",
@@ -51,10 +51,12 @@
     "contactForm": "お問い合わせ",
     "newest": "新しい順",
     "oldest": "古い順",
-    "memoTag": "振り返るためのメモを残しておきましょう",
+    "memoTag": "振り返るためのメモを残しておきましょう (任意)",
     "editButton": "編集",
     "noTag": "タグ無し",
     "noMemo": "メモ無し",
     "useDeckDistribution": "使用デッキ分布",
-    "opponentDeckDistribution": "対戦デッキ分布"
+    "opponentDeckDistribution": "対戦デッキ分布",
+    "settingSection": "各種設定",
+    "inputViewSettings":"入力画面設定"
 }

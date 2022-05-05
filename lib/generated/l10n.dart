@@ -100,10 +100,10 @@ class S {
     );
   }
 
-  /// `Tag`
+  /// `Tag (Optional)`
   String get tag {
     return Intl.message(
-      'Tag',
+      'Tag (Optional)',
       name: 'tag',
       desc: '',
       args: [],
@@ -570,10 +570,10 @@ class S {
     );
   }
 
-  /// `Keep notes to look back on.`
+  /// `Keep notes to look back on. (Optional)`
   String get memoTag {
     return Intl.message(
-      'Keep notes to look back on.',
+      'Keep notes to look back on. (Optional)',
       name: 'memoTag',
       desc: '',
       args: [],
@@ -625,6 +625,26 @@ class S {
     return Intl.message(
       'Opponent deck distribution',
       name: 'opponentDeckDistribution',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Setting`
+  String get settingSection {
+    return Intl.message(
+      'Setting',
+      name: 'settingSection',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Input View Settings`
+  String get inputViewSettings {
+    return Intl.message(
+      'Input View Settings',
+      name: 'inputViewSettings',
       desc: '',
       args: [],
     );

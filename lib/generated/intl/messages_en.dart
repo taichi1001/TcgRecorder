@@ -43,6 +43,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "gameEdit": MessageLookupByLibrary.simpleMessage("Edit Game"),
         "initializeGame": MessageLookupByLibrary.simpleMessage(
             "Enter the name of the game you want to record."),
+        "inputViewSettings":
+            MessageLookupByLibrary.simpleMessage("Input View Settings"),
         "inputgame": MessageLookupByLibrary.simpleMessage("Input Game"),
         "isSave":
             MessageLookupByLibrary.simpleMessage("Do you want to save it?"),
@@ -51,8 +53,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "listUseDeck": MessageLookupByLibrary.simpleMessage("Use Deck: "),
         "loss": MessageLookupByLibrary.simpleMessage("Loss"),
         "memo": MessageLookupByLibrary.simpleMessage("Memo"),
-        "memoTag":
-            MessageLookupByLibrary.simpleMessage("Keep notes to look back on."),
+        "memoTag": MessageLookupByLibrary.simpleMessage(
+            "Keep notes to look back on. (Optional)"),
         "newGame": MessageLookupByLibrary.simpleMessage("New"),
         "newGameDialog": MessageLookupByLibrary.simpleMessage("Input New Game"),
         "newest": MessageLookupByLibrary.simpleMessage("Newest"),
@@ -75,6 +77,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "review": MessageLookupByLibrary.simpleMessage("App Review"),
         "save": MessageLookupByLibrary.simpleMessage("Save"),
         "second": MessageLookupByLibrary.simpleMessage("Second"),
+        "settingSection": MessageLookupByLibrary.simpleMessage("Setting"),
         "submit": MessageLookupByLibrary.simpleMessage("Submit"),
         "tableDeckName": MessageLookupByLibrary.simpleMessage("Use Deck"),
         "tableFirstWinRate":
@@ -88,7 +91,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "tableSum": MessageLookupByLibrary.simpleMessage("Sum"),
         "tableWin": MessageLookupByLibrary.simpleMessage("Win"),
         "tableWinRate": MessageLookupByLibrary.simpleMessage("Win Rate"),
-        "tag": MessageLookupByLibrary.simpleMessage("Tag"),
+        "tag": MessageLookupByLibrary.simpleMessage("Tag (Optional)"),
         "tagEdit": MessageLookupByLibrary.simpleMessage("Edit Tag"),
         "useDeck": MessageLookupByLibrary.simpleMessage("Use Deck"),
         "useDeckDistribution":

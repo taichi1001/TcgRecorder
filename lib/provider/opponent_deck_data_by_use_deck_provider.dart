@@ -21,7 +21,7 @@ final opponentDeckDataByUseDeckProvider = StateProvider.family.autoDispose<List<
     }
 
     final filterRecordListNotifier = ref.read(filterRecordListController);
-    return opponentDeckList.map((opponentDeck) {
+    final opponentDeckData = opponentDeckList.map((opponentDeck) {
       final deck = opponentDeck.deck;
       final matchs = filterRecordListNotifier.countOpponentDeckMatches(useDeck, opponentDeck);
       final win = filterRecordListNotifier.countOpponentDeckWins(useDeck, opponentDeck);
@@ -39,5 +39,18 @@ final opponentDeckDataByUseDeckProvider = StateProvider.family.autoDispose<List<
         winRateOfSecond: winRateOfSecond,
       );
     }).toList();
+    opponentDeckData.add(
+      WinRateData(
+        deck: '合計',
+        matches: filterRecordListNotifier.countUseDeckMatches(useDeck),
+        win: filterRecordListNotifier.countUseDeckWins(useDeck),
+        loss: filterRecordListNotifier.countUseDeckLoss(useDeck),
+        useRate: filterRecordListNotifier.calcUseDeckUseRate(useDeck),
+        winRate: filterRecordListNotifier.calcUseDeckWinRate(useDeck),
+        winRateOfFirst: filterRecordListNotifier.calcUseDeckWinRateOfFirst(useDeck),
+        winRateOfSecond: filterRecordListNotifier.calcUseDeckWinRateOfSecond(useDeck),
+      ),
+    );
+    return opponentDeckData;
   },
 );
