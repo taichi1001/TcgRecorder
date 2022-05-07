@@ -28,6 +28,7 @@ class SlidableTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Slidable(
       key: key,
+      groupTag: '0',
       endActionPane: ActionPane(
         motion: const ScrollMotion(),
         children: [
@@ -88,11 +89,13 @@ class SlidableExpansionTileCard extends StatelessWidget {
     this.alertTitle = '選択データを削除します',
     this.trailing,
     this.subtitle,
+    this.leading,
     required this.alertMessage,
     this.children = const [],
     this.deleteFunc,
     this.editFunc,
     this.onTap,
+    this.onExpansionChanged,
     key,
   }) : super(key: key);
 
@@ -101,10 +104,12 @@ class SlidableExpansionTileCard extends StatelessWidget {
   final String alertMessage;
   final Widget? trailing;
   final Widget? subtitle;
+  final Widget? leading;
   final List<Widget> children;
   final Future Function()? deleteFunc;
   final Future Function()? editFunc;
   final Future Function()? onTap;
+  final void Function(bool)? onExpansionChanged;
   @override
   Widget build(BuildContext context) {
     return Slidable(
@@ -138,7 +143,7 @@ class SlidableExpansionTileCard extends StatelessWidget {
             ),
           if (editFunc != null)
             SlidableAction(
-              label: '名前変更',
+              label: '編集',
               autoClose: false,
               icon: Icons.edit,
               backgroundColor: Theme.of(context).toggleableActiveColor,
@@ -148,8 +153,10 @@ class SlidableExpansionTileCard extends StatelessWidget {
       ),
       child: Builder(builder: (context) {
         return ExpansionTileCard(
+          onExpansionChanged: onExpansionChanged,
           elevation: 0,
           title: title,
+          leading: leading,
           subtitle: subtitle,
           trailing: trailing ??
               IconButton(

@@ -111,20 +111,8 @@ class _BrandListTile extends HookConsumerWidget {
     final recordListNotifier = ref.read(allRecordListNotifierProvider.notifier);
     final record = ref.watch(currentMargedRecord);
     final outputFormat = DateFormat('yyyy年 MM月 dd日');
-
     return SlidableExpansionTileCard(
       key: UniqueKey(),
-      trailing: Column(
-        children: [
-          Text(
-            record.winLoss == WinLoss.win ? 'Win' : 'Loss',
-            style: GoogleFonts.bangers(
-              fontSize: 34,
-              color: record.winLoss == WinLoss.win ? const Color(0xFFA21F16) : const Color(0xFF3547AC),
-            ),
-          ),
-        ],
-      ),
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -139,7 +127,6 @@ class _BrandListTile extends HookConsumerWidget {
                       fontSize: 10,
                     ),
               ),
-              const SizedBox(width: 4),
               Flexible(
                 child: Text(
                   record.useDeck,
@@ -153,7 +140,7 @@ class _BrandListTile extends HookConsumerWidget {
               ),
             ],
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 8),
           Row(
             children: [
               Text(
@@ -164,7 +151,6 @@ class _BrandListTile extends HookConsumerWidget {
                       fontSize: 10,
                     ),
               ),
-              const SizedBox(width: 4),
               Flexible(
                 child: Text(
                   record.opponentDeck,
@@ -178,66 +164,90 @@ class _BrandListTile extends HookConsumerWidget {
               ),
             ],
           ),
-          const SizedBox(height: 4),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                'タグ: ',
-                style: Theme.of(context).textTheme.caption?.copyWith(
-                      leadingDistribution: TextLeadingDistribution.even,
-                      height: 1,
-                      fontSize: 10,
-                    ),
-              ),
-              const SizedBox(width: 4),
-              Flexible(
-                child: Text(
-                  record.tag ?? 'タグ無し',
-                  softWrap: false,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                        leadingDistribution: TextLeadingDistribution.even,
-                        height: 1,
-                      ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 4),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                '先攻後攻: ',
-                style: Theme.of(context).textTheme.caption?.copyWith(
-                      leadingDistribution: TextLeadingDistribution.even,
-                      height: 1,
-                      fontSize: 10,
-                    ),
-              ),
-              const SizedBox(width: 4),
-              Flexible(
-                child: Text(
-                  '先攻',
-                  softWrap: false,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                        leadingDistribution: TextLeadingDistribution.even,
-                        height: 1,
-                      ),
-                ),
-              ),
-            ],
-          ),
           const SizedBox(height: 8),
-          Text(
-            outputFormat.format(record.date),
-            style: Theme.of(context).textTheme.overline,
+          Row(
+            children: [
+              Icon(
+                Icons.tag,
+                size: 12,
+                color: Theme.of(context).textTheme.caption?.color!,
+              ),
+              Flexible(
+                child: Text(
+                  record.tag ?? 'aa',
+                  softWrap: false,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                        leadingDistribution: TextLeadingDistribution.even,
+                        height: 1,
+                      ),
+                ),
+              ),
+            ],
           ),
+          // const SizedBox(height: 8),
+          // Text(
+          //   outputFormat.format(record.date),
+          //   style: Theme.of(context).textTheme.overline,
+          // ),
         ],
       ),
+      trailing: SizedBox(
+        width: 93,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            record.memo != null && record.memo != '' ? const Icon(Icons.description) : const SizedBox(width: 24),
+            Container(
+              width: 24,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Theme.of(context).primaryColor,
+              ),
+              child: Center(
+                child: Text(
+                  '先',
+                  style: Theme.of(context).primaryTextTheme.labelMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        height: 1,
+                      ),
+                ),
+              ),
+            ),
+            SizedBox(
+              width: 45,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    record.winLoss == WinLoss.win ? 'Win' : 'Loss',
+                    style: GoogleFonts.bangers(
+                      fontSize: 24,
+                      color: record.winLoss == WinLoss.win ? const Color(0xFFA21F16) : const Color(0xFF3547AC),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
       deleteFunc: () async => await recordListNotifier.delete(record.recordId),
+      editFunc: () async {
+        await Navigator.push(
+          context,
+          MaterialPageRoute(
+            fullscreenDialog: true,
+            builder: (context) => ProviderScope(
+              overrides: [currentMargedRecord.overrideWithValue(record)],
+              child: RecordDetailView(
+                margedRecord: record,
+              ),
+            ),
+          ),
+        );
+        await Slidable.of(context)?.close();
+      },
       alertMessage: '',
       alertTitle: '',
       children: [
