@@ -33,10 +33,8 @@ class InputView extends HookConsumerWidget {
     final useDeck = ref.watch(inputViewNotifierProvider.select((value) => value.useDeck));
     final opponentDeck = ref.watch(inputViewNotifierProvider.select((value) => value.opponentDeck));
     final inputViewNotifier = ref.read(inputViewNotifierProvider.notifier);
-    final useDeckTextController =
-        ref.watch(textEditingControllerNotifierProvider.select((value) => value.useDeckController));
-    final opponentDeckTextController =
-        ref.watch(textEditingControllerNotifierProvider.select((value) => value.opponentDeckController));
+    final useDeckTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.useDeckController));
+    final opponentDeckTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.opponentDeckController));
     final tagTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.tagController));
     final memoTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.memoController));
     final outputFormat = DateFormat('yyyy年 MM月 dd日');
@@ -275,8 +273,8 @@ class InputView extends HookConsumerWidget {
                                       if (okCancelResult == OkCancelResult.ok) {
                                         await inputViewNotifier.save();
                                         await ref.read(dbHelper).fetchAll();
+                                        inputViewNotifier.resetView();
                                       }
-                                      inputViewNotifier.resetView();
                                       FocusScope.of(context).unfocus();
                                     },
                               child: Text(S.of(context).save),

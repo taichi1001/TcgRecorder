@@ -13,6 +13,7 @@ import 'package:tcg_manager/helper/theme_data.dart';
 import 'package:tcg_manager/provider/bottom_navigation_bar_provider.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
+import 'package:tcg_manager/provider/input_view_settings_provider.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 import 'package:tcg_manager/provider/theme_provider.dart';
@@ -66,7 +67,7 @@ class OtherView extends HookConsumerWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const _GameListView(),
+                      builder: (context) => const _InputViewSettingsView(),
                     ),
                   );
                 },
@@ -157,8 +158,7 @@ class OtherView extends HookConsumerWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => const WebViewScreen(
-                        url:
-                            'https://docs.google.com/forms/d/e/1FAIpQLSd5ilK8mF76ZnLIPirTFPo0A5fQucYTMf9uDkdD--SkRbczjA/viewform',
+                        url: 'https://docs.google.com/forms/d/e/1FAIpQLSd5ilK8mF76ZnLIPirTFPo0A5fQucYTMf9uDkdD--SkRbczjA/viewform',
                       ),
                     ),
                   );
@@ -172,9 +172,90 @@ class OtherView extends HookConsumerWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => const WebViewScreen(
-                        url:
-                            'https://phrygian-jellyfish-595.notion.site/Privacy-Policy-057b29da8fb74d76bccd700d80db53e1',
+                        url: 'https://phrygian-jellyfish-595.notion.site/Privacy-Policy-057b29da8fb74d76bccd700d80db53e1',
                       ),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _InputViewSettingsView extends HookConsumerWidget {
+  const _InputViewSettingsView({key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final fixUseDeck = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.fixUseDeck));
+    final fixOpponentDeck = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.fixOpponentDeck));
+    final fixTag = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.fixTag));
+    final inputiViewSettingsController = ref.watch(inputViewSettingsNotifierProvider.notifier);
+
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        elevation: 0.0,
+        title: Text(
+          S.of(context).otherTitle,
+          style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+        ),
+      ),
+      body: SettingsList(
+        lightTheme: SettingsThemeData(
+          settingsSectionBackground: Theme.of(context).canvasColor,
+          settingsListBackground: Theme.of(context).scaffoldBackgroundColor,
+        ),
+        darkTheme: SettingsThemeData(
+          settingsSectionBackground: Theme.of(context).canvasColor,
+          settingsListBackground: Theme.of(context).scaffoldBackgroundColor,
+        ),
+        sections: [
+          SettingsSection(
+            title: Text(S.of(context).settingSection),
+            tiles: [
+              SettingsTile.switchTile(
+                initialValue: fixUseDeck,
+                onToggle: (settings) => inputiViewSettingsController.changeFixUseDeck(settings),
+                title: const Text('使用デッキ'),
+                leading: const Icon(Icons.palette),
+                onPressed: (context) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const _ThemeChangeView(),
+                    ),
+                  );
+                },
+              ),
+              SettingsTile.switchTile(
+                initialValue: fixOpponentDeck,
+                onToggle: (settings) => inputiViewSettingsController.changeFixOpponentDeck(settings),
+                title: const Text('対戦相手デッキ'),
+                leading: const Icon(Icons.settings_applications),
+                onPressed: (context) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const _InputViewSettingsView(),
+                    ),
+                  );
+                },
+              ),
+              SettingsTile.switchTile(
+                initialValue: fixTag,
+                onToggle: (settings) => inputiViewSettingsController.changeFixTag(settings),
+                title: const Text('タグ'),
+                leading: const Icon(Icons.settings_applications),
+                onPressed: (context) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const _InputViewSettingsView(),
                     ),
                   );
                 },

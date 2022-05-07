@@ -4,6 +4,7 @@ import 'package:tcg_manager/entity/record.dart';
 import 'package:tcg_manager/entity/tag.dart';
 import 'package:tcg_manager/enum/first_second.dart';
 import 'package:tcg_manager/enum/win_loss.dart';
+import 'package:tcg_manager/provider/input_view_settings_provider.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
@@ -122,10 +123,16 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
   }
 
   void resetView() {
+    final fixUseDeck = read(inputViewSettingsNotifierProvider).fixUseDeck;
+    final fixOpponentDeck = read(inputViewSettingsNotifierProvider).fixOpponentDeck;
+    final fixTag = read(inputViewSettingsNotifierProvider).fixTag;
     state = InputViewState(
       date: state.date,
       winLoss: state.winLoss,
       firstSecond: state.firstSecond,
+      useDeck: fixUseDeck ? state.useDeck : null,
+      opponentDeck: fixOpponentDeck ? state.opponentDeck : null,
+      tag: fixTag ? state.tag : null,
     );
     read(textEditingControllerNotifierProvider.notifier).resetInputViewController();
   }
