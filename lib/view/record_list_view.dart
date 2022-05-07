@@ -31,6 +31,7 @@ class RecordListView extends HookConsumerWidget {
       children: [
         Expanded(
           child: CustomScaffold(
+            padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
             rightButton: IconButton(
               icon: const Icon(Icons.filter_list),
               onPressed: () {
