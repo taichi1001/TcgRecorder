@@ -241,7 +241,7 @@ class _BrandListTile extends HookConsumerWidget {
             fullscreenDialog: true,
             builder: (context) => ProviderScope(
               overrides: [currentMargedRecord.overrideWithValue(record)],
-              child: RecordDetailView(
+              child: RecordEditView(
                 margedRecord: record,
               ),
             ),
@@ -267,7 +267,7 @@ class _BrandListTile extends HookConsumerWidget {
             fullscreenDialog: true,
             builder: (context) => ProviderScope(
               overrides: [currentMargedRecord.overrideWithValue(record)],
-              child: RecordDetailView(
+              child: RecordEditView(
                 margedRecord: record,
               ),
             ),
