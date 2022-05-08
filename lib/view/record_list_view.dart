@@ -191,7 +191,7 @@ class _BrandListTile extends HookConsumerWidget {
               ),
               Flexible(
                 child: Text(
-                  record.tag ?? 'aa',
+                  record.tag ?? 'タグ無し',
                   softWrap: false,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.bodyText2?.copyWith(
@@ -274,8 +274,31 @@ class _BrandListTile extends HookConsumerWidget {
         FractionallySizedBox(
           widthFactor: 1,
           child: Padding(
-            padding: const EdgeInsets.only(left: 16),
-            child: Text(record.memo ?? ''),
+            padding: const EdgeInsets.only(left: 8),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'メモ: ',
+                  style: Theme.of(context).textTheme.caption?.copyWith(
+                        leadingDistribution: TextLeadingDistribution.even,
+                        height: 1,
+                        fontSize: 10,
+                      ),
+                ),
+                Flexible(
+                  child: Text(
+                    record.memo ?? '',
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 100,
+                    style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                          leadingDistribution: TextLeadingDistribution.even,
+                          height: 1,
+                        ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ],
