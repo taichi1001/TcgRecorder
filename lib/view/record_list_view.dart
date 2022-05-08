@@ -268,8 +268,8 @@ class _BrandListTile extends HookConsumerWidget {
         );
         await Slidable.of(context)?.close();
       },
-      alertMessage: '',
-      alertTitle: '',
+      alertTitle: '選択した記録を削除します',
+      alertMessage: 'この操作は元に戻せませんがよろしいですか？',
       children: [
         FractionallySizedBox(
           widthFactor: 1,
