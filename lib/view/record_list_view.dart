@@ -69,6 +69,7 @@ class RecordListView extends HookConsumerWidget {
                         child: ListView.builder(
                           itemCount: recordList.length,
                           itemBuilder: (context, index) {
+                            // if (index % 5 == 0 && index != 0) return const AdaptiveBannerAd();
                             return ProviderScope(
                               overrides: [
                                 currentMargedRecord.overrideWithValue(recordList[index]),
@@ -77,6 +78,19 @@ class RecordListView extends HookConsumerWidget {
                                 padding: index == recordList.length - 1 // 最後の要素だった場合
                                     ? const EdgeInsets.only(top: 8, bottom: 8)
                                     : const EdgeInsets.only(top: 8),
+                                // 広告挟むようにするときコメントアウト
+
+                                // child: index % 1 == 0 && index != 0
+                                //     ? Column(
+                                //         children: [
+                                //           const AdaptiveBannerAd(),
+                                //           const SizedBox(
+                                //             height: 8,
+                                //           ),
+                                //           const _BrandListTile(),
+                                //         ],
+                                //       )
+                                //     : const _BrandListTile(),
                                 child: const _BrandListTile(),
                               ),
                             );
@@ -112,8 +126,10 @@ class _BrandListTile extends HookConsumerWidget {
     final recordListNotifier = ref.read(allRecordListNotifierProvider.notifier);
     final record = ref.watch(currentMargedRecord);
     final outputFormat = DateFormat('yyyy年 MM月 dd日');
+    final isMemo = record.memo != null && record.memo != '';
     return SlidableExpansionTileCard(
       key: UniqueKey(),
+      isExpansion: isMemo,
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -194,11 +210,11 @@ class _BrandListTile extends HookConsumerWidget {
         ],
       ),
       trailing: SizedBox(
-        width: 93,
+        width: 110,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            record.memo != null && record.memo != '' ? const Icon(Icons.description) : const SizedBox(width: 24),
+            isMemo ? const Icon(Icons.description) : const SizedBox(width: 24),
             Container(
               width: 24,
               decoration: BoxDecoration(
@@ -207,7 +223,7 @@ class _BrandListTile extends HookConsumerWidget {
               ),
               child: Center(
                 child: Text(
-                  '先',
+                  record.firstSecond == FirstSecond.first ? '先' : '後',
                   style: Theme.of(context).primaryTextTheme.labelMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                         height: 1,
@@ -215,19 +231,22 @@ class _BrandListTile extends HookConsumerWidget {
                 ),
               ),
             ),
-            SizedBox(
+            Container(
               width: 45,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    record.winLoss == WinLoss.win ? 'Win' : 'Loss',
-                    style: GoogleFonts.bangers(
-                      fontSize: 24,
-                      color: record.winLoss == WinLoss.win ? const Color(0xFFA21F16) : const Color(0xFF3547AC),
-                    ),
+              height: 30,
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(6),
+                color: record.winLoss == WinLoss.win ? const Color(0xFFA21F16) : const Color(0xFF3547AC),
+              ),
+              child: Center(
+                child: Text(
+                  record.winLoss == WinLoss.win ? 'Win' : 'Loss',
+                  style: GoogleFonts.bangers(
+                    fontSize: 22,
+                    color: Colors.white,
                   ),
-                ],
+                ),
               ),
             ),
           ],

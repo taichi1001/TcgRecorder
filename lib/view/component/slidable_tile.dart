@@ -1,7 +1,7 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:tcg_manager/view/component/expansion_tile_card.dart';
 
 class SlidableTile extends StatelessWidget {
   const SlidableTile({
@@ -91,6 +91,7 @@ class SlidableExpansionTileCard extends StatelessWidget {
     this.subtitle,
     this.leading,
     required this.alertMessage,
+    this.isExpansion = true,
     this.children = const [],
     this.deleteFunc,
     this.editFunc,
@@ -106,6 +107,7 @@ class SlidableExpansionTileCard extends StatelessWidget {
   final Widget? subtitle;
   final Widget? leading;
   final List<Widget> children;
+  final bool isExpansion;
   final Future Function()? deleteFunc;
   final Future Function()? editFunc;
   final Future Function()? onTap;
@@ -153,6 +155,8 @@ class SlidableExpansionTileCard extends StatelessWidget {
       ),
       child: Builder(builder: (context) {
         return ExpansionTileCard(
+          isExpansion: isExpansion,
+          contentPadding: const EdgeInsets.only(left: 8, right: 8, top: 4, bottom: 4),
           onExpansionChanged: onExpansionChanged,
           elevation: 0,
           title: title,
