@@ -158,7 +158,8 @@ class OtherView extends HookConsumerWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => const WebViewScreen(
-                        url: 'https://docs.google.com/forms/d/e/1FAIpQLSd5ilK8mF76ZnLIPirTFPo0A5fQucYTMf9uDkdD--SkRbczjA/viewform',
+                        url:
+                            'https://docs.google.com/forms/d/e/1FAIpQLSd5ilK8mF76ZnLIPirTFPo0A5fQucYTMf9uDkdD--SkRbczjA/viewform',
                       ),
                     ),
                   );
@@ -172,7 +173,8 @@ class OtherView extends HookConsumerWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => const WebViewScreen(
-                        url: 'https://phrygian-jellyfish-595.notion.site/Privacy-Policy-057b29da8fb74d76bccd700d80db53e1',
+                        url:
+                            'https://phrygian-jellyfish-595.notion.site/Privacy-Policy-057b29da8fb74d76bccd700d80db53e1',
                       ),
                     ),
                   );
@@ -222,43 +224,19 @@ class _InputViewSettingsView extends HookConsumerWidget {
                 initialValue: fixUseDeck,
                 onToggle: (settings) => inputiViewSettingsController.changeFixUseDeck(settings),
                 title: const Text('使用デッキ'),
-                leading: const Icon(Icons.palette),
-                onPressed: (context) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const _ThemeChangeView(),
-                    ),
-                  );
-                },
+                leading: const Icon(Icons.settings_applications),
               ),
               SettingsTile.switchTile(
                 initialValue: fixOpponentDeck,
                 onToggle: (settings) => inputiViewSettingsController.changeFixOpponentDeck(settings),
                 title: const Text('対戦相手デッキ'),
                 leading: const Icon(Icons.settings_applications),
-                onPressed: (context) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const _InputViewSettingsView(),
-                    ),
-                  );
-                },
               ),
               SettingsTile.switchTile(
                 initialValue: fixTag,
                 onToggle: (settings) => inputiViewSettingsController.changeFixTag(settings),
                 title: const Text('タグ'),
                 leading: const Icon(Icons.settings_applications),
-                onPressed: (context) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const _InputViewSettingsView(),
-                    ),
-                  );
-                },
               ),
             ],
           ),
