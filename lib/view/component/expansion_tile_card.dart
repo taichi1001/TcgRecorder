@@ -271,7 +271,7 @@ class ExpansionTileCardState extends State<ExpansionTileCard> with SingleTickerP
   }
 
   void toggleExpansion() {
-    _setExpansion(!_isExpanded);
+    if (widget.isExpansion) _setExpansion(!_isExpanded);
   }
 
   Widget _buildChildren(BuildContext context, Widget? child) {
@@ -283,41 +283,40 @@ class ExpansionTileCardState extends State<ExpansionTileCard> with SingleTickerP
         borderRadius: widget.borderRadius,
         elevation: _elevation.value,
         shadowColor: widget.shadowColor,
-        child: Container(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              InkWell(
-                customBorder: RoundedRectangleBorder(borderRadius: widget.borderRadius),
-                onTap: widget.isExpansion ? toggleExpansion : null,
-                child: ListTileTheme.merge(
-                  iconColor: _iconColor.value,
-                  textColor: _headerColor.value,
-                  child: Padding(
-                    padding: const EdgeInsets.all(2.0),
-                    child: ListTile(
-                      isThreeLine: widget.isThreeLine,
-                      contentPadding: widget.contentPadding,
-                      leading: widget.leading,
-                      title: widget.title,
-                      subtitle: widget.subtitle,
-                      trailing: RotationTransition(
-                        turns:
-                            widget.trailing == null || widget.animateTrailing ? _iconTurns : AlwaysStoppedAnimation(0),
-                        child: widget.trailing ?? Icon(Icons.expand_more),
-                      ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            InkWell(
+              customBorder: RoundedRectangleBorder(borderRadius: widget.borderRadius),
+              onTap: toggleExpansion,
+              child: ListTileTheme.merge(
+                iconColor: _iconColor.value,
+                textColor: _headerColor.value,
+                child: Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: ListTile(
+                    isThreeLine: widget.isThreeLine,
+                    contentPadding: widget.contentPadding,
+                    leading: widget.leading,
+                    title: widget.title,
+                    subtitle: widget.subtitle,
+                    trailing: RotationTransition(
+                      turns: widget.trailing == null || widget.animateTrailing
+                          ? _iconTurns
+                          : const AlwaysStoppedAnimation(0),
+                      child: widget.trailing ?? const Icon(Icons.expand_more),
                     ),
                   ),
                 ),
               ),
-              ClipRect(
-                child: Align(
-                  heightFactor: _heightFactor.value,
-                  child: child,
-                ),
+            ),
+            ClipRect(
+              child: Align(
+                heightFactor: _heightFactor.value,
+                child: child,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -328,10 +327,10 @@ class ExpansionTileCardState extends State<ExpansionTileCard> with SingleTickerP
     final ThemeData theme = Theme.of(context);
     _headerColorTween
       ..begin = theme.textTheme.subtitle1!.color
-      ..end = widget.expandedTextColor ?? theme.accentColor;
+      ..end = widget.expandedTextColor ?? theme.colorScheme.secondary;
     _iconColorTween
       ..begin = theme.unselectedWidgetColor
-      ..end = widget.expandedTextColor ?? theme.accentColor;
+      ..end = widget.expandedTextColor ?? theme.colorScheme.secondary;
     _materialColorTween
       ..begin = widget.baseColor ?? theme.canvasColor
       ..end = widget.expandedColor ?? theme.cardColor;
