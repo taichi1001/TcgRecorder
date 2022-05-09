@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -21,17 +22,71 @@ import 'package:tcg_manager/view/record_detail_view.dart';
 class RecordListView extends HookConsumerWidget {
   const RecordListView({Key? key}) : super(key: key);
 
+  Map<String, List<MargedRecord>> _makeMap(List<MargedRecord>? recordList) {
+    final outputFormat = DateFormat('yyyy年 MM月 dd日');
+    Map<String, List<MargedRecord>> result = {};
+    if (recordList == null) return {};
+    for (final record in recordList) {
+      final date = outputFormat.format(record.date);
+      if (!result.containsKey(date)) {
+        result[date] = [record];
+      } else {
+        result[date] = result[date]!..add(record);
+      }
+    }
+    return result;
+  }
+
+  List<Widget> _makeSliverList(BuildContext context, Map<String, List<MargedRecord>> list) {
+    final List<Widget> result = [];
+    list.forEach(
+      (key, value) {
+        result.add(
+          SliverStickyHeader(
+            header: Container(
+              height: 30,
+              // color: const Color(0xffccccce),
+              color: Theme.of(context).colorScheme.surface,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              alignment: Alignment.centerLeft,
+              child: Text(key),
+            ),
+            sliver: SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) => ProviderScope(
+                  overrides: [
+                    currentMargedRecord.overrideWithValue(list[key]![index]),
+                  ],
+                  child: Padding(
+                    padding: index == list[key]!.length - 1 // 最後の要素だった場合
+                        ? const EdgeInsets.all(8)
+                        : const EdgeInsets.only(top: 8, left: 8, right: 8),
+                    child: const _BrandListTile(),
+                  ),
+                ),
+                childCount: list[key]!.length,
+              ),
+            ),
+          ),
+        );
+      },
+    );
+    return result;
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final recordList = ref.watch(margedRecordListProvider).margedRecordList;
     final recordListViewNotifier = ref.read(recordListViewNotifierProvider.notifier);
     final sort = ref.watch(recordListViewNotifierProvider.select((value) => value.sort));
     final isLoaded = ref.watch(allRecordListNotifierProvider.select((value) => value.isLoaded));
+    final recordMap = _makeMap(recordList);
+
     return Column(
       children: [
         Expanded(
           child: CustomScaffold(
-            padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
+            padding: const EdgeInsets.all(0),
             rightButton: IconButton(
               icon: const Icon(Icons.filter_list),
               onPressed: () {
@@ -66,35 +121,8 @@ class RecordListView extends HookConsumerWidget {
                         child: CircularProgressIndicator(),
                       )
                     : SlidableAutoCloseBehavior(
-                        child: ListView.builder(
-                          itemCount: recordList.length,
-                          itemBuilder: (context, index) {
-                            // if (index % 5 == 0 && index != 0) return const AdaptiveBannerAd();
-                            return ProviderScope(
-                              overrides: [
-                                currentMargedRecord.overrideWithValue(recordList[index]),
-                              ],
-                              child: Padding(
-                                padding: index == recordList.length - 1 // 最後の要素だった場合
-                                    ? const EdgeInsets.only(top: 8, bottom: 8)
-                                    : const EdgeInsets.only(top: 8),
-                                // 広告挟むようにするときコメントアウト
-
-                                // child: index % 1 == 0 && index != 0
-                                //     ? Column(
-                                //         children: [
-                                //           const AdaptiveBannerAd(),
-                                //           const SizedBox(
-                                //             height: 8,
-                                //           ),
-                                //           const _BrandListTile(),
-                                //         ],
-                                //       )
-                                //     : const _BrandListTile(),
-                                child: const _BrandListTile(),
-                              ),
-                            );
-                          },
+                        child: CustomScrollView(
+                          slivers: _makeSliverList(context, recordMap),
                         ),
                       ),
           ),
@@ -125,7 +153,6 @@ class _BrandListTile extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final recordListNotifier = ref.read(allRecordListNotifierProvider.notifier);
     final record = ref.watch(currentMargedRecord);
-    final outputFormat = DateFormat('yyyy年 MM月 dd日');
     final isMemo = record.memo != null && record.memo != '';
     return SlidableExpansionTileCard(
       key: UniqueKey(),
@@ -202,11 +229,6 @@ class _BrandListTile extends HookConsumerWidget {
               ),
             ],
           ),
-          // const SizedBox(height: 8),
-          // Text(
-          //   outputFormat.format(record.date),
-          //   style: Theme.of(context).textTheme.overline,
-          // ),
         ],
       ),
       trailing: SizedBox(
@@ -301,6 +323,7 @@ class _BrandListTile extends HookConsumerWidget {
             ),
           ),
         ),
+        const SizedBox(height: 8)
       ],
       onTap: () async {
         await Navigator.push(

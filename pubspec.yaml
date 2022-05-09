@@ -71,6 +71,8 @@ dependencies:
 
   flutter_slidable: ^1.2.0
 
+  flutter_sticky_header: ^0.6.1
+
 flutter_native_splash:
   image: "assets/images/icon.png"
   color: "FFFFFF"
