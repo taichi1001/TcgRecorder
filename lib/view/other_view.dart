@@ -158,8 +158,7 @@ class OtherView extends HookConsumerWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => const WebViewScreen(
-                        url:
-                            'https://docs.google.com/forms/d/e/1FAIpQLSd5ilK8mF76ZnLIPirTFPo0A5fQucYTMf9uDkdD--SkRbczjA/viewform',
+                        url: 'https://docs.google.com/forms/d/e/1FAIpQLSd5ilK8mF76ZnLIPirTFPo0A5fQucYTMf9uDkdD--SkRbczjA/viewform',
                       ),
                     ),
                   );
@@ -173,8 +172,7 @@ class OtherView extends HookConsumerWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => const WebViewScreen(
-                        url:
-                            'https://phrygian-jellyfish-595.notion.site/Privacy-Policy-057b29da8fb74d76bccd700d80db53e1',
+                        url: 'https://phrygian-jellyfish-595.notion.site/Privacy-Policy-057b29da8fb74d76bccd700d80db53e1',
                       ),
                     ),
                   );
@@ -326,7 +324,22 @@ class _DeckListView extends HookConsumerWidget {
                       textFields: [DialogTextField(initialText: deckList[index].deck)],
                     );
                     if (newName != null && newName.first != '') {
-                      ref.read(allDeckListNotifierProvider.notifier).updateName(newName.first, index);
+                      try {
+                        await ref.read(allDeckListNotifierProvider.notifier).updateName(newName.first, index);
+                      } catch (e) {
+                        if (e.toString().contains('code 2067')) {
+                          await showOkAlertDialog(
+                            context: context,
+                            title: 'エラー',
+                            message: '既に登録されているデッキです。',
+                          );
+                        } else {
+                          await showOkAlertDialog(
+                            context: context,
+                            title: '予期せぬエラー',
+                          );
+                        }
+                      }
                     }
                   },
                 );

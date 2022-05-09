@@ -27,8 +27,12 @@ class DeckDao {
 
   Future<int> update(Deck deck) async {
     final db = await dbProvider.database;
-    final result = await db.update(tableName, deck.toJson(), where: 'deck_id = ?', whereArgs: [deck.deckId]);
-    return result;
+    try {
+      final result = await db.update(tableName, deck.toJson(), where: 'deck_id = ?', whereArgs: [deck.deckId]);
+      return result;
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Future<int> delete(int id) async {
