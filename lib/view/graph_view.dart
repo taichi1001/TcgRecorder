@@ -61,36 +61,35 @@ class GraphView extends HookConsumerWidget {
                       ],
                     ),
             ),
-            Center(
-              child: recordList.isEmpty
-                  ? Text(S.of(context).noDataMessage)
-                  : Column(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
-                                child: _UseRateChart(
-                                  data: useDeckData,
-                                  title: S.of(context).useDeckDistribution,
-                                ),
+            recordList.isEmpty
+                ? Text(S.of(context).noDataMessage)
+                : Column(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
+                              child: _UseRateChart(
+                                data: useDeckData,
+                                title: S.of(context).useDeckDistribution,
                               ),
-                              const SizedBox(height: 16),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
-                                child: _UseRateChart(
-                                  data: opponentDeckData,
-                                  title: S.of(context).opponentDeckDistribution,
-                                ),
+                            ),
+                            const SizedBox(height: 16),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+                              child: _UseRateChart(
+                                data: opponentDeckData,
+                                title: S.of(context).opponentDeckDistribution,
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                        const AdaptiveBannerAd(),
-                      ],
-                    ),
-            ),
+                      ),
+                      const AdaptiveBannerAd(),
+                    ],
+                  ),
           ],
         ),
       ),
