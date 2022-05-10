@@ -43,6 +43,7 @@ class GraphView extends HookConsumerWidget {
           indicator: MaterialIndicator(
             horizontalPadding: 16,
             height: 3,
+            color: Theme.of(context).colorScheme.onBackground,
           ),
           tabs: const [
             Tab(icon: Icon(Icons.table_rows)),
