@@ -31,8 +31,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "bottomInput": MessageLookupByLibrary.simpleMessage("Input"),
         "bottomList": MessageLookupByLibrary.simpleMessage("List"),
         "bottomOther": MessageLookupByLibrary.simpleMessage("Other"),
+        "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "contactForm": MessageLookupByLibrary.simpleMessage("Contact"),
         "date": MessageLookupByLibrary.simpleMessage("Date"),
+        "dateFormat": MessageLookupByLibrary.simpleMessage("dd/MM/yyyy"),
         "deck": MessageLookupByLibrary.simpleMessage("Deck"),
         "deckEdit": MessageLookupByLibrary.simpleMessage("Edit Deck"),
         "deleteMessage":
@@ -74,6 +76,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "otherSection": MessageLookupByLibrary.simpleMessage("Other"),
         "otherTitle": MessageLookupByLibrary.simpleMessage("Other"),
         "privacyPolicy": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
+        "recordEditDialogMessage": MessageLookupByLibrary.simpleMessage(
+            "The content I am editing is not saved, may I go back?"),
+        "recordListDeleteDialogMessage": MessageLookupByLibrary.simpleMessage(
+            "This operation cannot be undone."),
+        "recordListDeleteDialogTitle": MessageLookupByLibrary.simpleMessage(
+            "Deletes the selected record."),
+        "recordListFirst": MessageLookupByLibrary.simpleMessage("1"),
+        "recordListMemo": MessageLookupByLibrary.simpleMessage("Memo: "),
+        "recordListNoTag": MessageLookupByLibrary.simpleMessage("No tag"),
+        "recordListSecond": MessageLookupByLibrary.simpleMessage("2"),
         "review": MessageLookupByLibrary.simpleMessage("App Review"),
         "save": MessageLookupByLibrary.simpleMessage("Save"),
         "second": MessageLookupByLibrary.simpleMessage("Second"),
@@ -93,6 +105,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "tableWinRate": MessageLookupByLibrary.simpleMessage("Win Rate"),
         "tag": MessageLookupByLibrary.simpleMessage("Tag (Optional)"),
         "tagEdit": MessageLookupByLibrary.simpleMessage("Edit Tag"),
+        "themeChange": MessageLookupByLibrary.simpleMessage("Change theme"),
         "useDeck": MessageLookupByLibrary.simpleMessage("Use Deck"),
         "useDeckDistribution":
             MessageLookupByLibrary.simpleMessage("Use deck distribution"),

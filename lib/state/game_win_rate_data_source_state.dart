@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:tcg_manager/entity/win_rate_data.dart';
-import 'package:collection/collection.dart';
+import 'package:tcg_manager/generated/l10n.dart';
 
 class GameWinRateDataSource extends DataGridSource {
   GameWinRateDataSource({
@@ -49,7 +49,7 @@ class GameWinRateDataSource extends DataGridSource {
   Widget _buildChild(DataGridCell cell) {
     if (cell.columnName == 'デッキ名') {
       if (cell.value == '合計') {
-        return Text(cell.value.toString());
+        return Text(S.of(context).tableSum);
       } else {
         return Text(
           cell.value.toString(),

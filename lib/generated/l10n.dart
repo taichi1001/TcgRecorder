@@ -649,6 +649,106 @@ class S {
       args: [],
     );
   }
+
+  /// `dd/MM/yyyy`
+  String get dateFormat {
+    return Intl.message(
+      'dd/MM/yyyy',
+      name: 'dateFormat',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `1`
+  String get recordListFirst {
+    return Intl.message(
+      '1',
+      name: 'recordListFirst',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `2`
+  String get recordListSecond {
+    return Intl.message(
+      '2',
+      name: 'recordListSecond',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Deletes the selected record.`
+  String get recordListDeleteDialogTitle {
+    return Intl.message(
+      'Deletes the selected record.',
+      name: 'recordListDeleteDialogTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This operation cannot be undone.`
+  String get recordListDeleteDialogMessage {
+    return Intl.message(
+      'This operation cannot be undone.',
+      name: 'recordListDeleteDialogMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Memo: `
+  String get recordListMemo {
+    return Intl.message(
+      'Memo: ',
+      name: 'recordListMemo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No tag`
+  String get recordListNoTag {
+    return Intl.message(
+      'No tag',
+      name: 'recordListNoTag',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The content I am editing is not saved, may I go back?`
+  String get recordEditDialogMessage {
+    return Intl.message(
+      'The content I am editing is not saved, may I go back?',
+      name: 'recordEditDialogMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change theme`
+  String get themeChange {
+    return Intl.message(
+      'Change theme',
+      name: 'themeChange',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get cancel {
+    return Intl.message(
+      'Cancel',
+      name: 'cancel',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

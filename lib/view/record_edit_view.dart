@@ -32,7 +32,7 @@ class RecordEditView extends HookConsumerWidget {
       onWillPop: (() async {
         final okCancelResult = await showOkCancelAlertDialog(
           context: context,
-          message: '編集中の内容が保存されませんが戻ってもよろしいですか？',
+          message: S.of(context).recordEditDialogMessage,
           isDestructiveAction: true,
         );
         if (okCancelResult == OkCancelResult.ok) return true;
@@ -49,7 +49,7 @@ class RecordEditView extends HookConsumerWidget {
           actions: [
             CupertinoButton(
               child: Text(
-                '保存',
+                S.of(context).save,
                 style: Theme.of(context).primaryTextTheme.bodyText1,
               ),
               onPressed: () {
@@ -90,7 +90,7 @@ class _EditView extends HookConsumerWidget {
     final opponentDeckTextController = useTextEditingController(text: editMargedRecord.opponentDeck);
     final tagTextController = useTextEditingController(text: editMargedRecord.tag);
     final memoTextController = useTextEditingController(text: editMargedRecord.memo);
-    final outputFormat = DateFormat('yyyy年 MM月 dd日');
+    final outputFormat = DateFormat(S.of(context).dateFormat);
     final isSelectPicker = useState(false);
 
     final _useDeckFocusnode = useFocusNode();

@@ -22,8 +22,8 @@ import 'package:tcg_manager/view/record_edit_view.dart';
 class RecordListView extends HookConsumerWidget {
   const RecordListView({Key? key}) : super(key: key);
 
-  Map<String, List<MargedRecord>> _makeMap(List<MargedRecord>? recordList) {
-    final outputFormat = DateFormat('yyyy年 MM月 dd日');
+  Map<String, List<MargedRecord>> _makeMap(List<MargedRecord>? recordList, BuildContext context) {
+    final outputFormat = DateFormat(S.of(context).dateFormat);
     Map<String, List<MargedRecord>> result = {};
     if (recordList == null) return {};
     for (final record in recordList) {
@@ -74,7 +74,7 @@ class RecordListView extends HookConsumerWidget {
     final recordListViewNotifier = ref.read(recordListViewNotifierProvider.notifier);
     final sort = ref.watch(recordListViewNotifierProvider.select((value) => value.sort));
     final isLoaded = ref.watch(allRecordListNotifierProvider.select((value) => value.isLoaded));
-    final recordMap = _makeMap(recordList);
+    final recordMap = _makeMap(recordList, context);
 
     return Column(
       children: [
@@ -212,7 +212,7 @@ class _BrandListTile extends HookConsumerWidget {
               ),
               Flexible(
                 child: Text(
-                  record.tag ?? 'タグ無し',
+                  record.tag ?? S.of(context).noTag,
                   softWrap: false,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.bodyText2?.copyWith(
@@ -239,7 +239,7 @@ class _BrandListTile extends HookConsumerWidget {
               ),
               child: Center(
                 child: Text(
-                  record.firstSecond == FirstSecond.first ? '先' : '後',
+                  record.firstSecond == FirstSecond.first ? S.of(context).recordListFirst : S.of(context).recordListSecond,
                   style: Theme.of(context).primaryTextTheme.labelMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                         height: 1,
@@ -284,8 +284,8 @@ class _BrandListTile extends HookConsumerWidget {
         );
         await Slidable.of(context)?.close();
       },
-      alertTitle: '選択した記録を削除します',
-      alertMessage: 'この操作は元に戻せませんがよろしいですか？',
+      alertTitle: S.of(context).recordListDeleteDialogTitle,
+      alertMessage: S.of(context).recordListDeleteDialogMessage,
       children: [
         FractionallySizedBox(
           widthFactor: 1,
@@ -295,7 +295,7 @@ class _BrandListTile extends HookConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'メモ: ',
+                  S.of(context).recordListMemo,
                   style: Theme.of(context).textTheme.caption?.copyWith(
                         leadingDistribution: TextLeadingDistribution.even,
                         height: 1,

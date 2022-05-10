@@ -37,7 +37,7 @@ class InputView extends HookConsumerWidget {
     final opponentDeckTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.opponentDeckController));
     final tagTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.tagController));
     final memoTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.memoController));
-    final outputFormat = DateFormat('yyyy年 MM月 dd日');
+    final outputFormat = DateFormat(S.of(context).dateFormat);
 
     final _useDeckFocusnode = useFocusNode();
     final _opponentDeckFocusnode = useFocusNode();

@@ -49,7 +49,7 @@ class OtherView extends HookConsumerWidget {
             title: Text(S.of(context).settingSection),
             tiles: [
               SettingsTile.navigation(
-                title: const Text('テーマ変更'),
+                title: Text(S.of(context).themeChange),
                 leading: const Icon(Icons.palette),
                 onPressed: (context) {
                   Navigator.push(
@@ -315,7 +315,7 @@ class _DeckListView extends HookConsumerWidget {
         centerTitle: true,
         elevation: 0.0,
         title: Text(
-          S.of(context).gameEdit,
+          S.of(context).deckEdit,
           style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
         ),
       ),
@@ -375,7 +375,7 @@ class _TagListView extends HookConsumerWidget {
         centerTitle: true,
         elevation: 0.0,
         title: Text(
-          S.of(context).gameEdit,
+          S.of(context).tagEdit,
           style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
         ),
       ),
@@ -454,7 +454,7 @@ class _ThemeChangeView extends HookConsumerWidget {
               Navigator.of(context).pop();
             },
             child: Text(
-              'キャンセル',
+              S.of(context).cancel,
               style: Theme.of(context).primaryTextTheme.bodyText1,
             ),
           ),
@@ -465,7 +465,7 @@ class _ThemeChangeView extends HookConsumerWidget {
                 Navigator.of(context).pop();
               },
               child: Text(
-                '決定',
+                S.of(context).submit,
                 style: Theme.of(context).primaryTextTheme.bodyText1,
               ),
             ),

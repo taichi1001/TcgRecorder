@@ -58,6 +58,15 @@
     "useDeckDistribution": "Use deck distribution",
     "opponentDeckDistribution": "Opponent deck distribution",
     "settingSection": "Setting",
-    "inputViewSettings":"Input View Settings"
-
+    "inputViewSettings": "Input View Settings",
+    "dateFormat": "dd/MM/yyyy",
+    "recordListFirst": "1",
+    "recordListSecond": "2",
+    "recordListDeleteDialogTitle": "Deletes the selected record.",
+    "recordListDeleteDialogMessage": "This operation cannot be undone.",
+    "recordListMemo": "Memo: ",
+    "recordListNoTag": "No tag",
+    "recordEditDialogMessage": "The content I am editing is not saved, may I go back?",
+    "themeChange": "Change theme",
+    "cancel": "Cancel"
 }
