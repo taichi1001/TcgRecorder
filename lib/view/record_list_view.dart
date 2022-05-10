@@ -45,7 +45,6 @@ class RecordListView extends HookConsumerWidget {
           SliverStickyHeader(
             header: Container(
               height: 30,
-              // color: const Color(0xffccccce),
               color: Theme.of(context).colorScheme.surface,
               padding: const EdgeInsets.symmetric(horizontal: 16),
               alignment: Alignment.centerLeft,
@@ -57,12 +56,7 @@ class RecordListView extends HookConsumerWidget {
                   overrides: [
                     currentMargedRecord.overrideWithValue(list[key]![index]),
                   ],
-                  child: Padding(
-                    padding: index == list[key]!.length - 1 // 最後の要素だった場合
-                        ? const EdgeInsets.all(8)
-                        : const EdgeInsets.only(top: 8, left: 8, right: 8),
-                    child: const _BrandListTile(),
-                  ),
+                  child: const _BrandListTile(),
                 ),
                 childCount: list[key]!.length,
               ),

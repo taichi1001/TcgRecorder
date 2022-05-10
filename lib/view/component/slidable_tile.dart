@@ -1,7 +1,6 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:tcg_manager/view/component/expansion_tile_card.dart';
 
 class SlidableTile extends StatelessWidget {
   const SlidableTile({
@@ -154,23 +153,29 @@ class SlidableExpansionTileCard extends StatelessWidget {
         ],
       ),
       child: Builder(builder: (context) {
-        return ExpansionTileCard(
-          isExpansion: isExpansion,
-          contentPadding: const EdgeInsets.only(left: 8, right: 8, top: 4, bottom: 4),
-          onExpansionChanged: onExpansionChanged,
-          elevation: 0,
-          title: title,
-          leading: leading,
-          subtitle: subtitle,
-          trailing: trailing ??
-              IconButton(
-                icon: const Icon(Icons.navigate_before),
-                onPressed: () {
-                  Slidable.of(context)?.openEndActionPane();
-                },
-              ),
-          children: children,
-        );
+        return isExpansion
+            ? ExpansionTile(
+                tilePadding: const EdgeInsets.only(left: 16, right: 16, top: 8),
+                onExpansionChanged: onExpansionChanged,
+                backgroundColor: Theme.of(context).colorScheme.surface,
+                title: title,
+                leading: leading,
+                subtitle: subtitle,
+                trailing: trailing ??
+                    IconButton(
+                      icon: const Icon(Icons.navigate_before),
+                      onPressed: () {
+                        Slidable.of(context)?.openEndActionPane();
+                      },
+                    ),
+                children: children,
+              )
+            : ListTile(
+                contentPadding: const EdgeInsets.only(left: 16, right: 16, top: 8),
+                title: title,
+                leading: leading,
+                trailing: trailing,
+              );
       }),
     );
   }
