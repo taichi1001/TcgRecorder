@@ -33,10 +33,8 @@ class InputView extends HookConsumerWidget {
     final useDeck = ref.watch(inputViewNotifierProvider.select((value) => value.useDeck));
     final opponentDeck = ref.watch(inputViewNotifierProvider.select((value) => value.opponentDeck));
     final inputViewNotifier = ref.read(inputViewNotifierProvider.notifier);
-    final useDeckTextController =
-        ref.watch(textEditingControllerNotifierProvider.select((value) => value.useDeckController));
-    final opponentDeckTextController =
-        ref.watch(textEditingControllerNotifierProvider.select((value) => value.opponentDeckController));
+    final useDeckTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.useDeckController));
+    final opponentDeckTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.opponentDeckController));
     final tagTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.tagController));
     final memoTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.memoController));
     final outputFormat = DateFormat('yyyy年 MM月 dd日');
@@ -52,7 +50,6 @@ class InputView extends HookConsumerWidget {
           child: CustomScaffold(
             padding: const EdgeInsets.only(right: 8, left: 8, bottom: 8),
             body: KeyboardActions(
-              tapOutsideBehavior: TapOutsideBehavior.translucentDismiss,
               config: KeyboardActionsConfig(
                 keyboardBarColor: Theme.of(context).canvasColor,
                 keyboardSeparatorColor: Theme.of(context).dividerColor,
@@ -71,20 +68,36 @@ class InputView extends HookConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 8),
-                    Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              outputFormat.format(date),
-                            ),
-                            _DatePickerButton(
-                              submited: inputViewNotifier.setDateTime,
+                    GestureDetector(
+                      onTap: () {
+                        showCupertinoModalPopup(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return CustomModalDatePicker(
+                              submited: () {
+                                inputViewNotifier.setDateTime();
+                                Navigator.pop(context);
+                              },
                               onDateTimeChanged: inputViewNotifier.scrollDateTime,
-                            ),
-                          ],
+                            );
+                          },
+                        );
+                      },
+                      child: Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                outputFormat.format(date),
+                              ),
+                              const Icon(
+                                Icons.calendar_today_rounded,
+                                size: 16,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -300,41 +313,6 @@ class InputView extends HookConsumerWidget {
         ),
         const AdaptiveBannerAd(),
       ],
-    );
-  }
-}
-
-class _DatePickerButton extends HookConsumerWidget {
-  const _DatePickerButton({
-    required this.submited,
-    required this.onDateTimeChanged,
-    Key? key,
-  }) : super(key: key);
-  final void Function() submited;
-  final Function(DateTime) onDateTimeChanged;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return IconButton(
-      padding: const EdgeInsets.all(0),
-      constraints: const BoxConstraints(),
-      icon: const Icon(
-        Icons.calendar_today_rounded,
-        size: 16,
-      ),
-      onPressed: () {
-        showCupertinoModalPopup(
-            context: context,
-            builder: (BuildContext context) {
-              return CustomModalDatePicker(
-                submited: () {
-                  submited();
-                  Navigator.pop(context);
-                },
-                onDateTimeChanged: onDateTimeChanged,
-              );
-            });
-      },
     );
   }
 }

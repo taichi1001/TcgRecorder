@@ -81,14 +81,11 @@ class _EditView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final gameDeck = ref.watch(gameDeckListProvider);
     final gameTag = ref.watch(gameTagListProvider);
-    final editMargedRecord =
-        ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.editMargedRecord));
+    final editMargedRecord = ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.editMargedRecord));
     final recordDetailNotifier = ref.watch(recordDetailNotifierProvider(margedRecord).notifier);
 
-    final firstSecond =
-        ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.editMargedRecord.firstSecond));
-    final winLoss =
-        ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.editMargedRecord.winLoss));
+    final firstSecond = ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.editMargedRecord.firstSecond));
+    final winLoss = ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.editMargedRecord.winLoss));
     final useDeckTextController = useTextEditingController(text: editMargedRecord.useDeck);
     final opponentDeckTextController = useTextEditingController(text: editMargedRecord.opponentDeck);
     final tagTextController = useTextEditingController(text: editMargedRecord.tag);
@@ -110,7 +107,6 @@ class _EditView extends HookConsumerWidget {
     }
 
     return KeyboardActions(
-      tapOutsideBehavior: TapOutsideBehavior.opaqueDismiss,
       config: KeyboardActionsConfig(
         keyboardBarColor: Theme.of(context).canvasColor,
         keyboardSeparatorColor: Theme.of(context).dividerColor,
@@ -129,20 +125,36 @@ class _EditView extends HookConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 8),
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      outputFormat.format(editMargedRecord.date),
-                    ),
-                    _DatePickerButton(
-                      submited: recordDetailNotifier.setDate,
+            GestureDetector(
+              onTap: () {
+                showCupertinoModalPopup(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return CustomModalDatePicker(
+                      submited: () {
+                        recordDetailNotifier.setDate();
+                        Navigator.pop(context);
+                      },
                       onDateTimeChanged: recordDetailNotifier.scrollDate,
-                    ),
-                  ],
+                    );
+                  },
+                );
+              },
+              child: Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        outputFormat.format(editMargedRecord.date),
+                      ),
+                      const Icon(
+                        Icons.calendar_today_rounded,
+                        size: 16,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -334,41 +346,6 @@ class _EditView extends HookConsumerWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class _DatePickerButton extends HookConsumerWidget {
-  const _DatePickerButton({
-    required this.submited,
-    required this.onDateTimeChanged,
-    Key? key,
-  }) : super(key: key);
-  final void Function() submited;
-  final Function(DateTime) onDateTimeChanged;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return IconButton(
-      padding: const EdgeInsets.all(0),
-      constraints: const BoxConstraints(),
-      icon: const Icon(
-        Icons.calendar_today_rounded,
-        size: 16,
-      ),
-      onPressed: () {
-        showCupertinoModalPopup(
-            context: context,
-            builder: (BuildContext context) {
-              return CustomModalDatePicker(
-                submited: () {
-                  submited();
-                  Navigator.pop(context);
-                },
-                onDateTimeChanged: onDateTimeChanged,
-              );
-            });
-      },
     );
   }
 }
