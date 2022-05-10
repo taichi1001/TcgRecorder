@@ -290,7 +290,7 @@ class _BrandListTile extends HookConsumerWidget {
         FractionallySizedBox(
           widthFactor: 1,
           child: Padding(
-            padding: const EdgeInsets.only(left: 8),
+            padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
