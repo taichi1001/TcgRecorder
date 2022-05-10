@@ -16,11 +16,15 @@ class GameListNotifier extends StateNotifier<GameListState> {
   Future updateName(String name, int index) async {
     final game = state.allGameList![index];
     final newGame = game.copyWith(game: name);
-    await read(gameRepository).update(newGame);
-    await fetch();
-    // 編集したゲームがselectGameと同じだった場合の処理
-    if (read(selectGameNotifierProvider).selectGame!.gameId == newGame.gameId) {
-      read(selectGameNotifierProvider.notifier).changeGame(newGame);
+    try {
+      await read(gameRepository).update(newGame);
+      await fetch();
+      // 編集したゲームがselectGameと同じだった場合の処理
+      if (read(selectGameNotifierProvider).selectGame!.gameId == newGame.gameId) {
+        read(selectGameNotifierProvider.notifier).changeGame(newGame);
+      }
+    } catch (e) {
+      rethrow;
     }
   }
 }

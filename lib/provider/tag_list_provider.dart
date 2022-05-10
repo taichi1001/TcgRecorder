@@ -15,8 +15,12 @@ class TagListNotifier extends StateNotifier<TagListState> {
   Future updateName(String name, int index) async {
     final tag = state.allTagList![index];
     final newTag = tag.copyWith(tag: name);
-    await read(tagRepository).update(newTag);
-    await fetch();
+    try {
+      await read(tagRepository).update(newTag);
+      await fetch();
+    } catch (e) {
+      rethrow;
+    }
   }
 }
 

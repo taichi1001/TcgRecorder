@@ -279,7 +279,22 @@ class _GameListView extends HookConsumerWidget {
                       textFields: [DialogTextField(initialText: gameList[index].game)],
                     );
                     if (newName != null && newName.first != '') {
-                      ref.read(allGameListNotifierProvider.notifier).updateName(newName.first, index);
+                      try {
+                        await ref.read(allGameListNotifierProvider.notifier).updateName(newName.first, index);
+                      } catch (e) {
+                        if (e.toString().contains('code 2067')) {
+                          await showOkAlertDialog(
+                            context: context,
+                            title: 'エラー',
+                            message: '既に登録されているデッキです。',
+                          );
+                        } else {
+                          await showOkAlertDialog(
+                            context: context,
+                            title: '予期せぬエラー',
+                          );
+                        }
+                      }
                     }
                   },
                 );
@@ -384,7 +399,22 @@ class _TagListView extends HookConsumerWidget {
                       textFields: [DialogTextField(initialText: tagList[index].tag)],
                     );
                     if (newName != null && newName.first != '') {
-                      ref.read(allTagListNotifierProvider.notifier).updateName(newName.first, index);
+                      try {
+                        await ref.read(allTagListNotifierProvider.notifier).updateName(newName.first, index);
+                      } catch (e) {
+                        if (e.toString().contains('code 2067')) {
+                          await showOkAlertDialog(
+                            context: context,
+                            title: 'エラー',
+                            message: '既に登録されているデッキです。',
+                          );
+                        } else {
+                          await showOkAlertDialog(
+                            context: context,
+                            title: '予期せぬエラー',
+                          );
+                        }
+                      }
                     }
                   },
                 );
