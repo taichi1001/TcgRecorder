@@ -45,6 +45,7 @@ class SlidableTile extends StatelessWidget {
                   isDestructiveAction: true,
                 );
                 if (okCancelResult == OkCancelResult.ok) {
+                  // ignore: use_build_context_synchronously
                   Slidable.of(context)?.dismiss(
                     ResizeRequest(
                       const Duration(microseconds: 300),
@@ -133,6 +134,7 @@ class SlidableExpansionTileCard extends StatelessWidget {
                   isDestructiveAction: true,
                 );
                 if (okCancelResult == OkCancelResult.ok) {
+                  // ignore: use_build_context_synchronously
                   Slidable.of(context)?.dismiss(
                     ResizeRequest(
                       const Duration(microseconds: 300),

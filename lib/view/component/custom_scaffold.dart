@@ -96,6 +96,7 @@ class _GameListPickerButton extends HookConsumerWidget {
                   if (games != null && games.first != '') {
                     await selectGameNotifier.saveGame(games.first);
                     inputViewNotifier.resetView();
+                    // ignore: use_build_context_synchronously
                     Navigator.pop(context);
                   }
                 },

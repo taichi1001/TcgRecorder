@@ -39,10 +39,10 @@ class InputView extends HookConsumerWidget {
     final memoTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.memoController));
     final outputFormat = DateFormat(S.of(context).dateFormat);
 
-    final _useDeckFocusnode = useFocusNode();
-    final _opponentDeckFocusnode = useFocusNode();
-    final _tagFocusnode = useFocusNode();
-    final _memoFocusnode = useFocusNode();
+    final useDeckFocusnode = useFocusNode();
+    final opponentDeckFocusnode = useFocusNode();
+    final tagFocusnode = useFocusNode();
+    final memoFocusnode = useFocusNode();
 
     return Column(
       children: [
@@ -56,10 +56,10 @@ class InputView extends HookConsumerWidget {
                 keyboardActionsPlatform: KeyboardActionsPlatform.ALL,
                 nextFocus: true,
                 actions: [
-                  KeyboardActionsItem(focusNode: _useDeckFocusnode),
-                  KeyboardActionsItem(focusNode: _opponentDeckFocusnode),
-                  KeyboardActionsItem(focusNode: _tagFocusnode),
-                  KeyboardActionsItem(focusNode: _memoFocusnode),
+                  KeyboardActionsItem(focusNode: useDeckFocusnode),
+                  KeyboardActionsItem(focusNode: opponentDeckFocusnode),
+                  KeyboardActionsItem(focusNode: tagFocusnode),
+                  KeyboardActionsItem(focusNode: memoFocusnode),
                 ],
               ),
               child: SingleChildScrollView(
@@ -183,7 +183,7 @@ class InputView extends HookConsumerWidget {
                                   labelText: S.of(context).useDeck,
                                   onChanged: inputViewNotifier.inputUseDeck,
                                   controller: useDeckTextController,
-                                  focusNode: _useDeckFocusnode,
+                                  focusNode: useDeckFocusnode,
                                 ),
                                 _ListPickerButton(
                                   submited: inputViewNotifier.setUseDeck,
@@ -210,7 +210,7 @@ class InputView extends HookConsumerWidget {
                                   labelText: S.of(context).opponentDeck,
                                   onChanged: inputViewNotifier.inputOpponentDeck,
                                   controller: opponentDeckTextController,
-                                  focusNode: _opponentDeckFocusnode,
+                                  focusNode: opponentDeckFocusnode,
                                 ),
                                 _ListPickerButton(
                                   submited: inputViewNotifier.setOpponentDeck,
@@ -237,7 +237,7 @@ class InputView extends HookConsumerWidget {
                                   labelText: S.of(context).tag,
                                   onChanged: inputViewNotifier.inputTag,
                                   controller: tagTextController,
-                                  focusNode: _tagFocusnode,
+                                  focusNode: tagFocusnode,
                                 ),
                                 _ListPickerButton(
                                   submited: inputViewNotifier.setTag,
@@ -259,7 +259,7 @@ class InputView extends HookConsumerWidget {
                             const SizedBox(height: 8),
                             CustomTextField(
                               controller: memoTextController,
-                              focusNode: _memoFocusnode,
+                              focusNode: memoFocusnode,
                               onChanged: inputViewNotifier.inputMemo,
                               labelText: S.of(context).memoTag,
                               keyboardType: TextInputType.multiline,
@@ -291,14 +291,15 @@ class InputView extends HookConsumerWidget {
                                         await ref.read(dbHelper).fetchAll();
                                         inputViewNotifier.resetView();
                                       }
+                                      // ignore: use_build_context_synchronously
                                       FocusScope.of(context).unfocus();
                                     },
-                              child: Text(S.of(context).save),
                               style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                               ),
+                              child: Text(S.of(context).save),
                             ),
                           ),
                           const SizedBox(height: 8),

@@ -282,6 +282,7 @@ class _BrandListTile extends HookConsumerWidget {
             ),
           ),
         );
+        // ignore: use_build_context_synchronously
         await Slidable.of(context)?.close();
       },
       alertTitle: S.of(context).recordListDeleteDialogTitle,

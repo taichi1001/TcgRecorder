@@ -52,12 +52,12 @@ class InitialGameRegistrationView extends HookConsumerWidget {
                                   ref.read(selectGameNotifierProvider.notifier).startupGame();
                                 }
                               },
-                        child: Text(S.of(context).save),
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
+                        child: Text(S.of(context).save),
                       ),
                     ),
                   ],

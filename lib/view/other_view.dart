@@ -436,7 +436,7 @@ class _ThemeChangeView extends HookConsumerWidget {
     final itemScrollController = ItemScrollController();
 
     useEffect(() {
-      WidgetsBinding.instance?.addPostFrameCallback((_) => itemScrollController.jumpTo(index: currentScheme.index));
+      WidgetsBinding.instance.addPostFrameCallback((_) => itemScrollController.jumpTo(index: currentScheme.index));
       return;
     }, const []);
 
@@ -686,12 +686,12 @@ class _InputViewMock extends HookConsumerWidget {
                       height: 50,
                       child: ElevatedButton(
                         onPressed: () async {},
-                        child: Text(S.of(context).save),
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
+                        child: Text(S.of(context).save),
                       ),
                     ),
                     const SizedBox(height: 8),

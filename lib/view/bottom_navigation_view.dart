@@ -17,7 +17,7 @@ class BottomNavigationView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final _views = [
+    final views = [
       const InputView(),
       const GraphView(),
       const RecordListView(),
@@ -27,7 +27,7 @@ class BottomNavigationView extends HookConsumerWidget {
     final bottomTabNotifier = ref.watch(bottomNavigationBarNotifierProvider.notifier);
     final int currentIndex = _items.indexOf(bottomTabState.viewItem);
     return Scaffold(
-      body: _views[currentIndex],
+      body: views[currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         items: [
