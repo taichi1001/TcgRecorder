@@ -57,7 +57,7 @@ dependencies:
 
   flutter_native_splash: ^2.0.2
 
-  modal_bottom_sheet: ^2.0.0
+  modal_bottom_sheet: ^2.0.1
 
   flutter_screenutil: ^5.3.1
 
