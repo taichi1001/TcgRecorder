@@ -201,7 +201,7 @@ class _InputViewSettingsView extends HookConsumerWidget {
         centerTitle: true,
         elevation: 0.0,
         title: Text(
-          S.of(context).otherTitle,
+          '入力画面設定',
           style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
         ),
       ),
@@ -216,7 +216,7 @@ class _InputViewSettingsView extends HookConsumerWidget {
         ),
         sections: [
           SettingsSection(
-            title: Text(S.of(context).settingSection),
+            title: const Text('入力固定オプション'),
             tiles: [
               SettingsTile.switchTile(
                 initialValue: fixUseDeck,
@@ -237,6 +237,24 @@ class _InputViewSettingsView extends HookConsumerWidget {
                 leading: const Icon(Icons.settings_applications),
               ),
             ],
+          ),
+          CustomSettingsSection(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 8, left: 16, right: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '設定ON:  記録保存時に入力欄の設定ONの項目が保持されます。',
+                    style: Theme.of(context).textTheme.caption?.copyWith(fontSize: 10),
+                  ),
+                  Text(
+                    '設定OFF: 記録保存時に入力欄の設定OFFの項目がリセットされます。',
+                    style: Theme.of(context).textTheme.caption?.copyWith(fontSize: 10),
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       ),
