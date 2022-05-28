@@ -48,18 +48,19 @@ class OtherView extends HookConsumerWidget {
           SettingsSection(
             title: Text(S.of(context).settingSection),
             tiles: [
-              SettingsTile.navigation(
-                title: Text(S.of(context).themeChange),
-                leading: const Icon(Icons.palette),
-                onPressed: (context) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const _ThemeChangeView(),
-                    ),
-                  );
-                },
-              ),
+              // テーマ設定画面を開放するときにコメントアウト
+              // SettingsTile.navigation(
+              //   title: Text(S.of(context).themeChange),
+              //   leading: const Icon(Icons.palette),
+              //   onPressed: (context) {
+              //     Navigator.push(
+              //       context,
+              //       MaterialPageRoute(
+              //         builder: (context) => const _ThemeChangeView(),
+              //       ),
+              //     );
+              //   },
+              // ),
               SettingsTile.navigation(
                 title: Text(S.of(context).inputViewSettings),
                 leading: const Icon(Icons.settings_applications),
@@ -158,7 +159,8 @@ class OtherView extends HookConsumerWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => const WebViewScreen(
-                        url: 'https://docs.google.com/forms/d/e/1FAIpQLSd5ilK8mF76ZnLIPirTFPo0A5fQucYTMf9uDkdD--SkRbczjA/viewform',
+                        url:
+                            'https://docs.google.com/forms/d/e/1FAIpQLSd5ilK8mF76ZnLIPirTFPo0A5fQucYTMf9uDkdD--SkRbczjA/viewform',
                       ),
                     ),
                   );
@@ -172,7 +174,8 @@ class OtherView extends HookConsumerWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => const WebViewScreen(
-                        url: 'https://phrygian-jellyfish-595.notion.site/Privacy-Policy-057b29da8fb74d76bccd700d80db53e1',
+                        url:
+                            'https://phrygian-jellyfish-595.notion.site/Privacy-Policy-057b29da8fb74d76bccd700d80db53e1',
                       ),
                     ),
                   );
@@ -240,7 +243,7 @@ class _InputViewSettingsView extends HookConsumerWidget {
           ),
           CustomSettingsSection(
             child: Padding(
-              padding: const EdgeInsets.only(top: 8, left: 16, right: 16),
+              padding: const EdgeInsets.only(left: 24, right: 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

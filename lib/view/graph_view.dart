@@ -111,12 +111,13 @@ class _UseRateChart extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => _UseRateDetailChart(data: data, title: title),
-          ),
-        );
+        // 機能開放時にコメントアウト
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => _UseRateDetailChart(data: data, title: title),
+        //   ),
+        // );
       },
       child: Card(
         margin: EdgeInsets.zero,
