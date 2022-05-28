@@ -26,18 +26,12 @@ class CustomScaffold extends HookConsumerWidget {
     final decks = ref.watch(allGameListNotifierProvider);
     final selectGameNotifier = ref.read(selectGameNotifierProvider.notifier);
     final inputViewNotifier = ref.read(inputViewNotifierProvider.notifier);
-
     return Scaffold(
       appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.black),
-        centerTitle: false,
+        centerTitle: true,
         title: Text(
           selectGame.selectGame != null ? selectGame.selectGame!.game : '',
-          style: const TextStyle(
-            color: Colors.black,
-            fontSize: 30,
-            fontWeight: FontWeight.bold,
-          ),
+          style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
         ),
         actions: [
           _GameListPickerButton(
@@ -51,8 +45,9 @@ class CustomScaffold extends HookConsumerWidget {
                       padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
                       child: Text(
                         game.game,
-                        softWrap: false,
+                        // softWrap: false,
                         overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.headline6?.copyWith(height: 1),
                       ),
                     ))
                 .toList(),
@@ -60,12 +55,9 @@ class CustomScaffold extends HookConsumerWidget {
           if (rightButton != null) rightButton!,
         ],
         bottom: appBarBottom != null ? appBarBottom! : null,
-        backgroundColor: Colors.white,
-        elevation: 0.0,
       ),
-      backgroundColor: Colors.white,
       body: Padding(
-        padding: padding != null ? padding! : const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 0),
+        padding: padding != null ? padding! : const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
         child: body,
       ),
     );
@@ -89,7 +81,6 @@ class _GameListPickerButton extends HookConsumerWidget {
     final inputViewNotifier = ref.read(inputViewNotifierProvider.notifier);
     return IconButton(
       icon: const Icon(Icons.arrow_drop_down),
-      color: Colors.black,
       onPressed: () {
         showCupertinoModalPopup(
           context: context,
@@ -105,6 +96,7 @@ class _GameListPickerButton extends HookConsumerWidget {
                   if (games != null && games.first != '') {
                     await selectGameNotifier.saveGame(games.first);
                     inputViewNotifier.resetView();
+                    // ignore: use_build_context_synchronously
                     Navigator.pop(context);
                   }
                 },

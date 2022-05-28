@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:tcg_manager/generated/l10n.dart';
 
 class CustomModalPicker extends StatelessWidget {
@@ -6,11 +7,13 @@ class CustomModalPicker extends StatelessWidget {
     required this.child,
     this.submitedAction,
     this.actionButton,
+    this.shoModalButton = true,
     Key? key,
   }) : super(key: key);
   final Widget child;
   final void Function()? submitedAction;
   final Widget? actionButton;
+  final bool shoModalButton;
 
   @override
   Widget build(BuildContext context) {
@@ -19,23 +22,18 @@ class CustomModalPicker extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          _ModalButton(
-            submitedAction: submitedAction != null ? submitedAction! : null,
-            actionButton: actionButton,
-          ),
+          if (shoModalButton)
+            _ModalButton(
+              submitedAction: submitedAction != null ? submitedAction! : null,
+              actionButton: actionButton,
+            ),
           Expanded(
             child: Container(
               padding: const EdgeInsets.only(top: 6),
-              color: CupertinoColors.white,
-              child: DefaultTextStyle(
-                style: const TextStyle(
-                  color: CupertinoColors.black,
-                  fontSize: 22,
-                ),
-                child: SafeArea(
-                  top: false,
-                  child: child,
-                ),
+              color: Theme.of(context).canvasColor,
+              child: SafeArea(
+                top: false,
+                child: child,
               ),
             ),
           ),
@@ -56,9 +54,9 @@ class _ModalButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        color: Color(0xffffffff),
-        border: Border(
+      decoration: BoxDecoration(
+        color: Theme.of(context).canvasColor,
+        border: const Border(
           bottom: BorderSide(
             color: Color(0xff999999),
             width: 0,

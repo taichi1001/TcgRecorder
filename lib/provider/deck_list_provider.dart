@@ -15,8 +15,12 @@ class DeckListNotifier extends StateNotifier<DeckListState> {
   Future updateName(String name, int index) async {
     final deck = state.allDeckList![index];
     final newDeck = deck.copyWith(deck: name);
-    await read(deckRepository).update(newDeck);
-    await fetch();
+    try {
+      await read(deckRepository).update(newDeck);
+      await fetch();
+    } catch (e) {
+      rethrow;
+    }
   }
 }
 

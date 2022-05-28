@@ -44,14 +44,15 @@ class SelectGameNotifier extends StateNotifier<SelectGameState> {
   void startupGame() {
     final records = read(allRecordListNotifierProvider).allRecordList;
     final games = read(allGameListNotifierProvider).allGameList;
-    if (games != null) {
-      if (records != null && records.isNotEmpty) {
-        final record = records.last;
-        final game = games.where((game) => game.gameId == record.gameId).last;
-        state = state.copyWith(selectGame: game, cacheSelectGame: game);
-      } else {
-        state = state.copyWith(selectGame: games.last, cacheSelectGame: games.last);
-      }
+    if (games == null) return;
+    if (records != null && records.isNotEmpty) {
+      // レコードが存在する場合、最後に登録したレコードのゲームを選択ゲームとする
+      final record = records.last;
+      final game = games.where((game) => game.gameId == record.gameId).last;
+      state = state.copyWith(selectGame: game, cacheSelectGame: game);
+    } else {
+      // レコードが存在しない場合、最後に登録したゲームを選択ゲームとする
+      state = state.copyWith(selectGame: games.last, cacheSelectGame: games.last);
     }
   }
 

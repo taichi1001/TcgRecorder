@@ -35,10 +35,10 @@ class _$RecordTearOff {
           int? opponentDeckId,
       @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson)
           DateTime? date,
-      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'first_second')
-          bool firstSecond = true,
-      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'win_loss')
-          bool winLoss = true,
+      @JsonKey(fromJson: _firstSecondFromJson, toJson: _firstSecondToJson, name: 'first_second')
+          FirstSecond firstSecond = FirstSecond.first,
+      @JsonKey(fromJson: _winLossFromJson, toJson: _winLossToJson, name: 'win_loss')
+          WinLoss winLoss = WinLoss.win,
       String? memo}) {
     return _Record(
       recordId: recordId,
@@ -75,10 +75,13 @@ mixin _$Record {
   int? get opponentDeckId => throw _privateConstructorUsedError;
   @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson)
   DateTime? get date => throw _privateConstructorUsedError;
-  @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'first_second')
-  bool get firstSecond => throw _privateConstructorUsedError;
-  @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'win_loss')
-  bool get winLoss => throw _privateConstructorUsedError;
+  @JsonKey(
+      fromJson: _firstSecondFromJson,
+      toJson: _firstSecondToJson,
+      name: 'first_second')
+  FirstSecond get firstSecond => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: _winLossFromJson, toJson: _winLossToJson, name: 'win_loss')
+  WinLoss get winLoss => throw _privateConstructorUsedError;
   String? get memo => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -103,10 +106,10 @@ abstract class $RecordCopyWith<$Res> {
           int? opponentDeckId,
       @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson)
           DateTime? date,
-      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'first_second')
-          bool firstSecond,
-      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'win_loss')
-          bool winLoss,
+      @JsonKey(fromJson: _firstSecondFromJson, toJson: _firstSecondToJson, name: 'first_second')
+          FirstSecond firstSecond,
+      @JsonKey(fromJson: _winLossFromJson, toJson: _winLossToJson, name: 'win_loss')
+          WinLoss winLoss,
       String? memo});
 }
 
@@ -158,11 +161,11 @@ class _$RecordCopyWithImpl<$Res> implements $RecordCopyWith<$Res> {
       firstSecond: firstSecond == freezed
           ? _value.firstSecond
           : firstSecond // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as FirstSecond,
       winLoss: winLoss == freezed
           ? _value.winLoss
           : winLoss // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as WinLoss,
       memo: memo == freezed
           ? _value.memo
           : memo // ignore: cast_nullable_to_non_nullable
@@ -189,10 +192,10 @@ abstract class _$RecordCopyWith<$Res> implements $RecordCopyWith<$Res> {
           int? opponentDeckId,
       @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson)
           DateTime? date,
-      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'first_second')
-          bool firstSecond,
-      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'win_loss')
-          bool winLoss,
+      @JsonKey(fromJson: _firstSecondFromJson, toJson: _firstSecondToJson, name: 'first_second')
+          FirstSecond firstSecond,
+      @JsonKey(fromJson: _winLossFromJson, toJson: _winLossToJson, name: 'win_loss')
+          WinLoss winLoss,
       String? memo});
 }
 
@@ -245,11 +248,11 @@ class __$RecordCopyWithImpl<$Res> extends _$RecordCopyWithImpl<$Res>
       firstSecond: firstSecond == freezed
           ? _value.firstSecond
           : firstSecond // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as FirstSecond,
       winLoss: winLoss == freezed
           ? _value.winLoss
           : winLoss // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as WinLoss,
       memo: memo == freezed
           ? _value.memo
           : memo // ignore: cast_nullable_to_non_nullable
@@ -274,10 +277,10 @@ class _$_Record implements _Record {
           this.opponentDeckId,
       @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson)
           this.date,
-      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'first_second')
-          this.firstSecond = true,
-      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'win_loss')
-          this.winLoss = true,
+      @JsonKey(fromJson: _firstSecondFromJson, toJson: _firstSecondToJson, name: 'first_second')
+          this.firstSecond = FirstSecond.first,
+      @JsonKey(fromJson: _winLossFromJson, toJson: _winLossToJson, name: 'win_loss')
+          this.winLoss = WinLoss.win,
       this.memo});
 
   factory _$_Record.fromJson(Map<String, dynamic> json) =>
@@ -302,11 +305,14 @@ class _$_Record implements _Record {
   @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson)
   final DateTime? date;
   @override
-  @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'first_second')
-  final bool firstSecond;
+  @JsonKey(
+      fromJson: _firstSecondFromJson,
+      toJson: _firstSecondToJson,
+      name: 'first_second')
+  final FirstSecond firstSecond;
   @override
-  @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'win_loss')
-  final bool winLoss;
+  @JsonKey(fromJson: _winLossFromJson, toJson: _winLossToJson, name: 'win_loss')
+  final WinLoss winLoss;
   @override
   final String? memo;
 
@@ -371,10 +377,10 @@ abstract class _Record implements Record {
           int? opponentDeckId,
       @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson)
           DateTime? date,
-      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'first_second')
-          bool firstSecond,
-      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'win_loss')
-          bool winLoss,
+      @JsonKey(fromJson: _firstSecondFromJson, toJson: _firstSecondToJson, name: 'first_second')
+          FirstSecond firstSecond,
+      @JsonKey(fromJson: _winLossFromJson, toJson: _winLossToJson, name: 'win_loss')
+          WinLoss winLoss,
       String? memo}) = _$_Record;
 
   factory _Record.fromJson(Map<String, dynamic> json) = _$_Record.fromJson;
@@ -398,11 +404,14 @@ abstract class _Record implements Record {
   @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson)
   DateTime? get date;
   @override
-  @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'first_second')
-  bool get firstSecond;
+  @JsonKey(
+      fromJson: _firstSecondFromJson,
+      toJson: _firstSecondToJson,
+      name: 'first_second')
+  FirstSecond get firstSecond;
   @override
-  @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'win_loss')
-  bool get winLoss;
+  @JsonKey(fromJson: _winLossFromJson, toJson: _winLossToJson, name: 'win_loss')
+  WinLoss get winLoss;
   @override
   String? get memo;
   @override

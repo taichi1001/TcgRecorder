@@ -1,14 +1,24 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:launch_review/launch_review.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/helper/db_helper.dart';
+import 'package:tcg_manager/helper/theme_data.dart';
 import 'package:tcg_manager/provider/bottom_navigation_bar_provider.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
+import 'package:tcg_manager/provider/input_view_settings_provider.dart';
+import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
+import 'package:tcg_manager/provider/theme_provider.dart';
+import 'package:tcg_manager/view/component/custom_textfield.dart';
+import 'package:tcg_manager/view/component/slidable_tile.dart';
 import 'package:tcg_manager/view/component/web_view_screen.dart';
 
 class OtherView extends HookConsumerWidget {
@@ -18,31 +28,57 @@ class OtherView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        centerTitle: false,
+        centerTitle: true,
         elevation: 0.0,
         title: Text(
           S.of(context).otherTitle,
-          style: const TextStyle(
-            color: Colors.black,
-            fontSize: 30,
-            fontWeight: FontWeight.bold,
-          ),
+          style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
         ),
       ),
-      backgroundColor: Colors.white,
       body: SettingsList(
         lightTheme: SettingsThemeData(
-          settingsListBackground: Colors.white,
           settingsSectionBackground: Theme.of(context).canvasColor,
-          dividerColor: Colors.black12,
-          leadingIconsColor: const Color(0xFF18204E),
+          settingsListBackground: Theme.of(context).scaffoldBackgroundColor,
+        ),
+        darkTheme: SettingsThemeData(
+          settingsSectionBackground: Theme.of(context).canvasColor,
+          settingsListBackground: Theme.of(context).scaffoldBackgroundColor,
         ),
         sections: [
           SettingsSection(
+            title: Text(S.of(context).settingSection),
+            tiles: [
+              // テーマ設定画面を開放するときにコメントアウト
+              // SettingsTile.navigation(
+              //   title: Text(S.of(context).themeChange),
+              //   leading: const Icon(Icons.palette),
+              //   onPressed: (context) {
+              //     Navigator.push(
+              //       context,
+              //       MaterialPageRoute(
+              //         builder: (context) => const _ThemeChangeView(),
+              //       ),
+              //     );
+              //   },
+              // ),
+              SettingsTile.navigation(
+                title: Text(S.of(context).inputViewSettings),
+                leading: const Icon(Icons.settings_applications),
+                onPressed: (context) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const _InputViewSettingsView(),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+          SettingsSection(
             title: Text(S.of(context).editSection),
             tiles: [
-              SettingsTile(
+              SettingsTile.navigation(
                 title: Text(S.of(context).gameEdit),
                 leading: const Icon(Icons.edit),
                 onPressed: (context) {
@@ -54,28 +90,40 @@ class OtherView extends HookConsumerWidget {
                   );
                 },
               ),
-              // SettingsTile(
-              //   title: const Text('デッキ編集'),
-              //   leading: const Icon(Icons.edit),
-              //   onPressed: (context) {
-              //     Navigator.push(
-              //       context,
-              //       MaterialPageRoute(
-              //         builder: (context) => const _DeckListView(),
-              //       ),
-              //     );
-              //   },
-              // ),
-              SettingsTile(
+              SettingsTile.navigation(
+                title: Text(S.of(context).deckEdit),
+                leading: const Icon(Icons.edit),
+                onPressed: (context) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const _DeckListView(),
+                    ),
+                  );
+                },
+              ),
+              SettingsTile.navigation(
+                title: Text(S.of(context).tagEdit),
+                leading: const Icon(Icons.edit),
+                onPressed: (context) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const _TagListView(),
+                    ),
+                  );
+                },
+              ),
+              SettingsTile.navigation(
                 title: Text(
                   S.of(context).allDelete,
-                  style: const TextStyle(
-                    color: Colors.red,
+                  style: TextStyle(
+                    color: Theme.of(context).errorColor,
                   ),
                 ),
-                leading: const Icon(
+                leading: Icon(
                   Icons.delete_forever,
-                  color: Colors.red,
+                  color: Theme.of(context).errorColor,
                 ),
                 onPressed: (context) async {
                   final okCancelResult = await showOkCancelAlertDialog(
@@ -96,14 +144,14 @@ class OtherView extends HookConsumerWidget {
           SettingsSection(
             title: Text(S.of(context).otherSection),
             tiles: [
-              SettingsTile(
+              SettingsTile.navigation(
                 title: Text(S.of(context).review),
                 leading: const Icon(Icons.reviews),
                 onPressed: (context) async {
                   LaunchReview.launch(iOSAppId: '1609073371');
                 },
               ),
-              SettingsTile(
+              SettingsTile.navigation(
                 title: Text(S.of(context).contactForm),
                 leading: const Icon(Icons.mail),
                 onPressed: (context) {
@@ -118,7 +166,7 @@ class OtherView extends HookConsumerWidget {
                   );
                 },
               ),
-              SettingsTile(
+              SettingsTile.navigation(
                 title: Text(S.of(context).privacyPolicy),
                 leading: const Icon(Icons.privacy_tip),
                 onPressed: (context) {
@@ -141,6 +189,82 @@ class OtherView extends HookConsumerWidget {
   }
 }
 
+class _InputViewSettingsView extends HookConsumerWidget {
+  const _InputViewSettingsView({key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final fixUseDeck = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.fixUseDeck));
+    final fixOpponentDeck = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.fixOpponentDeck));
+    final fixTag = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.fixTag));
+    final inputiViewSettingsController = ref.watch(inputViewSettingsNotifierProvider.notifier);
+
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        elevation: 0.0,
+        title: Text(
+          '入力画面設定',
+          style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+        ),
+      ),
+      body: SettingsList(
+        lightTheme: SettingsThemeData(
+          settingsSectionBackground: Theme.of(context).canvasColor,
+          settingsListBackground: Theme.of(context).scaffoldBackgroundColor,
+        ),
+        darkTheme: SettingsThemeData(
+          settingsSectionBackground: Theme.of(context).canvasColor,
+          settingsListBackground: Theme.of(context).scaffoldBackgroundColor,
+        ),
+        sections: [
+          SettingsSection(
+            title: const Text('入力固定オプション'),
+            tiles: [
+              SettingsTile.switchTile(
+                initialValue: fixUseDeck,
+                onToggle: (settings) => inputiViewSettingsController.changeFixUseDeck(settings),
+                title: const Text('使用デッキ'),
+                leading: const Icon(Icons.settings_applications),
+              ),
+              SettingsTile.switchTile(
+                initialValue: fixOpponentDeck,
+                onToggle: (settings) => inputiViewSettingsController.changeFixOpponentDeck(settings),
+                title: const Text('対戦相手デッキ'),
+                leading: const Icon(Icons.settings_applications),
+              ),
+              SettingsTile.switchTile(
+                initialValue: fixTag,
+                onToggle: (settings) => inputiViewSettingsController.changeFixTag(settings),
+                title: const Text('タグ'),
+                leading: const Icon(Icons.settings_applications),
+              ),
+            ],
+          ),
+          CustomSettingsSection(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 24, right: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '設定ON:  記録保存時に入力欄の設定ONの項目が保持されます。',
+                    style: Theme.of(context).textTheme.caption?.copyWith(fontSize: 10),
+                  ),
+                  Text(
+                    '設定OFF: 記録保存時に入力欄の設定OFFの項目がリセットされます。',
+                    style: Theme.of(context).textTheme.caption?.copyWith(fontSize: 10),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class _GameListView extends HookConsumerWidget {
   const _GameListView({Key? key}) : super(key: key);
 
@@ -149,45 +273,51 @@ class _GameListView extends HookConsumerWidget {
     final gameList = ref.watch(allGameListNotifierProvider).allGameList;
     return Scaffold(
       appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.black),
-        backgroundColor: Colors.white,
-        centerTitle: false,
+        centerTitle: true,
         elevation: 0.0,
         title: Text(
           S.of(context).gameEdit,
-          style: const TextStyle(
-            color: Colors.black,
-            fontSize: 30,
-            fontWeight: FontWeight.bold,
-          ),
+          style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
         ),
       ),
-      backgroundColor: Colors.white,
       body: gameList == null
           ? const Center(
-              child: CircularProgressIndicator(
-                color: Color(0xFF18204E),
-              ),
+              child: CircularProgressIndicator(),
             )
           : ListView.separated(
               itemCount: gameList.length,
               separatorBuilder: (context, index) => const SizedBox(height: 8, child: Divider(height: 1)),
               itemBuilder: (context, index) {
-                return ListTile(
+                return SlidableTile(
+                  key: ObjectKey(gameList[index]),
                   title: Text(gameList[index].game),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.edit),
-                    onPressed: () async {
-                      final newName = await showTextInputDialog(
-                        context: context,
-                        title: S.of(context).gameEdit,
-                        textFields: [DialogTextField(initialText: gameList[index].game)],
-                      );
-                      if (newName != null && newName.first != '') {
-                        ref.read(allGameListNotifierProvider.notifier).updateName(newName.first, index);
+                  alertMessage: '削除したゲームのデータが全て削除されます。(デッキ名やタグ名も削除されます。)',
+                  deleteFunc: () async => await ref.read(dbHelper).deleteGame(gameList[index]),
+                  editFunc: () async {
+                    final newName = await showTextInputDialog(
+                      context: context,
+                      title: S.of(context).gameEdit,
+                      textFields: [DialogTextField(initialText: gameList[index].game)],
+                    );
+                    if (newName != null && newName.first != '') {
+                      try {
+                        await ref.read(allGameListNotifierProvider.notifier).updateName(newName.first, index);
+                      } catch (e) {
+                        if (e.toString().contains('code 2067')) {
+                          await showOkAlertDialog(
+                            context: context,
+                            title: 'エラー',
+                            message: '既に登録されているデッキです。',
+                          );
+                        } else {
+                          await showOkAlertDialog(
+                            context: context,
+                            title: '予期せぬエラー',
+                          );
+                        }
                       }
-                    },
-                  ),
+                    }
+                  },
                 );
               },
             ),
@@ -203,48 +333,396 @@ class _DeckListView extends HookConsumerWidget {
     final deckList = ref.watch(allDeckListNotifierProvider).allDeckList;
     return Scaffold(
       appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.black),
-        backgroundColor: Colors.white,
-        centerTitle: false,
+        centerTitle: true,
         elevation: 0.0,
         title: Text(
-          S.of(context).gameEdit,
-          style: const TextStyle(
-            color: Colors.black,
-            fontSize: 30,
-            fontWeight: FontWeight.bold,
-          ),
+          S.of(context).deckEdit,
+          style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
         ),
       ),
-      backgroundColor: Colors.white,
       body: deckList == null
           ? const Center(
-              child: CircularProgressIndicator(
-                color: Color(0xFF18204E),
-              ),
+              child: CircularProgressIndicator(),
             )
           : ListView.separated(
               itemCount: deckList.length,
               separatorBuilder: (context, index) => const SizedBox(height: 8, child: Divider(height: 1)),
               itemBuilder: (context, index) {
-                return ListTile(
+                return SlidableTile(
+                  key: ObjectKey(deckList[index]),
                   title: Text(deckList[index].deck),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.edit),
-                    onPressed: () async {
-                      final newName = await showTextInputDialog(
-                        context: context,
-                        title: S.of(context).gameEdit,
-                        textFields: [DialogTextField(initialText: deckList[index].deck)],
-                      );
-                      if (newName != null && newName.first != '') {
-                        ref.read(allDeckListNotifierProvider.notifier).updateName(newName.first, index);
+                  alertMessage: '選択したデッキのデータが全て削除されます。',
+                  deleteFunc: () async => await ref.read(dbHelper).deleteDeck(deckList[index]),
+                  editFunc: () async {
+                    final newName = await showTextInputDialog(
+                      context: context,
+                      title: S.of(context).gameEdit,
+                      textFields: [DialogTextField(initialText: deckList[index].deck)],
+                    );
+                    if (newName != null && newName.first != '') {
+                      try {
+                        await ref.read(allDeckListNotifierProvider.notifier).updateName(newName.first, index);
+                      } catch (e) {
+                        if (e.toString().contains('code 2067')) {
+                          await showOkAlertDialog(
+                            context: context,
+                            title: 'エラー',
+                            message: '既に登録されているデッキです。',
+                          );
+                        } else {
+                          await showOkAlertDialog(
+                            context: context,
+                            title: '予期せぬエラー',
+                          );
+                        }
                       }
-                    },
-                  ),
+                    }
+                  },
                 );
               },
             ),
+    );
+  }
+}
+
+class _TagListView extends HookConsumerWidget {
+  const _TagListView({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final tagList = ref.watch(allTagListNotifierProvider).allTagList;
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        elevation: 0.0,
+        title: Text(
+          S.of(context).tagEdit,
+          style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+        ),
+      ),
+      body: tagList == null
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : ListView.separated(
+              itemCount: tagList.length,
+              separatorBuilder: (context, index) => const SizedBox(height: 8, child: Divider(height: 1)),
+              itemBuilder: (context, index) {
+                return SlidableTile(
+                  key: ObjectKey(tagList[index]),
+                  title: Text(tagList[index].tag),
+                  alertMessage: '選択したタグを削除し、そのタグが設定されているデータからタグを削除します。',
+                  deleteFunc: () async => await ref.read(dbHelper).deleteTag(tagList[index]),
+                  editFunc: () async {
+                    final newName = await showTextInputDialog(
+                      context: context,
+                      title: S.of(context).gameEdit,
+                      textFields: [DialogTextField(initialText: tagList[index].tag)],
+                    );
+                    if (newName != null && newName.first != '') {
+                      try {
+                        await ref.read(allTagListNotifierProvider.notifier).updateName(newName.first, index);
+                      } catch (e) {
+                        if (e.toString().contains('code 2067')) {
+                          await showOkAlertDialog(
+                            context: context,
+                            title: 'エラー',
+                            message: '既に登録されているデッキです。',
+                          );
+                        } else {
+                          await showOkAlertDialog(
+                            context: context,
+                            title: '予期せぬエラー',
+                          );
+                        }
+                      }
+                    }
+                  },
+                );
+              },
+            ),
+    );
+  }
+}
+
+class _ThemeChangeView extends HookConsumerWidget {
+  const _ThemeChangeView({key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themeNotifier = ref.watch(themeNotifierProvider.notifier);
+    final currentScheme = ref.watch(themeNotifierProvider.select((value) => value.scheme));
+    final previewScheme = ref.watch(themeNotifierProvider.select((value) => value.previewScheme));
+    final isDarkMode = MediaQuery.of(context).platformBrightness == Brightness.dark;
+    final itemScrollController = ItemScrollController();
+
+    useEffect(() {
+      WidgetsBinding.instance.addPostFrameCallback((_) => itemScrollController.jumpTo(index: currentScheme.index));
+      return;
+    }, const []);
+
+    return WillPopScope(
+      onWillPop: () async {
+        themeNotifier.changePreview(currentScheme);
+        return true;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leadingWidth: 115,
+          leading: TextButton(
+            onPressed: () {
+              themeNotifier.changePreview(currentScheme);
+              Navigator.of(context).pop();
+            },
+            child: Text(
+              S.of(context).cancel,
+              style: Theme.of(context).primaryTextTheme.bodyText1,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                themeNotifier.changeTheme();
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                S.of(context).submit,
+                style: Theme.of(context).primaryTextTheme.bodyText1,
+              ),
+            ),
+          ],
+        ),
+        body: Column(
+          children: [
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Stack(
+                    children: [
+                      Container(
+                        height: 500.h,
+                        width: 300.w,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: isDarkMode ? Colors.white : Colors.black,
+                            width: 2,
+                          ),
+                        ),
+                        child: const _InputViewMock(),
+                      ),
+                      Container(
+                        height: 500.h,
+                        width: 300.w,
+                        color: Colors.transparent,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            SafeArea(
+              child: Container(
+                height: 100,
+                color: Theme.of(context).dividerColor,
+                child: Scrollbar(
+                  controller: ScrollController(),
+                  child: ScrollablePositionedList.builder(
+                    itemScrollController: itemScrollController,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: FlexScheme.values.length - 1, // 最後の要素はカスタムカラーのため取り除く
+                    itemBuilder: ((context, index) => Padding(
+                          padding: const EdgeInsets.only(left: 8, right: 8),
+                          child: SizedBox(
+                            width: 55,
+                            height: 55,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: FlexThemeData.light(scheme: FlexScheme.values[index]).primaryColor,
+                                shape: CircleBorder(
+                                  side: previewScheme == FlexScheme.values[index]
+                                      ? BorderSide(
+                                          color: isDarkMode ? Colors.white : Colors.black,
+                                          width: 2,
+                                        )
+                                      : BorderSide.none,
+                                ),
+                              ),
+                              onPressed: () => themeNotifier.changePreview(FlexScheme.values[index]),
+                              child: const Text(''),
+                            ),
+                          ),
+                        )),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _InputViewMock extends HookConsumerWidget {
+  const _InputViewMock({key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final lightThemeData = ref.watch(previewLightThemeDataProvider);
+    final darkThemeData = ref.watch(previewDarkThemeDataProvider);
+    final isDarkMode = MediaQuery.of(context).platformBrightness == Brightness.dark;
+    return Theme(
+      data: isDarkMode ? darkThemeData : lightThemeData,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('プレビュー'),
+          automaticallyImplyLeading: false,
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 8),
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: const [
+                      Text('2022年 01月 01日'),
+                      Icon(Icons.calendar_today_rounded),
+                    ],
+                  ),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    width: 135,
+                    child: Card(
+                      child: Column(
+                        children: [
+                          RadioListTile(
+                            title: Text(S.of(context).first),
+                            value: 1,
+                            groupValue: 1,
+                            onChanged: (value) {},
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                            dense: true,
+                          ),
+                          RadioListTile(
+                            title: Text(S.of(context).second),
+                            value: 2,
+                            groupValue: int,
+                            onChanged: (value) {},
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                            dense: true,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 135,
+                    child: Card(
+                      child: Column(
+                        children: [
+                          RadioListTile(
+                            title: Text(S.of(context).win),
+                            value: 1,
+                            groupValue: 1,
+                            onChanged: (value) {},
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                            dense: true,
+                          ),
+                          RadioListTile(
+                            title: Text(S.of(context).loss),
+                            value: 2,
+                            groupValue: int,
+                            onChanged: (value) {},
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                            dense: true,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Stack(
+                        alignment: Alignment.centerRight,
+                        children: [
+                          CustomTextField(
+                            labelText: S.of(context).useDeck,
+                          ),
+                          const Icon(Icons.arrow_drop_down)
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Stack(
+                        alignment: Alignment.centerRight,
+                        children: [
+                          CustomTextField(
+                            labelText: S.of(context).opponentDeck,
+                          ),
+                          const Icon(Icons.arrow_drop_down),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Stack(
+                        alignment: Alignment.centerRight,
+                        children: [
+                          CustomTextField(
+                            labelText: S.of(context).tag,
+                          ),
+                          const Icon(Icons.arrow_drop_down)
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      CustomTextField(
+                        labelText: S.of(context).memoTag,
+                        keyboardType: TextInputType.multiline,
+                        maxLines: null,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    SizedBox(
+                      width: 300,
+                      height: 50,
+                      child: ElevatedButton(
+                        onPressed: () async {},
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        child: Text(S.of(context).save),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

@@ -1,18 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:tcg_manager/entity/win_rate_data.dart';
-import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
-import 'package:tcg_manager/view/deck_data_grid.dart';
-
-part 'game_win_rate_data_source_state.freezed.dart';
-
-@freezed
-abstract class GameWinRateDataSourceState with _$GameWinRateDataSourceState {
-  factory GameWinRateDataSourceState({
-    GameWinRateDataSource? gameWinRateDataSource,
-  }) = _GameWinRateDataSourceState;
-}
+import 'package:tcg_manager/generated/l10n.dart';
 
 class GameWinRateDataSource extends DataGridSource {
   GameWinRateDataSource({
@@ -48,7 +37,7 @@ class GameWinRateDataSource extends DataGridSource {
         (dataGridCell) {
           return Center(
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 8),
               child: _buildChild(dataGridCell),
             ),
           );
@@ -60,37 +49,16 @@ class GameWinRateDataSource extends DataGridSource {
   Widget _buildChild(DataGridCell cell) {
     if (cell.columnName == 'デッキ名') {
       if (cell.value == '合計') {
-        return Text(cell.value.toString());
+        return Text(S.of(context).tableSum);
       } else {
-        return TextButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => SafeArea(
-                  top: false,
-                  child: Column(
-                    children: [
-                      Expanded(child: DeckDataGrid(deck: cell.value)),
-                      const AdaptiveBannerAd(),
-                    ],
-                  ),
-                ),
+        return Text(
+          cell.value.toString(),
+          maxLines: 2,
+          style: Theme.of(context).textTheme.overline?.copyWith(
+                overflow: TextOverflow.ellipsis,
+                leadingDistribution: TextLeadingDistribution.even,
+                height: 1,
               ),
-            );
-          },
-          child: Text(
-            cell.value.toString(),
-            maxLines: 2,
-            style: const TextStyle(
-              decoration: TextDecoration.underline,
-              color: Colors.black,
-              fontSize: 12,
-              overflow: TextOverflow.ellipsis,
-              leadingDistribution: TextLeadingDistribution.even,
-              height: 1,
-            ),
-          ),
         );
       }
     }
@@ -105,17 +73,24 @@ class GameWinRateDataSource extends DataGridSource {
     }
     if (cell.columnName == '勝率') {
       if (cell.value.isNaN) return const Text('-');
-      return Text(cell.value.toString() + '%');
+      return Text('${cell.value}%');
     }
     if (cell.columnName == '先攻勝率') {
       if (cell.value.isNaN) return const Text('-');
-      return Text(cell.value.toString() + '%');
+      return Text('${cell.value}%');
     }
     if (cell.columnName == '後攻勝率') {
       if (cell.value.isNaN) return const Text('-');
-      return Text(cell.value.toString() + '%');
+      return Text('${cell.value}%');
     }
 
     return const Text('test');
+  }
+
+  // 合計行をソート対象から外すための処理を追加している
+  @override
+  int compare(DataGridRow? a, DataGridRow? b, SortColumnDetails sortColumn) {
+    if (a?.getCells().first.value == '合計' || b?.getCells().first.value == '合計') return 0;
+    return super.compare(a, b, sortColumn);
   }
 }

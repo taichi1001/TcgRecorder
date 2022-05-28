@@ -9,6 +9,7 @@ class WinRateData with _$WinRateData {
     @Default(0) int matches,
     @Default(0) int win,
     @Default(0) int loss,
+    @Default(0) double useRate,
     @Default(0) double winRate,
     @Default(0) double winRateOfFirst,
     @Default(0) double winRateOfSecond,

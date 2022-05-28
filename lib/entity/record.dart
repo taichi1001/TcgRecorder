@@ -1,4 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:tcg_manager/enum/first_second.dart';
+import 'package:tcg_manager/enum/win_loss.dart';
 
 part 'record.freezed.dart';
 part 'record.g.dart';
@@ -12,19 +14,29 @@ class Record with _$Record {
     @JsonKey(name: 'use_deck_id') int? useDeckId,
     @JsonKey(name: 'opponent_deck_id') int? opponentDeckId,
     @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson) DateTime? date,
-    @Default(true) @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'first_second') bool firstSecond,
-    @Default(true) @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'win_loss') bool winLoss,
+    @Default(FirstSecond.first)
+    @JsonKey(fromJson: _firstSecondFromJson, toJson: _firstSecondToJson, name: 'first_second')
+        FirstSecond firstSecond,
+    @Default(WinLoss.win) @JsonKey(fromJson: _winLossFromJson, toJson: _winLossToJson, name: 'win_loss') WinLoss winLoss,
     String? memo,
   }) = _Record;
   factory Record.fromJson(Map<String, dynamic> json) => _$RecordFromJson(json);
 }
 
-bool _boolFromJson(int value) {
-  return value == 0 ? false : true;
+FirstSecond _firstSecondFromJson(int value) {
+  return value == 1 ? FirstSecond.first : FirstSecond.second;
 }
 
-int _boolToJson(bool value) {
-  return value ? 1 : 0;
+int _firstSecondToJson(FirstSecond value) {
+  return value == FirstSecond.first ? 1 : 0;
+}
+
+WinLoss _winLossFromJson(int value) {
+  return value == 1 ? WinLoss.win : WinLoss.loss;
+}
+
+int _winLossToJson(WinLoss value) {
+  return value == WinLoss.win ? 1 : 0;
 }
 
 DateTime _dateTimeFromJson(String value) {

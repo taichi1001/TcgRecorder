@@ -1,4 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:tcg_manager/enum/first_second.dart';
+import 'package:tcg_manager/enum/win_loss.dart';
 
 part 'marged_record.freezed.dart';
 
@@ -11,8 +13,8 @@ class MargedRecord with _$MargedRecord {
     required String useDeck,
     required String opponentDeck,
     required DateTime date,
-    required bool firstSecond,
-    required bool winLoss,
+    required FirstSecond firstSecond,
+    required WinLoss winLoss,
     String? memo,
   }) = _MargedRecord;
 }

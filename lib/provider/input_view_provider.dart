@@ -2,10 +2,14 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/record.dart';
 import 'package:tcg_manager/entity/tag.dart';
+import 'package:tcg_manager/enum/first_second.dart';
+import 'package:tcg_manager/enum/win_loss.dart';
+import 'package:tcg_manager/provider/input_view_settings_provider.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
+import 'package:tcg_manager/repository/tag_repository.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
 import 'package:tcg_manager/selector/game_tag_list_selector.dart';
 import 'package:tcg_manager/state/input_view_state.dart';
@@ -77,6 +81,18 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     state = state.copyWith(tag: tag);
   }
 
+  void scrollTag(int index) {
+    final newTag = read(gameTagListProvider)[index];
+    state = state.copyWith(cacheTag: newTag);
+  }
+
+  void setTag() {
+    state = state.copyWith(tag: state.cacheTag);
+    if (state.cacheTag != null) {
+      read(textEditingControllerNotifierProvider.notifier).setTagController(state.cacheTag!.tag);
+    }
+  }
+
   void selectWinLoss(WinLoss? winloss) {
     if (winloss != null) {
       state = state.copyWith(winLoss: winloss);
@@ -89,39 +105,41 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     }
   }
 
+  void inputMemo(String memo) {
+    state = state.copyWith(memo: memo);
+  }
+
   void _saveDate() {
     final newRecord = state.record!.copyWith(date: state.date);
     state = state.copyWith(record: newRecord);
   }
 
   void _saveFirstSecond() {
-    if (state.firstSecond == FirstSecond.first) {
-      state = state.copyWith(record: state.record!.copyWith(firstSecond: true));
-    } else if (state.firstSecond == FirstSecond.second) {
-      state = state.copyWith(record: state.record!.copyWith(firstSecond: false));
-    }
+    state = state.copyWith(record: state.record!.copyWith(firstSecond: state.firstSecond));
   }
 
   void _saveWinLoss() {
-    if (state.winLoss == WinLoss.win) {
-      state = state.copyWith(record: state.record!.copyWith(winLoss: true));
-    } else if (state.winLoss == WinLoss.loss) {
-      state = state.copyWith(record: state.record!.copyWith(winLoss: false));
-    }
+    state = state.copyWith(record: state.record!.copyWith(winLoss: state.winLoss));
   }
 
   void resetView() {
+    final fixUseDeck = read(inputViewSettingsNotifierProvider).fixUseDeck;
+    final fixOpponentDeck = read(inputViewSettingsNotifierProvider).fixOpponentDeck;
+    final fixTag = read(inputViewSettingsNotifierProvider).fixTag;
     state = InputViewState(
       date: state.date,
       winLoss: state.winLoss,
       firstSecond: state.firstSecond,
+      useDeck: fixUseDeck ? state.useDeck : null,
+      opponentDeck: fixOpponentDeck ? state.opponentDeck : null,
+      tag: fixTag ? state.tag : null,
     );
     read(textEditingControllerNotifierProvider.notifier).resetInputViewController();
   }
 
   Future<bool> save() async {
-    // if (state.useDeck == null || state.opponentDeck == null || state.tag == null) return false;
     if (state.useDeck == null || state.opponentDeck == null) return false;
+    // if (state.useDeck == null || state.opponentDeck == null) return false;
     final selectGameId = read(selectGameNotifierProvider).selectGame!.gameId;
     // useDeckが新規だった場合、useDeckにgameIDを設定
     if (_checkIfSelectedUseDeckNew()) {
@@ -155,35 +173,34 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
         );
       }
     }
-    // // Tagが新規だった場合,opponentDeckにgameIDを設定
-    // if (_checkIfSelectedTagNew()) {
-    //   state = state.copyWith(
-    //     tag: state.tag!.copyWith(
-    //       gameId: selectGameId,
-    //     ),
-    //   );
-    //   final tagId = await read(tagRepository).insert(state.tag!);
-    //   state = state.copyWith(
-    //     tag: state.tag!.copyWith(
-    //       tagId: tagId,
-    //     ),
-    //   );
-    // }
+    if (state.tag != null) {
+      // Tagが新規だった場合,opponentDeckにgameIDを設定
+      if (_checkIfSelectedTagNew()) {
+        state = state.copyWith(
+          tag: state.tag!.copyWith(
+            gameId: selectGameId,
+          ),
+        );
+        final tagId = await read(tagRepository).insert(state.tag!);
+        state = state.copyWith(
+          tag: state.tag!.copyWith(
+            tagId: tagId,
+          ),
+        );
+      }
+    }
 
     // record登録
     final newRecord = Record(gameId: selectGameId);
     state = state.copyWith(record: newRecord);
 
-    // recordにuseDeckIdを設定
+    // recordに各種データを設定
     state = state.copyWith(
       record: state.record!.copyWith(
         useDeckId: state.useDeck!.deckId,
-      ),
-    );
-    // recordにopponentDeckId設定
-    state = state.copyWith(
-      record: state.record!.copyWith(
         opponentDeckId: state.opponentDeck!.deckId,
+        tagId: state.tag?.tagId,
+        memo: state.memo,
       ),
     );
 

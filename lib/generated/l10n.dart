@@ -100,6 +100,26 @@ class S {
     );
   }
 
+  /// `Tag (Optional)`
+  String get tag {
+    return Intl.message(
+      'Tag (Optional)',
+      name: 'tag',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Memo`
+  String get memo {
+    return Intl.message(
+      'Memo',
+      name: 'memo',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `First/Second`
   String get order {
     return Intl.message(
@@ -400,6 +420,26 @@ class S {
     );
   }
 
+  /// `Edit Deck`
+  String get deckEdit {
+    return Intl.message(
+      'Edit Deck',
+      name: 'deckEdit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit Tag`
+  String get tagEdit {
+    return Intl.message(
+      'Edit Tag',
+      name: 'tagEdit',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Delete All Data`
   String get allDelete {
     return Intl.message(
@@ -505,6 +545,206 @@ class S {
     return Intl.message(
       'Contact',
       name: 'contactForm',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Newest`
+  String get newest {
+    return Intl.message(
+      'Newest',
+      name: 'newest',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Oldest`
+  String get oldest {
+    return Intl.message(
+      'Oldest',
+      name: 'oldest',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Keep notes to look back on. (Optional)`
+  String get memoTag {
+    return Intl.message(
+      'Keep notes to look back on. (Optional)',
+      name: 'memoTag',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit`
+  String get editButton {
+    return Intl.message(
+      'Edit',
+      name: 'editButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No tag`
+  String get noTag {
+    return Intl.message(
+      'No tag',
+      name: 'noTag',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No memo`
+  String get noMemo {
+    return Intl.message(
+      'No memo',
+      name: 'noMemo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Use deck distribution`
+  String get useDeckDistribution {
+    return Intl.message(
+      'Use deck distribution',
+      name: 'useDeckDistribution',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Opponent deck distribution`
+  String get opponentDeckDistribution {
+    return Intl.message(
+      'Opponent deck distribution',
+      name: 'opponentDeckDistribution',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Setting`
+  String get settingSection {
+    return Intl.message(
+      'Setting',
+      name: 'settingSection',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Input View Settings`
+  String get inputViewSettings {
+    return Intl.message(
+      'Input View Settings',
+      name: 'inputViewSettings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `dd/MM/yyyy`
+  String get dateFormat {
+    return Intl.message(
+      'dd/MM/yyyy',
+      name: 'dateFormat',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `1`
+  String get recordListFirst {
+    return Intl.message(
+      '1',
+      name: 'recordListFirst',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `2`
+  String get recordListSecond {
+    return Intl.message(
+      '2',
+      name: 'recordListSecond',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Deletes the selected record.`
+  String get recordListDeleteDialogTitle {
+    return Intl.message(
+      'Deletes the selected record.',
+      name: 'recordListDeleteDialogTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This operation cannot be undone.`
+  String get recordListDeleteDialogMessage {
+    return Intl.message(
+      'This operation cannot be undone.',
+      name: 'recordListDeleteDialogMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Memo: `
+  String get recordListMemo {
+    return Intl.message(
+      'Memo: ',
+      name: 'recordListMemo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No tag`
+  String get recordListNoTag {
+    return Intl.message(
+      'No tag',
+      name: 'recordListNoTag',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The content I am editing is not saved, may I go back?`
+  String get recordEditDialogMessage {
+    return Intl.message(
+      'The content I am editing is not saved, may I go back?',
+      name: 'recordEditDialogMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change theme`
+  String get themeChange {
+    return Intl.message(
+      'Change theme',
+      name: 'themeChange',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get cancel {
+    return Intl.message(
+      'Cancel',
+      name: 'cancel',
       desc: '',
       args: [],
     );

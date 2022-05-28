@@ -1,0 +1,4 @@
+enum WinLoss {
+  win,
+  loss,
+}

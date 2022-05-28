@@ -25,8 +25,8 @@ class _$MargedRecordTearOff {
       required String useDeck,
       required String opponentDeck,
       required DateTime date,
-      required bool firstSecond,
-      required bool winLoss,
+      required FirstSecond firstSecond,
+      required WinLoss winLoss,
       String? memo}) {
     return _MargedRecord(
       recordId: recordId,
@@ -53,8 +53,8 @@ mixin _$MargedRecord {
   String get useDeck => throw _privateConstructorUsedError;
   String get opponentDeck => throw _privateConstructorUsedError;
   DateTime get date => throw _privateConstructorUsedError;
-  bool get firstSecond => throw _privateConstructorUsedError;
-  bool get winLoss => throw _privateConstructorUsedError;
+  FirstSecond get firstSecond => throw _privateConstructorUsedError;
+  WinLoss get winLoss => throw _privateConstructorUsedError;
   String? get memo => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -74,8 +74,8 @@ abstract class $MargedRecordCopyWith<$Res> {
       String useDeck,
       String opponentDeck,
       DateTime date,
-      bool firstSecond,
-      bool winLoss,
+      FirstSecond firstSecond,
+      WinLoss winLoss,
       String? memo});
 }
 
@@ -127,11 +127,11 @@ class _$MargedRecordCopyWithImpl<$Res> implements $MargedRecordCopyWith<$Res> {
       firstSecond: firstSecond == freezed
           ? _value.firstSecond
           : firstSecond // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as FirstSecond,
       winLoss: winLoss == freezed
           ? _value.winLoss
           : winLoss // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as WinLoss,
       memo: memo == freezed
           ? _value.memo
           : memo // ignore: cast_nullable_to_non_nullable
@@ -154,8 +154,8 @@ abstract class _$MargedRecordCopyWith<$Res>
       String useDeck,
       String opponentDeck,
       DateTime date,
-      bool firstSecond,
-      bool winLoss,
+      FirstSecond firstSecond,
+      WinLoss winLoss,
       String? memo});
 }
 
@@ -209,11 +209,11 @@ class __$MargedRecordCopyWithImpl<$Res> extends _$MargedRecordCopyWithImpl<$Res>
       firstSecond: firstSecond == freezed
           ? _value.firstSecond
           : firstSecond // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as FirstSecond,
       winLoss: winLoss == freezed
           ? _value.winLoss
           : winLoss // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as WinLoss,
       memo: memo == freezed
           ? _value.memo
           : memo // ignore: cast_nullable_to_non_nullable
@@ -250,9 +250,9 @@ class _$_MargedRecord implements _MargedRecord {
   @override
   final DateTime date;
   @override
-  final bool firstSecond;
+  final FirstSecond firstSecond;
   @override
-  final bool winLoss;
+  final WinLoss winLoss;
   @override
   final String? memo;
 
@@ -306,8 +306,8 @@ abstract class _MargedRecord implements MargedRecord {
       required String useDeck,
       required String opponentDeck,
       required DateTime date,
-      required bool firstSecond,
-      required bool winLoss,
+      required FirstSecond firstSecond,
+      required WinLoss winLoss,
       String? memo}) = _$_MargedRecord;
 
   @override
@@ -323,9 +323,9 @@ abstract class _MargedRecord implements MargedRecord {
   @override
   DateTime get date;
   @override
-  bool get firstSecond;
+  FirstSecond get firstSecond;
   @override
-  bool get winLoss;
+  WinLoss get winLoss;
   @override
   String? get memo;
   @override

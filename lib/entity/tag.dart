@@ -9,9 +9,7 @@ class Tag with _$Tag {
     @JsonKey(name: 'tag_id') int? tagId,
     required String tag,
     @JsonKey(name: 'game_id') int? gameId,
-    @Default(true)
-    @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker')
-        bool isVisibleToPicker,
+    @Default(true) @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker') bool isVisibleToPicker,
   }) = _Tag;
   factory Tag.fromJson(Map<String, dynamic> json) => _$TagFromJson(json);
 }

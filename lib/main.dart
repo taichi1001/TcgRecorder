@@ -1,18 +1,21 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/helper/att.dart';
 import 'package:tcg_manager/helper/db_helper.dart';
+import 'package:tcg_manager/helper/theme_data.dart';
 import 'package:tcg_manager/provider/adaptive_banner_ad_provider.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
+import 'package:tcg_manager/provider/input_view_settings_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
+import 'package:tcg_manager/provider/theme_provider.dart';
 import 'package:tcg_manager/view/bottom_navigation_view.dart';
 import 'package:tcg_manager/view/initial_game_registration_view.dart';
 
@@ -20,31 +23,19 @@ import 'generated/l10n.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
   ATT.instance.requestPermission().then((result) {
     MobileAds.instance.initialize();
   });
 
   MobileAds.instance.initialize();
   runApp(
-    DevicePreview(
-      // enabled: !kReleaseMode,
-      enabled: false,
-      builder: (context) => ProviderScope(
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          useInheritedMediaQuery: true,
-          locale: DevicePreview.locale(context),
-          builder: DevicePreview.appBuilder,
-          localizationsDelegates: const [
-            S.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            DefaultCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: S.delegate.supportedLocales,
-          home: const MainApp(),
-        ),
+    ScreenUtilInit(
+      designSize: const Size(428, 926),
+      builder: (context, child) => const ProviderScope(
+        child: MainApp(),
       ),
     ),
   );
@@ -59,6 +50,8 @@ class MainApp extends HookConsumerWidget {
       Future.microtask(() {
         ref.read(adaptiveBannerAdNotifierProvider.notifier).getAd(context);
         ref.read(dbHelper).fetchAll();
+        ref.read(themeNotifierProvider.notifier).themeInitialize();
+        ref.read(inputViewSettingsNotifierProvider.notifier).settingsInitialize();
       });
       return;
     }, const []);
@@ -67,17 +60,31 @@ class MainApp extends HookConsumerWidget {
     final allDeckList = ref.watch(allDeckListNotifierProvider).allDeckList;
     final allRecordList = ref.watch(allRecordListNotifierProvider).allRecordList;
     final allTagList = ref.watch(allTagListNotifierProvider).allTagList;
+    final lightThemeData = ref.watch(lightThemeDataProvider);
+    final darkThemeData = ref.watch(darkThemeDataProvider);
 
-    return allGameList == null && allDeckList == null && allRecordList == null && allTagList == null
-        ? const Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(
-                color: Color(0xFF18204E),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      localizationsDelegates: const [
+        S.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        DefaultCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: S.delegate.supportedLocales,
+      theme: lightThemeData,
+      darkTheme: darkThemeData,
+      themeMode: ThemeMode.system,
+      home: allGameList == null && allDeckList == null && allRecordList == null && allTagList == null
+          ? const Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
               ),
-            ),
-          )
-        : allGameList!.isEmpty
-            ? const InitialGameRegistrationView()
-            : const BottomNavigationView();
+            )
+          : allGameList!.isEmpty
+              ? const InitialGameRegistrationView()
+              : const BottomNavigationView(),
+    );
   }
 }

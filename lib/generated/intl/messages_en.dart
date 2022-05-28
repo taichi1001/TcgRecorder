@@ -31,16 +31,22 @@ class MessageLookup extends MessageLookupByLibrary {
         "bottomInput": MessageLookupByLibrary.simpleMessage("Input"),
         "bottomList": MessageLookupByLibrary.simpleMessage("List"),
         "bottomOther": MessageLookupByLibrary.simpleMessage("Other"),
+        "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "contactForm": MessageLookupByLibrary.simpleMessage("Contact"),
         "date": MessageLookupByLibrary.simpleMessage("Date"),
+        "dateFormat": MessageLookupByLibrary.simpleMessage("dd/MM/yyyy"),
         "deck": MessageLookupByLibrary.simpleMessage("Deck"),
+        "deckEdit": MessageLookupByLibrary.simpleMessage("Edit Deck"),
         "deleteMessage":
             MessageLookupByLibrary.simpleMessage("Can I delete it?"),
+        "editButton": MessageLookupByLibrary.simpleMessage("Edit"),
         "editSection": MessageLookupByLibrary.simpleMessage("Edit"),
         "first": MessageLookupByLibrary.simpleMessage("First"),
         "gameEdit": MessageLookupByLibrary.simpleMessage("Edit Game"),
         "initializeGame": MessageLookupByLibrary.simpleMessage(
             "Enter the name of the game you want to record."),
+        "inputViewSettings":
+            MessageLookupByLibrary.simpleMessage("Input View Settings"),
         "inputgame": MessageLookupByLibrary.simpleMessage("Input Game"),
         "isSave":
             MessageLookupByLibrary.simpleMessage("Do you want to save it?"),
@@ -48,22 +54,42 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Opponent Deck: "),
         "listUseDeck": MessageLookupByLibrary.simpleMessage("Use Deck: "),
         "loss": MessageLookupByLibrary.simpleMessage("Loss"),
+        "memo": MessageLookupByLibrary.simpleMessage("Memo"),
+        "memoTag": MessageLookupByLibrary.simpleMessage(
+            "Keep notes to look back on. (Optional)"),
         "newGame": MessageLookupByLibrary.simpleMessage("New"),
         "newGameDialog": MessageLookupByLibrary.simpleMessage("Input New Game"),
+        "newest": MessageLookupByLibrary.simpleMessage("Newest"),
         "nextFunctionAnnounce1": MessageLookupByLibrary.simpleMessage(
             "Graph function is not yet implemented.。"),
         "nextFunctionAnnounce2": MessageLookupByLibrary.simpleMessage(
             "We are planning to implement this in the future, so please support us."),
         "noDataMessage": MessageLookupByLibrary.simpleMessage(
             "There is no record of this game."),
+        "noMemo": MessageLookupByLibrary.simpleMessage("No memo"),
+        "noTag": MessageLookupByLibrary.simpleMessage("No tag"),
+        "oldest": MessageLookupByLibrary.simpleMessage("Oldest"),
         "opponentDeck": MessageLookupByLibrary.simpleMessage("Opponent Deck"),
+        "opponentDeckDistribution":
+            MessageLookupByLibrary.simpleMessage("Opponent deck distribution"),
         "order": MessageLookupByLibrary.simpleMessage("First/Second"),
         "otherSection": MessageLookupByLibrary.simpleMessage("Other"),
         "otherTitle": MessageLookupByLibrary.simpleMessage("Other"),
         "privacyPolicy": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
+        "recordEditDialogMessage": MessageLookupByLibrary.simpleMessage(
+            "The content I am editing is not saved, may I go back?"),
+        "recordListDeleteDialogMessage": MessageLookupByLibrary.simpleMessage(
+            "This operation cannot be undone."),
+        "recordListDeleteDialogTitle": MessageLookupByLibrary.simpleMessage(
+            "Deletes the selected record."),
+        "recordListFirst": MessageLookupByLibrary.simpleMessage("1"),
+        "recordListMemo": MessageLookupByLibrary.simpleMessage("Memo: "),
+        "recordListNoTag": MessageLookupByLibrary.simpleMessage("No tag"),
+        "recordListSecond": MessageLookupByLibrary.simpleMessage("2"),
         "review": MessageLookupByLibrary.simpleMessage("App Review"),
         "save": MessageLookupByLibrary.simpleMessage("Save"),
         "second": MessageLookupByLibrary.simpleMessage("Second"),
+        "settingSection": MessageLookupByLibrary.simpleMessage("Setting"),
         "submit": MessageLookupByLibrary.simpleMessage("Submit"),
         "tableDeckName": MessageLookupByLibrary.simpleMessage("Use Deck"),
         "tableFirstWinRate":
@@ -77,7 +103,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "tableSum": MessageLookupByLibrary.simpleMessage("Sum"),
         "tableWin": MessageLookupByLibrary.simpleMessage("Win"),
         "tableWinRate": MessageLookupByLibrary.simpleMessage("Win Rate"),
+        "tag": MessageLookupByLibrary.simpleMessage("Tag (Optional)"),
+        "tagEdit": MessageLookupByLibrary.simpleMessage("Edit Tag"),
+        "themeChange": MessageLookupByLibrary.simpleMessage("Change theme"),
         "useDeck": MessageLookupByLibrary.simpleMessage("Use Deck"),
+        "useDeckDistribution":
+            MessageLookupByLibrary.simpleMessage("Use deck distribution"),
         "win": MessageLookupByLibrary.simpleMessage("Win"),
         "winOrLoss": MessageLookupByLibrary.simpleMessage("Win/Loss")
       };

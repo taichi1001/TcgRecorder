@@ -23,6 +23,7 @@ class _$WinRateDataTearOff {
       int matches = 0,
       int win = 0,
       int loss = 0,
+      double useRate = 0,
       double winRate = 0,
       double winRateOfFirst = 0,
       double winRateOfSecond = 0}) {
@@ -31,6 +32,7 @@ class _$WinRateDataTearOff {
       matches: matches,
       win: win,
       loss: loss,
+      useRate: useRate,
       winRate: winRate,
       winRateOfFirst: winRateOfFirst,
       winRateOfSecond: winRateOfSecond,
@@ -47,6 +49,7 @@ mixin _$WinRateData {
   int get matches => throw _privateConstructorUsedError;
   int get win => throw _privateConstructorUsedError;
   int get loss => throw _privateConstructorUsedError;
+  double get useRate => throw _privateConstructorUsedError;
   double get winRate => throw _privateConstructorUsedError;
   double get winRateOfFirst => throw _privateConstructorUsedError;
   double get winRateOfSecond => throw _privateConstructorUsedError;
@@ -66,6 +69,7 @@ abstract class $WinRateDataCopyWith<$Res> {
       int matches,
       int win,
       int loss,
+      double useRate,
       double winRate,
       double winRateOfFirst,
       double winRateOfSecond});
@@ -85,6 +89,7 @@ class _$WinRateDataCopyWithImpl<$Res> implements $WinRateDataCopyWith<$Res> {
     Object? matches = freezed,
     Object? win = freezed,
     Object? loss = freezed,
+    Object? useRate = freezed,
     Object? winRate = freezed,
     Object? winRateOfFirst = freezed,
     Object? winRateOfSecond = freezed,
@@ -106,6 +111,10 @@ class _$WinRateDataCopyWithImpl<$Res> implements $WinRateDataCopyWith<$Res> {
           ? _value.loss
           : loss // ignore: cast_nullable_to_non_nullable
               as int,
+      useRate: useRate == freezed
+          ? _value.useRate
+          : useRate // ignore: cast_nullable_to_non_nullable
+              as double,
       winRate: winRate == freezed
           ? _value.winRate
           : winRate // ignore: cast_nullable_to_non_nullable
@@ -134,6 +143,7 @@ abstract class _$WinRateDataCopyWith<$Res>
       int matches,
       int win,
       int loss,
+      double useRate,
       double winRate,
       double winRateOfFirst,
       double winRateOfSecond});
@@ -155,6 +165,7 @@ class __$WinRateDataCopyWithImpl<$Res> extends _$WinRateDataCopyWithImpl<$Res>
     Object? matches = freezed,
     Object? win = freezed,
     Object? loss = freezed,
+    Object? useRate = freezed,
     Object? winRate = freezed,
     Object? winRateOfFirst = freezed,
     Object? winRateOfSecond = freezed,
@@ -176,6 +187,10 @@ class __$WinRateDataCopyWithImpl<$Res> extends _$WinRateDataCopyWithImpl<$Res>
           ? _value.loss
           : loss // ignore: cast_nullable_to_non_nullable
               as int,
+      useRate: useRate == freezed
+          ? _value.useRate
+          : useRate // ignore: cast_nullable_to_non_nullable
+              as double,
       winRate: winRate == freezed
           ? _value.winRate
           : winRate // ignore: cast_nullable_to_non_nullable
@@ -200,6 +215,7 @@ class _$_WinRateData implements _WinRateData {
       this.matches = 0,
       this.win = 0,
       this.loss = 0,
+      this.useRate = 0,
       this.winRate = 0,
       this.winRateOfFirst = 0,
       this.winRateOfSecond = 0});
@@ -218,6 +234,9 @@ class _$_WinRateData implements _WinRateData {
   final int loss;
   @JsonKey()
   @override
+  final double useRate;
+  @JsonKey()
+  @override
   final double winRate;
   @JsonKey()
   @override
@@ -228,7 +247,7 @@ class _$_WinRateData implements _WinRateData {
 
   @override
   String toString() {
-    return 'WinRateData(deck: $deck, matches: $matches, win: $win, loss: $loss, winRate: $winRate, winRateOfFirst: $winRateOfFirst, winRateOfSecond: $winRateOfSecond)';
+    return 'WinRateData(deck: $deck, matches: $matches, win: $win, loss: $loss, useRate: $useRate, winRate: $winRate, winRateOfFirst: $winRateOfFirst, winRateOfSecond: $winRateOfSecond)';
   }
 
   @override
@@ -240,6 +259,7 @@ class _$_WinRateData implements _WinRateData {
             const DeepCollectionEquality().equals(other.matches, matches) &&
             const DeepCollectionEquality().equals(other.win, win) &&
             const DeepCollectionEquality().equals(other.loss, loss) &&
+            const DeepCollectionEquality().equals(other.useRate, useRate) &&
             const DeepCollectionEquality().equals(other.winRate, winRate) &&
             const DeepCollectionEquality()
                 .equals(other.winRateOfFirst, winRateOfFirst) &&
@@ -254,6 +274,7 @@ class _$_WinRateData implements _WinRateData {
       const DeepCollectionEquality().hash(matches),
       const DeepCollectionEquality().hash(win),
       const DeepCollectionEquality().hash(loss),
+      const DeepCollectionEquality().hash(useRate),
       const DeepCollectionEquality().hash(winRate),
       const DeepCollectionEquality().hash(winRateOfFirst),
       const DeepCollectionEquality().hash(winRateOfSecond));
@@ -270,6 +291,7 @@ abstract class _WinRateData implements WinRateData {
       int matches,
       int win,
       int loss,
+      double useRate,
       double winRate,
       double winRateOfFirst,
       double winRateOfSecond}) = _$_WinRateData;
@@ -282,6 +304,8 @@ abstract class _WinRateData implements WinRateData {
   int get win;
   @override
   int get loss;
+  @override
+  double get useRate;
   @override
   double get winRate;
   @override

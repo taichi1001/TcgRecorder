@@ -2,15 +2,22 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/marged_record.dart';
 import 'package:tcg_manager/entity/record.dart';
+import 'package:tcg_manager/entity/tag.dart';
+import 'package:tcg_manager/enum/first_second.dart';
+import 'package:tcg_manager/enum/win_loss.dart';
+import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/helper/edit_record_helper.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
+import 'package:tcg_manager/repository/tag_repository.dart';
+import 'package:tcg_manager/selector/game_deck_list_selector.dart';
+import 'package:tcg_manager/selector/game_tag_list_selector.dart';
 import 'package:tcg_manager/state/record_detail_state.dart';
 
 class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
   RecordDetailNotifier(this.ref, this.record, this.margedRecord)
-      : super(RecordDetailState(record: record, margedRecord: margedRecord));
+      : super(RecordDetailState(record: record, margedRecord: margedRecord, cacheDate: record.date, editMargedRecord: margedRecord));
 
   final Ref ref;
   final Record record;
@@ -21,27 +28,94 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
   }
 
   void editUseDeck(String name) {
-    state = state.copyWith(editMargedRecord: state.margedRecord.copyWith(useDeck: name));
+    state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(useDeck: name));
+  }
+
+  void scrollUseDeck(int index) {
+    state = state.copyWith(cacheUseDeck: ref.read(gameDeckListProvider)[index]);
+  }
+
+  void setUseDeck() {
+    if (state.cacheUseDeck != null) {
+      state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(useDeck: state.cacheUseDeck!.deck));
+    }
   }
 
   void editOpponentDeck(String name) {
-    state = state.copyWith(editMargedRecord: state.margedRecord.copyWith(opponentDeck: name));
+    state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(opponentDeck: name));
+  }
+
+  void scrollOpponentDeck(int index) {
+    state = state.copyWith(cacheOpponentDeck: ref.read(gameDeckListProvider)[index]);
+  }
+
+  void setOpponentDeck() {
+    if (state.cacheOpponentDeck != null) {
+      state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(opponentDeck: state.cacheOpponentDeck!.deck));
+    }
+  }
+
+  void editTag(String name) {
+    state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(tag: name));
+  }
+
+  void scrollTag(int index) {
+    state = state.copyWith(cacheTag: ref.read(gameTagListProvider)[index]);
+  }
+
+  void setTag() {
+    if (state.cacheTag != null) {
+      state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(tag: state.cacheTag!.tag));
+    }
+  }
+
+  void scrollDate(DateTime date) {
+    state = state.copyWith(cacheDate: date);
+  }
+
+  void setDate() {
+    if (state.cacheDate != null) {
+      state = state.copyWith(
+        editMargedRecord: state.editMargedRecord.copyWith(date: state.cacheDate!),
+      );
+    }
+  }
+
+  void editWinLoss(WinLoss winnLoss) {
+    state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(winLoss: winnLoss));
+  }
+
+  void editFirstSecond(FirstSecond firstSecond) {
+    state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(firstSecond: firstSecond));
+  }
+
+  void editMemo(String memo) {
+    state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(memo: memo));
   }
 
   Future saveEdit() async {
-    // 変更が無かった場合に何もしない
-    if (state.editMargedRecord == null) return;
     // 編集したrecord(EditMargedRecord)を表示用のrecord(MargedRecord)に設定
-    state = state.copyWith(margedRecord: state.editMargedRecord!);
+    state = state.copyWith(margedRecord: state.editMargedRecord);
 
     // 各種値の保存、ID取得、recordへのID設定
     // ここの処理は各種値が編集済みが未編集かに関わらず実行される
     // 編集済みのみ実行するようにすればパフォーマンスは上がるかも
     await _saveEditUseDeck();
     await _saveEditOpponentDeck();
+    await _saveEditTag();
+    state = state.copyWith(
+      record: state.record.copyWith(
+        date: state.editMargedRecord.date,
+        winLoss: state.editMargedRecord.winLoss,
+        firstSecond: state.editMargedRecord.firstSecond,
+        memo: state.editMargedRecord.memo,
+      ),
+    );
 
     // recordを上書き
     await ref.read(recordRepository).update(state.record);
+
+    await ref.read(dbHelper).fetchAll();
   }
 
   Future _saveEditUseDeck() async {
@@ -87,12 +161,35 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
       state = state.copyWith(record: state.record.copyWith(opponentDeckId: checkOpponentDeck.deck!.deckId));
     }
   }
+
+  Future _saveEditTag() async {
+    if (state.margedRecord.tag == null) return;
+    // 入力されたタグが新規のものかどうかを判定
+    final checkTag = ref.read(editRecordHelper).checkIfSelectedTagIsNew(state.margedRecord.tag!);
+
+    // 新規だった場合
+    if (checkTag.isNew) {
+      // 入力された対戦デッキをDBに登録しデッキIDを取得
+      final newId = await ref.read(tagRepository).insert(
+            Tag(
+              tag: state.margedRecord.tag!,
+              gameId: state.record.gameId,
+            ),
+          );
+
+      // recordに新しいタグIDを登録
+      state = state.copyWith(record: state.record.copyWith(tagId: newId));
+    } else {
+      // 既に登録済みのタグだった場合、そのタグのIDをrecordに登録
+      state = state.copyWith(record: state.record.copyWith(tagId: checkTag.tag!.tagId));
+    }
+  }
 }
 
-final recordDetailNotifierProvider =
-    StateNotifierProvider.family.autoDispose<RecordDetailNotifier, RecordDetailState, MargedRecord>(
+final recordDetailNotifierProvider = StateNotifierProvider.family.autoDispose<RecordDetailNotifier, RecordDetailState, MargedRecord>(
   (ref, margedRecord) {
-    final recordList = ref.watch(allRecordListNotifierProvider).allRecordList;
+    // 一覧からレコードを選択した瞬間の値のみがほしいため、watchで監視せずにreadで読み取っている
+    final recordList = ref.read(allRecordListNotifierProvider).allRecordList;
     final record = recordList!.firstWhere((record) => record.recordId == margedRecord.recordId);
     final notifier = RecordDetailNotifier(ref, record, margedRecord);
     return notifier;

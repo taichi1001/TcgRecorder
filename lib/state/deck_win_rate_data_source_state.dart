@@ -1,16 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:tcg_manager/entity/win_rate_data.dart';
-
-part 'deck_win_rate_data_source_state.freezed.dart';
-
-@freezed
-abstract class DeckWinRateDataSourceState with _$DeckWinRateDataSourceState {
-  factory DeckWinRateDataSourceState({
-    DeckWinRateDataSource? deckWinRateDataSource,
-  }) = _DeckWinRateDataSourceState;
-}
 
 class DeckWinRateDataSource extends DataGridSource {
   DeckWinRateDataSource({
@@ -44,7 +34,7 @@ class DeckWinRateDataSource extends DataGridSource {
         (dataGridCell) {
           return Center(
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 8),
               child: _buildChild(dataGridCell),
             ),
           );
@@ -75,17 +65,24 @@ class DeckWinRateDataSource extends DataGridSource {
     }
     if (cell.columnName == '勝率') {
       if (cell.value.isNaN) return const Text('-');
-      return Text(cell.value.toString() + '%');
+      return Text('${cell.value}%');
     }
     if (cell.columnName == '先攻勝率') {
       if (cell.value.isNaN) return const Text('-');
-      return Text(cell.value.toString() + '%');
+      return Text('${cell.value}%');
     }
     if (cell.columnName == '後攻勝率') {
       if (cell.value.isNaN) return const Text('-');
-      return Text(cell.value.toString() + '%');
+      return Text('${cell.value}%');
     }
 
     return const Text('test');
+  }
+
+  // 合計行をソート対象から外すための処理を追加している
+  @override
+  int compare(DataGridRow? a, DataGridRow? b, SortColumnDetails sortColumn) {
+    if (a?.getCells().first.value == '合計' || b?.getCells().first.value == '合計') return 0;
+    return super.compare(a, b, sortColumn);
   }
 }

@@ -1,4 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tcg_manager/enum/bottom_tab_item.dart';
 import 'package:tcg_manager/state/bottom_navigation_bar_state.dart';
 
 class BottomNavigationBarNotifier extends StateNotifier<BottomNavigationBarState> {
@@ -9,7 +10,6 @@ class BottomNavigationBarNotifier extends StateNotifier<BottomNavigationBarState
   }
 }
 
-final bottomNavigationBarNotifierProvider =
-    StateNotifierProvider<BottomNavigationBarNotifier, BottomNavigationBarState>(
+final bottomNavigationBarNotifierProvider = StateNotifierProvider<BottomNavigationBarNotifier, BottomNavigationBarState>(
   (ref) => BottomNavigationBarNotifier(),
 );
