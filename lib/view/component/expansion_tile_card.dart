@@ -56,8 +56,7 @@ class ExpansionTileCard extends StatefulWidget {
     this.shadowColor = const Color(0xffaaaaaa),
     this.animateTrailing = false,
     this.isExpansion = true,
-  })  : assert(initiallyExpanded != null),
-        super(key: key);
+  }) : super(key: key);
 
   final bool isExpansion;
 
@@ -228,8 +227,7 @@ class ExpansionTileCardState extends State<ExpansionTileCard> with SingleTickerP
     _headerColor = _controller.drive(_headerColorTween.chain(_colorTween));
     _materialColor = _controller.drive(_materialColorTween.chain(_colorTween));
     _iconColor = _controller.drive(_iconColorTween.chain(_colorTween));
-    _elevation =
-        _controller.drive(Tween<double>(begin: widget.initialElevation, end: widget.elevation).chain(_elevationTween));
+    _elevation = _controller.drive(Tween<double>(begin: widget.initialElevation, end: widget.elevation).chain(_elevationTween));
     _padding = _controller.drive(_edgeInsetsTween.chain(_paddingTween));
     _isExpanded = PageStorage.of(context)?.readState(context) as bool? ?? widget.initiallyExpanded;
     if (_isExpanded) _controller.value = 1.0;
@@ -301,9 +299,7 @@ class ExpansionTileCardState extends State<ExpansionTileCard> with SingleTickerP
                     title: widget.title,
                     subtitle: widget.subtitle,
                     trailing: RotationTransition(
-                      turns: widget.trailing == null || widget.animateTrailing
-                          ? _iconTurns
-                          : const AlwaysStoppedAnimation(0),
+                      turns: widget.trailing == null || widget.animateTrailing ? _iconTurns : const AlwaysStoppedAnimation(0),
                       child: widget.trailing ?? const Icon(Icons.expand_more),
                     ),
                   ),
