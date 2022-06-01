@@ -16,8 +16,7 @@ import 'package:tcg_manager/provider/input_view_settings_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/provider/theme_provider.dart';
-import 'package:tcg_manager/view/bottom_navigation_view.dart';
-import 'package:tcg_manager/view/initial_game_registration_view.dart';
+import 'package:tcg_manager/view/select_deck_view.dart';
 
 import 'generated/l10n.dart';
 
@@ -76,15 +75,16 @@ class MainApp extends HookConsumerWidget {
       theme: lightThemeData,
       darkTheme: darkThemeData,
       themeMode: ThemeMode.system,
-      home: allGameList == null && allDeckList == null && allRecordList == null && allTagList == null
-          ? const Scaffold(
-              body: Center(
-                child: CircularProgressIndicator(),
-              ),
-            )
-          : allGameList!.isEmpty
-              ? const InitialGameRegistrationView()
-              : const BottomNavigationView(),
+      home: SelectDeckView(),
+      //   home: allGameList == null && allDeckList == null && allRecordList == null && allTagList == null
+      //       ? const Scaffold(
+      //           body: Center(
+      //             child: CircularProgressIndicator(),
+      //           ),
+      //         )
+      //       : allGameList!.isEmpty
+      //           ? const InitialGameRegistrationView()
+      //           : const BottomNavigationView(),
     );
   }
 }
