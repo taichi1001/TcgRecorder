@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tcg_manager/selector/recently_use_deck_selector.dart';
 
 class SelectDeckView extends HookConsumerWidget {
   const SelectDeckView({
@@ -14,8 +15,11 @@ class SelectDeckView extends HookConsumerWidget {
       ),
       body: SingleChildScrollView(
         child: Column(
-          children: [
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: const [
+            Text('最近使用したデッキ'),
             _RecentlyUsedView(),
+            Text('一覧'),
             _AllListView(),
           ],
         ),
@@ -29,7 +33,7 @@ class _RecentlyUsedView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final list = ['a', 'b', 'c', 'b', 'c', 'b', 'c', 'b', 'c'];
+    final list = ref.watch(recentlyUseDeckProvider);
     return ListView.separated(
       shrinkWrap: true,
       physics: const BouncingScrollPhysics(),
@@ -38,7 +42,8 @@ class _RecentlyUsedView extends HookConsumerWidget {
           return Container();
         }
         return ListTile(
-          title: Text(list[index - 1]),
+          title: Text(list[index - 1].deck),
+          tileColor: Theme.of(context).colorScheme.surface,
         );
       }),
       separatorBuilder: ((context, index) {
@@ -68,7 +73,7 @@ class _AllListView extends HookConsumerWidget {
         );
       }),
       separatorBuilder: ((context, index) {
-        return Divider();
+        return const Divider();
       }),
       itemCount: list.length,
     );

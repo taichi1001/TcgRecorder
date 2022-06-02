@@ -5,8 +5,8 @@ import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/provider/bottom_navigation_bar_provider.dart';
 import 'package:tcg_manager/view/graph_view.dart';
 import 'package:tcg_manager/view/input_view.dart';
-import 'package:tcg_manager/view/other_view.dart';
 import 'package:tcg_manager/view/record_list_view.dart';
+import 'package:tcg_manager/view/select_deck_view.dart';
 
 class BottomNavigationView extends HookConsumerWidget {
   const BottomNavigationView({
@@ -21,7 +21,8 @@ class BottomNavigationView extends HookConsumerWidget {
       const InputView(),
       const GraphView(),
       const RecordListView(),
-      const OtherView(),
+      // const OtherView(),
+      const SelectDeckView()
     ];
     final bottomTabState = ref.watch(bottomNavigationBarNotifierProvider);
     final bottomTabNotifier = ref.watch(bottomNavigationBarNotifierProvider.notifier);
