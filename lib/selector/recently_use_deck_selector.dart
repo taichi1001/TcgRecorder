@@ -17,8 +17,8 @@ final recentlyUseDeckProvider = StateProvider.autoDispose<List<Deck>>((ref) {
   // 直近使用した、または使用されたデッキ10個のIDを抽出
   List<int> recentlyDeckIdList = [];
   for (final record in recordList) {
-    if (recentlyDeckIdList.length == 10) break;
-    if (recentlyDeckIdList.length == 11) {
+    if (recentlyDeckIdList.length == 5) break;
+    if (recentlyDeckIdList.length == 6) {
       recentlyDeckIdList.removeLast();
       break;
     }
