@@ -178,6 +178,7 @@ class _UseRateChart extends StatelessWidget {
   }
 }
 
+// ignore: unused_element
 class _UseRateDetailChart extends HookConsumerWidget {
   const _UseRateDetailChart({
     required this.data,
