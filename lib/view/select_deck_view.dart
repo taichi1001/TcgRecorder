@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/helper/convert_sort_string.dart';
+import 'package:tcg_manager/provider/input_view_provider.dart';
 import 'package:tcg_manager/provider/select_deck_view_provider.dart';
 import 'package:tcg_manager/selector/recently_use_deck_selector.dart';
 import 'package:tcg_manager/selector/sorted_deck_list_selector.dart';
@@ -97,6 +98,7 @@ class _DeckListView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final inputViewNotifier = ref.watch(inputViewNotifierProvider.notifier);
     return ListView.separated(
       shrinkWrap: true,
       physics: const BouncingScrollPhysics(),
@@ -104,12 +106,18 @@ class _DeckListView extends HookConsumerWidget {
         if (index == 0 || index == deckList.length + 1) {
           return Container();
         }
-        return Container(
-          padding: const EdgeInsets.all(16),
-          color: Theme.of(context).colorScheme.surface,
-          child: Text(
-            deckList[index - 1].deck,
-            style: Theme.of(context).textTheme.bodyMedium,
+        return GestureDetector(
+          onTap: () {
+            inputViewNotifier.selectUseDeck(deckList[index - 1]);
+            Navigator.pop(context);
+          },
+          child: Container(
+            padding: const EdgeInsets.all(16),
+            color: Theme.of(context).colorScheme.surface,
+            child: Text(
+              deckList[index - 1].deck,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
           ),
         );
       }),
