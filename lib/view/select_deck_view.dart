@@ -36,6 +36,7 @@ class SelectDeckView extends HookConsumerWidget {
         ),
       ),
       body: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
         child: Visibility(
           visible: !isSearch.value,
           child: Column(
@@ -99,18 +100,21 @@ class _DeckListView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final inputViewNotifier = ref.watch(inputViewNotifierProvider.notifier);
-    return ListView.separated(
+    return ReorderableListView.builder(
       shrinkWrap: true,
       physics: const BouncingScrollPhysics(),
       itemBuilder: ((context, index) {
         if (index == 0 || index == deckList.length + 1) {
-          return Container();
+          return Container(
+            key: UniqueKey(),
+          );
         }
         return GestureDetector(
-          onTap: () {
-            inputViewNotifier.selectUseDeck(deckList[index - 1]);
-            Navigator.pop(context);
-          },
+          key: Key(deckList[index - 1].deckId.toString()),
+          // onTap: () {
+          //   inputViewNotifier.selectUseDeck(deckList[index - 1]);
+          //   Navigator.pop(context);
+          // },
           child: Container(
             padding: const EdgeInsets.all(16),
             color: Theme.of(context).colorScheme.surface,
@@ -121,13 +125,21 @@ class _DeckListView extends HookConsumerWidget {
           ),
         );
       }),
-      separatorBuilder: ((context, index) {
-        return const Divider(
-          indent: 16,
-          thickness: 1,
-          height: 0,
-        );
-      }),
+      onReorder: (oldIndex, newIndex) {
+        if (oldIndex - 1 < newIndex - 1) {
+          newIndex -= 1;
+        }
+        final deck = deckList.removeAt(oldIndex - 1);
+        deckList.insert(newIndex - 1, deck);
+        ref.read(sortedRecordListProvider.notifier).state = deckList;
+      },
+      // separatorBuilder: ((context, index) {
+      //   return const Divider(
+      //     indent: 16,
+      //     thickness: 1,
+      //     height: 0,
+      //   );
+      // }),
       itemCount: deckList.length + 1,
     );
   }

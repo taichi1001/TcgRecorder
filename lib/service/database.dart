@@ -25,7 +25,12 @@ class DatabaseService {
     final documentsDirectory = await getApplicationDocumentsDirectory();
     final path = join(documentsDirectory.path, _databaseName);
 
-    final database = await openDatabase(path, version: _databaseVersion, onCreate: initDB, onUpgrade: onUpgrade);
+    final database = await openDatabase(
+      path,
+      version: _databaseVersion,
+      onCreate: initDB,
+      onUpgrade: onUpgrade,
+    );
     return database;
   }
 
@@ -35,8 +40,7 @@ class DatabaseService {
   }
 
   Future initDB(Database database, int version) async {
-    await database.execute(
-        '''
+    await database.execute('''
       CREATE TABLE $recordTableName (
         record_id INTEGER PRIMARY KEY AUTOINCREMENT,
         date TEXT NOT NULL,
@@ -49,8 +53,7 @@ class DatabaseService {
         memo TEXT
       )
     ''');
-    await database.execute(
-        '''
+    await database.execute('''
       CREATE TABLE $gameTableName (
         game_id INTEGER PRIMARY KEY AUTOINCREMENT,
         game TEXT NOT NULL,
@@ -58,8 +61,7 @@ class DatabaseService {
         unique(game)
       )
     ''');
-    await database.execute(
-        '''
+    await database.execute('''
       CREATE TABLE $deckTableName (
         deck_id INTEGER PRIMARY KEY AUTOINCREMENT,
         deck TEXT NOT NULL,
@@ -68,8 +70,7 @@ class DatabaseService {
         unique(deck, game_id)
       )
     ''');
-    await database.execute(
-        '''
+    await database.execute('''
       CREATE TABLE $tagTableName (
         tag_id INTEGER PRIMARY KEY AUTOINCREMENT,
         tag TEXT NOT NULL,
