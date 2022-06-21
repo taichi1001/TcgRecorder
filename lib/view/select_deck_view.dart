@@ -7,6 +7,7 @@ import 'package:tcg_manager/enum/sort.dart';
 import 'package:tcg_manager/helper/convert_sort_string.dart';
 import 'package:tcg_manager/provider/input_view_provider.dart';
 import 'package:tcg_manager/provider/select_deck_view_provider.dart';
+import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/selector/recently_use_deck_selector.dart';
 import 'package:tcg_manager/selector/sorted_deck_list_selector.dart';
 
@@ -16,7 +17,7 @@ class SelectDeckView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final recentlyUseDeckList = ref.watch(recentlyUseDeckProvider);
-    final gameDeckList = ref.watch(sortedRecordListProvider);
+    final gameDeckList = ref.watch(sortedDeckListProvider);
     final searchTextController = useTextEditingController();
     final searchFocusNode = useFocusNode();
     final isSearch = useState(false);
@@ -82,7 +83,14 @@ class _AllListViewTitle extends HookConsumerWidget {
               if (sort == Sort.custom)
                 CupertinoButton(
                   padding: const EdgeInsets.all(0),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ReordableDeckView(),
+                      ),
+                    );
+                  },
                   child: Text(
                     '並び替え',
                     style: Theme.of(context).textTheme.bodyText2,
@@ -114,21 +122,19 @@ class _DeckListView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final inputViewNotifier = ref.watch(inputViewNotifierProvider.notifier);
-    return ReorderableListView.builder(
+    print(deckList);
+    return ListView.separated(
       shrinkWrap: true,
       physics: const BouncingScrollPhysics(),
       itemBuilder: ((context, index) {
         if (index == 0 || index == deckList.length + 1) {
-          return Container(
-            key: UniqueKey(),
-          );
+          return Container();
         }
         return GestureDetector(
-          key: Key(deckList[index - 1].deckId.toString()),
-          // onTap: () {
-          //   inputViewNotifier.selectUseDeck(deckList[index - 1]);
-          //   Navigator.pop(context);
-          // },
+          onTap: () {
+            inputViewNotifier.selectUseDeck(deckList[index - 1]);
+            Navigator.pop(context);
+          },
           child: Container(
             padding: const EdgeInsets.all(16),
             color: Theme.of(context).colorScheme.surface,
@@ -139,22 +145,74 @@ class _DeckListView extends HookConsumerWidget {
           ),
         );
       }),
+      separatorBuilder: ((context, index) {
+        return const Divider(
+          indent: 16,
+          thickness: 1,
+          height: 0,
+        );
+      }),
+      itemCount: deckList.length + 1,
+    );
+  }
+}
+
+class _ReorderableDeckListView extends HookConsumerWidget {
+  const _ReorderableDeckListView({
+    required this.deckList,
+    key,
+  }) : super(key: key);
+
+  final List<Deck> deckList;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    // final inputViewNotifier = ref.watch(inputViewNotifierProvider.notifier);
+    print(deckList);
+    return ReorderableListView.builder(
+      shrinkWrap: true,
+      physics: const BouncingScrollPhysics(),
+      itemBuilder: ((context, index) {
+        if (index == 0 || index == deckList.length + 1) {
+          return Container(
+            key: UniqueKey(),
+          );
+        }
+        return Container(
+          key: Key(deckList[index - 1].deckId.toString()),
+          padding: const EdgeInsets.all(16),
+          color: Theme.of(context).colorScheme.surface,
+          child: Text(
+            deckList[index - 1].deck,
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+        );
+      }),
       onReorder: (oldIndex, newIndex) {
         if (oldIndex - 1 < newIndex - 1) {
           newIndex -= 1;
         }
         final deck = deckList.removeAt(oldIndex - 1);
         deckList.insert(newIndex - 1, deck);
-        ref.read(sortedRecordListProvider.notifier).state = deckList;
+        ref.read(sortedDeckListProvider.notifier).state = deckList;
       },
-      // separatorBuilder: ((context, index) {
-      //   return const Divider(
-      //     indent: 16,
-      //     thickness: 1,
-      //     height: 0,
-      //   );
-      // }),
       itemCount: deckList.length + 1,
+    );
+  }
+}
+
+class ReordableDeckView extends HookConsumerWidget {
+  const ReordableDeckView({key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final gameDeckList = ref.watch(sortedDeckListProvider);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('並び替え'),
+      ),
+      body: _ReorderableDeckListView(deckList: gameDeckList),
     );
   }
 }
