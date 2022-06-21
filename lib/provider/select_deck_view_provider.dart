@@ -1,5 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tcg_manager/enum/Sort.dart';
+import 'package:tcg_manager/enum/sort.dart';
 import 'package:tcg_manager/state/select_deck_view_state.dart';
 
 class SelectDeckViewNotifier extends StateNotifier<SelectDeckViewState> {

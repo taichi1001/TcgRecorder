@@ -12,44 +12,7 @@ part of 'record_list_view_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
-
-/// @nodoc
-class _$RecordListViewStateTearOff {
-  const _$RecordListViewStateTearOff();
-
-  _RecordListViewState call(
-      {Sort sort = Sort.newest,
-      DateTime? startDate,
-      DateTime? endDate,
-      Deck? useDeck,
-      Deck? opponentDeck,
-      Tag? tag,
-      Sort cacheOrder = Sort.newest,
-      DateTime? cacheStartDate,
-      DateTime? cacheEndDate,
-      Deck? cacheUseDeck,
-      Deck? cacheOpponentDeck,
-      Tag? cacheTag}) {
-    return _RecordListViewState(
-      sort: sort,
-      startDate: startDate,
-      endDate: endDate,
-      useDeck: useDeck,
-      opponentDeck: opponentDeck,
-      tag: tag,
-      cacheOrder: cacheOrder,
-      cacheStartDate: cacheStartDate,
-      cacheEndDate: cacheEndDate,
-      cacheUseDeck: cacheUseDeck,
-      cacheOpponentDeck: cacheOpponentDeck,
-      cacheTag: cacheTag,
-    );
-  }
-}
-
-/// @nodoc
-const $RecordListViewState = _$RecordListViewStateTearOff();
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
 mixin _$RecordListViewState {
@@ -242,11 +205,11 @@ class _$RecordListViewStateCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$RecordListViewStateCopyWith<$Res>
+abstract class _$$_RecordListViewStateCopyWith<$Res>
     implements $RecordListViewStateCopyWith<$Res> {
-  factory _$RecordListViewStateCopyWith(_RecordListViewState value,
-          $Res Function(_RecordListViewState) then) =
-      __$RecordListViewStateCopyWithImpl<$Res>;
+  factory _$$_RecordListViewStateCopyWith(_$_RecordListViewState value,
+          $Res Function(_$_RecordListViewState) then) =
+      __$$_RecordListViewStateCopyWithImpl<$Res>;
   @override
   $Res call(
       {Sort sort,
@@ -277,15 +240,15 @@ abstract class _$RecordListViewStateCopyWith<$Res>
 }
 
 /// @nodoc
-class __$RecordListViewStateCopyWithImpl<$Res>
+class __$$_RecordListViewStateCopyWithImpl<$Res>
     extends _$RecordListViewStateCopyWithImpl<$Res>
-    implements _$RecordListViewStateCopyWith<$Res> {
-  __$RecordListViewStateCopyWithImpl(
-      _RecordListViewState _value, $Res Function(_RecordListViewState) _then)
-      : super(_value, (v) => _then(v as _RecordListViewState));
+    implements _$$_RecordListViewStateCopyWith<$Res> {
+  __$$_RecordListViewStateCopyWithImpl(_$_RecordListViewState _value,
+      $Res Function(_$_RecordListViewState) _then)
+      : super(_value, (v) => _then(v as _$_RecordListViewState));
 
   @override
-  _RecordListViewState get _value => super._value as _RecordListViewState;
+  _$_RecordListViewState get _value => super._value as _$_RecordListViewState;
 
   @override
   $Res call({
@@ -302,7 +265,7 @@ class __$RecordListViewStateCopyWithImpl<$Res>
     Object? cacheOpponentDeck = freezed,
     Object? cacheTag = freezed,
   }) {
-    return _then(_RecordListViewState(
+    return _then(_$_RecordListViewState(
       sort: sort == freezed
           ? _value.sort
           : sort // ignore: cast_nullable_to_non_nullable
@@ -372,8 +335,8 @@ class _$_RecordListViewState implements _RecordListViewState {
       this.cacheOpponentDeck,
       this.cacheTag});
 
-  @JsonKey()
   @override
+  @JsonKey()
   final Sort sort;
   @override
   final DateTime? startDate;
@@ -385,8 +348,8 @@ class _$_RecordListViewState implements _RecordListViewState {
   final Deck? opponentDeck;
   @override
   final Tag? tag;
-  @JsonKey()
   @override
+  @JsonKey()
   final Sort cacheOrder;
   @override
   final DateTime? cacheStartDate;
@@ -408,7 +371,7 @@ class _$_RecordListViewState implements _RecordListViewState {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _RecordListViewState &&
+            other is _$_RecordListViewState &&
             const DeepCollectionEquality().equals(other.sort, sort) &&
             const DeepCollectionEquality().equals(other.startDate, startDate) &&
             const DeepCollectionEquality().equals(other.endDate, endDate) &&
@@ -447,52 +410,52 @@ class _$_RecordListViewState implements _RecordListViewState {
 
   @JsonKey(ignore: true)
   @override
-  _$RecordListViewStateCopyWith<_RecordListViewState> get copyWith =>
-      __$RecordListViewStateCopyWithImpl<_RecordListViewState>(
+  _$$_RecordListViewStateCopyWith<_$_RecordListViewState> get copyWith =>
+      __$$_RecordListViewStateCopyWithImpl<_$_RecordListViewState>(
           this, _$identity);
 }
 
 abstract class _RecordListViewState implements RecordListViewState {
   factory _RecordListViewState(
-      {Sort sort,
-      DateTime? startDate,
-      DateTime? endDate,
-      Deck? useDeck,
-      Deck? opponentDeck,
-      Tag? tag,
-      Sort cacheOrder,
-      DateTime? cacheStartDate,
-      DateTime? cacheEndDate,
-      Deck? cacheUseDeck,
-      Deck? cacheOpponentDeck,
-      Tag? cacheTag}) = _$_RecordListViewState;
+      {final Sort sort,
+      final DateTime? startDate,
+      final DateTime? endDate,
+      final Deck? useDeck,
+      final Deck? opponentDeck,
+      final Tag? tag,
+      final Sort cacheOrder,
+      final DateTime? cacheStartDate,
+      final DateTime? cacheEndDate,
+      final Deck? cacheUseDeck,
+      final Deck? cacheOpponentDeck,
+      final Tag? cacheTag}) = _$_RecordListViewState;
 
   @override
-  Sort get sort;
+  Sort get sort => throw _privateConstructorUsedError;
   @override
-  DateTime? get startDate;
+  DateTime? get startDate => throw _privateConstructorUsedError;
   @override
-  DateTime? get endDate;
+  DateTime? get endDate => throw _privateConstructorUsedError;
   @override
-  Deck? get useDeck;
+  Deck? get useDeck => throw _privateConstructorUsedError;
   @override
-  Deck? get opponentDeck;
+  Deck? get opponentDeck => throw _privateConstructorUsedError;
   @override
-  Tag? get tag;
+  Tag? get tag => throw _privateConstructorUsedError;
   @override
-  Sort get cacheOrder;
+  Sort get cacheOrder => throw _privateConstructorUsedError;
   @override
-  DateTime? get cacheStartDate;
+  DateTime? get cacheStartDate => throw _privateConstructorUsedError;
   @override
-  DateTime? get cacheEndDate;
+  DateTime? get cacheEndDate => throw _privateConstructorUsedError;
   @override
-  Deck? get cacheUseDeck;
+  Deck? get cacheUseDeck => throw _privateConstructorUsedError;
   @override
-  Deck? get cacheOpponentDeck;
+  Deck? get cacheOpponentDeck => throw _privateConstructorUsedError;
   @override
-  Tag? get cacheTag;
+  Tag? get cacheTag => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$RecordListViewStateCopyWith<_RecordListViewState> get copyWith =>
+  _$$_RecordListViewStateCopyWith<_$_RecordListViewState> get copyWith =>
       throw _privateConstructorUsedError;
 }

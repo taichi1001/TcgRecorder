@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/deck.dart';
+import 'package:tcg_manager/enum/sort.dart';
 import 'package:tcg_manager/helper/convert_sort_string.dart';
 import 'package:tcg_manager/provider/input_view_provider.dart';
 import 'package:tcg_manager/provider/select_deck_view_provider.dart';
@@ -76,12 +77,25 @@ class _AllListViewTitle extends HookConsumerWidget {
             '一覧',
             style: Theme.of(context).textTheme.caption,
           ),
-          CupertinoButton(
-            onPressed: () => selectDeckViewNotifier.changeSort(),
-            child: Text(
-              ConvertSortString.convert(context, sort),
-              style: Theme.of(context).textTheme.bodyText2,
-            ),
+          Row(
+            children: [
+              if (sort == Sort.custom)
+                CupertinoButton(
+                  padding: const EdgeInsets.all(0),
+                  onPressed: () {},
+                  child: Text(
+                    '並び替え',
+                    style: Theme.of(context).textTheme.bodyText2,
+                  ),
+                ),
+              CupertinoButton(
+                onPressed: () => selectDeckViewNotifier.changeSort(),
+                child: Text(
+                  ConvertSortString.convert(context, sort),
+                  style: Theme.of(context).textTheme.bodyText2,
+                ),
+              ),
+            ],
           ),
         ],
       ),

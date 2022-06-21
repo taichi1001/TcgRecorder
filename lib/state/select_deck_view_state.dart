@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:tcg_manager/enum/Sort.dart';
+import 'package:tcg_manager/enum/sort.dart';
 
 part 'select_deck_view_state.freezed.dart';
 

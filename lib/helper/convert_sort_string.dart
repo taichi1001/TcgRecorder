@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:tcg_manager/enum/Sort.dart';
+import 'package:tcg_manager/enum/sort.dart';
 import 'package:tcg_manager/generated/l10n.dart';
 
 class ConvertSortString {
@@ -8,6 +8,8 @@ class ConvertSortString {
       return S.of(context).newest;
     } else if (sort == Sort.oldest) {
       return S.of(context).oldest;
+    } else if (sort == Sort.custom) {
+      return 'カスタム';
     } else {
       return 'エラー';
     }
