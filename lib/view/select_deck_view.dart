@@ -2,12 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/enum/sort.dart';
 import 'package:tcg_manager/helper/convert_sort_string.dart';
 import 'package:tcg_manager/provider/input_view_provider.dart';
 import 'package:tcg_manager/provider/select_deck_view_provider.dart';
-import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/selector/recently_use_deck_selector.dart';
 import 'package:tcg_manager/selector/sorted_deck_list_selector.dart';
 
@@ -15,10 +15,11 @@ class SelectDeckView extends HookConsumerWidget {
   const SelectDeckView({key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  // ignore: avoid_renaming_method_parameters
+  Widget build(BuildContext rootContext, WidgetRef ref) {
     final recentlyUseDeckList = ref.watch(recentlyUseDeckProvider);
     final gameDeckList = ref.watch(sortedDeckListProvider);
-    final searchTextController = useTextEditingController();
+    final searchTextController = useTextEditingController(text: '');
     final searchFocusNode = useFocusNode();
     final isSearch = useState(false);
 
@@ -30,31 +31,81 @@ class SelectDeckView extends HookConsumerWidget {
       print(searchTextController.text);
     });
 
-    return Scaffold(
-      appBar: AppBar(
-        title: TextField(
-          controller: searchTextController,
-          focusNode: searchFocusNode,
-        ),
-      ),
-      body: SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        child: Visibility(
-          visible: !isSearch.value,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Text(
-                  '最近使用したデッキ',
-                  style: Theme.of(context).textTheme.caption,
+    return Material(
+      child: Navigator(
+        onGenerateRoute: (_) => MaterialPageRoute(
+          builder: (context2) => Builder(
+            builder: (context) => Scaffold(
+              appBar: AppBar(
+                leading: Icon(
+                  Icons.search,
+                  color: Theme.of(context).primaryColor,
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: searchTextController.text == ''
+                        ? null
+                        : () {
+                            print(searchTextController.text);
+                            searchTextController.text = '';
+                          },
+                    child: Text(
+                      'クリア',
+                      style: searchTextController.text == ''
+                          ? Theme.of(context).textTheme.caption?.copyWith(color: Colors.grey)
+                          : Theme.of(context).textTheme.caption,
+                    ),
+                  ),
+                ],
+                titleSpacing: 0,
+                backgroundColor: Theme.of(context).colorScheme.surface,
+                title: TextField(
+                  controller: searchTextController,
+                  focusNode: searchFocusNode,
+                  decoration: const InputDecoration(
+                    labelText: '検索',
+                  ),
                 ),
               ),
-              _DeckListView(deckList: recentlyUseDeckList),
-              const _AllListViewTitle(),
-              _DeckListView(deckList: gameDeckList),
-            ],
+              // 最後までスクロールした時に出るアニメーションを消すために入れている
+              body: NotificationListener<OverscrollIndicatorNotification>(
+                onNotification: (overscroll) {
+                  overscroll.disallowIndicator();
+                  return true;
+                },
+                child: NestedScrollView(
+                  controller: ScrollController(),
+                  headerSliverBuilder: (context, innnerBoxIsScrolled) => [], // headerは必要ないため空を返す
+                  body: SingleChildScrollView(
+                    controller: ModalScrollController.of(context),
+                    child: Visibility(
+                      visible: !isSearch.value,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: Text(
+                              '最近使用したデッキ',
+                              style: Theme.of(context).textTheme.caption,
+                            ),
+                          ),
+                          _DeckListView(
+                            deckList: recentlyUseDeckList,
+                            rootContext: rootContext,
+                          ),
+                          const _AllListViewTitle(),
+                          _DeckListView(
+                            deckList: gameDeckList,
+                            rootContext: rootContext,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ),
         ),
       ),
@@ -114,18 +165,18 @@ class _AllListViewTitle extends HookConsumerWidget {
 class _DeckListView extends HookConsumerWidget {
   const _DeckListView({
     required this.deckList,
+    required this.rootContext,
     key,
   }) : super(key: key);
 
   final List<Deck> deckList;
+  final BuildContext rootContext;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final inputViewNotifier = ref.watch(inputViewNotifierProvider.notifier);
-    print(deckList);
     return ListView.separated(
       shrinkWrap: true,
-      physics: const BouncingScrollPhysics(),
       itemBuilder: ((context, index) {
         if (index == 0 || index == deckList.length + 1) {
           return Container();
@@ -133,7 +184,7 @@ class _DeckListView extends HookConsumerWidget {
         return GestureDetector(
           onTap: () {
             inputViewNotifier.selectUseDeck(deckList[index - 1]);
-            Navigator.pop(context);
+            Navigator.pop(rootContext);
           },
           child: Container(
             padding: const EdgeInsets.all(16),
@@ -168,35 +219,32 @@ class _ReorderableDeckListView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // final inputViewNotifier = ref.watch(inputViewNotifierProvider.notifier);
-    print(deckList);
     return ReorderableListView.builder(
       shrinkWrap: true,
-      physics: const BouncingScrollPhysics(),
+      buildDefaultDragHandles: false,
       itemBuilder: ((context, index) {
-        if (index == 0 || index == deckList.length + 1) {
-          return Container(
-            key: UniqueKey(),
-          );
-        }
-        return Container(
-          key: Key(deckList[index - 1].deckId.toString()),
-          padding: const EdgeInsets.all(16),
-          color: Theme.of(context).colorScheme.surface,
-          child: Text(
-            deckList[index - 1].deck,
+        return ListTile(
+          key: Key(deckList[index].deckId.toString()),
+          tileColor: Theme.of(context).colorScheme.surface,
+          title: Text(
+            deckList[index].deck,
             style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          trailing: ReorderableDragStartListener(
+            index: index,
+            child: const Icon(Icons.drag_handle),
           ),
         );
       }),
       onReorder: (oldIndex, newIndex) {
-        if (oldIndex - 1 < newIndex - 1) {
+        if (oldIndex < newIndex) {
           newIndex -= 1;
         }
-        final deck = deckList.removeAt(oldIndex - 1);
-        deckList.insert(newIndex - 1, deck);
-        ref.read(sortedDeckListProvider.notifier).state = deckList;
+        final deck = deckList.removeAt(oldIndex);
+        deckList.insert(newIndex, deck);
+        ref.watch(sortedDeckListProvider.notifier).state = deckList;
       },
-      itemCount: deckList.length + 1,
+      itemCount: deckList.length,
     );
   }
 }

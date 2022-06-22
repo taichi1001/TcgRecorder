@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:tcg_manager/enum/first_second.dart';
 import 'package:tcg_manager/enum/win_loss.dart';
 import 'package:tcg_manager/generated/l10n.dart';
@@ -16,9 +17,9 @@ import 'package:tcg_manager/selector/game_deck_list_selector.dart';
 import 'package:tcg_manager/selector/game_tag_list_selector.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
 import 'package:tcg_manager/view/component/custom_modal_date_picker.dart';
-import 'package:tcg_manager/view/component/custom_modal_list_picker.dart';
 import 'package:tcg_manager/view/component/custom_scaffold.dart';
 import 'package:tcg_manager/view/component/custom_textfield.dart';
+import 'package:tcg_manager/view/select_deck_view.dart';
 
 class InputView extends HookConsumerWidget {
   const InputView({Key? key}) : super(key: key);
@@ -336,18 +337,21 @@ class _ListPickerButton extends StatelessWidget {
       onPressed: children.isEmpty
           ? null
           : () {
-              showCupertinoModalPopup(
+              showCupertinoModalBottomSheet(
+                expand: true,
                 context: context,
+                backgroundColor: Colors.transparent,
                 builder: (BuildContext context) {
-                  return CustomModalListPicker(
-                    submited: () {
-                      submited();
-                      Navigator.pop(context);
-                      FocusScope.of(context).unfocus();
-                    },
-                    onSelectedItemChanged: onSelectedItemChanged,
-                    children: children,
-                  );
+                  // return CustomModalListPicker(
+                  //   submited: () {
+                  //     submited();
+                  //     Navigator.pop(context);
+                  //     FocusScope.of(context).unfocus();
+                  //   },
+                  //   onSelectedItemChanged: onSelectedItemChanged,
+                  //   children: children,
+                  // );
+                  return const SelectDeckView();
                 },
               );
             },
