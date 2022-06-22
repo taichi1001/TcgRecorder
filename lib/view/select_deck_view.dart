@@ -12,7 +12,12 @@ import 'package:tcg_manager/selector/recently_use_deck_selector.dart';
 import 'package:tcg_manager/selector/sorted_deck_list_selector.dart';
 
 class SelectDeckView extends HookConsumerWidget {
-  const SelectDeckView({key}) : super(key: key);
+  const SelectDeckView({
+    required this.selectDeckFunc,
+    key,
+  }) : super(key: key);
+
+  final Function(Deck) selectDeckFunc;
 
   @override
   // ignore: avoid_renaming_method_parameters
@@ -82,6 +87,7 @@ class SelectDeckView extends HookConsumerWidget {
                       visible: !isSearch.value,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Padding(
                             padding: const EdgeInsets.all(16),
@@ -93,11 +99,13 @@ class SelectDeckView extends HookConsumerWidget {
                           _DeckListView(
                             deckList: recentlyUseDeckList,
                             rootContext: rootContext,
+                            selectDeckFunc: selectDeckFunc,
                           ),
                           const _AllListViewTitle(),
                           _DeckListView(
                             deckList: gameDeckList,
                             rootContext: rootContext,
+                            selectDeckFunc: selectDeckFunc,
                           ),
                         ],
                       ),
@@ -166,16 +174,19 @@ class _DeckListView extends HookConsumerWidget {
   const _DeckListView({
     required this.deckList,
     required this.rootContext,
+    required this.selectDeckFunc,
     key,
   }) : super(key: key);
 
   final List<Deck> deckList;
   final BuildContext rootContext;
+  final Function(Deck) selectDeckFunc;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final inputViewNotifier = ref.watch(inputViewNotifierProvider.notifier);
     return ListView.separated(
+      padding: EdgeInsets.zero,
       shrinkWrap: true,
       itemBuilder: ((context, index) {
         if (index == 0 || index == deckList.length + 1) {
