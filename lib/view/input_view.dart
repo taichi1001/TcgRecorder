@@ -17,6 +17,7 @@ import 'package:tcg_manager/selector/game_deck_list_selector.dart';
 import 'package:tcg_manager/selector/game_tag_list_selector.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
 import 'package:tcg_manager/view/component/custom_modal_date_picker.dart';
+import 'package:tcg_manager/view/component/custom_modal_list_picker.dart';
 import 'package:tcg_manager/view/component/custom_scaffold.dart';
 import 'package:tcg_manager/view/component/custom_textfield.dart';
 import 'package:tcg_manager/view/select_deck_view.dart';
@@ -186,20 +187,20 @@ class InputView extends HookConsumerWidget {
                                   controller: useDeckTextController,
                                   focusNode: useDeckFocusnode,
                                 ),
-                                _ListPickerButton(
-                                  submited: inputViewNotifier.setUseDeck,
-                                  onSelectedItemChanged: inputViewNotifier.scrollUseDeck,
-                                  children: gameDeck
-                                      .map((deck) => Padding(
-                                            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                                            child: Text(
-                                              deck.deck,
-                                              softWrap: false,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: Theme.of(context).textTheme.headline6?.copyWith(height: 1),
+                                IconButton(
+                                  icon: const Icon(Icons.arrow_drop_down),
+                                  onPressed: gameDeck.isEmpty
+                                      ? null
+                                      : () {
+                                          showCupertinoModalBottomSheet(
+                                            expand: true,
+                                            context: context,
+                                            backgroundColor: Colors.transparent,
+                                            builder: (BuildContext context) => SelectDeckView(
+                                              selectDeckFunc: inputViewNotifier.selectUseDeck,
                                             ),
-                                          ))
-                                      .toList(),
+                                          );
+                                        },
                                 ),
                               ],
                             ),
@@ -213,20 +214,20 @@ class InputView extends HookConsumerWidget {
                                   controller: opponentDeckTextController,
                                   focusNode: opponentDeckFocusnode,
                                 ),
-                                _ListPickerButton(
-                                  submited: inputViewNotifier.setOpponentDeck,
-                                  onSelectedItemChanged: inputViewNotifier.scrollOpponentDeck,
-                                  children: gameDeck
-                                      .map((deck) => Padding(
-                                            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                                            child: Text(
-                                              deck.deck,
-                                              softWrap: false,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: Theme.of(context).textTheme.headline6?.copyWith(height: 1),
+                                IconButton(
+                                  icon: const Icon(Icons.arrow_drop_down),
+                                  onPressed: gameDeck.isEmpty
+                                      ? null
+                                      : () {
+                                          showCupertinoModalBottomSheet(
+                                            expand: true,
+                                            context: context,
+                                            backgroundColor: Colors.transparent,
+                                            builder: (BuildContext context) => SelectDeckView(
+                                              selectDeckFunc: inputViewNotifier.selectOpponentDeck,
                                             ),
-                                          ))
-                                      .toList(),
+                                          );
+                                        },
                                 ),
                               ],
                             ),
@@ -337,21 +338,18 @@ class _ListPickerButton extends StatelessWidget {
       onPressed: children.isEmpty
           ? null
           : () {
-              showCupertinoModalBottomSheet(
-                expand: true,
+              showCupertinoModalPopup(
                 context: context,
-                backgroundColor: Colors.transparent,
                 builder: (BuildContext context) {
-                  // return CustomModalListPicker(
-                  //   submited: () {
-                  //     submited();
-                  //     Navigator.pop(context);
-                  //     FocusScope.of(context).unfocus();
-                  //   },
-                  //   onSelectedItemChanged: onSelectedItemChanged,
-                  //   children: children,
-                  // );
-                  return const SelectDeckView();
+                  return CustomModalListPicker(
+                    submited: () {
+                      submited();
+                      Navigator.pop(context);
+                      FocusScope.of(context).unfocus();
+                    },
+                    onSelectedItemChanged: onSelectedItemChanged,
+                    children: children,
+                  );
                 },
               );
             },

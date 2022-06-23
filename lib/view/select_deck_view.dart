@@ -6,7 +6,6 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/enum/sort.dart';
 import 'package:tcg_manager/helper/convert_sort_string.dart';
-import 'package:tcg_manager/provider/input_view_provider.dart';
 import 'package:tcg_manager/provider/select_deck_view_provider.dart';
 import 'package:tcg_manager/selector/recently_use_deck_selector.dart';
 import 'package:tcg_manager/selector/sorted_deck_list_selector.dart';
@@ -184,7 +183,7 @@ class _DeckListView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final inputViewNotifier = ref.watch(inputViewNotifierProvider.notifier);
+    // final inputViewNotifier = ref.watch(inputViewNotifierProvider.notifier);
     return ListView.separated(
       padding: EdgeInsets.zero,
       shrinkWrap: true,
@@ -194,7 +193,8 @@ class _DeckListView extends HookConsumerWidget {
         }
         return GestureDetector(
           onTap: () {
-            inputViewNotifier.selectUseDeck(deckList[index - 1]);
+            // inputViewNotifier.selectUseDeck(deckList[index - 1]);
+            selectDeckFunc(deckList[index - 1]);
             Navigator.pop(rootContext);
           },
           child: Container(

@@ -1,4 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/enum/sort.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
 import 'package:tcg_manager/selector/game_tag_list_selector.dart';
@@ -44,6 +45,10 @@ class RecordListViewNotifier extends StateNotifier<RecordListViewState> {
 
   void setUseDeck() {
     state = state.copyWith(useDeck: state.cacheUseDeck);
+  }
+
+  void selectUseDeck(Deck deck) {
+    state = state.copyWith(useDeck: deck);
   }
 
   void scrollOpponentDeck(int index) {

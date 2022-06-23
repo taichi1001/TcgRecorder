@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:tcg_manager/enum/sort.dart';
 import 'package:tcg_manager/helper/convert_sort_string.dart';
@@ -10,6 +11,7 @@ import 'package:tcg_manager/selector/game_deck_list_selector.dart';
 import 'package:tcg_manager/selector/game_tag_list_selector.dart';
 import 'package:tcg_manager/view/component/custom_modal_list_picker.dart';
 import 'package:tcg_manager/view/component/custom_modal_picker.dart';
+import 'package:tcg_manager/view/select_deck_view.dart';
 
 class FilterModalBottomSheet extends HookConsumerWidget {
   const FilterModalBottomSheet({
@@ -76,7 +78,7 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                 _SelectableRow(
                   submited: recordListViewNotifier.setSort,
                   onSelectedItemChanged: recordListViewNotifier.scrollSort,
-                  showAlooButton: false,
+                  showAllButton: false,
                   selectableList: Sort.values
                       .map(
                         (sort) => Padding(
@@ -177,22 +179,18 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                   ),
                 ),
               if (showUseDeck)
-                _SelectableRow(
-                  submited: recordListViewNotifier.setUseDeck,
-                  onSelectedItemChanged: recordListViewNotifier.scrollUseDeck,
-                  selectableList: gameDeck
-                      .map(
-                        (deck) => Padding(
-                          padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                          child: Text(
-                            deck.deck,
-                            softWrap: false,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.headline6?.copyWith(height: 1),
-                          ),
-                        ),
-                      )
-                      .toList(),
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    showCupertinoModalBottomSheet(
+                      expand: true,
+                      context: context,
+                      backgroundColor: Colors.transparent,
+                      builder: (BuildContext context) => SelectDeckView(
+                        selectDeckFunc: recordListViewNotifier.selectUseDeck,
+                      ),
+                    );
+                  },
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
@@ -298,18 +296,18 @@ class _SelectableRow extends StatelessWidget {
     required this.onSelectedItemChanged,
     required this.selectableList,
     required this.child,
-    this.showAlooButton = true,
+    this.showAllButton = true,
     key,
   }) : super(key: key);
   final void Function() submited;
   final Function(int) onSelectedItemChanged;
   final List<Widget> selectableList;
   final Widget child;
-  final bool showAlooButton;
+  final bool showAllButton;
 
   @override
   Widget build(BuildContext context) {
-    if (showAlooButton) {
+    if (showAllButton) {
       selectableList.insert(
         0,
         Padding(
