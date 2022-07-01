@@ -253,7 +253,7 @@ class _ReorderableDeckListView extends HookConsumerWidget {
         }
         final deck = deckList.removeAt(oldIndex);
         deckList.insert(newIndex, deck);
-        ref.watch(sortedDeckListProvider.notifier).state = deckList;
+        ref.watch(sortedDeckListProvider.notifier).state = [...deckList];
       },
       itemCount: deckList.length,
     );
