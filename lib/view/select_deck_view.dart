@@ -6,7 +6,9 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/enum/sort.dart';
 import 'package:tcg_manager/helper/convert_sort_string.dart';
+import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/provider/select_deck_view_provider.dart';
+import 'package:tcg_manager/repository/deck_repository.dart';
 import 'package:tcg_manager/selector/recently_use_deck_selector.dart';
 import 'package:tcg_manager/selector/sorted_deck_list_selector.dart';
 
@@ -31,9 +33,7 @@ class SelectDeckView extends HookConsumerWidget {
       isSearch.value = searchFocusNode.hasFocus;
     });
 
-    searchTextController.addListener(() {
-      print(searchTextController.text);
-    });
+    searchTextController.addListener(() {});
 
     return Material(
       child: Navigator(
@@ -50,7 +50,6 @@ class SelectDeckView extends HookConsumerWidget {
                     onPressed: searchTextController.text == ''
                         ? null
                         : () {
-                            print(searchTextController.text);
                             searchTextController.text = '';
                           },
                     child: Text(
@@ -193,7 +192,6 @@ class _DeckListView extends HookConsumerWidget {
         }
         return GestureDetector(
           onTap: () {
-            // inputViewNotifier.selectUseDeck(deckList[index - 1]);
             selectDeckFunc(deckList[index - 1]);
             Navigator.pop(rootContext);
           },
@@ -229,7 +227,6 @@ class _ReorderableDeckListView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final inputViewNotifier = ref.watch(inputViewNotifierProvider.notifier);
     return ReorderableListView.builder(
       shrinkWrap: true,
       buildDefaultDragHandles: false,
@@ -251,9 +248,16 @@ class _ReorderableDeckListView extends HookConsumerWidget {
         if (oldIndex < newIndex) {
           newIndex -= 1;
         }
-        final deck = deckList.removeAt(oldIndex);
-        deckList.insert(newIndex, deck);
-        ref.watch(sortedDeckListProvider.notifier).state = [...deckList];
+        final moveDeck = deckList.removeAt(oldIndex);
+        deckList.insert(newIndex, moveDeck);
+        final List<Deck> newDeckList = [];
+        deckList.asMap().forEach((index, deck) {
+          deck = deck.copyWith(sortIndex: index);
+          newDeckList.add(deck);
+        });
+        ref.read(deckRepository).updateSortIndex(newDeckList);
+        ref.read(dbHelper).fetchAll();
+        ref.watch(sortedDeckListProvider.notifier).state = [...newDeckList];
       },
       itemCount: deckList.length,
     );

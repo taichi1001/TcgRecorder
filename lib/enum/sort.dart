@@ -1,5 +1,5 @@
 enum Sort {
-  newest,
   oldest,
+  newest,
   custom,
 }

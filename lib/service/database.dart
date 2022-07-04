@@ -6,7 +6,7 @@ import 'package:sqflite/sqflite.dart';
 // import 'package:tcg_recorder/entity/tag.dart';
 
 class DatabaseService {
-  static const _databaseVersion = 1;
+  static const _databaseVersion = 2;
   static const _databaseName = 'record.db';
 
   //tableName
@@ -36,11 +36,14 @@ class DatabaseService {
 
   //not use this sample
   void onUpgrade(Database database, int oldVersion, int newVersion) {
-    if (newVersion > oldVersion) {}
+    if (newVersion > oldVersion) {
+      database.execute('ALTER TABLE $deckTableName ADD sort_index INTEGER');
+    }
   }
 
   Future initDB(Database database, int version) async {
-    await database.execute('''
+    await database.execute(
+        '''
       CREATE TABLE $recordTableName (
         record_id INTEGER PRIMARY KEY AUTOINCREMENT,
         date TEXT NOT NULL,
@@ -53,7 +56,8 @@ class DatabaseService {
         memo TEXT
       )
     ''');
-    await database.execute('''
+    await database.execute(
+        '''
       CREATE TABLE $gameTableName (
         game_id INTEGER PRIMARY KEY AUTOINCREMENT,
         game TEXT NOT NULL,
@@ -61,16 +65,19 @@ class DatabaseService {
         unique(game)
       )
     ''');
-    await database.execute('''
+    await database.execute(
+        '''
       CREATE TABLE $deckTableName (
         deck_id INTEGER PRIMARY KEY AUTOINCREMENT,
         deck TEXT NOT NULL,
         game_id INTEGER NOT NULL,
         is_visible_to_picker INTEGER NOT NULL,
+        sort_index INTEGER,
         unique(deck, game_id)
       )
     ''');
-    await database.execute('''
+    await database.execute(
+        '''
       CREATE TABLE $tagTableName (
         tag_id INTEGER PRIMARY KEY AUTOINCREMENT,
         tag TEXT NOT NULL,

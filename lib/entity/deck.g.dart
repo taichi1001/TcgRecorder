@@ -13,6 +13,7 @@ _$_Deck _$$_DeckFromJson(Map<String, dynamic> json) => _$_Deck(
       isVisibleToPicker: json['is_visible_to_picker'] == null
           ? true
           : _boolFromJson(json['is_visible_to_picker']),
+      sortIndex: json['sort_index'] as int?,
     );
 
 Map<String, dynamic> _$$_DeckToJson(_$_Deck instance) => <String, dynamic>{
@@ -20,4 +21,5 @@ Map<String, dynamic> _$$_DeckToJson(_$_Deck instance) => <String, dynamic>{
       'deck': instance.deck,
       'game_id': instance.gameId,
       'is_visible_to_picker': _boolToJson(instance.isVisibleToPicker),
+      'sort_index': instance.sortIndex,
     };

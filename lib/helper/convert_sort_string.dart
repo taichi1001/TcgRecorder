@@ -9,7 +9,7 @@ class ConvertSortString {
     } else if (sort == Sort.oldest) {
       return S.of(context).oldest;
     } else if (sort == Sort.custom) {
-      return 'カスタム';
+      return 'カスタム順';
     } else {
       return 'エラー';
     }

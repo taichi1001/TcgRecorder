@@ -11,6 +11,12 @@ final sortedDeckListProvider = StateProvider.autoDispose<List<Deck>>((ref) {
     deckList.sort((a, b) => a.deckId!.compareTo(b.deckId!));
   } else if (sort == Sort.newest) {
     deckList.sort((a, b) => -a.deckId!.compareTo(b.deckId!));
+  } else if (sort == Sort.custom) {
+    deckList.sort((a, b) {
+      if (a.sortIndex == null) return -1;
+      if (b.sortIndex == null) return -1;
+      return a.sortIndex!.compareTo(b.sortIndex!);
+    });
   }
   return deckList;
 });
