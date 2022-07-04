@@ -27,7 +27,6 @@ class SelectDeckView extends HookConsumerWidget {
   Widget build(BuildContext rootContext, WidgetRef ref) {
     final selectDeckViewNotifier = ref.watch(selectDeckViewNotifierProvider.notifier);
     final recentlyUseDeckList = ref.watch(recentlyUseDeckProvider);
-    final gameDeckList = ref.watch(sortedDeckListProvider);
     final searchTextController = useTextEditingController(text: '');
     final searchFocusNode = useFocusNode();
     final isSearchFocus = useState(false);
@@ -61,6 +60,7 @@ class SelectDeckView extends HookConsumerWidget {
           builder: (context2) => Builder(
             builder: (context) {
               // こいつだけここに置かないと更新されなかった。理由は不明。
+              final gameDeckList = ref.watch(sortedDeckListProvider);
               final searchDeckList = ref.watch(searchDeckListProvider);
               return Scaffold(
                 appBar: AppBar(
@@ -270,7 +270,7 @@ class _ReorderableDeckListView extends HookConsumerWidget {
           ),
         );
       }),
-      onReorder: (oldIndex, newIndex) {
+      onReorder: (oldIndex, newIndex) async {
         if (oldIndex < newIndex) {
           newIndex -= 1;
         }
@@ -281,8 +281,8 @@ class _ReorderableDeckListView extends HookConsumerWidget {
           deck = deck.copyWith(sortIndex: index);
           newDeckList.add(deck);
         });
-        ref.read(deckRepository).updateSortIndex(newDeckList);
-        ref.read(dbHelper).fetchAll();
+        await ref.read(deckRepository).updateSortIndex(newDeckList);
+        await ref.read(dbHelper).fetchAll();
         ref.watch(sortedDeckListProvider.notifier).state = [...newDeckList];
       },
       itemCount: deckList.length,
