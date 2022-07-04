@@ -8,5 +8,6 @@ abstract class SelectDeckViewState with _$SelectDeckViewState {
   factory SelectDeckViewState({
     @Default(Sort.oldest) Sort sortType,
     @Default(false) bool isSearch,
+    @Default('') String searchText,
   }) = _SelectDeckViewState;
 }

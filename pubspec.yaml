@@ -76,6 +76,8 @@ dependencies:
 
   flutter_sticky_header: ^0.6.3
 
+  easy_debounce: ^2.0.2+1
+
 flutter_native_splash:
   image: "assets/images/icon.png"
   color: "FFFFFF"

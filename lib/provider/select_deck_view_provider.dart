@@ -16,6 +16,10 @@ class SelectDeckViewNotifier extends StateNotifier<SelectDeckViewState> {
       state = state.copyWith(sortType: sortTypes[oldIndex + 1]);
     }
   }
+
+  void setSearchText(String searchText) {
+    state = state.copyWith(searchText: searchText);
+  }
 }
 
 final selectDeckViewNotifierProvider = StateNotifierProvider<SelectDeckViewNotifier, SelectDeckViewState>(

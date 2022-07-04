@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$SelectDeckViewState {
   Sort get sortType => throw _privateConstructorUsedError;
   bool get isSearch => throw _privateConstructorUsedError;
+  String get searchText => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $SelectDeckViewStateCopyWith<SelectDeckViewState> get copyWith =>
@@ -29,7 +30,7 @@ abstract class $SelectDeckViewStateCopyWith<$Res> {
   factory $SelectDeckViewStateCopyWith(
           SelectDeckViewState value, $Res Function(SelectDeckViewState) then) =
       _$SelectDeckViewStateCopyWithImpl<$Res>;
-  $Res call({Sort sortType, bool isSearch});
+  $Res call({Sort sortType, bool isSearch, String searchText});
 }
 
 /// @nodoc
@@ -45,6 +46,7 @@ class _$SelectDeckViewStateCopyWithImpl<$Res>
   $Res call({
     Object? sortType = freezed,
     Object? isSearch = freezed,
+    Object? searchText = freezed,
   }) {
     return _then(_value.copyWith(
       sortType: sortType == freezed
@@ -55,6 +57,10 @@ class _$SelectDeckViewStateCopyWithImpl<$Res>
           ? _value.isSearch
           : isSearch // ignore: cast_nullable_to_non_nullable
               as bool,
+      searchText: searchText == freezed
+          ? _value.searchText
+          : searchText // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -66,7 +72,7 @@ abstract class _$$_SelectDeckViewStateCopyWith<$Res>
           $Res Function(_$_SelectDeckViewState) then) =
       __$$_SelectDeckViewStateCopyWithImpl<$Res>;
   @override
-  $Res call({Sort sortType, bool isSearch});
+  $Res call({Sort sortType, bool isSearch, String searchText});
 }
 
 /// @nodoc
@@ -84,6 +90,7 @@ class __$$_SelectDeckViewStateCopyWithImpl<$Res>
   $Res call({
     Object? sortType = freezed,
     Object? isSearch = freezed,
+    Object? searchText = freezed,
   }) {
     return _then(_$_SelectDeckViewState(
       sortType: sortType == freezed
@@ -94,6 +101,10 @@ class __$$_SelectDeckViewStateCopyWithImpl<$Res>
           ? _value.isSearch
           : isSearch // ignore: cast_nullable_to_non_nullable
               as bool,
+      searchText: searchText == freezed
+          ? _value.searchText
+          : searchText // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -101,7 +112,10 @@ class __$$_SelectDeckViewStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_SelectDeckViewState implements _SelectDeckViewState {
-  _$_SelectDeckViewState({this.sortType = Sort.oldest, this.isSearch = false});
+  _$_SelectDeckViewState(
+      {this.sortType = Sort.oldest,
+      this.isSearch = false,
+      this.searchText = ''});
 
   @override
   @JsonKey()
@@ -109,10 +123,13 @@ class _$_SelectDeckViewState implements _SelectDeckViewState {
   @override
   @JsonKey()
   final bool isSearch;
+  @override
+  @JsonKey()
+  final String searchText;
 
   @override
   String toString() {
-    return 'SelectDeckViewState(sortType: $sortType, isSearch: $isSearch)';
+    return 'SelectDeckViewState(sortType: $sortType, isSearch: $isSearch, searchText: $searchText)';
   }
 
   @override
@@ -121,14 +138,17 @@ class _$_SelectDeckViewState implements _SelectDeckViewState {
         (other.runtimeType == runtimeType &&
             other is _$_SelectDeckViewState &&
             const DeepCollectionEquality().equals(other.sortType, sortType) &&
-            const DeepCollectionEquality().equals(other.isSearch, isSearch));
+            const DeepCollectionEquality().equals(other.isSearch, isSearch) &&
+            const DeepCollectionEquality()
+                .equals(other.searchText, searchText));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(sortType),
-      const DeepCollectionEquality().hash(isSearch));
+      const DeepCollectionEquality().hash(isSearch),
+      const DeepCollectionEquality().hash(searchText));
 
   @JsonKey(ignore: true)
   @override
@@ -138,13 +158,17 @@ class _$_SelectDeckViewState implements _SelectDeckViewState {
 }
 
 abstract class _SelectDeckViewState implements SelectDeckViewState {
-  factory _SelectDeckViewState({final Sort sortType, final bool isSearch}) =
-      _$_SelectDeckViewState;
+  factory _SelectDeckViewState(
+      {final Sort sortType,
+      final bool isSearch,
+      final String searchText}) = _$_SelectDeckViewState;
 
   @override
   Sort get sortType => throw _privateConstructorUsedError;
   @override
   bool get isSearch => throw _privateConstructorUsedError;
+  @override
+  String get searchText => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_SelectDeckViewStateCopyWith<_$_SelectDeckViewState> get copyWith =>
