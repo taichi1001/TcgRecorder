@@ -1,4 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tcg_manager/entity/game.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/repository/game_repository.dart';
 import 'package:tcg_manager/state/game_list_state.dart';
@@ -28,6 +29,19 @@ class GameListNotifier extends StateNotifier<GameListState> {
     }
   }
 }
+
+final allGameList = FutureProvider.autoDispose<List<Game>>(
+  (ref) async {
+    final gameList = await ref.read(gameRepository).getAll();
+    return gameList;
+  },
+);
+
+final abc = FutureProvider.autoDispose<List<Game>>((ref) async {
+  final all = await ref.watch(allGameList.future);
+  final ab = all.where((element) => element.game == '').toList();
+  return ab;
+});
 
 final allGameListNotifierProvider = StateNotifierProvider<GameListNotifier, GameListState>(
   (ref) => GameListNotifier(ref.read),

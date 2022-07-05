@@ -7,12 +7,35 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/enum/sort.dart';
 import 'package:tcg_manager/helper/convert_sort_string.dart';
-import 'package:tcg_manager/helper/db_helper.dart';
+import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/select_deck_view_provider.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
 import 'package:tcg_manager/selector/recently_use_deck_selector.dart';
 import 'package:tcg_manager/selector/search_deck_list_selector.dart';
 import 'package:tcg_manager/selector/sorted_deck_list_selector.dart';
+
+class SelectDeckViewInfo {
+  const SelectDeckViewInfo({
+    required this.gameDeckList,
+    required this.searchDeckList,
+    required this.recentlyUseDeckList,
+  });
+
+  final List<Deck> gameDeckList;
+  final List<Deck> searchDeckList;
+  final List<Deck> recentlyUseDeckList;
+}
+
+final selectDeckViewInfoProvider = FutureProvider.autoDispose<SelectDeckViewInfo>((ref) async {
+  final gameDeckList = await ref.watch(sortedDeckListProvider.future);
+  final searchDeckList = await ref.watch(searchDeckListProvider.future);
+  final recentlyUseDeckList = await ref.watch(recentlyUseDeckProvider.future);
+  return SelectDeckViewInfo(
+    gameDeckList: gameDeckList,
+    searchDeckList: searchDeckList,
+    recentlyUseDeckList: recentlyUseDeckList,
+  );
+});
 
 class SelectDeckView extends HookConsumerWidget {
   const SelectDeckView({
@@ -26,7 +49,7 @@ class SelectDeckView extends HookConsumerWidget {
   // ignore: avoid_renaming_method_parameters
   Widget build(BuildContext rootContext, WidgetRef ref) {
     final selectDeckViewNotifier = ref.watch(selectDeckViewNotifierProvider.notifier);
-    final recentlyUseDeckList = ref.watch(recentlyUseDeckProvider);
+    // final recentlyUseDeckList = ref.watch(recentlyUseDeckProvider);
     final searchTextController = useTextEditingController(text: '');
     final searchFocusNode = useFocusNode();
     final isSearchFocus = useState(false);
@@ -60,83 +83,90 @@ class SelectDeckView extends HookConsumerWidget {
           builder: (context2) => Builder(
             builder: (context) {
               // こいつだけここに置かないと更新されなかった。理由は不明。
-              final gameDeckList = ref.watch(sortedDeckListProvider);
-              final searchDeckList = ref.watch(searchDeckListProvider);
-              return Scaffold(
-                appBar: AppBar(
-                  leading: Icon(
-                    Icons.search,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: searchTextController.text == ''
-                          ? null
-                          : () {
-                              searchTextController.text = '';
-                            },
-                      child: Text(
-                        'クリア',
-                        style: searchTextController.text == ''
-                            ? Theme.of(context).textTheme.caption?.copyWith(color: Colors.grey)
-                            : Theme.of(context).textTheme.caption,
+              final selectDeckViewInfo = ref.watch(selectDeckViewInfoProvider);
+              // final gameDeckList = ref.watch(sortedDeckListProvider);
+              // final searchDeckList = ref.watch(searchDeckListProvider);
+              return selectDeckViewInfo.when(
+                data: (selectDeckViewInfo) {
+                  return Scaffold(
+                    appBar: AppBar(
+                      leading: Icon(
+                        Icons.search,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: searchTextController.text == ''
+                              ? null
+                              : () {
+                                  searchTextController.text = '';
+                                },
+                          child: Text(
+                            'クリア',
+                            style: searchTextController.text == ''
+                                ? Theme.of(context).textTheme.caption?.copyWith(color: Colors.grey)
+                                : Theme.of(context).textTheme.caption,
+                          ),
+                        ),
+                      ],
+                      titleSpacing: 0,
+                      backgroundColor: Theme.of(context).colorScheme.surface,
+                      title: TextField(
+                        controller: searchTextController,
+                        focusNode: searchFocusNode,
+                        decoration: const InputDecoration(
+                          labelText: '検索',
+                        ),
                       ),
                     ),
-                  ],
-                  titleSpacing: 0,
-                  backgroundColor: Theme.of(context).colorScheme.surface,
-                  title: TextField(
-                    controller: searchTextController,
-                    focusNode: searchFocusNode,
-                    decoration: const InputDecoration(
-                      labelText: '検索',
-                    ),
-                  ),
-                ),
-                // 最後までスクロールした時に出るアニメーションを消すために入れている
-                body: NotificationListener<OverscrollIndicatorNotification>(
-                  onNotification: (overscroll) {
-                    overscroll.disallowIndicator();
-                    return true;
-                  },
-                  child: NestedScrollView(
-                    controller: ScrollController(),
-                    headerSliverBuilder: (context, innnerBoxIsScrolled) => [], // headerは必要ないため空を返す
-                    body: SingleChildScrollView(
-                      controller: ModalScrollController.of(context),
-                      child: isSearch.value
-                          ? _DeckListView(
-                              deckList: searchDeckList,
-                              rootContext: rootContext,
-                              selectDeckFunc: selectDeckFunc,
-                            )
-                          : Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(16),
-                                  child: Text(
-                                    '最近使用したデッキ',
-                                    style: Theme.of(context).textTheme.caption,
-                                  ),
-                                ),
-                                _DeckListView(
-                                  deckList: recentlyUseDeckList,
+                    // 最後までスクロールした時に出るアニメーションを消すために入れている
+                    body: NotificationListener<OverscrollIndicatorNotification>(
+                      onNotification: (overscroll) {
+                        overscroll.disallowIndicator();
+                        return true;
+                      },
+                      child: NestedScrollView(
+                        controller: ScrollController(),
+                        headerSliverBuilder: (context, innnerBoxIsScrolled) => [], // headerは必要ないため空を返す
+                        body: SingleChildScrollView(
+                          controller: ModalScrollController.of(context),
+                          child: isSearch.value
+                              ? _DeckListView(
+                                  deckList: selectDeckViewInfo.searchDeckList,
                                   rootContext: rootContext,
                                   selectDeckFunc: selectDeckFunc,
+                                )
+                              : Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(16),
+                                      child: Text(
+                                        '最近使用したデッキ',
+                                        style: Theme.of(context).textTheme.caption,
+                                      ),
+                                    ),
+                                    _DeckListView(
+                                      deckList: selectDeckViewInfo.recentlyUseDeckList,
+                                      rootContext: rootContext,
+                                      selectDeckFunc: selectDeckFunc,
+                                    ),
+                                    const _AllListViewTitle(),
+                                    _DeckListView(
+                                      deckList: selectDeckViewInfo.gameDeckList,
+                                      rootContext: rootContext,
+                                      selectDeckFunc: selectDeckFunc,
+                                    ),
+                                  ],
                                 ),
-                                const _AllListViewTitle(),
-                                _DeckListView(
-                                  deckList: gameDeckList,
-                                  rootContext: rootContext,
-                                  selectDeckFunc: selectDeckFunc,
-                                ),
-                              ],
-                            ),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
+                  );
+                },
+                error: (error, stack) => Text('$error'),
+                loading: () => const CircularProgressIndicator(),
               );
             },
           ),
@@ -282,8 +312,9 @@ class _ReorderableDeckListView extends HookConsumerWidget {
           newDeckList.add(deck);
         });
         await ref.read(deckRepository).updateSortIndex(newDeckList);
-        await ref.read(dbHelper).fetchAll();
-        ref.watch(sortedDeckListProvider.notifier).state = [...newDeckList];
+        // await ref.read(dbHelper).fetchAll();
+        ref.refresh(allDeckListProvider);
+        // ref.watch(sortedDeckListProvider.notifier).state = [...newDeckList];
       },
       itemCount: deckList.length,
     );
@@ -301,7 +332,13 @@ class ReordableDeckView extends HookConsumerWidget {
       appBar: AppBar(
         title: const Text('並び替え'),
       ),
-      body: _ReorderableDeckListView(deckList: gameDeckList),
+      body: gameDeckList.when(
+        data: (gameDeckList) {
+          return _ReorderableDeckListView(deckList: gameDeckList);
+        },
+        error: (error, stack) => Text('$error'),
+        loading: () => const CircularProgressIndicator(),
+      ),
     );
   }
 }

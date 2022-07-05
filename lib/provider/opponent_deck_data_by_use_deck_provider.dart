@@ -4,10 +4,10 @@ import 'package:tcg_manager/entity/win_rate_data.dart';
 import 'package:tcg_manager/selector/filter_record_list_selector.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
 
-final opponentDeckDataByUseDeckProvider = StateProvider.family.autoDispose<List<WinRateData>, String>(
-  (ref, useDeckName) {
+final opponentDeckDataByUseDeckProvider = FutureProvider.family.autoDispose<List<WinRateData>, String>(
+  (ref, useDeckName) async {
     final filterRecordList = ref.watch(filterRecordListProvider);
-    final gameDeckList = ref.watch(gameDeckListProvider);
+    final gameDeckList = await ref.watch(gameDeckListProvider.future);
     final useDeck = gameDeckList.firstWhere((deck) => deck.deck == useDeckName);
     final useDeckRecord = filterRecordList.where((record) => record.useDeckId == useDeck.deckId).toList();
     final List<Deck> opponentDeckList = [];

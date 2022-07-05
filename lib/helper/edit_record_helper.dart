@@ -23,8 +23,8 @@ class EditRecordHelper {
   /// 入力されたデッキ名がDBに存在するかをチェックする
   ///
   /// 存在する場合にFalse, しない場合にTrueを返す
-  CheckDeckResult checkIfSelectedUseDeckIsNew(String deckName) {
-    final gameDeckList = read(gameDeckListProvider);
+  Future<CheckDeckResult> checkIfSelectedUseDeckIsNew(String deckName) async {
+    final gameDeckList = await read(gameDeckListProvider.future);
     final matchList = gameDeckList.where((Deck deck) => deck.deck == deckName);
     if (matchList.isEmpty) {
       return CheckDeckResult(isNew: true);

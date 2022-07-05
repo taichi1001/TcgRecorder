@@ -4,11 +4,11 @@ import 'package:tcg_manager/entity/win_rate_data.dart';
 import 'package:tcg_manager/selector/filter_record_list_selector.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
 
-final useDeckDataByGameProvider = StateProvider.autoDispose<List<WinRateData>>(
-  (ref) {
+final useDeckDataByGameProvider = FutureProvider.autoDispose<List<WinRateData>>(
+  (ref) async {
     final filterRecordListNotifier = ref.read(filterRecordListController);
     final filterRecordList = ref.watch(filterRecordListProvider);
-    final gameDeckList = ref.watch(gameDeckListProvider);
+    final gameDeckList = await ref.watch(gameDeckListProvider.future);
 
     final List<Deck> gameUseDeckList = [];
     for (final deck in gameDeckList) {
@@ -37,9 +37,9 @@ final useDeckDataByGameProvider = StateProvider.autoDispose<List<WinRateData>>(
   },
 );
 
-final totalAddedToUseDeckDataByGameProvider = StateProvider.autoDispose<List<WinRateData>>(
-  (ref) {
-    final useDeckDataByGame = ref.watch(useDeckDataByGameProvider);
+final totalAddedToUseDeckDataByGameProvider = FutureProvider.autoDispose<List<WinRateData>>(
+  (ref) async {
+    final useDeckDataByGame = await ref.watch(useDeckDataByGameProvider.future);
     final copyUseDeckDataByGame = [...useDeckDataByGame];
     final filterRecordListNotifier = ref.read(filterRecordListController);
 

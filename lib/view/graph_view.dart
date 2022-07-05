@@ -70,20 +70,32 @@ class GraphView extends HookConsumerWidget {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
-                              child: _UseRateChart(
-                                data: useDeckData,
-                                title: S.of(context).useDeckDistribution,
-                              ),
+                            useDeckData.when(
+                              data: (useDeckData) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
+                                  child: _UseRateChart(
+                                    data: useDeckData,
+                                    title: S.of(context).useDeckDistribution,
+                                  ),
+                                );
+                              },
+                              error: (error, stack) => Text('$error'),
+                              loading: () => const CircularProgressIndicator(),
                             ),
                             const SizedBox(height: 16),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
-                              child: _UseRateChart(
-                                data: opponentDeckData,
-                                title: S.of(context).opponentDeckDistribution,
-                              ),
+                            opponentDeckData.when(
+                              data: (opponentDeckData) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+                                  child: _UseRateChart(
+                                    data: opponentDeckData,
+                                    title: S.of(context).opponentDeckDistribution,
+                                  ),
+                                );
+                              },
+                              error: (error, stack) => Text('$error'),
+                              loading: () => const CircularProgressIndicator(),
                             ),
                           ],
                         ),
