@@ -10,6 +10,7 @@ class Deck with _$Deck {
     required String deck,
     @JsonKey(name: 'game_id') int? gameId,
     @Default(true) @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker') bool isVisibleToPicker,
+    @JsonKey(name: 'sort_index') int? sortIndex,
   }) = _Deck;
   factory Deck.fromJson(Map<String, dynamic> json) => _$DeckFromJson(json);
 }

@@ -12,36 +12,7 @@ part of 'record_detail_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
-
-/// @nodoc
-class _$RecordDetailStateTearOff {
-  const _$RecordDetailStateTearOff();
-
-  _RecordDetailState call(
-      {bool isEdit = false,
-      required Record record,
-      required MargedRecord margedRecord,
-      required MargedRecord editMargedRecord,
-      Deck? cacheUseDeck,
-      Deck? cacheOpponentDeck,
-      Tag? cacheTag,
-      DateTime? cacheDate}) {
-    return _RecordDetailState(
-      isEdit: isEdit,
-      record: record,
-      margedRecord: margedRecord,
-      editMargedRecord: editMargedRecord,
-      cacheUseDeck: cacheUseDeck,
-      cacheOpponentDeck: cacheOpponentDeck,
-      cacheTag: cacheTag,
-      cacheDate: cacheDate,
-    );
-  }
-}
-
-/// @nodoc
-const $RecordDetailState = _$RecordDetailStateTearOff();
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
 mixin _$RecordDetailState {
@@ -194,11 +165,11 @@ class _$RecordDetailStateCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$RecordDetailStateCopyWith<$Res>
+abstract class _$$_RecordDetailStateCopyWith<$Res>
     implements $RecordDetailStateCopyWith<$Res> {
-  factory _$RecordDetailStateCopyWith(
-          _RecordDetailState value, $Res Function(_RecordDetailState) then) =
-      __$RecordDetailStateCopyWithImpl<$Res>;
+  factory _$$_RecordDetailStateCopyWith(_$_RecordDetailState value,
+          $Res Function(_$_RecordDetailState) then) =
+      __$$_RecordDetailStateCopyWithImpl<$Res>;
   @override
   $Res call(
       {bool isEdit,
@@ -225,15 +196,15 @@ abstract class _$RecordDetailStateCopyWith<$Res>
 }
 
 /// @nodoc
-class __$RecordDetailStateCopyWithImpl<$Res>
+class __$$_RecordDetailStateCopyWithImpl<$Res>
     extends _$RecordDetailStateCopyWithImpl<$Res>
-    implements _$RecordDetailStateCopyWith<$Res> {
-  __$RecordDetailStateCopyWithImpl(
-      _RecordDetailState _value, $Res Function(_RecordDetailState) _then)
-      : super(_value, (v) => _then(v as _RecordDetailState));
+    implements _$$_RecordDetailStateCopyWith<$Res> {
+  __$$_RecordDetailStateCopyWithImpl(
+      _$_RecordDetailState _value, $Res Function(_$_RecordDetailState) _then)
+      : super(_value, (v) => _then(v as _$_RecordDetailState));
 
   @override
-  _RecordDetailState get _value => super._value as _RecordDetailState;
+  _$_RecordDetailState get _value => super._value as _$_RecordDetailState;
 
   @override
   $Res call({
@@ -246,7 +217,7 @@ class __$RecordDetailStateCopyWithImpl<$Res>
     Object? cacheTag = freezed,
     Object? cacheDate = freezed,
   }) {
-    return _then(_RecordDetailState(
+    return _then(_$_RecordDetailState(
       isEdit: isEdit == freezed
           ? _value.isEdit
           : isEdit // ignore: cast_nullable_to_non_nullable
@@ -296,8 +267,8 @@ class _$_RecordDetailState implements _RecordDetailState {
       this.cacheTag,
       this.cacheDate});
 
-  @JsonKey()
   @override
+  @JsonKey()
   final bool isEdit;
   @override
   final Record record;
@@ -323,7 +294,7 @@ class _$_RecordDetailState implements _RecordDetailState {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _RecordDetailState &&
+            other is _$_RecordDetailState &&
             const DeepCollectionEquality().equals(other.isEdit, isEdit) &&
             const DeepCollectionEquality().equals(other.record, record) &&
             const DeepCollectionEquality()
@@ -352,39 +323,40 @@ class _$_RecordDetailState implements _RecordDetailState {
 
   @JsonKey(ignore: true)
   @override
-  _$RecordDetailStateCopyWith<_RecordDetailState> get copyWith =>
-      __$RecordDetailStateCopyWithImpl<_RecordDetailState>(this, _$identity);
+  _$$_RecordDetailStateCopyWith<_$_RecordDetailState> get copyWith =>
+      __$$_RecordDetailStateCopyWithImpl<_$_RecordDetailState>(
+          this, _$identity);
 }
 
 abstract class _RecordDetailState implements RecordDetailState {
   factory _RecordDetailState(
-      {bool isEdit,
-      required Record record,
-      required MargedRecord margedRecord,
-      required MargedRecord editMargedRecord,
-      Deck? cacheUseDeck,
-      Deck? cacheOpponentDeck,
-      Tag? cacheTag,
-      DateTime? cacheDate}) = _$_RecordDetailState;
+      {final bool isEdit,
+      required final Record record,
+      required final MargedRecord margedRecord,
+      required final MargedRecord editMargedRecord,
+      final Deck? cacheUseDeck,
+      final Deck? cacheOpponentDeck,
+      final Tag? cacheTag,
+      final DateTime? cacheDate}) = _$_RecordDetailState;
 
   @override
-  bool get isEdit;
+  bool get isEdit => throw _privateConstructorUsedError;
   @override
-  Record get record;
+  Record get record => throw _privateConstructorUsedError;
   @override
-  MargedRecord get margedRecord;
+  MargedRecord get margedRecord => throw _privateConstructorUsedError;
   @override
-  MargedRecord get editMargedRecord;
+  MargedRecord get editMargedRecord => throw _privateConstructorUsedError;
   @override
-  Deck? get cacheUseDeck;
+  Deck? get cacheUseDeck => throw _privateConstructorUsedError;
   @override
-  Deck? get cacheOpponentDeck;
+  Deck? get cacheOpponentDeck => throw _privateConstructorUsedError;
   @override
-  Tag? get cacheTag;
+  Tag? get cacheTag => throw _privateConstructorUsedError;
   @override
-  DateTime? get cacheDate;
+  DateTime? get cacheDate => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$RecordDetailStateCopyWith<_RecordDetailState> get copyWith =>
+  _$$_RecordDetailStateCopyWith<_$_RecordDetailState> get copyWith =>
       throw _privateConstructorUsedError;
 }

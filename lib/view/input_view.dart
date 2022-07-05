@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:tcg_manager/enum/first_second.dart';
 import 'package:tcg_manager/enum/win_loss.dart';
 import 'package:tcg_manager/generated/l10n.dart';
@@ -19,6 +20,7 @@ import 'package:tcg_manager/view/component/custom_modal_date_picker.dart';
 import 'package:tcg_manager/view/component/custom_modal_list_picker.dart';
 import 'package:tcg_manager/view/component/custom_scaffold.dart';
 import 'package:tcg_manager/view/component/custom_textfield.dart';
+import 'package:tcg_manager/view/select_deck_view.dart';
 
 class InputView extends HookConsumerWidget {
   const InputView({Key? key}) : super(key: key);
@@ -185,20 +187,20 @@ class InputView extends HookConsumerWidget {
                                   controller: useDeckTextController,
                                   focusNode: useDeckFocusnode,
                                 ),
-                                _ListPickerButton(
-                                  submited: inputViewNotifier.setUseDeck,
-                                  onSelectedItemChanged: inputViewNotifier.scrollUseDeck,
-                                  children: gameDeck
-                                      .map((deck) => Padding(
-                                            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                                            child: Text(
-                                              deck.deck,
-                                              softWrap: false,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: Theme.of(context).textTheme.headline6?.copyWith(height: 1),
+                                IconButton(
+                                  icon: const Icon(Icons.arrow_drop_down),
+                                  onPressed: gameDeck.isEmpty
+                                      ? null
+                                      : () {
+                                          showCupertinoModalBottomSheet(
+                                            expand: true,
+                                            context: context,
+                                            backgroundColor: Colors.transparent,
+                                            builder: (BuildContext context) => SelectDeckView(
+                                              selectDeckFunc: inputViewNotifier.selectUseDeck,
                                             ),
-                                          ))
-                                      .toList(),
+                                          );
+                                        },
                                 ),
                               ],
                             ),
@@ -212,20 +214,20 @@ class InputView extends HookConsumerWidget {
                                   controller: opponentDeckTextController,
                                   focusNode: opponentDeckFocusnode,
                                 ),
-                                _ListPickerButton(
-                                  submited: inputViewNotifier.setOpponentDeck,
-                                  onSelectedItemChanged: inputViewNotifier.scrollOpponentDeck,
-                                  children: gameDeck
-                                      .map((deck) => Padding(
-                                            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                                            child: Text(
-                                              deck.deck,
-                                              softWrap: false,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: Theme.of(context).textTheme.headline6?.copyWith(height: 1),
+                                IconButton(
+                                  icon: const Icon(Icons.arrow_drop_down),
+                                  onPressed: gameDeck.isEmpty
+                                      ? null
+                                      : () {
+                                          showCupertinoModalBottomSheet(
+                                            expand: true,
+                                            context: context,
+                                            backgroundColor: Colors.transparent,
+                                            builder: (BuildContext context) => SelectDeckView(
+                                              selectDeckFunc: inputViewNotifier.selectOpponentDeck,
                                             ),
-                                          ))
-                                      .toList(),
+                                          );
+                                        },
                                 ),
                               ],
                             ),

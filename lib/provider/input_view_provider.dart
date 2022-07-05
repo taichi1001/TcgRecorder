@@ -76,6 +76,16 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     }
   }
 
+  void selectUseDeck(Deck deck) {
+    state = state.copyWith(useDeck: deck);
+    read(textEditingControllerNotifierProvider.notifier).setUseDeckController(state.useDeck!.deck);
+  }
+
+  void selectOpponentDeck(Deck deck) {
+    state = state.copyWith(opponentDeck: deck);
+    read(textEditingControllerNotifierProvider.notifier).setOpponentDeckController(state.opponentDeck!.deck);
+  }
+
   void inputTag(String name) {
     final tag = Tag(tag: name);
     state = state.copyWith(tag: tag);

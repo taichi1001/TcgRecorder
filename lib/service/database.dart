@@ -6,7 +6,7 @@ import 'package:sqflite/sqflite.dart';
 // import 'package:tcg_recorder/entity/tag.dart';
 
 class DatabaseService {
-  static const _databaseVersion = 1;
+  static const _databaseVersion = 2;
   static const _databaseName = 'record.db';
 
   //tableName
@@ -25,13 +25,20 @@ class DatabaseService {
     final documentsDirectory = await getApplicationDocumentsDirectory();
     final path = join(documentsDirectory.path, _databaseName);
 
-    final database = await openDatabase(path, version: _databaseVersion, onCreate: initDB, onUpgrade: onUpgrade);
+    final database = await openDatabase(
+      path,
+      version: _databaseVersion,
+      onCreate: initDB,
+      onUpgrade: onUpgrade,
+    );
     return database;
   }
 
   //not use this sample
   void onUpgrade(Database database, int oldVersion, int newVersion) {
-    if (newVersion > oldVersion) {}
+    if (newVersion > oldVersion) {
+      database.execute('ALTER TABLE $deckTableName ADD sort_index INTEGER');
+    }
   }
 
   Future initDB(Database database, int version) async {
@@ -65,6 +72,7 @@ class DatabaseService {
         deck TEXT NOT NULL,
         game_id INTEGER NOT NULL,
         is_visible_to_picker INTEGER NOT NULL,
+        sort_index INTEGER,
         unique(deck, game_id)
       )
     ''');

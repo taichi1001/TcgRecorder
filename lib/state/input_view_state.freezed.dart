@@ -12,44 +12,7 @@ part of 'input_view_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
-
-/// @nodoc
-class _$InputViewStateTearOff {
-  const _$InputViewStateTearOff();
-
-  _InputViewState call(
-      {Record? record,
-      required DateTime date,
-      DateTime? cacheDate,
-      Deck? useDeck,
-      Deck? cacheUseDeck,
-      Deck? opponentDeck,
-      Deck? cacheOpponentDeck,
-      Tag? tag,
-      Tag? cacheTag,
-      String? memo,
-      WinLoss winLoss = WinLoss.win,
-      FirstSecond firstSecond = FirstSecond.first}) {
-    return _InputViewState(
-      record: record,
-      date: date,
-      cacheDate: cacheDate,
-      useDeck: useDeck,
-      cacheUseDeck: cacheUseDeck,
-      opponentDeck: opponentDeck,
-      cacheOpponentDeck: cacheOpponentDeck,
-      tag: tag,
-      cacheTag: cacheTag,
-      memo: memo,
-      winLoss: winLoss,
-      firstSecond: firstSecond,
-    );
-  }
-}
-
-/// @nodoc
-const $InputViewState = _$InputViewStateTearOff();
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
 mixin _$InputViewState {
@@ -254,11 +217,11 @@ class _$InputViewStateCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$InputViewStateCopyWith<$Res>
+abstract class _$$_InputViewStateCopyWith<$Res>
     implements $InputViewStateCopyWith<$Res> {
-  factory _$InputViewStateCopyWith(
-          _InputViewState value, $Res Function(_InputViewState) then) =
-      __$InputViewStateCopyWithImpl<$Res>;
+  factory _$$_InputViewStateCopyWith(
+          _$_InputViewState value, $Res Function(_$_InputViewState) then) =
+      __$$_InputViewStateCopyWithImpl<$Res>;
   @override
   $Res call(
       {Record? record,
@@ -291,15 +254,15 @@ abstract class _$InputViewStateCopyWith<$Res>
 }
 
 /// @nodoc
-class __$InputViewStateCopyWithImpl<$Res>
+class __$$_InputViewStateCopyWithImpl<$Res>
     extends _$InputViewStateCopyWithImpl<$Res>
-    implements _$InputViewStateCopyWith<$Res> {
-  __$InputViewStateCopyWithImpl(
-      _InputViewState _value, $Res Function(_InputViewState) _then)
-      : super(_value, (v) => _then(v as _InputViewState));
+    implements _$$_InputViewStateCopyWith<$Res> {
+  __$$_InputViewStateCopyWithImpl(
+      _$_InputViewState _value, $Res Function(_$_InputViewState) _then)
+      : super(_value, (v) => _then(v as _$_InputViewState));
 
   @override
-  _InputViewState get _value => super._value as _InputViewState;
+  _$_InputViewState get _value => super._value as _$_InputViewState;
 
   @override
   $Res call({
@@ -316,7 +279,7 @@ class __$InputViewStateCopyWithImpl<$Res>
     Object? winLoss = freezed,
     Object? firstSecond = freezed,
   }) {
-    return _then(_InputViewState(
+    return _then(_$_InputViewState(
       record: record == freezed
           ? _value.record
           : record // ignore: cast_nullable_to_non_nullable
@@ -406,11 +369,11 @@ class _$_InputViewState implements _InputViewState {
   final Tag? cacheTag;
   @override
   final String? memo;
-  @JsonKey()
   @override
+  @JsonKey()
   final WinLoss winLoss;
-  @JsonKey()
   @override
+  @JsonKey()
   final FirstSecond firstSecond;
 
   @override
@@ -422,7 +385,7 @@ class _$_InputViewState implements _InputViewState {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _InputViewState &&
+            other is _$_InputViewState &&
             const DeepCollectionEquality().equals(other.record, record) &&
             const DeepCollectionEquality().equals(other.date, date) &&
             const DeepCollectionEquality().equals(other.cacheDate, cacheDate) &&
@@ -459,51 +422,51 @@ class _$_InputViewState implements _InputViewState {
 
   @JsonKey(ignore: true)
   @override
-  _$InputViewStateCopyWith<_InputViewState> get copyWith =>
-      __$InputViewStateCopyWithImpl<_InputViewState>(this, _$identity);
+  _$$_InputViewStateCopyWith<_$_InputViewState> get copyWith =>
+      __$$_InputViewStateCopyWithImpl<_$_InputViewState>(this, _$identity);
 }
 
 abstract class _InputViewState implements InputViewState {
   factory _InputViewState(
-      {Record? record,
-      required DateTime date,
-      DateTime? cacheDate,
-      Deck? useDeck,
-      Deck? cacheUseDeck,
-      Deck? opponentDeck,
-      Deck? cacheOpponentDeck,
-      Tag? tag,
-      Tag? cacheTag,
-      String? memo,
-      WinLoss winLoss,
-      FirstSecond firstSecond}) = _$_InputViewState;
+      {final Record? record,
+      required final DateTime date,
+      final DateTime? cacheDate,
+      final Deck? useDeck,
+      final Deck? cacheUseDeck,
+      final Deck? opponentDeck,
+      final Deck? cacheOpponentDeck,
+      final Tag? tag,
+      final Tag? cacheTag,
+      final String? memo,
+      final WinLoss winLoss,
+      final FirstSecond firstSecond}) = _$_InputViewState;
 
   @override
-  Record? get record;
+  Record? get record => throw _privateConstructorUsedError;
   @override
-  DateTime get date;
+  DateTime get date => throw _privateConstructorUsedError;
   @override
-  DateTime? get cacheDate;
+  DateTime? get cacheDate => throw _privateConstructorUsedError;
   @override
-  Deck? get useDeck;
+  Deck? get useDeck => throw _privateConstructorUsedError;
   @override
-  Deck? get cacheUseDeck;
+  Deck? get cacheUseDeck => throw _privateConstructorUsedError;
   @override
-  Deck? get opponentDeck;
+  Deck? get opponentDeck => throw _privateConstructorUsedError;
   @override
-  Deck? get cacheOpponentDeck;
+  Deck? get cacheOpponentDeck => throw _privateConstructorUsedError;
   @override
-  Tag? get tag;
+  Tag? get tag => throw _privateConstructorUsedError;
   @override
-  Tag? get cacheTag;
+  Tag? get cacheTag => throw _privateConstructorUsedError;
   @override
-  String? get memo;
+  String? get memo => throw _privateConstructorUsedError;
   @override
-  WinLoss get winLoss;
+  WinLoss get winLoss => throw _privateConstructorUsedError;
   @override
-  FirstSecond get firstSecond;
+  FirstSecond get firstSecond => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$InputViewStateCopyWith<_InputViewState> get copyWith =>
+  _$$_InputViewStateCopyWith<_$_InputViewState> get copyWith =>
       throw _privateConstructorUsedError;
 }
