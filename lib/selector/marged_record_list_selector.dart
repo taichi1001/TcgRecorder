@@ -5,26 +5,14 @@ import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/selector/filter_record_list_selector.dart';
-import 'package:tcg_manager/state/marged_record_list_state.dart';
 
-class MargedRecordListNotifier extends StateNotifier<MargedRecordListState> {
-  MargedRecordListNotifier(this.read) : super(MargedRecordListState());
-
-  final Reader read;
-
-  void setMargedRecordList(List<MargedRecord> list) {
-    state = state.copyWith(margedRecordList: list);
-  }
-}
-
-final margedRecordListProvider = StateNotifierProvider.autoDispose<MargedRecordListNotifier, MargedRecordListState>((ref) {
-  final margedRecordListNotifier = MargedRecordListNotifier(ref.read);
+final margedRecordListProvider = FutureProvider.autoDispose<List<MargedRecord>>((ref) async {
   final filterRecordList = ref.watch(filterRecordListProvider);
   final allGameList = ref.read(allGameListNotifierProvider).allGameList;
-  final allDeckList = ref.read(allDeckListNotifierProvider).allDeckList;
+  final allDeckList = await ref.read(allDeckListProvider.future);
   final allTagList = ref.read(allTagListNotifierProvider).allTagList;
 
-  if (allGameList != null && allDeckList != null && allTagList != null) {
+  if (allGameList != null && allTagList != null) {
     final list = filterRecordList.map((Record record) {
       final game = allGameList.singleWhere((value) => value.gameId == record.gameId);
       final useDeck = allDeckList.singleWhere((value) => value.deckId == record.useDeckId);
@@ -42,10 +30,8 @@ final margedRecordListProvider = StateNotifierProvider.autoDispose<MargedRecordL
         memo: record.memo,
       );
     }).toList();
-
-    margedRecordListNotifier.setMargedRecordList(list);
-    return margedRecordListNotifier;
+    ref.keepAlive();
+    return list;
   }
-  margedRecordListNotifier.setMargedRecordList(List.empty());
-  return margedRecordListNotifier;
+  return List.empty();
 });

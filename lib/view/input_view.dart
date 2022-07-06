@@ -12,6 +12,7 @@ import 'package:tcg_manager/enum/first_second.dart';
 import 'package:tcg_manager/enum/win_loss.dart';
 import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/helper/db_helper.dart';
+import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/input_view_provider.dart';
 import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
@@ -33,6 +34,7 @@ class InputViewInfo {
 
 final inputViewInfoProvider = FutureProvider.autoDispose<InputViewInfo>((ref) async {
   final gameDeckList = await ref.watch(gameDeckListProvider.future);
+  ref.keepAlive();
   return InputViewInfo(
     gameDeckList: gameDeckList,
   );
@@ -311,6 +313,7 @@ class InputView extends HookConsumerWidget {
                                           if (okCancelResult == OkCancelResult.ok) {
                                             await inputViewNotifier.save();
                                             await ref.read(dbHelper).fetchAll();
+                                            ref.refresh(allDeckListProvider);
                                             inputViewNotifier.resetView();
                                           }
                                           // ignore: use_build_context_synchronously

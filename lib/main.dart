@@ -55,9 +55,8 @@ class MainApp extends HookConsumerWidget {
       });
       return;
     }, const []);
-
+    ref.refresh(allDeckListProvider);
     final allGameList = ref.watch(allGameListNotifierProvider).allGameList;
-    final allDeckList = ref.watch(allDeckListNotifierProvider).allDeckList;
     final allRecordList = ref.watch(allRecordListNotifierProvider).allRecordList;
     final allTagList = ref.watch(allTagListNotifierProvider).allTagList;
     final lightThemeData = ref.watch(lightThemeDataProvider);
@@ -76,7 +75,7 @@ class MainApp extends HookConsumerWidget {
       theme: lightThemeData,
       darkTheme: darkThemeData,
       themeMode: ThemeMode.system,
-      home: allGameList == null && allDeckList == null && allRecordList == null && allTagList == null
+      home: allGameList == null && allRecordList == null && allTagList == null
           ? const Scaffold(
               body: Center(
                 child: CircularProgressIndicator(),

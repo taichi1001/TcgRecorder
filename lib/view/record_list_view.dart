@@ -70,11 +70,10 @@ class RecordListView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final recordList = ref.watch(margedRecordListProvider).margedRecordList;
+    final recordList = ref.watch(margedRecordListProvider);
     final recordListViewNotifier = ref.read(recordListViewNotifierProvider.notifier);
     final sort = ref.watch(recordListViewNotifierProvider.select((value) => value.sort));
     final isLoaded = ref.watch(allRecordListNotifierProvider.select((value) => value.isLoaded));
-    final recordMap = _makeMap(recordList, context);
 
     return Column(
       children: [
@@ -108,17 +107,24 @@ class RecordListView extends HookConsumerWidget {
                 ],
               ),
             ),
-            body: recordList!.isEmpty
-                ? Center(child: Text(S.of(context).noDataMessage))
-                : isLoaded
-                    ? const Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : SlidableAutoCloseBehavior(
-                        child: CustomScrollView(
-                          slivers: _makeSliverList(context, recordMap),
-                        ),
-                      ),
+            body: recordList.when(
+              data: (recordList) {
+                final recordMap = _makeMap(recordList, context);
+                return recordList.isEmpty
+                    ? Center(child: Text(S.of(context).noDataMessage))
+                    : isLoaded
+                        ? const Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : SlidableAutoCloseBehavior(
+                            child: CustomScrollView(
+                              slivers: _makeSliverList(context, recordMap),
+                            ),
+                          );
+              },
+              error: (error, stack) => Text('$error'),
+              loading: () => const CircularProgressIndicator(),
+            ),
           ),
         ),
         const AdaptiveBannerAd(),
