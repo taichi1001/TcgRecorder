@@ -8,11 +8,11 @@ import 'package:tcg_manager/selector/filter_record_list_selector.dart';
 
 final margedRecordListProvider = FutureProvider.autoDispose<List<MargedRecord>>((ref) async {
   final filterRecordList = ref.watch(filterRecordListProvider);
-  final allGameList = ref.read(allGameListNotifierProvider).allGameList;
+  final allGameList = await ref.read(allGameListProvider.future);
   final allDeckList = await ref.read(allDeckListProvider.future);
   final allTagList = ref.read(allTagListNotifierProvider).allTagList;
 
-  if (allGameList != null && allTagList != null) {
+  if (allTagList != null) {
     final list = filterRecordList.map((Record record) {
       final game = allGameList.singleWhere((value) => value.gameId == record.gameId);
       final useDeck = allDeckList.singleWhere((value) => value.deckId == record.useDeckId);

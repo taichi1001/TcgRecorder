@@ -10,7 +10,6 @@ import 'package:tcg_manager/helper/att.dart';
 import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/helper/theme_data.dart';
 import 'package:tcg_manager/provider/adaptive_banner_ad_provider.dart';
-import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/input_view_settings_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
@@ -55,8 +54,7 @@ class MainApp extends HookConsumerWidget {
       });
       return;
     }, const []);
-    ref.refresh(allDeckListProvider);
-    final allGameList = ref.watch(allGameListNotifierProvider).allGameList;
+    final allGameList = ref.watch(allGameListProvider);
     final allRecordList = ref.watch(allRecordListNotifierProvider).allRecordList;
     final allTagList = ref.watch(allTagListNotifierProvider).allTagList;
     final lightThemeData = ref.watch(lightThemeDataProvider);
@@ -75,15 +73,17 @@ class MainApp extends HookConsumerWidget {
       theme: lightThemeData,
       darkTheme: darkThemeData,
       themeMode: ThemeMode.system,
-      home: allGameList == null && allRecordList == null && allTagList == null
+      home: allRecordList == null && allTagList == null
           ? const Scaffold(
               body: Center(
                 child: CircularProgressIndicator(),
               ),
             )
-          : allGameList!.isEmpty
-              ? const InitialGameRegistrationView()
-              : const BottomNavigationView(),
+          : allGameList.when(
+              data: (allGameList) => allGameList.isEmpty ? const InitialGameRegistrationView() : const BottomNavigationView(),
+              error: (error, stack) => Text('$error'),
+              loading: () => const CircularProgressIndicator(),
+            ),
     );
   }
 }

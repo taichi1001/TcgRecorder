@@ -48,7 +48,7 @@ class InitialGameRegistrationView extends HookConsumerWidget {
                                 } else {
                                   initialGameRegistrationNotifier.save();
                                   initialGameRegistrationNotifier.reset();
-                                  await ref.read(allGameListNotifierProvider.notifier).fetch();
+                                  ref.refresh(allGameListProvider);
                                   ref.read(selectGameNotifierProvider.notifier).startupGame();
                                 }
                               },

@@ -5,6 +5,7 @@ import 'package:tcg_manager/entity/tag.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
+import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
 import 'package:tcg_manager/repository/game_repository.dart';
@@ -86,7 +87,8 @@ class DbHelper {
   }
 
   Future fetchAll() async {
-    await ref.read(allGameListNotifierProvider.notifier).fetch();
+    ref.refresh(allDeckListProvider);
+    ref.refresh(allGameListProvider);
     await ref.read(allTagListNotifierProvider.notifier).fetch();
     await ref.read(allRecordListNotifierProvider.notifier).fetch();
   }
@@ -98,6 +100,22 @@ class DbHelper {
     try {
       await ref.read(deckRepository).update(newDeck);
       ref.refresh(allDeckListProvider);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future updateGameName(String name, int index) async {
+    final allGameList = await ref.read(allGameListProvider.future);
+    final game = allGameList[index];
+    final newGame = game.copyWith(game: name);
+    try {
+      await ref.read(gameRepository).update(newGame);
+      ref.refresh(allGameListProvider);
+      // 編集したゲームがselectGameと同じだった場合の処理
+      if (ref.read(selectGameNotifierProvider).selectGame!.gameId == newGame.gameId) {
+        ref.read(selectGameNotifierProvider.notifier).changeGame(newGame);
+      }
     } catch (e) {
       rethrow;
     }
