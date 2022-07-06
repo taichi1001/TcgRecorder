@@ -65,11 +65,12 @@ class RecordListViewNotifier extends StateNotifier<RecordListViewState> {
     state = state.copyWith(opponentDeck: state.cacheOpponentDeck);
   }
 
-  void scrollTag(int index) {
+  Future scrollTag(int index) async {
     if (index == 0) {
       state = state.copyWith(cacheTag: null);
     } else {
-      state = state.copyWith(cacheTag: read(gameTagListProvider)[index - 1]);
+      final gameTagList = await read(gameTagListProvider.future);
+      state = state.copyWith(cacheTag: gameTagList[index - 1]);
     }
   }
 

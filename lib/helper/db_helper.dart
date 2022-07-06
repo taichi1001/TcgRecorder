@@ -61,8 +61,8 @@ class DbHelper {
   }
 
   Future _deleteGameTag(Game game) async {
-    final allTag = ref.read(allTagListNotifierProvider);
-    final gameTag = allTag.allTagList!.where((tag) => tag.gameId == game.gameId).toList();
+    final allTag = await ref.read(allTagListProvider.future);
+    final gameTag = allTag.where((tag) => tag.gameId == game.gameId).toList();
     for (final tag in gameTag) {
       await ref.read(tagRepository).deleteById(tag.tagId!);
     }
@@ -87,9 +87,9 @@ class DbHelper {
   }
 
   Future fetchAll() async {
-    ref.refresh(allDeckListProvider);
     ref.refresh(allGameListProvider);
-    await ref.read(allTagListNotifierProvider.notifier).fetch();
+    ref.refresh(allDeckListProvider);
+    ref.refresh(allTagListProvider);
     await ref.read(allRecordListNotifierProvider.notifier).fetch();
   }
 
@@ -116,6 +116,18 @@ class DbHelper {
       if (ref.read(selectGameNotifierProvider).selectGame!.gameId == newGame.gameId) {
         ref.read(selectGameNotifierProvider.notifier).changeGame(newGame);
       }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future updateTagName(String name, int index) async {
+    final allTagList = await ref.read(allTagListProvider.future);
+    final tag = allTagList[index];
+    final newTag = tag.copyWith(tag: name);
+    try {
+      await ref.read(tagRepository).update(newTag);
+      ref.refresh(allTagListProvider);
     } catch (e) {
       rethrow;
     }

@@ -91,8 +91,9 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     state = state.copyWith(tag: tag);
   }
 
-  void scrollTag(int index) {
-    final newTag = read(gameTagListProvider)[index];
+  Future scrollTag(int index) async {
+    final gameTagList = await read(gameTagListProvider.future);
+    final newTag = gameTagList[index];
     state = state.copyWith(cacheTag: newTag);
   }
 
@@ -185,7 +186,7 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     }
     if (state.tag != null) {
       // Tagが新規だった場合,opponentDeckにgameIDを設定
-      if (_checkIfSelectedTagNew()) {
+      if (await _checkIfSelectedTagNew()) {
         state = state.copyWith(
           tag: state.tag!.copyWith(
             gameId: selectGameId,
@@ -241,8 +242,8 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     return true;
   }
 
-  bool _checkIfSelectedTagNew() {
-    final gameTagList = read(gameTagListProvider);
+  Future<bool> _checkIfSelectedTagNew() async {
+    final gameTagList = await read(gameTagListProvider.future);
     final matchList = gameTagList.where((tag) => tag.tag == state.tag!.tag);
     if (matchList.isNotEmpty) {
       state = state.copyWith(tag: matchList.first);

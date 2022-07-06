@@ -234,12 +234,8 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                           )
                           .toList();
                     },
-                    error: (error, stack) => [
-                      Text(error.toString()),
-                    ],
-                    loading: () => [
-                      const CircularProgressIndicator(),
-                    ],
+                    error: (error, stack) => [Text(error.toString())],
+                    loading: () => [const CircularProgressIndicator()],
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -268,19 +264,25 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                 _SelectableRow(
                   submited: recordListViewNotifier.setTag,
                   onSelectedItemChanged: recordListViewNotifier.scrollTag,
-                  selectableList: gameTag
-                      .map(
-                        (tag) => Padding(
-                          padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                          child: Text(
-                            tag.tag,
-                            softWrap: false,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.headline6?.copyWith(height: 1),
-                          ),
-                        ),
-                      )
-                      .toList(),
+                  selectableList: gameTag.when(
+                    data: (gameTag) {
+                      return gameTag
+                          .map(
+                            (tag) => Padding(
+                              padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                              child: Text(
+                                tag.tag,
+                                softWrap: false,
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context).textTheme.headline6?.copyWith(height: 1),
+                              ),
+                            ),
+                          )
+                          .toList();
+                    },
+                    error: (error, stack) => [Text(error.toString())],
+                    loading: () => [const CircularProgressIndicator()],
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(

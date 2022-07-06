@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:tcg_manager/entity/deck.dart';
+import 'package:tcg_manager/entity/tag.dart';
 import 'package:tcg_manager/enum/first_second.dart';
 import 'package:tcg_manager/enum/win_loss.dart';
 import 'package:tcg_manager/generated/l10n.dart';
@@ -27,16 +28,20 @@ import 'package:tcg_manager/view/select_deck_view.dart';
 class InputViewInfo {
   const InputViewInfo({
     required this.gameDeckList,
+    required this.gameTagList,
   });
 
   final List<Deck> gameDeckList;
+  final List<Tag> gameTagList;
 }
 
 final inputViewInfoProvider = FutureProvider.autoDispose<InputViewInfo>((ref) async {
   final gameDeckList = await ref.watch(gameDeckListProvider.future);
+  final gameTagList = await ref.watch(gameTagListProvider.future);
   ref.keepAlive();
   return InputViewInfo(
     gameDeckList: gameDeckList,
+    gameTagList: gameTagList,
   );
 });
 
@@ -45,8 +50,6 @@ class InputView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final gameDeck = ref.watch(gameDeckListProvider);
-    final gameTag = ref.watch(gameTagListProvider);
     final date = ref.watch(inputViewNotifierProvider.select((value) => value.date));
     final winLoss = ref.watch(inputViewNotifierProvider.select((value) => value.winLoss));
     final firstSecond = ref.watch(inputViewNotifierProvider.select((value) => value.firstSecond));
@@ -266,7 +269,7 @@ class InputView extends HookConsumerWidget {
                                     _ListPickerButton(
                                       submited: inputViewNotifier.setTag,
                                       onSelectedItemChanged: inputViewNotifier.scrollTag,
-                                      children: gameTag
+                                      children: inputViewInfo.gameTagList
                                           .map((tag) => Padding(
                                                 padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
                                                 child: Text(

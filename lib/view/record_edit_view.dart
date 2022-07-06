@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/marged_record.dart';
+import 'package:tcg_manager/entity/tag.dart';
 import 'package:tcg_manager/enum/first_second.dart';
 import 'package:tcg_manager/enum/win_loss.dart';
 import 'package:tcg_manager/generated/l10n.dart';
@@ -20,16 +21,20 @@ import 'package:tcg_manager/view/component/custom_textfield.dart';
 
 class RecordEditViewInfo {
   const RecordEditViewInfo({
+    required this.gameTagList,
     required this.gameDeckList,
   });
 
   final List<Deck> gameDeckList;
+  final List<Tag> gameTagList;
 }
 
 final recordEditViewInfoProvider = FutureProvider.autoDispose<RecordEditViewInfo>((ref) async {
   final gameDeckList = await ref.watch(gameDeckListProvider.future);
+  final gameTagList = await ref.watch(gameTagListProvider.future);
   return RecordEditViewInfo(
     gameDeckList: gameDeckList,
+    gameTagList: gameTagList,
   );
 });
 
@@ -97,8 +102,6 @@ class _EditView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final recordEditViewInfo = ref.watch(recordEditViewInfoProvider);
 
-    // final gameDeck = ref.watch(gameDeckListProvider);
-    final gameTag = ref.watch(gameTagListProvider);
     final editMargedRecord = ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.editMargedRecord));
     final recordDetailNotifier = ref.watch(recordDetailNotifierProvider(margedRecord).notifier);
 
@@ -336,7 +339,7 @@ class _EditView extends HookConsumerWidget {
                                 isSelectPicker.value = true;
                               },
                               onSelectedItemChanged: recordDetailNotifier.scrollTag,
-                              children: gameTag
+                              children: recordEditViewInfo.gameTagList
                                   .map((tag) => Padding(
                                         padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
                                         child: Text(

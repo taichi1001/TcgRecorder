@@ -392,7 +392,7 @@ class _TagListView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final tagList = ref.watch(allTagListNotifierProvider).allTagList;
+    final tagList = ref.watch(allTagListProvider);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -402,47 +402,49 @@ class _TagListView extends HookConsumerWidget {
           style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
         ),
       ),
-      body: tagList == null
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : ListView.separated(
-              itemCount: tagList.length,
-              separatorBuilder: (context, index) => const SizedBox(height: 8, child: Divider(height: 1)),
-              itemBuilder: (context, index) {
-                return SlidableTile(
-                  key: ObjectKey(tagList[index]),
-                  title: Text(tagList[index].tag),
-                  alertMessage: '選択したタグを削除し、そのタグが設定されているデータからタグを削除します。',
-                  deleteFunc: () async => await ref.read(dbHelper).deleteTag(tagList[index]),
-                  editFunc: () async {
-                    final newName = await showTextInputDialog(
-                      context: context,
-                      title: S.of(context).gameEdit,
-                      textFields: [DialogTextField(initialText: tagList[index].tag)],
-                    );
-                    if (newName != null && newName.first != '') {
-                      try {
-                        await ref.read(allTagListNotifierProvider.notifier).updateName(newName.first, index);
-                      } catch (e) {
-                        if (e.toString().contains('code 2067')) {
-                          await showOkAlertDialog(
-                            context: context,
-                            title: 'エラー',
-                            message: '既に登録されているデッキです。',
-                          );
-                        } else {
-                          await showOkAlertDialog(
-                            context: context,
-                            title: '予期せぬエラー',
-                          );
-                        }
+      body: tagList.when(
+        data: (tagList) {
+          return ListView.separated(
+            itemCount: tagList.length,
+            separatorBuilder: (context, index) => const SizedBox(height: 8, child: Divider(height: 1)),
+            itemBuilder: (context, index) {
+              return SlidableTile(
+                key: ObjectKey(tagList[index]),
+                title: Text(tagList[index].tag),
+                alertMessage: '選択したタグを削除し、そのタグが設定されているデータからタグを削除します。',
+                deleteFunc: () async => await ref.read(dbHelper).deleteTag(tagList[index]),
+                editFunc: () async {
+                  final newName = await showTextInputDialog(
+                    context: context,
+                    title: S.of(context).gameEdit,
+                    textFields: [DialogTextField(initialText: tagList[index].tag)],
+                  );
+                  if (newName != null && newName.first != '') {
+                    try {
+                      await ref.read(dbHelper).updateTagName(newName.first, index);
+                    } catch (e) {
+                      if (e.toString().contains('code 2067')) {
+                        await showOkAlertDialog(
+                          context: context,
+                          title: 'エラー',
+                          message: '既に登録されているデッキです。',
+                        );
+                      } else {
+                        await showOkAlertDialog(
+                          context: context,
+                          title: '予期せぬエラー',
+                        );
                       }
                     }
-                  },
-                );
-              },
-            ),
+                  }
+                },
+              );
+            },
+          );
+        },
+        error: (error, stack) => Text('$error'),
+        loading: () => const CircularProgressIndicator(),
+      ),
     );
   }
 }

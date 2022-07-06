@@ -10,28 +10,25 @@ final margedRecordListProvider = FutureProvider.autoDispose<List<MargedRecord>>(
   final filterRecordList = ref.watch(filterRecordListProvider);
   final allGameList = await ref.read(allGameListProvider.future);
   final allDeckList = await ref.read(allDeckListProvider.future);
-  final allTagList = ref.read(allTagListNotifierProvider).allTagList;
+  final allTagList = await ref.read(allTagListProvider.future);
 
-  if (allTagList != null) {
-    final list = filterRecordList.map((Record record) {
-      final game = allGameList.singleWhere((value) => value.gameId == record.gameId);
-      final useDeck = allDeckList.singleWhere((value) => value.deckId == record.useDeckId);
-      final opponentDeck = allDeckList.singleWhere((value) => value.deckId == record.opponentDeckId);
-      final tagList = allTagList.where((value) => value.tagId == record.tagId).toList();
-      return MargedRecord(
-        recordId: record.recordId!,
-        game: game.game,
-        useDeck: useDeck.deck,
-        opponentDeck: opponentDeck.deck,
-        tag: tagList.isEmpty ? null : tagList.first.tag,
-        firstSecond: record.firstSecond,
-        winLoss: record.winLoss,
-        date: record.date!,
-        memo: record.memo,
-      );
-    }).toList();
-    ref.keepAlive();
-    return list;
-  }
-  return List.empty();
+  final list = filterRecordList.map((Record record) {
+    final game = allGameList.singleWhere((value) => value.gameId == record.gameId);
+    final useDeck = allDeckList.singleWhere((value) => value.deckId == record.useDeckId);
+    final opponentDeck = allDeckList.singleWhere((value) => value.deckId == record.opponentDeckId);
+    final tagList = allTagList.where((value) => value.tagId == record.tagId).toList();
+    return MargedRecord(
+      recordId: record.recordId!,
+      game: game.game,
+      useDeck: useDeck.deck,
+      opponentDeck: opponentDeck.deck,
+      tag: tagList.isEmpty ? null : tagList.first.tag,
+      firstSecond: record.firstSecond,
+      winLoss: record.winLoss,
+      date: record.date!,
+      memo: record.memo,
+    );
+  }).toList();
+  ref.keepAlive();
+  return list;
 });

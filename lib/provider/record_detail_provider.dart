@@ -61,8 +61,9 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
     state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(tag: name));
   }
 
-  void scrollTag(int index) {
-    state = state.copyWith(cacheTag: ref.read(gameTagListProvider)[index]);
+  Future scrollTag(int index) async {
+    final gameTagList = await ref.read(gameTagListProvider.future);
+    state = state.copyWith(cacheTag: gameTagList[index]);
   }
 
   void setTag() {
@@ -167,7 +168,7 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
   Future _saveEditTag() async {
     if (state.margedRecord.tag == null) return;
     // 入力されたタグが新規のものかどうかを判定
-    final checkTag = ref.read(editRecordHelper).checkIfSelectedTagIsNew(state.margedRecord.tag!);
+    final checkTag = await ref.read(editRecordHelper).checkIfSelectedTagIsNew(state.margedRecord.tag!);
 
     // 新規だった場合
     if (checkTag.isNew) {
