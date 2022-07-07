@@ -44,9 +44,9 @@ class SelectGameNotifier extends StateNotifier<SelectGameState> {
   }
 
   Future startupGame() async {
-    final records = ref.read(allRecordListNotifierProvider).allRecordList;
+    final records = await ref.read(allRecordListProvider.future);
     final games = await ref.read(allGameListProvider.future);
-    if (records != null && records.isNotEmpty) {
+    if (records.isNotEmpty) {
       // レコードが存在する場合、最後に登録したレコードのゲームを選択ゲームとする
       final record = records.last;
       final game = games.where((game) => game.gameId == record.gameId).last;

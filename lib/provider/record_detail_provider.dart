@@ -16,8 +16,18 @@ import 'package:tcg_manager/selector/game_tag_list_selector.dart';
 import 'package:tcg_manager/state/record_detail_state.dart';
 
 class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
-  RecordDetailNotifier(this.ref, this.record, this.margedRecord)
-      : super(RecordDetailState(record: record, margedRecord: margedRecord, cacheDate: record.date, editMargedRecord: margedRecord));
+  RecordDetailNotifier({
+    required this.ref,
+    required this.record,
+    required this.margedRecord,
+  }) : super(
+          RecordDetailState(
+            record: record,
+            margedRecord: margedRecord,
+            cacheDate: record.date,
+            editMargedRecord: margedRecord,
+          ),
+        );
 
   final Ref ref;
   final Record record;
@@ -189,12 +199,21 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
   }
 }
 
-final recordDetailNotifierProvider = StateNotifierProvider.family.autoDispose<RecordDetailNotifier, RecordDetailState, MargedRecord>(
-  (ref, margedRecord) {
-    // 一覧からレコードを選択した瞬間の値のみがほしいため、watchで監視せずにreadで読み取っている
-    final recordList = ref.read(allRecordListNotifierProvider).allRecordList;
-    final record = recordList!.firstWhere((record) => record.recordId == margedRecord.recordId);
-    final notifier = RecordDetailNotifier(ref, record, margedRecord);
-    return notifier;
-  },
-);
+final recordListProvider = StateProvider<List<Record>>((ref) {
+  final recordList = ref.read(allRecordListProvider);
+  final state = recordList.when(
+    data: (recordList) => recordList,
+    error: (_, __) => [],
+    loading: () => [],
+  );
+  return state.cast();
+});
+
+final recordDetailNotifierProvider =
+    StateNotifierProvider.family.autoDispose<RecordDetailNotifier, RecordDetailState, MargedRecord>((ref, margedRecord) {
+  // 一覧からレコードを選択した瞬間の値のみがほしいため、watchで監視せずにreadで読み取っている
+  final recordList = ref.read(recordListProvider);
+  final record = recordList.firstWhere((record) => record.recordId == margedRecord.recordId);
+  final notifier = RecordDetailNotifier(ref: ref, record: record, margedRecord: margedRecord);
+  return notifier;
+});

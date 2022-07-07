@@ -12,6 +12,7 @@ import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/helper/convert_sort_string.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/record_list_view_provider.dart';
+import 'package:tcg_manager/repository/record_repository.dart';
 import 'package:tcg_manager/selector/marged_record_list_selector.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
 import 'package:tcg_manager/view/component/custom_scaffold.dart';
@@ -73,7 +74,6 @@ class RecordListView extends HookConsumerWidget {
     final recordList = ref.watch(margedRecordListProvider);
     final recordListViewNotifier = ref.read(recordListViewNotifierProvider.notifier);
     final sort = ref.watch(recordListViewNotifierProvider.select((value) => value.sort));
-    final isLoaded = ref.watch(allRecordListNotifierProvider.select((value) => value.isLoaded));
 
     return Column(
       children: [
@@ -112,15 +112,11 @@ class RecordListView extends HookConsumerWidget {
                 final recordMap = _makeMap(recordList, context);
                 return recordList.isEmpty
                     ? Center(child: Text(S.of(context).noDataMessage))
-                    : isLoaded
-                        ? const Center(
-                            child: CircularProgressIndicator(),
-                          )
-                        : SlidableAutoCloseBehavior(
-                            child: CustomScrollView(
-                              slivers: _makeSliverList(context, recordMap),
-                            ),
-                          );
+                    : SlidableAutoCloseBehavior(
+                        child: CustomScrollView(
+                          slivers: _makeSliverList(context, recordMap),
+                        ),
+                      );
               },
               error: (error, stack) => Text('$error'),
               loading: () => const CircularProgressIndicator(),
@@ -151,7 +147,6 @@ class _BrandListTile extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final recordListNotifier = ref.read(allRecordListNotifierProvider.notifier);
     final record = ref.watch(currentMargedRecord);
     final isMemo = record.memo != null && record.memo != '';
     return SlidableExpansionTileCard(
@@ -274,7 +269,10 @@ class _BrandListTile extends HookConsumerWidget {
           ],
         ),
       ),
-      deleteFunc: () async => await recordListNotifier.delete(record.recordId),
+      deleteFunc: () async {
+        await ref.read(recordRepository).deleteById(record.recordId);
+        ref.refresh(allRecordListProvider);
+      },
       editFunc: () async {
         await Navigator.push(
           context,

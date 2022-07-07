@@ -50,60 +50,66 @@ class GraphView extends HookConsumerWidget {
             Tab(icon: Icon(Icons.pie_chart_outline)),
           ],
         ),
-        body: TabBarView(
-          children: [
-            Center(
-              child: recordList.isEmpty
-                  ? Text(S.of(context).noDataMessage)
-                  : Column(
-                      children: const [
-                        Expanded(child: GameDataGrid()),
-                        AdaptiveBannerAd(),
-                      ],
-                    ),
-            ),
-            recordList.isEmpty
-                ? Text(S.of(context).noDataMessage)
-                : Column(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            useDeckData.when(
-                              data: (useDeckData) {
-                                return Padding(
-                                  padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
-                                  child: _UseRateChart(
-                                    data: useDeckData,
-                                    title: S.of(context).useDeckDistribution,
-                                  ),
-                                );
-                              },
-                              error: (error, stack) => Text('$error'),
-                              loading: () => const CircularProgressIndicator(),
-                            ),
-                            const SizedBox(height: 16),
-                            opponentDeckData.when(
-                              data: (opponentDeckData) {
-                                return Padding(
-                                  padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
-                                  child: _UseRateChart(
-                                    data: opponentDeckData,
-                                    title: S.of(context).opponentDeckDistribution,
-                                  ),
-                                );
-                              },
-                              error: (error, stack) => Text('$error'),
-                              loading: () => const CircularProgressIndicator(),
-                            ),
+        body: recordList.when(
+          data: (recordList) {
+            return TabBarView(
+              children: [
+                Center(
+                  child: recordList.isEmpty
+                      ? Text(S.of(context).noDataMessage)
+                      : Column(
+                          children: const [
+                            Expanded(child: GameDataGrid()),
+                            AdaptiveBannerAd(),
                           ],
                         ),
+                ),
+                recordList.isEmpty
+                    ? Text(S.of(context).noDataMessage)
+                    : Column(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                useDeckData.when(
+                                  data: (useDeckData) {
+                                    return Padding(
+                                      padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
+                                      child: _UseRateChart(
+                                        data: useDeckData,
+                                        title: S.of(context).useDeckDistribution,
+                                      ),
+                                    );
+                                  },
+                                  error: (error, stack) => Text('$error'),
+                                  loading: () => const CircularProgressIndicator(),
+                                ),
+                                const SizedBox(height: 16),
+                                opponentDeckData.when(
+                                  data: (opponentDeckData) {
+                                    return Padding(
+                                      padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+                                      child: _UseRateChart(
+                                        data: opponentDeckData,
+                                        title: S.of(context).opponentDeckDistribution,
+                                      ),
+                                    );
+                                  },
+                                  error: (error, stack) => Text('$error'),
+                                  loading: () => const CircularProgressIndicator(),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const AdaptiveBannerAd(),
+                        ],
                       ),
-                      const AdaptiveBannerAd(),
-                    ],
-                  ),
-          ],
+              ],
+            );
+          },
+          error: (error, stack) => Text('$error'),
+          loading: () => const CircularProgressIndicator(),
         ),
       ),
     );

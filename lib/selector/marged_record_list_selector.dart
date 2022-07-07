@@ -7,7 +7,7 @@ import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/selector/filter_record_list_selector.dart';
 
 final margedRecordListProvider = FutureProvider.autoDispose<List<MargedRecord>>((ref) async {
-  final filterRecordList = ref.watch(filterRecordListProvider);
+  final filterRecordList = await ref.watch(filterRecordListProvider.future);
   final allGameList = await ref.read(allGameListProvider.future);
   final allDeckList = await ref.read(allDeckListProvider.future);
   final allTagList = await ref.read(allTagListProvider.future);

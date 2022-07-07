@@ -4,7 +4,7 @@ import 'package:tcg_manager/selector/game_deck_list_selector.dart';
 import 'package:tcg_manager/selector/game_record_list_selector.dart';
 
 final recentlyUseDeckProvider = FutureProvider.autoDispose<List<Deck>>((ref) async {
-  final recordList = ref.watch(gameRecordListProvider);
+  final recordList = await ref.watch(gameRecordListProvider.future);
 
   // レコードを最新順に並び替え
   recordList.sort((a, b) {
