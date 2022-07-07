@@ -6,7 +6,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
+import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/marged_record.dart';
+import 'package:tcg_manager/entity/tag.dart';
 import 'package:tcg_manager/enum/first_second.dart';
 import 'package:tcg_manager/enum/win_loss.dart';
 import 'package:tcg_manager/generated/l10n.dart';
@@ -16,6 +18,25 @@ import 'package:tcg_manager/selector/game_tag_list_selector.dart';
 import 'package:tcg_manager/view/component/custom_modal_date_picker.dart';
 import 'package:tcg_manager/view/component/custom_modal_list_picker.dart';
 import 'package:tcg_manager/view/component/custom_textfield.dart';
+
+class RecordEditViewInfo {
+  const RecordEditViewInfo({
+    required this.gameTagList,
+    required this.gameDeckList,
+  });
+
+  final List<Deck> gameDeckList;
+  final List<Tag> gameTagList;
+}
+
+final recordEditViewInfoProvider = FutureProvider.autoDispose<RecordEditViewInfo>((ref) async {
+  final gameDeckList = await ref.watch(gameDeckListProvider.future);
+  final gameTagList = await ref.watch(gameTagListProvider.future);
+  return RecordEditViewInfo(
+    gameDeckList: gameDeckList,
+    gameTagList: gameTagList,
+  );
+});
 
 class RecordEditView extends HookConsumerWidget {
   const RecordEditView({
@@ -79,8 +100,8 @@ class _EditView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final gameDeck = ref.watch(gameDeckListProvider);
-    final gameTag = ref.watch(gameTagListProvider);
+    final recordEditViewInfo = ref.watch(recordEditViewInfoProvider);
+
     final editMargedRecord = ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.editMargedRecord));
     final recordDetailNotifier = ref.watch(recordDetailNotifierProvider(margedRecord).notifier);
 
@@ -106,246 +127,252 @@ class _EditView extends HookConsumerWidget {
       isSelectPicker.value = false;
     }
 
-    return KeyboardActions(
-      config: KeyboardActionsConfig(
-        keyboardBarColor: Theme.of(context).canvasColor,
-        keyboardSeparatorColor: Theme.of(context).dividerColor,
-        keyboardActionsPlatform: KeyboardActionsPlatform.ALL,
-        nextFocus: true,
-        actions: [
-          KeyboardActionsItem(focusNode: useDeckFocusnode),
-          KeyboardActionsItem(focusNode: opponentDeckFocusnode),
-          KeyboardActionsItem(focusNode: tagFocusnode),
-          KeyboardActionsItem(focusNode: memoFocusnode),
-        ],
-      ),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 8),
-            GestureDetector(
-              onTap: () {
-                showCupertinoModalPopup(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return CustomModalDatePicker(
-                      submited: () {
-                        recordDetailNotifier.setDate();
-                        Navigator.pop(context);
+    return recordEditViewInfo.when(
+      data: (recordEditViewInfo) {
+        return KeyboardActions(
+          config: KeyboardActionsConfig(
+            keyboardBarColor: Theme.of(context).canvasColor,
+            keyboardSeparatorColor: Theme.of(context).dividerColor,
+            keyboardActionsPlatform: KeyboardActionsPlatform.ALL,
+            nextFocus: true,
+            actions: [
+              KeyboardActionsItem(focusNode: useDeckFocusnode),
+              KeyboardActionsItem(focusNode: opponentDeckFocusnode),
+              KeyboardActionsItem(focusNode: tagFocusnode),
+              KeyboardActionsItem(focusNode: memoFocusnode),
+            ],
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 8),
+                GestureDetector(
+                  onTap: () {
+                    showCupertinoModalPopup(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return CustomModalDatePicker(
+                          submited: () {
+                            recordDetailNotifier.setDate();
+                            Navigator.pop(context);
+                          },
+                          onDateTimeChanged: recordDetailNotifier.scrollDate,
+                        );
                       },
-                      onDateTimeChanged: recordDetailNotifier.scrollDate,
                     );
                   },
-                );
-              },
-              child: Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        outputFormat.format(editMargedRecord.date),
-                      ),
-                      const Icon(
-                        Icons.calendar_today_rounded,
-                        size: 16,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: 195.w,
                   child: Card(
                     child: Padding(
                       padding: const EdgeInsets.all(16),
-                      child: Column(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          RadioListTile(
-                            title: Text(S.of(context).first),
-                            value: FirstSecond.first,
-                            groupValue: firstSecond,
-                            onChanged: (FirstSecond? value) {
-                              if (value != null) {
-                                recordDetailNotifier.editFirstSecond(value);
-                              }
-                            },
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 0),
-                            dense: true,
+                          Text(
+                            outputFormat.format(editMargedRecord.date),
                           ),
-                          RadioListTile(
-                            title: Text(S.of(context).second),
-                            value: FirstSecond.second,
-                            groupValue: firstSecond,
-                            onChanged: (FirstSecond? value) {
-                              if (value != null) {
-                                recordDetailNotifier.editFirstSecond(value);
-                              }
-                            },
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 0),
-                            dense: true,
+                          const Icon(
+                            Icons.calendar_today_rounded,
+                            size: 16,
                           ),
                         ],
                       ),
                     ),
                   ),
                 ),
-                SizedBox(
-                  width: 195.w,
-                  child: Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        children: [
-                          RadioListTile(
-                            title: Text(S.of(context).win),
-                            value: WinLoss.win,
-                            groupValue: winLoss,
-                            onChanged: (WinLoss? value) {
-                              if (value != null) {
-                                recordDetailNotifier.editWinLoss(value);
-                              }
-                            },
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 0),
-                            dense: true,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: 195.w,
+                      child: Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            children: [
+                              RadioListTile(
+                                title: Text(S.of(context).first),
+                                value: FirstSecond.first,
+                                groupValue: firstSecond,
+                                onChanged: (FirstSecond? value) {
+                                  if (value != null) {
+                                    recordDetailNotifier.editFirstSecond(value);
+                                  }
+                                },
+                                contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                dense: true,
+                              ),
+                              RadioListTile(
+                                title: Text(S.of(context).second),
+                                value: FirstSecond.second,
+                                groupValue: firstSecond,
+                                onChanged: (FirstSecond? value) {
+                                  if (value != null) {
+                                    recordDetailNotifier.editFirstSecond(value);
+                                  }
+                                },
+                                contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                dense: true,
+                              ),
+                            ],
                           ),
-                          RadioListTile(
-                            title: Text(S.of(context).loss),
-                            value: WinLoss.loss,
-                            groupValue: winLoss,
-                            onChanged: (WinLoss? value) {
-                              if (value != null) {
-                                recordDetailNotifier.editWinLoss(value);
-                              }
-                            },
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 0),
-                            dense: true,
-                          ),
-                        ],
+                        ),
                       ),
+                    ),
+                    SizedBox(
+                      width: 195.w,
+                      child: Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            children: [
+                              RadioListTile(
+                                title: Text(S.of(context).win),
+                                value: WinLoss.win,
+                                groupValue: winLoss,
+                                onChanged: (WinLoss? value) {
+                                  if (value != null) {
+                                    recordDetailNotifier.editWinLoss(value);
+                                  }
+                                },
+                                contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                dense: true,
+                              ),
+                              RadioListTile(
+                                title: Text(S.of(context).loss),
+                                value: WinLoss.loss,
+                                groupValue: winLoss,
+                                onChanged: (WinLoss? value) {
+                                  if (value != null) {
+                                    recordDetailNotifier.editWinLoss(value);
+                                  }
+                                },
+                                contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                dense: true,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Stack(
+                          alignment: Alignment.centerRight,
+                          children: [
+                            CustomTextField(
+                              labelText: S.of(context).useDeck,
+                              onChanged: recordDetailNotifier.editUseDeck,
+                              controller: useDeckTextController,
+                              focusNode: useDeckFocusnode,
+                            ),
+                            _ListPickerButton(
+                              submited: () {
+                                recordDetailNotifier.setUseDeck();
+                                isSelectPicker.value = true;
+                              },
+                              onSelectedItemChanged: recordDetailNotifier.scrollUseDeck,
+                              children: recordEditViewInfo.gameDeckList
+                                  .map((deck) => Padding(
+                                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                                        child: Text(
+                                          deck.deck,
+                                          softWrap: false,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: Theme.of(context).textTheme.headline6?.copyWith(height: 1),
+                                        ),
+                                      ))
+                                  .toList(),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        Stack(
+                          alignment: Alignment.centerRight,
+                          children: [
+                            CustomTextField(
+                              labelText: S.of(context).opponentDeck,
+                              onChanged: recordDetailNotifier.editOpponentDeck,
+                              controller: opponentDeckTextController,
+                              focusNode: opponentDeckFocusnode,
+                            ),
+                            _ListPickerButton(
+                              submited: () {
+                                recordDetailNotifier.setOpponentDeck();
+                                isSelectPicker.value = true;
+                              },
+                              onSelectedItemChanged: recordDetailNotifier.scrollOpponentDeck,
+                              children: recordEditViewInfo.gameDeckList
+                                  .map((deck) => Padding(
+                                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                                        child: Text(
+                                          deck.deck,
+                                          softWrap: false,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: Theme.of(context).textTheme.headline6?.copyWith(height: 1),
+                                        ),
+                                      ))
+                                  .toList(),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        Stack(
+                          alignment: Alignment.centerRight,
+                          children: [
+                            CustomTextField(
+                              labelText: S.of(context).tag,
+                              onChanged: recordDetailNotifier.editTag,
+                              controller: tagTextController,
+                              focusNode: tagFocusnode,
+                            ),
+                            _ListPickerButton(
+                              submited: () {
+                                recordDetailNotifier.setTag();
+                                isSelectPicker.value = true;
+                              },
+                              onSelectedItemChanged: recordDetailNotifier.scrollTag,
+                              children: recordEditViewInfo.gameTagList
+                                  .map((tag) => Padding(
+                                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                                        child: Text(
+                                          tag.tag,
+                                          softWrap: false,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: Theme.of(context).textTheme.headline6?.copyWith(height: 1),
+                                        ),
+                                      ))
+                                  .toList(),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        CustomTextField(
+                          controller: memoTextController,
+                          onChanged: recordDetailNotifier.editMemo,
+                          labelText: S.of(context).memoTag,
+                          keyboardType: TextInputType.multiline,
+                          maxLines: null,
+                          focusNode: memoFocusnode,
+                        ),
+                      ],
                     ),
                   ),
                 ),
               ],
             ),
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Stack(
-                      alignment: Alignment.centerRight,
-                      children: [
-                        CustomTextField(
-                          labelText: S.of(context).useDeck,
-                          onChanged: recordDetailNotifier.editUseDeck,
-                          controller: useDeckTextController,
-                          focusNode: useDeckFocusnode,
-                        ),
-                        _ListPickerButton(
-                          submited: () {
-                            recordDetailNotifier.setUseDeck();
-                            isSelectPicker.value = true;
-                          },
-                          onSelectedItemChanged: recordDetailNotifier.scrollUseDeck,
-                          children: gameDeck
-                              .map((deck) => Padding(
-                                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                                    child: Text(
-                                      deck.deck,
-                                      softWrap: false,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: Theme.of(context).textTheme.headline6?.copyWith(height: 1),
-                                    ),
-                                  ))
-                              .toList(),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Stack(
-                      alignment: Alignment.centerRight,
-                      children: [
-                        CustomTextField(
-                          labelText: S.of(context).opponentDeck,
-                          onChanged: recordDetailNotifier.editOpponentDeck,
-                          controller: opponentDeckTextController,
-                          focusNode: opponentDeckFocusnode,
-                        ),
-                        _ListPickerButton(
-                          submited: () {
-                            recordDetailNotifier.setOpponentDeck();
-                            isSelectPicker.value = true;
-                          },
-                          onSelectedItemChanged: recordDetailNotifier.scrollOpponentDeck,
-                          children: gameDeck
-                              .map((deck) => Padding(
-                                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                                    child: Text(
-                                      deck.deck,
-                                      softWrap: false,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: Theme.of(context).textTheme.headline6?.copyWith(height: 1),
-                                    ),
-                                  ))
-                              .toList(),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Stack(
-                      alignment: Alignment.centerRight,
-                      children: [
-                        CustomTextField(
-                          labelText: S.of(context).tag,
-                          onChanged: recordDetailNotifier.editTag,
-                          controller: tagTextController,
-                          focusNode: tagFocusnode,
-                        ),
-                        _ListPickerButton(
-                          submited: () {
-                            recordDetailNotifier.setTag();
-                            isSelectPicker.value = true;
-                          },
-                          onSelectedItemChanged: recordDetailNotifier.scrollTag,
-                          children: gameTag
-                              .map((tag) => Padding(
-                                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                                    child: Text(
-                                      tag.tag,
-                                      softWrap: false,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: Theme.of(context).textTheme.headline6?.copyWith(height: 1),
-                                    ),
-                                  ))
-                              .toList(),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    CustomTextField(
-                      controller: memoTextController,
-                      onChanged: recordDetailNotifier.editMemo,
-                      labelText: S.of(context).memoTag,
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
-                      focusNode: memoFocusnode,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
+      error: (error, stack) => Text('$error'),
+      loading: () => const Center(child: CircularProgressIndicator()),
     );
   }
 }

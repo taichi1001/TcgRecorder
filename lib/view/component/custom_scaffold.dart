@@ -23,7 +23,7 @@ class CustomScaffold extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectGame = ref.watch(selectGameNotifierProvider);
-    final decks = ref.watch(allGameListNotifierProvider);
+    final games = ref.watch(allGameListProvider);
     final selectGameNotifier = ref.read(selectGameNotifierProvider.notifier);
     final inputViewNotifier = ref.read(inputViewNotifierProvider.notifier);
     return Scaffold(
@@ -40,17 +40,23 @@ class CustomScaffold extends HookConsumerWidget {
               inputViewNotifier.resetView();
             },
             onSelectedItemChanged: selectGameNotifier.scrollSelectGame,
-            children: decks.allGameList!
-                .map((game) => Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                      child: Text(
-                        game.game,
-                        // softWrap: false,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.headline6?.copyWith(height: 1),
-                      ),
-                    ))
-                .toList(),
+            children: games.when(
+              data: (games) {
+                return games
+                    .map((game) => Padding(
+                          padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                          child: Text(
+                            game.game,
+                            // softWrap: false,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.headline6?.copyWith(height: 1),
+                          ),
+                        ))
+                    .toList();
+              },
+              error: (error, stack) => [Text('$error')],
+              loading: () => [const CircularProgressIndicator()],
+            ),
           ),
           if (rightButton != null) rightButton!,
         ],

@@ -6,11 +6,11 @@ import 'package:tcg_manager/repository/game_repository.dart';
 import 'package:tcg_manager/state/select_game_state.dart';
 
 class SelectGameNotifier extends StateNotifier<SelectGameState> {
-  SelectGameNotifier(this.read) : super(SelectGameState()) {
+  SelectGameNotifier(this.ref) : super(SelectGameState()) {
     startupGame();
   }
 
-  final Reader read;
+  final StateNotifierProviderRef ref;
 
   void changeGame(Game game) {
     state = state.copyWith(selectGame: game);
@@ -20,8 +20,9 @@ class SelectGameNotifier extends StateNotifier<SelectGameState> {
     state = state.copyWith(selectGame: Game(game: name));
   }
 
-  void scrollSelectGame(int index) {
-    final newDeck = read(allGameListNotifierProvider).allGameList?[index];
+  void scrollSelectGame(int index) async {
+    final gameList = await ref.read(allGameListProvider.future);
+    final newDeck = gameList[index];
     state = state.copyWith(cacheSelectGame: newDeck);
   }
 
@@ -31,21 +32,21 @@ class SelectGameNotifier extends StateNotifier<SelectGameState> {
 
   Future<bool> saveGame(String name) async {
     final newGame = Game(game: name);
-    if (_checkIfSelectedGamekNew(name)) {
-      await read(gameRepository).insert(newGame);
-      await read(allGameListNotifierProvider.notifier).fetch();
-      final game = read(allGameListNotifierProvider).allGameList?.last;
+    if (await _checkIfSelectedGamekNew(name)) {
+      await ref.read(gameRepository).insert(newGame);
+      ref.refresh(allGameListProvider);
+      final allGameList = await ref.read(allGameListProvider.future);
+      final game = allGameList.last;
       state = state.copyWith(selectGame: game);
       return true;
     }
     return false;
   }
 
-  void startupGame() {
-    final records = read(allRecordListNotifierProvider).allRecordList;
-    final games = read(allGameListNotifierProvider).allGameList;
-    if (games == null) return;
-    if (records != null && records.isNotEmpty) {
+  Future startupGame() async {
+    final records = await ref.read(allRecordListProvider.future);
+    final games = await ref.read(allGameListProvider.future);
+    if (records.isNotEmpty) {
       // レコードが存在する場合、最後に登録したレコードのゲームを選択ゲームとする
       final record = records.last;
       final game = games.where((game) => game.gameId == record.gameId).last;
@@ -56,9 +57,9 @@ class SelectGameNotifier extends StateNotifier<SelectGameState> {
     }
   }
 
-  bool _checkIfSelectedGamekNew(String name) {
-    final gameList = read(allGameListNotifierProvider).allGameList;
-    final matchList = gameList!.where((game) => game.game == name);
+  Future<bool> _checkIfSelectedGamekNew(String name) async {
+    final gameList = await ref.read(allGameListProvider.future);
+    final matchList = gameList.where((game) => game.game == name);
     if (matchList.isNotEmpty) {
       state = state.copyWith(selectGame: matchList.first);
       return false;
@@ -68,5 +69,5 @@ class SelectGameNotifier extends StateNotifier<SelectGameState> {
 }
 
 final selectGameNotifierProvider = StateNotifierProvider<SelectGameNotifier, SelectGameState>(
-  (ref) => SelectGameNotifier(ref.read),
+  (ref) => SelectGameNotifier(ref),
 );

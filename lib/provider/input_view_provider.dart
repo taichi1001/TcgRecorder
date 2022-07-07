@@ -52,14 +52,14 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     }
   }
 
-  void scrollUseDeck(int index) {
-    final newDeck = read(gameDeckListProvider)[index];
-    state = state.copyWith(cacheUseDeck: newDeck);
+  Future scrollUseDeck(int index) async {
+    final deckList = await read(gameDeckListProvider.future);
+    state = state.copyWith(cacheUseDeck: deckList[index]);
   }
 
-  void scrollOpponentDeck(int index) {
-    final newDeck = read(gameDeckListProvider)[index];
-    state = state.copyWith(cacheOpponentDeck: newDeck);
+  Future scrollOpponentDeck(int index) async {
+    final deckList = await read(gameDeckListProvider.future);
+    state = state.copyWith(cacheOpponentDeck: deckList[index]);
   }
 
   void setUseDeck() {
@@ -91,8 +91,9 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     state = state.copyWith(tag: tag);
   }
 
-  void scrollTag(int index) {
-    final newTag = read(gameTagListProvider)[index];
+  Future scrollTag(int index) async {
+    final gameTagList = await read(gameTagListProvider.future);
+    final newTag = gameTagList[index];
     state = state.copyWith(cacheTag: newTag);
   }
 
@@ -152,7 +153,7 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     // if (state.useDeck == null || state.opponentDeck == null) return false;
     final selectGameId = read(selectGameNotifierProvider).selectGame!.gameId;
     // useDeckが新規だった場合、useDeckにgameIDを設定
-    if (_checkIfSelectedUseDeckNew()) {
+    if (await _checkIfSelectedUseDeckNew()) {
       state = state.copyWith(
         useDeck: state.useDeck!.copyWith(
           gameId: selectGameId,
@@ -169,7 +170,7 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
       state = state.copyWith(opponentDeck: state.useDeck);
     } else {
       // opponentDeckが新規だった場合,opponentDeckにgameIDを設定
-      if (_checkIfSelectedOpponentDeckNew()) {
+      if (await _checkIfSelectedOpponentDeckNew()) {
         state = state.copyWith(
           opponentDeck: state.opponentDeck!.copyWith(
             gameId: selectGameId,
@@ -185,7 +186,7 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     }
     if (state.tag != null) {
       // Tagが新規だった場合,opponentDeckにgameIDを設定
-      if (_checkIfSelectedTagNew()) {
+      if (await _checkIfSelectedTagNew()) {
         state = state.copyWith(
           tag: state.tag!.copyWith(
             gameId: selectGameId,
@@ -221,8 +222,8 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     return true;
   }
 
-  bool _checkIfSelectedUseDeckNew() {
-    final gameDeckList = read(gameDeckListProvider);
+  Future<bool> _checkIfSelectedUseDeckNew() async {
+    final gameDeckList = await read(gameDeckListProvider.future);
     final matchList = gameDeckList.where((deck) => deck.deck == state.useDeck!.deck);
     if (matchList.isNotEmpty) {
       state = state.copyWith(useDeck: matchList.first);
@@ -231,8 +232,8 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     return true;
   }
 
-  bool _checkIfSelectedOpponentDeckNew() {
-    final gameDeckList = read(gameDeckListProvider);
+  Future<bool> _checkIfSelectedOpponentDeckNew() async {
+    final gameDeckList = await read(gameDeckListProvider.future);
     final matchList = gameDeckList.where((deck) => deck.deck == state.opponentDeck!.deck);
     if (matchList.isNotEmpty) {
       state = state.copyWith(opponentDeck: matchList.first);
@@ -241,8 +242,8 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     return true;
   }
 
-  bool _checkIfSelectedTagNew() {
-    final gameTagList = read(gameTagListProvider);
+  Future<bool> _checkIfSelectedTagNew() async {
+    final gameTagList = await read(gameTagListProvider.future);
     final matchList = gameTagList.where((tag) => tag.tag == state.tag!.tag);
     if (matchList.isNotEmpty) {
       state = state.copyWith(tag: matchList.first);

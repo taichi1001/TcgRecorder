@@ -35,11 +35,12 @@ class RecordListViewNotifier extends StateNotifier<RecordListViewState> {
     }
   }
 
-  void scrollUseDeck(int index) {
+  Future scrollUseDeck(int index) async {
     if (index == 0) {
       state = state.copyWith(cacheUseDeck: null);
     } else {
-      state = state.copyWith(cacheUseDeck: read(gameDeckListProvider)[index - 1]);
+      final gameDeckList = await read(gameDeckListProvider.future);
+      state = state.copyWith(cacheUseDeck: gameDeckList[index - 1]);
     }
   }
 
@@ -51,11 +52,12 @@ class RecordListViewNotifier extends StateNotifier<RecordListViewState> {
     state = state.copyWith(useDeck: deck);
   }
 
-  void scrollOpponentDeck(int index) {
+  Future scrollOpponentDeck(int index) async {
     if (index == 0) {
       state = state.copyWith(cacheOpponentDeck: null);
     } else {
-      state = state.copyWith(cacheOpponentDeck: read(gameDeckListProvider)[index - 1]);
+      final gameDeckList = await read(gameDeckListProvider.future);
+      state = state.copyWith(cacheOpponentDeck: gameDeckList[index - 1]);
     }
   }
 
@@ -63,11 +65,16 @@ class RecordListViewNotifier extends StateNotifier<RecordListViewState> {
     state = state.copyWith(opponentDeck: state.cacheOpponentDeck);
   }
 
-  void scrollTag(int index) {
+  void selectOpponentDeck(Deck deck) {
+    state = state.copyWith(opponentDeck: deck);
+  }
+
+  Future scrollTag(int index) async {
     if (index == 0) {
       state = state.copyWith(cacheTag: null);
     } else {
-      state = state.copyWith(cacheTag: read(gameTagListProvider)[index - 1]);
+      final gameTagList = await read(gameTagListProvider.future);
+      state = state.copyWith(cacheTag: gameTagList[index - 1]);
     }
   }
 

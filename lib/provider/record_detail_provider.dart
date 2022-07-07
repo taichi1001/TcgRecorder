@@ -16,8 +16,18 @@ import 'package:tcg_manager/selector/game_tag_list_selector.dart';
 import 'package:tcg_manager/state/record_detail_state.dart';
 
 class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
-  RecordDetailNotifier(this.ref, this.record, this.margedRecord)
-      : super(RecordDetailState(record: record, margedRecord: margedRecord, cacheDate: record.date, editMargedRecord: margedRecord));
+  RecordDetailNotifier({
+    required this.ref,
+    required this.record,
+    required this.margedRecord,
+  }) : super(
+          RecordDetailState(
+            record: record,
+            margedRecord: margedRecord,
+            cacheDate: record.date,
+            editMargedRecord: margedRecord,
+          ),
+        );
 
   final Ref ref;
   final Record record;
@@ -31,8 +41,9 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
     state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(useDeck: name));
   }
 
-  void scrollUseDeck(int index) {
-    state = state.copyWith(cacheUseDeck: ref.read(gameDeckListProvider)[index]);
+  Future scrollUseDeck(int index) async {
+    final gameDeckList = await ref.read(gameDeckListProvider.future);
+    state = state.copyWith(cacheUseDeck: gameDeckList[index]);
   }
 
   void setUseDeck() {
@@ -45,8 +56,9 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
     state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(opponentDeck: name));
   }
 
-  void scrollOpponentDeck(int index) {
-    state = state.copyWith(cacheOpponentDeck: ref.read(gameDeckListProvider)[index]);
+  Future scrollOpponentDeck(int index) async {
+    final gameDeckList = await ref.read(gameDeckListProvider.future);
+    state = state.copyWith(cacheOpponentDeck: gameDeckList[index]);
   }
 
   void setOpponentDeck() {
@@ -59,8 +71,9 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
     state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(tag: name));
   }
 
-  void scrollTag(int index) {
-    state = state.copyWith(cacheTag: ref.read(gameTagListProvider)[index]);
+  Future scrollTag(int index) async {
+    final gameTagList = await ref.read(gameTagListProvider.future);
+    state = state.copyWith(cacheTag: gameTagList[index]);
   }
 
   void setTag() {
@@ -120,7 +133,7 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
 
   Future _saveEditUseDeck() async {
     // 入力された使用デッキが新規のものかどうかを判定
-    final checkUseDeck = ref.read(editRecordHelper).checkIfSelectedUseDeckIsNew(state.margedRecord.useDeck);
+    final checkUseDeck = await ref.read(editRecordHelper).checkIfSelectedUseDeckIsNew(state.margedRecord.useDeck);
 
     // 新規だった場合
     if (checkUseDeck.isNew) {
@@ -142,7 +155,7 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
 
   Future _saveEditOpponentDeck() async {
     // 入力された対戦デッキが新規のものかどうかを判定
-    final checkOpponentDeck = ref.read(editRecordHelper).checkIfSelectedUseDeckIsNew(state.margedRecord.opponentDeck);
+    final checkOpponentDeck = await ref.read(editRecordHelper).checkIfSelectedUseDeckIsNew(state.margedRecord.opponentDeck);
 
     // 新規だった場合
     if (checkOpponentDeck.isNew) {
@@ -165,7 +178,7 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
   Future _saveEditTag() async {
     if (state.margedRecord.tag == null) return;
     // 入力されたタグが新規のものかどうかを判定
-    final checkTag = ref.read(editRecordHelper).checkIfSelectedTagIsNew(state.margedRecord.tag!);
+    final checkTag = await ref.read(editRecordHelper).checkIfSelectedTagIsNew(state.margedRecord.tag!);
 
     // 新規だった場合
     if (checkTag.isNew) {
@@ -186,12 +199,21 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
   }
 }
 
-final recordDetailNotifierProvider = StateNotifierProvider.family.autoDispose<RecordDetailNotifier, RecordDetailState, MargedRecord>(
-  (ref, margedRecord) {
-    // 一覧からレコードを選択した瞬間の値のみがほしいため、watchで監視せずにreadで読み取っている
-    final recordList = ref.read(allRecordListNotifierProvider).allRecordList;
-    final record = recordList!.firstWhere((record) => record.recordId == margedRecord.recordId);
-    final notifier = RecordDetailNotifier(ref, record, margedRecord);
-    return notifier;
-  },
-);
+final recordListProvider = StateProvider<List<Record>>((ref) {
+  final recordList = ref.read(allRecordListProvider);
+  final state = recordList.when(
+    data: (recordList) => recordList,
+    error: (_, __) => [],
+    loading: () => [],
+  );
+  return state.cast();
+});
+
+final recordDetailNotifierProvider =
+    StateNotifierProvider.family.autoDispose<RecordDetailNotifier, RecordDetailState, MargedRecord>((ref, margedRecord) {
+  // 一覧からレコードを選択した瞬間の値のみがほしいため、watchで監視せずにreadで読み取っている
+  final recordList = ref.read(recordListProvider);
+  final record = recordList.firstWhere((record) => record.recordId == margedRecord.recordId);
+  final notifier = RecordDetailNotifier(ref: ref, record: record, margedRecord: margedRecord);
+  return notifier;
+});

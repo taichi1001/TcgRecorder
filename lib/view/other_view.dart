@@ -268,7 +268,7 @@ class _GameListView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final gameList = ref.watch(allGameListNotifierProvider).allGameList;
+    final gameList = ref.watch(allGameListProvider);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -278,47 +278,49 @@ class _GameListView extends HookConsumerWidget {
           style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
         ),
       ),
-      body: gameList == null
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : ListView.separated(
-              itemCount: gameList.length,
-              separatorBuilder: (context, index) => const SizedBox(height: 8, child: Divider(height: 1)),
-              itemBuilder: (context, index) {
-                return SlidableTile(
-                  key: ObjectKey(gameList[index]),
-                  title: Text(gameList[index].game),
-                  alertMessage: '削除したゲームのデータが全て削除されます。(デッキ名やタグ名も削除されます。)',
-                  deleteFunc: () async => await ref.read(dbHelper).deleteGame(gameList[index]),
-                  editFunc: () async {
-                    final newName = await showTextInputDialog(
-                      context: context,
-                      title: S.of(context).gameEdit,
-                      textFields: [DialogTextField(initialText: gameList[index].game)],
-                    );
-                    if (newName != null && newName.first != '') {
-                      try {
-                        await ref.read(allGameListNotifierProvider.notifier).updateName(newName.first, index);
-                      } catch (e) {
-                        if (e.toString().contains('code 2067')) {
-                          await showOkAlertDialog(
-                            context: context,
-                            title: 'エラー',
-                            message: '既に登録されているデッキです。',
-                          );
-                        } else {
-                          await showOkAlertDialog(
-                            context: context,
-                            title: '予期せぬエラー',
-                          );
-                        }
+      body: gameList.when(
+        data: (gameList) {
+          return ListView.separated(
+            itemCount: gameList.length,
+            separatorBuilder: (context, index) => const SizedBox(height: 8, child: Divider(height: 1)),
+            itemBuilder: (context, index) {
+              return SlidableTile(
+                key: ObjectKey(gameList[index]),
+                title: Text(gameList[index].game),
+                alertMessage: '削除したゲームのデータが全て削除されます。(デッキ名やタグ名も削除されます。)',
+                deleteFunc: () async => await ref.read(dbHelper).deleteGame(gameList[index]),
+                editFunc: () async {
+                  final newName = await showTextInputDialog(
+                    context: context,
+                    title: S.of(context).gameEdit,
+                    textFields: [DialogTextField(initialText: gameList[index].game)],
+                  );
+                  if (newName != null && newName.first != '') {
+                    try {
+                      await ref.read(dbHelper).updateGameName(newName.first, index);
+                    } catch (e) {
+                      if (e.toString().contains('code 2067')) {
+                        await showOkAlertDialog(
+                          context: context,
+                          title: 'エラー',
+                          message: '既に登録されているデッキです。',
+                        );
+                      } else {
+                        await showOkAlertDialog(
+                          context: context,
+                          title: '予期せぬエラー',
+                        );
                       }
                     }
-                  },
-                );
-              },
-            ),
+                  }
+                },
+              );
+            },
+          );
+        },
+        error: (error, stack) => Text('$error'),
+        loading: () => const Center(child: CircularProgressIndicator()),
+      ),
     );
   }
 }
@@ -328,7 +330,7 @@ class _DeckListView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final deckList = ref.watch(allDeckListNotifierProvider).allDeckList;
+    final deckList = ref.watch(allDeckListProvider);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -338,47 +340,49 @@ class _DeckListView extends HookConsumerWidget {
           style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
         ),
       ),
-      body: deckList == null
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : ListView.separated(
-              itemCount: deckList.length,
-              separatorBuilder: (context, index) => const SizedBox(height: 8, child: Divider(height: 1)),
-              itemBuilder: (context, index) {
-                return SlidableTile(
-                  key: ObjectKey(deckList[index]),
-                  title: Text(deckList[index].deck),
-                  alertMessage: '選択したデッキのデータが全て削除されます。',
-                  deleteFunc: () async => await ref.read(dbHelper).deleteDeck(deckList[index]),
-                  editFunc: () async {
-                    final newName = await showTextInputDialog(
-                      context: context,
-                      title: S.of(context).gameEdit,
-                      textFields: [DialogTextField(initialText: deckList[index].deck)],
-                    );
-                    if (newName != null && newName.first != '') {
-                      try {
-                        await ref.read(allDeckListNotifierProvider.notifier).updateName(newName.first, index);
-                      } catch (e) {
-                        if (e.toString().contains('code 2067')) {
-                          await showOkAlertDialog(
-                            context: context,
-                            title: 'エラー',
-                            message: '既に登録されているデッキです。',
-                          );
-                        } else {
-                          await showOkAlertDialog(
-                            context: context,
-                            title: '予期せぬエラー',
-                          );
-                        }
+      body: deckList.when(
+        data: (deckList) {
+          return ListView.separated(
+            itemCount: deckList.length,
+            separatorBuilder: (context, index) => const SizedBox(height: 8, child: Divider(height: 1)),
+            itemBuilder: (context, index) {
+              return SlidableTile(
+                key: ObjectKey(deckList[index]),
+                title: Text(deckList[index].deck),
+                alertMessage: '選択したデッキのデータが全て削除されます。',
+                deleteFunc: () async => await ref.read(dbHelper).deleteDeck(deckList[index]),
+                editFunc: () async {
+                  final newName = await showTextInputDialog(
+                    context: context,
+                    title: S.of(context).gameEdit,
+                    textFields: [DialogTextField(initialText: deckList[index].deck)],
+                  );
+                  if (newName != null && newName.first != '') {
+                    try {
+                      await ref.read(dbHelper).updateDeckName(newName.first, index);
+                    } catch (e) {
+                      if (e.toString().contains('code 2067')) {
+                        await showOkAlertDialog(
+                          context: context,
+                          title: 'エラー',
+                          message: '既に登録されているデッキです。',
+                        );
+                      } else {
+                        await showOkAlertDialog(
+                          context: context,
+                          title: '予期せぬエラー',
+                        );
                       }
                     }
-                  },
-                );
-              },
-            ),
+                  }
+                },
+              );
+            },
+          );
+        },
+        error: (error, stack) => Text('$error'),
+        loading: () => const Center(child: CircularProgressIndicator()),
+      ),
     );
   }
 }
@@ -388,7 +392,7 @@ class _TagListView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final tagList = ref.watch(allTagListNotifierProvider).allTagList;
+    final tagList = ref.watch(allTagListProvider);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -398,47 +402,49 @@ class _TagListView extends HookConsumerWidget {
           style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
         ),
       ),
-      body: tagList == null
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : ListView.separated(
-              itemCount: tagList.length,
-              separatorBuilder: (context, index) => const SizedBox(height: 8, child: Divider(height: 1)),
-              itemBuilder: (context, index) {
-                return SlidableTile(
-                  key: ObjectKey(tagList[index]),
-                  title: Text(tagList[index].tag),
-                  alertMessage: '選択したタグを削除し、そのタグが設定されているデータからタグを削除します。',
-                  deleteFunc: () async => await ref.read(dbHelper).deleteTag(tagList[index]),
-                  editFunc: () async {
-                    final newName = await showTextInputDialog(
-                      context: context,
-                      title: S.of(context).gameEdit,
-                      textFields: [DialogTextField(initialText: tagList[index].tag)],
-                    );
-                    if (newName != null && newName.first != '') {
-                      try {
-                        await ref.read(allTagListNotifierProvider.notifier).updateName(newName.first, index);
-                      } catch (e) {
-                        if (e.toString().contains('code 2067')) {
-                          await showOkAlertDialog(
-                            context: context,
-                            title: 'エラー',
-                            message: '既に登録されているデッキです。',
-                          );
-                        } else {
-                          await showOkAlertDialog(
-                            context: context,
-                            title: '予期せぬエラー',
-                          );
-                        }
+      body: tagList.when(
+        data: (tagList) {
+          return ListView.separated(
+            itemCount: tagList.length,
+            separatorBuilder: (context, index) => const SizedBox(height: 8, child: Divider(height: 1)),
+            itemBuilder: (context, index) {
+              return SlidableTile(
+                key: ObjectKey(tagList[index]),
+                title: Text(tagList[index].tag),
+                alertMessage: '選択したタグを削除し、そのタグが設定されているデータからタグを削除します。',
+                deleteFunc: () async => await ref.read(dbHelper).deleteTag(tagList[index]),
+                editFunc: () async {
+                  final newName = await showTextInputDialog(
+                    context: context,
+                    title: S.of(context).gameEdit,
+                    textFields: [DialogTextField(initialText: tagList[index].tag)],
+                  );
+                  if (newName != null && newName.first != '') {
+                    try {
+                      await ref.read(dbHelper).updateTagName(newName.first, index);
+                    } catch (e) {
+                      if (e.toString().contains('code 2067')) {
+                        await showOkAlertDialog(
+                          context: context,
+                          title: 'エラー',
+                          message: '既に登録されているデッキです。',
+                        );
+                      } else {
+                        await showOkAlertDialog(
+                          context: context,
+                          title: '予期せぬエラー',
+                        );
                       }
                     }
-                  },
-                );
-              },
-            ),
+                  }
+                },
+              );
+            },
+          );
+        },
+        error: (error, stack) => Text('$error'),
+        loading: () => const Center(child: CircularProgressIndicator()),
+      ),
     );
   }
 }

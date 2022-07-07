@@ -4,11 +4,11 @@ import 'package:tcg_manager/enum/sort.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/record_list_view_provider.dart';
 
-final sortedRecordListProvider = StateProvider.autoDispose<List<Record>>((ref) {
-  final recordList = ref.watch(allRecordListNotifierProvider).allRecordList;
+final sortedRecordListProvider = FutureProvider.autoDispose<List<Record>>((ref) async {
+  final recordList = await ref.watch(allRecordListProvider.future);
   final sort = ref.watch(recordListViewNotifierProvider.select((value) => value.sort));
   if (sort == Sort.oldest) {
-    recordList!.sort((a, b) {
+    recordList.sort((a, b) {
       int result = a.date!.compareTo(b.date!);
       if (result == 0) {
         result = a.recordId!.compareTo(b.recordId!);
@@ -16,7 +16,7 @@ final sortedRecordListProvider = StateProvider.autoDispose<List<Record>>((ref) {
       return result;
     });
   } else if (sort == Sort.newest) {
-    recordList!.sort((a, b) {
+    recordList.sort((a, b) {
       int result = -a.date!.compareTo(b.date!);
       if (result == 0) {
         result = -a.recordId!.compareTo(b.recordId!);
@@ -24,6 +24,5 @@ final sortedRecordListProvider = StateProvider.autoDispose<List<Record>>((ref) {
       return result;
     });
   }
-  if (recordList != null) return recordList;
-  return List.empty();
+  return recordList;
 });

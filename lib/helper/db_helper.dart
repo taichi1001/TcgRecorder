@@ -5,6 +5,7 @@ import 'package:tcg_manager/entity/tag.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
+import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
 import 'package:tcg_manager/repository/game_repository.dart';
@@ -12,14 +13,14 @@ import 'package:tcg_manager/repository/record_repository.dart';
 import 'package:tcg_manager/repository/tag_repository.dart';
 
 class DbHelper {
-  DbHelper(this.read);
-  final Reader read;
+  DbHelper(this.ref);
+  final ProviderRef ref;
 
   Future deleteAll() async {
-    await read(recordRepository).deleteAll();
-    await read(tagRepository).deleteAll();
-    await read(deckRepository).deleteAll();
-    await read(gameRepository).deleteAll();
+    await ref.read(recordRepository).deleteAll();
+    await ref.read(tagRepository).deleteAll();
+    await ref.read(deckRepository).deleteAll();
+    await ref.read(gameRepository).deleteAll();
     await fetchAll();
   }
 
@@ -27,70 +28,109 @@ class DbHelper {
     await _deleteGameRecord(game);
     await _deleteGameDeck(game);
     await _deleteGameTag(game);
-    await read(gameRepository).deleteById(game.gameId!);
+    await ref.read(gameRepository).deleteById(game.gameId!);
     await fetchAll();
   }
 
   Future deleteDeck(Deck deck) async {
     await _deleteDeckRecord(deck);
-    await read(deckRepository).deleteById(deck.deckId!);
+    await ref.read(deckRepository).deleteById(deck.deckId!);
     await fetchAll();
   }
 
   Future deleteTag(Tag tag) async {
     await _removeTagFromRecord(tag);
-    await read(tagRepository).deleteById(tag.tagId!);
+    await ref.read(tagRepository).deleteById(tag.tagId!);
     await fetchAll();
   }
 
   Future _deleteGameRecord(Game game) async {
-    final allRecord = read(allRecordListNotifierProvider);
-    final gameRecord = allRecord.allRecordList!.where((record) => record.gameId == game.gameId).toList();
+    final allRecord = await ref.read(allRecordListProvider.future);
+    final gameRecord = allRecord.where((record) => record.gameId == game.gameId).toList();
     for (final record in gameRecord) {
-      await read(recordRepository).deleteById(record.recordId!);
+      await ref.read(recordRepository).deleteById(record.recordId!);
     }
   }
 
   Future _deleteGameDeck(Game game) async {
-    final allDeck = read(allDeckListNotifierProvider);
-    final gameDeck = allDeck.allDeckList!.where((deck) => deck.gameId == game.gameId).toList();
+    final allDeck = await ref.read(allDeckListProvider.future);
+    final gameDeck = allDeck.where((deck) => deck.gameId == game.gameId).toList();
     for (final deck in gameDeck) {
-      await read(deckRepository).deleteById(deck.deckId!);
+      await ref.read(deckRepository).deleteById(deck.deckId!);
     }
   }
 
   Future _deleteGameTag(Game game) async {
-    final allTag = read(allTagListNotifierProvider);
-    final gameTag = allTag.allTagList!.where((tag) => tag.gameId == game.gameId).toList();
+    final allTag = await ref.read(allTagListProvider.future);
+    final gameTag = allTag.where((tag) => tag.gameId == game.gameId).toList();
     for (final tag in gameTag) {
-      await read(tagRepository).deleteById(tag.tagId!);
+      await ref.read(tagRepository).deleteById(tag.tagId!);
     }
   }
 
   Future _deleteDeckRecord(Deck deck) async {
-    final allRecord = read(allRecordListNotifierProvider);
-    final deckRecord =
-        allRecord.allRecordList!.where((record) => record.useDeckId == deck.deckId || record.opponentDeckId == deck.deckId).toList();
+    final allRecord = await ref.read(allRecordListProvider.future);
+    final deckRecord = allRecord.where((record) => record.useDeckId == deck.deckId || record.opponentDeckId == deck.deckId).toList();
     for (final record in deckRecord) {
-      await read(recordRepository).deleteById(record.recordId!);
+      await ref.read(recordRepository).deleteById(record.recordId!);
     }
   }
 
   Future _removeTagFromRecord(Tag tag) async {
-    final allRecord = read(allRecordListNotifierProvider);
-    final tagRecord = allRecord.allRecordList!.where((record) => record.tagId == tag.tagId).toList();
+    final allRecord = await ref.read(allRecordListProvider.future);
+    final tagRecord = allRecord.where((record) => record.tagId == tag.tagId).toList();
     for (var record in tagRecord) {
       record = record.copyWith(tagId: null);
-      await read(recordRepository).update(record);
+      await ref.read(recordRepository).update(record);
     }
   }
 
   Future fetchAll() async {
-    await read(allGameListNotifierProvider.notifier).fetch();
-    await read(allDeckListNotifierProvider.notifier).fetch();
-    await read(allTagListNotifierProvider.notifier).fetch();
-    await read(allRecordListNotifierProvider.notifier).fetch();
+    ref.refresh(allGameListProvider);
+    ref.refresh(allDeckListProvider);
+    ref.refresh(allTagListProvider);
+    ref.refresh(allRecordListProvider);
+  }
+
+  Future updateDeckName(String name, int index) async {
+    final allDeckList = await ref.read(allDeckListProvider.future);
+    final deck = allDeckList[index];
+    final newDeck = deck.copyWith(deck: name);
+    try {
+      await ref.read(deckRepository).update(newDeck);
+      ref.refresh(allDeckListProvider);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future updateGameName(String name, int index) async {
+    final allGameList = await ref.read(allGameListProvider.future);
+    final game = allGameList[index];
+    final newGame = game.copyWith(game: name);
+    try {
+      await ref.read(gameRepository).update(newGame);
+      ref.refresh(allGameListProvider);
+      // 編集したゲームがselectGameと同じだった場合の処理
+      if (ref.read(selectGameNotifierProvider).selectGame!.gameId == newGame.gameId) {
+        ref.read(selectGameNotifierProvider.notifier).changeGame(newGame);
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future updateTagName(String name, int index) async {
+    final allTagList = await ref.read(allTagListProvider.future);
+    final tag = allTagList[index];
+    final newTag = tag.copyWith(tag: name);
+    try {
+      await ref.read(tagRepository).update(newTag);
+      ref.refresh(allTagListProvider);
+    } catch (e) {
+      rethrow;
+    }
   }
 }
 
-final dbHelper = Provider((ref) => DbHelper(ref.read));
+final dbHelper = Provider((ref) => DbHelper(ref));

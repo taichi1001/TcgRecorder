@@ -1,14 +1,15 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/win_rate_data.dart';
+import 'package:tcg_manager/helper/record_calc.dart';
 import 'package:tcg_manager/selector/filter_record_list_selector.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
 
-final opponentDeckDataByGameProvider = StateProvider.autoDispose<List<WinRateData>>(
-  (ref) {
-    final filterRecordListNotifier = ref.read(filterRecordListController);
-    final filterRecordList = ref.watch(filterRecordListProvider);
-    final gameDeckList = ref.watch(gameDeckListProvider);
+final opponentDeckDataByGameProvider = FutureProvider.autoDispose<List<WinRateData>>(
+  (ref) async {
+    final filterRecordList = await ref.watch(filterRecordListProvider.future);
+    final gameDeckList = await ref.watch(gameDeckListProvider.future);
+    final calc = RecordCalculator(targetRecordList: filterRecordList);
 
     final List<Deck> opponentDeckList = [];
     for (final deck in gameDeckList) {
@@ -24,8 +25,8 @@ final opponentDeckDataByGameProvider = StateProvider.autoDispose<List<WinRateDat
         .map(
           (useDeck) => WinRateData(
             deck: useDeck.deck,
-            matches: filterRecordListNotifier.countOpponentDeckMatches2(useDeck),
-            useRate: filterRecordListNotifier.calcOpponentDeckUseRate(useDeck),
+            matches: calc.countOpponentDeckMatches2(useDeck),
+            useRate: calc.calcOpponentDeckUseRate(useDeck),
           ),
         )
         .toList();

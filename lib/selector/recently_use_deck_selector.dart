@@ -3,8 +3,8 @@ import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
 import 'package:tcg_manager/selector/game_record_list_selector.dart';
 
-final recentlyUseDeckProvider = StateProvider.autoDispose<List<Deck>>((ref) {
-  final recordList = ref.watch(gameRecordListProvider);
+final recentlyUseDeckProvider = FutureProvider.autoDispose<List<Deck>>((ref) async {
+  final recordList = await ref.watch(gameRecordListProvider.future);
 
   // レコードを最新順に並び替え
   recordList.sort((a, b) {
@@ -27,7 +27,7 @@ final recentlyUseDeckProvider = StateProvider.autoDispose<List<Deck>>((ref) {
     recentlyDeckIdList = recentlyDeckIdList.toSet().toList();
   }
   // IDが一致するデッキを抽出
-  final deckList = ref.watch(gameDeckListProvider);
+  final deckList = await ref.watch(gameDeckListProvider.future);
   final List<Deck> recentlyDeckList = [];
   for (final id in recentlyDeckIdList) {
     for (final deck in deckList) {

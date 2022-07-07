@@ -1,14 +1,15 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/win_rate_data.dart';
+import 'package:tcg_manager/helper/record_calc.dart';
 import 'package:tcg_manager/selector/filter_record_list_selector.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
 
-final useDeckDataByGameProvider = StateProvider.autoDispose<List<WinRateData>>(
-  (ref) {
-    final filterRecordListNotifier = ref.read(filterRecordListController);
-    final filterRecordList = ref.watch(filterRecordListProvider);
-    final gameDeckList = ref.watch(gameDeckListProvider);
+final useDeckDataByGameProvider = FutureProvider.autoDispose<List<WinRateData>>(
+  (ref) async {
+    final filterRecordList = await ref.watch(filterRecordListProvider.future);
+    final gameDeckList = await ref.watch(gameDeckListProvider.future);
+    final calc = RecordCalculator(targetRecordList: filterRecordList);
 
     final List<Deck> gameUseDeckList = [];
     for (final deck in gameDeckList) {
@@ -24,36 +25,37 @@ final useDeckDataByGameProvider = StateProvider.autoDispose<List<WinRateData>>(
         .map(
           (useDeck) => WinRateData(
             deck: useDeck.deck,
-            matches: filterRecordListNotifier.countUseDeckMatches(useDeck),
-            win: filterRecordListNotifier.countUseDeckWins(useDeck),
-            loss: filterRecordListNotifier.countUseDeckLoss(useDeck),
-            useRate: filterRecordListNotifier.calcUseDeckUseRate(useDeck),
-            winRate: filterRecordListNotifier.calcUseDeckWinRate(useDeck),
-            winRateOfFirst: filterRecordListNotifier.calcUseDeckWinRateOfFirst(useDeck),
-            winRateOfSecond: filterRecordListNotifier.calcUseDeckWinRateOfSecond(useDeck),
+            matches: calc.countUseDeckMatches(useDeck),
+            win: calc.countUseDeckWins(useDeck),
+            loss: calc.countUseDeckLoss(useDeck),
+            useRate: calc.calcUseDeckUseRate(useDeck),
+            winRate: calc.calcUseDeckWinRate(useDeck),
+            winRateOfFirst: calc.calcUseDeckWinRateOfFirst(useDeck),
+            winRateOfSecond: calc.calcUseDeckWinRateOfSecond(useDeck),
           ),
         )
         .toList();
   },
 );
 
-final totalAddedToUseDeckDataByGameProvider = StateProvider.autoDispose<List<WinRateData>>(
-  (ref) {
-    final useDeckDataByGame = ref.watch(useDeckDataByGameProvider);
-    final copyUseDeckDataByGame = [...useDeckDataByGame];
-    final filterRecordListNotifier = ref.read(filterRecordListController);
+final totalAddedToUseDeckDataByGameProvider = FutureProvider.autoDispose<List<WinRateData>>(
+  (ref) async {
+    final useDeckDataByGame = [...await ref.watch(useDeckDataByGameProvider.future)];
+    final filterRecordList = await ref.watch(filterRecordListProvider.future);
+    final calc = RecordCalculator(targetRecordList: filterRecordList);
 
-    copyUseDeckDataByGame.add(
+    useDeckDataByGame.add(
       WinRateData(
         deck: '合計',
-        matches: filterRecordListNotifier.countMatches(),
-        win: filterRecordListNotifier.countWins(),
-        loss: filterRecordListNotifier.countLoss(),
-        winRate: filterRecordListNotifier.calcWinRate(),
-        winRateOfFirst: filterRecordListNotifier.calcWinRateOfFirst(),
-        winRateOfSecond: filterRecordListNotifier.calcWinRateOfSecond(),
+        matches: calc.countMatches(),
+        win: calc.countWins(),
+        loss: calc.countLoss(),
+        winRate: calc.calcWinRate(),
+        winRateOfFirst: calc.calcWinRateOfFirst(),
+        winRateOfSecond: calc.calcWinRateOfSecond(),
       ),
     );
-    return copyUseDeckDataByGame;
+    ref.keepAlive();
+    return useDeckDataByGame;
   },
 );
