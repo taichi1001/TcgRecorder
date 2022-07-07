@@ -77,95 +77,97 @@ class SelectDeckView extends HookConsumerWidget {
     });
 
     return Material(
-      child: Navigator(
-        onGenerateRoute: (_) => MaterialPageRoute(
-          builder: (context2) => Builder(
-            builder: (context) {
-              // こいつだけここに置かないと更新されなかった。理由は不明。
-              final selectDeckViewInfo = ref.watch(selectDeckViewInfoProvider);
-              return selectDeckViewInfo.when(
-                data: (selectDeckViewInfo) {
-                  return Scaffold(
-                    appBar: AppBar(
-                      leading: Icon(
-                        Icons.search,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: searchTextController.text == ''
-                              ? null
-                              : () {
-                                  searchTextController.text = '';
-                                },
-                          child: Text(
-                            'クリア',
-                            style: searchTextController.text == ''
-                                ? Theme.of(context).textTheme.caption?.copyWith(color: Colors.grey)
-                                : Theme.of(context).textTheme.caption,
+      child: SafeArea(
+        child: Navigator(
+          onGenerateRoute: (_) => MaterialPageRoute(
+            builder: (context2) => Builder(
+              builder: (context) {
+                // こいつだけここに置かないと更新されなかった。理由は不明。
+                final selectDeckViewInfo = ref.watch(selectDeckViewInfoProvider);
+                return selectDeckViewInfo.when(
+                  data: (selectDeckViewInfo) {
+                    return Scaffold(
+                      appBar: AppBar(
+                        leading: Icon(
+                          Icons.search,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: searchTextController.text == ''
+                                ? null
+                                : () {
+                                    searchTextController.text = '';
+                                  },
+                            child: Text(
+                              'クリア',
+                              style: searchTextController.text == ''
+                                  ? Theme.of(context).textTheme.caption?.copyWith(color: Colors.grey)
+                                  : Theme.of(context).textTheme.caption,
+                            ),
+                          ),
+                        ],
+                        titleSpacing: 0,
+                        backgroundColor: Theme.of(context).colorScheme.surface,
+                        title: TextField(
+                          controller: searchTextController,
+                          focusNode: searchFocusNode,
+                          decoration: const InputDecoration(
+                            labelText: '検索',
                           ),
                         ),
-                      ],
-                      titleSpacing: 0,
-                      backgroundColor: Theme.of(context).colorScheme.surface,
-                      title: TextField(
-                        controller: searchTextController,
-                        focusNode: searchFocusNode,
-                        decoration: const InputDecoration(
-                          labelText: '検索',
-                        ),
                       ),
-                    ),
-                    // 最後までスクロールした時に出るアニメーションを消すために入れている
-                    body: NotificationListener<OverscrollIndicatorNotification>(
-                      onNotification: (overscroll) {
-                        overscroll.disallowIndicator();
-                        return true;
-                      },
-                      child: NestedScrollView(
-                        controller: ScrollController(),
-                        headerSliverBuilder: (context, innnerBoxIsScrolled) => [], // headerは必要ないため空を返す
-                        body: SingleChildScrollView(
-                          controller: ModalScrollController.of(context),
-                          child: isSearch.value
-                              ? _DeckListView(
-                                  deckList: selectDeckViewInfo.searchDeckList,
-                                  rootContext: rootContext,
-                                  selectDeckFunc: selectDeckFunc,
-                                )
-                              : Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(16),
-                                      child: Text(
-                                        '最近使用したデッキ',
-                                        style: Theme.of(context).textTheme.caption,
+                      // 最後までスクロールした時に出るアニメーションを消すために入れている
+                      body: NotificationListener<OverscrollIndicatorNotification>(
+                        onNotification: (overscroll) {
+                          overscroll.disallowIndicator();
+                          return true;
+                        },
+                        child: NestedScrollView(
+                          controller: ScrollController(),
+                          headerSliverBuilder: (context, innnerBoxIsScrolled) => [], // headerは必要ないため空を返す
+                          body: SingleChildScrollView(
+                            controller: ModalScrollController.of(context),
+                            child: isSearch.value
+                                ? _DeckListView(
+                                    deckList: selectDeckViewInfo.searchDeckList,
+                                    rootContext: rootContext,
+                                    selectDeckFunc: selectDeckFunc,
+                                  )
+                                : Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(16),
+                                        child: Text(
+                                          '最近使用したデッキ',
+                                          style: Theme.of(context).textTheme.caption,
+                                        ),
                                       ),
-                                    ),
-                                    _DeckListView(
-                                      deckList: selectDeckViewInfo.recentlyUseDeckList,
-                                      rootContext: rootContext,
-                                      selectDeckFunc: selectDeckFunc,
-                                    ),
-                                    const _AllListViewTitle(),
-                                    _DeckListView(
-                                      deckList: selectDeckViewInfo.gameDeckList,
-                                      rootContext: rootContext,
-                                      selectDeckFunc: selectDeckFunc,
-                                    ),
-                                  ],
-                                ),
+                                      _DeckListView(
+                                        deckList: selectDeckViewInfo.recentlyUseDeckList,
+                                        rootContext: rootContext,
+                                        selectDeckFunc: selectDeckFunc,
+                                      ),
+                                      const _AllListViewTitle(),
+                                      _DeckListView(
+                                        deckList: selectDeckViewInfo.gameDeckList,
+                                        rootContext: rootContext,
+                                        selectDeckFunc: selectDeckFunc,
+                                      ),
+                                    ],
+                                  ),
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                },
-                error: (error, stack) => Text('$error'),
-                loading: () => const Center(child: CircularProgressIndicator()),
-              );
-            },
+                    );
+                  },
+                  error: (error, stack) => Text('$error'),
+                  loading: () => const Center(child: CircularProgressIndicator()),
+                );
+              },
+            ),
           ),
         ),
       ),

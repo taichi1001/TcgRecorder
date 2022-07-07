@@ -77,95 +77,97 @@ class SelectTagView extends HookConsumerWidget {
     });
 
     return Material(
-      child: Navigator(
-        onGenerateRoute: (_) => MaterialPageRoute(
-          builder: (context2) => Builder(
-            builder: (context) {
-              // こいつだけここに置かないと更新されなかった。理由は不明。
-              final selectTagViewInfo = ref.watch(selectTagViewInfoProvider);
-              return selectTagViewInfo.when(
-                data: (selectTagViewInfo) {
-                  return Scaffold(
-                    appBar: AppBar(
-                      leading: Icon(
-                        Icons.search,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: searchTextController.text == ''
-                              ? null
-                              : () {
-                                  searchTextController.text = '';
-                                },
-                          child: Text(
-                            'クリア',
-                            style: searchTextController.text == ''
-                                ? Theme.of(context).textTheme.caption?.copyWith(color: Colors.grey)
-                                : Theme.of(context).textTheme.caption,
+      child: SafeArea(
+        child: Navigator(
+          onGenerateRoute: (_) => MaterialPageRoute(
+            builder: (context2) => Builder(
+              builder: (context) {
+                // こいつだけここに置かないと更新されなかった。理由は不明。
+                final selectTagViewInfo = ref.watch(selectTagViewInfoProvider);
+                return selectTagViewInfo.when(
+                  data: (selectTagViewInfo) {
+                    return Scaffold(
+                      appBar: AppBar(
+                        leading: Icon(
+                          Icons.search,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: searchTextController.text == ''
+                                ? null
+                                : () {
+                                    searchTextController.text = '';
+                                  },
+                            child: Text(
+                              'クリア',
+                              style: searchTextController.text == ''
+                                  ? Theme.of(context).textTheme.caption?.copyWith(color: Colors.grey)
+                                  : Theme.of(context).textTheme.caption,
+                            ),
+                          ),
+                        ],
+                        titleSpacing: 0,
+                        backgroundColor: Theme.of(context).colorScheme.surface,
+                        title: TextField(
+                          controller: searchTextController,
+                          focusNode: searchFocusNode,
+                          decoration: const InputDecoration(
+                            labelText: '検索',
                           ),
                         ),
-                      ],
-                      titleSpacing: 0,
-                      backgroundColor: Theme.of(context).colorScheme.surface,
-                      title: TextField(
-                        controller: searchTextController,
-                        focusNode: searchFocusNode,
-                        decoration: const InputDecoration(
-                          labelText: '検索',
-                        ),
                       ),
-                    ),
-                    // 最後までスクロールした時に出るアニメーションを消すために入れている
-                    body: NotificationListener<OverscrollIndicatorNotification>(
-                      onNotification: (overscroll) {
-                        overscroll.disallowIndicator();
-                        return true;
-                      },
-                      child: NestedScrollView(
-                        controller: ScrollController(),
-                        headerSliverBuilder: (context, innnerBoxIsScrolled) => [], // headerは必要ないため空を返す
-                        body: SingleChildScrollView(
-                          controller: ModalScrollController.of(context),
-                          child: isSearch.value
-                              ? _TagListView(
-                                  tagList: selectTagViewInfo.searchTagList,
-                                  rootContext: rootContext,
-                                  selectTagFunc: selectTagFunc,
-                                )
-                              : Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(16),
-                                      child: Text(
-                                        '最近使用したタグ',
-                                        style: Theme.of(context).textTheme.caption,
+                      // 最後までスクロールした時に出るアニメーションを消すために入れている
+                      body: NotificationListener<OverscrollIndicatorNotification>(
+                        onNotification: (overscroll) {
+                          overscroll.disallowIndicator();
+                          return true;
+                        },
+                        child: NestedScrollView(
+                          controller: ScrollController(),
+                          headerSliverBuilder: (context, innnerBoxIsScrolled) => [], // headerは必要ないため空を返す
+                          body: SingleChildScrollView(
+                            controller: ModalScrollController.of(context),
+                            child: isSearch.value
+                                ? _TagListView(
+                                    tagList: selectTagViewInfo.searchTagList,
+                                    rootContext: rootContext,
+                                    selectTagFunc: selectTagFunc,
+                                  )
+                                : Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(16),
+                                        child: Text(
+                                          '最近使用したタグ',
+                                          style: Theme.of(context).textTheme.caption,
+                                        ),
                                       ),
-                                    ),
-                                    _TagListView(
-                                      tagList: selectTagViewInfo.recentlyUseTagList,
-                                      rootContext: rootContext,
-                                      selectTagFunc: selectTagFunc,
-                                    ),
-                                    const _AllListViewTitle(),
-                                    _TagListView(
-                                      tagList: selectTagViewInfo.gameTagList,
-                                      rootContext: rootContext,
-                                      selectTagFunc: selectTagFunc,
-                                    ),
-                                  ],
-                                ),
+                                      _TagListView(
+                                        tagList: selectTagViewInfo.recentlyUseTagList,
+                                        rootContext: rootContext,
+                                        selectTagFunc: selectTagFunc,
+                                      ),
+                                      const _AllListViewTitle(),
+                                      _TagListView(
+                                        tagList: selectTagViewInfo.gameTagList,
+                                        rootContext: rootContext,
+                                        selectTagFunc: selectTagFunc,
+                                      ),
+                                    ],
+                                  ),
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                },
-                error: (error, stack) => Text('$error'),
-                loading: () => const Center(child: CircularProgressIndicator()),
-              );
-            },
+                    );
+                  },
+                  error: (error, stack) => Text('$error'),
+                  loading: () => const Center(child: CircularProgressIndicator()),
+                );
+              },
+            ),
           ),
         ),
       ),
