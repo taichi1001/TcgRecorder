@@ -12,36 +12,7 @@ part of 'win_rate_data.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
-
-/// @nodoc
-class _$WinRateDataTearOff {
-  const _$WinRateDataTearOff();
-
-  _WinRateData call(
-      {String deck = '',
-      int matches = 0,
-      int win = 0,
-      int loss = 0,
-      double useRate = 0,
-      double winRate = 0,
-      double winRateOfFirst = 0,
-      double winRateOfSecond = 0}) {
-    return _WinRateData(
-      deck: deck,
-      matches: matches,
-      win: win,
-      loss: loss,
-      useRate: useRate,
-      winRate: winRate,
-      winRateOfFirst: winRateOfFirst,
-      winRateOfSecond: winRateOfSecond,
-    );
-  }
-}
-
-/// @nodoc
-const $WinRateData = _$WinRateDataTearOff();
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
 mixin _$WinRateData {
@@ -132,11 +103,11 @@ class _$WinRateDataCopyWithImpl<$Res> implements $WinRateDataCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$WinRateDataCopyWith<$Res>
+abstract class _$$_WinRateDataCopyWith<$Res>
     implements $WinRateDataCopyWith<$Res> {
-  factory _$WinRateDataCopyWith(
-          _WinRateData value, $Res Function(_WinRateData) then) =
-      __$WinRateDataCopyWithImpl<$Res>;
+  factory _$$_WinRateDataCopyWith(
+          _$_WinRateData value, $Res Function(_$_WinRateData) then) =
+      __$$_WinRateDataCopyWithImpl<$Res>;
   @override
   $Res call(
       {String deck,
@@ -150,14 +121,14 @@ abstract class _$WinRateDataCopyWith<$Res>
 }
 
 /// @nodoc
-class __$WinRateDataCopyWithImpl<$Res> extends _$WinRateDataCopyWithImpl<$Res>
-    implements _$WinRateDataCopyWith<$Res> {
-  __$WinRateDataCopyWithImpl(
-      _WinRateData _value, $Res Function(_WinRateData) _then)
-      : super(_value, (v) => _then(v as _WinRateData));
+class __$$_WinRateDataCopyWithImpl<$Res> extends _$WinRateDataCopyWithImpl<$Res>
+    implements _$$_WinRateDataCopyWith<$Res> {
+  __$$_WinRateDataCopyWithImpl(
+      _$_WinRateData _value, $Res Function(_$_WinRateData) _then)
+      : super(_value, (v) => _then(v as _$_WinRateData));
 
   @override
-  _WinRateData get _value => super._value as _WinRateData;
+  _$_WinRateData get _value => super._value as _$_WinRateData;
 
   @override
   $Res call({
@@ -170,7 +141,7 @@ class __$WinRateDataCopyWithImpl<$Res> extends _$WinRateDataCopyWithImpl<$Res>
     Object? winRateOfFirst = freezed,
     Object? winRateOfSecond = freezed,
   }) {
-    return _then(_WinRateData(
+    return _then(_$_WinRateData(
       deck: deck == freezed
           ? _value.deck
           : deck // ignore: cast_nullable_to_non_nullable
@@ -220,29 +191,29 @@ class _$_WinRateData implements _WinRateData {
       this.winRateOfFirst = 0,
       this.winRateOfSecond = 0});
 
-  @JsonKey()
   @override
+  @JsonKey()
   final String deck;
-  @JsonKey()
   @override
+  @JsonKey()
   final int matches;
-  @JsonKey()
   @override
+  @JsonKey()
   final int win;
-  @JsonKey()
   @override
+  @JsonKey()
   final int loss;
-  @JsonKey()
   @override
+  @JsonKey()
   final double useRate;
-  @JsonKey()
   @override
+  @JsonKey()
   final double winRate;
-  @JsonKey()
   @override
+  @JsonKey()
   final double winRateOfFirst;
-  @JsonKey()
   @override
+  @JsonKey()
   final double winRateOfSecond;
 
   @override
@@ -254,7 +225,7 @@ class _$_WinRateData implements _WinRateData {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _WinRateData &&
+            other is _$_WinRateData &&
             const DeepCollectionEquality().equals(other.deck, deck) &&
             const DeepCollectionEquality().equals(other.matches, matches) &&
             const DeepCollectionEquality().equals(other.win, win) &&
@@ -281,39 +252,39 @@ class _$_WinRateData implements _WinRateData {
 
   @JsonKey(ignore: true)
   @override
-  _$WinRateDataCopyWith<_WinRateData> get copyWith =>
-      __$WinRateDataCopyWithImpl<_WinRateData>(this, _$identity);
+  _$$_WinRateDataCopyWith<_$_WinRateData> get copyWith =>
+      __$$_WinRateDataCopyWithImpl<_$_WinRateData>(this, _$identity);
 }
 
 abstract class _WinRateData implements WinRateData {
   factory _WinRateData(
-      {String deck,
-      int matches,
-      int win,
-      int loss,
-      double useRate,
-      double winRate,
-      double winRateOfFirst,
-      double winRateOfSecond}) = _$_WinRateData;
+      {final String deck,
+      final int matches,
+      final int win,
+      final int loss,
+      final double useRate,
+      final double winRate,
+      final double winRateOfFirst,
+      final double winRateOfSecond}) = _$_WinRateData;
 
   @override
-  String get deck;
+  String get deck => throw _privateConstructorUsedError;
   @override
-  int get matches;
+  int get matches => throw _privateConstructorUsedError;
   @override
-  int get win;
+  int get win => throw _privateConstructorUsedError;
   @override
-  int get loss;
+  int get loss => throw _privateConstructorUsedError;
   @override
-  double get useRate;
+  double get useRate => throw _privateConstructorUsedError;
   @override
-  double get winRate;
+  double get winRate => throw _privateConstructorUsedError;
   @override
-  double get winRateOfFirst;
+  double get winRateOfFirst => throw _privateConstructorUsedError;
   @override
-  double get winRateOfSecond;
+  double get winRateOfSecond => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$WinRateDataCopyWith<_WinRateData> get copyWith =>
+  _$$_WinRateDataCopyWith<_$_WinRateData> get copyWith =>
       throw _privateConstructorUsedError;
 }

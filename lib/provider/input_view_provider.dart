@@ -104,6 +104,11 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     }
   }
 
+  void selectTag(Tag tag) {
+    state = state.copyWith(tag: tag);
+    read(textEditingControllerNotifierProvider.notifier).setTagController(state.tag!.tag);
+  }
+
   void selectWinLoss(WinLoss? winloss) {
     if (winloss != null) {
       state = state.copyWith(winLoss: winloss);

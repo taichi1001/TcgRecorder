@@ -7,11 +7,10 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:tcg_manager/enum/sort.dart';
 import 'package:tcg_manager/helper/convert_sort_string.dart';
 import 'package:tcg_manager/provider/record_list_view_provider.dart';
-import 'package:tcg_manager/selector/game_deck_list_selector.dart';
-import 'package:tcg_manager/selector/game_tag_list_selector.dart';
 import 'package:tcg_manager/view/component/custom_modal_list_picker.dart';
 import 'package:tcg_manager/view/component/custom_modal_picker.dart';
 import 'package:tcg_manager/view/select_deck_view.dart';
+import 'package:tcg_manager/view/select_tag_view.dart';
 
 class FilterModalBottomSheet extends HookConsumerWidget {
   const FilterModalBottomSheet({
@@ -32,8 +31,6 @@ class FilterModalBottomSheet extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final recordListViewState = ref.watch(recordListViewNotifierProvider);
     final recordListViewNotifier = ref.watch(recordListViewNotifierProvider.notifier);
-    final gameDeck = ref.watch(gameDeckListProvider);
-    final gameTag = ref.watch(gameTagListProvider);
     final outputFormat = DateFormat('yyyy/MM/dd');
 
     return Material(
@@ -251,28 +248,18 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                   ),
                 ),
               if (showTag)
-                _SelectableRow(
-                  submited: recordListViewNotifier.setTag,
-                  onSelectedItemChanged: recordListViewNotifier.scrollTag,
-                  selectableList: gameTag.when(
-                    data: (gameTag) {
-                      return gameTag
-                          .map(
-                            (tag) => Padding(
-                              padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                              child: Text(
-                                tag.tag,
-                                softWrap: false,
-                                overflow: TextOverflow.ellipsis,
-                                style: Theme.of(context).textTheme.headline6?.copyWith(height: 1),
-                              ),
-                            ),
-                          )
-                          .toList();
-                    },
-                    error: (error, stack) => [Text(error.toString())],
-                    loading: () => [const CircularProgressIndicator()],
-                  ),
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    showCupertinoModalBottomSheet(
+                      expand: true,
+                      context: context,
+                      backgroundColor: Colors.transparent,
+                      builder: (BuildContext context) => SelectTagView(
+                        selectTagFunc: recordListViewNotifier.selectTag,
+                      ),
+                    );
+                  },
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(

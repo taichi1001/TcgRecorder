@@ -31,6 +31,16 @@ class TagDao {
     return result;
   }
 
+  Future<List<Object?>> updateSortIndex(List<Tag> tagList) async {
+    final db = await dbProvider.database;
+    final batch = db.batch();
+    for (final tag in tagList) {
+      batch.update(tableName, tag.toJson(), where: 'tag_id = ?', whereArgs: [tag.tagId]);
+    }
+    final result = await batch.commit();
+    return result;
+  }
+
   Future<int> delete(int id) async {
     final db = await dbProvider.database;
     final result = await db.delete(tableName, where: 'tag_id = ?', whereArgs: [id]);

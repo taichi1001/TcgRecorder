@@ -12,54 +12,11 @@ part of 'record.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 Record _$RecordFromJson(Map<String, dynamic> json) {
   return _Record.fromJson(json);
 }
-
-/// @nodoc
-class _$RecordTearOff {
-  const _$RecordTearOff();
-
-  _Record call(
-      {@JsonKey(name: 'record_id')
-          int? recordId,
-      @JsonKey(name: 'game_id')
-          int? gameId,
-      @JsonKey(name: 'tag_id')
-          int? tagId,
-      @JsonKey(name: 'use_deck_id')
-          int? useDeckId,
-      @JsonKey(name: 'opponent_deck_id')
-          int? opponentDeckId,
-      @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson)
-          DateTime? date,
-      @JsonKey(fromJson: _firstSecondFromJson, toJson: _firstSecondToJson, name: 'first_second')
-          FirstSecond firstSecond = FirstSecond.first,
-      @JsonKey(fromJson: _winLossFromJson, toJson: _winLossToJson, name: 'win_loss')
-          WinLoss winLoss = WinLoss.win,
-      String? memo}) {
-    return _Record(
-      recordId: recordId,
-      gameId: gameId,
-      tagId: tagId,
-      useDeckId: useDeckId,
-      opponentDeckId: opponentDeckId,
-      date: date,
-      firstSecond: firstSecond,
-      winLoss: winLoss,
-      memo: memo,
-    );
-  }
-
-  Record fromJson(Map<String, Object?> json) {
-    return Record.fromJson(json);
-  }
-}
-
-/// @nodoc
-const $Record = _$RecordTearOff();
 
 /// @nodoc
 mixin _$Record {
@@ -175,9 +132,9 @@ class _$RecordCopyWithImpl<$Res> implements $RecordCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$RecordCopyWith<$Res> implements $RecordCopyWith<$Res> {
-  factory _$RecordCopyWith(_Record value, $Res Function(_Record) then) =
-      __$RecordCopyWithImpl<$Res>;
+abstract class _$$_RecordCopyWith<$Res> implements $RecordCopyWith<$Res> {
+  factory _$$_RecordCopyWith(_$_Record value, $Res Function(_$_Record) then) =
+      __$$_RecordCopyWithImpl<$Res>;
   @override
   $Res call(
       {@JsonKey(name: 'record_id')
@@ -200,13 +157,13 @@ abstract class _$RecordCopyWith<$Res> implements $RecordCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$RecordCopyWithImpl<$Res> extends _$RecordCopyWithImpl<$Res>
-    implements _$RecordCopyWith<$Res> {
-  __$RecordCopyWithImpl(_Record _value, $Res Function(_Record) _then)
-      : super(_value, (v) => _then(v as _Record));
+class __$$_RecordCopyWithImpl<$Res> extends _$RecordCopyWithImpl<$Res>
+    implements _$$_RecordCopyWith<$Res> {
+  __$$_RecordCopyWithImpl(_$_Record _value, $Res Function(_$_Record) _then)
+      : super(_value, (v) => _then(v as _$_Record));
 
   @override
-  _Record get _value => super._value as _Record;
+  _$_Record get _value => super._value as _$_Record;
 
   @override
   $Res call({
@@ -220,7 +177,7 @@ class __$RecordCopyWithImpl<$Res> extends _$RecordCopyWithImpl<$Res>
     Object? winLoss = freezed,
     Object? memo = freezed,
   }) {
-    return _then(_Record(
+    return _then(_$_Record(
       recordId: recordId == freezed
           ? _value.recordId
           : recordId // ignore: cast_nullable_to_non_nullable
@@ -325,7 +282,7 @@ class _$_Record implements _Record {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _Record &&
+            other is _$_Record &&
             const DeepCollectionEquality().equals(other.recordId, recordId) &&
             const DeepCollectionEquality().equals(other.gameId, gameId) &&
             const DeepCollectionEquality().equals(other.tagId, tagId) &&
@@ -339,6 +296,7 @@ class _$_Record implements _Record {
             const DeepCollectionEquality().equals(other.memo, memo));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -354,8 +312,8 @@ class _$_Record implements _Record {
 
   @JsonKey(ignore: true)
   @override
-  _$RecordCopyWith<_Record> get copyWith =>
-      __$RecordCopyWithImpl<_Record>(this, _$identity);
+  _$$_RecordCopyWith<_$_Record> get copyWith =>
+      __$$_RecordCopyWithImpl<_$_Record>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -366,55 +324,56 @@ class _$_Record implements _Record {
 abstract class _Record implements Record {
   factory _Record(
       {@JsonKey(name: 'record_id')
-          int? recordId,
+          final int? recordId,
       @JsonKey(name: 'game_id')
-          int? gameId,
+          final int? gameId,
       @JsonKey(name: 'tag_id')
-          int? tagId,
+          final int? tagId,
       @JsonKey(name: 'use_deck_id')
-          int? useDeckId,
+          final int? useDeckId,
       @JsonKey(name: 'opponent_deck_id')
-          int? opponentDeckId,
+          final int? opponentDeckId,
       @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson)
-          DateTime? date,
+          final DateTime? date,
       @JsonKey(fromJson: _firstSecondFromJson, toJson: _firstSecondToJson, name: 'first_second')
-          FirstSecond firstSecond,
+          final FirstSecond firstSecond,
       @JsonKey(fromJson: _winLossFromJson, toJson: _winLossToJson, name: 'win_loss')
-          WinLoss winLoss,
-      String? memo}) = _$_Record;
+          final WinLoss winLoss,
+      final String? memo}) = _$_Record;
 
   factory _Record.fromJson(Map<String, dynamic> json) = _$_Record.fromJson;
 
   @override
   @JsonKey(name: 'record_id')
-  int? get recordId;
+  int? get recordId => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'game_id')
-  int? get gameId;
+  int? get gameId => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'tag_id')
-  int? get tagId;
+  int? get tagId => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'use_deck_id')
-  int? get useDeckId;
+  int? get useDeckId => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'opponent_deck_id')
-  int? get opponentDeckId;
+  int? get opponentDeckId => throw _privateConstructorUsedError;
   @override
   @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson)
-  DateTime? get date;
+  DateTime? get date => throw _privateConstructorUsedError;
   @override
   @JsonKey(
       fromJson: _firstSecondFromJson,
       toJson: _firstSecondToJson,
       name: 'first_second')
-  FirstSecond get firstSecond;
+  FirstSecond get firstSecond => throw _privateConstructorUsedError;
   @override
   @JsonKey(fromJson: _winLossFromJson, toJson: _winLossToJson, name: 'win_loss')
-  WinLoss get winLoss;
+  WinLoss get winLoss => throw _privateConstructorUsedError;
   @override
-  String? get memo;
+  String? get memo => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$RecordCopyWith<_Record> get copyWith => throw _privateConstructorUsedError;
+  _$$_RecordCopyWith<_$_Record> get copyWith =>
+      throw _privateConstructorUsedError;
 }

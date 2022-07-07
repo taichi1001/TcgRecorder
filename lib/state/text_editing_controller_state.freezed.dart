@@ -12,28 +12,7 @@ part of 'text_editing_controller_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
-
-/// @nodoc
-class _$TextEditingControllerStateTearOff {
-  const _$TextEditingControllerStateTearOff();
-
-  _TextEditingControllerState call(
-      {required TextEditingController useDeckController,
-      required TextEditingController opponentDeckController,
-      required TextEditingController tagController,
-      required TextEditingController memoController}) {
-    return _TextEditingControllerState(
-      useDeckController: useDeckController,
-      opponentDeckController: opponentDeckController,
-      tagController: tagController,
-      memoController: memoController,
-    );
-  }
-}
-
-/// @nodoc
-const $TextEditingControllerState = _$TextEditingControllerStateTearOff();
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
 mixin _$TextEditingControllerState {
@@ -100,12 +79,12 @@ class _$TextEditingControllerStateCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$TextEditingControllerStateCopyWith<$Res>
+abstract class _$$_TextEditingControllerStateCopyWith<$Res>
     implements $TextEditingControllerStateCopyWith<$Res> {
-  factory _$TextEditingControllerStateCopyWith(
-          _TextEditingControllerState value,
-          $Res Function(_TextEditingControllerState) then) =
-      __$TextEditingControllerStateCopyWithImpl<$Res>;
+  factory _$$_TextEditingControllerStateCopyWith(
+          _$_TextEditingControllerState value,
+          $Res Function(_$_TextEditingControllerState) then) =
+      __$$_TextEditingControllerStateCopyWithImpl<$Res>;
   @override
   $Res call(
       {TextEditingController useDeckController,
@@ -115,16 +94,17 @@ abstract class _$TextEditingControllerStateCopyWith<$Res>
 }
 
 /// @nodoc
-class __$TextEditingControllerStateCopyWithImpl<$Res>
+class __$$_TextEditingControllerStateCopyWithImpl<$Res>
     extends _$TextEditingControllerStateCopyWithImpl<$Res>
-    implements _$TextEditingControllerStateCopyWith<$Res> {
-  __$TextEditingControllerStateCopyWithImpl(_TextEditingControllerState _value,
-      $Res Function(_TextEditingControllerState) _then)
-      : super(_value, (v) => _then(v as _TextEditingControllerState));
+    implements _$$_TextEditingControllerStateCopyWith<$Res> {
+  __$$_TextEditingControllerStateCopyWithImpl(
+      _$_TextEditingControllerState _value,
+      $Res Function(_$_TextEditingControllerState) _then)
+      : super(_value, (v) => _then(v as _$_TextEditingControllerState));
 
   @override
-  _TextEditingControllerState get _value =>
-      super._value as _TextEditingControllerState;
+  _$_TextEditingControllerState get _value =>
+      super._value as _$_TextEditingControllerState;
 
   @override
   $Res call({
@@ -133,7 +113,7 @@ class __$TextEditingControllerStateCopyWithImpl<$Res>
     Object? tagController = freezed,
     Object? memoController = freezed,
   }) {
-    return _then(_TextEditingControllerState(
+    return _then(_$_TextEditingControllerState(
       useDeckController: useDeckController == freezed
           ? _value.useDeckController
           : useDeckController // ignore: cast_nullable_to_non_nullable
@@ -181,7 +161,7 @@ class _$_TextEditingControllerState implements _TextEditingControllerState {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _TextEditingControllerState &&
+            other is _$_TextEditingControllerState &&
             const DeepCollectionEquality()
                 .equals(other.useDeckController, useDeckController) &&
             const DeepCollectionEquality()
@@ -202,30 +182,33 @@ class _$_TextEditingControllerState implements _TextEditingControllerState {
 
   @JsonKey(ignore: true)
   @override
-  _$TextEditingControllerStateCopyWith<_TextEditingControllerState>
-      get copyWith => __$TextEditingControllerStateCopyWithImpl<
-          _TextEditingControllerState>(this, _$identity);
+  _$$_TextEditingControllerStateCopyWith<_$_TextEditingControllerState>
+      get copyWith => __$$_TextEditingControllerStateCopyWithImpl<
+          _$_TextEditingControllerState>(this, _$identity);
 }
 
 abstract class _TextEditingControllerState
     implements TextEditingControllerState {
   factory _TextEditingControllerState(
-          {required TextEditingController useDeckController,
-          required TextEditingController opponentDeckController,
-          required TextEditingController tagController,
-          required TextEditingController memoController}) =
+          {required final TextEditingController useDeckController,
+          required final TextEditingController opponentDeckController,
+          required final TextEditingController tagController,
+          required final TextEditingController memoController}) =
       _$_TextEditingControllerState;
 
   @override
-  TextEditingController get useDeckController;
+  TextEditingController get useDeckController =>
+      throw _privateConstructorUsedError;
   @override
-  TextEditingController get opponentDeckController;
+  TextEditingController get opponentDeckController =>
+      throw _privateConstructorUsedError;
   @override
-  TextEditingController get tagController;
+  TextEditingController get tagController => throw _privateConstructorUsedError;
   @override
-  TextEditingController get memoController;
+  TextEditingController get memoController =>
+      throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$TextEditingControllerStateCopyWith<_TextEditingControllerState>
+  _$$_TextEditingControllerStateCopyWith<_$_TextEditingControllerState>
       get copyWith => throw _privateConstructorUsedError;
 }

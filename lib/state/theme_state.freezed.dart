@@ -12,24 +12,7 @@ part of 'theme_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
-
-/// @nodoc
-class _$ThemeStateTearOff {
-  const _$ThemeStateTearOff();
-
-  _ThemeState call(
-      {FlexScheme scheme = FlexScheme.ebonyClay,
-      FlexScheme previewScheme = FlexScheme.ebonyClay}) {
-    return _ThemeState(
-      scheme: scheme,
-      previewScheme: previewScheme,
-    );
-  }
-}
-
-/// @nodoc
-const $ThemeState = _$ThemeStateTearOff();
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
 mixin _$ThemeState {
@@ -76,30 +59,31 @@ class _$ThemeStateCopyWithImpl<$Res> implements $ThemeStateCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$ThemeStateCopyWith<$Res> implements $ThemeStateCopyWith<$Res> {
-  factory _$ThemeStateCopyWith(
-          _ThemeState value, $Res Function(_ThemeState) then) =
-      __$ThemeStateCopyWithImpl<$Res>;
+abstract class _$$_ThemeStateCopyWith<$Res>
+    implements $ThemeStateCopyWith<$Res> {
+  factory _$$_ThemeStateCopyWith(
+          _$_ThemeState value, $Res Function(_$_ThemeState) then) =
+      __$$_ThemeStateCopyWithImpl<$Res>;
   @override
   $Res call({FlexScheme scheme, FlexScheme previewScheme});
 }
 
 /// @nodoc
-class __$ThemeStateCopyWithImpl<$Res> extends _$ThemeStateCopyWithImpl<$Res>
-    implements _$ThemeStateCopyWith<$Res> {
-  __$ThemeStateCopyWithImpl(
-      _ThemeState _value, $Res Function(_ThemeState) _then)
-      : super(_value, (v) => _then(v as _ThemeState));
+class __$$_ThemeStateCopyWithImpl<$Res> extends _$ThemeStateCopyWithImpl<$Res>
+    implements _$$_ThemeStateCopyWith<$Res> {
+  __$$_ThemeStateCopyWithImpl(
+      _$_ThemeState _value, $Res Function(_$_ThemeState) _then)
+      : super(_value, (v) => _then(v as _$_ThemeState));
 
   @override
-  _ThemeState get _value => super._value as _ThemeState;
+  _$_ThemeState get _value => super._value as _$_ThemeState;
 
   @override
   $Res call({
     Object? scheme = freezed,
     Object? previewScheme = freezed,
   }) {
-    return _then(_ThemeState(
+    return _then(_$_ThemeState(
       scheme: scheme == freezed
           ? _value.scheme
           : scheme // ignore: cast_nullable_to_non_nullable
@@ -119,11 +103,11 @@ class _$_ThemeState implements _ThemeState {
       {this.scheme = FlexScheme.ebonyClay,
       this.previewScheme = FlexScheme.ebonyClay});
 
-  @JsonKey()
   @override
+  @JsonKey()
   final FlexScheme scheme;
-  @JsonKey()
   @override
+  @JsonKey()
   final FlexScheme previewScheme;
 
   @override
@@ -135,7 +119,7 @@ class _$_ThemeState implements _ThemeState {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _ThemeState &&
+            other is _$_ThemeState &&
             const DeepCollectionEquality().equals(other.scheme, scheme) &&
             const DeepCollectionEquality()
                 .equals(other.previewScheme, previewScheme));
@@ -149,20 +133,21 @@ class _$_ThemeState implements _ThemeState {
 
   @JsonKey(ignore: true)
   @override
-  _$ThemeStateCopyWith<_ThemeState> get copyWith =>
-      __$ThemeStateCopyWithImpl<_ThemeState>(this, _$identity);
+  _$$_ThemeStateCopyWith<_$_ThemeState> get copyWith =>
+      __$$_ThemeStateCopyWithImpl<_$_ThemeState>(this, _$identity);
 }
 
 abstract class _ThemeState implements ThemeState {
-  factory _ThemeState({FlexScheme scheme, FlexScheme previewScheme}) =
-      _$_ThemeState;
+  factory _ThemeState(
+      {final FlexScheme scheme,
+      final FlexScheme previewScheme}) = _$_ThemeState;
 
   @override
-  FlexScheme get scheme;
+  FlexScheme get scheme => throw _privateConstructorUsedError;
   @override
-  FlexScheme get previewScheme;
+  FlexScheme get previewScheme => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$ThemeStateCopyWith<_ThemeState> get copyWith =>
+  _$$_ThemeStateCopyWith<_$_ThemeState> get copyWith =>
       throw _privateConstructorUsedError;
 }
