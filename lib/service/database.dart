@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
-// import 'package:tcg_recorder/entity/tag.dart';
 
 class DatabaseService {
   static const _databaseVersion = 2;
@@ -38,6 +37,7 @@ class DatabaseService {
   void onUpgrade(Database database, int oldVersion, int newVersion) {
     if (newVersion > oldVersion) {
       database.execute('ALTER TABLE $deckTableName ADD sort_index INTEGER');
+      database.execute('ALTER TABLE $tagTableName ADD sort_index INTEGER');
     }
   }
 
@@ -83,9 +83,9 @@ class DatabaseService {
         tag TEXT NOT NULL,
         game_id INTEGER NOT NULL,
         is_visible_to_picker INTEGER NOT NULL,
+        sort_index INTEGER,
         unique(tag, game_id)
       )
     ''');
-    // await database.insert(tagTableName, Tag(tag: 'none').toDatabaseJson());
   }
 }

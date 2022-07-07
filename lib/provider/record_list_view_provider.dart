@@ -1,5 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/deck.dart';
+import 'package:tcg_manager/entity/tag.dart';
 import 'package:tcg_manager/enum/sort.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
 import 'package:tcg_manager/selector/game_tag_list_selector.dart';
@@ -80,6 +81,10 @@ class RecordListViewNotifier extends StateNotifier<RecordListViewState> {
 
   void setTag() {
     state = state.copyWith(tag: state.cacheTag);
+  }
+
+  void selectTag(Tag tag) {
+    state = state.copyWith(tag: tag);
   }
 
   void resetFilter() {

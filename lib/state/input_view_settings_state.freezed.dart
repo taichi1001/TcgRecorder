@@ -12,26 +12,7 @@ part of 'input_view_settings_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
-
-/// @nodoc
-class _$InputViewSettingsStateTearOff {
-  const _$InputViewSettingsStateTearOff();
-
-  _InputViewSettingsState call(
-      {bool fixUseDeck = false,
-      bool fixOpponentDeck = false,
-      bool fixTag = false}) {
-    return _InputViewSettingsState(
-      fixUseDeck: fixUseDeck,
-      fixOpponentDeck: fixOpponentDeck,
-      fixTag: fixTag,
-    );
-  }
-}
-
-/// @nodoc
-const $InputViewSettingsState = _$InputViewSettingsStateTearOff();
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
 mixin _$InputViewSettingsState {
@@ -85,25 +66,26 @@ class _$InputViewSettingsStateCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$InputViewSettingsStateCopyWith<$Res>
+abstract class _$$_InputViewSettingsStateCopyWith<$Res>
     implements $InputViewSettingsStateCopyWith<$Res> {
-  factory _$InputViewSettingsStateCopyWith(_InputViewSettingsState value,
-          $Res Function(_InputViewSettingsState) then) =
-      __$InputViewSettingsStateCopyWithImpl<$Res>;
+  factory _$$_InputViewSettingsStateCopyWith(_$_InputViewSettingsState value,
+          $Res Function(_$_InputViewSettingsState) then) =
+      __$$_InputViewSettingsStateCopyWithImpl<$Res>;
   @override
   $Res call({bool fixUseDeck, bool fixOpponentDeck, bool fixTag});
 }
 
 /// @nodoc
-class __$InputViewSettingsStateCopyWithImpl<$Res>
+class __$$_InputViewSettingsStateCopyWithImpl<$Res>
     extends _$InputViewSettingsStateCopyWithImpl<$Res>
-    implements _$InputViewSettingsStateCopyWith<$Res> {
-  __$InputViewSettingsStateCopyWithImpl(_InputViewSettingsState _value,
-      $Res Function(_InputViewSettingsState) _then)
-      : super(_value, (v) => _then(v as _InputViewSettingsState));
+    implements _$$_InputViewSettingsStateCopyWith<$Res> {
+  __$$_InputViewSettingsStateCopyWithImpl(_$_InputViewSettingsState _value,
+      $Res Function(_$_InputViewSettingsState) _then)
+      : super(_value, (v) => _then(v as _$_InputViewSettingsState));
 
   @override
-  _InputViewSettingsState get _value => super._value as _InputViewSettingsState;
+  _$_InputViewSettingsState get _value =>
+      super._value as _$_InputViewSettingsState;
 
   @override
   $Res call({
@@ -111,7 +93,7 @@ class __$InputViewSettingsStateCopyWithImpl<$Res>
     Object? fixOpponentDeck = freezed,
     Object? fixTag = freezed,
   }) {
-    return _then(_InputViewSettingsState(
+    return _then(_$_InputViewSettingsState(
       fixUseDeck: fixUseDeck == freezed
           ? _value.fixUseDeck
           : fixUseDeck // ignore: cast_nullable_to_non_nullable
@@ -136,14 +118,14 @@ class _$_InputViewSettingsState implements _InputViewSettingsState {
       this.fixOpponentDeck = false,
       this.fixTag = false});
 
-  @JsonKey()
   @override
+  @JsonKey()
   final bool fixUseDeck;
-  @JsonKey()
   @override
+  @JsonKey()
   final bool fixOpponentDeck;
-  @JsonKey()
   @override
+  @JsonKey()
   final bool fixTag;
 
   @override
@@ -155,7 +137,7 @@ class _$_InputViewSettingsState implements _InputViewSettingsState {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _InputViewSettingsState &&
+            other is _$_InputViewSettingsState &&
             const DeepCollectionEquality()
                 .equals(other.fixUseDeck, fixUseDeck) &&
             const DeepCollectionEquality()
@@ -172,25 +154,25 @@ class _$_InputViewSettingsState implements _InputViewSettingsState {
 
   @JsonKey(ignore: true)
   @override
-  _$InputViewSettingsStateCopyWith<_InputViewSettingsState> get copyWith =>
-      __$InputViewSettingsStateCopyWithImpl<_InputViewSettingsState>(
+  _$$_InputViewSettingsStateCopyWith<_$_InputViewSettingsState> get copyWith =>
+      __$$_InputViewSettingsStateCopyWithImpl<_$_InputViewSettingsState>(
           this, _$identity);
 }
 
 abstract class _InputViewSettingsState implements InputViewSettingsState {
   factory _InputViewSettingsState(
-      {bool fixUseDeck,
-      bool fixOpponentDeck,
-      bool fixTag}) = _$_InputViewSettingsState;
+      {final bool fixUseDeck,
+      final bool fixOpponentDeck,
+      final bool fixTag}) = _$_InputViewSettingsState;
 
   @override
-  bool get fixUseDeck;
+  bool get fixUseDeck => throw _privateConstructorUsedError;
   @override
-  bool get fixOpponentDeck;
+  bool get fixOpponentDeck => throw _privateConstructorUsedError;
   @override
-  bool get fixTag;
+  bool get fixTag => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$InputViewSettingsStateCopyWith<_InputViewSettingsState> get copyWith =>
+  _$$_InputViewSettingsStateCopyWith<_$_InputViewSettingsState> get copyWith =>
       throw _privateConstructorUsedError;
 }

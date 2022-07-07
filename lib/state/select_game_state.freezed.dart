@@ -12,22 +12,7 @@ part of 'select_game_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
-
-/// @nodoc
-class _$SelectGameStateTearOff {
-  const _$SelectGameStateTearOff();
-
-  _SelectGameState call({Game? selectGame, Game? cacheSelectGame}) {
-    return _SelectGameState(
-      selectGame: selectGame,
-      cacheSelectGame: cacheSelectGame,
-    );
-  }
-}
-
-/// @nodoc
-const $SelectGameState = _$SelectGameStateTearOff();
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
 mixin _$SelectGameState {
@@ -100,11 +85,11 @@ class _$SelectGameStateCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$SelectGameStateCopyWith<$Res>
+abstract class _$$_SelectGameStateCopyWith<$Res>
     implements $SelectGameStateCopyWith<$Res> {
-  factory _$SelectGameStateCopyWith(
-          _SelectGameState value, $Res Function(_SelectGameState) then) =
-      __$SelectGameStateCopyWithImpl<$Res>;
+  factory _$$_SelectGameStateCopyWith(
+          _$_SelectGameState value, $Res Function(_$_SelectGameState) then) =
+      __$$_SelectGameStateCopyWithImpl<$Res>;
   @override
   $Res call({Game? selectGame, Game? cacheSelectGame});
 
@@ -115,22 +100,22 @@ abstract class _$SelectGameStateCopyWith<$Res>
 }
 
 /// @nodoc
-class __$SelectGameStateCopyWithImpl<$Res>
+class __$$_SelectGameStateCopyWithImpl<$Res>
     extends _$SelectGameStateCopyWithImpl<$Res>
-    implements _$SelectGameStateCopyWith<$Res> {
-  __$SelectGameStateCopyWithImpl(
-      _SelectGameState _value, $Res Function(_SelectGameState) _then)
-      : super(_value, (v) => _then(v as _SelectGameState));
+    implements _$$_SelectGameStateCopyWith<$Res> {
+  __$$_SelectGameStateCopyWithImpl(
+      _$_SelectGameState _value, $Res Function(_$_SelectGameState) _then)
+      : super(_value, (v) => _then(v as _$_SelectGameState));
 
   @override
-  _SelectGameState get _value => super._value as _SelectGameState;
+  _$_SelectGameState get _value => super._value as _$_SelectGameState;
 
   @override
   $Res call({
     Object? selectGame = freezed,
     Object? cacheSelectGame = freezed,
   }) {
-    return _then(_SelectGameState(
+    return _then(_$_SelectGameState(
       selectGame: selectGame == freezed
           ? _value.selectGame
           : selectGame // ignore: cast_nullable_to_non_nullable
@@ -162,7 +147,7 @@ class _$_SelectGameState implements _SelectGameState {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _SelectGameState &&
+            other is _$_SelectGameState &&
             const DeepCollectionEquality()
                 .equals(other.selectGame, selectGame) &&
             const DeepCollectionEquality()
@@ -177,20 +162,21 @@ class _$_SelectGameState implements _SelectGameState {
 
   @JsonKey(ignore: true)
   @override
-  _$SelectGameStateCopyWith<_SelectGameState> get copyWith =>
-      __$SelectGameStateCopyWithImpl<_SelectGameState>(this, _$identity);
+  _$$_SelectGameStateCopyWith<_$_SelectGameState> get copyWith =>
+      __$$_SelectGameStateCopyWithImpl<_$_SelectGameState>(this, _$identity);
 }
 
 abstract class _SelectGameState implements SelectGameState {
-  factory _SelectGameState({Game? selectGame, Game? cacheSelectGame}) =
-      _$_SelectGameState;
+  factory _SelectGameState(
+      {final Game? selectGame,
+      final Game? cacheSelectGame}) = _$_SelectGameState;
 
   @override
-  Game? get selectGame;
+  Game? get selectGame => throw _privateConstructorUsedError;
   @override
-  Game? get cacheSelectGame;
+  Game? get cacheSelectGame => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$SelectGameStateCopyWith<_SelectGameState> get copyWith =>
+  _$$_SelectGameStateCopyWith<_$_SelectGameState> get copyWith =>
       throw _privateConstructorUsedError;
 }

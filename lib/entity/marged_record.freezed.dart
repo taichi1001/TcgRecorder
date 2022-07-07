@@ -12,38 +12,7 @@ part of 'marged_record.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
-
-/// @nodoc
-class _$MargedRecordTearOff {
-  const _$MargedRecordTearOff();
-
-  _MargedRecord call(
-      {required int recordId,
-      required String game,
-      String? tag = '分類無し',
-      required String useDeck,
-      required String opponentDeck,
-      required DateTime date,
-      required FirstSecond firstSecond,
-      required WinLoss winLoss,
-      String? memo}) {
-    return _MargedRecord(
-      recordId: recordId,
-      game: game,
-      tag: tag,
-      useDeck: useDeck,
-      opponentDeck: opponentDeck,
-      date: date,
-      firstSecond: firstSecond,
-      winLoss: winLoss,
-      memo: memo,
-    );
-  }
-}
-
-/// @nodoc
-const $MargedRecord = _$MargedRecordTearOff();
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
 mixin _$MargedRecord {
@@ -141,11 +110,11 @@ class _$MargedRecordCopyWithImpl<$Res> implements $MargedRecordCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$MargedRecordCopyWith<$Res>
+abstract class _$$_MargedRecordCopyWith<$Res>
     implements $MargedRecordCopyWith<$Res> {
-  factory _$MargedRecordCopyWith(
-          _MargedRecord value, $Res Function(_MargedRecord) then) =
-      __$MargedRecordCopyWithImpl<$Res>;
+  factory _$$_MargedRecordCopyWith(
+          _$_MargedRecord value, $Res Function(_$_MargedRecord) then) =
+      __$$_MargedRecordCopyWithImpl<$Res>;
   @override
   $Res call(
       {int recordId,
@@ -160,14 +129,15 @@ abstract class _$MargedRecordCopyWith<$Res>
 }
 
 /// @nodoc
-class __$MargedRecordCopyWithImpl<$Res> extends _$MargedRecordCopyWithImpl<$Res>
-    implements _$MargedRecordCopyWith<$Res> {
-  __$MargedRecordCopyWithImpl(
-      _MargedRecord _value, $Res Function(_MargedRecord) _then)
-      : super(_value, (v) => _then(v as _MargedRecord));
+class __$$_MargedRecordCopyWithImpl<$Res>
+    extends _$MargedRecordCopyWithImpl<$Res>
+    implements _$$_MargedRecordCopyWith<$Res> {
+  __$$_MargedRecordCopyWithImpl(
+      _$_MargedRecord _value, $Res Function(_$_MargedRecord) _then)
+      : super(_value, (v) => _then(v as _$_MargedRecord));
 
   @override
-  _MargedRecord get _value => super._value as _MargedRecord;
+  _$_MargedRecord get _value => super._value as _$_MargedRecord;
 
   @override
   $Res call({
@@ -181,7 +151,7 @@ class __$MargedRecordCopyWithImpl<$Res> extends _$MargedRecordCopyWithImpl<$Res>
     Object? winLoss = freezed,
     Object? memo = freezed,
   }) {
-    return _then(_MargedRecord(
+    return _then(_$_MargedRecord(
       recordId: recordId == freezed
           ? _value.recordId
           : recordId // ignore: cast_nullable_to_non_nullable
@@ -240,8 +210,8 @@ class _$_MargedRecord implements _MargedRecord {
   final int recordId;
   @override
   final String game;
-  @JsonKey()
   @override
+  @JsonKey()
   final String? tag;
   @override
   final String useDeck;
@@ -265,7 +235,7 @@ class _$_MargedRecord implements _MargedRecord {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _MargedRecord &&
+            other is _$_MargedRecord &&
             const DeepCollectionEquality().equals(other.recordId, recordId) &&
             const DeepCollectionEquality().equals(other.game, game) &&
             const DeepCollectionEquality().equals(other.tag, tag) &&
@@ -294,42 +264,42 @@ class _$_MargedRecord implements _MargedRecord {
 
   @JsonKey(ignore: true)
   @override
-  _$MargedRecordCopyWith<_MargedRecord> get copyWith =>
-      __$MargedRecordCopyWithImpl<_MargedRecord>(this, _$identity);
+  _$$_MargedRecordCopyWith<_$_MargedRecord> get copyWith =>
+      __$$_MargedRecordCopyWithImpl<_$_MargedRecord>(this, _$identity);
 }
 
 abstract class _MargedRecord implements MargedRecord {
   factory _MargedRecord(
-      {required int recordId,
-      required String game,
-      String? tag,
-      required String useDeck,
-      required String opponentDeck,
-      required DateTime date,
-      required FirstSecond firstSecond,
-      required WinLoss winLoss,
-      String? memo}) = _$_MargedRecord;
+      {required final int recordId,
+      required final String game,
+      final String? tag,
+      required final String useDeck,
+      required final String opponentDeck,
+      required final DateTime date,
+      required final FirstSecond firstSecond,
+      required final WinLoss winLoss,
+      final String? memo}) = _$_MargedRecord;
 
   @override
-  int get recordId;
+  int get recordId => throw _privateConstructorUsedError;
   @override
-  String get game;
+  String get game => throw _privateConstructorUsedError;
   @override
-  String? get tag;
+  String? get tag => throw _privateConstructorUsedError;
   @override
-  String get useDeck;
+  String get useDeck => throw _privateConstructorUsedError;
   @override
-  String get opponentDeck;
+  String get opponentDeck => throw _privateConstructorUsedError;
   @override
-  DateTime get date;
+  DateTime get date => throw _privateConstructorUsedError;
   @override
-  FirstSecond get firstSecond;
+  FirstSecond get firstSecond => throw _privateConstructorUsedError;
   @override
-  WinLoss get winLoss;
+  WinLoss get winLoss => throw _privateConstructorUsedError;
   @override
-  String? get memo;
+  String? get memo => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$MargedRecordCopyWith<_MargedRecord> get copyWith =>
+  _$$_MargedRecordCopyWith<_$_MargedRecord> get copyWith =>
       throw _privateConstructorUsedError;
 }

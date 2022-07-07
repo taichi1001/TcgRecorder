@@ -12,21 +12,7 @@ part of 'initial_game_registration_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
-
-/// @nodoc
-class _$InitialGameRegistrationStateTearOff {
-  const _$InitialGameRegistrationStateTearOff();
-
-  _InitialGameRegistrationState call({Game? initialGame}) {
-    return _InitialGameRegistrationState(
-      initialGame: initialGame,
-    );
-  }
-}
-
-/// @nodoc
-const $InitialGameRegistrationState = _$InitialGameRegistrationStateTearOff();
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
 mixin _$InitialGameRegistrationState {
@@ -82,12 +68,12 @@ class _$InitialGameRegistrationStateCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$InitialGameRegistrationStateCopyWith<$Res>
+abstract class _$$_InitialGameRegistrationStateCopyWith<$Res>
     implements $InitialGameRegistrationStateCopyWith<$Res> {
-  factory _$InitialGameRegistrationStateCopyWith(
-          _InitialGameRegistrationState value,
-          $Res Function(_InitialGameRegistrationState) then) =
-      __$InitialGameRegistrationStateCopyWithImpl<$Res>;
+  factory _$$_InitialGameRegistrationStateCopyWith(
+          _$_InitialGameRegistrationState value,
+          $Res Function(_$_InitialGameRegistrationState) then) =
+      __$$_InitialGameRegistrationStateCopyWithImpl<$Res>;
   @override
   $Res call({Game? initialGame});
 
@@ -96,23 +82,23 @@ abstract class _$InitialGameRegistrationStateCopyWith<$Res>
 }
 
 /// @nodoc
-class __$InitialGameRegistrationStateCopyWithImpl<$Res>
+class __$$_InitialGameRegistrationStateCopyWithImpl<$Res>
     extends _$InitialGameRegistrationStateCopyWithImpl<$Res>
-    implements _$InitialGameRegistrationStateCopyWith<$Res> {
-  __$InitialGameRegistrationStateCopyWithImpl(
-      _InitialGameRegistrationState _value,
-      $Res Function(_InitialGameRegistrationState) _then)
-      : super(_value, (v) => _then(v as _InitialGameRegistrationState));
+    implements _$$_InitialGameRegistrationStateCopyWith<$Res> {
+  __$$_InitialGameRegistrationStateCopyWithImpl(
+      _$_InitialGameRegistrationState _value,
+      $Res Function(_$_InitialGameRegistrationState) _then)
+      : super(_value, (v) => _then(v as _$_InitialGameRegistrationState));
 
   @override
-  _InitialGameRegistrationState get _value =>
-      super._value as _InitialGameRegistrationState;
+  _$_InitialGameRegistrationState get _value =>
+      super._value as _$_InitialGameRegistrationState;
 
   @override
   $Res call({
     Object? initialGame = freezed,
   }) {
-    return _then(_InitialGameRegistrationState(
+    return _then(_$_InitialGameRegistrationState(
       initialGame: initialGame == freezed
           ? _value.initialGame
           : initialGame // ignore: cast_nullable_to_non_nullable
@@ -138,7 +124,7 @@ class _$_InitialGameRegistrationState implements _InitialGameRegistrationState {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _InitialGameRegistrationState &&
+            other is _$_InitialGameRegistrationState &&
             const DeepCollectionEquality()
                 .equals(other.initialGame, initialGame));
   }
@@ -149,20 +135,20 @@ class _$_InitialGameRegistrationState implements _InitialGameRegistrationState {
 
   @JsonKey(ignore: true)
   @override
-  _$InitialGameRegistrationStateCopyWith<_InitialGameRegistrationState>
-      get copyWith => __$InitialGameRegistrationStateCopyWithImpl<
-          _InitialGameRegistrationState>(this, _$identity);
+  _$$_InitialGameRegistrationStateCopyWith<_$_InitialGameRegistrationState>
+      get copyWith => __$$_InitialGameRegistrationStateCopyWithImpl<
+          _$_InitialGameRegistrationState>(this, _$identity);
 }
 
 abstract class _InitialGameRegistrationState
     implements InitialGameRegistrationState {
-  factory _InitialGameRegistrationState({Game? initialGame}) =
+  factory _InitialGameRegistrationState({final Game? initialGame}) =
       _$_InitialGameRegistrationState;
 
   @override
-  Game? get initialGame;
+  Game? get initialGame => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$InitialGameRegistrationStateCopyWith<_InitialGameRegistrationState>
+  _$$_InitialGameRegistrationStateCopyWith<_$_InitialGameRegistrationState>
       get copyWith => throw _privateConstructorUsedError;
 }

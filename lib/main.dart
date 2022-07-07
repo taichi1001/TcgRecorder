@@ -17,7 +17,6 @@ import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/input_view_settings_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
-import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/provider/theme_provider.dart';
 import 'package:tcg_manager/view/bottom_navigation_view.dart';
@@ -51,13 +50,13 @@ class MainInfo {
     required this.allDeckList,
     required this.allTagList,
     required this.allRecordList,
-    required this.selectGame,
+    // required this.selectGame,
   });
   final List<Game> allGameList;
   final List<Deck> allDeckList;
   final List<Tag> allTagList;
   final List<Record> allRecordList;
-  final Game? selectGame;
+  // final Game? selectGame;
 }
 
 final mainInfoProvider = FutureProvider.autoDispose<MainInfo>((ref) async {
@@ -65,14 +64,14 @@ final mainInfoProvider = FutureProvider.autoDispose<MainInfo>((ref) async {
   final allDeckList = await ref.watch(allDeckListProvider.future);
   final allTagList = await ref.watch(allTagListProvider.future);
   final allRecordList = await ref.watch(allRecordListProvider.future);
-  final selectGame = ref.watch(selectGameNotifierProvider).selectGame;
+  // final selectGame = ref.watch(selectGameNotifierProvider).selectGame;
   ref.keepAlive();
   return MainInfo(
     allGameList: allGameList,
     allDeckList: allDeckList,
     allTagList: allTagList,
     allRecordList: allRecordList,
-    selectGame: selectGame,
+    // selectGame: selectGame,
   );
 });
 

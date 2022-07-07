@@ -12,22 +12,7 @@ part of 'bottom_navigation_bar_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
-
-/// @nodoc
-class _$BottomNavigationBarStateTearOff {
-  const _$BottomNavigationBarStateTearOff();
-
-  _BottomNavigationBarState call(
-      {BottomTabItem viewItem = BottomTabItem.inputScreen}) {
-    return _BottomNavigationBarState(
-      viewItem: viewItem,
-    );
-  }
-}
-
-/// @nodoc
-const $BottomNavigationBarState = _$BottomNavigationBarStateTearOff();
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
 mixin _$BottomNavigationBarState {
@@ -69,32 +54,33 @@ class _$BottomNavigationBarStateCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$BottomNavigationBarStateCopyWith<$Res>
+abstract class _$$_BottomNavigationBarStateCopyWith<$Res>
     implements $BottomNavigationBarStateCopyWith<$Res> {
-  factory _$BottomNavigationBarStateCopyWith(_BottomNavigationBarState value,
-          $Res Function(_BottomNavigationBarState) then) =
-      __$BottomNavigationBarStateCopyWithImpl<$Res>;
+  factory _$$_BottomNavigationBarStateCopyWith(
+          _$_BottomNavigationBarState value,
+          $Res Function(_$_BottomNavigationBarState) then) =
+      __$$_BottomNavigationBarStateCopyWithImpl<$Res>;
   @override
   $Res call({BottomTabItem viewItem});
 }
 
 /// @nodoc
-class __$BottomNavigationBarStateCopyWithImpl<$Res>
+class __$$_BottomNavigationBarStateCopyWithImpl<$Res>
     extends _$BottomNavigationBarStateCopyWithImpl<$Res>
-    implements _$BottomNavigationBarStateCopyWith<$Res> {
-  __$BottomNavigationBarStateCopyWithImpl(_BottomNavigationBarState _value,
-      $Res Function(_BottomNavigationBarState) _then)
-      : super(_value, (v) => _then(v as _BottomNavigationBarState));
+    implements _$$_BottomNavigationBarStateCopyWith<$Res> {
+  __$$_BottomNavigationBarStateCopyWithImpl(_$_BottomNavigationBarState _value,
+      $Res Function(_$_BottomNavigationBarState) _then)
+      : super(_value, (v) => _then(v as _$_BottomNavigationBarState));
 
   @override
-  _BottomNavigationBarState get _value =>
-      super._value as _BottomNavigationBarState;
+  _$_BottomNavigationBarState get _value =>
+      super._value as _$_BottomNavigationBarState;
 
   @override
   $Res call({
     Object? viewItem = freezed,
   }) {
-    return _then(_BottomNavigationBarState(
+    return _then(_$_BottomNavigationBarState(
       viewItem: viewItem == freezed
           ? _value.viewItem
           : viewItem // ignore: cast_nullable_to_non_nullable
@@ -108,8 +94,8 @@ class __$BottomNavigationBarStateCopyWithImpl<$Res>
 class _$_BottomNavigationBarState implements _BottomNavigationBarState {
   _$_BottomNavigationBarState({this.viewItem = BottomTabItem.inputScreen});
 
-  @JsonKey()
   @override
+  @JsonKey()
   final BottomTabItem viewItem;
 
   @override
@@ -121,7 +107,7 @@ class _$_BottomNavigationBarState implements _BottomNavigationBarState {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _BottomNavigationBarState &&
+            other is _$_BottomNavigationBarState &&
             const DeepCollectionEquality().equals(other.viewItem, viewItem));
   }
 
@@ -131,19 +117,19 @@ class _$_BottomNavigationBarState implements _BottomNavigationBarState {
 
   @JsonKey(ignore: true)
   @override
-  _$BottomNavigationBarStateCopyWith<_BottomNavigationBarState> get copyWith =>
-      __$BottomNavigationBarStateCopyWithImpl<_BottomNavigationBarState>(
-          this, _$identity);
+  _$$_BottomNavigationBarStateCopyWith<_$_BottomNavigationBarState>
+      get copyWith => __$$_BottomNavigationBarStateCopyWithImpl<
+          _$_BottomNavigationBarState>(this, _$identity);
 }
 
 abstract class _BottomNavigationBarState implements BottomNavigationBarState {
-  factory _BottomNavigationBarState({BottomTabItem viewItem}) =
+  factory _BottomNavigationBarState({final BottomTabItem viewItem}) =
       _$_BottomNavigationBarState;
 
   @override
-  BottomTabItem get viewItem;
+  BottomTabItem get viewItem => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$BottomNavigationBarStateCopyWith<_BottomNavigationBarState> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$_BottomNavigationBarStateCopyWith<_$_BottomNavigationBarState>
+      get copyWith => throw _privateConstructorUsedError;
 }
