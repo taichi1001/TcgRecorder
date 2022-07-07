@@ -309,9 +309,7 @@ class _ReorderableDeckListView extends HookConsumerWidget {
           newDeckList.add(deck);
         });
         await ref.read(deckRepository).updateSortIndex(newDeckList);
-        // await ref.read(dbHelper).fetchAll();
         ref.refresh(allDeckListProvider);
-        // ref.watch(sortedDeckListProvider.notifier).state = [...newDeckList];
       },
       itemCount: deckList.length,
     );
@@ -326,8 +324,16 @@ class ReordableDeckView extends HookConsumerWidget {
     final gameDeckList = ref.watch(sortedDeckListProvider);
 
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        title: const Text('並び替え'),
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        iconTheme: IconThemeData(
+          color: Theme.of(context).primaryColor,
+        ),
+        title: Text(
+          '並び替え',
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
       ),
       body: gameDeckList.when(
         data: (gameDeckList) {

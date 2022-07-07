@@ -22,8 +22,10 @@ final recentlyUseTagProvider = FutureProvider.autoDispose<List<Tag>>((ref) async
       recentlyTagIdList.removeLast();
       break;
     }
-    recentlyTagIdList.add(record.tagId!);
-    recentlyTagIdList = recentlyTagIdList.toSet().toList();
+    if (record.tagId != null) {
+      recentlyTagIdList.add(record.tagId!);
+      recentlyTagIdList = recentlyTagIdList.toSet().toList();
+    }
   }
   // IDが一致するタグを抽出
   final tagList = await ref.watch(gameTagListProvider.future);

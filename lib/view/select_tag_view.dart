@@ -140,7 +140,7 @@ class SelectTagView extends HookConsumerWidget {
                                     Padding(
                                       padding: const EdgeInsets.all(16),
                                       child: Text(
-                                        '最近使用したデッキ',
+                                        '最近使用したタグ',
                                         style: Theme.of(context).textTheme.caption,
                                       ),
                                     ),
@@ -324,8 +324,16 @@ class ReordableTagView extends HookConsumerWidget {
     final gameTagkList = ref.watch(sortedTagListProvider);
 
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        title: const Text('並び替え'),
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        iconTheme: IconThemeData(
+          color: Theme.of(context).primaryColor,
+        ),
+        title: Text(
+          '並び替え',
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
       ),
       body: gameTagkList.when(
         data: (gameTagkList) {
