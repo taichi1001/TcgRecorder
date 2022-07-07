@@ -49,7 +49,6 @@ class SelectDeckView extends HookConsumerWidget {
   // ignore: avoid_renaming_method_parameters
   Widget build(BuildContext rootContext, WidgetRef ref) {
     final selectDeckViewNotifier = ref.watch(selectDeckViewNotifierProvider.notifier);
-    // final recentlyUseDeckList = ref.watch(recentlyUseDeckProvider);
     final searchTextController = useTextEditingController(text: '');
     final searchFocusNode = useFocusNode();
     final isSearchFocus = useState(false);
@@ -84,8 +83,6 @@ class SelectDeckView extends HookConsumerWidget {
             builder: (context) {
               // こいつだけここに置かないと更新されなかった。理由は不明。
               final selectDeckViewInfo = ref.watch(selectDeckViewInfoProvider);
-              // final gameDeckList = ref.watch(sortedDeckListProvider);
-              // final searchDeckList = ref.watch(searchDeckListProvider);
               return selectDeckViewInfo.when(
                 data: (selectDeckViewInfo) {
                   return Scaffold(

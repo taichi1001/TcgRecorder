@@ -215,28 +215,18 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                   ),
                 ),
               if (showOpponentDeck)
-                _SelectableRow(
-                  submited: recordListViewNotifier.setOpponentDeck,
-                  onSelectedItemChanged: recordListViewNotifier.scrollOpponentDeck,
-                  selectableList: gameDeck.when(
-                    data: (gameDeck) {
-                      return gameDeck
-                          .map(
-                            (deck) => Padding(
-                              padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                              child: Text(
-                                deck.deck,
-                                softWrap: false,
-                                overflow: TextOverflow.ellipsis,
-                                style: Theme.of(context).textTheme.headline6?.copyWith(height: 1),
-                              ),
-                            ),
-                          )
-                          .toList();
-                    },
-                    error: (error, stack) => [Text(error.toString())],
-                    loading: () => [const CircularProgressIndicator()],
-                  ),
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    showCupertinoModalBottomSheet(
+                      expand: true,
+                      context: context,
+                      backgroundColor: Colors.transparent,
+                      builder: (BuildContext context) => SelectDeckView(
+                        selectDeckFunc: recordListViewNotifier.selectOpponentDeck,
+                      ),
+                    );
+                  },
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
