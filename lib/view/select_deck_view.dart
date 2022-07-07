@@ -166,7 +166,7 @@ class SelectDeckView extends HookConsumerWidget {
                   );
                 },
                 error: (error, stack) => Text('$error'),
-                loading: () => const CircularProgressIndicator(),
+                loading: () => const Center(child: CircularProgressIndicator()),
               );
             },
           ),
@@ -337,7 +337,7 @@ class ReordableDeckView extends HookConsumerWidget {
           return _ReorderableDeckListView(deckList: gameDeckList);
         },
         error: (error, stack) => Text('$error'),
-        loading: () => const CircularProgressIndicator(),
+        loading: () => const Center(child: CircularProgressIndicator()),
       ),
     );
   }

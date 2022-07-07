@@ -122,7 +122,7 @@ class GameDataGrid extends HookConsumerWidget {
         );
       },
       error: (error, stack) => Text('$error'),
-      loading: () => const CircularProgressIndicator(),
+      loading: () => const Center(child: CircularProgressIndicator()),
     );
   }
 }

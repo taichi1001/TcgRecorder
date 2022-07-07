@@ -11,7 +11,6 @@ import 'package:tcg_manager/entity/game.dart';
 import 'package:tcg_manager/entity/record.dart';
 import 'package:tcg_manager/entity/tag.dart';
 import 'package:tcg_manager/helper/att.dart';
-import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/helper/theme_data.dart';
 import 'package:tcg_manager/provider/adaptive_banner_ad_provider.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
@@ -85,7 +84,6 @@ class MainApp extends HookConsumerWidget {
     useEffect(() {
       Future.microtask(() {
         ref.read(adaptiveBannerAdNotifierProvider.notifier).getAd(context);
-        ref.read(dbHelper).fetchAll();
         ref.read(themeNotifierProvider.notifier).themeInitialize();
         ref.read(inputViewSettingsNotifierProvider.notifier).settingsInitialize();
       });

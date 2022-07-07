@@ -319,7 +319,7 @@ class _GameListView extends HookConsumerWidget {
           );
         },
         error: (error, stack) => Text('$error'),
-        loading: () => const CircularProgressIndicator(),
+        loading: () => const Center(child: CircularProgressIndicator()),
       ),
     );
   }
@@ -381,7 +381,7 @@ class _DeckListView extends HookConsumerWidget {
           );
         },
         error: (error, stack) => Text('$error'),
-        loading: () => const CircularProgressIndicator(),
+        loading: () => const Center(child: CircularProgressIndicator()),
       ),
     );
   }
@@ -443,7 +443,7 @@ class _TagListView extends HookConsumerWidget {
           );
         },
         error: (error, stack) => Text('$error'),
-        loading: () => const CircularProgressIndicator(),
+        loading: () => const Center(child: CircularProgressIndicator()),
       ),
     );
   }

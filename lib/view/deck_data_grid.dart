@@ -121,7 +121,7 @@ class DeckDataGrid extends HookConsumerWidget {
           );
         },
         error: (error, stack) => Text(error.toString()),
-        loading: () => const CircularProgressIndicator(),
+        loading: () => const Center(child: CircularProgressIndicator()),
       ),
     );
   }

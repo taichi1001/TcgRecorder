@@ -83,7 +83,7 @@ class GraphView extends HookConsumerWidget {
                                     );
                                   },
                                   error: (error, stack) => Text('$error'),
-                                  loading: () => const CircularProgressIndicator(),
+                                  loading: () => const Center(child: CircularProgressIndicator()),
                                 ),
                                 const SizedBox(height: 16),
                                 opponentDeckData.when(
@@ -97,7 +97,7 @@ class GraphView extends HookConsumerWidget {
                                     );
                                   },
                                   error: (error, stack) => Text('$error'),
-                                  loading: () => const CircularProgressIndicator(),
+                                  loading: () => const Center(child: CircularProgressIndicator()),
                                 ),
                               ],
                             ),
@@ -109,7 +109,7 @@ class GraphView extends HookConsumerWidget {
             );
           },
           error: (error, stack) => Text('$error'),
-          loading: () => const CircularProgressIndicator(),
+          loading: () => const Center(child: CircularProgressIndicator()),
         ),
       ),
     );
