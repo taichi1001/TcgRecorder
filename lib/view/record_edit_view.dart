@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/marged_record.dart';
 import 'package:tcg_manager/entity/tag.dart';
@@ -16,8 +17,9 @@ import 'package:tcg_manager/provider/record_detail_provider.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
 import 'package:tcg_manager/selector/game_tag_list_selector.dart';
 import 'package:tcg_manager/view/component/custom_modal_date_picker.dart';
-import 'package:tcg_manager/view/component/custom_modal_list_picker.dart';
 import 'package:tcg_manager/view/component/custom_textfield.dart';
+import 'package:tcg_manager/view/select_deck_view.dart';
+import 'package:tcg_manager/view/select_tag_view.dart';
 
 class RecordEditViewInfo {
   const RecordEditViewInfo({
@@ -273,23 +275,21 @@ class _EditView extends HookConsumerWidget {
                               controller: useDeckTextController,
                               focusNode: useDeckFocusnode,
                             ),
-                            _ListPickerButton(
-                              submited: () {
-                                recordDetailNotifier.setUseDeck();
+                            IconButton(
+                              icon: const Icon(Icons.arrow_drop_down),
+                              onPressed: () async {
+                                await showCupertinoModalBottomSheet(
+                                  expand: true,
+                                  context: context,
+                                  backgroundColor: Colors.transparent,
+                                  builder: (BuildContext context) {
+                                    return SelectDeckView(
+                                      selectDeckFunc: recordDetailNotifier.selectUseDeck,
+                                    );
+                                  },
+                                );
                                 isSelectPicker.value = true;
                               },
-                              onSelectedItemChanged: recordDetailNotifier.scrollUseDeck,
-                              children: recordEditViewInfo.gameDeckList
-                                  .map((deck) => Padding(
-                                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                                        child: Text(
-                                          deck.deck,
-                                          softWrap: false,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: Theme.of(context).textTheme.headline6?.copyWith(height: 1),
-                                        ),
-                                      ))
-                                  .toList(),
                             ),
                           ],
                         ),
@@ -303,23 +303,21 @@ class _EditView extends HookConsumerWidget {
                               controller: opponentDeckTextController,
                               focusNode: opponentDeckFocusnode,
                             ),
-                            _ListPickerButton(
-                              submited: () {
-                                recordDetailNotifier.setOpponentDeck();
+                            IconButton(
+                              icon: const Icon(Icons.arrow_drop_down),
+                              onPressed: () async {
+                                await showCupertinoModalBottomSheet(
+                                  expand: true,
+                                  context: context,
+                                  backgroundColor: Colors.transparent,
+                                  builder: (BuildContext context) {
+                                    return SelectDeckView(
+                                      selectDeckFunc: recordDetailNotifier.selectOpponentDeck,
+                                    );
+                                  },
+                                );
                                 isSelectPicker.value = true;
                               },
-                              onSelectedItemChanged: recordDetailNotifier.scrollOpponentDeck,
-                              children: recordEditViewInfo.gameDeckList
-                                  .map((deck) => Padding(
-                                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                                        child: Text(
-                                          deck.deck,
-                                          softWrap: false,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: Theme.of(context).textTheme.headline6?.copyWith(height: 1),
-                                        ),
-                                      ))
-                                  .toList(),
                             ),
                           ],
                         ),
@@ -333,23 +331,21 @@ class _EditView extends HookConsumerWidget {
                               controller: tagTextController,
                               focusNode: tagFocusnode,
                             ),
-                            _ListPickerButton(
-                              submited: () {
-                                recordDetailNotifier.setTag();
+                            IconButton(
+                              icon: const Icon(Icons.arrow_drop_down),
+                              onPressed: () async {
+                                await showCupertinoModalBottomSheet(
+                                  expand: true,
+                                  context: context,
+                                  backgroundColor: Colors.transparent,
+                                  builder: (BuildContext context) {
+                                    return SelectTagView(
+                                      selectTagFunc: recordDetailNotifier.selectTag,
+                                    );
+                                  },
+                                );
                                 isSelectPicker.value = true;
                               },
-                              onSelectedItemChanged: recordDetailNotifier.scrollTag,
-                              children: recordEditViewInfo.gameTagList
-                                  .map((tag) => Padding(
-                                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                                        child: Text(
-                                          tag.tag,
-                                          softWrap: false,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: Theme.of(context).textTheme.headline6?.copyWith(height: 1),
-                                        ),
-                                      ))
-                                  .toList(),
                             ),
                           ],
                         ),
@@ -373,43 +369,6 @@ class _EditView extends HookConsumerWidget {
       },
       error: (error, stack) => Text('$error'),
       loading: () => const Center(child: CircularProgressIndicator()),
-    );
-  }
-}
-
-class _ListPickerButton extends StatelessWidget {
-  const _ListPickerButton({
-    required this.submited,
-    required this.onSelectedItemChanged,
-    required this.children,
-    key,
-  }) : super(key: key);
-  final void Function() submited;
-  final Function(int) onSelectedItemChanged;
-  final List<Widget> children;
-
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      icon: const Icon(Icons.arrow_drop_down),
-      onPressed: children.isEmpty
-          ? null
-          : () {
-              showCupertinoModalPopup(
-                context: context,
-                builder: (BuildContext context) {
-                  return CustomModalListPicker(
-                    submited: () {
-                      submited();
-                      Navigator.pop(context);
-                      FocusScope.of(context).unfocus();
-                    },
-                    onSelectedItemChanged: onSelectedItemChanged,
-                    children: children,
-                  );
-                },
-              );
-            },
     );
   }
 }
