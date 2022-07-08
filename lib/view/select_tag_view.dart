@@ -323,7 +323,7 @@ class ReordableTagView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final gameTagkList = ref.watch(sortedTagListProvider);
+    final gameTagList = ref.watch(sortedTagListProvider);
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -337,9 +337,9 @@ class ReordableTagView extends HookConsumerWidget {
           style: Theme.of(context).textTheme.titleMedium,
         ),
       ),
-      body: gameTagkList.when(
-        data: (gameTagkList) {
-          return _ReorderableTagListView(tagList: gameTagkList);
+      body: gameTagList.when(
+        data: (gameTagList) {
+          return _ReorderableTagListView(tagList: gameTagList);
         },
         error: (error, stack) => Text('$error'),
         loading: () => const Center(child: CircularProgressIndicator()),
