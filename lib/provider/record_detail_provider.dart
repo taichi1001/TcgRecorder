@@ -52,6 +52,10 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
     }
   }
 
+  void selectUseDeck(Deck deck) {
+    state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(useDeck: deck.deck));
+  }
+
   void editOpponentDeck(String name) {
     state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(opponentDeck: name));
   }
@@ -67,6 +71,10 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
     }
   }
 
+  void selectOpponentDeck(Deck deck) {
+    state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(opponentDeck: deck.deck));
+  }
+
   void editTag(String name) {
     state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(tag: name));
   }
@@ -80,6 +88,10 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
     if (state.cacheTag != null) {
       state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(tag: state.cacheTag!.tag));
     }
+  }
+
+  void selectTag(Tag tag) {
+    state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(tag: tag.tag));
   }
 
   void scrollDate(DateTime date) {

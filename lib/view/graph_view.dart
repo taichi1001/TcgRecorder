@@ -39,16 +39,19 @@ class GraphView extends HookConsumerWidget {
           },
         ),
         padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
-        appBarBottom: TabBar(
-          indicator: MaterialIndicator(
-            horizontalPadding: 16,
-            height: 3,
-            color: Theme.of(context).colorScheme.onBackground,
+        appBarBottom: PreferredSize(
+          preferredSize: const Size.fromHeight(30),
+          child: TabBar(
+            indicator: MaterialIndicator(
+              horizontalPadding: 16,
+              height: 3,
+              color: Theme.of(context).colorScheme.onBackground,
+            ),
+            tabs: const [
+              Tab(icon: Icon(Icons.table_rows)),
+              Tab(icon: Icon(Icons.pie_chart_outline)),
+            ],
           ),
-          tabs: const [
-            Tab(icon: Icon(Icons.table_rows)),
-            Tab(icon: Icon(Icons.pie_chart_outline)),
-          ],
         ),
         body: recordList.when(
           data: (recordList) {

@@ -158,7 +158,7 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     // if (state.useDeck == null || state.opponentDeck == null) return false;
     final selectGameId = read(selectGameNotifierProvider).selectGame!.gameId;
     // useDeckが新規だった場合、useDeckにgameIDを設定
-    if (await _checkIfSelectedUseDeckNew()) {
+    if (await _checkIfDeckIsNew(state.useDeck!)) {
       state = state.copyWith(
         useDeck: state.useDeck!.copyWith(
           gameId: selectGameId,
@@ -175,7 +175,7 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
       state = state.copyWith(opponentDeck: state.useDeck);
     } else {
       // opponentDeckが新規だった場合,opponentDeckにgameIDを設定
-      if (await _checkIfSelectedOpponentDeckNew()) {
+      if (await _checkIfDeckIsNew(state.opponentDeck!)) {
         state = state.copyWith(
           opponentDeck: state.opponentDeck!.copyWith(
             gameId: selectGameId,
@@ -191,7 +191,7 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     }
     if (state.tag != null) {
       // Tagが新規だった場合,opponentDeckにgameIDを設定
-      if (await _checkIfSelectedTagNew()) {
+      if (await _checkIfTagIsNew(state.tag!)) {
         state = state.copyWith(
           tag: state.tag!.copyWith(
             gameId: selectGameId,
@@ -227,9 +227,9 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     return true;
   }
 
-  Future<bool> _checkIfSelectedUseDeckNew() async {
+  Future<bool> _checkIfDeckIsNew(Deck targetDeck) async {
     final gameDeckList = await read(gameDeckListProvider.future);
-    final matchList = gameDeckList.where((deck) => deck.deck == state.useDeck!.deck);
+    final matchList = gameDeckList.where((deck) => deck.deck == targetDeck.deck);
     if (matchList.isNotEmpty) {
       state = state.copyWith(useDeck: matchList.first);
       return false;
@@ -237,19 +237,9 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     return true;
   }
 
-  Future<bool> _checkIfSelectedOpponentDeckNew() async {
-    final gameDeckList = await read(gameDeckListProvider.future);
-    final matchList = gameDeckList.where((deck) => deck.deck == state.opponentDeck!.deck);
-    if (matchList.isNotEmpty) {
-      state = state.copyWith(opponentDeck: matchList.first);
-      return false;
-    }
-    return true;
-  }
-
-  Future<bool> _checkIfSelectedTagNew() async {
+  Future<bool> _checkIfTagIsNew(Tag targetTag) async {
     final gameTagList = await read(gameTagListProvider.future);
-    final matchList = gameTagList.where((tag) => tag.tag == state.tag!.tag);
+    final matchList = gameTagList.where((tag) => tag.tag == targetTag.tag);
     if (matchList.isNotEmpty) {
       state = state.copyWith(tag: matchList.first);
       return false;

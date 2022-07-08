@@ -1,4 +1,3 @@
-import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -61,13 +60,7 @@ class SelectTagView extends HookConsumerWidget {
     });
 
     searchTextController.addListener(() {
-      EasyDebounce.debounce(
-        'search_tag',
-        const Duration(milliseconds: 500),
-        () {
-          selectTagViewNotifier.setSearchText(searchTextController.text);
-        },
-      );
+      selectTagViewNotifier.setSearchText(searchTextController.text);
       if (searchTextController.text == '') {
         isSearchText.value = false;
       } else {
@@ -77,63 +70,84 @@ class SelectTagView extends HookConsumerWidget {
     });
 
     return Material(
-      child: Navigator(
-        onGenerateRoute: (_) => MaterialPageRoute(
-          builder: (context2) => Builder(
-            builder: (context) {
-              // こいつだけここに置かないと更新されなかった。理由は不明。
-              final selectTagViewInfo = ref.watch(selectTagViewInfoProvider);
-              return selectTagViewInfo.when(
-                data: (selectTagViewInfo) {
-                  return Scaffold(
-                    appBar: AppBar(
-                      leading: Icon(
-                        Icons.search,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: searchTextController.text == ''
-                              ? null
-                              : () {
-                                  searchTextController.text = '';
-                                },
-                          child: Text(
-                            'クリア',
-                            style: searchTextController.text == ''
-                                ? Theme.of(context).textTheme.caption?.copyWith(color: Colors.grey)
-                                : Theme.of(context).textTheme.caption,
+      child: SafeArea(
+        child: Navigator(
+          onGenerateRoute: (_) => MaterialPageRoute(
+            builder: (context2) => Builder(
+              builder: (context) {
+                // こいつだけここに置かないと更新されなかった。理由は不明。
+                final selectTagViewInfo = ref.watch(selectTagViewInfoProvider);
+                final searchText = ref.watch(selectTagViewNotifierProvider.select((value) => value.searchText));
+                return selectTagViewInfo.when(
+                  data: (selectTagViewInfo) {
+                    return Scaffold(
+                      appBar: AppBar(
+                        leading: Icon(
+                          Icons.search,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: searchTextController.text == ''
+                                ? null
+                                : () {
+                                    searchTextController.text = '';
+                                  },
+                            child: Text(
+                              'クリア',
+                              style: searchTextController.text == ''
+                                  ? Theme.of(context).textTheme.caption?.copyWith(color: Colors.grey)
+                                  : Theme.of(context).textTheme.caption,
+                            ),
+                          ),
+                        ],
+                        titleSpacing: 0,
+                        backgroundColor: Theme.of(context).colorScheme.surface,
+                        title: TextField(
+                          controller: searchTextController,
+                          focusNode: searchFocusNode,
+                          decoration: const InputDecoration(
+                            labelText: '検索',
                           ),
                         ),
-                      ],
-                      titleSpacing: 0,
-                      backgroundColor: Theme.of(context).colorScheme.surface,
-                      title: TextField(
-                        controller: searchTextController,
-                        focusNode: searchFocusNode,
-                        decoration: const InputDecoration(
-                          labelText: '検索',
-                        ),
                       ),
-                    ),
-                    // 最後までスクロールした時に出るアニメーションを消すために入れている
-                    body: NotificationListener<OverscrollIndicatorNotification>(
-                      onNotification: (overscroll) {
-                        overscroll.disallowIndicator();
-                        return true;
-                      },
-                      child: NestedScrollView(
-                        controller: ScrollController(),
-                        headerSliverBuilder: (context, innnerBoxIsScrolled) => [], // headerは必要ないため空を返す
-                        body: SingleChildScrollView(
-                          controller: ModalScrollController.of(context),
-                          child: isSearch.value
-                              ? _TagListView(
+                      // 最後までスクロールした時に出るアニメーションを消すために入れている
+                      body: NotificationListener<OverscrollIndicatorNotification>(
+                        onNotification: (overscroll) {
+                          overscroll.disallowIndicator();
+                          return true;
+                        },
+                        child: NestedScrollView(
+                          controller: ScrollController(),
+                          headerSliverBuilder: (context, innnerBoxIsScrolled) => [], // headerは必要ないため空を返す
+                          body: SingleChildScrollView(
+                            controller: ModalScrollController.of(context),
+                            child: (() {
+                              // 検索結果がなかったときの表示
+                              if (isSearch.value && selectTagViewInfo.searchTagList.isEmpty && searchText != '') {
+                                return GestureDetector(
+                                  onTap: () {
+                                    selectTagViewNotifier.saveTag(searchText);
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.all(16),
+                                    color: Theme.of(context).colorScheme.surface,
+                                    child: Text(
+                                      '「$searchText」を登録する',
+                                      style: Theme.of(context).textTheme.bodyMedium,
+                                    ),
+                                  ),
+                                );
+                                // 検索結果があった場合の表示
+                              } else if (isSearch.value) {
+                                return _TagListView(
                                   tagList: selectTagViewInfo.searchTagList,
                                   rootContext: rootContext,
                                   selectTagFunc: selectTagFunc,
-                                )
-                              : Column(
+                                );
+                                // 検索していない場合の表示
+                              } else {
+                                return Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
@@ -156,16 +170,19 @@ class SelectTagView extends HookConsumerWidget {
                                       selectTagFunc: selectTagFunc,
                                     ),
                                   ],
-                                ),
+                                );
+                              }
+                            })(),
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                },
-                error: (error, stack) => Text('$error'),
-                loading: () => const Center(child: CircularProgressIndicator()),
-              );
-            },
+                    );
+                  },
+                  error: (error, stack) => Text('$error'),
+                  loading: () => const Center(child: CircularProgressIndicator()),
+                );
+              },
+            ),
           ),
         ),
       ),
@@ -280,38 +297,43 @@ class _ReorderableTagListView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ReorderableListView.builder(
-      shrinkWrap: true,
-      buildDefaultDragHandles: false,
-      itemBuilder: ((context, index) {
-        return ListTile(
-          key: Key(tagList[index].tagId.toString()),
-          tileColor: Theme.of(context).colorScheme.surface,
-          title: Text(
-            tagList[index].tag,
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-          trailing: ReorderableDragStartListener(
-            index: index,
-            child: const Icon(Icons.drag_handle),
-          ),
-        );
-      }),
-      onReorder: (oldIndex, newIndex) async {
-        if (oldIndex < newIndex) {
-          newIndex -= 1;
-        }
-        final moveTag = tagList.removeAt(oldIndex);
-        tagList.insert(newIndex, moveTag);
-        final List<Tag> newTagList = [];
-        tagList.asMap().forEach((index, tag) {
-          tag = tag.copyWith(sortIndex: index);
-          newTagList.add(tag);
-        });
-        await ref.read(tagRepository).updateSortIndex(newTagList);
-        ref.refresh(allTagListProvider);
+    return NotificationListener<OverscrollIndicatorNotification>(
+      onNotification: (overscroll) {
+        overscroll.disallowIndicator();
+        return true;
       },
-      itemCount: tagList.length,
+      child: ReorderableListView.builder(
+        shrinkWrap: true,
+        itemBuilder: ((context, index) {
+          return ListTile(
+            key: Key(tagList[index].tagId.toString()),
+            tileColor: Theme.of(context).colorScheme.surface,
+            title: Text(
+              tagList[index].tag,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            trailing: ReorderableDragStartListener(
+              index: index,
+              child: const Icon(Icons.drag_handle),
+            ),
+          );
+        }),
+        onReorder: (oldIndex, newIndex) async {
+          if (oldIndex < newIndex) {
+            newIndex -= 1;
+          }
+          final moveTag = tagList.removeAt(oldIndex);
+          tagList.insert(newIndex, moveTag);
+          final List<Tag> newTagList = [];
+          tagList.asMap().forEach((index, tag) {
+            tag = tag.copyWith(sortIndex: index);
+            newTagList.add(tag);
+          });
+          await ref.read(tagRepository).updateSortIndex(newTagList);
+          ref.refresh(allTagListProvider);
+        },
+        itemCount: tagList.length,
+      ),
     );
   }
 }
@@ -321,15 +343,23 @@ class ReordableTagView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final gameTagkList = ref.watch(sortedTagListProvider);
+    final gameTagList = ref.watch(sortedTagListProvider);
 
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        title: const Text('並び替え'),
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        iconTheme: IconThemeData(
+          color: Theme.of(context).primaryColor,
+        ),
+        title: Text(
+          '並び替え',
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
       ),
-      body: gameTagkList.when(
-        data: (gameTagkList) {
-          return _ReorderableTagListView(tagList: gameTagkList);
+      body: gameTagList.when(
+        data: (gameTagList) {
+          return _ReorderableTagListView(tagList: gameTagList);
         },
         error: (error, stack) => Text('$error'),
         loading: () => const Center(child: CircularProgressIndicator()),
