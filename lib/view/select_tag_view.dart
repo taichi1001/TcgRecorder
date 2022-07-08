@@ -282,38 +282,43 @@ class _ReorderableTagListView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ReorderableListView.builder(
-      shrinkWrap: true,
-      buildDefaultDragHandles: false,
-      itemBuilder: ((context, index) {
-        return ListTile(
-          key: Key(tagList[index].tagId.toString()),
-          tileColor: Theme.of(context).colorScheme.surface,
-          title: Text(
-            tagList[index].tag,
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-          trailing: ReorderableDragStartListener(
-            index: index,
-            child: const Icon(Icons.drag_handle),
-          ),
-        );
-      }),
-      onReorder: (oldIndex, newIndex) async {
-        if (oldIndex < newIndex) {
-          newIndex -= 1;
-        }
-        final moveTag = tagList.removeAt(oldIndex);
-        tagList.insert(newIndex, moveTag);
-        final List<Tag> newTagList = [];
-        tagList.asMap().forEach((index, tag) {
-          tag = tag.copyWith(sortIndex: index);
-          newTagList.add(tag);
-        });
-        await ref.read(tagRepository).updateSortIndex(newTagList);
-        ref.refresh(allTagListProvider);
+    return NotificationListener<OverscrollIndicatorNotification>(
+      onNotification: (overscroll) {
+        overscroll.disallowIndicator();
+        return true;
       },
-      itemCount: tagList.length,
+      child: ReorderableListView.builder(
+        shrinkWrap: true,
+        itemBuilder: ((context, index) {
+          return ListTile(
+            key: Key(tagList[index].tagId.toString()),
+            tileColor: Theme.of(context).colorScheme.surface,
+            title: Text(
+              tagList[index].tag,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            trailing: ReorderableDragStartListener(
+              index: index,
+              child: const Icon(Icons.drag_handle),
+            ),
+          );
+        }),
+        onReorder: (oldIndex, newIndex) async {
+          if (oldIndex < newIndex) {
+            newIndex -= 1;
+          }
+          final moveTag = tagList.removeAt(oldIndex);
+          tagList.insert(newIndex, moveTag);
+          final List<Tag> newTagList = [];
+          tagList.asMap().forEach((index, tag) {
+            tag = tag.copyWith(sortIndex: index);
+            newTagList.add(tag);
+          });
+          await ref.read(tagRepository).updateSortIndex(newTagList);
+          ref.refresh(allTagListProvider);
+        },
+        itemCount: tagList.length,
+      ),
     );
   }
 }

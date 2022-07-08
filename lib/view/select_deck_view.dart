@@ -282,38 +282,44 @@ class _ReorderableDeckListView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ReorderableListView.builder(
-      shrinkWrap: true,
-      buildDefaultDragHandles: false,
-      itemBuilder: ((context, index) {
-        return ListTile(
-          key: Key(deckList[index].deckId.toString()),
-          tileColor: Theme.of(context).colorScheme.surface,
-          title: Text(
-            deckList[index].deck,
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-          trailing: ReorderableDragStartListener(
-            index: index,
-            child: const Icon(Icons.drag_handle),
-          ),
-        );
-      }),
-      onReorder: (oldIndex, newIndex) async {
-        if (oldIndex < newIndex) {
-          newIndex -= 1;
-        }
-        final moveDeck = deckList.removeAt(oldIndex);
-        deckList.insert(newIndex, moveDeck);
-        final List<Deck> newDeckList = [];
-        deckList.asMap().forEach((index, deck) {
-          deck = deck.copyWith(sortIndex: index);
-          newDeckList.add(deck);
-        });
-        await ref.read(deckRepository).updateSortIndex(newDeckList);
-        ref.refresh(allDeckListProvider);
+    return NotificationListener<OverscrollIndicatorNotification>(
+      onNotification: (overscroll) {
+        overscroll.disallowIndicator();
+        return true;
       },
-      itemCount: deckList.length,
+      child: ReorderableListView.builder(
+        shrinkWrap: true,
+        buildDefaultDragHandles: false,
+        itemBuilder: ((context, index) {
+          return ListTile(
+            key: Key(deckList[index].deckId.toString()),
+            tileColor: Theme.of(context).colorScheme.surface,
+            title: Text(
+              deckList[index].deck,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            trailing: ReorderableDragStartListener(
+              index: index,
+              child: const Icon(Icons.drag_handle),
+            ),
+          );
+        }),
+        onReorder: (oldIndex, newIndex) async {
+          if (oldIndex < newIndex) {
+            newIndex -= 1;
+          }
+          final moveDeck = deckList.removeAt(oldIndex);
+          deckList.insert(newIndex, moveDeck);
+          final List<Deck> newDeckList = [];
+          deckList.asMap().forEach((index, deck) {
+            deck = deck.copyWith(sortIndex: index);
+            newDeckList.add(deck);
+          });
+          await ref.read(deckRepository).updateSortIndex(newDeckList);
+          ref.refresh(allDeckListProvider);
+        },
+        itemCount: deckList.length,
+      ),
     );
   }
 }
