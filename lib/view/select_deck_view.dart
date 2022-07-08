@@ -208,8 +208,9 @@ class _AllListViewTitle extends HookConsumerWidget {
           ),
           Row(
             children: [
-              if (sort == Sort.custom)
-                CupertinoButton(
+              Visibility(
+                visible: sort == Sort.custom,
+                child: CupertinoButton(
                   padding: const EdgeInsets.all(0),
                   onPressed: () {
                     Navigator.push(
@@ -224,6 +225,7 @@ class _AllListViewTitle extends HookConsumerWidget {
                     style: Theme.of(context).textTheme.bodyText2,
                   ),
                 ),
+              ),
               CupertinoButton(
                 onPressed: () => selectDeckViewNotifier.changeSort(),
                 child: Text(

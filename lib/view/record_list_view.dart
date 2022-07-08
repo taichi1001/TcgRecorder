@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
@@ -95,7 +96,7 @@ class RecordListView extends HookConsumerWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  TextButton(
+                  CupertinoButton(
                     onPressed: () {
                       recordListViewNotifier.toggleSort();
                     },
