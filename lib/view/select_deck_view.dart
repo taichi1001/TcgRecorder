@@ -1,4 +1,3 @@
-import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -61,13 +60,7 @@ class SelectDeckView extends HookConsumerWidget {
     });
 
     searchTextController.addListener(() {
-      EasyDebounce.debounce(
-        'search_deck',
-        const Duration(milliseconds: 500),
-        () {
-          selectDeckViewNotifier.setSearchText(searchTextController.text);
-        },
-      );
+      selectDeckViewNotifier.setSearchText(searchTextController.text);
       if (searchTextController.text == '') {
         isSearchText.value = false;
       } else {
@@ -75,7 +68,6 @@ class SelectDeckView extends HookConsumerWidget {
       }
       isSearch.value = isSearchFocus.value || isSearchText.value;
     });
-
     return Material(
       child: SafeArea(
         child: Navigator(
@@ -84,6 +76,7 @@ class SelectDeckView extends HookConsumerWidget {
               builder: (context) {
                 // こいつだけここに置かないと更新されなかった。理由は不明。
                 final selectDeckViewInfo = ref.watch(selectDeckViewInfoProvider);
+                final searchText = ref.watch(selectDeckViewNotifierProvider.select((value) => value.searchText));
                 return selectDeckViewInfo.when(
                   data: (selectDeckViewInfo) {
                     return Scaffold(
@@ -128,36 +121,58 @@ class SelectDeckView extends HookConsumerWidget {
                           headerSliverBuilder: (context, innnerBoxIsScrolled) => [], // headerは必要ないため空を返す
                           body: SingleChildScrollView(
                             controller: ModalScrollController.of(context),
-                            child: isSearch.value
-                                ? _DeckListView(
-                                    deckList: selectDeckViewInfo.searchDeckList,
-                                    rootContext: rootContext,
-                                    selectDeckFunc: selectDeckFunc,
-                                  )
-                                : Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(16),
-                                        child: Text(
-                                          '最近使用したデッキ',
-                                          style: Theme.of(context).textTheme.caption,
-                                        ),
-                                      ),
-                                      _DeckListView(
-                                        deckList: selectDeckViewInfo.recentlyUseDeckList,
-                                        rootContext: rootContext,
-                                        selectDeckFunc: selectDeckFunc,
-                                      ),
-                                      const _AllListViewTitle(),
-                                      _DeckListView(
-                                        deckList: selectDeckViewInfo.gameDeckList,
-                                        rootContext: rootContext,
-                                        selectDeckFunc: selectDeckFunc,
-                                      ),
-                                    ],
+                            // 即時関数で作ってる
+                            child: (() {
+                              // 検索結果がなかったときの表示
+                              if (isSearch.value && selectDeckViewInfo.searchDeckList.isEmpty && searchText != '') {
+                                return GestureDetector(
+                                  onTap: () {
+                                    selectDeckViewNotifier.saveDeck(searchText);
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.all(16),
+                                    color: Theme.of(context).colorScheme.surface,
+                                    child: Text(
+                                      '「$searchText」を登録する',
+                                      style: Theme.of(context).textTheme.bodyMedium,
+                                    ),
                                   ),
+                                );
+                                // 検索結果があった場合の表示
+                              } else if (isSearch.value) {
+                                return _DeckListView(
+                                  deckList: selectDeckViewInfo.searchDeckList,
+                                  rootContext: rootContext,
+                                  selectDeckFunc: selectDeckFunc,
+                                );
+                                // 検索していない場合の表示
+                              } else {
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(16),
+                                      child: Text(
+                                        '最近使用したデッキ',
+                                        style: Theme.of(context).textTheme.caption,
+                                      ),
+                                    ),
+                                    _DeckListView(
+                                      deckList: selectDeckViewInfo.recentlyUseDeckList,
+                                      rootContext: rootContext,
+                                      selectDeckFunc: selectDeckFunc,
+                                    ),
+                                    const _AllListViewTitle(),
+                                    _DeckListView(
+                                      deckList: selectDeckViewInfo.gameDeckList,
+                                      rootContext: rootContext,
+                                      selectDeckFunc: selectDeckFunc,
+                                    ),
+                                  ],
+                                );
+                              }
+                            })(),
                           ),
                         ),
                       ),

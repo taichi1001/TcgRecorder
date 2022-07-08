@@ -1,11 +1,15 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/enum/sort.dart';
+import 'package:tcg_manager/provider/deck_list_provider.dart';
+import 'package:tcg_manager/provider/select_game_provider.dart';
+import 'package:tcg_manager/repository/deck_repository.dart';
 import 'package:tcg_manager/state/select_deck_view_state.dart';
 
 class SelectDeckViewNotifier extends StateNotifier<SelectDeckViewState> {
-  SelectDeckViewNotifier(this.read) : super(SelectDeckViewState());
+  SelectDeckViewNotifier(this.ref) : super(SelectDeckViewState());
 
-  final Reader read;
+  final StateNotifierProviderRef ref;
 
   void changeSort() {
     const sortTypes = Sort.values;
@@ -20,8 +24,18 @@ class SelectDeckViewNotifier extends StateNotifier<SelectDeckViewState> {
   void setSearchText(String searchText) {
     state = state.copyWith(searchText: searchText);
   }
+
+  void saveDeck(String deckName) {
+    final selectGame = ref.read(selectGameNotifierProvider).selectGame;
+    final deck = Deck(
+      deck: deckName,
+      gameId: selectGame!.gameId,
+    );
+    ref.read(deckRepository).insert(deck);
+    ref.refresh(allDeckListProvider);
+  }
 }
 
 final selectDeckViewNotifierProvider = StateNotifierProvider<SelectDeckViewNotifier, SelectDeckViewState>(
-  (ref) => SelectDeckViewNotifier(ref.read),
+  (ref) => SelectDeckViewNotifier(ref),
 );

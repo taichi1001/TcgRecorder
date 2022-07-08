@@ -1,4 +1,3 @@
-import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -61,13 +60,7 @@ class SelectTagView extends HookConsumerWidget {
     });
 
     searchTextController.addListener(() {
-      EasyDebounce.debounce(
-        'search_tag',
-        const Duration(milliseconds: 500),
-        () {
-          selectTagViewNotifier.setSearchText(searchTextController.text);
-        },
-      );
+      selectTagViewNotifier.setSearchText(searchTextController.text);
       if (searchTextController.text == '') {
         isSearchText.value = false;
       } else {
@@ -84,6 +77,7 @@ class SelectTagView extends HookConsumerWidget {
               builder: (context) {
                 // こいつだけここに置かないと更新されなかった。理由は不明。
                 final selectTagViewInfo = ref.watch(selectTagViewInfoProvider);
+                final searchText = ref.watch(selectTagViewNotifierProvider.select((value) => value.searchText));
                 return selectTagViewInfo.when(
                   data: (selectTagViewInfo) {
                     return Scaffold(
@@ -128,36 +122,57 @@ class SelectTagView extends HookConsumerWidget {
                           headerSliverBuilder: (context, innnerBoxIsScrolled) => [], // headerは必要ないため空を返す
                           body: SingleChildScrollView(
                             controller: ModalScrollController.of(context),
-                            child: isSearch.value
-                                ? _TagListView(
-                                    tagList: selectTagViewInfo.searchTagList,
-                                    rootContext: rootContext,
-                                    selectTagFunc: selectTagFunc,
-                                  )
-                                : Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(16),
-                                        child: Text(
-                                          '最近使用したタグ',
-                                          style: Theme.of(context).textTheme.caption,
-                                        ),
-                                      ),
-                                      _TagListView(
-                                        tagList: selectTagViewInfo.recentlyUseTagList,
-                                        rootContext: rootContext,
-                                        selectTagFunc: selectTagFunc,
-                                      ),
-                                      const _AllListViewTitle(),
-                                      _TagListView(
-                                        tagList: selectTagViewInfo.gameTagList,
-                                        rootContext: rootContext,
-                                        selectTagFunc: selectTagFunc,
-                                      ),
-                                    ],
+                            child: (() {
+                              // 検索結果がなかったときの表示
+                              if (isSearch.value && selectTagViewInfo.searchTagList.isEmpty && searchText != '') {
+                                return GestureDetector(
+                                  onTap: () {
+                                    selectTagViewNotifier.saveTag(searchText);
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.all(16),
+                                    color: Theme.of(context).colorScheme.surface,
+                                    child: Text(
+                                      '「$searchText」を登録する',
+                                      style: Theme.of(context).textTheme.bodyMedium,
+                                    ),
                                   ),
+                                );
+                                // 検索結果があった場合の表示
+                              } else if (isSearch.value) {
+                                return _TagListView(
+                                  tagList: selectTagViewInfo.searchTagList,
+                                  rootContext: rootContext,
+                                  selectTagFunc: selectTagFunc,
+                                );
+                                // 検索していない場合の表示
+                              } else {
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(16),
+                                      child: Text(
+                                        '最近使用したデッキ',
+                                        style: Theme.of(context).textTheme.caption,
+                                      ),
+                                    ),
+                                    _TagListView(
+                                      tagList: selectTagViewInfo.recentlyUseTagList,
+                                      rootContext: rootContext,
+                                      selectTagFunc: selectTagFunc,
+                                    ),
+                                    const _AllListViewTitle(),
+                                    _TagListView(
+                                      tagList: selectTagViewInfo.gameTagList,
+                                      rootContext: rootContext,
+                                      selectTagFunc: selectTagFunc,
+                                    ),
+                                  ],
+                                );
+                              }
+                            })(),
                           ),
                         ),
                       ),
