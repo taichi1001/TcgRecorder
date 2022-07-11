@@ -165,7 +165,7 @@ class SelectTagView extends HookConsumerWidget {
                                       tagList: selectTagViewInfo.searchTagList,
                                       rootContext: rootContext,
                                       selectTagFunc: selectTagFunc,
-                                      enableVisibility: enableVisiblity,
+                                      enableVisibility: false,
                                     ),
                                   ],
                                 );
@@ -203,7 +203,7 @@ class SelectTagView extends HookConsumerWidget {
                                       tagList: selectTagViewInfo.searchTagList,
                                       rootContext: rootContext,
                                       selectTagFunc: selectTagFunc,
-                                      enableVisibility: enableVisiblity,
+                                      enableVisibility: false,
                                     ),
                                   ],
                                 );

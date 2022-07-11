@@ -163,7 +163,7 @@ class SelectDeckView extends HookConsumerWidget {
                                       deckList: selectDeckViewInfo.searchDeckList,
                                       rootContext: rootContext,
                                       selectDeckFunc: selectDeckFunc,
-                                      enableVisibility: enableVisiblity,
+                                      enableVisibility: false,
                                     ),
                                   ],
                                 );
@@ -201,7 +201,7 @@ class SelectDeckView extends HookConsumerWidget {
                                       deckList: selectDeckViewInfo.searchDeckList,
                                       rootContext: rootContext,
                                       selectDeckFunc: selectDeckFunc,
-                                      enableVisibility: enableVisiblity,
+                                      enableVisibility: false,
                                     ),
                                   ],
                                 );
