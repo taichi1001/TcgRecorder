@@ -20,11 +20,8 @@ mixin _$InputViewState {
   DateTime get date => throw _privateConstructorUsedError;
   DateTime? get cacheDate => throw _privateConstructorUsedError;
   Deck? get useDeck => throw _privateConstructorUsedError;
-  Deck? get cacheUseDeck => throw _privateConstructorUsedError;
   Deck? get opponentDeck => throw _privateConstructorUsedError;
-  Deck? get cacheOpponentDeck => throw _privateConstructorUsedError;
   Tag? get tag => throw _privateConstructorUsedError;
-  Tag? get cacheTag => throw _privateConstructorUsedError;
   String? get memo => throw _privateConstructorUsedError;
   WinLoss get winLoss => throw _privateConstructorUsedError;
   FirstSecond get firstSecond => throw _privateConstructorUsedError;
@@ -44,22 +41,16 @@ abstract class $InputViewStateCopyWith<$Res> {
       DateTime date,
       DateTime? cacheDate,
       Deck? useDeck,
-      Deck? cacheUseDeck,
       Deck? opponentDeck,
-      Deck? cacheOpponentDeck,
       Tag? tag,
-      Tag? cacheTag,
       String? memo,
       WinLoss winLoss,
       FirstSecond firstSecond});
 
   $RecordCopyWith<$Res>? get record;
   $DeckCopyWith<$Res>? get useDeck;
-  $DeckCopyWith<$Res>? get cacheUseDeck;
   $DeckCopyWith<$Res>? get opponentDeck;
-  $DeckCopyWith<$Res>? get cacheOpponentDeck;
   $TagCopyWith<$Res>? get tag;
-  $TagCopyWith<$Res>? get cacheTag;
 }
 
 /// @nodoc
@@ -77,11 +68,8 @@ class _$InputViewStateCopyWithImpl<$Res>
     Object? date = freezed,
     Object? cacheDate = freezed,
     Object? useDeck = freezed,
-    Object? cacheUseDeck = freezed,
     Object? opponentDeck = freezed,
-    Object? cacheOpponentDeck = freezed,
     Object? tag = freezed,
-    Object? cacheTag = freezed,
     Object? memo = freezed,
     Object? winLoss = freezed,
     Object? firstSecond = freezed,
@@ -103,25 +91,13 @@ class _$InputViewStateCopyWithImpl<$Res>
           ? _value.useDeck
           : useDeck // ignore: cast_nullable_to_non_nullable
               as Deck?,
-      cacheUseDeck: cacheUseDeck == freezed
-          ? _value.cacheUseDeck
-          : cacheUseDeck // ignore: cast_nullable_to_non_nullable
-              as Deck?,
       opponentDeck: opponentDeck == freezed
           ? _value.opponentDeck
           : opponentDeck // ignore: cast_nullable_to_non_nullable
               as Deck?,
-      cacheOpponentDeck: cacheOpponentDeck == freezed
-          ? _value.cacheOpponentDeck
-          : cacheOpponentDeck // ignore: cast_nullable_to_non_nullable
-              as Deck?,
       tag: tag == freezed
           ? _value.tag
           : tag // ignore: cast_nullable_to_non_nullable
-              as Tag?,
-      cacheTag: cacheTag == freezed
-          ? _value.cacheTag
-          : cacheTag // ignore: cast_nullable_to_non_nullable
               as Tag?,
       memo: memo == freezed
           ? _value.memo
@@ -161,17 +137,6 @@ class _$InputViewStateCopyWithImpl<$Res>
   }
 
   @override
-  $DeckCopyWith<$Res>? get cacheUseDeck {
-    if (_value.cacheUseDeck == null) {
-      return null;
-    }
-
-    return $DeckCopyWith<$Res>(_value.cacheUseDeck!, (value) {
-      return _then(_value.copyWith(cacheUseDeck: value));
-    });
-  }
-
-  @override
   $DeckCopyWith<$Res>? get opponentDeck {
     if (_value.opponentDeck == null) {
       return null;
@@ -183,17 +148,6 @@ class _$InputViewStateCopyWithImpl<$Res>
   }
 
   @override
-  $DeckCopyWith<$Res>? get cacheOpponentDeck {
-    if (_value.cacheOpponentDeck == null) {
-      return null;
-    }
-
-    return $DeckCopyWith<$Res>(_value.cacheOpponentDeck!, (value) {
-      return _then(_value.copyWith(cacheOpponentDeck: value));
-    });
-  }
-
-  @override
   $TagCopyWith<$Res>? get tag {
     if (_value.tag == null) {
       return null;
@@ -201,17 +155,6 @@ class _$InputViewStateCopyWithImpl<$Res>
 
     return $TagCopyWith<$Res>(_value.tag!, (value) {
       return _then(_value.copyWith(tag: value));
-    });
-  }
-
-  @override
-  $TagCopyWith<$Res>? get cacheTag {
-    if (_value.cacheTag == null) {
-      return null;
-    }
-
-    return $TagCopyWith<$Res>(_value.cacheTag!, (value) {
-      return _then(_value.copyWith(cacheTag: value));
     });
   }
 }
@@ -228,11 +171,8 @@ abstract class _$$_InputViewStateCopyWith<$Res>
       DateTime date,
       DateTime? cacheDate,
       Deck? useDeck,
-      Deck? cacheUseDeck,
       Deck? opponentDeck,
-      Deck? cacheOpponentDeck,
       Tag? tag,
-      Tag? cacheTag,
       String? memo,
       WinLoss winLoss,
       FirstSecond firstSecond});
@@ -242,15 +182,9 @@ abstract class _$$_InputViewStateCopyWith<$Res>
   @override
   $DeckCopyWith<$Res>? get useDeck;
   @override
-  $DeckCopyWith<$Res>? get cacheUseDeck;
-  @override
   $DeckCopyWith<$Res>? get opponentDeck;
   @override
-  $DeckCopyWith<$Res>? get cacheOpponentDeck;
-  @override
   $TagCopyWith<$Res>? get tag;
-  @override
-  $TagCopyWith<$Res>? get cacheTag;
 }
 
 /// @nodoc
@@ -270,11 +204,8 @@ class __$$_InputViewStateCopyWithImpl<$Res>
     Object? date = freezed,
     Object? cacheDate = freezed,
     Object? useDeck = freezed,
-    Object? cacheUseDeck = freezed,
     Object? opponentDeck = freezed,
-    Object? cacheOpponentDeck = freezed,
     Object? tag = freezed,
-    Object? cacheTag = freezed,
     Object? memo = freezed,
     Object? winLoss = freezed,
     Object? firstSecond = freezed,
@@ -296,25 +227,13 @@ class __$$_InputViewStateCopyWithImpl<$Res>
           ? _value.useDeck
           : useDeck // ignore: cast_nullable_to_non_nullable
               as Deck?,
-      cacheUseDeck: cacheUseDeck == freezed
-          ? _value.cacheUseDeck
-          : cacheUseDeck // ignore: cast_nullable_to_non_nullable
-              as Deck?,
       opponentDeck: opponentDeck == freezed
           ? _value.opponentDeck
           : opponentDeck // ignore: cast_nullable_to_non_nullable
               as Deck?,
-      cacheOpponentDeck: cacheOpponentDeck == freezed
-          ? _value.cacheOpponentDeck
-          : cacheOpponentDeck // ignore: cast_nullable_to_non_nullable
-              as Deck?,
       tag: tag == freezed
           ? _value.tag
           : tag // ignore: cast_nullable_to_non_nullable
-              as Tag?,
-      cacheTag: cacheTag == freezed
-          ? _value.cacheTag
-          : cacheTag // ignore: cast_nullable_to_non_nullable
               as Tag?,
       memo: memo == freezed
           ? _value.memo
@@ -340,11 +259,8 @@ class _$_InputViewState implements _InputViewState {
       required this.date,
       this.cacheDate,
       this.useDeck,
-      this.cacheUseDeck,
       this.opponentDeck,
-      this.cacheOpponentDeck,
       this.tag,
-      this.cacheTag,
       this.memo,
       this.winLoss = WinLoss.win,
       this.firstSecond = FirstSecond.first});
@@ -358,15 +274,9 @@ class _$_InputViewState implements _InputViewState {
   @override
   final Deck? useDeck;
   @override
-  final Deck? cacheUseDeck;
-  @override
   final Deck? opponentDeck;
   @override
-  final Deck? cacheOpponentDeck;
-  @override
   final Tag? tag;
-  @override
-  final Tag? cacheTag;
   @override
   final String? memo;
   @override
@@ -378,7 +288,7 @@ class _$_InputViewState implements _InputViewState {
 
   @override
   String toString() {
-    return 'InputViewState(record: $record, date: $date, cacheDate: $cacheDate, useDeck: $useDeck, cacheUseDeck: $cacheUseDeck, opponentDeck: $opponentDeck, cacheOpponentDeck: $cacheOpponentDeck, tag: $tag, cacheTag: $cacheTag, memo: $memo, winLoss: $winLoss, firstSecond: $firstSecond)';
+    return 'InputViewState(record: $record, date: $date, cacheDate: $cacheDate, useDeck: $useDeck, opponentDeck: $opponentDeck, tag: $tag, memo: $memo, winLoss: $winLoss, firstSecond: $firstSecond)';
   }
 
   @override
@@ -391,13 +301,8 @@ class _$_InputViewState implements _InputViewState {
             const DeepCollectionEquality().equals(other.cacheDate, cacheDate) &&
             const DeepCollectionEquality().equals(other.useDeck, useDeck) &&
             const DeepCollectionEquality()
-                .equals(other.cacheUseDeck, cacheUseDeck) &&
-            const DeepCollectionEquality()
                 .equals(other.opponentDeck, opponentDeck) &&
-            const DeepCollectionEquality()
-                .equals(other.cacheOpponentDeck, cacheOpponentDeck) &&
             const DeepCollectionEquality().equals(other.tag, tag) &&
-            const DeepCollectionEquality().equals(other.cacheTag, cacheTag) &&
             const DeepCollectionEquality().equals(other.memo, memo) &&
             const DeepCollectionEquality().equals(other.winLoss, winLoss) &&
             const DeepCollectionEquality()
@@ -411,11 +316,8 @@ class _$_InputViewState implements _InputViewState {
       const DeepCollectionEquality().hash(date),
       const DeepCollectionEquality().hash(cacheDate),
       const DeepCollectionEquality().hash(useDeck),
-      const DeepCollectionEquality().hash(cacheUseDeck),
       const DeepCollectionEquality().hash(opponentDeck),
-      const DeepCollectionEquality().hash(cacheOpponentDeck),
       const DeepCollectionEquality().hash(tag),
-      const DeepCollectionEquality().hash(cacheTag),
       const DeepCollectionEquality().hash(memo),
       const DeepCollectionEquality().hash(winLoss),
       const DeepCollectionEquality().hash(firstSecond));
@@ -432,11 +334,8 @@ abstract class _InputViewState implements InputViewState {
       required final DateTime date,
       final DateTime? cacheDate,
       final Deck? useDeck,
-      final Deck? cacheUseDeck,
       final Deck? opponentDeck,
-      final Deck? cacheOpponentDeck,
       final Tag? tag,
-      final Tag? cacheTag,
       final String? memo,
       final WinLoss winLoss,
       final FirstSecond firstSecond}) = _$_InputViewState;
@@ -450,15 +349,9 @@ abstract class _InputViewState implements InputViewState {
   @override
   Deck? get useDeck => throw _privateConstructorUsedError;
   @override
-  Deck? get cacheUseDeck => throw _privateConstructorUsedError;
-  @override
   Deck? get opponentDeck => throw _privateConstructorUsedError;
   @override
-  Deck? get cacheOpponentDeck => throw _privateConstructorUsedError;
-  @override
   Tag? get tag => throw _privateConstructorUsedError;
-  @override
-  Tag? get cacheTag => throw _privateConstructorUsedError;
   @override
   String? get memo => throw _privateConstructorUsedError;
   @override
