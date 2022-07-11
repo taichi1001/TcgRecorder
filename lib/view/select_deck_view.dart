@@ -11,6 +11,7 @@ import 'package:tcg_manager/provider/select_deck_view_provider.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
 import 'package:tcg_manager/selector/recently_use_deck_selector.dart';
 import 'package:tcg_manager/selector/search_deck_list_selector.dart';
+import 'package:tcg_manager/selector/search_exact_match_deck_selector.dart';
 import 'package:tcg_manager/selector/sorted_deck_list_selector.dart';
 
 class SelectDeckViewInfo {
@@ -75,8 +76,9 @@ class SelectDeckView extends HookConsumerWidget {
             builder: (context2) => Builder(
               builder: (context) {
                 // こいつだけここに置かないと更新されなかった。理由は不明。
-                final selectDeckViewInfo = ref.watch(selectDeckViewInfoProvider);
                 final searchText = ref.watch(selectDeckViewNotifierProvider.select((value) => value.searchText));
+                final selectDeckViewInfo = ref.watch(selectDeckViewInfoProvider);
+                final searchExactMatchTag = ref.watch(searchExactMatchDeckProvider);
                 return selectDeckViewInfo.when(
                   data: (selectDeckViewInfo) {
                     return Scaffold(
@@ -131,6 +133,7 @@ class SelectDeckView extends HookConsumerWidget {
                                   },
                                   child: Container(
                                     padding: const EdgeInsets.all(16),
+                                    width: double.infinity,
                                     color: Theme.of(context).colorScheme.surface,
                                     child: Text(
                                       '「$searchText」を登録する',
@@ -138,12 +141,65 @@ class SelectDeckView extends HookConsumerWidget {
                                     ),
                                   ),
                                 );
-                                // 検索結果があった場合の表示
-                              } else if (isSearch.value) {
-                                return _DeckListView(
-                                  deckList: selectDeckViewInfo.searchDeckList,
-                                  rootContext: rootContext,
-                                  selectDeckFunc: selectDeckFunc,
+                                // 完全一致の検索結果があった場合
+                              } else if (isSearch.value &&
+                                  selectDeckViewInfo.searchDeckList.isNotEmpty &&
+                                  searchExactMatchTag.asData?.value != null &&
+                                  searchText != '') {
+                                return Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(16),
+                                      child: Text(
+                                        '検索結果',
+                                        style: Theme.of(context).textTheme.caption,
+                                      ),
+                                    ),
+                                    _DeckListView(
+                                      deckList: selectDeckViewInfo.searchDeckList,
+                                      rootContext: rootContext,
+                                      selectDeckFunc: selectDeckFunc,
+                                    ),
+                                  ],
+                                );
+                                // 検索結果はあるが完全一致はない場合の表示
+                              } else if (isSearch.value &&
+                                  selectDeckViewInfo.searchDeckList.isNotEmpty &&
+                                  searchExactMatchTag.asData?.value == null &&
+                                  searchText != '') {
+                                return Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        selectDeckViewNotifier.saveDeck(searchText);
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.all(16),
+                                        width: double.infinity,
+                                        color: Theme.of(context).colorScheme.surface,
+                                        child: Text(
+                                          '「$searchText」を登録する',
+                                          style: Theme.of(context).textTheme.bodyMedium,
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(16),
+                                      child: Text(
+                                        '検索結果',
+                                        style: Theme.of(context).textTheme.caption,
+                                      ),
+                                    ),
+                                    _DeckListView(
+                                      deckList: selectDeckViewInfo.searchDeckList,
+                                      rootContext: rootContext,
+                                      selectDeckFunc: selectDeckFunc,
+                                    ),
+                                  ],
                                 );
                                 // 検索していない場合の表示
                               } else {

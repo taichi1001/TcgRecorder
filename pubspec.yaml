@@ -78,6 +78,8 @@ dependencies:
 
   easy_debounce: ^2.0.2+1
 
+  collection: ^1.16.0
+
 flutter_native_splash:
   image: "assets/images/icon.png"
   color: "FFFFFF"

@@ -10,6 +10,7 @@ import 'package:tcg_manager/provider/select_tag_view_provider.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/repository/tag_repository.dart';
 import 'package:tcg_manager/selector/recently_use_tag_selector.dart';
+import 'package:tcg_manager/selector/search_exact_match_tag_selector.dart';
 import 'package:tcg_manager/selector/search_tag_list_selector.dart';
 import 'package:tcg_manager/selector/sorted_tag_list_selector.dart';
 
@@ -29,6 +30,8 @@ final selectTagViewInfoProvider = FutureProvider.autoDispose<SelectTagViewInfo>(
   final gameTagList = await ref.watch(sortedTagListProvider.future);
   final searchTagList = await ref.watch(searchTagListProvider.future);
   final recentlyUseTagList = await ref.watch(recentlyUseTagProvider.future);
+  ref.keepAlive();
+
   return SelectTagViewInfo(
     gameTagList: gameTagList,
     searchTagList: searchTagList,
@@ -78,6 +81,7 @@ class SelectTagView extends HookConsumerWidget {
                 // こいつだけここに置かないと更新されなかった。理由は不明。
                 final selectTagViewInfo = ref.watch(selectTagViewInfoProvider);
                 final searchText = ref.watch(selectTagViewNotifierProvider.select((value) => value.searchText));
+                final searchExactMatchTag = ref.watch(searchExactMatchTagProvider);
                 return selectTagViewInfo.when(
                   data: (selectTagViewInfo) {
                     return Scaffold(
@@ -123,7 +127,7 @@ class SelectTagView extends HookConsumerWidget {
                           body: SingleChildScrollView(
                             controller: ModalScrollController.of(context),
                             child: (() {
-                              // 検索結果がなかったときの表示
+                              // 検索結果がなかった場合
                               if (isSearch.value && selectTagViewInfo.searchTagList.isEmpty && searchText != '') {
                                 return GestureDetector(
                                   onTap: () {
@@ -131,6 +135,7 @@ class SelectTagView extends HookConsumerWidget {
                                   },
                                   child: Container(
                                     padding: const EdgeInsets.all(16),
+                                    width: double.infinity,
                                     color: Theme.of(context).colorScheme.surface,
                                     child: Text(
                                       '「$searchText」を登録する',
@@ -138,12 +143,65 @@ class SelectTagView extends HookConsumerWidget {
                                     ),
                                   ),
                                 );
-                                // 検索結果があった場合の表示
-                              } else if (isSearch.value) {
-                                return _TagListView(
-                                  tagList: selectTagViewInfo.searchTagList,
-                                  rootContext: rootContext,
-                                  selectTagFunc: selectTagFunc,
+                                // 完全一致の検索結果があった場合
+                              } else if (isSearch.value &&
+                                  selectTagViewInfo.searchTagList.isNotEmpty &&
+                                  searchExactMatchTag.asData?.value != null &&
+                                  searchText != '') {
+                                return Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(16),
+                                      child: Text(
+                                        '検索結果',
+                                        style: Theme.of(context).textTheme.caption,
+                                      ),
+                                    ),
+                                    _TagListView(
+                                      tagList: selectTagViewInfo.searchTagList,
+                                      rootContext: rootContext,
+                                      selectTagFunc: selectTagFunc,
+                                    ),
+                                  ],
+                                );
+                                // 完全一致はないが検索結果がある場合
+                              } else if (isSearch.value &&
+                                  selectTagViewInfo.searchTagList.isNotEmpty &&
+                                  searchExactMatchTag.asData?.value == null &&
+                                  searchText != '') {
+                                return Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        selectTagViewNotifier.saveTag(searchText);
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.all(16),
+                                        width: double.infinity,
+                                        color: Theme.of(context).colorScheme.surface,
+                                        child: Text(
+                                          '「$searchText」を登録する',
+                                          style: Theme.of(context).textTheme.bodyMedium,
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(16),
+                                      child: Text(
+                                        '検索結果',
+                                        style: Theme.of(context).textTheme.caption,
+                                      ),
+                                    ),
+                                    _TagListView(
+                                      tagList: selectTagViewInfo.searchTagList,
+                                      rootContext: rootContext,
+                                      selectTagFunc: selectTagFunc,
+                                    ),
+                                  ],
                                 );
                                 // 検索していない場合の表示
                               } else {
