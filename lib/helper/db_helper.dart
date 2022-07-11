@@ -131,6 +131,18 @@ class DbHelper {
       rethrow;
     }
   }
+
+  Future toggleIsVisibleToPickerOfDeck(Deck deck) async {
+    final newDeck = deck.copyWith(isVisibleToPicker: !deck.isVisibleToPicker);
+    await ref.read(deckRepository).update(newDeck);
+    ref.refresh(allDeckListProvider);
+  }
+
+  Future toggleIsVisibleToPickerOfTag(Tag tag) async {
+    final newTag = tag.copyWith(isVisibleToPicker: !tag.isVisibleToPicker);
+    await ref.read(tagRepository).update(newTag);
+    ref.refresh(allTagListProvider);
+  }
 }
 
 final dbHelper = Provider((ref) => DbHelper(ref));

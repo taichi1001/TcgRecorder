@@ -11,7 +11,9 @@ class SlidableTile extends StatelessWidget {
     required this.alertMessage,
     this.deleteFunc,
     this.editFunc,
+    this.visibleFunc,
     this.onTap,
+    this.isVisible,
     key,
   }) : super(key: key);
 
@@ -22,7 +24,9 @@ class SlidableTile extends StatelessWidget {
   final Widget? subtitle;
   final Future Function()? deleteFunc;
   final Future Function()? editFunc;
+  final Future Function()? visibleFunc;
   final Future Function()? onTap;
+  final bool? isVisible;
   @override
   Widget build(BuildContext context) {
     return Slidable(
@@ -58,10 +62,18 @@ class SlidableTile extends StatelessWidget {
           if (editFunc != null)
             SlidableAction(
               label: '名前変更',
-              autoClose: false,
+              autoClose: true,
               icon: Icons.edit,
-              backgroundColor: Theme.of(context).toggleableActiveColor,
+              backgroundColor: Theme.of(context).hintColor,
               onPressed: (context) async => await editFunc!(),
+            ),
+          if (visibleFunc != null)
+            SlidableAction(
+              label: '表示切り替え',
+              autoClose: false,
+              icon: isVisible! ? Icons.visibility : Icons.visibility_off,
+              backgroundColor: Theme.of(context).toggleableActiveColor,
+              onPressed: (context) async => await visibleFunc!(),
             ),
         ],
       ),
