@@ -223,6 +223,7 @@ class InputView extends HookConsumerWidget {
                                                 backgroundColor: Colors.transparent,
                                                 builder: (BuildContext context) => SelectDeckView(
                                                   selectDeckFunc: inputViewNotifier.selectUseDeck,
+                                                  afterFunc: FocusScope.of(context).unfocus,
                                                   enableVisiblity: true,
                                                 ),
                                               );
@@ -251,6 +252,7 @@ class InputView extends HookConsumerWidget {
                                                 backgroundColor: Colors.transparent,
                                                 builder: (BuildContext context) => SelectDeckView(
                                                   selectDeckFunc: inputViewNotifier.selectOpponentDeck,
+                                                  afterFunc: FocusScope.of(context).unfocus,
                                                   enableVisiblity: true,
                                                 ),
                                               );
@@ -279,6 +281,7 @@ class InputView extends HookConsumerWidget {
                                                 backgroundColor: Colors.transparent,
                                                 builder: (BuildContext context) => SelectTagView(
                                                   selectTagFunc: inputViewNotifier.selectTag,
+                                                  afterFunc: FocusScope.of(context).unfocus,
                                                   enableVisiblity: true,
                                                 ),
                                               );

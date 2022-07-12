@@ -30,8 +30,6 @@ final selectTagViewInfoProvider = FutureProvider.autoDispose<SelectTagViewInfo>(
   final gameTagList = await ref.watch(sortedTagListProvider.future);
   final searchTagList = await ref.watch(searchTagListProvider.future);
   final recentlyUseTagList = await ref.watch(recentlyUseTagProvider.future);
-  ref.keepAlive();
-
   return SelectTagViewInfo(
     gameTagList: gameTagList,
     searchTagList: searchTagList,
@@ -42,11 +40,13 @@ final selectTagViewInfoProvider = FutureProvider.autoDispose<SelectTagViewInfo>(
 class SelectTagView extends HookConsumerWidget {
   const SelectTagView({
     required this.selectTagFunc,
+    this.afterFunc,
     this.enableVisiblity = false,
     key,
   }) : super(key: key);
 
   final Function(Tag) selectTagFunc;
+  final Function? afterFunc;
   final bool enableVisiblity;
 
   @override
@@ -166,6 +166,7 @@ class SelectTagView extends HookConsumerWidget {
                                       rootContext: rootContext,
                                       selectTagFunc: selectTagFunc,
                                       enableVisibility: false,
+                                      afterFunc: afterFunc,
                                     ),
                                   ],
                                 );
@@ -204,6 +205,7 @@ class SelectTagView extends HookConsumerWidget {
                                       rootContext: rootContext,
                                       selectTagFunc: selectTagFunc,
                                       enableVisibility: false,
+                                      afterFunc: afterFunc,
                                     ),
                                   ],
                                 );
@@ -225,6 +227,7 @@ class SelectTagView extends HookConsumerWidget {
                                       rootContext: rootContext,
                                       selectTagFunc: selectTagFunc,
                                       enableVisibility: enableVisiblity,
+                                      afterFunc: afterFunc,
                                     ),
                                     _AllListViewTitle(
                                       enableVisiblity: enableVisiblity,
@@ -234,6 +237,7 @@ class SelectTagView extends HookConsumerWidget {
                                       rootContext: rootContext,
                                       selectTagFunc: selectTagFunc,
                                       enableVisibility: enableVisiblity,
+                                      afterFunc: afterFunc,
                                     ),
                                   ],
                                 );
@@ -320,12 +324,15 @@ class _TagListView extends StatelessWidget {
     required this.rootContext,
     required this.selectTagFunc,
     required this.enableVisibility,
+    this.afterFunc,
     key,
   }) : super(key: key);
 
   final List<Tag> tagList;
   final BuildContext rootContext;
   final Function(Tag) selectTagFunc;
+  final Function? afterFunc;
+
   final bool enableVisibility;
 
   @override
@@ -340,6 +347,7 @@ class _TagListView extends StatelessWidget {
           onTap: () {
             selectTagFunc(tagList[index - 1]);
             Navigator.pop(rootContext);
+            if (afterFunc != null) afterFunc!();
           },
           child: Container(
             padding: const EdgeInsets.all(16),

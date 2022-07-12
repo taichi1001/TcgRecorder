@@ -40,11 +40,13 @@ final selectDeckViewInfoProvider = FutureProvider.autoDispose<SelectDeckViewInfo
 class SelectDeckView extends HookConsumerWidget {
   const SelectDeckView({
     required this.selectDeckFunc,
+    this.afterFunc,
     this.enableVisiblity = false,
     key,
   }) : super(key: key);
 
   final Function(Deck) selectDeckFunc;
+  final Function? afterFunc;
   final bool enableVisiblity;
 
   @override
@@ -164,6 +166,7 @@ class SelectDeckView extends HookConsumerWidget {
                                       rootContext: rootContext,
                                       selectDeckFunc: selectDeckFunc,
                                       enableVisibility: false,
+                                      afterFunc: afterFunc,
                                     ),
                                   ],
                                 );
@@ -202,6 +205,7 @@ class SelectDeckView extends HookConsumerWidget {
                                       rootContext: rootContext,
                                       selectDeckFunc: selectDeckFunc,
                                       enableVisibility: false,
+                                      afterFunc: afterFunc,
                                     ),
                                   ],
                                 );
@@ -223,6 +227,7 @@ class SelectDeckView extends HookConsumerWidget {
                                       rootContext: rootContext,
                                       selectDeckFunc: selectDeckFunc,
                                       enableVisibility: enableVisiblity,
+                                      afterFunc: afterFunc,
                                     ),
                                     _AllListViewTitle(
                                       enableVisiblity: enableVisiblity,
@@ -232,6 +237,7 @@ class SelectDeckView extends HookConsumerWidget {
                                       rootContext: rootContext,
                                       selectDeckFunc: selectDeckFunc,
                                       enableVisibility: enableVisiblity,
+                                      afterFunc: afterFunc,
                                     ),
                                   ],
                                 );
@@ -318,12 +324,14 @@ class _DeckListView extends StatelessWidget {
     required this.rootContext,
     required this.selectDeckFunc,
     required this.enableVisibility,
+    this.afterFunc,
     key,
   }) : super(key: key);
 
   final List<Deck> deckList;
   final BuildContext rootContext;
   final Function(Deck) selectDeckFunc;
+  final Function? afterFunc;
   final bool enableVisibility;
 
   @override
@@ -338,6 +346,7 @@ class _DeckListView extends StatelessWidget {
           onTap: () {
             selectDeckFunc(deckList[index - 1]);
             Navigator.pop(rootContext);
+            if (afterFunc != null) afterFunc!();
           },
           child: Container(
             padding: const EdgeInsets.all(16),
