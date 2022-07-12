@@ -174,3 +174,47 @@ final previewDarkThemeDataProvider = StateProvider<ThemeData>(
     );
   }),
 );
+
+final previewThemeDataListProvider = StateProvider<List<ThemeData>>((ref) {
+  final List<ThemeData> result = [];
+  for (final scheme in FlexScheme.values) {
+    if (scheme == FlexScheme.custom) break;
+    result.add(FlexThemeData.light(
+      scheme: scheme,
+      surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
+      blendLevel: 9,
+      appBarStyle: FlexAppBarStyle.primary,
+      appBarOpacity: 0.95,
+      appBarElevation: 0.5,
+      transparentStatusBar: true,
+      tabBarStyle: FlexTabBarStyle.forAppBar,
+      tooltipsMatchBackground: true,
+      swapColors: false,
+      lightIsWhite: false,
+      keyColors: const FlexKeyColors(
+        useSecondary: true,
+        useTertiary: true,
+      ),
+      tones: FlexTones.material(Brightness.light),
+      visualDensity: FlexColorScheme.comfortablePlatformDensity,
+      // fontFamily: GoogleFonts.mPlus1p().fontFamily,
+      subThemesData: const FlexSubThemesData(
+        useTextTheme: true,
+        fabUseShape: true,
+        interactionEffects: true,
+        bottomNavigationBarElevation: 0,
+        bottomNavigationBarOpacity: 0.95,
+        navigationBarOpacity: 0.95,
+        navigationBarMutedUnselectedLabel: true,
+        navigationBarMutedUnselectedIcon: true,
+        inputDecoratorIsFilled: false,
+        inputDecoratorBorderType: FlexInputBorderType.underline,
+        inputDecoratorUnfocusedHasBorder: true,
+        blendOnColors: true,
+        blendTextTheme: true,
+        popupMenuOpacity: 0.95,
+      ),
+    ));
+  }
+  return result;
+});

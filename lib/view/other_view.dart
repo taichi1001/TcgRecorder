@@ -548,6 +548,7 @@ class _ThemeChangeView extends HookConsumerWidget {
     final themeNotifier = ref.watch(themeNotifierProvider.notifier);
     final currentScheme = ref.watch(themeNotifierProvider.select((value) => value.scheme));
     final previewScheme = ref.watch(themeNotifierProvider.select((value) => value.previewScheme));
+    final previewThemeDataList = ref.watch(previewThemeDataListProvider);
     final isDarkMode = MediaQuery.of(context).platformBrightness == Brightness.dark;
     final itemScrollController = ItemScrollController();
 
@@ -633,7 +634,7 @@ class _ThemeChangeView extends HookConsumerWidget {
                             height: 55,
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                primary: FlexThemeData.light(scheme: FlexScheme.values[index]).primaryColor,
+                                primary: previewThemeDataList[index].primaryColor,
                                 shape: CircleBorder(
                                   side: previewScheme == FlexScheme.values[index]
                                       ? BorderSide(
