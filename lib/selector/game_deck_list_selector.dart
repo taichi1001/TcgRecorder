@@ -1,5 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/deck.dart';
+import 'package:tcg_manager/entity/game.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
 
@@ -9,4 +10,9 @@ final gameDeckListProvider = FutureProvider.autoDispose<List<Deck>>((ref) async 
   if (selectGame == null) return [];
   final gameDeckList = allDeckList.where((deck) => deck.gameId! == selectGame.gameId).toList();
   return gameDeckList;
+});
+
+final currentGameDeckListProvider = FutureProvider.family.autoDispose<List<Deck>, Game>((ref, selectGame) async {
+  final allDeckList = await ref.watch(allDeckListProvider.future);
+  return allDeckList.where((deck) => deck.gameId! == selectGame.gameId).toList();
 });
