@@ -343,39 +343,52 @@ class _DeckListView extends HookConsumerWidget {
       body: deckList.when(
         data: (deckList) {
           return ListView.separated(
+            padding: EdgeInsets.zero,
             itemCount: deckList.length,
-            separatorBuilder: (context, index) => const SizedBox(height: 8, child: Divider(height: 1)),
+            separatorBuilder: (context, index) => const Divider(indent: 16, thickness: 1, height: 0),
             itemBuilder: (context, index) {
-              return SlidableTile(
-                key: ObjectKey(deckList[index]),
-                title: Text(deckList[index].deck),
-                alertMessage: '選択したデッキのデータが全て削除されます。',
-                deleteFunc: () async => await ref.read(dbHelper).deleteDeck(deckList[index]),
-                editFunc: () async {
-                  final newName = await showTextInputDialog(
-                    context: context,
-                    title: S.of(context).gameEdit,
-                    textFields: [DialogTextField(initialText: deckList[index].deck)],
-                  );
-                  if (newName != null && newName.first != '') {
-                    try {
-                      await ref.read(dbHelper).updateDeckName(newName.first, index);
-                    } catch (e) {
-                      if (e.toString().contains('code 2067')) {
-                        await showOkAlertDialog(
-                          context: context,
-                          title: 'エラー',
-                          message: '既に登録されているデッキです。',
-                        );
-                      } else {
-                        await showOkAlertDialog(
-                          context: context,
-                          title: '予期せぬエラー',
-                        );
+              return Container(
+                color: Theme.of(context).colorScheme.surface,
+                child: SlidableTile(
+                  key: ObjectKey(deckList[index]),
+                  title: Text(
+                    deckList[index].deck,
+                    style: deckList[index].isVisibleToPicker
+                        ? Theme.of(context).textTheme.bodyMedium
+                        : Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: Theme.of(context).disabledColor,
+                            ),
+                  ),
+                  alertMessage: '選択したデッキのデータが全て削除されます。',
+                  isVisible: deckList[index].isVisibleToPicker,
+                  visibleFunc: () async => await ref.read(dbHelper).toggleIsVisibleToPickerOfDeck(deckList[index]),
+                  deleteFunc: () async => await ref.read(dbHelper).deleteDeck(deckList[index]),
+                  editFunc: () async {
+                    final newName = await showTextInputDialog(
+                      context: context,
+                      title: S.of(context).gameEdit,
+                      textFields: [DialogTextField(initialText: deckList[index].deck)],
+                    );
+                    if (newName != null && newName.first != '') {
+                      try {
+                        await ref.read(dbHelper).updateDeckName(newName.first, index);
+                      } catch (e) {
+                        if (e.toString().contains('code 2067')) {
+                          await showOkAlertDialog(
+                            context: context,
+                            title: 'エラー',
+                            message: '既に登録されているデッキです。',
+                          );
+                        } else {
+                          await showOkAlertDialog(
+                            context: context,
+                            title: '予期せぬエラー',
+                          );
+                        }
                       }
                     }
-                  }
-                },
+                  },
+                ),
               );
             },
           );
@@ -405,39 +418,52 @@ class _TagListView extends HookConsumerWidget {
       body: tagList.when(
         data: (tagList) {
           return ListView.separated(
+            padding: EdgeInsets.zero,
             itemCount: tagList.length,
-            separatorBuilder: (context, index) => const SizedBox(height: 8, child: Divider(height: 1)),
+            separatorBuilder: (context, index) => const Divider(indent: 16, thickness: 1, height: 0),
             itemBuilder: (context, index) {
-              return SlidableTile(
-                key: ObjectKey(tagList[index]),
-                title: Text(tagList[index].tag),
-                alertMessage: '選択したタグを削除し、そのタグが設定されているデータからタグを削除します。',
-                deleteFunc: () async => await ref.read(dbHelper).deleteTag(tagList[index]),
-                editFunc: () async {
-                  final newName = await showTextInputDialog(
-                    context: context,
-                    title: S.of(context).gameEdit,
-                    textFields: [DialogTextField(initialText: tagList[index].tag)],
-                  );
-                  if (newName != null && newName.first != '') {
-                    try {
-                      await ref.read(dbHelper).updateTagName(newName.first, index);
-                    } catch (e) {
-                      if (e.toString().contains('code 2067')) {
-                        await showOkAlertDialog(
-                          context: context,
-                          title: 'エラー',
-                          message: '既に登録されているデッキです。',
-                        );
-                      } else {
-                        await showOkAlertDialog(
-                          context: context,
-                          title: '予期せぬエラー',
-                        );
+              return Container(
+                color: Theme.of(context).colorScheme.surface,
+                child: SlidableTile(
+                  key: ObjectKey(tagList[index]),
+                  title: Text(
+                    tagList[index].tag,
+                    style: tagList[index].isVisibleToPicker
+                        ? Theme.of(context).textTheme.bodyMedium
+                        : Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: Theme.of(context).disabledColor,
+                            ),
+                  ),
+                  alertMessage: '選択したタグを削除し、そのタグが設定されているデータからタグを削除します。',
+                  isVisible: tagList[index].isVisibleToPicker,
+                  visibleFunc: () async => await ref.read(dbHelper).toggleIsVisibleToPickerOfTag(tagList[index]),
+                  deleteFunc: () async => await ref.read(dbHelper).deleteTag(tagList[index]),
+                  editFunc: () async {
+                    final newName = await showTextInputDialog(
+                      context: context,
+                      title: S.of(context).gameEdit,
+                      textFields: [DialogTextField(initialText: tagList[index].tag)],
+                    );
+                    if (newName != null && newName.first != '') {
+                      try {
+                        await ref.read(dbHelper).updateTagName(newName.first, index);
+                      } catch (e) {
+                        if (e.toString().contains('code 2067')) {
+                          await showOkAlertDialog(
+                            context: context,
+                            title: 'エラー',
+                            message: '既に登録されているデッキです。',
+                          );
+                        } else {
+                          await showOkAlertDialog(
+                            context: context,
+                            title: '予期せぬエラー',
+                          );
+                        }
                       }
                     }
-                  }
-                },
+                  },
+                ),
               );
             },
           );

@@ -40,10 +40,12 @@ final selectDeckViewInfoProvider = FutureProvider.autoDispose<SelectDeckViewInfo
 class SelectDeckView extends HookConsumerWidget {
   const SelectDeckView({
     required this.selectDeckFunc,
+    this.enableVisiblity = false,
     key,
   }) : super(key: key);
 
   final Function(Deck) selectDeckFunc;
+  final bool enableVisiblity;
 
   @override
   // ignore: avoid_renaming_method_parameters
@@ -161,6 +163,7 @@ class SelectDeckView extends HookConsumerWidget {
                                       deckList: selectDeckViewInfo.searchDeckList,
                                       rootContext: rootContext,
                                       selectDeckFunc: selectDeckFunc,
+                                      enableVisibility: false,
                                     ),
                                   ],
                                 );
@@ -198,6 +201,7 @@ class SelectDeckView extends HookConsumerWidget {
                                       deckList: selectDeckViewInfo.searchDeckList,
                                       rootContext: rootContext,
                                       selectDeckFunc: selectDeckFunc,
+                                      enableVisibility: false,
                                     ),
                                   ],
                                 );
@@ -218,12 +222,16 @@ class SelectDeckView extends HookConsumerWidget {
                                       deckList: selectDeckViewInfo.recentlyUseDeckList,
                                       rootContext: rootContext,
                                       selectDeckFunc: selectDeckFunc,
+                                      enableVisibility: enableVisiblity,
                                     ),
-                                    const _AllListViewTitle(),
+                                    _AllListViewTitle(
+                                      enableVisiblity: enableVisiblity,
+                                    ),
                                     _DeckListView(
                                       deckList: selectDeckViewInfo.gameDeckList,
                                       rootContext: rootContext,
                                       selectDeckFunc: selectDeckFunc,
+                                      enableVisibility: enableVisiblity,
                                     ),
                                   ],
                                 );
@@ -247,7 +255,12 @@ class SelectDeckView extends HookConsumerWidget {
 }
 
 class _AllListViewTitle extends HookConsumerWidget {
-  const _AllListViewTitle({key}) : super(key: key);
+  const _AllListViewTitle({
+    required this.enableVisiblity,
+    key,
+  }) : super(key: key);
+
+  final bool enableVisiblity;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -272,7 +285,9 @@ class _AllListViewTitle extends HookConsumerWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const ReordableDeckView(),
+                        builder: (context) => ReordableDeckView(
+                          enableVisiblity: enableVisiblity,
+                        ),
                       ),
                     );
                   },
@@ -302,12 +317,14 @@ class _DeckListView extends StatelessWidget {
     required this.deckList,
     required this.rootContext,
     required this.selectDeckFunc,
+    required this.enableVisibility,
     key,
   }) : super(key: key);
 
   final List<Deck> deckList;
   final BuildContext rootContext;
   final Function(Deck) selectDeckFunc;
+  final bool enableVisibility;
 
   @override
   Widget build(BuildContext context) {
@@ -315,9 +332,8 @@ class _DeckListView extends StatelessWidget {
       padding: EdgeInsets.zero,
       shrinkWrap: true,
       itemBuilder: ((context, index) {
-        if (index == 0 || index == deckList.length + 1) {
-          return Container();
-        }
+        if (index == 0 || index == deckList.length + 1) return Container();
+        if (enableVisibility && !deckList[index - 1].isVisibleToPicker) return Container();
         return GestureDetector(
           onTap: () {
             selectDeckFunc(deckList[index - 1]);
@@ -348,10 +364,12 @@ class _DeckListView extends StatelessWidget {
 class _ReorderableDeckListView extends HookConsumerWidget {
   const _ReorderableDeckListView({
     required this.deckList,
+    required this.enableVisibility,
     key,
   }) : super(key: key);
 
   final List<Deck> deckList;
+  final bool enableVisibility;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -364,6 +382,7 @@ class _ReorderableDeckListView extends HookConsumerWidget {
         shrinkWrap: true,
         buildDefaultDragHandles: false,
         itemBuilder: ((context, index) {
+          if (enableVisibility && !deckList[index].isVisibleToPicker) return Container(key: Key(deckList[index].deckId.toString()));
           return ListTile(
             key: Key(deckList[index].deckId.toString()),
             tileColor: Theme.of(context).colorScheme.surface,
@@ -398,7 +417,11 @@ class _ReorderableDeckListView extends HookConsumerWidget {
 }
 
 class ReordableDeckView extends HookConsumerWidget {
-  const ReordableDeckView({key}) : super(key: key);
+  const ReordableDeckView({
+    required this.enableVisiblity,
+    key,
+  }) : super(key: key);
+  final bool enableVisiblity;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -418,7 +441,10 @@ class ReordableDeckView extends HookConsumerWidget {
       ),
       body: gameDeckList.when(
         data: (gameDeckList) {
-          return _ReorderableDeckListView(deckList: gameDeckList);
+          return _ReorderableDeckListView(
+            deckList: gameDeckList,
+            enableVisibility: enableVisiblity,
+          );
         },
         error: (error, stack) => Text('$error'),
         loading: () => const Center(child: CircularProgressIndicator()),
