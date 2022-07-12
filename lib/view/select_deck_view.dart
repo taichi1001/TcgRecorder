@@ -226,7 +226,7 @@ class SelectDeckView extends HookConsumerWidget {
                                       deckList: selectDeckViewInfo.recentlyUseDeckList,
                                       rootContext: rootContext,
                                       selectDeckFunc: selectDeckFunc,
-                                      enableVisibility: enableVisiblity,
+                                      enableVisibility: false,
                                       afterFunc: afterFunc,
                                     ),
                                     _AllListViewTitle(
@@ -340,11 +340,10 @@ class _DeckListView extends StatelessWidget {
       padding: EdgeInsets.zero,
       shrinkWrap: true,
       itemBuilder: ((context, index) {
-        if (index == 0 || index == deckList.length + 1) return Container();
-        if (enableVisibility && !deckList[index - 1].isVisibleToPicker) return Container();
+        if (enableVisibility && !deckList[index].isVisibleToPicker) return Container();
         return GestureDetector(
           onTap: () {
-            selectDeckFunc(deckList[index - 1]);
+            selectDeckFunc(deckList[index]);
             Navigator.pop(rootContext);
             if (afterFunc != null) afterFunc!();
           },
@@ -352,20 +351,21 @@ class _DeckListView extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             color: Theme.of(context).colorScheme.surface,
             child: Text(
-              deckList[index - 1].deck,
+              deckList[index].deck,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
           ),
         );
       }),
       separatorBuilder: ((context, index) {
+        if (enableVisibility && !deckList[index].isVisibleToPicker) return Container();
         return const Divider(
           indent: 16,
           thickness: 1,
           height: 0,
         );
       }),
-      itemCount: deckList.length + 1,
+      itemCount: deckList.length,
     );
   }
 }

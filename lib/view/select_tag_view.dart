@@ -226,7 +226,7 @@ class SelectTagView extends HookConsumerWidget {
                                       tagList: selectTagViewInfo.recentlyUseTagList,
                                       rootContext: rootContext,
                                       selectTagFunc: selectTagFunc,
-                                      enableVisibility: enableVisiblity,
+                                      enableVisibility: false,
                                       afterFunc: afterFunc,
                                     ),
                                     _AllListViewTitle(
@@ -341,11 +341,10 @@ class _TagListView extends StatelessWidget {
       padding: EdgeInsets.zero,
       shrinkWrap: true,
       itemBuilder: ((context, index) {
-        if (index == 0 || index == tagList.length + 1) return Container();
-        if (enableVisibility && !tagList[index - 1].isVisibleToPicker) return Container();
+        if (enableVisibility && !tagList[index].isVisibleToPicker) return Container();
         return GestureDetector(
           onTap: () {
-            selectTagFunc(tagList[index - 1]);
+            selectTagFunc(tagList[index]);
             Navigator.pop(rootContext);
             if (afterFunc != null) afterFunc!();
           },
@@ -353,20 +352,21 @@ class _TagListView extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             color: Theme.of(context).colorScheme.surface,
             child: Text(
-              tagList[index - 1].tag,
+              tagList[index].tag,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
           ),
         );
       }),
       separatorBuilder: ((context, index) {
+        if (enableVisibility && !tagList[index].isVisibleToPicker) return Container();
         return const Divider(
           indent: 16,
           thickness: 1,
           height: 0,
         );
       }),
-      itemCount: tagList.length + 1,
+      itemCount: tagList.length,
     );
   }
 }
