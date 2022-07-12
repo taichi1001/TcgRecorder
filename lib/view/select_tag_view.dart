@@ -216,7 +216,7 @@ class SelectTagView extends HookConsumerWidget {
                                     Padding(
                                       padding: const EdgeInsets.all(16),
                                       child: Text(
-                                        '最近使用したデッキ',
+                                        '最近使用したタグ',
                                         style: Theme.of(context).textTheme.caption,
                                       ),
                                     ),

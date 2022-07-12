@@ -292,7 +292,7 @@ class _GameListView extends HookConsumerWidget {
                 editFunc: () async {
                   final newName = await showTextInputDialog(
                     context: context,
-                    title: S.of(context).gameEdit,
+                    title: '名前変更',
                     textFields: [DialogTextField(initialText: gameList[index].game)],
                   );
                   if (newName != null && newName.first != '') {
@@ -366,7 +366,7 @@ class _DeckListView extends HookConsumerWidget {
                   editFunc: () async {
                     final newName = await showTextInputDialog(
                       context: context,
-                      title: S.of(context).gameEdit,
+                      title: '名前変更',
                       textFields: [DialogTextField(initialText: deckList[index].deck)],
                     );
                     if (newName != null && newName.first != '') {
@@ -441,7 +441,7 @@ class _TagListView extends HookConsumerWidget {
                   editFunc: () async {
                     final newName = await showTextInputDialog(
                       context: context,
-                      title: S.of(context).gameEdit,
+                      title: '名前変更',
                       textFields: [DialogTextField(initialText: tagList[index].tag)],
                     );
                     if (newName != null && newName.first != '') {
