@@ -304,11 +304,11 @@ class _GameListView extends HookConsumerWidget {
                     try {
                       await ref.read(dbHelper).updateGameName(newName.first, index);
                     } catch (e) {
-                      if (e.toString().contains('code 2067')) {
+                      if (e.toString().contains('2067')) {
                         await showOkAlertDialog(
                           context: context,
                           title: 'エラー',
-                          message: '既に登録されているデッキです。',
+                          message: '既に登録されているゲームです。',
                         );
                       } else {
                         await showOkAlertDialog(
@@ -436,7 +436,7 @@ class _DeckListView extends HookConsumerWidget {
                       try {
                         await ref.read(dbHelper).updateDeckName(newName.first, index);
                       } catch (e) {
-                        if (e.toString().contains('code 2067')) {
+                        if (e.toString().contains('2067')) {
                           await showOkAlertDialog(
                             context: context,
                             title: 'エラー',
@@ -512,11 +512,11 @@ class _TagListView extends HookConsumerWidget {
                       try {
                         await ref.read(dbHelper).updateTagName(newName.first, index);
                       } catch (e) {
-                        if (e.toString().contains('code 2067')) {
+                        if (e.toString().contains('2067')) {
                           await showOkAlertDialog(
                             context: context,
                             title: 'エラー',
-                            message: '既に登録されているデッキです。',
+                            message: '既に登録されているタグです。',
                           );
                         } else {
                           await showOkAlertDialog(
