@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/provider/theme_provider.dart';
 
-final lightThemeDataProvider = StateProvider<ThemeData>(
+final lightThemeDataProvider = Provider<ThemeData>(
   ((ref) {
     final scheme = ref.watch(themeNotifierProvider.select((value) => value.scheme));
     return FlexThemeData.light(
@@ -46,7 +46,7 @@ final lightThemeDataProvider = StateProvider<ThemeData>(
   }),
 );
 
-final darkThemeDataProvider = StateProvider<ThemeData>(
+final darkThemeDataProvider = Provider<ThemeData>(
   ((ref) {
     final scheme = ref.watch(themeNotifierProvider.select((value) => value.scheme));
     return FlexThemeData.dark(
@@ -87,7 +87,7 @@ final darkThemeDataProvider = StateProvider<ThemeData>(
   }),
 );
 
-final previewLightThemeDataProvider = StateProvider<ThemeData>(
+final previewLightThemeDataProvider = Provider<ThemeData>(
   ((ref) {
     final scheme = ref.watch(themeNotifierProvider.select((value) => value.previewScheme));
     return FlexThemeData.light(
@@ -129,7 +129,7 @@ final previewLightThemeDataProvider = StateProvider<ThemeData>(
   }),
 );
 
-final previewDarkThemeDataProvider = StateProvider<ThemeData>(
+final previewDarkThemeDataProvider = Provider<ThemeData>(
   ((ref) {
     final scheme = ref.watch(themeNotifierProvider.select((value) => value.previewScheme));
     return FlexThemeData.dark(
@@ -175,7 +175,7 @@ final previewDarkThemeDataProvider = StateProvider<ThemeData>(
   }),
 );
 
-final previewThemeDataListProvider = StateProvider<List<ThemeData>>((ref) {
+final previewThemeDataListProvider = Provider<List<ThemeData>>((ref) {
   final List<ThemeData> result = [];
   for (final scheme in FlexScheme.values) {
     if (scheme == FlexScheme.custom) break;
