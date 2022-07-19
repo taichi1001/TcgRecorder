@@ -422,8 +422,6 @@ class _DeckListView extends HookConsumerWidget {
                             ),
                   ),
                   alertMessage: '選択したデッキのデータが全て削除されます。',
-                  isVisible: deckList[index].isVisibleToPicker,
-                  visibleFunc: () async => await ref.read(dbHelper).toggleIsVisibleToPickerOfDeck(deckList[index]),
                   deleteFunc: () async => await ref.read(dbHelper).deleteDeck(deckList[index]),
                   editFunc: () async {
                     final newName = await showTextInputDialog(
@@ -497,8 +495,6 @@ class _TagListView extends HookConsumerWidget {
                             ),
                   ),
                   alertMessage: '選択したタグを削除し、そのタグが設定されているデータからタグを削除します。',
-                  isVisible: tagList[index].isVisibleToPicker,
-                  visibleFunc: () async => await ref.read(dbHelper).toggleIsVisibleToPickerOfTag(tagList[index]),
                   deleteFunc: () async => await ref.read(dbHelper).deleteTag(tagList[index]),
                   editFunc: () async {
                     final newName = await showTextInputDialog(

@@ -6,6 +6,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/enum/sort.dart';
 import 'package:tcg_manager/helper/convert_sort_string.dart';
+import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/select_deck_view_provider.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
@@ -298,7 +299,7 @@ class _AllListViewTitle extends HookConsumerWidget {
                     );
                   },
                   child: Text(
-                    '並び替え',
+                    '設定',
                     style: Theme.of(context).textTheme.bodyText2,
                   ),
                 ),
@@ -391,18 +392,24 @@ class _ReorderableDeckListView extends HookConsumerWidget {
         shrinkWrap: true,
         buildDefaultDragHandles: false,
         itemBuilder: ((context, index) {
-          if (enableVisibility && !deckList[index].isVisibleToPicker) return Container(key: Key(deckList[index].deckId.toString()));
           return ListTile(
             key: Key(deckList[index].deckId.toString()),
             tileColor: Theme.of(context).colorScheme.surface,
             title: Text(
               deckList[index].deck,
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: deckList[index].isVisibleToPicker
+                  ? Theme.of(context).textTheme.bodyMedium
+                  : Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Theme.of(context).disabledColor,
+                      ),
             ),
             trailing: ReorderableDragStartListener(
               index: index,
               child: const Icon(Icons.drag_handle),
             ),
+            onTap: () async {
+              await ref.read(dbHelper).toggleIsVisibleToPickerOfDeck(deckList[index]);
+            },
           );
         }),
         onReorder: (oldIndex, newIndex) async {
@@ -450,9 +457,25 @@ class ReordableDeckView extends HookConsumerWidget {
       ),
       body: gameDeckList.when(
         data: (gameDeckList) {
-          return _ReorderableDeckListView(
-            deckList: gameDeckList,
-            enableVisibility: enableVisiblity,
+          return Column(
+            children: [
+              Expanded(
+                child: _ReorderableDeckListView(
+                  deckList: gameDeckList,
+                  enableVisibility: enableVisiblity,
+                ),
+              ),
+              Container(
+                color: Theme.of(context).canvasColor,
+                width: double.infinity,
+                padding: const EdgeInsets.all(16),
+                child: Text(
+                  '項目をタップで表示/非表示を切り替えられます',
+                  style: Theme.of(context).textTheme.bodySmall,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
           );
         },
         error: (error, stack) => Text('$error'),

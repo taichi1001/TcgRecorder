@@ -115,8 +115,8 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     read(textEditingControllerNotifierProvider.notifier).resetInputViewController();
   }
 
-  Future<bool> save() async {
-    if (state.useDeck == null || state.opponentDeck == null) return false;
+  Future<int> save() async {
+    if (state.useDeck == null || state.opponentDeck == null) return 0;
     final selectGameId = read(selectGameNotifierProvider).selectGame!.gameId;
     // useDeckが新規だった場合、useDeckにgameIDを設定
     final checkUseDeck = await read(editRecordHelper).checkIfSelectedUseDeckIsNew(state.useDeck!.deck);
@@ -193,8 +193,8 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     _saveDate();
     _saveFirstSecond();
     _saveWinLoss();
-    await read(recordRepository).insert(state.record!);
-    return true;
+    final recordCount = await read(recordRepository).insert(state.record!);
+    return recordCount;
   }
 }
 
