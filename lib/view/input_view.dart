@@ -323,13 +323,12 @@ class InputView extends HookConsumerWidget {
                                           if (okCancelResult == OkCancelResult.ok) {
                                             final recordCount = await inputViewNotifier.save();
                                             await ref.read(dbHelper).fetchAll();
-                                            // if (recordCount % 42 == 0) {
-                                            // レビュー催促ダイアログ表示
-                                            final inAppReview = InAppReview.instance;
-                                            if (await inAppReview.isAvailable()) {
-                                              inAppReview.requestReview();
+                                            if (recordCount % 200 == 0) {
+                                              final inAppReview = InAppReview.instance;
+                                              if (await inAppReview.isAvailable()) {
+                                                inAppReview.requestReview();
+                                              }
                                             }
-                                            // }
                                             ref.refresh(allDeckListProvider);
                                             inputViewNotifier.resetView();
                                           }
