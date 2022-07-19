@@ -307,8 +307,7 @@ class _GameListView extends HookConsumerWidget {
                       if (e.toString().contains('2067')) {
                         await showOkAlertDialog(
                           context: context,
-                          title: 'エラー',
-                          message: '既に登録されているゲームです。',
+                          title: '既に登録されているゲームです',
                         );
                       } else {
                         await showOkAlertDialog(
@@ -439,8 +438,7 @@ class _DeckListView extends HookConsumerWidget {
                         if (e.toString().contains('2067')) {
                           await showOkAlertDialog(
                             context: context,
-                            title: 'エラー',
-                            message: '既に登録されているデッキです。',
+                            title: '既に登録されているデッキです',
                           );
                         } else {
                           await showOkAlertDialog(
@@ -515,8 +513,7 @@ class _TagListView extends HookConsumerWidget {
                         if (e.toString().contains('2067')) {
                           await showOkAlertDialog(
                             context: context,
-                            title: 'エラー',
-                            message: '既に登録されているタグです。',
+                            title: '既に登録されているタグです。',
                           );
                         } else {
                           await showOkAlertDialog(
