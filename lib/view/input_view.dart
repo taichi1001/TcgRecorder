@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:intl/intl.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -320,8 +321,15 @@ class InputView extends HookConsumerWidget {
                                             isDestructiveAction: true,
                                           );
                                           if (okCancelResult == OkCancelResult.ok) {
-                                            await inputViewNotifier.save();
+                                            final recordCount = await inputViewNotifier.save();
                                             await ref.read(dbHelper).fetchAll();
+                                            // if (recordCount % 42 == 0) {
+                                            // レビュー催促ダイアログ表示
+                                            final inAppReview = InAppReview.instance;
+                                            if (await inAppReview.isAvailable()) {
+                                              inAppReview.requestReview();
+                                            }
+                                            // }
                                             ref.refresh(allDeckListProvider);
                                             inputViewNotifier.resetView();
                                           }

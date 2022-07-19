@@ -58,6 +58,8 @@ dependencies:
 
   launch_review: ^3.0.1
 
+  in_app_review: ^2.0.4
+
   webview_flutter: ^3.0.4
 
   flutter_native_splash: ^2.2.4
