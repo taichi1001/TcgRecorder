@@ -13,7 +13,7 @@ abstract class TagRepository {
 
   Future<int> update(Tag tag);
 
-  Future<List<Object?>> updateSortIndex(List<Tag> tagList);
+  Future<List<Object?>> updateTagList(List<Tag> tagList);
 
   Future<int> deleteById(int id);
 
@@ -39,7 +39,7 @@ class TagRepositoryImpl implements TagRepository {
   Future<int> update(Tag tag) => tagDao.update(tag);
 
   @override
-  Future<List<Object?>> updateSortIndex(List<Tag> tagList) => tagDao.updateSortIndex(tagList);
+  Future<List<Object?>> updateTagList(List<Tag> tagList) => tagDao.updateTagList(tagList);
 
   @override
   Future<int> deleteById(int id) => tagDao.delete(id);

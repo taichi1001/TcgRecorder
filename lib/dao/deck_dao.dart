@@ -35,10 +35,10 @@ class DeckDao {
     }
   }
 
-  Future<List<Object?>> updateSortIndex(List<Deck> deckList) async {
+  Future<List<Object?>> updateDeckList(List<Deck> deckList) async {
     final db = await dbProvider.database;
     final batch = db.batch();
-    for (var deck in deckList) {
+    for (final deck in deckList) {
       batch.update(tableName, deck.toJson(), where: 'deck_id = ?', whereArgs: [deck.deckId]);
     }
     final result = await batch.commit();

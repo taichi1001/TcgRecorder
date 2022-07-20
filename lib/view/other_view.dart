@@ -7,15 +7,26 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:settings_ui/settings_ui.dart';
+import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/game.dart';
+import 'package:tcg_manager/entity/record.dart';
+import 'package:tcg_manager/entity/tag.dart';
 import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/helper/db_helper.dart';
+import 'package:tcg_manager/helper/edit_record_helper.dart';
 import 'package:tcg_manager/helper/theme_data.dart';
 import 'package:tcg_manager/provider/bottom_navigation_bar_provider.dart';
+import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/input_view_settings_provider.dart';
+import 'package:tcg_manager/provider/record_list_provider.dart';
+import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 import 'package:tcg_manager/provider/theme_provider.dart';
+import 'package:tcg_manager/repository/deck_repository.dart';
+import 'package:tcg_manager/repository/game_repository.dart';
+import 'package:tcg_manager/repository/record_repository.dart';
+import 'package:tcg_manager/repository/tag_repository.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
 import 'package:tcg_manager/selector/game_tag_list_selector.dart';
 import 'package:tcg_manager/view/component/custom_textfield.dart';
@@ -305,10 +316,47 @@ class _GameListView extends HookConsumerWidget {
                       await ref.read(dbHelper).updateGameName(newName.first, index);
                     } catch (e) {
                       if (e.toString().contains('2067')) {
-                        await showOkAlertDialog(
+                        final result = await showOkCancelAlertDialog(
                           context: context,
                           title: '既に登録されているゲームです',
+                          message: '保存されている記録を統合しますか？',
                         );
+                        if (result == OkCancelResult.ok) {
+                          // ゲームを統合したことで、ゲームID違いで同じ名前だったデッキやタグが
+                          // ゲームIDも同じになってしまうことで重複エラーが出るようになっているため修正必要
+                          final oldGame = await ref.read(editRecordHelper).checkIfSelectedGameIsNew(newName.first);
+                          final allRecordList = await ref.read(recordRepository).getAll();
+                          final targetRecordList = allRecordList.where((record) => record.gameId == gameList[index].gameId).toList();
+                          final List<Record> newRecordList = [];
+                          for (var record in targetRecordList) {
+                            record = record.copyWith(gameId: oldGame.game!.gameId);
+                            newRecordList.add(record);
+                          }
+                          await ref.read(recordRepository).updateRecordList(newRecordList);
+
+                          final allDeckList = await ref.read(deckRepository).getAll();
+                          final targetDeckList = allDeckList.where((deck) => deck.gameId! == gameList[index].gameId).toList();
+                          final List<Deck> newDeckList = [];
+                          for (var deck in targetDeckList) {
+                            deck = deck.copyWith(gameId: oldGame.game!.gameId);
+                            newDeckList.add(deck);
+                          }
+                          await ref.read(deckRepository).updateDeckList(newDeckList);
+
+                          final allTagList = await ref.read(tagRepository).getAll();
+                          final targetTagList = allTagList.where((tag) => tag.gameId! == gameList[index].gameId).toList();
+                          final List<Tag> newTagList = [];
+                          for (var tag in targetTagList) {
+                            tag = tag.copyWith(gameId: oldGame.game!.gameId);
+                            newTagList.add(tag);
+                          }
+                          await ref.read(tagRepository).updateTagList(newTagList);
+
+                          await ref.read(gameRepository).deleteById(gameList[index].gameId!);
+                          ref.refresh(allTagListProvider);
+                          ref.refresh(allDeckListProvider);
+                          ref.refresh(allRecordListProvider);
+                        }
                       } else {
                         await showOkAlertDialog(
                           context: context,
@@ -434,10 +482,36 @@ class _DeckListView extends HookConsumerWidget {
                         await ref.read(dbHelper).updateDeckName(newName.first, index);
                       } catch (e) {
                         if (e.toString().contains('2067')) {
-                          await showOkAlertDialog(
+                          final result = await showOkCancelAlertDialog(
                             context: context,
                             title: '既に登録されているデッキです',
+                            message: '保存されている記録を統合しますか？',
                           );
+                          if (result == OkCancelResult.ok) {
+                            final oldDeck = await ref.read(editRecordHelper).checkIfSelectedUseDeckIsNew(newName.first);
+                            var allRecordList = await ref.read(recordRepository).getAll();
+                            final targetUseDeckList = allRecordList.where((record) => record.useDeckId! == deckList[index].deckId).toList();
+                            final List<Record> newUseDeckRecordList = [];
+                            for (var deck in targetUseDeckList) {
+                              deck = deck.copyWith(useDeckId: oldDeck.deck!.deckId);
+                              newUseDeckRecordList.add(deck);
+                            }
+                            await ref.read(recordRepository).updateRecordList(newUseDeckRecordList);
+
+                            allRecordList = await ref.read(recordRepository).getAll();
+                            final targetOpponentDeckList =
+                                allRecordList.where((record) => record.opponentDeckId! == deckList[index].deckId).toList();
+                            final List<Record> newOpponentDeckRecordList = [];
+                            for (var deck in targetOpponentDeckList) {
+                              deck = deck.copyWith(opponentDeckId: oldDeck.deck!.deckId);
+                              newOpponentDeckRecordList.add(deck);
+                            }
+                            await ref.read(recordRepository).updateRecordList(newOpponentDeckRecordList);
+
+                            await ref.read(deckRepository).deleteById(deckList[index].deckId!);
+                            ref.refresh(allDeckListProvider);
+                            ref.refresh(allRecordListProvider);
+                          }
                         } else {
                           await showOkAlertDialog(
                             context: context,
@@ -507,10 +581,26 @@ class _TagListView extends HookConsumerWidget {
                         await ref.read(dbHelper).updateTagName(newName.first, index);
                       } catch (e) {
                         if (e.toString().contains('2067')) {
-                          await showOkAlertDialog(
+                          final result = await showOkCancelAlertDialog(
                             context: context,
                             title: '既に登録されているタグです。',
+                            message: '保存されている記録を統合しますか？',
                           );
+                          if (result == OkCancelResult.ok) {
+                            final oldTag = await ref.read(editRecordHelper).checkIfSelectedTagIsNew(newName.first);
+                            final allRecordList = await ref.read(recordRepository).getAll();
+                            final isTagList = allRecordList.where((record) => record.tagId != null);
+                            final targetTagList = isTagList.where((record) => record.tagId! == tagList[index].tagId).toList();
+                            final List<Record> newTagRecordList = [];
+                            for (var tag in targetTagList) {
+                              tag = tag.copyWith(tagId: oldTag.tag!.tagId);
+                              newTagRecordList.add(tag);
+                            }
+                            await ref.read(recordRepository).updateRecordList(newTagRecordList);
+                            await ref.read(deckRepository).deleteById(tagList[index].tagId!);
+                            ref.refresh(allTagListProvider);
+                            ref.refresh(allRecordListProvider);
+                          }
                         } else {
                           await showOkAlertDialog(
                             context: context,
