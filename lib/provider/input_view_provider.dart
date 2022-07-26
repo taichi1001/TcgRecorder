@@ -5,8 +5,11 @@ import 'package:tcg_manager/entity/tag.dart';
 import 'package:tcg_manager/enum/first_second.dart';
 import 'package:tcg_manager/enum/win_loss.dart';
 import 'package:tcg_manager/helper/edit_record_helper.dart';
+import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/input_view_settings_provider.dart';
+import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
+import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
@@ -14,12 +17,9 @@ import 'package:tcg_manager/repository/tag_repository.dart';
 import 'package:tcg_manager/state/input_view_state.dart';
 
 class InputViewNotifier extends StateNotifier<InputViewState> {
-  InputViewNotifier(this.read)
-      : super(
-          InputViewState(
-            date: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
-          ),
-        );
+  InputViewNotifier(this.read) : super(InputViewState(date: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day))) {
+    init();
+  }
 
   final Reader read;
 
@@ -62,8 +62,12 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
   }
 
   void inputTag(String name) {
-    final tag = Tag(tag: name);
-    state = state.copyWith(tag: tag);
+    if (name == '') {
+      state = state.copyWith(tag: null);
+    } else {
+      final tag = Tag(tag: name);
+      state = state.copyWith(tag: tag);
+    }
   }
 
   void selectTag(Tag tag) {
@@ -98,6 +102,32 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
 
   void _saveWinLoss() {
     state = state.copyWith(record: state.record!.copyWith(winLoss: state.winLoss));
+  }
+
+  Future init() async {
+    final recordList = await read(allRecordListProvider.future);
+    final deckList = await read(allDeckListProvider.future);
+    final tagList = await read(allTagListProvider.future);
+    final inputViewSettings = read(inputViewSettingsNotifierProvider);
+    final fixUseDeck = inputViewSettings.fixUseDeck;
+    final fixOpponentDeck = inputViewSettings.fixOpponentDeck;
+    final fixTag = inputViewSettings.fixTag;
+    if (recordList.isNotEmpty) {
+      final previousRecord = recordList.last;
+      final previousUseDeck = deckList.firstWhere((deck) => deck.deckId == previousRecord.useDeckId);
+      final previousOpponentDeck = deckList.firstWhere((deck) => deck.deckId == previousRecord.opponentDeckId);
+      final previousTagList = tagList.where((tag) => tag.tagId == previousRecord.tagId).toList();
+      Tag? previousTag;
+      if (previousTagList.isNotEmpty) previousTag = previousTagList.last;
+      state = state.copyWith(
+        useDeck: fixUseDeck ? previousUseDeck : null,
+        opponentDeck: fixOpponentDeck ? previousOpponentDeck : null,
+        tag: fixTag ? previousTag : null,
+      );
+      if (fixUseDeck) read(textEditingControllerNotifierProvider.notifier).setUseDeckController(previousUseDeck.deck);
+      if (fixOpponentDeck) read(textEditingControllerNotifierProvider.notifier).setOpponentDeckController(previousOpponentDeck.deck);
+      if (fixTag && previousTag != null) read(textEditingControllerNotifierProvider.notifier).setTagController(previousTag.tag);
+    }
   }
 
   void resetView() {
