@@ -219,7 +219,7 @@ class SelectDeckView extends HookConsumerWidget {
                                     Padding(
                                       padding: const EdgeInsets.all(16),
                                       child: Text(
-                                        '最近使用したデッキ',
+                                        '最近記録したデッキ',
                                         style: Theme.of(context).textTheme.caption,
                                       ),
                                     ),
