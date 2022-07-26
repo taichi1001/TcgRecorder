@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:intl/intl.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -223,6 +224,7 @@ class InputView extends HookConsumerWidget {
                                                 backgroundColor: Colors.transparent,
                                                 builder: (BuildContext context) => SelectDeckView(
                                                   selectDeckFunc: inputViewNotifier.selectUseDeck,
+                                                  afterFunc: FocusScope.of(context).unfocus,
                                                   enableVisiblity: true,
                                                 ),
                                               );
@@ -251,6 +253,7 @@ class InputView extends HookConsumerWidget {
                                                 backgroundColor: Colors.transparent,
                                                 builder: (BuildContext context) => SelectDeckView(
                                                   selectDeckFunc: inputViewNotifier.selectOpponentDeck,
+                                                  afterFunc: FocusScope.of(context).unfocus,
                                                   enableVisiblity: true,
                                                 ),
                                               );
@@ -279,6 +282,7 @@ class InputView extends HookConsumerWidget {
                                                 backgroundColor: Colors.transparent,
                                                 builder: (BuildContext context) => SelectTagView(
                                                   selectTagFunc: inputViewNotifier.selectTag,
+                                                  afterFunc: FocusScope.of(context).unfocus,
                                                   enableVisiblity: true,
                                                 ),
                                               );
@@ -317,8 +321,14 @@ class InputView extends HookConsumerWidget {
                                             isDestructiveAction: true,
                                           );
                                           if (okCancelResult == OkCancelResult.ok) {
-                                            await inputViewNotifier.save();
+                                            final recordCount = await inputViewNotifier.save();
                                             await ref.read(dbHelper).fetchAll();
+                                            if (recordCount % 200 == 0) {
+                                              final inAppReview = InAppReview.instance;
+                                              if (await inAppReview.isAvailable()) {
+                                                inAppReview.requestReview();
+                                              }
+                                            }
                                             ref.refresh(allDeckListProvider);
                                             inputViewNotifier.resetView();
                                           }

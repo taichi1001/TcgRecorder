@@ -6,6 +6,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/enum/sort.dart';
 import 'package:tcg_manager/helper/convert_sort_string.dart';
+import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/select_deck_view_provider.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
@@ -40,11 +41,13 @@ final selectDeckViewInfoProvider = FutureProvider.autoDispose<SelectDeckViewInfo
 class SelectDeckView extends HookConsumerWidget {
   const SelectDeckView({
     required this.selectDeckFunc,
+    this.afterFunc,
     this.enableVisiblity = false,
     key,
   }) : super(key: key);
 
   final Function(Deck) selectDeckFunc;
+  final Function? afterFunc;
   final bool enableVisiblity;
 
   @override
@@ -164,6 +167,7 @@ class SelectDeckView extends HookConsumerWidget {
                                       rootContext: rootContext,
                                       selectDeckFunc: selectDeckFunc,
                                       enableVisibility: false,
+                                      afterFunc: afterFunc,
                                     ),
                                   ],
                                 );
@@ -202,6 +206,7 @@ class SelectDeckView extends HookConsumerWidget {
                                       rootContext: rootContext,
                                       selectDeckFunc: selectDeckFunc,
                                       enableVisibility: false,
+                                      afterFunc: afterFunc,
                                     ),
                                   ],
                                 );
@@ -214,7 +219,7 @@ class SelectDeckView extends HookConsumerWidget {
                                     Padding(
                                       padding: const EdgeInsets.all(16),
                                       child: Text(
-                                        '最近使用したデッキ',
+                                        '最近記録したデッキ',
                                         style: Theme.of(context).textTheme.caption,
                                       ),
                                     ),
@@ -222,7 +227,8 @@ class SelectDeckView extends HookConsumerWidget {
                                       deckList: selectDeckViewInfo.recentlyUseDeckList,
                                       rootContext: rootContext,
                                       selectDeckFunc: selectDeckFunc,
-                                      enableVisibility: enableVisiblity,
+                                      enableVisibility: false,
+                                      afterFunc: afterFunc,
                                     ),
                                     _AllListViewTitle(
                                       enableVisiblity: enableVisiblity,
@@ -232,6 +238,7 @@ class SelectDeckView extends HookConsumerWidget {
                                       rootContext: rootContext,
                                       selectDeckFunc: selectDeckFunc,
                                       enableVisibility: enableVisiblity,
+                                      afterFunc: afterFunc,
                                     ),
                                   ],
                                 );
@@ -292,7 +299,7 @@ class _AllListViewTitle extends HookConsumerWidget {
                     );
                   },
                   child: Text(
-                    '並び替え',
+                    '設定',
                     style: Theme.of(context).textTheme.bodyText2,
                   ),
                 ),
@@ -318,12 +325,14 @@ class _DeckListView extends StatelessWidget {
     required this.rootContext,
     required this.selectDeckFunc,
     required this.enableVisibility,
+    this.afterFunc,
     key,
   }) : super(key: key);
 
   final List<Deck> deckList;
   final BuildContext rootContext;
   final Function(Deck) selectDeckFunc;
+  final Function? afterFunc;
   final bool enableVisibility;
 
   @override
@@ -332,31 +341,32 @@ class _DeckListView extends StatelessWidget {
       padding: EdgeInsets.zero,
       shrinkWrap: true,
       itemBuilder: ((context, index) {
-        if (index == 0 || index == deckList.length + 1) return Container();
-        if (enableVisibility && !deckList[index - 1].isVisibleToPicker) return Container();
+        if (enableVisibility && !deckList[index].isVisibleToPicker) return Container();
         return GestureDetector(
           onTap: () {
-            selectDeckFunc(deckList[index - 1]);
+            selectDeckFunc(deckList[index]);
             Navigator.pop(rootContext);
+            if (afterFunc != null) afterFunc!();
           },
           child: Container(
             padding: const EdgeInsets.all(16),
             color: Theme.of(context).colorScheme.surface,
             child: Text(
-              deckList[index - 1].deck,
+              deckList[index].deck,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
           ),
         );
       }),
       separatorBuilder: ((context, index) {
+        if (enableVisibility && !deckList[index].isVisibleToPicker) return Container();
         return const Divider(
           indent: 16,
           thickness: 1,
           height: 0,
         );
       }),
-      itemCount: deckList.length + 1,
+      itemCount: deckList.length,
     );
   }
 }
@@ -382,18 +392,24 @@ class _ReorderableDeckListView extends HookConsumerWidget {
         shrinkWrap: true,
         buildDefaultDragHandles: false,
         itemBuilder: ((context, index) {
-          if (enableVisibility && !deckList[index].isVisibleToPicker) return Container(key: Key(deckList[index].deckId.toString()));
           return ListTile(
             key: Key(deckList[index].deckId.toString()),
             tileColor: Theme.of(context).colorScheme.surface,
             title: Text(
               deckList[index].deck,
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: deckList[index].isVisibleToPicker
+                  ? Theme.of(context).textTheme.bodyMedium
+                  : Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Theme.of(context).disabledColor,
+                      ),
             ),
             trailing: ReorderableDragStartListener(
               index: index,
               child: const Icon(Icons.drag_handle),
             ),
+            onTap: () async {
+              await ref.read(dbHelper).toggleIsVisibleToPickerOfDeck(deckList[index]);
+            },
           );
         }),
         onReorder: (oldIndex, newIndex) async {
@@ -441,9 +457,25 @@ class ReordableDeckView extends HookConsumerWidget {
       ),
       body: gameDeckList.when(
         data: (gameDeckList) {
-          return _ReorderableDeckListView(
-            deckList: gameDeckList,
-            enableVisibility: enableVisiblity,
+          return Column(
+            children: [
+              Expanded(
+                child: _ReorderableDeckListView(
+                  deckList: gameDeckList,
+                  enableVisibility: enableVisiblity,
+                ),
+              ),
+              Container(
+                color: Theme.of(context).canvasColor,
+                width: double.infinity,
+                padding: const EdgeInsets.all(16),
+                child: Text(
+                  '項目をタップで表示/非表示を切り替えられます',
+                  style: Theme.of(context).textTheme.bodySmall,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
           );
         },
         error: (error, stack) => Text('$error'),

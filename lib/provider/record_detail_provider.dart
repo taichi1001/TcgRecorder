@@ -211,7 +211,7 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
   }
 }
 
-final recordListProvider = StateProvider<List<Record>>((ref) {
+final recordListProvider = Provider<List<Record>>((ref) {
   final recordList = ref.read(allRecordListProvider);
   final state = recordList.when(
     data: (recordList) => recordList,

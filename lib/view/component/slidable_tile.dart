@@ -37,10 +37,10 @@ class SlidableTile extends StatelessWidget {
         children: [
           if (deleteFunc != null)
             SlidableAction(
-              label: '削除',
               icon: Icons.delete,
               backgroundColor: Theme.of(context).errorColor,
               autoClose: false,
+              label: '削除',
               onPressed: (context) async {
                 final okCancelResult = await showOkCancelAlertDialog(
                   context: context,
@@ -61,15 +61,14 @@ class SlidableTile extends StatelessWidget {
             ),
           if (editFunc != null)
             SlidableAction(
-              label: '名前変更',
               autoClose: true,
               icon: Icons.edit,
               backgroundColor: Theme.of(context).hintColor,
               onPressed: (context) async => await editFunc!(),
+              label: '名前変更',
             ),
           if (visibleFunc != null)
             SlidableAction(
-              label: '表示切り替え',
               autoClose: false,
               icon: isVisible! ? Icons.visibility : Icons.visibility_off,
               backgroundColor: Theme.of(context).toggleableActiveColor,

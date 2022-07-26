@@ -7,16 +7,17 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:settings_ui/settings_ui.dart';
+import 'package:tcg_manager/entity/game.dart';
 import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/helper/theme_data.dart';
 import 'package:tcg_manager/provider/bottom_navigation_bar_provider.dart';
-import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/input_view_settings_provider.dart';
-import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 import 'package:tcg_manager/provider/theme_provider.dart';
+import 'package:tcg_manager/selector/game_deck_list_selector.dart';
+import 'package:tcg_manager/selector/game_tag_list_selector.dart';
 import 'package:tcg_manager/view/component/custom_textfield.dart';
 import 'package:tcg_manager/view/component/slidable_tile.dart';
 import 'package:tcg_manager/view/component/web_view_screen.dart';
@@ -97,7 +98,9 @@ class OtherView extends HookConsumerWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const _DeckListView(),
+                      builder: (context) => const _GameSelectView(
+                        nextPage: _DeckListView(),
+                      ),
                     ),
                   );
                 },
@@ -109,7 +112,9 @@ class OtherView extends HookConsumerWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const _TagListView(),
+                      builder: (context) => const _GameSelectView(
+                        nextPage: _TagListView(),
+                      ),
                     ),
                   );
                 },
@@ -292,18 +297,17 @@ class _GameListView extends HookConsumerWidget {
                 editFunc: () async {
                   final newName = await showTextInputDialog(
                     context: context,
-                    title: S.of(context).gameEdit,
+                    title: '名前変更',
                     textFields: [DialogTextField(initialText: gameList[index].game)],
                   );
                   if (newName != null && newName.first != '') {
                     try {
                       await ref.read(dbHelper).updateGameName(newName.first, index);
                     } catch (e) {
-                      if (e.toString().contains('code 2067')) {
+                      if (e.toString().contains('2067')) {
                         await showOkAlertDialog(
                           context: context,
-                          title: 'エラー',
-                          message: '既に登録されているデッキです。',
+                          title: '既に登録されているゲームです',
                         );
                       } else {
                         await showOkAlertDialog(
@@ -325,12 +329,70 @@ class _GameListView extends HookConsumerWidget {
   }
 }
 
+final currentGameProvider = Provider<Game>((ref) {
+  return throw UnimplementedError();
+});
+
+class _GameSelectView extends HookConsumerWidget {
+  const _GameSelectView({
+    required this.nextPage,
+    key,
+  }) : super(key: key);
+
+  final Widget nextPage;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final gameList = ref.watch(allGameListProvider);
+    return gameList.when(
+      data: (gameList) {
+        return Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            elevation: 0.0,
+            title: Text(
+              'ゲーム選択',
+              style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+            ),
+          ),
+          body: ListView.separated(
+            itemBuilder: (context, index) {
+              return Container(
+                color: Theme.of(context).colorScheme.surface,
+                child: ListTile(
+                  title: Text(gameList[index].game),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProviderScope(
+                          overrides: [currentGameProvider.overrideWithValue(gameList[index])],
+                          child: nextPage,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              );
+            },
+            separatorBuilder: (context, index) => const Divider(indent: 16, thickness: 1, height: 0),
+            itemCount: gameList.length,
+          ),
+        );
+      },
+      error: (error, stack) => Text('$error'),
+      loading: () => const Center(child: CircularProgressIndicator()),
+    );
+  }
+}
+
 class _DeckListView extends HookConsumerWidget {
   const _DeckListView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final deckList = ref.watch(allDeckListProvider);
+    final currentGame = ref.watch(currentGameProvider);
+    final deckList = ref.watch(currentGameDeckListProvider(currentGame));
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -360,24 +422,21 @@ class _DeckListView extends HookConsumerWidget {
                             ),
                   ),
                   alertMessage: '選択したデッキのデータが全て削除されます。',
-                  isVisible: deckList[index].isVisibleToPicker,
-                  visibleFunc: () async => await ref.read(dbHelper).toggleIsVisibleToPickerOfDeck(deckList[index]),
                   deleteFunc: () async => await ref.read(dbHelper).deleteDeck(deckList[index]),
                   editFunc: () async {
                     final newName = await showTextInputDialog(
                       context: context,
-                      title: S.of(context).gameEdit,
+                      title: '名前変更',
                       textFields: [DialogTextField(initialText: deckList[index].deck)],
                     );
                     if (newName != null && newName.first != '') {
                       try {
                         await ref.read(dbHelper).updateDeckName(newName.first, index);
                       } catch (e) {
-                        if (e.toString().contains('code 2067')) {
+                        if (e.toString().contains('2067')) {
                           await showOkAlertDialog(
                             context: context,
-                            title: 'エラー',
-                            message: '既に登録されているデッキです。',
+                            title: '既に登録されているデッキです',
                           );
                         } else {
                           await showOkAlertDialog(
@@ -405,7 +464,8 @@ class _TagListView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final tagList = ref.watch(allTagListProvider);
+    final currentGame = ref.watch(currentGameProvider);
+    final tagList = ref.watch(currentTagDeckListProvider(currentGame));
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -435,24 +495,21 @@ class _TagListView extends HookConsumerWidget {
                             ),
                   ),
                   alertMessage: '選択したタグを削除し、そのタグが設定されているデータからタグを削除します。',
-                  isVisible: tagList[index].isVisibleToPicker,
-                  visibleFunc: () async => await ref.read(dbHelper).toggleIsVisibleToPickerOfTag(tagList[index]),
                   deleteFunc: () async => await ref.read(dbHelper).deleteTag(tagList[index]),
                   editFunc: () async {
                     final newName = await showTextInputDialog(
                       context: context,
-                      title: S.of(context).gameEdit,
+                      title: '名前変更',
                       textFields: [DialogTextField(initialText: tagList[index].tag)],
                     );
                     if (newName != null && newName.first != '') {
                       try {
                         await ref.read(dbHelper).updateTagName(newName.first, index);
                       } catch (e) {
-                        if (e.toString().contains('code 2067')) {
+                        if (e.toString().contains('2067')) {
                           await showOkAlertDialog(
                             context: context,
-                            title: 'エラー',
-                            message: '既に登録されているデッキです。',
+                            title: '既に登録されているタグです。',
                           );
                         } else {
                           await showOkAlertDialog(
@@ -484,6 +541,7 @@ class _ThemeChangeView extends HookConsumerWidget {
     final themeNotifier = ref.watch(themeNotifierProvider.notifier);
     final currentScheme = ref.watch(themeNotifierProvider.select((value) => value.scheme));
     final previewScheme = ref.watch(themeNotifierProvider.select((value) => value.previewScheme));
+    final previewThemeDataList = ref.watch(previewThemeDataListProvider);
     final isDarkMode = MediaQuery.of(context).platformBrightness == Brightness.dark;
     final itemScrollController = ItemScrollController();
 
@@ -569,7 +627,7 @@ class _ThemeChangeView extends HookConsumerWidget {
                             height: 55,
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                primary: FlexThemeData.light(scheme: FlexScheme.values[index]).primaryColor,
+                                primary: previewThemeDataList[index].primaryColor,
                                 shape: CircleBorder(
                                   side: previewScheme == FlexScheme.values[index]
                                       ? BorderSide(

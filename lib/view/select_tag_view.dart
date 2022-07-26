@@ -6,6 +6,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:tcg_manager/entity/tag.dart';
 import 'package:tcg_manager/enum/sort.dart';
 import 'package:tcg_manager/helper/convert_sort_string.dart';
+import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/provider/select_tag_view_provider.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/repository/tag_repository.dart';
@@ -30,8 +31,6 @@ final selectTagViewInfoProvider = FutureProvider.autoDispose<SelectTagViewInfo>(
   final gameTagList = await ref.watch(sortedTagListProvider.future);
   final searchTagList = await ref.watch(searchTagListProvider.future);
   final recentlyUseTagList = await ref.watch(recentlyUseTagProvider.future);
-  ref.keepAlive();
-
   return SelectTagViewInfo(
     gameTagList: gameTagList,
     searchTagList: searchTagList,
@@ -42,11 +41,13 @@ final selectTagViewInfoProvider = FutureProvider.autoDispose<SelectTagViewInfo>(
 class SelectTagView extends HookConsumerWidget {
   const SelectTagView({
     required this.selectTagFunc,
+    this.afterFunc,
     this.enableVisiblity = false,
     key,
   }) : super(key: key);
 
   final Function(Tag) selectTagFunc;
+  final Function? afterFunc;
   final bool enableVisiblity;
 
   @override
@@ -166,6 +167,7 @@ class SelectTagView extends HookConsumerWidget {
                                       rootContext: rootContext,
                                       selectTagFunc: selectTagFunc,
                                       enableVisibility: false,
+                                      afterFunc: afterFunc,
                                     ),
                                   ],
                                 );
@@ -204,6 +206,7 @@ class SelectTagView extends HookConsumerWidget {
                                       rootContext: rootContext,
                                       selectTagFunc: selectTagFunc,
                                       enableVisibility: false,
+                                      afterFunc: afterFunc,
                                     ),
                                   ],
                                 );
@@ -216,7 +219,7 @@ class SelectTagView extends HookConsumerWidget {
                                     Padding(
                                       padding: const EdgeInsets.all(16),
                                       child: Text(
-                                        '最近使用したデッキ',
+                                        '最近記録したタグ',
                                         style: Theme.of(context).textTheme.caption,
                                       ),
                                     ),
@@ -224,7 +227,8 @@ class SelectTagView extends HookConsumerWidget {
                                       tagList: selectTagViewInfo.recentlyUseTagList,
                                       rootContext: rootContext,
                                       selectTagFunc: selectTagFunc,
-                                      enableVisibility: enableVisiblity,
+                                      enableVisibility: false,
+                                      afterFunc: afterFunc,
                                     ),
                                     _AllListViewTitle(
                                       enableVisiblity: enableVisiblity,
@@ -234,6 +238,7 @@ class SelectTagView extends HookConsumerWidget {
                                       rootContext: rootContext,
                                       selectTagFunc: selectTagFunc,
                                       enableVisibility: enableVisiblity,
+                                      afterFunc: afterFunc,
                                     ),
                                   ],
                                 );
@@ -294,7 +299,7 @@ class _AllListViewTitle extends HookConsumerWidget {
                     );
                   },
                   child: Text(
-                    '並び替え',
+                    '設定',
                     style: Theme.of(context).textTheme.bodyText2,
                   ),
                 ),
@@ -320,12 +325,15 @@ class _TagListView extends StatelessWidget {
     required this.rootContext,
     required this.selectTagFunc,
     required this.enableVisibility,
+    this.afterFunc,
     key,
   }) : super(key: key);
 
   final List<Tag> tagList;
   final BuildContext rootContext;
   final Function(Tag) selectTagFunc;
+  final Function? afterFunc;
+
   final bool enableVisibility;
 
   @override
@@ -334,31 +342,32 @@ class _TagListView extends StatelessWidget {
       padding: EdgeInsets.zero,
       shrinkWrap: true,
       itemBuilder: ((context, index) {
-        if (index == 0 || index == tagList.length + 1) return Container();
-        if (enableVisibility && !tagList[index - 1].isVisibleToPicker) return Container();
+        if (enableVisibility && !tagList[index].isVisibleToPicker) return Container();
         return GestureDetector(
           onTap: () {
-            selectTagFunc(tagList[index - 1]);
+            selectTagFunc(tagList[index]);
             Navigator.pop(rootContext);
+            if (afterFunc != null) afterFunc!();
           },
           child: Container(
             padding: const EdgeInsets.all(16),
             color: Theme.of(context).colorScheme.surface,
             child: Text(
-              tagList[index - 1].tag,
+              tagList[index].tag,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
           ),
         );
       }),
       separatorBuilder: ((context, index) {
+        if (enableVisibility && !tagList[index].isVisibleToPicker) return Container();
         return const Divider(
           indent: 16,
           thickness: 1,
           height: 0,
         );
       }),
-      itemCount: tagList.length + 1,
+      itemCount: tagList.length,
     );
   }
 }
@@ -383,18 +392,24 @@ class _ReorderableTagListView extends HookConsumerWidget {
       child: ReorderableListView.builder(
         shrinkWrap: true,
         itemBuilder: ((context, index) {
-          if (enableVisibility && !tagList[index].isVisibleToPicker) return Container(key: Key(tagList[index].tagId.toString()));
           return ListTile(
             key: Key(tagList[index].tagId.toString()),
             tileColor: Theme.of(context).colorScheme.surface,
             title: Text(
               tagList[index].tag,
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: tagList[index].isVisibleToPicker
+                  ? Theme.of(context).textTheme.bodyMedium
+                  : Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Theme.of(context).disabledColor,
+                      ),
             ),
             trailing: ReorderableDragStartListener(
               index: index,
               child: const Icon(Icons.drag_handle),
             ),
+            onTap: () async {
+              await ref.read(dbHelper).toggleIsVisibleToPickerOfTag(tagList[index]);
+            },
           );
         }),
         onReorder: (oldIndex, newIndex) async {
@@ -442,9 +457,25 @@ class ReordableTagView extends HookConsumerWidget {
       ),
       body: gameTagList.when(
         data: (gameTagList) {
-          return _ReorderableTagListView(
-            tagList: gameTagList,
-            enableVisibility: enableVisiblity,
+          return Column(
+            children: [
+              Expanded(
+                child: _ReorderableTagListView(
+                  tagList: gameTagList,
+                  enableVisibility: enableVisiblity,
+                ),
+              ),
+              Container(
+                color: Theme.of(context).canvasColor,
+                width: double.infinity,
+                padding: const EdgeInsets.all(16),
+                child: Text(
+                  '項目をタップで表示/非表示を切り替えられます',
+                  style: Theme.of(context).textTheme.bodySmall,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
           );
         },
         error: (error, stack) => Text('$error'),
