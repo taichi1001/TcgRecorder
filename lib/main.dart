@@ -15,6 +15,7 @@ import 'package:tcg_manager/helper/theme_data.dart';
 import 'package:tcg_manager/provider/adaptive_banner_ad_provider.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
+import 'package:tcg_manager/provider/graph_view_settings_provider.dart';
 import 'package:tcg_manager/provider/input_view_settings_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
@@ -81,6 +82,7 @@ class MainApp extends HookConsumerWidget {
         ref.read(adaptiveBannerAdNotifierProvider.notifier).getAd(context);
         ref.read(themeNotifierProvider.notifier).themeInitialize();
         ref.read(inputViewSettingsNotifierProvider.notifier).settingsInitialize();
+        ref.read(graphViewSettingsNotifierProvider.notifier).settingsInitialize();
       });
       return;
     }, const []);

@@ -26,6 +26,8 @@ final useDeckDataByGameProvider = FutureProvider.autoDispose<List<WinRateData>>(
           (useDeck) => WinRateData(
             deck: useDeck.deck,
             matches: calc.countUseDeckMatches(useDeck),
+            firstMatches: calc.countUseDeckFirstMatches(useDeck),
+            secondMatches: calc.countUseDeckSecondMatches(useDeck),
             win: calc.countUseDeckWins(useDeck),
             loss: calc.countUseDeckLoss(useDeck),
             useRate: calc.calcUseDeckUseRate(useDeck),
@@ -48,6 +50,8 @@ final totalAddedToUseDeckDataByGameProvider = FutureProvider.autoDispose<List<Wi
       WinRateData(
         deck: '合計',
         matches: calc.countMatches(),
+        firstMatches: calc.countFirstMatches(),
+        secondMatches: calc.countSecondMatches(),
         win: calc.countWins(),
         loss: calc.countLoss(),
         winRate: calc.calcWinRate(),

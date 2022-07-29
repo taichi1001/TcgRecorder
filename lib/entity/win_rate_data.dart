@@ -7,6 +7,8 @@ class WinRateData with _$WinRateData {
   factory WinRateData({
     @Default('') String deck,
     @Default(0) int matches,
+    @Default(0) int firstMatches,
+    @Default(0) int secondMatches,
     @Default(0) int win,
     @Default(0) int loss,
     @Default(0) double useRate,
