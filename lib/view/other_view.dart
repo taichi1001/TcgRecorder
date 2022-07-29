@@ -46,36 +46,36 @@ class OtherView extends HookConsumerWidget {
           settingsListBackground: Theme.of(context).scaffoldBackgroundColor,
         ),
         sections: [
-          SettingsSection(
-            title: Text(S.of(context).settingSection),
-            tiles: [
-              // テーマ設定画面を開放するときにコメントアウト
-              // SettingsTile.navigation(
-              //   title: Text(S.of(context).themeChange),
-              //   leading: const Icon(Icons.palette),
-              //   onPressed: (context) {
-              //     Navigator.push(
-              //       context,
-              //       MaterialPageRoute(
-              //         builder: (context) => const _ThemeChangeView(),
-              //       ),
-              //     );
-              //   },
-              // ),
-              SettingsTile.navigation(
-                title: Text(S.of(context).inputViewSettings),
-                leading: const Icon(Icons.settings_applications),
-                onPressed: (context) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const _InputViewSettingsView(),
-                    ),
-                  );
-                },
-              ),
-            ],
-          ),
+          // SettingsSection(
+          //   title: Text(S.of(context).settingSection),
+          //   tiles: [
+          //     // テーマ設定画面を開放するときにコメントアウト
+          //     // SettingsTile.navigation(
+          //     //   title: Text(S.of(context).themeChange),
+          //     //   leading: const Icon(Icons.palette),
+          //     //   onPressed: (context) {
+          //     //     Navigator.push(
+          //     //       context,
+          //     //       MaterialPageRoute(
+          //     //         builder: (context) => const _ThemeChangeView(),
+          //     //       ),
+          //     //     );
+          //     //   },
+          //     // ),
+          //     SettingsTile.navigation(
+          //       title: Text(S.of(context).inputViewSettings),
+          //       leading: const Icon(Icons.settings_applications),
+          //       onPressed: (context) {
+          //         Navigator.push(
+          //           context,
+          //           MaterialPageRoute(
+          //             builder: (context) => const _InputViewSettingsView(),
+          //           ),
+          //         );
+          //       },
+          //     ),
+          //   ],
+          // ),
           SettingsSection(
             title: Text(S.of(context).editSection),
             tiles: [
