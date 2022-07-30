@@ -316,47 +316,46 @@ class _GameListView extends HookConsumerWidget {
                       await ref.read(dbHelper).updateGameName(newName.first, index);
                     } catch (e) {
                       if (e.toString().contains('2067')) {
-                        final result = await showOkCancelAlertDialog(
+                        await showOkAlertDialog(
                           context: context,
                           title: '既に登録されているゲームです',
-                          message: '保存されている記録を統合しますか？',
                         );
-                        if (result == OkCancelResult.ok) {
-                          // ゲームを統合したことで、ゲームID違いで同じ名前だったデッキやタグが
-                          // ゲームIDも同じになってしまうことで重複エラーが出るようになっているため修正必要
-                          final oldGame = await ref.read(editRecordHelper).checkIfSelectedGameIsNew(newName.first);
-                          final allRecordList = await ref.read(recordRepository).getAll();
-                          final targetRecordList = allRecordList.where((record) => record.gameId == gameList[index].gameId).toList();
-                          final List<Record> newRecordList = [];
-                          for (var record in targetRecordList) {
-                            record = record.copyWith(gameId: oldGame.game!.gameId);
-                            newRecordList.add(record);
-                          }
-                          await ref.read(recordRepository).updateRecordList(newRecordList);
+                        // if (result == OkCancelResult.ok) {
+                        //   // ゲームを統合したことで、ゲームID違いで同じ名前だったデッキやタグが
+                        //   // ゲームIDも同じになってしまうことで重複エラーが出るようになっているため修正必要
+                        //   final oldGame = await ref.read(editRecordHelper).checkIfSelectedGameIsNew(newName.first);
+                        //   final allRecordList = await ref.read(recordRepository).getAll();
+                        //   final targetRecordList = allRecordList.where((record) => record.gameId == gameList[index].gameId).toList();
+                        //   final List<Record> newRecordList = [];
+                        //   for (var record in targetRecordList) {
+                        //     record = record.copyWith(gameId: oldGame.game!.gameId);
+                        //     newRecordList.add(record);
+                        //   }
+                        //   await ref.read(recordRepository).updateRecordList(newRecordList);
 
-                          final allDeckList = await ref.read(deckRepository).getAll();
-                          final targetDeckList = allDeckList.where((deck) => deck.gameId! == gameList[index].gameId).toList();
-                          final List<Deck> newDeckList = [];
-                          for (var deck in targetDeckList) {
-                            deck = deck.copyWith(gameId: oldGame.game!.gameId);
-                            newDeckList.add(deck);
-                          }
-                          await ref.read(deckRepository).updateDeckList(newDeckList);
+                        //   final allDeckList = await ref.read(deckRepository).getAll();
+                        //   final targetDeckList = allDeckList.where((deck) => deck.gameId! == gameList[index].gameId).toList();
+                        //   final List<Deck> newDeckList = [];
+                        //   for (var deck in targetDeckList) {
+                        //     deck = deck.copyWith(gameId: oldGame.game!.gameId);
+                        //     newDeckList.add(deck);
+                        //   }
+                        //   await ref.read(deckRepository).updateDeckList(newDeckList);
 
-                          final allTagList = await ref.read(tagRepository).getAll();
-                          final targetTagList = allTagList.where((tag) => tag.gameId! == gameList[index].gameId).toList();
-                          final List<Tag> newTagList = [];
-                          for (var tag in targetTagList) {
-                            tag = tag.copyWith(gameId: oldGame.game!.gameId);
-                            newTagList.add(tag);
-                          }
-                          await ref.read(tagRepository).updateTagList(newTagList);
+                        //   final allTagList = await ref.read(tagRepository).getAll();
+                        //   final targetTagList = allTagList.where((tag) => tag.gameId! == gameList[index].gameId).toList();
+                        //   final List<Tag> newTagList = [];
+                        //   for (var tag in targetTagList) {
+                        //     tag = tag.copyWith(gameId: oldGame.game!.gameId);
+                        //     newTagList.add(tag);
+                        //   }
+                        //   await ref.read(tagRepository).updateTagList(newTagList);
 
-                          await ref.read(gameRepository).deleteById(gameList[index].gameId!);
-                          ref.refresh(allTagListProvider);
-                          ref.refresh(allDeckListProvider);
-                          ref.refresh(allRecordListProvider);
-                        }
+                        //   await ref.read(gameRepository).deleteById(gameList[index].gameId!);
+                        //   ref.refresh(allTagListProvider);
+                        //   ref.refresh(allDeckListProvider);
+                        //   ref.refresh(allRecordListProvider);
+                        // }
                       } else {
                         await showOkAlertDialog(
                           context: context,
