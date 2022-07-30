@@ -237,7 +237,9 @@ class _BrandListTile extends HookConsumerWidget {
               width: 24,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Theme.of(context).primaryColor,
+                color: record.firstSecond == FirstSecond.first
+                    ? Theme.of(context).colorScheme.primary
+                    : Theme.of(context).colorScheme.secondary,
               ),
               child: Center(
                 child: Text(
