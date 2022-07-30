@@ -315,6 +315,42 @@ class _SettingModalBottomSheet extends HookConsumerWidget {
               SwitchListTile.adaptive(
                 contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
                 title: Text(
+                  '先攻勝ち数',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                value: graphViewSettings.firstMatchesWin,
+                onChanged: graphViewSettingsController.changeFirstMatchesWin,
+              ),
+              SwitchListTile.adaptive(
+                contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                title: Text(
+                  '先攻負け数',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                value: graphViewSettings.firstMatchesLoss,
+                onChanged: graphViewSettingsController.changeFirstMatchesLoss,
+              ),
+              SwitchListTile.adaptive(
+                contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                title: Text(
+                  '後攻勝ち数',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                value: graphViewSettings.secondMatchesWin,
+                onChanged: graphViewSettingsController.changeSecondMatchesWin,
+              ),
+              SwitchListTile.adaptive(
+                contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                title: Text(
+                  '後攻負け数',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                value: graphViewSettings.secondMatchesLoss,
+                onChanged: graphViewSettingsController.changeSecondMatchesLoss,
+              ),
+              SwitchListTile.adaptive(
+                contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                title: Text(
                   '勝率',
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),

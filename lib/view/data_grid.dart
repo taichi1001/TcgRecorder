@@ -179,6 +179,50 @@ List<GridColumn> _getGridColumns(BuildContext context, GraphViewSettingsState se
       width: 60,
     ),
     GridColumn(
+      visible: settings.firstMatchesWin,
+      columnName: '先攻勝',
+      label: const Center(
+        child: Text(
+          '先攻勝',
+          style: TextStyle(),
+        ),
+      ),
+      width: 60,
+    ),
+    GridColumn(
+      visible: settings.firstMatchesLoss,
+      columnName: '先攻負',
+      label: const Center(
+        child: Text(
+          '先攻負',
+          style: TextStyle(),
+        ),
+      ),
+      width: 60,
+    ),
+    GridColumn(
+      visible: settings.secondMatchesWin,
+      columnName: '後攻勝',
+      label: const Center(
+        child: Text(
+          '後攻勝',
+          style: TextStyle(),
+        ),
+      ),
+      width: 60,
+    ),
+    GridColumn(
+      visible: settings.secondMatchesLoss,
+      columnName: '後攻負',
+      label: const Center(
+        child: Text(
+          '後攻負',
+          style: TextStyle(),
+        ),
+      ),
+      width: 60,
+    ),
+    GridColumn(
       visible: settings.winRate,
       columnName: '勝率',
       label: Center(
@@ -229,6 +273,10 @@ class GameWinRateDataSource extends DataGridSource {
               DataGridCell(columnName: '後攻試合数', value: winRateData.secondMatches),
               DataGridCell(columnName: '勝', value: winRateData.win),
               DataGridCell(columnName: '負', value: winRateData.loss),
+              DataGridCell(columnName: '先攻勝', value: winRateData.firstMatchesWin),
+              DataGridCell(columnName: '先攻負', value: winRateData.firstMatchesLoss),
+              DataGridCell(columnName: '後攻勝', value: winRateData.secondMatchesWin),
+              DataGridCell(columnName: '後攻負', value: winRateData.secondMatchesLoss),
               DataGridCell(columnName: '勝率', value: winRateData.winRate),
               DataGridCell(columnName: '先攻勝率', value: winRateData.winRateOfFirst),
               DataGridCell(columnName: '後攻勝率', value: winRateData.winRateOfSecond),
@@ -288,6 +336,18 @@ class GameWinRateDataSource extends DataGridSource {
       return Text(cell.value.toString());
     }
     if (cell.columnName == '負') {
+      return Text(cell.value.toString());
+    }
+    if (cell.columnName == '先攻勝') {
+      return Text(cell.value.toString());
+    }
+    if (cell.columnName == '先攻負') {
+      return Text(cell.value.toString());
+    }
+    if (cell.columnName == '後攻勝') {
+      return Text(cell.value.toString());
+    }
+    if (cell.columnName == '後攻負') {
       return Text(cell.value.toString());
     }
     if (cell.columnName == '勝率') {

@@ -10,7 +10,11 @@ class GraphViewSettingsNotifier extends StateNotifier<GraphViewSettingsState> {
   static const firstMatchesKey = 'firstMatches';
   static const secondMatchesKey = 'secondMatches';
   static const winKey = 'win';
+  static const firstMatchesWinKey = 'firstMatchesWin';
+  static const secondMatchesWinKey = 'secondMatchesWin';
   static const lossKey = 'loss';
+  static const firstMatchesLossKey = 'firstMatchesLoss';
+  static const secondMatchesLossKey = 'secondMatchesLoss';
   static const winRateKey = 'winRate';
   static const firstWinRateKey = 'firstWinRate';
   static const secondWinRateKey = 'secondWinRate';
@@ -20,7 +24,11 @@ class GraphViewSettingsNotifier extends StateNotifier<GraphViewSettingsState> {
     final firstMatches = await _getFirstMatches();
     final secondMatches = await _getSecondMatches();
     final win = await _getWin();
+    final firstMatchesWin = await _getFirstMatchesWin();
+    final secondMatchesWin = await _getSecondMatchesWin();
     final loss = await _getLoss();
+    final firstMatchesLoss = await _getFirstMatchesLoss();
+    final secondMatchesLoss = await _getSecondMatchesLoss();
     final winRate = await _getWinRate();
     final firstWinRate = await _getFirstWinRate();
     final secondWinRate = await _getSecondWinRate();
@@ -29,7 +37,11 @@ class GraphViewSettingsNotifier extends StateNotifier<GraphViewSettingsState> {
       firstMatches: firstMatches ?? true,
       secondMatches: secondMatches ?? true,
       win: win ?? true,
+      firstMatchesWin: firstMatchesWin ?? true,
+      secondMatchesWin: secondMatchesWin ?? true,
       loss: loss ?? true,
+      firstMatchesLoss: firstMatchesLoss ?? true,
+      secondMatchesLoss: secondMatchesLoss ?? true,
       winRate: winRate ?? true,
       firstWinRate: firstWinRate ?? true,
       secondWinRate: secondWinRate ?? true,
@@ -96,6 +108,36 @@ class GraphViewSettingsNotifier extends StateNotifier<GraphViewSettingsState> {
     prefs.setBool(winKey, settings);
   }
 
+  Future changeFirstMatchesWin(bool settings) async {
+    state = state.copyWith(firstMatchesWin: settings);
+    await _saveFirstMatchesWin(state.firstMatchesWin);
+  }
+
+  Future<bool?> _getFirstMatchesWin() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(firstMatchesWinKey);
+  }
+
+  Future _saveFirstMatchesWin(bool settings) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setBool(firstMatchesWinKey, settings);
+  }
+
+  Future changeSecondMatchesWin(bool settings) async {
+    state = state.copyWith(secondMatchesWin: settings);
+    await _saveSecondMatchesWin(state.secondMatchesWin);
+  }
+
+  Future<bool?> _getSecondMatchesWin() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(secondMatchesWinKey);
+  }
+
+  Future _saveSecondMatchesWin(bool settings) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setBool(secondMatchesWinKey, settings);
+  }
+
   Future changeLoss(bool settings) async {
     state = state.copyWith(loss: settings);
     await _saveLoss(state.loss);
@@ -109,6 +151,36 @@ class GraphViewSettingsNotifier extends StateNotifier<GraphViewSettingsState> {
   Future _saveLoss(bool settings) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setBool(lossKey, settings);
+  }
+
+  Future changeFirstMatchesLoss(bool settings) async {
+    state = state.copyWith(firstMatchesLoss: settings);
+    await _saveFirstMatchesLoss(state.firstMatchesLoss);
+  }
+
+  Future<bool?> _getFirstMatchesLoss() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(firstMatchesLossKey);
+  }
+
+  Future _saveFirstMatchesLoss(bool settings) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setBool(firstMatchesLossKey, settings);
+  }
+
+  Future changeSecondMatchesLoss(bool settings) async {
+    state = state.copyWith(secondMatchesLoss: settings);
+    await _saveSecondMatchesLoss(state.secondMatchesLoss);
+  }
+
+  Future<bool?> _getSecondMatchesLoss() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(secondMatchesLossKey);
+  }
+
+  Future _saveSecondMatchesLoss(bool settings) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setBool(secondMatchesLossKey, settings);
   }
 
   Future changeWinRate(bool settings) async {
