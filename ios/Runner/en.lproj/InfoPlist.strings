@@ -6,3 +6,4 @@
   
 */
 CFBundleDisplayName = "TCG Manager";
+NSUserTrackingUsageDescription = "We use this information to display advertisements tailored to your interests.";
