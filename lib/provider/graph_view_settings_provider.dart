@@ -24,23 +24,15 @@ class GraphViewSettingsNotifier extends StateNotifier<GraphViewSettingsState> {
     final winRate = await _getWinRate();
     final firstWinRate = await _getFirstWinRate();
     final secondWinRate = await _getSecondWinRate();
-    if (matches == null ||
-        firstMatches == null ||
-        secondMatches == null ||
-        win == null ||
-        loss == null ||
-        winRate == null ||
-        firstWinRate == null ||
-        secondWinRate == null) return;
     state = state.copyWith(
-      matches: matches,
-      firstMatches: firstMatches,
-      secondMatches: secondMatches,
-      win: win,
-      loss: loss,
-      winRate: winRate,
-      firstWinRate: firstWinRate,
-      secondWinRate: secondWinRate,
+      matches: matches ?? true,
+      firstMatches: firstMatches ?? true,
+      secondMatches: secondMatches ?? true,
+      win: win ?? true,
+      loss: loss ?? true,
+      winRate: winRate ?? true,
+      firstWinRate: firstWinRate ?? true,
+      secondWinRate: secondWinRate ?? true,
     );
   }
 
