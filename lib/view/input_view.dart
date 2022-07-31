@@ -144,7 +144,7 @@ class InputView extends HookConsumerWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             SizedBox(
-                              width: 205.w,
+                              width: 204.w,
                               child: Card(
                                 child: Padding(
                                   padding: const EdgeInsets.all(8),
@@ -176,7 +176,7 @@ class InputView extends HookConsumerWidget {
                               ),
                             ),
                             SizedBox(
-                              width: 205.w,
+                              width: 204.w,
                               child: Card(
                                 child: Padding(
                                   padding: const EdgeInsets.all(8),

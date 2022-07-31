@@ -256,126 +256,128 @@ class _SettingModalBottomSheet extends HookConsumerWidget {
         top: false,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(16, 0, 0, 16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 16, 0, 8),
-                child: Text(
-                  '表示項目オプション',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 16, 0, 8),
+                  child: Text(
+                    '表示項目オプション',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
+                  ),
                 ),
-              ),
-              SwitchListTile.adaptive(
-                contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                title: Text(
-                  '試合数',
-                  style: Theme.of(context).textTheme.bodyMedium,
+                SwitchListTile.adaptive(
+                  contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                  title: Text(
+                    '試合数',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  value: graphViewSettings.matches,
+                  onChanged: graphViewSettingsController.changeMatches,
                 ),
-                value: graphViewSettings.matches,
-                onChanged: graphViewSettingsController.changeMatches,
-              ),
-              SwitchListTile.adaptive(
-                contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                title: Text(
-                  '先攻試合数',
-                  style: Theme.of(context).textTheme.bodyMedium,
+                SwitchListTile.adaptive(
+                  contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                  title: Text(
+                    '先攻試合数',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  value: graphViewSettings.firstMatches,
+                  onChanged: graphViewSettingsController.changeFirstMatches,
                 ),
-                value: graphViewSettings.firstMatches,
-                onChanged: graphViewSettingsController.changeFirstMatches,
-              ),
-              SwitchListTile.adaptive(
-                contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                title: Text(
-                  '後攻試合数',
-                  style: Theme.of(context).textTheme.bodyMedium,
+                SwitchListTile.adaptive(
+                  contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                  title: Text(
+                    '後攻試合数',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  value: graphViewSettings.secondMatches,
+                  onChanged: graphViewSettingsController.changeSecondMatches,
                 ),
-                value: graphViewSettings.secondMatches,
-                onChanged: graphViewSettingsController.changeSecondMatches,
-              ),
-              SwitchListTile.adaptive(
-                contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                title: Text(
-                  '勝ち数',
-                  style: Theme.of(context).textTheme.bodyMedium,
+                SwitchListTile.adaptive(
+                  contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                  title: Text(
+                    '勝ち数',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  value: graphViewSettings.win,
+                  onChanged: graphViewSettingsController.changeWin,
                 ),
-                value: graphViewSettings.win,
-                onChanged: graphViewSettingsController.changeWin,
-              ),
-              SwitchListTile.adaptive(
-                contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                title: Text(
-                  '負け数',
-                  style: Theme.of(context).textTheme.bodyMedium,
+                SwitchListTile.adaptive(
+                  contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                  title: Text(
+                    '負け数',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  value: graphViewSettings.loss,
+                  onChanged: graphViewSettingsController.changeLoss,
                 ),
-                value: graphViewSettings.loss,
-                onChanged: graphViewSettingsController.changeLoss,
-              ),
-              SwitchListTile.adaptive(
-                contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                title: Text(
-                  '先攻勝ち数',
-                  style: Theme.of(context).textTheme.bodyMedium,
+                SwitchListTile.adaptive(
+                  contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                  title: Text(
+                    '先攻勝ち数',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  value: graphViewSettings.firstMatchesWin,
+                  onChanged: graphViewSettingsController.changeFirstMatchesWin,
                 ),
-                value: graphViewSettings.firstMatchesWin,
-                onChanged: graphViewSettingsController.changeFirstMatchesWin,
-              ),
-              SwitchListTile.adaptive(
-                contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                title: Text(
-                  '先攻負け数',
-                  style: Theme.of(context).textTheme.bodyMedium,
+                SwitchListTile.adaptive(
+                  contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                  title: Text(
+                    '先攻負け数',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  value: graphViewSettings.firstMatchesLoss,
+                  onChanged: graphViewSettingsController.changeFirstMatchesLoss,
                 ),
-                value: graphViewSettings.firstMatchesLoss,
-                onChanged: graphViewSettingsController.changeFirstMatchesLoss,
-              ),
-              SwitchListTile.adaptive(
-                contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                title: Text(
-                  '後攻勝ち数',
-                  style: Theme.of(context).textTheme.bodyMedium,
+                SwitchListTile.adaptive(
+                  contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                  title: Text(
+                    '後攻勝ち数',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  value: graphViewSettings.secondMatchesWin,
+                  onChanged: graphViewSettingsController.changeSecondMatchesWin,
                 ),
-                value: graphViewSettings.secondMatchesWin,
-                onChanged: graphViewSettingsController.changeSecondMatchesWin,
-              ),
-              SwitchListTile.adaptive(
-                contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                title: Text(
-                  '後攻負け数',
-                  style: Theme.of(context).textTheme.bodyMedium,
+                SwitchListTile.adaptive(
+                  contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                  title: Text(
+                    '後攻負け数',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  value: graphViewSettings.secondMatchesLoss,
+                  onChanged: graphViewSettingsController.changeSecondMatchesLoss,
                 ),
-                value: graphViewSettings.secondMatchesLoss,
-                onChanged: graphViewSettingsController.changeSecondMatchesLoss,
-              ),
-              SwitchListTile.adaptive(
-                contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                title: Text(
-                  '勝率',
-                  style: Theme.of(context).textTheme.bodyMedium,
+                SwitchListTile.adaptive(
+                  contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                  title: Text(
+                    '勝率',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  value: graphViewSettings.winRate,
+                  onChanged: graphViewSettingsController.changeWinRate,
                 ),
-                value: graphViewSettings.winRate,
-                onChanged: graphViewSettingsController.changeWinRate,
-              ),
-              SwitchListTile.adaptive(
-                contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                title: Text(
-                  '先攻勝率',
-                  style: Theme.of(context).textTheme.bodyMedium,
+                SwitchListTile.adaptive(
+                  contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                  title: Text(
+                    '先攻勝率',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  value: graphViewSettings.firstWinRate,
+                  onChanged: graphViewSettingsController.changeFirstWinRate,
                 ),
-                value: graphViewSettings.firstWinRate,
-                onChanged: graphViewSettingsController.changeFirstWinRate,
-              ),
-              SwitchListTile.adaptive(
-                contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                title: Text(
-                  '後攻勝率',
-                  style: Theme.of(context).textTheme.bodyMedium,
+                SwitchListTile.adaptive(
+                  contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                  title: Text(
+                    '後攻勝率',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  value: graphViewSettings.secondWinRate,
+                  onChanged: graphViewSettingsController.changeSecondWinRate,
                 ),
-                value: graphViewSettings.secondWinRate,
-                onChanged: graphViewSettingsController.changeSecondWinRate,
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
