@@ -8,6 +8,7 @@ import 'package:in_app_review/in_app_review.dart';
 import 'package:intl/intl.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/tag.dart';
 import 'package:tcg_manager/enum/first_second.dart';
@@ -21,7 +22,7 @@ import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
 import 'package:tcg_manager/selector/game_tag_list_selector.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
-import 'package:tcg_manager/view/component/custom_modal_date_picker.dart';
+import 'package:tcg_manager/view/component/custom_modal_picker.dart';
 import 'package:tcg_manager/view/component/custom_scaffold.dart';
 import 'package:tcg_manager/view/component/custom_textfield.dart';
 import 'package:tcg_manager/view/select_deck_view.dart';
@@ -112,12 +113,28 @@ class InputView extends HookConsumerWidget {
                             showCupertinoModalPopup(
                               context: context,
                               builder: (BuildContext context) {
-                                return CustomModalDatePicker(
-                                  submited: () {
-                                    inputViewNotifier.setDateTime();
-                                    Navigator.pop(context);
-                                  },
-                                  onDateTimeChanged: inputViewNotifier.scrollDateTime,
+                                return SizedBox(
+                                  height: 350,
+                                  child: CustomModalPicker(
+                                    shoModalButton: false,
+                                    child: SfDateRangePicker(
+                                      selectionMode: DateRangePickerSelectionMode.single,
+                                      view: DateRangePickerView.month,
+                                      showActionButtons: true,
+                                      showNavigationArrow: true,
+                                      minDate: DateTime(2000, 01, 01),
+                                      maxDate: DateTime.now(),
+                                      initialSelectedDate: date,
+                                      toggleDaySelection: true,
+                                      onSubmit: (value) {
+                                        if (value is DateTime) {
+                                          inputViewNotifier.selectDateTime(value);
+                                          Navigator.pop(context);
+                                        }
+                                      },
+                                      onCancel: () => Navigator.pop(context),
+                                    ),
+                                  ),
                                 );
                               },
                             );

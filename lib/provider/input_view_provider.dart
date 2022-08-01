@@ -23,14 +23,8 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
 
   final Reader read;
 
-  void scrollDateTime(DateTime date) {
-    state = state.copyWith(cacheDate: date);
-  }
-
-  void setDateTime() {
-    if (state.cacheDate != null) {
-      state = state.copyWith(date: state.cacheDate!);
-    }
+  void selectDateTime(DateTime date) {
+    state = state.copyWith(date: date);
   }
 
   void inputUseDeck(String name) {
