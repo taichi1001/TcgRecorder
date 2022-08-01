@@ -18,6 +18,7 @@ import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/input_view_provider.dart';
 import 'package:tcg_manager/provider/input_view_settings_provider.dart';
+import 'package:tcg_manager/provider/revenue_cat_provider.dart';
 import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
 import 'package:tcg_manager/selector/game_tag_list_selector.dart';
@@ -82,6 +83,7 @@ class InputView extends HookConsumerWidget {
                 leading: IconButton(
                   icon: const Icon(Icons.tune),
                   onPressed: () {
+                    print(ref.read(revenueCatProvider).offerings?.current?.monthly);
                     showCupertinoModalBottomSheet(
                       expand: false,
                       context: context,
