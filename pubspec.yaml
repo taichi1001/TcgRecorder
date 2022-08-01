@@ -82,6 +82,9 @@ dependencies:
 
   collection: ^1.16.0
 
+  purchases_flutter: ^4.0.0-rc.2
+  
+
 flutter_native_splash:
   image: "assets/images/icon.png"
   color: "FFFFFF"
