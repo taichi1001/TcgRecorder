@@ -14,11 +14,10 @@ class InputViewSettingsNotifier extends StateNotifier<InputViewSettingsState> {
     final fixUseDeck = await _getFixUseDeck();
     final fixOpponentDeck = await _getFixOpponentDeck();
     final fixTag = await _getFixTag();
-    if (fixUseDeck == null || fixOpponentDeck == null || fixTag == null) return;
     state = state.copyWith(
-      fixUseDeck: fixUseDeck,
-      fixOpponentDeck: fixOpponentDeck,
-      fixTag: fixTag,
+      fixUseDeck: fixUseDeck ?? false,
+      fixOpponentDeck: fixOpponentDeck ?? false,
+      fixTag: fixTag ?? false,
     );
   }
 

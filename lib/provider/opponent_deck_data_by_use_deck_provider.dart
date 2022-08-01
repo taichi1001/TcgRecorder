@@ -23,29 +23,34 @@ final opponentDeckDataByUseDeckProvider = FutureProvider.family.autoDispose<List
 
     final calc = RecordCalculator(targetRecordList: filterRecordList);
     final opponentDeckData = opponentDeckList.map((opponentDeck) {
-      final deck = opponentDeck.deck;
-      final matchs = calc.countOpponentDeckMatches(useDeck, opponentDeck);
-      final win = calc.countOpponentDeckWins(useDeck, opponentDeck);
-      final loss = calc.countOpponentDeckLoss(useDeck, opponentDeck);
-      final winRate = calc.calcOpponentDeckWinRate(useDeck, opponentDeck);
-      final winRateOfFirst = calc.calcOpponentDeckWinRateOfFirst(useDeck, opponentDeck);
-      final winRateOfSecond = calc.calcOpponentDeckWinRateOfSecond(useDeck, opponentDeck);
       return WinRateData(
-        deck: deck,
-        matches: matchs,
-        win: win,
-        loss: loss,
-        winRate: winRate,
-        winRateOfFirst: winRateOfFirst,
-        winRateOfSecond: winRateOfSecond,
+        deck: opponentDeck.deck,
+        matches: calc.countOpponentDeckMatches(useDeck, opponentDeck),
+        firstMatches: calc.countOpponentDeckFirstMatches(useDeck, opponentDeck),
+        secondMatches: calc.countOpponentDeckSecondMatches(useDeck, opponentDeck),
+        win: calc.countOpponentDeckWins(useDeck, opponentDeck),
+        firstMatchesWin: calc.countOpponentDeckFirstMatchesWins(useDeck, opponentDeck),
+        secondMatchesWin: calc.countOpponentDeckSecondMatchesWins(useDeck, opponentDeck),
+        loss: calc.countOpponentDeckLoss(useDeck, opponentDeck),
+        firstMatchesLoss: calc.countOpponentDeckFirstMatchesLoss(useDeck, opponentDeck),
+        secondMatchesLoss: calc.countOpponentDeckSecondMatchesLoss(useDeck, opponentDeck),
+        winRate: calc.calcOpponentDeckWinRate(useDeck, opponentDeck),
+        winRateOfFirst: calc.calcOpponentDeckWinRateOfFirst(useDeck, opponentDeck),
+        winRateOfSecond: calc.calcOpponentDeckWinRateOfSecond(useDeck, opponentDeck),
       );
     }).toList();
     opponentDeckData.add(
       WinRateData(
         deck: '合計',
         matches: calc.countUseDeckMatches(useDeck),
+        firstMatches: calc.countUseDeckFirstMatches(useDeck),
+        secondMatches: calc.countUseDeckSecondMatches(useDeck),
         win: calc.countUseDeckWins(useDeck),
+        firstMatchesWin: calc.countUseDeckFirstMatchesWins(useDeck),
+        secondMatchesWin: calc.countUseDeckFirstMatchesLoss(useDeck),
         loss: calc.countUseDeckLoss(useDeck),
+        firstMatchesLoss: calc.countUseDeckFirstMatchesLoss(useDeck),
+        secondMatchesLoss: calc.countUseDeckSecondMatchesLoss(useDeck),
         useRate: calc.calcUseDeckUseRate(useDeck),
         winRate: calc.calcUseDeckWinRate(useDeck),
         winRateOfFirst: calc.calcUseDeckWinRateOfFirst(useDeck),

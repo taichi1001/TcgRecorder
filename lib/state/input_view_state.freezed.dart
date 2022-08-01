@@ -18,7 +18,6 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$InputViewState {
   Record? get record => throw _privateConstructorUsedError;
   DateTime get date => throw _privateConstructorUsedError;
-  DateTime? get cacheDate => throw _privateConstructorUsedError;
   Deck? get useDeck => throw _privateConstructorUsedError;
   Deck? get opponentDeck => throw _privateConstructorUsedError;
   Tag? get tag => throw _privateConstructorUsedError;
@@ -39,7 +38,6 @@ abstract class $InputViewStateCopyWith<$Res> {
   $Res call(
       {Record? record,
       DateTime date,
-      DateTime? cacheDate,
       Deck? useDeck,
       Deck? opponentDeck,
       Tag? tag,
@@ -66,7 +64,6 @@ class _$InputViewStateCopyWithImpl<$Res>
   $Res call({
     Object? record = freezed,
     Object? date = freezed,
-    Object? cacheDate = freezed,
     Object? useDeck = freezed,
     Object? opponentDeck = freezed,
     Object? tag = freezed,
@@ -83,10 +80,6 @@ class _$InputViewStateCopyWithImpl<$Res>
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      cacheDate: cacheDate == freezed
-          ? _value.cacheDate
-          : cacheDate // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
       useDeck: useDeck == freezed
           ? _value.useDeck
           : useDeck // ignore: cast_nullable_to_non_nullable
@@ -169,7 +162,6 @@ abstract class _$$_InputViewStateCopyWith<$Res>
   $Res call(
       {Record? record,
       DateTime date,
-      DateTime? cacheDate,
       Deck? useDeck,
       Deck? opponentDeck,
       Tag? tag,
@@ -202,7 +194,6 @@ class __$$_InputViewStateCopyWithImpl<$Res>
   $Res call({
     Object? record = freezed,
     Object? date = freezed,
-    Object? cacheDate = freezed,
     Object? useDeck = freezed,
     Object? opponentDeck = freezed,
     Object? tag = freezed,
@@ -219,10 +210,6 @@ class __$$_InputViewStateCopyWithImpl<$Res>
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      cacheDate: cacheDate == freezed
-          ? _value.cacheDate
-          : cacheDate // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
       useDeck: useDeck == freezed
           ? _value.useDeck
           : useDeck // ignore: cast_nullable_to_non_nullable
@@ -257,7 +244,6 @@ class _$_InputViewState implements _InputViewState {
   _$_InputViewState(
       {this.record,
       required this.date,
-      this.cacheDate,
       this.useDeck,
       this.opponentDeck,
       this.tag,
@@ -269,8 +255,6 @@ class _$_InputViewState implements _InputViewState {
   final Record? record;
   @override
   final DateTime date;
-  @override
-  final DateTime? cacheDate;
   @override
   final Deck? useDeck;
   @override
@@ -288,7 +272,7 @@ class _$_InputViewState implements _InputViewState {
 
   @override
   String toString() {
-    return 'InputViewState(record: $record, date: $date, cacheDate: $cacheDate, useDeck: $useDeck, opponentDeck: $opponentDeck, tag: $tag, memo: $memo, winLoss: $winLoss, firstSecond: $firstSecond)';
+    return 'InputViewState(record: $record, date: $date, useDeck: $useDeck, opponentDeck: $opponentDeck, tag: $tag, memo: $memo, winLoss: $winLoss, firstSecond: $firstSecond)';
   }
 
   @override
@@ -298,7 +282,6 @@ class _$_InputViewState implements _InputViewState {
             other is _$_InputViewState &&
             const DeepCollectionEquality().equals(other.record, record) &&
             const DeepCollectionEquality().equals(other.date, date) &&
-            const DeepCollectionEquality().equals(other.cacheDate, cacheDate) &&
             const DeepCollectionEquality().equals(other.useDeck, useDeck) &&
             const DeepCollectionEquality()
                 .equals(other.opponentDeck, opponentDeck) &&
@@ -314,7 +297,6 @@ class _$_InputViewState implements _InputViewState {
       runtimeType,
       const DeepCollectionEquality().hash(record),
       const DeepCollectionEquality().hash(date),
-      const DeepCollectionEquality().hash(cacheDate),
       const DeepCollectionEquality().hash(useDeck),
       const DeepCollectionEquality().hash(opponentDeck),
       const DeepCollectionEquality().hash(tag),
@@ -332,7 +314,6 @@ abstract class _InputViewState implements InputViewState {
   factory _InputViewState(
       {final Record? record,
       required final DateTime date,
-      final DateTime? cacheDate,
       final Deck? useDeck,
       final Deck? opponentDeck,
       final Tag? tag,
@@ -344,8 +325,6 @@ abstract class _InputViewState implements InputViewState {
   Record? get record => throw _privateConstructorUsedError;
   @override
   DateTime get date => throw _privateConstructorUsedError;
-  @override
-  DateTime? get cacheDate => throw _privateConstructorUsedError;
   @override
   Deck? get useDeck => throw _privateConstructorUsedError;
   @override

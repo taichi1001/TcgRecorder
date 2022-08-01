@@ -12,7 +12,6 @@ abstract class InputViewState with _$InputViewState {
   factory InputViewState({
     Record? record,
     required DateTime date,
-    DateTime? cacheDate,
     Deck? useDeck,
     Deck? opponentDeck,
     Tag? tag,

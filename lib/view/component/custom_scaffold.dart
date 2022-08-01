@@ -11,12 +11,14 @@ import 'package:tcg_manager/view/component/custom_modal_list_picker.dart';
 class CustomScaffold extends HookConsumerWidget {
   const CustomScaffold({
     required this.body,
+    this.leading,
     this.rightButton,
     this.appBarBottom,
     this.padding,
     key,
   }) : super(key: key);
   final Widget body;
+  final Widget? leading;
   final Widget? rightButton;
   final PreferredSizeWidget? appBarBottom;
   final EdgeInsetsGeometry? padding;
@@ -33,6 +35,7 @@ class CustomScaffold extends HookConsumerWidget {
           selectGame.selectGame != null ? selectGame.selectGame!.game : '',
           style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
         ),
+        leading: leading,
         actions: [
           _GameListPickerButton(
             submited: () {

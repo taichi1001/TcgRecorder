@@ -8,6 +8,7 @@ import 'package:in_app_review/in_app_review.dart';
 import 'package:intl/intl.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/tag.dart';
 import 'package:tcg_manager/enum/first_second.dart';
@@ -16,11 +17,12 @@ import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/input_view_provider.dart';
+import 'package:tcg_manager/provider/input_view_settings_provider.dart';
 import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
 import 'package:tcg_manager/selector/game_tag_list_selector.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
-import 'package:tcg_manager/view/component/custom_modal_date_picker.dart';
+import 'package:tcg_manager/view/component/custom_modal_picker.dart';
 import 'package:tcg_manager/view/component/custom_scaffold.dart';
 import 'package:tcg_manager/view/component/custom_textfield.dart';
 import 'package:tcg_manager/view/select_deck_view.dart';
@@ -77,6 +79,16 @@ class InputView extends HookConsumerWidget {
             Expanded(
               child: CustomScaffold(
                 padding: const EdgeInsets.only(right: 8, left: 8, bottom: 8),
+                leading: IconButton(
+                  icon: const Icon(Icons.tune),
+                  onPressed: () {
+                    showCupertinoModalBottomSheet(
+                      expand: false,
+                      context: context,
+                      builder: (context) => const _SettingModalBottomSheet(),
+                    );
+                  },
+                ),
                 body: KeyboardActions(
                   config: KeyboardActionsConfig(
                     keyboardBarColor: Theme.of(context).canvasColor,
@@ -101,12 +113,28 @@ class InputView extends HookConsumerWidget {
                             showCupertinoModalPopup(
                               context: context,
                               builder: (BuildContext context) {
-                                return CustomModalDatePicker(
-                                  submited: () {
-                                    inputViewNotifier.setDateTime();
-                                    Navigator.pop(context);
-                                  },
-                                  onDateTimeChanged: inputViewNotifier.scrollDateTime,
+                                return SizedBox(
+                                  height: 350,
+                                  child: CustomModalPicker(
+                                    shoModalButton: false,
+                                    child: SfDateRangePicker(
+                                      selectionMode: DateRangePickerSelectionMode.single,
+                                      view: DateRangePickerView.month,
+                                      showActionButtons: true,
+                                      showNavigationArrow: true,
+                                      minDate: DateTime(2000, 01, 01),
+                                      maxDate: DateTime.now(),
+                                      initialSelectedDate: date,
+                                      toggleDaySelection: true,
+                                      onSubmit: (value) {
+                                        if (value is DateTime) {
+                                          inputViewNotifier.selectDateTime(value);
+                                          Navigator.pop(context);
+                                        }
+                                      },
+                                      onCancel: () => Navigator.pop(context),
+                                    ),
+                                  ),
                                 );
                               },
                             );
@@ -133,7 +161,7 @@ class InputView extends HookConsumerWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             SizedBox(
-                              width: 205.w,
+                              width: 204.w,
                               child: Card(
                                 child: Padding(
                                   padding: const EdgeInsets.all(8),
@@ -165,7 +193,7 @@ class InputView extends HookConsumerWidget {
                               ),
                             ),
                             SizedBox(
-                              width: 205.w,
+                              width: 204.w,
                               child: Card(
                                 child: Padding(
                                   padding: const EdgeInsets.all(8),
@@ -359,6 +387,68 @@ class InputView extends HookConsumerWidget {
       },
       error: (error, stack) => Text('$error'),
       loading: () => const Center(child: CircularProgressIndicator()),
+    );
+  }
+}
+
+class _SettingModalBottomSheet extends HookConsumerWidget {
+  const _SettingModalBottomSheet({
+    key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final fixUseDeck = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.fixUseDeck));
+    final fixOpponentDeck = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.fixOpponentDeck));
+    final fixTag = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.fixTag));
+    final inputiViewSettingsController = ref.watch(inputViewSettingsNotifierProvider.notifier);
+    return Material(
+      child: SafeArea(
+        top: false,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 0, 0, 16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 16, 0, 8),
+                child: Text(
+                  '入力固定オプション',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
+                ),
+              ),
+              SwitchListTile.adaptive(
+                contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                title: Text(
+                  '使用デッキ',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                value: fixUseDeck,
+                onChanged: inputiViewSettingsController.changeFixUseDeck,
+              ),
+              SwitchListTile.adaptive(
+                contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                title: Text(
+                  '対戦相手デッキ',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                value: fixOpponentDeck,
+                onChanged: inputiViewSettingsController.changeFixOpponentDeck,
+              ),
+              SwitchListTile.adaptive(
+                contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                title: Text(
+                  'タグ',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                value: fixTag,
+                onChanged: inputiViewSettingsController.changeFixTag,
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
