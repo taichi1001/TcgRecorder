@@ -38,6 +38,16 @@ class RecordDao {
     return result;
   }
 
+  Future<List<Object?>> updateRecordList(List<Record> recordList) async {
+    final db = await dbProvider.database;
+    final batch = db.batch();
+    for (final record in recordList) {
+      batch.update(tableName, record.toJson(), where: 'record_id = ?', whereArgs: [record.recordId]);
+    }
+    final result = await batch.commit();
+    return result;
+  }
+
   Future<int> delete(int id) async {
     final db = await dbProvider.database;
     final result = await db.delete(tableName, where: 'record_id = ?', whereArgs: [id]);

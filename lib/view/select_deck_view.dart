@@ -423,7 +423,7 @@ class _ReorderableDeckListView extends HookConsumerWidget {
             deck = deck.copyWith(sortIndex: index);
             newDeckList.add(deck);
           });
-          await ref.read(deckRepository).updateSortIndex(newDeckList);
+          await ref.read(deckRepository).updateDeckList(newDeckList);
           ref.refresh(allDeckListProvider);
         },
         itemCount: deckList.length,

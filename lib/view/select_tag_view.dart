@@ -423,7 +423,7 @@ class _ReorderableTagListView extends HookConsumerWidget {
             tag = tag.copyWith(sortIndex: index);
             newTagList.add(tag);
           });
-          await ref.read(tagRepository).updateSortIndex(newTagList);
+          await ref.read(tagRepository).updateTagList(newTagList);
           ref.refresh(allTagListProvider);
         },
         itemCount: tagList.length,
