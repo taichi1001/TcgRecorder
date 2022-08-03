@@ -10,6 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/game.dart';
 import 'package:tcg_manager/entity/record.dart';
@@ -19,12 +20,9 @@ import 'package:tcg_manager/helper/theme_data.dart';
 import 'package:tcg_manager/provider/adaptive_banner_ad_provider.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
-import 'package:tcg_manager/provider/graph_view_settings_provider.dart';
-import 'package:tcg_manager/provider/input_view_settings_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/revenue_cat_provider.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
-import 'package:tcg_manager/provider/theme_provider.dart';
 import 'package:tcg_manager/state/revenue_cat_state.dart';
 import 'package:tcg_manager/view/bottom_navigation_view.dart';
 import 'package:tcg_manager/view/initial_game_registration_view.dart';
@@ -37,11 +35,13 @@ void main() async {
   const String iosAPIKey = 'appl_qGfPwLpLoCrmULsxbiCIsWgWDpx';
   const String androidAPIKey = '';
 
-  late final RevenueCatState revenueCat;
-
   final revenueCatAPIKey = Platform.isIOS ? iosAPIKey : androidAPIKey;
 
+  late final RevenueCatState revenueCat;
+  late final SharedPreferences prefs;
+
   await Future.wait([
+    // 課金関連初期化
     Future(() async {
       try {
         await Purchases.setDebugLogsEnabled(kDebugMode);
@@ -60,6 +60,10 @@ void main() async {
         );
       }
     }),
+    // SharedPreferences初期化
+    Future(() async {
+      prefs = await SharedPreferences.getInstance();
+    }),
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]),
     ATT.instance.requestPermission().then((result) {
       MobileAds.instance.initialize();
@@ -73,12 +77,15 @@ void main() async {
       builder: (context, child) => ProviderScope(
         overrides: [
           revenueCatProvider.overrideWithValue(revenueCat),
+          sharedPreferencesProvider.overrideWithValue(prefs),
         ],
         child: const MainApp(),
       ),
     ),
   );
 }
+
+final sharedPreferencesProvider = Provider<SharedPreferences>((ref) => throw UnimplementedError);
 
 class MainInfo {
   const MainInfo({
@@ -115,9 +122,6 @@ class MainApp extends HookConsumerWidget {
     useEffect(() {
       Future.microtask(() {
         ref.read(adaptiveBannerAdNotifierProvider.notifier).getAd(context);
-        ref.read(themeNotifierProvider.notifier).themeInitialize();
-        ref.read(inputViewSettingsNotifierProvider.notifier).settingsInitialize();
-        ref.read(graphViewSettingsNotifierProvider.notifier).settingsInitialize();
       });
       return;
     }, const []);
