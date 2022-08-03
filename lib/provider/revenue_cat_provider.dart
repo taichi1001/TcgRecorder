@@ -6,14 +6,14 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:tcg_manager/state/revenue_cat_state.dart';
 
 class RevenueCatNotifier extends StateNotifier<RevenueCatState> {
-  RevenueCatNotifier() : super(RevenueCatState());
+  RevenueCatNotifier(this.revenueCatState) : super(revenueCatState);
 
-  static const String iosAPIKey = '';
+  final RevenueCatState revenueCatState;
+  static const String iosAPIKey = 'appl_qGfPwLpLoCrmULsxbiCIsWgWDpx';
   static const String androidAPIKey = '';
+  static final revenueCatAPIKey = Platform.isIOS ? iosAPIKey : androidAPIKey;
 
   Future init() async {
-    final revenueCatAPIKey = Platform.isIOS ? iosAPIKey : androidAPIKey;
-
     try {
       await Purchases.setDebugLogsEnabled(kDebugMode);
       await Purchases.configure(PurchasesConfiguration(revenueCatAPIKey));
@@ -21,19 +21,29 @@ class RevenueCatNotifier extends StateNotifier<RevenueCatState> {
       final offerings = await Purchases.getOfferings();
       state = state.copyWith(customerInfo: info, offerings: offerings);
     } catch (e) {
-      print(e);
+      state = state.copyWith(exception: e as Exception);
     }
   }
 
-  // Future purchase(Package package) async {
-  //   try {
-  //     final pu
-  //   } catch (e) {}
-  // }
+  Future purchasePremiumMonthly() async {
+    try {
+      final package = state.offerings?.current?.monthly;
+      if (package == null) return;
+      await Purchases.purchasePackage(package);
+      final purchaseseInfo = await Purchases.getCustomerInfo();
+      final isPremium = purchaseseInfo.entitlements.all['premium']?.isActive;
+      state = state.copyWith(isPremium: isPremium ?? false);
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
 
 final revenueCatNotifierProvider = StateNotifierProvider<RevenueCatNotifier, RevenueCatState>(
-  (ref) => RevenueCatNotifier(),
+  (ref) {
+    final revenueCat = ref.watch(revenueCatProvider);
+    return RevenueCatNotifier(revenueCat);
+  },
 );
 
 final revenueCatProvider = Provider<RevenueCatState>((ref) => throw UnimplementedError);

@@ -48,9 +48,16 @@ void main() async {
         await Purchases.configure(PurchasesConfiguration(revenueCatAPIKey));
         final info = await Purchases.getCustomerInfo();
         final offerings = await Purchases.getOfferings();
-        revenueCat = RevenueCatState(customerInfo: info, offerings: offerings);
+        revenueCat = RevenueCatState(
+          customerInfo: info,
+          offerings: offerings,
+          isPremium: info.entitlements.all['premium']?.isActive ?? false,
+        );
       } catch (e) {
-        revenueCat = RevenueCatState(exception: e as Exception);
+        revenueCat = RevenueCatState(
+          isPremium: false,
+          exception: e as Exception,
+        );
       }
     }),
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]),

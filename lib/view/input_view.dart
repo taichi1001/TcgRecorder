@@ -82,8 +82,7 @@ class InputView extends HookConsumerWidget {
                 padding: const EdgeInsets.only(right: 8, left: 8, bottom: 8),
                 leading: IconButton(
                   icon: const Icon(Icons.tune),
-                  onPressed: () {
-                    print(ref.read(revenueCatProvider).offerings?.current?.monthly);
+                  onPressed: () async {
                     showCupertinoModalBottomSheet(
                       expand: false,
                       context: context,
@@ -111,7 +110,12 @@ class InputView extends HookConsumerWidget {
                       children: [
                         const SizedBox(height: 8),
                         GestureDetector(
-                          onTap: () {
+                          onTap: () async {
+                            try {
+                              await ref.read(revenueCatNotifierProvider.notifier).purchasePremiumMonthly();
+                            } catch (e) {
+                              print(e);
+                            }
                             showCupertinoModalPopup(
                               context: context,
                               builder: (BuildContext context) {

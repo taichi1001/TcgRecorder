@@ -19,6 +19,7 @@ mixin _$RevenueCatState {
   CustomerInfo? get customerInfo => throw _privateConstructorUsedError;
   Offerings? get offerings => throw _privateConstructorUsedError;
   Exception? get exception => throw _privateConstructorUsedError;
+  bool get isPremium => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $RevenueCatStateCopyWith<RevenueCatState> get copyWith =>
@@ -31,7 +32,10 @@ abstract class $RevenueCatStateCopyWith<$Res> {
           RevenueCatState value, $Res Function(RevenueCatState) then) =
       _$RevenueCatStateCopyWithImpl<$Res>;
   $Res call(
-      {CustomerInfo? customerInfo, Offerings? offerings, Exception? exception});
+      {CustomerInfo? customerInfo,
+      Offerings? offerings,
+      Exception? exception,
+      bool isPremium});
 
   $CustomerInfoCopyWith<$Res>? get customerInfo;
   $OfferingsCopyWith<$Res>? get offerings;
@@ -51,6 +55,7 @@ class _$RevenueCatStateCopyWithImpl<$Res>
     Object? customerInfo = freezed,
     Object? offerings = freezed,
     Object? exception = freezed,
+    Object? isPremium = freezed,
   }) {
     return _then(_value.copyWith(
       customerInfo: customerInfo == freezed
@@ -65,6 +70,10 @@ class _$RevenueCatStateCopyWithImpl<$Res>
           ? _value.exception
           : exception // ignore: cast_nullable_to_non_nullable
               as Exception?,
+      isPremium: isPremium == freezed
+          ? _value.isPremium
+          : isPremium // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 
@@ -99,7 +108,10 @@ abstract class _$$_RevenueCatStateCopyWith<$Res>
       __$$_RevenueCatStateCopyWithImpl<$Res>;
   @override
   $Res call(
-      {CustomerInfo? customerInfo, Offerings? offerings, Exception? exception});
+      {CustomerInfo? customerInfo,
+      Offerings? offerings,
+      Exception? exception,
+      bool isPremium});
 
   @override
   $CustomerInfoCopyWith<$Res>? get customerInfo;
@@ -123,6 +135,7 @@ class __$$_RevenueCatStateCopyWithImpl<$Res>
     Object? customerInfo = freezed,
     Object? offerings = freezed,
     Object? exception = freezed,
+    Object? isPremium = freezed,
   }) {
     return _then(_$_RevenueCatState(
       customerInfo: customerInfo == freezed
@@ -137,6 +150,10 @@ class __$$_RevenueCatStateCopyWithImpl<$Res>
           ? _value.exception
           : exception // ignore: cast_nullable_to_non_nullable
               as Exception?,
+      isPremium: isPremium == freezed
+          ? _value.isPremium
+          : isPremium // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -144,7 +161,11 @@ class __$$_RevenueCatStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_RevenueCatState implements _RevenueCatState {
-  _$_RevenueCatState({this.customerInfo, this.offerings, this.exception});
+  _$_RevenueCatState(
+      {this.customerInfo,
+      this.offerings,
+      this.exception,
+      this.isPremium = false});
 
   @override
   final CustomerInfo? customerInfo;
@@ -152,10 +173,13 @@ class _$_RevenueCatState implements _RevenueCatState {
   final Offerings? offerings;
   @override
   final Exception? exception;
+  @override
+  @JsonKey()
+  final bool isPremium;
 
   @override
   String toString() {
-    return 'RevenueCatState(customerInfo: $customerInfo, offerings: $offerings, exception: $exception)';
+    return 'RevenueCatState(customerInfo: $customerInfo, offerings: $offerings, exception: $exception, isPremium: $isPremium)';
   }
 
   @override
@@ -166,7 +190,8 @@ class _$_RevenueCatState implements _RevenueCatState {
             const DeepCollectionEquality()
                 .equals(other.customerInfo, customerInfo) &&
             const DeepCollectionEquality().equals(other.offerings, offerings) &&
-            const DeepCollectionEquality().equals(other.exception, exception));
+            const DeepCollectionEquality().equals(other.exception, exception) &&
+            const DeepCollectionEquality().equals(other.isPremium, isPremium));
   }
 
   @override
@@ -174,7 +199,8 @@ class _$_RevenueCatState implements _RevenueCatState {
       runtimeType,
       const DeepCollectionEquality().hash(customerInfo),
       const DeepCollectionEquality().hash(offerings),
-      const DeepCollectionEquality().hash(exception));
+      const DeepCollectionEquality().hash(exception),
+      const DeepCollectionEquality().hash(isPremium));
 
   @JsonKey(ignore: true)
   @override
@@ -186,7 +212,8 @@ abstract class _RevenueCatState implements RevenueCatState {
   factory _RevenueCatState(
       {final CustomerInfo? customerInfo,
       final Offerings? offerings,
-      final Exception? exception}) = _$_RevenueCatState;
+      final Exception? exception,
+      final bool isPremium}) = _$_RevenueCatState;
 
   @override
   CustomerInfo? get customerInfo => throw _privateConstructorUsedError;
@@ -194,6 +221,8 @@ abstract class _RevenueCatState implements RevenueCatState {
   Offerings? get offerings => throw _privateConstructorUsedError;
   @override
   Exception? get exception => throw _privateConstructorUsedError;
+  @override
+  bool get isPremium => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_RevenueCatStateCopyWith<_$_RevenueCatState> get copyWith =>
