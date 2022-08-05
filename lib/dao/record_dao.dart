@@ -7,6 +7,7 @@ class RecordDao {
 
   Future<int> create(Record record) async {
     final db = await dbProvider.database;
+    print(record.toJson());
     final result = db.insert(tableName, record.toJson());
     return result;
   }

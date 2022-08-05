@@ -184,6 +184,7 @@ class InputView extends HookConsumerWidget {
                                     children: [
                                       RadioListTile(
                                         title: Text(S.of(context).first),
+                                        toggleable: true,
                                         value: FirstSecond.first,
                                         groupValue: isBO3 ? firstMatchFirstSecond : firstSecond,
                                         onChanged: (FirstSecond? value) {
@@ -198,6 +199,7 @@ class InputView extends HookConsumerWidget {
                                       ),
                                       RadioListTile(
                                         title: Text(S.of(context).second),
+                                        toggleable: true,
                                         value: FirstSecond.second,
                                         groupValue: isBO3 ? firstMatchFirstSecond : firstSecond,
                                         onChanged: (FirstSecond? value) {
@@ -224,6 +226,7 @@ class InputView extends HookConsumerWidget {
                                     children: [
                                       RadioListTile(
                                         title: Text(S.of(context).win),
+                                        toggleable: true,
                                         value: WinLoss.win,
                                         groupValue: isBO3 ? firstMatchWinLoss : winLoss,
                                         onChanged: (WinLoss? value) {
@@ -238,6 +241,7 @@ class InputView extends HookConsumerWidget {
                                       ),
                                       RadioListTile(
                                         title: Text(S.of(context).loss),
+                                        toggleable: true,
                                         value: WinLoss.loss,
                                         groupValue: isBO3 ? firstMatchWinLoss : winLoss,
                                         onChanged: (WinLoss? value) {
@@ -254,6 +258,7 @@ class InputView extends HookConsumerWidget {
                                         RadioListTile(
                                           title: Text(S.of(context).draw),
                                           value: WinLoss.draw,
+                                          toggleable: true,
                                           groupValue: isBO3 ? firstMatchWinLoss : winLoss,
                                           onChanged: (WinLoss? value) {
                                             if (isBO3) {
@@ -287,6 +292,7 @@ class InputView extends HookConsumerWidget {
                                         RadioListTile(
                                           title: Text(S.of(context).first),
                                           value: FirstSecond.first,
+                                          toggleable: true,
                                           groupValue: secondMatchFirstSecond,
                                           onChanged: (FirstSecond? value) {
                                             inputViewNotifier.selectSecondMatchFirstSecond(value);
@@ -297,6 +303,7 @@ class InputView extends HookConsumerWidget {
                                         RadioListTile(
                                           title: Text(S.of(context).second),
                                           value: FirstSecond.second,
+                                          toggleable: true,
                                           groupValue: secondMatchFirstSecond,
                                           onChanged: (FirstSecond? value) {
                                             inputViewNotifier.selectSecondMatchFirstSecond(value);
@@ -319,6 +326,7 @@ class InputView extends HookConsumerWidget {
                                         RadioListTile(
                                           title: Text(S.of(context).win),
                                           value: WinLoss.win,
+                                          toggleable: true,
                                           groupValue: secondMatchWinLoss,
                                           onChanged: (WinLoss? value) {
                                             inputViewNotifier.selectSecondMatchWinLoss(value);
@@ -329,6 +337,7 @@ class InputView extends HookConsumerWidget {
                                         RadioListTile(
                                           title: Text(S.of(context).loss),
                                           value: WinLoss.loss,
+                                          toggleable: true,
                                           groupValue: secondMatchWinLoss,
                                           onChanged: (WinLoss? value) {
                                             inputViewNotifier.selectSecondMatchWinLoss(value);
@@ -340,6 +349,7 @@ class InputView extends HookConsumerWidget {
                                           RadioListTile(
                                             title: Text(S.of(context).draw),
                                             value: WinLoss.draw,
+                                            toggleable: true,
                                             groupValue: secondMatchWinLoss,
                                             onChanged: (WinLoss? value) {
                                               inputViewNotifier.selectSecondMatchWinLoss(value);
@@ -368,6 +378,7 @@ class InputView extends HookConsumerWidget {
                                       children: [
                                         RadioListTile(
                                           title: Text(S.of(context).first),
+                                          toggleable: true,
                                           value: FirstSecond.first,
                                           groupValue: thirdMatchFirstSecond,
                                           onChanged: (FirstSecond? value) {
@@ -379,6 +390,7 @@ class InputView extends HookConsumerWidget {
                                         RadioListTile(
                                           title: Text(S.of(context).second),
                                           value: FirstSecond.second,
+                                          toggleable: true,
                                           groupValue: thirdMatchFirstSecond,
                                           onChanged: (FirstSecond? value) {
                                             inputViewNotifier.selectThirdMatchFirstSecond(value);
@@ -401,6 +413,7 @@ class InputView extends HookConsumerWidget {
                                         RadioListTile(
                                           title: Text(S.of(context).win),
                                           value: WinLoss.win,
+                                          toggleable: true,
                                           groupValue: thirdMatchWinLoss,
                                           onChanged: (WinLoss? value) {
                                             inputViewNotifier.selectThirdMatchWinLoss(value);
@@ -411,6 +424,7 @@ class InputView extends HookConsumerWidget {
                                         RadioListTile(
                                           title: Text(S.of(context).loss),
                                           value: WinLoss.loss,
+                                          toggleable: true,
                                           groupValue: thirdMatchWinLoss,
                                           onChanged: (WinLoss? value) {
                                             inputViewNotifier.selectThirdMatchWinLoss(value);
@@ -422,6 +436,7 @@ class InputView extends HookConsumerWidget {
                                           RadioListTile(
                                             title: Text(S.of(context).draw),
                                             value: WinLoss.draw,
+                                            toggleable: true,
                                             groupValue: thirdMatchWinLoss,
                                             onChanged: (WinLoss? value) {
                                               inputViewNotifier.selectThirdMatchWinLoss(value);
@@ -552,7 +567,11 @@ class InputView extends HookConsumerWidget {
                                 child: ElevatedButton(
                                   onPressed: useDeck == null ||
                                           opponentDeck == null ||
-                                          (isBO3 && (firstMatchFirstSecond == null || firstMatchWinLoss == null))
+                                          (isBO3 && (firstMatchFirstSecond == null || firstMatchWinLoss == null)) ||
+                                          (isBO3 && secondMatchFirstSecond != null && secondMatchWinLoss == null) ||
+                                          (isBO3 && secondMatchFirstSecond == null && secondMatchWinLoss != null) ||
+                                          (isBO3 && thirdMatchFirstSecond != null && thirdMatchWinLoss == null) ||
+                                          (isBO3 && thirdMatchFirstSecond == null && thirdMatchWinLoss != null)
                                       ? null
                                       : () async {
                                           final okCancelResult = await showOkCancelAlertDialog(
@@ -561,7 +580,12 @@ class InputView extends HookConsumerWidget {
                                             isDestructiveAction: true,
                                           );
                                           if (okCancelResult == OkCancelResult.ok) {
-                                            final recordCount = await inputViewNotifier.save();
+                                            int recordCount;
+                                            if (isBO3) {
+                                              recordCount = await inputViewNotifier.saveBO3();
+                                            } else {
+                                              recordCount = await inputViewNotifier.saveBO1();
+                                            }
                                             await ref.read(dbHelper).fetchAll();
                                             if (recordCount % 200 == 0) {
                                               final inAppReview = InAppReview.instance;

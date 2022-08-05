@@ -2,6 +2,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/record.dart';
 import 'package:tcg_manager/entity/tag.dart';
+import 'package:tcg_manager/enum/bo.dart';
 import 'package:tcg_manager/enum/first_second.dart';
 import 'package:tcg_manager/enum/win_loss.dart';
 import 'package:tcg_manager/helper/edit_record_helper.dart';
@@ -76,21 +77,15 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
   }
 
   void selectFirstMatchWinLoss(WinLoss? winloss) {
-    if (winloss != null) {
-      state = state.copyWith(firstMatchWinLoss: winloss);
-    }
+    state = state.copyWith(firstMatchWinLoss: winloss);
   }
 
   void selectSecondMatchWinLoss(WinLoss? winloss) {
-    if (winloss != null) {
-      state = state.copyWith(secondMatchWinLoss: winloss);
-    }
+    state = state.copyWith(secondMatchWinLoss: winloss);
   }
 
   void selectThirdMatchWinLoss(WinLoss? winloss) {
-    if (winloss != null) {
-      state = state.copyWith(thirdMatchWinLoss: winloss);
-    }
+    state = state.copyWith(thirdMatchWinLoss: winloss);
   }
 
   void selectFirstSecond(FirstSecond? firstSecond) {
@@ -100,25 +95,78 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
   }
 
   void selectFirstMatchFirstSecond(FirstSecond? firstSecond) {
-    if (firstSecond != null) {
-      state = state.copyWith(firstMatchFirstSecond: firstSecond);
-    }
+    state = state.copyWith(firstMatchFirstSecond: firstSecond);
   }
 
   void selectSecondMatchFirstSecond(FirstSecond? firstSecond) {
-    if (firstSecond != null) {
-      state = state.copyWith(secondMatchFirstSecond: firstSecond);
-    }
+    state = state.copyWith(secondMatchFirstSecond: firstSecond);
   }
 
   void selectThirdMatchFirstSecond(FirstSecond? firstSecond) {
-    if (firstSecond != null) {
-      state = state.copyWith(thirdMatchFirstSecond: firstSecond);
-    }
+    state = state.copyWith(thirdMatchFirstSecond: firstSecond);
   }
 
   void inputMemo(String memo) {
     state = state.copyWith(memo: memo);
+  }
+
+  Future _saveUseDeck(int? gameId) async {
+    final checkUseDeck = await read(editRecordHelper).checkIfSelectedUseDeckIsNew(state.useDeck!.deck);
+    if (checkUseDeck.isNew) {
+      state = state.copyWith(
+        useDeck: state.useDeck!.copyWith(
+          gameId: gameId,
+        ),
+      );
+      final useDeckId = await read(deckRepository).insert(state.useDeck!);
+      state = state.copyWith(
+        useDeck: state.useDeck!.copyWith(
+          deckId: useDeckId,
+        ),
+      );
+    } else {
+      state = state.copyWith(useDeck: checkUseDeck.deck);
+    }
+  }
+
+  Future _saveOpoonentDeck(int? gameId) async {
+    final checkOpponentDeck = await read(editRecordHelper).checkIfSelectedUseDeckIsNew(state.opponentDeck!.deck);
+    if (checkOpponentDeck.isNew) {
+      state = state.copyWith(
+        opponentDeck: state.opponentDeck!.copyWith(
+          gameId: gameId,
+        ),
+      );
+      final opponentDeckId = await read(deckRepository).insert(state.opponentDeck!);
+      state = state.copyWith(
+        opponentDeck: state.opponentDeck!.copyWith(
+          deckId: opponentDeckId,
+        ),
+      );
+    } else {
+      state = state.copyWith(opponentDeck: checkOpponentDeck.deck);
+    }
+  }
+
+  Future _saveTag(int? gameId) async {
+    if (state.tag == null) return;
+    // Tagが新規だった場合,opponentDeckにgameIDを設定
+    final checkTag = await read(editRecordHelper).checkIfSelectedTagIsNew(state.tag!.tag);
+    if (checkTag.isNew) {
+      state = state.copyWith(
+        tag: state.tag!.copyWith(
+          gameId: gameId,
+        ),
+      );
+      final tagId = await read(tagRepository).insert(state.tag!);
+      state = state.copyWith(
+        tag: state.tag!.copyWith(
+          tagId: tagId,
+        ),
+      );
+    } else {
+      state = state.copyWith(tag: checkTag.tag);
+    }
   }
 
   void _saveDate() {
@@ -130,8 +178,50 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     state = state.copyWith(record: state.record!.copyWith(firstSecond: state.firstSecond));
   }
 
+  void _saveFirstMatchFirstSecond() {
+    state = state.copyWith(record: state.record!.copyWith(firstMatchFirstSecond: state.firstMatchFirstSecond));
+  }
+
+  void _saveSecondMatchFirstSecond() {
+    state = state.copyWith(record: state.record!.copyWith(secondMatchFirstSecond: state.secondMatchFirstSecond));
+  }
+
+  void _saveThirdMatchFirstSecond() {
+    state = state.copyWith(record: state.record!.copyWith(thiredMatchFirstSecond: state.thirdMatchFirstSecond));
+  }
+
   void _saveWinLoss() {
     state = state.copyWith(record: state.record!.copyWith(winLoss: state.winLoss));
+  }
+
+  void _saveFirstMatchWinLoss() {
+    state = state.copyWith(record: state.record!.copyWith(firstMatchWinLoss: state.firstMatchWinLoss));
+  }
+
+  void _saveSecondMatchWinLoss() {
+    state = state.copyWith(record: state.record!.copyWith(secondMatchWinLoss: state.secondMatchWinLoss));
+  }
+
+  void _saveThirdMatchWinLoss() {
+    state = state.copyWith(record: state.record!.copyWith(thirdMatchWinLoss: state.thirdMatchWinLoss));
+  }
+
+  void _calcWinLossBO3() {
+    final winLossList = [state.firstMatchWinLoss, state.secondMatchWinLoss, state.thirdMatchWinLoss];
+    final winCount = winLossList.where((winLoss) => winLoss == WinLoss.win).length;
+    final lossCount = winLossList.where((winLoss) => winLoss == WinLoss.loss).length;
+    if (winCount > lossCount) state = state.copyWith(winLoss: WinLoss.win);
+    if (winCount < lossCount) state = state.copyWith(winLoss: WinLoss.loss);
+    if (winCount == lossCount) state = state.copyWith(winLoss: WinLoss.draw);
+  }
+
+  void _calcFirstSecondBO3() {
+    final firstSecondList = [state.firstMatchFirstSecond, state.secondMatchFirstSecond, state.thirdMatchFirstSecond];
+    final firstCount = firstSecondList.where((firstSecond) => firstSecond == FirstSecond.first).length;
+    final secondCount = firstSecondList.where((firstSecond) => firstSecond == FirstSecond.second).length;
+    if (firstCount > secondCount) state = state.copyWith(firstSecond: FirstSecond.first);
+    if (firstCount < secondCount) state = state.copyWith(firstSecond: FirstSecond.second);
+    if (firstCount == secondCount) state = state.copyWith(firstSecond: state.firstMatchFirstSecond!);
   }
 
   Future init() async {
@@ -175,70 +265,18 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     read(textEditingControllerNotifierProvider.notifier).resetInputViewController();
   }
 
-  Future<int> save() async {
+  Future<int> saveBO1() async {
     if (state.useDeck == null || state.opponentDeck == null) return 0;
     final selectGameId = read(selectGameNotifierProvider).selectGame!.gameId;
-    // useDeckが新規だった場合、useDeckにgameIDを設定
-    final checkUseDeck = await read(editRecordHelper).checkIfSelectedUseDeckIsNew(state.useDeck!.deck);
-    if (checkUseDeck.isNew) {
-      state = state.copyWith(
-        useDeck: state.useDeck!.copyWith(
-          gameId: selectGameId,
-        ),
-      );
-      final useDeckId = await read(deckRepository).insert(state.useDeck!);
-      state = state.copyWith(
-        useDeck: state.useDeck!.copyWith(
-          deckId: useDeckId,
-        ),
-      );
-    } else {
-      state = state.copyWith(useDeck: checkUseDeck.deck);
-    }
-    if (state.useDeck!.deck == state.opponentDeck!.deck) {
-      state = state.copyWith(opponentDeck: state.useDeck);
-    } else {
-      // opponentDeckが新規だった場合,opponentDeckにgameIDを設定
-      final checkOpponentDeck = await read(editRecordHelper).checkIfSelectedUseDeckIsNew(state.opponentDeck!.deck);
-      if (checkOpponentDeck.isNew) {
-        state = state.copyWith(
-          opponentDeck: state.opponentDeck!.copyWith(
-            gameId: selectGameId,
-          ),
-        );
-        final opponentDeckId = await read(deckRepository).insert(state.opponentDeck!);
-        state = state.copyWith(
-          opponentDeck: state.opponentDeck!.copyWith(
-            deckId: opponentDeckId,
-          ),
-        );
-      } else {
-        state = state.copyWith(opponentDeck: checkOpponentDeck.deck);
-      }
-    }
-    if (state.tag != null) {
-      // Tagが新規だった場合,opponentDeckにgameIDを設定
-      final checkTag = await read(editRecordHelper).checkIfSelectedTagIsNew(state.tag!.tag);
-      if (checkTag.isNew) {
-        state = state.copyWith(
-          tag: state.tag!.copyWith(
-            gameId: selectGameId,
-          ),
-        );
-        final tagId = await read(tagRepository).insert(state.tag!);
-        state = state.copyWith(
-          tag: state.tag!.copyWith(
-            tagId: tagId,
-          ),
-        );
-      } else {
-        state = state.copyWith(tag: checkTag.tag);
-      }
-    }
-
+    await _saveUseDeck(selectGameId);
+    await _saveOpoonentDeck(selectGameId);
+    await _saveTag(selectGameId);
     // record登録
     final newRecord = Record(gameId: selectGameId);
     state = state.copyWith(record: newRecord);
+    _saveDate();
+    _saveFirstSecond();
+    _saveWinLoss();
 
     // recordに各種データを設定
     state = state.copyWith(
@@ -246,13 +284,45 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
         useDeckId: state.useDeck!.deckId,
         opponentDeckId: state.opponentDeck!.deckId,
         tagId: state.tag?.tagId,
+        bo: BO.bo1,
         memo: state.memo,
       ),
     );
 
+    final recordCount = await read(recordRepository).insert(state.record!);
+    return recordCount;
+  }
+
+  Future saveBO3() async {
+    if (state.useDeck == null || state.opponentDeck == null) return 0;
+    final selectGameId = read(selectGameNotifierProvider).selectGame!.gameId;
+    await _saveUseDeck(selectGameId);
+    await _saveOpoonentDeck(selectGameId);
+    await _saveTag(selectGameId);
+    _calcFirstSecondBO3();
+    _calcWinLossBO3();
+    // record登録
+    final newRecord = Record(gameId: selectGameId);
+    state = state.copyWith(record: newRecord);
     _saveDate();
     _saveFirstSecond();
     _saveWinLoss();
+    _saveFirstMatchFirstSecond();
+    _saveSecondMatchFirstSecond();
+    _saveThirdMatchFirstSecond();
+    _saveFirstMatchWinLoss();
+    _saveSecondMatchWinLoss();
+    _saveThirdMatchWinLoss();
+    // recordに各種データを設定
+    state = state.copyWith(
+      record: state.record!.copyWith(
+        useDeckId: state.useDeck!.deckId,
+        opponentDeckId: state.opponentDeck!.deckId,
+        tagId: state.tag?.tagId,
+        bo: BO.bo3,
+        memo: state.memo,
+      ),
+    );
     final recordCount = await read(recordRepository).insert(state.record!);
     return recordCount;
   }
