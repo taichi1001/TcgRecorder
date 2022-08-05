@@ -31,6 +31,7 @@
     "second": "Second",
     "win": "Win",
     "loss": "Loss",
+    "draw": "Draw",
     "listUseDeck": "Use Deck: ",
     "listOpponentDeck": "Opponent Deck: ",
     "otherTitle": "Other",

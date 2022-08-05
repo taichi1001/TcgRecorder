@@ -370,6 +370,16 @@ class S {
     );
   }
 
+  /// `Draw`
+  String get draw {
+    return Intl.message(
+      'Draw',
+      name: 'draw',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Use Deck: `
   String get listUseDeck {
     return Intl.message(

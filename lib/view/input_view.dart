@@ -64,6 +64,7 @@ class InputView extends HookConsumerWidget {
     final opponentDeckTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.opponentDeckController));
     final tagTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.tagController));
     final memoTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.memoController));
+    final isDraw = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.draw));
     final outputFormat = DateFormat(S.of(context).dateFormat);
 
     final inputViewInfo = ref.watch(inputViewInfoProvider);
@@ -165,6 +166,7 @@ class InputView extends HookConsumerWidget {
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(
                               width: 204.w,
@@ -225,6 +227,17 @@ class InputView extends HookConsumerWidget {
                                         contentPadding: const EdgeInsets.symmetric(horizontal: 0),
                                         dense: true,
                                       ),
+                                      if (isDraw)
+                                        RadioListTile(
+                                          title: Text(S.of(context).draw),
+                                          value: WinLoss.draw,
+                                          groupValue: winLoss,
+                                          onChanged: (WinLoss? value) {
+                                            inputViewNotifier.selectWinLoss(value);
+                                          },
+                                          contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                          dense: true,
+                                        ),
                                     ],
                                   ),
                                 ),
@@ -407,6 +420,7 @@ class _SettingModalBottomSheet extends HookConsumerWidget {
     final fixUseDeck = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.fixUseDeck));
     final fixOpponentDeck = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.fixOpponentDeck));
     final fixTag = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.fixTag));
+    final draw = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.draw));
     final inputiViewSettingsController = ref.watch(inputViewSettingsNotifierProvider.notifier);
     return Material(
       child: SafeArea(
@@ -450,6 +464,22 @@ class _SettingModalBottomSheet extends HookConsumerWidget {
                 ),
                 value: fixTag,
                 onChanged: inputiViewSettingsController.changeFixTag,
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 16, 0, 8),
+                child: Text(
+                  '入力項目オプション',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
+                ),
+              ),
+              SwitchListTile.adaptive(
+                contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                title: Text(
+                  '引き分け',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                value: draw,
+                onChanged: inputiViewSettingsController.changeDraw,
               ),
             ],
           ),

@@ -39,6 +39,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "deckEdit": MessageLookupByLibrary.simpleMessage("Edit Deck"),
         "deleteMessage":
             MessageLookupByLibrary.simpleMessage("Can I delete it?"),
+        "draw": MessageLookupByLibrary.simpleMessage("Draw"),
         "editButton": MessageLookupByLibrary.simpleMessage("Edit"),
         "editSection": MessageLookupByLibrary.simpleMessage("Edit"),
         "first": MessageLookupByLibrary.simpleMessage("First"),

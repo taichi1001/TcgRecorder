@@ -32,11 +32,30 @@ int _firstSecondToJson(FirstSecond value) {
 }
 
 WinLoss _winLossFromJson(int value) {
-  return value == 1 ? WinLoss.win : WinLoss.loss;
+  switch (value) {
+    case 0:
+      return WinLoss.loss;
+    case 1:
+      return WinLoss.win;
+    case 2:
+      return WinLoss.draw;
+    default:
+      throw Exception();
+  }
 }
 
 int _winLossToJson(WinLoss value) {
-  return value == WinLoss.win ? 1 : 0;
+  switch (value) {
+    case WinLoss.loss:
+      return 0;
+    case WinLoss.win:
+      return 1;
+    case WinLoss.draw:
+      return 2;
+
+    default:
+      throw Exception();
+  }
 }
 
 DateTime _dateTimeFromJson(String value) {

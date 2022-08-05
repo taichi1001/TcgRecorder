@@ -8,5 +8,6 @@ abstract class InputViewSettingsState with _$InputViewSettingsState {
     @Default(false) final bool fixUseDeck,
     @Default(false) final bool fixOpponentDeck,
     @Default(false) final bool fixTag,
+    @Default(false) final bool draw,
   }) = _InputViewSettingsState;
 }

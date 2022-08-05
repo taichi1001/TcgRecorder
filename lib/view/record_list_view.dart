@@ -257,11 +257,19 @@ class _BrandListTile extends HookConsumerWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 borderRadius: BorderRadius.circular(6),
-                color: record.winLoss == WinLoss.win ? const Color(0xFFA21F16) : const Color(0xFF3547AC),
+                color: record.winLoss == WinLoss.win
+                    ? const Color(0xFFA21F16)
+                    : record.winLoss == WinLoss.loss
+                        ? const Color(0xFF3547AC)
+                        : Colors.grey,
               ),
               child: Center(
                 child: Text(
-                  record.winLoss == WinLoss.win ? 'Win' : 'Loss',
+                  record.winLoss == WinLoss.win
+                      ? 'Win'
+                      : record.winLoss == WinLoss.loss
+                          ? 'Loss'
+                          : 'Draw',
                   style: GoogleFonts.bangers(
                     fontSize: 22,
                     color: Colors.white,

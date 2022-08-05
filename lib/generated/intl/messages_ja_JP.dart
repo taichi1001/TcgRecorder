@@ -37,6 +37,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "deck": MessageLookupByLibrary.simpleMessage("デッキ"),
         "deckEdit": MessageLookupByLibrary.simpleMessage("デッキ編集"),
         "deleteMessage": MessageLookupByLibrary.simpleMessage("削除しますか？"),
+        "draw": MessageLookupByLibrary.simpleMessage("引き分け"),
         "editButton": MessageLookupByLibrary.simpleMessage("編集"),
         "editSection": MessageLookupByLibrary.simpleMessage("編集"),
         "first": MessageLookupByLibrary.simpleMessage("先攻"),
