@@ -12,19 +12,17 @@ class InputViewSettingsNotifier extends StateNotifier<InputViewSettingsState> {
   static const fixOpponentDeckKey = 'fixOpponentDeck';
   static const fixTagKey = 'fixTag';
   static const drawKey = 'draw';
+  static const bo3Key = 'bo3';
 
   late final prefs = read(sharedPreferencesProvider);
 
   void _init() {
-    final fixUseDeck = _getFixUseDeck();
-    final fixOpponentDeck = _getFixOpponentDeck();
-    final fixTag = _getFixTag();
-    final draw = _getDraw();
     state = state.copyWith(
-      fixUseDeck: fixUseDeck ?? false,
-      fixOpponentDeck: fixOpponentDeck ?? false,
-      fixTag: fixTag ?? false,
-      draw: draw ?? false,
+      fixUseDeck: _getFixUseDeck() ?? false,
+      fixOpponentDeck: _getFixOpponentDeck() ?? false,
+      fixTag: _getFixTag() ?? false,
+      draw: _getDraw() ?? false,
+      bo3: _getBO3() ?? false,
     );
   }
 
@@ -48,15 +46,22 @@ class InputViewSettingsNotifier extends StateNotifier<InputViewSettingsState> {
     _saveDraw(state.draw);
   }
 
+  void changeBO3(bool settings) {
+    state = state.copyWith(bo3: settings);
+    _saveBO3(state.bo3);
+  }
+
   bool? _getFixUseDeck() => prefs.getBool(fixUseDeckKey);
   bool? _getFixOpponentDeck() => prefs.getBool(fixOpponentDeckKey);
   bool? _getFixTag() => prefs.getBool(fixTagKey);
   bool? _getDraw() => prefs.getBool(drawKey);
+  bool? _getBO3() => prefs.getBool(bo3Key);
 
   void _saveFixUseDeck(bool settings) => prefs.setBool(fixUseDeckKey, settings);
   void _saveFixOpponentDeck(bool settings) => prefs.setBool(fixOpponentDeckKey, settings);
   void _saveFixTag(bool settings) => prefs.setBool(fixTagKey, settings);
   void _saveDraw(bool settings) => prefs.setBool(drawKey, settings);
+  void _saveBO3(bool settings) => prefs.setBool(bo3Key, settings);
 }
 
 final inputViewSettingsNotifierProvider = StateNotifierProvider<InputViewSettingsNotifier, InputViewSettingsState>(

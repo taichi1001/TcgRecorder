@@ -56,7 +56,13 @@ class InputView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final date = ref.watch(inputViewNotifierProvider.select((value) => value.date));
     final winLoss = ref.watch(inputViewNotifierProvider.select((value) => value.winLoss));
+    final firstMatchWinLoss = ref.watch(inputViewNotifierProvider.select((value) => value.firstMatchWinLoss));
+    final secondMatchWinLoss = ref.watch(inputViewNotifierProvider.select((value) => value.secondMatchWinLoss));
+    final thirdMatchWinLoss = ref.watch(inputViewNotifierProvider.select((value) => value.thirdMatchWinLoss));
     final firstSecond = ref.watch(inputViewNotifierProvider.select((value) => value.firstSecond));
+    final firstMatchFirstSecond = ref.watch(inputViewNotifierProvider.select((value) => value.firstMatchFirstSecond));
+    final secondMatchFirstSecond = ref.watch(inputViewNotifierProvider.select((value) => value.secondMatchFirstSecond));
+    final thirdMatchFirstSecond = ref.watch(inputViewNotifierProvider.select((value) => value.thirdMatchFirstSecond));
     final useDeck = ref.watch(inputViewNotifierProvider.select((value) => value.useDeck));
     final opponentDeck = ref.watch(inputViewNotifierProvider.select((value) => value.opponentDeck));
     final inputViewNotifier = ref.read(inputViewNotifierProvider.notifier);
@@ -65,6 +71,7 @@ class InputView extends HookConsumerWidget {
     final tagTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.tagController));
     final memoTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.memoController));
     final isDraw = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.draw));
+    final isBO3 = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.bo3));
     final outputFormat = DateFormat(S.of(context).dateFormat);
 
     final inputViewInfo = ref.watch(inputViewInfoProvider);
@@ -178,9 +185,13 @@ class InputView extends HookConsumerWidget {
                                       RadioListTile(
                                         title: Text(S.of(context).first),
                                         value: FirstSecond.first,
-                                        groupValue: firstSecond,
+                                        groupValue: isBO3 ? firstMatchFirstSecond : firstSecond,
                                         onChanged: (FirstSecond? value) {
-                                          inputViewNotifier.selectFirstSecond(value);
+                                          if (isBO3) {
+                                            inputViewNotifier.selectFirstMatchFirstSecond(value);
+                                          } else {
+                                            inputViewNotifier.selectFirstSecond(value);
+                                          }
                                         },
                                         contentPadding: const EdgeInsets.symmetric(horizontal: 0),
                                         dense: true,
@@ -188,9 +199,13 @@ class InputView extends HookConsumerWidget {
                                       RadioListTile(
                                         title: Text(S.of(context).second),
                                         value: FirstSecond.second,
-                                        groupValue: firstSecond,
+                                        groupValue: isBO3 ? firstMatchFirstSecond : firstSecond,
                                         onChanged: (FirstSecond? value) {
-                                          inputViewNotifier.selectFirstSecond(value);
+                                          if (isBO3) {
+                                            inputViewNotifier.selectFirstMatchFirstSecond(value);
+                                          } else {
+                                            inputViewNotifier.selectFirstSecond(value);
+                                          }
                                         },
                                         contentPadding: const EdgeInsets.symmetric(horizontal: 0),
                                         dense: true,
@@ -210,9 +225,13 @@ class InputView extends HookConsumerWidget {
                                       RadioListTile(
                                         title: Text(S.of(context).win),
                                         value: WinLoss.win,
-                                        groupValue: winLoss,
+                                        groupValue: isBO3 ? firstMatchWinLoss : winLoss,
                                         onChanged: (WinLoss? value) {
-                                          inputViewNotifier.selectWinLoss(value);
+                                          if (isBO3) {
+                                            inputViewNotifier.selectFirstMatchWinLoss(value);
+                                          } else {
+                                            inputViewNotifier.selectWinLoss(value);
+                                          }
                                         },
                                         contentPadding: const EdgeInsets.symmetric(horizontal: 0),
                                         dense: true,
@@ -220,9 +239,13 @@ class InputView extends HookConsumerWidget {
                                       RadioListTile(
                                         title: Text(S.of(context).loss),
                                         value: WinLoss.loss,
-                                        groupValue: winLoss,
+                                        groupValue: isBO3 ? firstMatchWinLoss : winLoss,
                                         onChanged: (WinLoss? value) {
-                                          inputViewNotifier.selectWinLoss(value);
+                                          if (isBO3) {
+                                            inputViewNotifier.selectFirstMatchWinLoss(value);
+                                          } else {
+                                            inputViewNotifier.selectWinLoss(value);
+                                          }
                                         },
                                         contentPadding: const EdgeInsets.symmetric(horizontal: 0),
                                         dense: true,
@@ -231,9 +254,13 @@ class InputView extends HookConsumerWidget {
                                         RadioListTile(
                                           title: Text(S.of(context).draw),
                                           value: WinLoss.draw,
-                                          groupValue: winLoss,
+                                          groupValue: isBO3 ? firstMatchWinLoss : winLoss,
                                           onChanged: (WinLoss? value) {
-                                            inputViewNotifier.selectWinLoss(value);
+                                            if (isBO3) {
+                                              inputViewNotifier.selectFirstMatchWinLoss(value);
+                                            } else {
+                                              inputViewNotifier.selectWinLoss(value);
+                                            }
                                           },
                                           contentPadding: const EdgeInsets.symmetric(horizontal: 0),
                                           dense: true,
@@ -245,6 +272,170 @@ class InputView extends HookConsumerWidget {
                             ),
                           ],
                         ),
+                        if (isBO3)
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: 204.w,
+                                child: Card(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8),
+                                    child: Column(
+                                      children: [
+                                        RadioListTile(
+                                          title: Text(S.of(context).first),
+                                          value: FirstSecond.first,
+                                          groupValue: secondMatchFirstSecond,
+                                          onChanged: (FirstSecond? value) {
+                                            inputViewNotifier.selectSecondMatchFirstSecond(value);
+                                          },
+                                          contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                          dense: true,
+                                        ),
+                                        RadioListTile(
+                                          title: Text(S.of(context).second),
+                                          value: FirstSecond.second,
+                                          groupValue: secondMatchFirstSecond,
+                                          onChanged: (FirstSecond? value) {
+                                            inputViewNotifier.selectSecondMatchFirstSecond(value);
+                                          },
+                                          contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                          dense: true,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 204.w,
+                                child: Card(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8),
+                                    child: Column(
+                                      children: [
+                                        RadioListTile(
+                                          title: Text(S.of(context).win),
+                                          value: WinLoss.win,
+                                          groupValue: secondMatchWinLoss,
+                                          onChanged: (WinLoss? value) {
+                                            inputViewNotifier.selectSecondMatchWinLoss(value);
+                                          },
+                                          contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                          dense: true,
+                                        ),
+                                        RadioListTile(
+                                          title: Text(S.of(context).loss),
+                                          value: WinLoss.loss,
+                                          groupValue: secondMatchWinLoss,
+                                          onChanged: (WinLoss? value) {
+                                            inputViewNotifier.selectSecondMatchWinLoss(value);
+                                          },
+                                          contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                          dense: true,
+                                        ),
+                                        if (isDraw)
+                                          RadioListTile(
+                                            title: Text(S.of(context).draw),
+                                            value: WinLoss.draw,
+                                            groupValue: secondMatchWinLoss,
+                                            onChanged: (WinLoss? value) {
+                                              inputViewNotifier.selectSecondMatchWinLoss(value);
+                                            },
+                                            contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                            dense: true,
+                                          ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        if (isBO3)
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: 204.w,
+                                child: Card(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8),
+                                    child: Column(
+                                      children: [
+                                        RadioListTile(
+                                          title: Text(S.of(context).first),
+                                          value: FirstSecond.first,
+                                          groupValue: thirdMatchFirstSecond,
+                                          onChanged: (FirstSecond? value) {
+                                            inputViewNotifier.selectThirdMatchFirstSecond(value);
+                                          },
+                                          contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                          dense: true,
+                                        ),
+                                        RadioListTile(
+                                          title: Text(S.of(context).second),
+                                          value: FirstSecond.second,
+                                          groupValue: thirdMatchFirstSecond,
+                                          onChanged: (FirstSecond? value) {
+                                            inputViewNotifier.selectThirdMatchFirstSecond(value);
+                                          },
+                                          contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                          dense: true,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 204.w,
+                                child: Card(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8),
+                                    child: Column(
+                                      children: [
+                                        RadioListTile(
+                                          title: Text(S.of(context).win),
+                                          value: WinLoss.win,
+                                          groupValue: thirdMatchWinLoss,
+                                          onChanged: (WinLoss? value) {
+                                            inputViewNotifier.selectThirdMatchWinLoss(value);
+                                          },
+                                          contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                          dense: true,
+                                        ),
+                                        RadioListTile(
+                                          title: Text(S.of(context).loss),
+                                          value: WinLoss.loss,
+                                          groupValue: thirdMatchWinLoss,
+                                          onChanged: (WinLoss? value) {
+                                            inputViewNotifier.selectThirdMatchWinLoss(value);
+                                          },
+                                          contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                          dense: true,
+                                        ),
+                                        if (isDraw)
+                                          RadioListTile(
+                                            title: Text(S.of(context).draw),
+                                            value: WinLoss.draw,
+                                            groupValue: thirdMatchWinLoss,
+                                            onChanged: (WinLoss? value) {
+                                              inputViewNotifier.selectThirdMatchWinLoss(value);
+                                            },
+                                            contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                            dense: true,
+                                          ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         Card(
                           child: Padding(
                             padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
@@ -359,7 +550,9 @@ class InputView extends HookConsumerWidget {
                                 width: 300,
                                 height: 50,
                                 child: ElevatedButton(
-                                  onPressed: useDeck == null || opponentDeck == null
+                                  onPressed: useDeck == null ||
+                                          opponentDeck == null ||
+                                          (isBO3 && (firstMatchFirstSecond == null || firstMatchWinLoss == null))
                                       ? null
                                       : () async {
                                           final okCancelResult = await showOkCancelAlertDialog(
@@ -421,6 +614,7 @@ class _SettingModalBottomSheet extends HookConsumerWidget {
     final fixOpponentDeck = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.fixOpponentDeck));
     final fixTag = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.fixTag));
     final draw = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.draw));
+    final bo3 = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.bo3));
     final inputiViewSettingsController = ref.watch(inputViewSettingsNotifierProvider.notifier);
     return Material(
       child: SafeArea(
@@ -480,6 +674,15 @@ class _SettingModalBottomSheet extends HookConsumerWidget {
                 ),
                 value: draw,
                 onChanged: inputiViewSettingsController.changeDraw,
+              ),
+              SwitchListTile.adaptive(
+                contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                title: Text(
+                  'BO3',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                value: bo3,
+                onChanged: inputiViewSettingsController.changeBO3,
               ),
             ],
           ),

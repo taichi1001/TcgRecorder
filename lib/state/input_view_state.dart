@@ -17,6 +17,12 @@ abstract class InputViewState with _$InputViewState {
     Tag? tag,
     String? memo,
     @Default(WinLoss.win) WinLoss winLoss,
+    WinLoss? firstMatchWinLoss,
+    WinLoss? secondMatchWinLoss,
+    WinLoss? thirdMatchWinLoss,
     @Default(FirstSecond.first) FirstSecond firstSecond,
+    FirstSecond? firstMatchFirstSecond,
+    FirstSecond? secondMatchFirstSecond,
+    FirstSecond? thirdMatchFirstSecond,
   }) = _InputViewState;
 }

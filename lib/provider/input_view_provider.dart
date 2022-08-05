@@ -75,9 +75,45 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     }
   }
 
+  void selectFirstMatchWinLoss(WinLoss? winloss) {
+    if (winloss != null) {
+      state = state.copyWith(firstMatchWinLoss: winloss);
+    }
+  }
+
+  void selectSecondMatchWinLoss(WinLoss? winloss) {
+    if (winloss != null) {
+      state = state.copyWith(secondMatchWinLoss: winloss);
+    }
+  }
+
+  void selectThirdMatchWinLoss(WinLoss? winloss) {
+    if (winloss != null) {
+      state = state.copyWith(thirdMatchWinLoss: winloss);
+    }
+  }
+
   void selectFirstSecond(FirstSecond? firstSecond) {
     if (firstSecond != null) {
       state = state.copyWith(firstSecond: firstSecond);
+    }
+  }
+
+  void selectFirstMatchFirstSecond(FirstSecond? firstSecond) {
+    if (firstSecond != null) {
+      state = state.copyWith(firstMatchFirstSecond: firstSecond);
+    }
+  }
+
+  void selectSecondMatchFirstSecond(FirstSecond? firstSecond) {
+    if (firstSecond != null) {
+      state = state.copyWith(secondMatchFirstSecond: firstSecond);
+    }
+  }
+
+  void selectThirdMatchFirstSecond(FirstSecond? firstSecond) {
+    if (firstSecond != null) {
+      state = state.copyWith(thirdMatchFirstSecond: firstSecond);
     }
   }
 

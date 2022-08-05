@@ -9,5 +9,6 @@ abstract class InputViewSettingsState with _$InputViewSettingsState {
     @Default(false) final bool fixOpponentDeck,
     @Default(false) final bool fixTag,
     @Default(false) final bool draw,
+    @Default(false) final bool bo3,
   }) = _InputViewSettingsState;
 }
