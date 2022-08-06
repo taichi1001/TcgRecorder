@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:tcg_manager/entity/marged_record.dart';
+import 'package:tcg_manager/enum/bo.dart';
 import 'package:tcg_manager/enum/first_second.dart';
 import 'package:tcg_manager/enum/win_loss.dart';
 import 'package:tcg_manager/generated/l10n.dart';
@@ -136,6 +137,7 @@ final currentMargedRecord = Provider<MargedRecord>((ref) => MargedRecord(
       useDeck: '',
       opponentDeck: '',
       tag: '',
+      bo: BO.bo1,
       firstSecond: FirstSecond.first,
       winLoss: WinLoss.win,
       date: DateTime.now(),
@@ -152,7 +154,7 @@ class _BrandListTile extends HookConsumerWidget {
     final isMemo = record.memo != null && record.memo != '';
     return SlidableExpansionTileCard(
       key: UniqueKey(),
-      isExpansion: isMemo,
+      isExpansion: isMemo || record.bo == BO.bo3,
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -228,11 +230,28 @@ class _BrandListTile extends HookConsumerWidget {
         ],
       ),
       trailing: SizedBox(
-        width: 110,
+        width: 130,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             isMemo ? const Icon(Icons.description) : const SizedBox(width: 24),
+            Container(
+              width: 24,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: record.bo == BO.bo1 ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.secondary,
+              ),
+              child: Center(
+                child: Text(
+                  record.bo == BO.bo1 ? 'BO1' : 'BO3',
+                  style: Theme.of(context).primaryTextTheme.labelMedium?.copyWith(
+                        fontSize: 9,
+                        fontWeight: FontWeight.bold,
+                        height: 1,
+                      ),
+                ),
+              ),
+            ),
             Container(
               width: 24,
               decoration: BoxDecoration(
