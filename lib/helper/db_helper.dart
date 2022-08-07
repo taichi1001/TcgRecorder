@@ -92,10 +92,8 @@ class DbHelper {
     ref.refresh(allRecordListProvider);
   }
 
-  Future updateDeckName(String name, int index) async {
-    final allDeckList = await ref.read(allDeckListProvider.future);
-    final deck = allDeckList[index];
-    final newDeck = deck.copyWith(deck: name);
+  Future updateDeckName(Deck deck, String newName) async {
+    final newDeck = deck.copyWith(deck: newName);
     try {
       await ref.read(deckRepository).update(newDeck);
       ref.refresh(allDeckListProvider);
@@ -104,10 +102,8 @@ class DbHelper {
     }
   }
 
-  Future updateGameName(String name, int index) async {
-    final allGameList = await ref.read(allGameListProvider.future);
-    final game = allGameList[index];
-    final newGame = game.copyWith(game: name);
+  Future updateGameName(Game game, String newName) async {
+    final newGame = game.copyWith(game: newName);
     try {
       await ref.read(gameRepository).update(newGame);
       ref.refresh(allGameListProvider);
@@ -120,10 +116,8 @@ class DbHelper {
     }
   }
 
-  Future updateTagName(String name, int index) async {
-    final allTagList = await ref.read(allTagListProvider.future);
-    final tag = allTagList[index];
-    final newTag = tag.copyWith(tag: name);
+  Future updateTagName(Tag tag, String newName) async {
+    final newTag = tag.copyWith(tag: newName);
     try {
       await ref.read(tagRepository).update(newTag);
       ref.refresh(allTagListProvider);
