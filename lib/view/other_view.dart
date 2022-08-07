@@ -309,7 +309,7 @@ class _GameListView extends HookConsumerWidget {
                   );
                   if (newName != null && newName.first != '') {
                     try {
-                      await ref.read(dbHelper).updateGameName(newName.first, index);
+                      await ref.read(dbHelper).updateGameName(gameList[index], newName.first);
                     } catch (e) {
                       if (e.toString().contains('2067')) {
                         await showOkAlertDialog(
@@ -474,7 +474,7 @@ class _DeckListView extends HookConsumerWidget {
                     );
                     if (newName != null && newName.first != '') {
                       try {
-                        await ref.read(dbHelper).updateDeckName(newName.first, index);
+                        await ref.read(dbHelper).updateDeckName(deckList[index], newName.first);
                       } catch (e) {
                         if (e.toString().contains('2067')) {
                           final result = await showOkCancelAlertDialog(
@@ -573,7 +573,7 @@ class _TagListView extends HookConsumerWidget {
                     );
                     if (newName != null && newName.first != '') {
                       try {
-                        await ref.read(dbHelper).updateTagName(newName.first, index);
+                        await ref.read(dbHelper).updateTagName(tagList[index], newName.first);
                       } catch (e) {
                         if (e.toString().contains('2067')) {
                           final result = await showOkCancelAlertDialog(
