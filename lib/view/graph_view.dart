@@ -12,8 +12,8 @@ import 'package:tcg_manager/provider/use_deck_data_by_game_provider.dart';
 import 'package:tcg_manager/selector/filter_record_list_selector.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
 import 'package:tcg_manager/view/component/custom_scaffold.dart';
-import 'package:tcg_manager/view/filter_modal_bottom_sheet.dart';
 import 'package:tcg_manager/view/data_grid.dart';
+import 'package:tcg_manager/view/filter_modal_bottom_sheet.dart';
 
 class GraphView extends HookConsumerWidget {
   const GraphView({Key? key}) : super(key: key);
@@ -316,6 +316,15 @@ class _SettingModalBottomSheet extends HookConsumerWidget {
                 SwitchListTile.adaptive(
                   contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
                   title: Text(
+                    '引き分け数',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  value: graphViewSettings.draw,
+                  onChanged: graphViewSettingsController.changeDraw,
+                ),
+                SwitchListTile.adaptive(
+                  contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                  title: Text(
                     '先攻勝ち数',
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
@@ -334,6 +343,15 @@ class _SettingModalBottomSheet extends HookConsumerWidget {
                 SwitchListTile.adaptive(
                   contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
                   title: Text(
+                    '先攻引き分け数',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  value: graphViewSettings.firstMatchesDraw,
+                  onChanged: graphViewSettingsController.changeFirstMatchesDraw,
+                ),
+                SwitchListTile.adaptive(
+                  contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                  title: Text(
                     '後攻勝ち数',
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
@@ -348,6 +366,15 @@ class _SettingModalBottomSheet extends HookConsumerWidget {
                   ),
                   value: graphViewSettings.secondMatchesLoss,
                   onChanged: graphViewSettingsController.changeSecondMatchesLoss,
+                ),
+                SwitchListTile.adaptive(
+                  contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                  title: Text(
+                    '後攻引き分け数',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  value: graphViewSettings.secondMatchesDraw,
+                  onChanged: graphViewSettingsController.changeSecondMatchesDraw,
                 ),
                 SwitchListTile.adaptive(
                   contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),

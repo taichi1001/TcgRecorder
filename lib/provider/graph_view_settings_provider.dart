@@ -17,6 +17,9 @@ class GraphViewSettingsNotifier extends StateNotifier<GraphViewSettingsState> {
   static const lossKey = 'loss';
   static const firstMatchesLossKey = 'firstMatchesLoss';
   static const secondMatchesLossKey = 'secondMatchesLoss';
+  static const drawKey = 'draw';
+  static const firstMatchesDrawKey = 'firstMatchesDraw';
+  static const secondMatchesDrawKey = 'secondMatchesDraw';
   static const winRateKey = 'winRate';
   static const firstWinRateKey = 'firstWinRate';
   static const secondWinRateKey = 'secondWinRate';
@@ -34,6 +37,9 @@ class GraphViewSettingsNotifier extends StateNotifier<GraphViewSettingsState> {
       loss: _getLoss() ?? true,
       firstMatchesLoss: _getFirstMatchesLoss() ?? true,
       secondMatchesLoss: _getSecondMatchesLoss() ?? true,
+      draw: _getDraw() ?? true,
+      firstMatchesDraw: _getFirstMatchesDraw() ?? true,
+      secondMatchesDraw: _getSecondMatchesDraw() ?? true,
       winRate: _getWinRate() ?? true,
       firstWinRate: _getFirstWinRate() ?? true,
       secondWinRate: _getSecondWinRate() ?? true,
@@ -49,6 +55,9 @@ class GraphViewSettingsNotifier extends StateNotifier<GraphViewSettingsState> {
   bool? _getLoss() => prefs.getBool(lossKey);
   bool? _getFirstMatchesLoss() => prefs.getBool(firstMatchesLossKey);
   bool? _getSecondMatchesLoss() => prefs.getBool(secondMatchesLossKey);
+  bool? _getDraw() => prefs.getBool(drawKey);
+  bool? _getFirstMatchesDraw() => prefs.getBool(firstMatchesDrawKey);
+  bool? _getSecondMatchesDraw() => prefs.getBool(secondMatchesDrawKey);
   bool? _getWinRate() => prefs.getBool(winRateKey);
   bool? _getFirstWinRate() => prefs.getBool(firstWinRateKey);
   bool? _getSecondWinRate() => prefs.getBool(secondWinRateKey);
@@ -62,6 +71,9 @@ class GraphViewSettingsNotifier extends StateNotifier<GraphViewSettingsState> {
   void _saveLoss(bool settings) => prefs.setBool(lossKey, settings);
   void _saveFirstMatchesLoss(bool settings) => prefs.setBool(firstMatchesLossKey, settings);
   void _saveSecondMatchesLoss(bool settings) => prefs.setBool(secondMatchesLossKey, settings);
+  void _saveDraw(bool settings) => prefs.setBool(drawKey, settings);
+  void _saveFirstMatchesDraw(bool settings) => prefs.setBool(firstMatchesDrawKey, settings);
+  void _saveSecondMatchesDraw(bool settings) => prefs.setBool(secondMatchesDrawKey, settings);
   void _saveWinRate(bool settings) => prefs.setBool(winRateKey, settings);
   void _saveFirstWinRate(bool settings) => prefs.setBool(firstWinRateKey, settings);
   void _saveSecondWinRate(bool settings) => prefs.setBool(secondWinRateKey, settings);
@@ -109,6 +121,21 @@ class GraphViewSettingsNotifier extends StateNotifier<GraphViewSettingsState> {
   void changeSecondMatchesLoss(bool settings) {
     state = state.copyWith(secondMatchesLoss: settings);
     _saveSecondMatchesLoss(state.secondMatchesLoss);
+  }
+
+  void changeDraw(bool settings) {
+    state = state.copyWith(draw: settings);
+    _saveDraw(state.draw);
+  }
+
+  void changeFirstMatchesDraw(bool settings) {
+    state = state.copyWith(firstMatchesDraw: settings);
+    _saveFirstMatchesDraw(state.firstMatchesDraw);
+  }
+
+  void changeSecondMatchesDraw(bool settings) {
+    state = state.copyWith(secondMatchesDraw: settings);
+    _saveSecondMatchesDraw(state.secondMatchesDraw);
   }
 
   void changeWinRate(bool settings) {
