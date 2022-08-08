@@ -269,7 +269,11 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     if (state.useDeck == null || state.opponentDeck == null) return 0;
     final selectGameId = read(selectGameNotifierProvider).selectGame!.gameId;
     await _saveUseDeck(selectGameId);
-    await _saveOpoonentDeck(selectGameId);
+    if (state.useDeck!.deck == state.opponentDeck!.deck) {
+      state = state.copyWith(opponentDeck: state.useDeck);
+    } else {
+      await _saveOpoonentDeck(selectGameId);
+    }
     await _saveTag(selectGameId);
     // record登録
     final newRecord = Record(gameId: selectGameId);
@@ -297,7 +301,11 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     if (state.useDeck == null || state.opponentDeck == null) return 0;
     final selectGameId = read(selectGameNotifierProvider).selectGame!.gameId;
     await _saveUseDeck(selectGameId);
-    await _saveOpoonentDeck(selectGameId);
+    if (state.useDeck!.deck == state.opponentDeck!.deck) {
+      state = state.copyWith(opponentDeck: state.useDeck);
+    } else {
+      await _saveOpoonentDeck(selectGameId);
+    }
     await _saveTag(selectGameId);
     _calcFirstSecondBO3();
     _calcWinLossBO3();
