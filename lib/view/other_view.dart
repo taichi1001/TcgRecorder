@@ -53,36 +53,36 @@ class OtherView extends HookConsumerWidget {
           settingsListBackground: Theme.of(context).scaffoldBackgroundColor,
         ),
         sections: [
-          // SettingsSection(
-          //   title: Text(S.of(context).settingSection),
-          //   tiles: [
-          //     // テーマ設定画面を開放するときにコメントアウト
-          //     // SettingsTile.navigation(
-          //     //   title: Text(S.of(context).themeChange),
-          //     //   leading: const Icon(Icons.palette),
-          //     //   onPressed: (context) {
-          //     //     Navigator.push(
-          //     //       context,
-          //     //       MaterialPageRoute(
-          //     //         builder: (context) => const _ThemeChangeView(),
-          //     //       ),
-          //     //     );
-          //     //   },
-          //     // ),
-          //     SettingsTile.navigation(
-          //       title: Text(S.of(context).inputViewSettings),
-          //       leading: const Icon(Icons.settings_applications),
-          //       onPressed: (context) {
-          //         Navigator.push(
-          //           context,
-          //           MaterialPageRoute(
-          //             builder: (context) => const _InputViewSettingsView(),
-          //           ),
-          //         );
-          //       },
-          //     ),
-          //   ],
-          // ),
+          SettingsSection(
+            title: Text(S.of(context).settingSection),
+            tiles: [
+              // テーマ設定画面を開放するときにコメントアウト
+              SettingsTile.navigation(
+                title: Text(S.of(context).themeChange),
+                leading: const Icon(Icons.palette),
+                onPressed: (context) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const _ThemeChangeView(),
+                    ),
+                  );
+                },
+              ),
+              // SettingsTile.navigation(
+              //   title: Text(S.of(context).inputViewSettings),
+              //   leading: const Icon(Icons.settings_applications),
+              //   onPressed: (context) {
+              //     Navigator.push(
+              //       context,
+              //       MaterialPageRoute(
+              //         builder: (context) => const _InputViewSettingsView(),
+              //       ),
+              //     );
+              //   },
+              // ),
+            ],
+          ),
           SettingsSection(
             title: Text(S.of(context).editSection),
             tiles: [
@@ -626,8 +626,8 @@ class _ThemeChangeView extends HookConsumerWidget {
     final themeNotifier = ref.watch(themeNotifierProvider.notifier);
     final currentScheme = ref.watch(themeNotifierProvider.select((value) => value.scheme));
     final previewScheme = ref.watch(themeNotifierProvider.select((value) => value.previewScheme));
-    final previewThemeDataList = ref.watch(previewThemeDataListProvider);
     final isDarkMode = MediaQuery.of(context).platformBrightness == Brightness.dark;
+    final previewThemeDataList = ref.watch(previewThemeDataListProvider(isDarkMode));
     final itemScrollController = ItemScrollController();
 
     useEffect(() {
