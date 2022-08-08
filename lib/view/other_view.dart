@@ -199,6 +199,7 @@ class OtherView extends HookConsumerWidget {
   }
 }
 
+// ignore: unused_element
 class _InputViewSettingsView extends HookConsumerWidget {
   const _InputViewSettingsView({key}) : super(key: key);
 

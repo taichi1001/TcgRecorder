@@ -121,9 +121,8 @@ class InputView extends HookConsumerWidget {
                           onTap: () async {
                             try {
                               await ref.read(revenueCatNotifierProvider.notifier).purchasePremiumMonthly();
-                            } catch (e) {
-                              print(e);
-                            }
+                              // ignore: empty_catches
+                            } catch (e) {}
                             showCupertinoModalPopup(
                               context: context,
                               builder: (BuildContext context) {
