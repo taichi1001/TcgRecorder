@@ -1,4 +1,5 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -555,6 +556,22 @@ class InputView extends HookConsumerWidget {
                             ),
                           ),
                         ),
+                        Card(
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  _AddPhotoWidget(
+                                    onTap: () {},
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
                         const SizedBox(height: 16),
                         Center(
                           child: Column(
@@ -710,6 +727,39 @@ class _SettingModalBottomSheet extends HookConsumerWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _AddPhotoWidget extends StatelessWidget {
+  const _AddPhotoWidget({
+    required this.onTap,
+    key,
+  }) : super(key: key);
+
+  final Function() onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Stack(
+        alignment: AlignmentDirectional.bottomEnd,
+        children: [
+          DottedBorder(
+            color: Theme.of(context).dividerColor,
+            dashPattern: const [10, 2],
+            child: const SizedBox(
+              width: 80,
+              height: 80,
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.all(4),
+            child: Icon(Icons.add_a_photo_outlined),
+          ),
+        ],
       ),
     );
   }
