@@ -143,11 +143,6 @@ final previewDarkThemeDataProvider = Provider<ThemeData>(
       tabBarStyle: FlexTabBarStyle.forAppBar,
       tooltipsMatchBackground: true,
       swapColors: false,
-      darkIsTrueBlack: false,
-      keyColors: const FlexKeyColors(
-        useSecondary: true,
-        useTertiary: true,
-      ),
       tones: FlexTones.material(Brightness.dark),
       visualDensity: FlexColorScheme.comfortablePlatformDensity,
       // fontFamily: GoogleFonts.mPlus1p().fontFamily,
@@ -210,6 +205,10 @@ final previewThemeDataListProvider = Provider.family.autoDispose<List<ThemeData>
             blendOnColors: true,
             blendTextTheme: true,
             popupMenuOpacity: 0.95,
+          ),
+        ).copyWith(
+          cupertinoOverrideTheme: const CupertinoThemeData(
+            textTheme: CupertinoTextThemeData(),
           ),
         ),
       );
