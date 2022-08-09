@@ -241,7 +241,8 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     final saveDir = await getApplicationDocumentsDirectory();
     final savePath = saveDir.path;
     for (final image in state.images) {
-      image.saveTo('$savePath/${image.name}');
+      await image.saveTo('$savePath/${image.name}');
+      print(image.name);
     }
     final imagePaths = state.images.map((image) => '$savePath/${image.name}').toList();
     state = state.copyWith(record: state.record!.copyWith(imagePath: imagePaths));
@@ -304,6 +305,7 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     _saveDate();
     _saveFirstSecond();
     _saveWinLoss();
+    await _saveImage();
 
     // recordに各種データを設定
     state = state.copyWith(
@@ -315,7 +317,6 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
         memo: state.memo,
       ),
     );
-
     final recordCount = await read(recordRepository).insert(state.record!);
     return recordCount;
   }
@@ -344,7 +345,7 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     _saveFirstMatchWinLoss();
     _saveSecondMatchWinLoss();
     _saveThirdMatchWinLoss();
-    _saveImage();
+    await _saveImage();
     // recordに各種データを設定
     state = state.copyWith(
       record: state.record!.copyWith(

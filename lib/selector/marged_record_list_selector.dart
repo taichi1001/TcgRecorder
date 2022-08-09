@@ -34,6 +34,7 @@ final margedRecordListProvider = FutureProvider.autoDispose<List<MargedRecord>>(
       thirdMatchWinLoss: record.thirdMatchWinLoss,
       date: record.date!,
       memo: record.memo,
+      imagePaths: record.imagePath,
     );
   }).toList();
   ref.keepAlive();

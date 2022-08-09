@@ -32,6 +32,7 @@ mixin _$MargedRecord {
   WinLoss? get secondMatchWinLoss => throw _privateConstructorUsedError;
   WinLoss? get thirdMatchWinLoss => throw _privateConstructorUsedError;
   String? get memo => throw _privateConstructorUsedError;
+  List<String>? get imagePaths => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $MargedRecordCopyWith<MargedRecord> get copyWith =>
@@ -59,7 +60,8 @@ abstract class $MargedRecordCopyWith<$Res> {
       WinLoss? firstMatchWinLoss,
       WinLoss? secondMatchWinLoss,
       WinLoss? thirdMatchWinLoss,
-      String? memo});
+      String? memo,
+      List<String>? imagePaths});
 }
 
 /// @nodoc
@@ -88,6 +90,7 @@ class _$MargedRecordCopyWithImpl<$Res> implements $MargedRecordCopyWith<$Res> {
     Object? secondMatchWinLoss = freezed,
     Object? thirdMatchWinLoss = freezed,
     Object? memo = freezed,
+    Object? imagePaths = freezed,
   }) {
     return _then(_value.copyWith(
       recordId: recordId == freezed
@@ -154,6 +157,10 @@ class _$MargedRecordCopyWithImpl<$Res> implements $MargedRecordCopyWith<$Res> {
           ? _value.memo
           : memo // ignore: cast_nullable_to_non_nullable
               as String?,
+      imagePaths: imagePaths == freezed
+          ? _value.imagePaths
+          : imagePaths // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
     ));
   }
 }
@@ -181,7 +188,8 @@ abstract class _$$_MargedRecordCopyWith<$Res>
       WinLoss? firstMatchWinLoss,
       WinLoss? secondMatchWinLoss,
       WinLoss? thirdMatchWinLoss,
-      String? memo});
+      String? memo,
+      List<String>? imagePaths});
 }
 
 /// @nodoc
@@ -213,6 +221,7 @@ class __$$_MargedRecordCopyWithImpl<$Res>
     Object? secondMatchWinLoss = freezed,
     Object? thirdMatchWinLoss = freezed,
     Object? memo = freezed,
+    Object? imagePaths = freezed,
   }) {
     return _then(_$_MargedRecord(
       recordId: recordId == freezed
@@ -279,6 +288,10 @@ class __$$_MargedRecordCopyWithImpl<$Res>
           ? _value.memo
           : memo // ignore: cast_nullable_to_non_nullable
               as String?,
+      imagePaths: imagePaths == freezed
+          ? _value._imagePaths
+          : imagePaths // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
     ));
   }
 }
@@ -302,7 +315,9 @@ class _$_MargedRecord implements _MargedRecord {
       this.firstMatchWinLoss,
       this.secondMatchWinLoss,
       this.thirdMatchWinLoss,
-      this.memo});
+      this.memo,
+      final List<String>? imagePaths})
+      : _imagePaths = imagePaths;
 
   @override
   final int recordId;
@@ -337,10 +352,18 @@ class _$_MargedRecord implements _MargedRecord {
   final WinLoss? thirdMatchWinLoss;
   @override
   final String? memo;
+  final List<String>? _imagePaths;
+  @override
+  List<String>? get imagePaths {
+    final value = _imagePaths;
+    if (value == null) return null;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'MargedRecord(recordId: $recordId, game: $game, tag: $tag, bo: $bo, useDeck: $useDeck, opponentDeck: $opponentDeck, date: $date, firstSecond: $firstSecond, firstMatchFirstSecond: $firstMatchFirstSecond, secondMatchFirstSecond: $secondMatchFirstSecond, thirdMatchFirstSecond: $thirdMatchFirstSecond, winLoss: $winLoss, firstMatchWinLoss: $firstMatchWinLoss, secondMatchWinLoss: $secondMatchWinLoss, thirdMatchWinLoss: $thirdMatchWinLoss, memo: $memo)';
+    return 'MargedRecord(recordId: $recordId, game: $game, tag: $tag, bo: $bo, useDeck: $useDeck, opponentDeck: $opponentDeck, date: $date, firstSecond: $firstSecond, firstMatchFirstSecond: $firstMatchFirstSecond, secondMatchFirstSecond: $secondMatchFirstSecond, thirdMatchFirstSecond: $thirdMatchFirstSecond, winLoss: $winLoss, firstMatchWinLoss: $firstMatchWinLoss, secondMatchWinLoss: $secondMatchWinLoss, thirdMatchWinLoss: $thirdMatchWinLoss, memo: $memo, imagePaths: $imagePaths)';
   }
 
   @override
@@ -371,7 +394,9 @@ class _$_MargedRecord implements _MargedRecord {
                 .equals(other.secondMatchWinLoss, secondMatchWinLoss) &&
             const DeepCollectionEquality()
                 .equals(other.thirdMatchWinLoss, thirdMatchWinLoss) &&
-            const DeepCollectionEquality().equals(other.memo, memo));
+            const DeepCollectionEquality().equals(other.memo, memo) &&
+            const DeepCollectionEquality()
+                .equals(other._imagePaths, _imagePaths));
   }
 
   @override
@@ -392,7 +417,8 @@ class _$_MargedRecord implements _MargedRecord {
       const DeepCollectionEquality().hash(firstMatchWinLoss),
       const DeepCollectionEquality().hash(secondMatchWinLoss),
       const DeepCollectionEquality().hash(thirdMatchWinLoss),
-      const DeepCollectionEquality().hash(memo));
+      const DeepCollectionEquality().hash(memo),
+      const DeepCollectionEquality().hash(_imagePaths));
 
   @JsonKey(ignore: true)
   @override
@@ -417,7 +443,8 @@ abstract class _MargedRecord implements MargedRecord {
       final WinLoss? firstMatchWinLoss,
       final WinLoss? secondMatchWinLoss,
       final WinLoss? thirdMatchWinLoss,
-      final String? memo}) = _$_MargedRecord;
+      final String? memo,
+      final List<String>? imagePaths}) = _$_MargedRecord;
 
   @override
   int get recordId => throw _privateConstructorUsedError;
@@ -451,6 +478,8 @@ abstract class _MargedRecord implements MargedRecord {
   WinLoss? get thirdMatchWinLoss => throw _privateConstructorUsedError;
   @override
   String? get memo => throw _privateConstructorUsedError;
+  @override
+  List<String>? get imagePaths => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_MargedRecordCopyWith<_$_MargedRecord> get copyWith =>

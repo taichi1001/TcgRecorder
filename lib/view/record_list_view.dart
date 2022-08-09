@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -152,9 +154,11 @@ class _BrandListTile extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final record = ref.watch(currentMargedRecord);
     final isMemo = record.memo != null && record.memo != '';
+    final isImage = record.imagePaths != null && record.imagePaths != [];
+
     return SlidableExpansionTileCard(
       key: UniqueKey(),
-      isExpansion: isMemo || record.bo == BO.bo3,
+      isExpansion: isMemo || record.bo == BO.bo3 || isImage,
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -315,29 +319,50 @@ class _BrandListTile extends HookConsumerWidget {
                     ),
                   ),
                 if (isMemo)
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        S.of(context).recordListMemo,
-                        style: Theme.of(context).textTheme.caption?.copyWith(
-                              leadingDistribution: TextLeadingDistribution.even,
-                              height: 1,
-                              fontSize: 10,
-                            ),
-                      ),
-                      Flexible(
-                        child: Text(
-                          record.memo ?? '',
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 100,
-                          style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 4),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          S.of(context).recordListMemo,
+                          style: Theme.of(context).textTheme.caption?.copyWith(
                                 leadingDistribution: TextLeadingDistribution.even,
                                 height: 1,
+                                fontSize: 10,
                               ),
                         ),
-                      ),
-                    ],
+                        Flexible(
+                          child: Text(
+                            record.memo ?? '',
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 100,
+                            style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                                  leadingDistribution: TextLeadingDistribution.even,
+                                  height: 1,
+                                ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                if (isImage)
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        ...record.imagePaths!.map(
+                          (image) => SizedBox(
+                            width: 80,
+                            height: 80,
+                            child: Image.file(
+                              File(image),
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
               ],
             ),
