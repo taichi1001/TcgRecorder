@@ -8,6 +8,7 @@ import 'package:tcg_manager/enum/bo.dart';
 import 'package:tcg_manager/enum/first_second.dart';
 import 'package:tcg_manager/enum/win_loss.dart';
 import 'package:tcg_manager/helper/edit_record_helper.dart';
+import 'package:tcg_manager/main.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/input_view_settings_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
@@ -238,13 +239,11 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
   }
 
   Future _saveImage() async {
-    final saveDir = await getApplicationDocumentsDirectory();
-    final savePath = saveDir.path;
+    final savePath = read(imagePathProvider);
     for (final image in state.images) {
       await image.saveTo('$savePath/${image.name}');
-      print(image.name);
     }
-    final imagePaths = state.images.map((image) => '$savePath/${image.name}').toList();
+    final imagePaths = state.images.map((image) => image.name).toList();
     state = state.copyWith(record: state.record!.copyWith(imagePath: imagePaths));
   }
 

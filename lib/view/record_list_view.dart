@@ -14,6 +14,7 @@ import 'package:tcg_manager/enum/first_second.dart';
 import 'package:tcg_manager/enum/win_loss.dart';
 import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/helper/convert_sort_string.dart';
+import 'package:tcg_manager/main.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/record_list_view_provider.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
@@ -153,6 +154,7 @@ class _BrandListTile extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final record = ref.watch(currentMargedRecord);
+    final imagePath = ref.watch(imagePathProvider);
     final isMemo = record.memo != null && record.memo != '';
     final isImage = record.imagePaths != null && record.imagePaths != [];
 
@@ -356,7 +358,7 @@ class _BrandListTile extends HookConsumerWidget {
                             width: 80,
                             height: 80,
                             child: Image.file(
-                              File(image),
+                              File('$imagePath/$image'),
                               fit: BoxFit.fill,
                             ),
                           ),

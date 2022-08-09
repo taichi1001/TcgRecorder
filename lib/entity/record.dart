@@ -153,7 +153,7 @@ String? _stringListToJson(List<String>? values) {
       // ignore: unnecessary_string_interpolations
       result = value;
     } else {
-      result = '$result,value';
+      result = '$result,$value';
     }
     count++;
   }
