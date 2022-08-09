@@ -47,6 +47,7 @@ class DatabaseService {
         database.execute('ALTER TABLE $recordTableName ADD second_match_win_loss INTEGER');
         database.execute('ALTER TABLE $recordTableName ADD third_match_win_loss INTEGER');
         database.execute('ALTER TABLE $recordTableName ADD bo INTEGER');
+        database.execute('ALTER TABLE $recordTableName ADD image_path TEXT');
       }
     }
   }
@@ -69,6 +70,7 @@ class DatabaseService {
         first_match_win_loss INTEGER,
         second_match_win_loss INTEGER,
         third_match_win_loss INTEGER,
+        bo INTEGER,
         memo TEXT
       )
     ''');

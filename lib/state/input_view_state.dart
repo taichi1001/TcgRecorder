@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/record.dart';
 import 'package:tcg_manager/entity/tag.dart';
@@ -24,5 +25,6 @@ abstract class InputViewState with _$InputViewState {
     FirstSecond? firstMatchFirstSecond,
     FirstSecond? secondMatchFirstSecond,
     FirstSecond? thirdMatchFirstSecond,
+    @Default([]) List<XFile> images,
   }) = _InputViewState;
 }

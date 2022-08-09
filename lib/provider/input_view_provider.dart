@@ -1,4 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/record.dart';
 import 'package:tcg_manager/entity/tag.dart';
@@ -108,6 +110,17 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
 
   void inputMemo(String memo) {
     state = state.copyWith(memo: memo);
+  }
+
+  void inputImage(XFile image) {
+    final newImages = [...state.images, image];
+    state = state.copyWith(images: newImages);
+  }
+
+  void removeImage(int index) {
+    final newImages = [...state.images];
+    newImages.removeAt(index);
+    state = state.copyWith(images: newImages);
   }
 
   Future _saveUseDeck(int? gameId) async {
@@ -224,6 +237,16 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     if (firstCount == secondCount) state = state.copyWith(firstSecond: state.firstMatchFirstSecond!);
   }
 
+  Future _saveImage() async {
+    final saveDir = await getApplicationDocumentsDirectory();
+    final savePath = saveDir.path;
+    for (final image in state.images) {
+      image.saveTo('$savePath/${image.name}');
+    }
+    final imagePaths = state.images.map((image) => '$savePath/${image.name}').toList();
+    state = state.copyWith(record: state.record!.copyWith(imagePath: imagePaths));
+  }
+
   Future init() async {
     final recordList = await read(allRecordListProvider.future);
     final deckList = await read(allDeckListProvider.future);
@@ -321,6 +344,7 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     _saveFirstMatchWinLoss();
     _saveSecondMatchWinLoss();
     _saveThirdMatchWinLoss();
+    _saveImage();
     // recordに各種データを設定
     state = state.copyWith(
       record: state.record!.copyWith(

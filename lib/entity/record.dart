@@ -30,6 +30,7 @@ class Record with _$Record {
     @JsonKey(fromJson: _nullableWinLossFromJson, toJson: _nullableWinLossToJson, name: 'second_match_win_loss') WinLoss? secondMatchWinLoss,
     @JsonKey(fromJson: _nullableWinLossFromJson, toJson: _nullableWinLossToJson, name: 'third_match_win_loss') WinLoss? thirdMatchWinLoss,
     String? memo,
+    @JsonKey(fromJson: _stringListFromJson, toJson: _stringListToJson, name: 'image_path') List<String>? imagePath,
   }) = _Record;
   factory Record.fromJson(Map<String, dynamic> json) => _$RecordFromJson(json);
 }
@@ -136,4 +137,25 @@ String _dateTimeToJson(DateTime? value) {
     return DateTime.now().toUtc().toIso8601String();
   }
   return value.toUtc().toIso8601String();
+}
+
+List<String>? _stringListFromJson(String? value) {
+  if (value == null) return null;
+  return value.split(',');
+}
+
+String? _stringListToJson(List<String>? values) {
+  if (values == null || values.isEmpty) return null;
+  var result = '';
+  var count = 0;
+  for (final value in values) {
+    if (count == 0) {
+      // ignore: unnecessary_string_interpolations
+      result = value;
+    } else {
+      result = '$result,value';
+    }
+    count++;
+  }
+  return result;
 }
