@@ -1,6 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/record.dart';
 import 'package:tcg_manager/entity/tag.dart';
@@ -21,7 +20,7 @@ import 'package:tcg_manager/repository/tag_repository.dart';
 import 'package:tcg_manager/state/input_view_state.dart';
 
 class InputViewNotifier extends StateNotifier<InputViewState> {
-  InputViewNotifier(this.read) : super(InputViewState(date: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day))) {
+  InputViewNotifier(this.read) : super(InputViewState(date: DateTime.now())) {
     init();
   }
 

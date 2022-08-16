@@ -670,6 +670,16 @@ class S {
     );
   }
 
+  /// `yyyy/MM/dd日 HH:mm`
+  String get dateFormatIncludeTime {
+    return Intl.message(
+      'yyyy/MM/dd日 HH:mm',
+      name: 'dateFormatIncludeTime',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `1`
   String get recordListFirst {
     return Intl.message(

@@ -27,6 +27,7 @@ import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/state/revenue_cat_state.dart';
 import 'package:tcg_manager/view/bottom_navigation_view.dart';
 import 'package:tcg_manager/view/initial_game_registration_view.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
 import 'generated/l10n.dart';
 
@@ -153,6 +154,8 @@ class MainApp extends HookConsumerWidget {
           darkTheme: darkThemeData,
           themeMode: ThemeMode.system,
           home: mainInfo.allGameList.isEmpty ? const InitialGameRegistrationView() : const BottomNavigationView(),
+          navigatorObservers: [FlutterSmartDialog.observer],
+          builder: FlutterSmartDialog.init(),
         );
       },
       error: (error, stack) => Text('$error'),

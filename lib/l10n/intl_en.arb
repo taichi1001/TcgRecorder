@@ -61,6 +61,7 @@
     "settingSection": "Setting",
     "inputViewSettings": "Input View Settings",
     "dateFormat": "dd/MM/yyyy",
+    "dateFormatIncludeTime": "yyyy/MM/dd日 HH:mm",
     "recordListFirst": "1",
     "recordListSecond": "2",
     "recordListDeleteDialogTitle": "Deletes the selected record.",

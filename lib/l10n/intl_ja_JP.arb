@@ -61,6 +61,7 @@
     "settingSection": "各種設定",
     "inputViewSettings": "入力画面設定",
     "dateFormat": "yyyy年 MM月 dd日",
+    "dateFormatIncludeTime": "yyyy年 MM月 dd日 HH:mm",
     "recordListFirst": "先",
     "recordListSecond": "後",
     "recordListDeleteDialogTitle": "選択した記録を削除します",
