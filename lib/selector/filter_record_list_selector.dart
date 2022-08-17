@@ -11,7 +11,8 @@ final filterRecordListProvider = FutureProvider.autoDispose<List<Record>>((ref) 
 
   if (filter.startDate != null) {
     filterdList = filterdList.where((record) {
-      if (record.date!.isAtSameMomentAs(filter.startDate!) || record.date!.isAfter(filter.startDate!)) {
+      final compareDate = DateTime(record.date!.year, record.date!.month, record.date!.day);
+      if (compareDate.isAtSameMomentAs(filter.startDate!) || compareDate.isAfter(filter.startDate!)) {
         return true;
       } else {
         return false;
@@ -21,7 +22,22 @@ final filterRecordListProvider = FutureProvider.autoDispose<List<Record>>((ref) 
 
   if (filter.endDate != null) {
     filterdList = filterdList.where((record) {
-      if (record.date!.isAtSameMomentAs(filter.endDate!) || record.date!.isBefore(filter.endDate!)) {
+      final compareDate = DateTime(record.date!.year, record.date!.month, record.date!.day);
+      if (compareDate.isAtSameMomentAs(filter.endDate!) || compareDate.isBefore(filter.endDate!)) {
+        return true;
+      } else {
+        return false;
+      }
+    }).toList();
+  }
+
+  if (filter.startTime != null && filter.endTime != null) {
+    filterdList = filterdList.where((record) {
+      final recordDate = record.date;
+      final compareDate = DateTime(1994, 10, 1, recordDate!.hour, recordDate.minute);
+      final startResult = compareDate.compareTo(filter.startTime!);
+      final endResult = compareDate.compareTo(filter.endTime!);
+      if ((startResult == 1 || startResult == 0) && (endResult == -1 || endResult == 0)) {
         return true;
       } else {
         return false;
