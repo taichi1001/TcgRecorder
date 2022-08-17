@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -353,16 +354,35 @@ class _BrandListTile extends HookConsumerWidget {
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       children: [
-                        ...record.imagePaths!.map(
-                          (image) => SizedBox(
-                            width: 80,
-                            height: 80,
-                            child: Image.file(
-                              File('$imagePath/$image'),
-                              fit: BoxFit.fill,
+                        ...record.imagePaths!.asMap().entries.map(
+                              (image) => GestureDetector(
+                                onTap: () {
+                                  final customImageProvider = CustomImageProvider(
+                                    imageUrls: [
+                                      ...record.imagePaths!.map((image) => '$imagePath/$image'),
+                                    ].toList(),
+                                    initialIndex: image.key,
+                                  );
+                                  showImageViewerPager(
+                                    context,
+                                    customImageProvider,
+                                    swipeDismissible: true,
+                                    useSafeArea: true,
+                                  );
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 8),
+                                  child: SizedBox(
+                                    width: 80,
+                                    height: 80,
+                                    child: Image.file(
+                                      File('$imagePath/${image.value}'),
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
                       ],
                     ),
                   ),
@@ -517,4 +537,20 @@ class _BO3MatchRow extends StatelessWidget {
       ),
     );
   }
+}
+
+class CustomImageProvider extends EasyImageProvider {
+  @override
+  final int initialIndex;
+  final List<String> imageUrls;
+
+  CustomImageProvider({required this.imageUrls, this.initialIndex = 0}) : super();
+
+  @override
+  ImageProvider<Object> imageBuilder(BuildContext context, int index) {
+    return Image.file(File(imageUrls[index])).image;
+  }
+
+  @override
+  int get imageCount => imageUrls.length;
 }

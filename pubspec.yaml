@@ -90,7 +90,9 @@ dependencies:
   dotted_border: ^2.0.0+2
 
   flutter_smart_dialog: ^4.5.4+2
-  
+
+  easy_image_viewer: ^1.1.0
+
 
 flutter_native_splash:
   image: "assets/images/icon.png"
