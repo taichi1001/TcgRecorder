@@ -11,6 +11,8 @@ abstract class RecordListViewState with _$RecordListViewState {
     @Default(Sort.newest) final Sort sort,
     final DateTime? startDate,
     final DateTime? endDate,
+    final DateTime? startTime,
+    final DateTime? endTime,
     final Deck? useDeck,
     final Deck? opponentDeck,
     final Tag? tag,

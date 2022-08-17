@@ -9,6 +9,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tcg_manager/entity/deck.dart';
@@ -26,6 +27,7 @@ import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/state/revenue_cat_state.dart';
 import 'package:tcg_manager/view/bottom_navigation_view.dart';
 import 'package:tcg_manager/view/initial_game_registration_view.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 
 import 'generated/l10n.dart';
 
@@ -39,6 +41,7 @@ void main() async {
 
   late final RevenueCatState revenueCat;
   late final SharedPreferences prefs;
+  late final String imagePath;
 
   await Future.wait([
     // 課金関連初期化
@@ -64,6 +67,10 @@ void main() async {
     Future(() async {
       prefs = await SharedPreferences.getInstance();
     }),
+    Future(() async {
+      final saveDir = await getApplicationDocumentsDirectory();
+      imagePath = saveDir.path;
+    }),
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]),
     ATT.instance.requestPermission().then((result) {
       MobileAds.instance.initialize();
@@ -78,6 +85,7 @@ void main() async {
         overrides: [
           revenueCatProvider.overrideWithValue(revenueCat),
           sharedPreferencesProvider.overrideWithValue(prefs),
+          imagePathProvider.overrideWithValue(imagePath),
         ],
         child: const MainApp(),
       ),
@@ -86,6 +94,7 @@ void main() async {
 }
 
 final sharedPreferencesProvider = Provider<SharedPreferences>((ref) => throw UnimplementedError);
+final imagePathProvider = Provider<String>((ref) => throw UnimplementedError);
 
 class MainInfo {
   const MainInfo({
@@ -145,6 +154,8 @@ class MainApp extends HookConsumerWidget {
           darkTheme: darkThemeData,
           themeMode: ThemeMode.system,
           home: mainInfo.allGameList.isEmpty ? const InitialGameRegistrationView() : const BottomNavigationView(),
+          navigatorObservers: [FlutterSmartDialog.observer],
+          builder: FlutterSmartDialog.init(),
         );
       },
       error: (error, stack) => Text('$error'),

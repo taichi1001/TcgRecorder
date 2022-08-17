@@ -1,14 +1,19 @@
+import 'dart:io';
+
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:collection/collection.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:intl/intl.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/tag.dart';
 import 'package:tcg_manager/enum/first_second.dart';
@@ -23,9 +28,9 @@ import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
 import 'package:tcg_manager/selector/game_tag_list_selector.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
-import 'package:tcg_manager/view/component/custom_modal_picker.dart';
 import 'package:tcg_manager/view/component/custom_scaffold.dart';
 import 'package:tcg_manager/view/component/custom_textfield.dart';
+import 'package:tcg_manager/view/component/cutom_date_time_picker.dart';
 import 'package:tcg_manager/view/select_deck_view.dart';
 import 'package:tcg_manager/view/select_tag_view.dart';
 
@@ -65,14 +70,16 @@ class InputView extends HookConsumerWidget {
     final thirdMatchFirstSecond = ref.watch(inputViewNotifierProvider.select((value) => value.thirdMatchFirstSecond));
     final useDeck = ref.watch(inputViewNotifierProvider.select((value) => value.useDeck));
     final opponentDeck = ref.watch(inputViewNotifierProvider.select((value) => value.opponentDeck));
+    final images = ref.watch(inputViewNotifierProvider.select((value) => value.images));
     final inputViewNotifier = ref.read(inputViewNotifierProvider.notifier);
     final useDeckTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.useDeckController));
     final opponentDeckTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.opponentDeckController));
     final tagTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.tagController));
     final memoTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.memoController));
+    final dateTimeController = useState(CustomModalDateTimePickerController(initialDateTime: DateTime.now()));
     final isDraw = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.draw));
     final isBO3 = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.bo3));
-    final outputFormat = DateFormat(S.of(context).dateFormat);
+    final outputFormat = DateFormat(S.of(context).dateFormatIncludeTime);
 
     final inputViewInfo = ref.watch(inputViewInfoProvider);
 
@@ -126,28 +133,17 @@ class InputView extends HookConsumerWidget {
                             showCupertinoModalPopup(
                               context: context,
                               builder: (BuildContext context) {
-                                return SizedBox(
-                                  height: 350,
-                                  child: CustomModalPicker(
-                                    shoModalButton: false,
-                                    child: SfDateRangePicker(
-                                      selectionMode: DateRangePickerSelectionMode.single,
-                                      view: DateRangePickerView.month,
-                                      showActionButtons: true,
-                                      showNavigationArrow: true,
-                                      minDate: DateTime(2000, 01, 01),
-                                      maxDate: DateTime.now(),
-                                      initialSelectedDate: date,
-                                      toggleDaySelection: true,
-                                      onSubmit: (value) {
-                                        if (value is DateTime) {
-                                          inputViewNotifier.selectDateTime(value);
-                                          Navigator.pop(context);
-                                        }
-                                      },
-                                      onCancel: () => Navigator.pop(context),
-                                    ),
-                                  ),
+                                return CustomModalDateTimePicker(
+                                  controller: dateTimeController.value,
+                                  submitedAction: () {
+                                    inputViewNotifier.selectDateTime(dateTimeController.value.selectedDateTime);
+                                    Navigator.pop(context);
+                                  },
+                                  nowAction: () {
+                                    dateTimeController.value.setDateTimeNow();
+                                    inputViewNotifier.selectDateTime(dateTimeController.value.selectedDateTime);
+                                    Navigator.pop(context);
+                                  },
                                 );
                               },
                             );
@@ -555,6 +551,34 @@ class InputView extends HookConsumerWidget {
                             ),
                           ),
                         ),
+                        SizedBox(
+                          width: double.infinity,
+                          child: Card(
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                              child: Center(
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: _addPhotoWidgets(
+                                      images: images,
+                                      selectImageFunc: () async {
+                                        final picker = ImagePicker();
+                                        final image = await picker.pickImage(source: ImageSource.gallery);
+                                        if (image == null) return;
+                                        inputViewNotifier.inputImage(image);
+                                      },
+                                      deleteImageFunc: (value) {
+                                        inputViewNotifier.removeImage(value);
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                         const SizedBox(height: 16),
                         Center(
                           child: Column(
@@ -579,6 +603,7 @@ class InputView extends HookConsumerWidget {
                                             isDestructiveAction: true,
                                           );
                                           if (okCancelResult == OkCancelResult.ok) {
+                                            SmartDialog.showLoading();
                                             int recordCount;
                                             if (isBO3) {
                                               recordCount = await inputViewNotifier.saveBO3();
@@ -594,6 +619,7 @@ class InputView extends HookConsumerWidget {
                                             }
                                             ref.refresh(allDeckListProvider);
                                             inputViewNotifier.resetView();
+                                            SmartDialog.dismiss();
                                           }
                                           // ignore: use_build_context_synchronously
                                           FocusScope.of(context).unfocus();
@@ -624,6 +650,26 @@ class InputView extends HookConsumerWidget {
       loading: () => const Center(child: CircularProgressIndicator()),
     );
   }
+}
+
+List<Widget> _addPhotoWidgets({
+  required List<XFile> images,
+  required Function() selectImageFunc,
+  required Function(int) deleteImageFunc,
+}) {
+  if (images.isEmpty) return [_AddPhotoWidget(selectImageFunc: selectImageFunc, deleteImageFunc: deleteImageFunc)];
+  final List<Widget> result = images
+      .mapIndexed(
+        (index, image) => _AddPhotoWidget(
+          file: image,
+          index: index,
+          selectImageFunc: selectImageFunc,
+          deleteImageFunc: deleteImageFunc,
+        ),
+      )
+      .toList();
+  result.add(_AddPhotoWidget(selectImageFunc: selectImageFunc, deleteImageFunc: deleteImageFunc));
+  return result;
 }
 
 class _SettingModalBottomSheet extends HookConsumerWidget {
@@ -710,6 +756,74 @@ class _SettingModalBottomSheet extends HookConsumerWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _AddPhotoWidget extends StatelessWidget {
+  const _AddPhotoWidget({
+    required this.selectImageFunc,
+    required this.deleteImageFunc,
+    this.file,
+    this.index,
+    key,
+  }) : super(key: key);
+
+  final Function() selectImageFunc;
+  final Function(int) deleteImageFunc;
+  final XFile? file;
+  final int? index;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 8),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(15),
+        child: file == null
+            ? GestureDetector(
+                onTap: selectImageFunc,
+                child: Stack(
+                  alignment: AlignmentDirectional.bottomEnd,
+                  children: [
+                    DottedBorder(
+                      color: Theme.of(context).dividerColor,
+                      dashPattern: const [10, 2],
+                      child: const SizedBox(
+                        width: 80,
+                        height: 80,
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(4),
+                      child: Icon(Icons.add_a_photo_outlined),
+                    ),
+                  ],
+                ),
+              )
+            : GestureDetector(
+                onTap: () {
+                  deleteImageFunc(index!);
+                },
+                child: Stack(
+                  alignment: AlignmentDirectional.topEnd,
+                  children: [
+                    SizedBox(
+                      width: 80,
+                      height: 80,
+                      child: Image.file(
+                        File(file!.path),
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(4),
+                      child: Icon(Icons.cancel),
+                    ),
+                  ],
+                ),
+              ),
       ),
     );
   }

@@ -24,5 +24,6 @@ class MargedRecord with _$MargedRecord {
     WinLoss? secondMatchWinLoss,
     WinLoss? thirdMatchWinLoss,
     String? memo,
+    List<String>? imagePaths,
   }) = _MargedRecord;
 }

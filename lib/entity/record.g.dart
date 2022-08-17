@@ -33,6 +33,7 @@ _$_Record _$$_RecordFromJson(Map<String, dynamic> json) => _$_Record(
       thirdMatchWinLoss:
           _nullableWinLossFromJson(json['third_match_win_loss'] as int?),
       memo: json['memo'] as String?,
+      imagePath: _stringListFromJson(json['image_path'] as String?),
     );
 
 Map<String, dynamic> _$$_RecordToJson(_$_Record instance) => <String, dynamic>{
@@ -58,4 +59,5 @@ Map<String, dynamic> _$$_RecordToJson(_$_Record instance) => <String, dynamic>{
       'third_match_win_loss':
           _nullableWinLossToJson(instance.thirdMatchWinLoss),
       'memo': instance.memo,
+      'image_path': _stringListToJson(instance.imagePath),
     };

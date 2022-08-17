@@ -8,22 +8,24 @@ class CustomModalPicker extends StatelessWidget {
     this.submitedAction,
     this.actionButton,
     this.shoModalButton = true,
+    this.height,
     Key? key,
   }) : super(key: key);
   final Widget child;
   final void Function()? submitedAction;
   final Widget? actionButton;
   final bool shoModalButton;
+  final double? height;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height / 3,
+      height: height ?? MediaQuery.of(context).size.height / 3,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           if (shoModalButton)
-            _ModalButton(
+            ModalButton(
               submitedAction: submitedAction != null ? submitedAction! : null,
               actionButton: actionButton,
             ),
@@ -43,8 +45,8 @@ class CustomModalPicker extends StatelessWidget {
   }
 }
 
-class _ModalButton extends StatelessWidget {
-  const _ModalButton({
+class ModalButton extends StatelessWidget {
+  const ModalButton({
     this.submitedAction,
     this.actionButton,
     key,

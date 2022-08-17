@@ -34,6 +34,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "contactForm": MessageLookupByLibrary.simpleMessage("お問い合わせ"),
         "date": MessageLookupByLibrary.simpleMessage("日付"),
         "dateFormat": MessageLookupByLibrary.simpleMessage("yyyy年 MM月 dd日"),
+        "dateFormatIncludeTime":
+            MessageLookupByLibrary.simpleMessage("yyyy年 MM月 dd日 HH:mm"),
         "deck": MessageLookupByLibrary.simpleMessage("デッキ"),
         "deckEdit": MessageLookupByLibrary.simpleMessage("デッキ編集"),
         "deleteMessage": MessageLookupByLibrary.simpleMessage("削除しますか？"),

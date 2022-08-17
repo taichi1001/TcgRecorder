@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -6,12 +9,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:tcg_manager/entity/marged_record.dart';
 import 'package:tcg_manager/enum/bo.dart';
 import 'package:tcg_manager/enum/first_second.dart';
 import 'package:tcg_manager/enum/win_loss.dart';
 import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/helper/convert_sort_string.dart';
+import 'package:tcg_manager/helper/db_helper.dart';
+import 'package:tcg_manager/main.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/record_list_view_provider.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
@@ -151,10 +157,13 @@ class _BrandListTile extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final record = ref.watch(currentMargedRecord);
+    final imagePath = ref.watch(imagePathProvider);
     final isMemo = record.memo != null && record.memo != '';
+    final isImage = record.imagePaths != null && record.imagePaths != [];
+
     return SlidableExpansionTileCard(
       key: UniqueKey(),
-      isExpansion: isMemo || record.bo == BO.bo3,
+      isExpansion: isMemo || record.bo == BO.bo3 || isImage,
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -258,6 +267,8 @@ class _BrandListTile extends HookConsumerWidget {
         ),
       ),
       deleteFunc: () async {
+        final targetRecord = await ref.read(recordRepository).getRecordId(record.recordId);
+        ref.read(dbHelper).removeRecordImage(targetRecord!);
         await ref.read(recordRepository).deleteById(record.recordId);
         ref.refresh(allRecordListProvider);
       },
@@ -315,29 +326,69 @@ class _BrandListTile extends HookConsumerWidget {
                     ),
                   ),
                 if (isMemo)
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        S.of(context).recordListMemo,
-                        style: Theme.of(context).textTheme.caption?.copyWith(
-                              leadingDistribution: TextLeadingDistribution.even,
-                              height: 1,
-                              fontSize: 10,
-                            ),
-                      ),
-                      Flexible(
-                        child: Text(
-                          record.memo ?? '',
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 100,
-                          style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 4),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          S.of(context).recordListMemo,
+                          style: Theme.of(context).textTheme.caption?.copyWith(
                                 leadingDistribution: TextLeadingDistribution.even,
                                 height: 1,
+                                fontSize: 10,
                               ),
                         ),
-                      ),
-                    ],
+                        Flexible(
+                          child: Text(
+                            record.memo ?? '',
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 100,
+                            style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                                  leadingDistribution: TextLeadingDistribution.even,
+                                  height: 1,
+                                ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                if (isImage)
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        ...record.imagePaths!.asMap().entries.map(
+                              (image) => GestureDetector(
+                                onTap: () {
+                                  final customImageProvider = CustomImageProvider(
+                                    imageUrls: [
+                                      ...record.imagePaths!.map((image) => '$imagePath/$image'),
+                                    ].toList(),
+                                    initialIndex: image.key,
+                                  );
+                                  showImageViewerPager(
+                                    context,
+                                    customImageProvider,
+                                    swipeDismissible: true,
+                                    useSafeArea: true,
+                                  );
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 8),
+                                  child: SizedBox(
+                                    width: 80,
+                                    height: 80,
+                                    child: Image.file(
+                                      File('$imagePath/${image.value}'),
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                      ],
+                    ),
                   ),
               ],
             ),
@@ -490,4 +541,20 @@ class _BO3MatchRow extends StatelessWidget {
       ),
     );
   }
+}
+
+class CustomImageProvider extends EasyImageProvider {
+  @override
+  final int initialIndex;
+  final List<String> imageUrls;
+
+  CustomImageProvider({required this.imageUrls, this.initialIndex = 0}) : super();
+
+  @override
+  ImageProvider<Object> imageBuilder(BuildContext context, int index) {
+    return Image.file(File(imageUrls[index])).image;
+  }
+
+  @override
+  int get imageCount => imageUrls.length;
 }

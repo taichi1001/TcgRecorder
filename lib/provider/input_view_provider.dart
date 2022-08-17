@@ -1,4 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/record.dart';
 import 'package:tcg_manager/entity/tag.dart';
@@ -6,6 +7,7 @@ import 'package:tcg_manager/enum/bo.dart';
 import 'package:tcg_manager/enum/first_second.dart';
 import 'package:tcg_manager/enum/win_loss.dart';
 import 'package:tcg_manager/helper/edit_record_helper.dart';
+import 'package:tcg_manager/main.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/input_view_settings_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
@@ -18,7 +20,7 @@ import 'package:tcg_manager/repository/tag_repository.dart';
 import 'package:tcg_manager/state/input_view_state.dart';
 
 class InputViewNotifier extends StateNotifier<InputViewState> {
-  InputViewNotifier(this.read) : super(InputViewState(date: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day))) {
+  InputViewNotifier(this.read) : super(InputViewState(date: DateTime.now())) {
     init();
   }
 
@@ -108,6 +110,17 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
 
   void inputMemo(String memo) {
     state = state.copyWith(memo: memo);
+  }
+
+  void inputImage(XFile image) {
+    final newImages = [...state.images, image];
+    state = state.copyWith(images: newImages);
+  }
+
+  void removeImage(int index) {
+    final newImages = [...state.images];
+    newImages.removeAt(index);
+    state = state.copyWith(images: newImages);
   }
 
   Future _saveUseDeck(int? gameId) async {
@@ -224,6 +237,15 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     if (firstCount == secondCount) state = state.copyWith(firstSecond: state.firstMatchFirstSecond!);
   }
 
+  Future _saveImage() async {
+    final savePath = read(imagePathProvider);
+    for (final image in state.images) {
+      await image.saveTo('$savePath/${image.name}');
+    }
+    final imagePaths = state.images.map((image) => image.name).toList();
+    state = state.copyWith(record: state.record!.copyWith(imagePath: imagePaths));
+  }
+
   Future init() async {
     final recordList = await read(allRecordListProvider.future);
     final deckList = await read(allDeckListProvider.future);
@@ -281,6 +303,7 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     _saveDate();
     _saveFirstSecond();
     _saveWinLoss();
+    await _saveImage();
 
     // recordに各種データを設定
     state = state.copyWith(
@@ -292,7 +315,6 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
         memo: state.memo,
       ),
     );
-
     final recordCount = await read(recordRepository).insert(state.record!);
     return recordCount;
   }
@@ -321,6 +343,7 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     _saveFirstMatchWinLoss();
     _saveSecondMatchWinLoss();
     _saveThirdMatchWinLoss();
+    await _saveImage();
     // recordに各種データを設定
     state = state.copyWith(
       record: state.record!.copyWith(
