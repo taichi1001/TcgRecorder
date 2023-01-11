@@ -166,10 +166,10 @@ class OtherView extends HookConsumerWidget {
                 title: const Text('CSV出力'),
                 leading: const Icon(Icons.data_object),
                 onPressed: (context) async {
-                  final margedRecordList = await ref.read(margedRecordListProvider.future);
+                  final margedRecordList = await ref.read(allMargedRecordListProvider.future);
                   final csv = ListToCSV.margeRecordListToCSV(margedRecordList);
                   final savePath = ref.read(imagePathProvider);
-                  final logPath = '$savePath/test.csv';
+                  final logPath = '$savePath/toremane_output.csv';
                   final textfilePath = File(logPath);
                   await textfilePath.writeAsString(csv);
                   Share.shareFiles([logPath]);
