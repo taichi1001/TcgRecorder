@@ -50,7 +50,7 @@ final opponentDeckDataByUseDeckProvider = FutureProvider.family.autoDispose<List
         secondMatches: calc.countUseDeckSecondMatches(useDeck),
         win: calc.countUseDeckWins(useDeck),
         firstMatchesWin: calc.countUseDeckFirstMatchesWins(useDeck),
-        secondMatchesWin: calc.countUseDeckFirstMatchesLoss(useDeck),
+        secondMatchesWin: calc.countUseDeckSecondMatchesWins(useDeck),
         loss: calc.countUseDeckLoss(useDeck),
         firstMatchesLoss: calc.countUseDeckFirstMatchesLoss(useDeck),
         secondMatchesLoss: calc.countUseDeckSecondMatchesLoss(useDeck),
