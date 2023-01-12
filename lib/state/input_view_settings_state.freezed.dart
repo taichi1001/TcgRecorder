@@ -19,6 +19,8 @@ mixin _$InputViewSettingsState {
   bool get fixUseDeck => throw _privateConstructorUsedError;
   bool get fixOpponentDeck => throw _privateConstructorUsedError;
   bool get fixTag => throw _privateConstructorUsedError;
+  bool get draw => throw _privateConstructorUsedError;
+  bool get bo3 => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $InputViewSettingsStateCopyWith<InputViewSettingsState> get copyWith =>
@@ -30,7 +32,12 @@ abstract class $InputViewSettingsStateCopyWith<$Res> {
   factory $InputViewSettingsStateCopyWith(InputViewSettingsState value,
           $Res Function(InputViewSettingsState) then) =
       _$InputViewSettingsStateCopyWithImpl<$Res>;
-  $Res call({bool fixUseDeck, bool fixOpponentDeck, bool fixTag});
+  $Res call(
+      {bool fixUseDeck,
+      bool fixOpponentDeck,
+      bool fixTag,
+      bool draw,
+      bool bo3});
 }
 
 /// @nodoc
@@ -47,6 +54,8 @@ class _$InputViewSettingsStateCopyWithImpl<$Res>
     Object? fixUseDeck = freezed,
     Object? fixOpponentDeck = freezed,
     Object? fixTag = freezed,
+    Object? draw = freezed,
+    Object? bo3 = freezed,
   }) {
     return _then(_value.copyWith(
       fixUseDeck: fixUseDeck == freezed
@@ -61,6 +70,14 @@ class _$InputViewSettingsStateCopyWithImpl<$Res>
           ? _value.fixTag
           : fixTag // ignore: cast_nullable_to_non_nullable
               as bool,
+      draw: draw == freezed
+          ? _value.draw
+          : draw // ignore: cast_nullable_to_non_nullable
+              as bool,
+      bo3: bo3 == freezed
+          ? _value.bo3
+          : bo3 // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -72,7 +89,12 @@ abstract class _$$_InputViewSettingsStateCopyWith<$Res>
           $Res Function(_$_InputViewSettingsState) then) =
       __$$_InputViewSettingsStateCopyWithImpl<$Res>;
   @override
-  $Res call({bool fixUseDeck, bool fixOpponentDeck, bool fixTag});
+  $Res call(
+      {bool fixUseDeck,
+      bool fixOpponentDeck,
+      bool fixTag,
+      bool draw,
+      bool bo3});
 }
 
 /// @nodoc
@@ -92,6 +114,8 @@ class __$$_InputViewSettingsStateCopyWithImpl<$Res>
     Object? fixUseDeck = freezed,
     Object? fixOpponentDeck = freezed,
     Object? fixTag = freezed,
+    Object? draw = freezed,
+    Object? bo3 = freezed,
   }) {
     return _then(_$_InputViewSettingsState(
       fixUseDeck: fixUseDeck == freezed
@@ -106,6 +130,14 @@ class __$$_InputViewSettingsStateCopyWithImpl<$Res>
           ? _value.fixTag
           : fixTag // ignore: cast_nullable_to_non_nullable
               as bool,
+      draw: draw == freezed
+          ? _value.draw
+          : draw // ignore: cast_nullable_to_non_nullable
+              as bool,
+      bo3: bo3 == freezed
+          ? _value.bo3
+          : bo3 // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -116,7 +148,9 @@ class _$_InputViewSettingsState implements _InputViewSettingsState {
   _$_InputViewSettingsState(
       {this.fixUseDeck = false,
       this.fixOpponentDeck = false,
-      this.fixTag = false});
+      this.fixTag = false,
+      this.draw = false,
+      this.bo3 = false});
 
   @override
   @JsonKey()
@@ -127,10 +161,16 @@ class _$_InputViewSettingsState implements _InputViewSettingsState {
   @override
   @JsonKey()
   final bool fixTag;
+  @override
+  @JsonKey()
+  final bool draw;
+  @override
+  @JsonKey()
+  final bool bo3;
 
   @override
   String toString() {
-    return 'InputViewSettingsState(fixUseDeck: $fixUseDeck, fixOpponentDeck: $fixOpponentDeck, fixTag: $fixTag)';
+    return 'InputViewSettingsState(fixUseDeck: $fixUseDeck, fixOpponentDeck: $fixOpponentDeck, fixTag: $fixTag, draw: $draw, bo3: $bo3)';
   }
 
   @override
@@ -142,7 +182,9 @@ class _$_InputViewSettingsState implements _InputViewSettingsState {
                 .equals(other.fixUseDeck, fixUseDeck) &&
             const DeepCollectionEquality()
                 .equals(other.fixOpponentDeck, fixOpponentDeck) &&
-            const DeepCollectionEquality().equals(other.fixTag, fixTag));
+            const DeepCollectionEquality().equals(other.fixTag, fixTag) &&
+            const DeepCollectionEquality().equals(other.draw, draw) &&
+            const DeepCollectionEquality().equals(other.bo3, bo3));
   }
 
   @override
@@ -150,7 +192,9 @@ class _$_InputViewSettingsState implements _InputViewSettingsState {
       runtimeType,
       const DeepCollectionEquality().hash(fixUseDeck),
       const DeepCollectionEquality().hash(fixOpponentDeck),
-      const DeepCollectionEquality().hash(fixTag));
+      const DeepCollectionEquality().hash(fixTag),
+      const DeepCollectionEquality().hash(draw),
+      const DeepCollectionEquality().hash(bo3));
 
   @JsonKey(ignore: true)
   @override
@@ -163,7 +207,9 @@ abstract class _InputViewSettingsState implements InputViewSettingsState {
   factory _InputViewSettingsState(
       {final bool fixUseDeck,
       final bool fixOpponentDeck,
-      final bool fixTag}) = _$_InputViewSettingsState;
+      final bool fixTag,
+      final bool draw,
+      final bool bo3}) = _$_InputViewSettingsState;
 
   @override
   bool get fixUseDeck => throw _privateConstructorUsedError;
@@ -171,6 +217,10 @@ abstract class _InputViewSettingsState implements InputViewSettingsState {
   bool get fixOpponentDeck => throw _privateConstructorUsedError;
   @override
   bool get fixTag => throw _privateConstructorUsedError;
+  @override
+  bool get draw => throw _privateConstructorUsedError;
+  @override
+  bool get bo3 => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_InputViewSettingsStateCopyWith<_$_InputViewSettingsState> get copyWith =>

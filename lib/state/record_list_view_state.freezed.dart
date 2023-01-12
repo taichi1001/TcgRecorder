@@ -19,6 +19,8 @@ mixin _$RecordListViewState {
   Sort get sort => throw _privateConstructorUsedError;
   DateTime? get startDate => throw _privateConstructorUsedError;
   DateTime? get endDate => throw _privateConstructorUsedError;
+  DateTime? get startTime => throw _privateConstructorUsedError;
+  DateTime? get endTime => throw _privateConstructorUsedError;
   Deck? get useDeck => throw _privateConstructorUsedError;
   Deck? get opponentDeck => throw _privateConstructorUsedError;
   Tag? get tag => throw _privateConstructorUsedError;
@@ -43,6 +45,8 @@ abstract class $RecordListViewStateCopyWith<$Res> {
       {Sort sort,
       DateTime? startDate,
       DateTime? endDate,
+      DateTime? startTime,
+      DateTime? endTime,
       Deck? useDeck,
       Deck? opponentDeck,
       Tag? tag,
@@ -75,6 +79,8 @@ class _$RecordListViewStateCopyWithImpl<$Res>
     Object? sort = freezed,
     Object? startDate = freezed,
     Object? endDate = freezed,
+    Object? startTime = freezed,
+    Object? endTime = freezed,
     Object? useDeck = freezed,
     Object? opponentDeck = freezed,
     Object? tag = freezed,
@@ -97,6 +103,14 @@ class _$RecordListViewStateCopyWithImpl<$Res>
       endDate: endDate == freezed
           ? _value.endDate
           : endDate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      startTime: startTime == freezed
+          ? _value.startTime
+          : startTime // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      endTime: endTime == freezed
+          ? _value.endTime
+          : endTime // ignore: cast_nullable_to_non_nullable
               as DateTime?,
       useDeck: useDeck == freezed
           ? _value.useDeck
@@ -215,6 +229,8 @@ abstract class _$$_RecordListViewStateCopyWith<$Res>
       {Sort sort,
       DateTime? startDate,
       DateTime? endDate,
+      DateTime? startTime,
+      DateTime? endTime,
       Deck? useDeck,
       Deck? opponentDeck,
       Tag? tag,
@@ -255,6 +271,8 @@ class __$$_RecordListViewStateCopyWithImpl<$Res>
     Object? sort = freezed,
     Object? startDate = freezed,
     Object? endDate = freezed,
+    Object? startTime = freezed,
+    Object? endTime = freezed,
     Object? useDeck = freezed,
     Object? opponentDeck = freezed,
     Object? tag = freezed,
@@ -277,6 +295,14 @@ class __$$_RecordListViewStateCopyWithImpl<$Res>
       endDate: endDate == freezed
           ? _value.endDate
           : endDate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      startTime: startTime == freezed
+          ? _value.startTime
+          : startTime // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      endTime: endTime == freezed
+          ? _value.endTime
+          : endTime // ignore: cast_nullable_to_non_nullable
               as DateTime?,
       useDeck: useDeck == freezed
           ? _value.useDeck
@@ -325,6 +351,8 @@ class _$_RecordListViewState implements _RecordListViewState {
       {this.sort = Sort.newest,
       this.startDate,
       this.endDate,
+      this.startTime,
+      this.endTime,
       this.useDeck,
       this.opponentDeck,
       this.tag,
@@ -342,6 +370,10 @@ class _$_RecordListViewState implements _RecordListViewState {
   final DateTime? startDate;
   @override
   final DateTime? endDate;
+  @override
+  final DateTime? startTime;
+  @override
+  final DateTime? endTime;
   @override
   final Deck? useDeck;
   @override
@@ -364,7 +396,7 @@ class _$_RecordListViewState implements _RecordListViewState {
 
   @override
   String toString() {
-    return 'RecordListViewState(sort: $sort, startDate: $startDate, endDate: $endDate, useDeck: $useDeck, opponentDeck: $opponentDeck, tag: $tag, cacheOrder: $cacheOrder, cacheStartDate: $cacheStartDate, cacheEndDate: $cacheEndDate, cacheUseDeck: $cacheUseDeck, cacheOpponentDeck: $cacheOpponentDeck, cacheTag: $cacheTag)';
+    return 'RecordListViewState(sort: $sort, startDate: $startDate, endDate: $endDate, startTime: $startTime, endTime: $endTime, useDeck: $useDeck, opponentDeck: $opponentDeck, tag: $tag, cacheOrder: $cacheOrder, cacheStartDate: $cacheStartDate, cacheEndDate: $cacheEndDate, cacheUseDeck: $cacheUseDeck, cacheOpponentDeck: $cacheOpponentDeck, cacheTag: $cacheTag)';
   }
 
   @override
@@ -375,6 +407,8 @@ class _$_RecordListViewState implements _RecordListViewState {
             const DeepCollectionEquality().equals(other.sort, sort) &&
             const DeepCollectionEquality().equals(other.startDate, startDate) &&
             const DeepCollectionEquality().equals(other.endDate, endDate) &&
+            const DeepCollectionEquality().equals(other.startTime, startTime) &&
+            const DeepCollectionEquality().equals(other.endTime, endTime) &&
             const DeepCollectionEquality().equals(other.useDeck, useDeck) &&
             const DeepCollectionEquality()
                 .equals(other.opponentDeck, opponentDeck) &&
@@ -398,6 +432,8 @@ class _$_RecordListViewState implements _RecordListViewState {
       const DeepCollectionEquality().hash(sort),
       const DeepCollectionEquality().hash(startDate),
       const DeepCollectionEquality().hash(endDate),
+      const DeepCollectionEquality().hash(startTime),
+      const DeepCollectionEquality().hash(endTime),
       const DeepCollectionEquality().hash(useDeck),
       const DeepCollectionEquality().hash(opponentDeck),
       const DeepCollectionEquality().hash(tag),
@@ -420,6 +456,8 @@ abstract class _RecordListViewState implements RecordListViewState {
       {final Sort sort,
       final DateTime? startDate,
       final DateTime? endDate,
+      final DateTime? startTime,
+      final DateTime? endTime,
       final Deck? useDeck,
       final Deck? opponentDeck,
       final Tag? tag,
@@ -436,6 +474,10 @@ abstract class _RecordListViewState implements RecordListViewState {
   DateTime? get startDate => throw _privateConstructorUsedError;
   @override
   DateTime? get endDate => throw _privateConstructorUsedError;
+  @override
+  DateTime? get startTime => throw _privateConstructorUsedError;
+  @override
+  DateTime? get endTime => throw _privateConstructorUsedError;
   @override
   Deck? get useDeck => throw _privateConstructorUsedError;
   @override

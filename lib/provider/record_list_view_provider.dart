@@ -24,7 +24,7 @@ class RecordListViewNotifier extends StateNotifier<RecordListViewState> {
     state.sort == Sort.newest ? state = state.copyWith(sort: Sort.oldest) : state = state.copyWith(sort: Sort.newest);
   }
 
-  void setStartDate(DateTime day) {
+  void setStartDate(DateTime? day) {
     state = state.copyWith(startDate: day);
   }
 
@@ -34,6 +34,14 @@ class RecordListViewNotifier extends StateNotifier<RecordListViewState> {
     } else {
       state = state.copyWith(endDate: day);
     }
+  }
+
+  void setStartTime(DateTime? time) {
+    state = state.copyWith(startTime: time);
+  }
+
+  void setEndTime(DateTime? time) {
+    state = state.copyWith(endTime: time);
   }
 
   Future scrollUseDeck(int index) async {
@@ -88,18 +96,7 @@ class RecordListViewNotifier extends StateNotifier<RecordListViewState> {
   }
 
   void resetFilter() {
-    state = state.copyWith(
-      startDate: null,
-      endDate: null,
-      useDeck: null,
-      opponentDeck: null,
-      tag: null,
-      cacheStartDate: null,
-      cacheEndDate: null,
-      cacheUseDeck: null,
-      cacheOpponentDeck: null,
-      cacheTag: null,
-    );
+    state = RecordListViewState();
   }
 }
 

@@ -23,7 +23,14 @@ mixin _$InputViewState {
   Tag? get tag => throw _privateConstructorUsedError;
   String? get memo => throw _privateConstructorUsedError;
   WinLoss get winLoss => throw _privateConstructorUsedError;
+  WinLoss? get firstMatchWinLoss => throw _privateConstructorUsedError;
+  WinLoss? get secondMatchWinLoss => throw _privateConstructorUsedError;
+  WinLoss? get thirdMatchWinLoss => throw _privateConstructorUsedError;
   FirstSecond get firstSecond => throw _privateConstructorUsedError;
+  FirstSecond? get firstMatchFirstSecond => throw _privateConstructorUsedError;
+  FirstSecond? get secondMatchFirstSecond => throw _privateConstructorUsedError;
+  FirstSecond? get thirdMatchFirstSecond => throw _privateConstructorUsedError;
+  List<XFile> get images => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $InputViewStateCopyWith<InputViewState> get copyWith =>
@@ -43,7 +50,14 @@ abstract class $InputViewStateCopyWith<$Res> {
       Tag? tag,
       String? memo,
       WinLoss winLoss,
-      FirstSecond firstSecond});
+      WinLoss? firstMatchWinLoss,
+      WinLoss? secondMatchWinLoss,
+      WinLoss? thirdMatchWinLoss,
+      FirstSecond firstSecond,
+      FirstSecond? firstMatchFirstSecond,
+      FirstSecond? secondMatchFirstSecond,
+      FirstSecond? thirdMatchFirstSecond,
+      List<XFile> images});
 
   $RecordCopyWith<$Res>? get record;
   $DeckCopyWith<$Res>? get useDeck;
@@ -69,7 +83,14 @@ class _$InputViewStateCopyWithImpl<$Res>
     Object? tag = freezed,
     Object? memo = freezed,
     Object? winLoss = freezed,
+    Object? firstMatchWinLoss = freezed,
+    Object? secondMatchWinLoss = freezed,
+    Object? thirdMatchWinLoss = freezed,
     Object? firstSecond = freezed,
+    Object? firstMatchFirstSecond = freezed,
+    Object? secondMatchFirstSecond = freezed,
+    Object? thirdMatchFirstSecond = freezed,
+    Object? images = freezed,
   }) {
     return _then(_value.copyWith(
       record: record == freezed
@@ -100,10 +121,38 @@ class _$InputViewStateCopyWithImpl<$Res>
           ? _value.winLoss
           : winLoss // ignore: cast_nullable_to_non_nullable
               as WinLoss,
+      firstMatchWinLoss: firstMatchWinLoss == freezed
+          ? _value.firstMatchWinLoss
+          : firstMatchWinLoss // ignore: cast_nullable_to_non_nullable
+              as WinLoss?,
+      secondMatchWinLoss: secondMatchWinLoss == freezed
+          ? _value.secondMatchWinLoss
+          : secondMatchWinLoss // ignore: cast_nullable_to_non_nullable
+              as WinLoss?,
+      thirdMatchWinLoss: thirdMatchWinLoss == freezed
+          ? _value.thirdMatchWinLoss
+          : thirdMatchWinLoss // ignore: cast_nullable_to_non_nullable
+              as WinLoss?,
       firstSecond: firstSecond == freezed
           ? _value.firstSecond
           : firstSecond // ignore: cast_nullable_to_non_nullable
               as FirstSecond,
+      firstMatchFirstSecond: firstMatchFirstSecond == freezed
+          ? _value.firstMatchFirstSecond
+          : firstMatchFirstSecond // ignore: cast_nullable_to_non_nullable
+              as FirstSecond?,
+      secondMatchFirstSecond: secondMatchFirstSecond == freezed
+          ? _value.secondMatchFirstSecond
+          : secondMatchFirstSecond // ignore: cast_nullable_to_non_nullable
+              as FirstSecond?,
+      thirdMatchFirstSecond: thirdMatchFirstSecond == freezed
+          ? _value.thirdMatchFirstSecond
+          : thirdMatchFirstSecond // ignore: cast_nullable_to_non_nullable
+              as FirstSecond?,
+      images: images == freezed
+          ? _value.images
+          : images // ignore: cast_nullable_to_non_nullable
+              as List<XFile>,
     ));
   }
 
@@ -167,7 +216,14 @@ abstract class _$$_InputViewStateCopyWith<$Res>
       Tag? tag,
       String? memo,
       WinLoss winLoss,
-      FirstSecond firstSecond});
+      WinLoss? firstMatchWinLoss,
+      WinLoss? secondMatchWinLoss,
+      WinLoss? thirdMatchWinLoss,
+      FirstSecond firstSecond,
+      FirstSecond? firstMatchFirstSecond,
+      FirstSecond? secondMatchFirstSecond,
+      FirstSecond? thirdMatchFirstSecond,
+      List<XFile> images});
 
   @override
   $RecordCopyWith<$Res>? get record;
@@ -199,7 +255,14 @@ class __$$_InputViewStateCopyWithImpl<$Res>
     Object? tag = freezed,
     Object? memo = freezed,
     Object? winLoss = freezed,
+    Object? firstMatchWinLoss = freezed,
+    Object? secondMatchWinLoss = freezed,
+    Object? thirdMatchWinLoss = freezed,
     Object? firstSecond = freezed,
+    Object? firstMatchFirstSecond = freezed,
+    Object? secondMatchFirstSecond = freezed,
+    Object? thirdMatchFirstSecond = freezed,
+    Object? images = freezed,
   }) {
     return _then(_$_InputViewState(
       record: record == freezed
@@ -230,10 +293,38 @@ class __$$_InputViewStateCopyWithImpl<$Res>
           ? _value.winLoss
           : winLoss // ignore: cast_nullable_to_non_nullable
               as WinLoss,
+      firstMatchWinLoss: firstMatchWinLoss == freezed
+          ? _value.firstMatchWinLoss
+          : firstMatchWinLoss // ignore: cast_nullable_to_non_nullable
+              as WinLoss?,
+      secondMatchWinLoss: secondMatchWinLoss == freezed
+          ? _value.secondMatchWinLoss
+          : secondMatchWinLoss // ignore: cast_nullable_to_non_nullable
+              as WinLoss?,
+      thirdMatchWinLoss: thirdMatchWinLoss == freezed
+          ? _value.thirdMatchWinLoss
+          : thirdMatchWinLoss // ignore: cast_nullable_to_non_nullable
+              as WinLoss?,
       firstSecond: firstSecond == freezed
           ? _value.firstSecond
           : firstSecond // ignore: cast_nullable_to_non_nullable
               as FirstSecond,
+      firstMatchFirstSecond: firstMatchFirstSecond == freezed
+          ? _value.firstMatchFirstSecond
+          : firstMatchFirstSecond // ignore: cast_nullable_to_non_nullable
+              as FirstSecond?,
+      secondMatchFirstSecond: secondMatchFirstSecond == freezed
+          ? _value.secondMatchFirstSecond
+          : secondMatchFirstSecond // ignore: cast_nullable_to_non_nullable
+              as FirstSecond?,
+      thirdMatchFirstSecond: thirdMatchFirstSecond == freezed
+          ? _value.thirdMatchFirstSecond
+          : thirdMatchFirstSecond // ignore: cast_nullable_to_non_nullable
+              as FirstSecond?,
+      images: images == freezed
+          ? _value._images
+          : images // ignore: cast_nullable_to_non_nullable
+              as List<XFile>,
     ));
   }
 }
@@ -249,7 +340,15 @@ class _$_InputViewState implements _InputViewState {
       this.tag,
       this.memo,
       this.winLoss = WinLoss.win,
-      this.firstSecond = FirstSecond.first});
+      this.firstMatchWinLoss,
+      this.secondMatchWinLoss,
+      this.thirdMatchWinLoss,
+      this.firstSecond = FirstSecond.first,
+      this.firstMatchFirstSecond,
+      this.secondMatchFirstSecond,
+      this.thirdMatchFirstSecond,
+      final List<XFile> images = const []})
+      : _images = images;
 
   @override
   final Record? record;
@@ -267,12 +366,31 @@ class _$_InputViewState implements _InputViewState {
   @JsonKey()
   final WinLoss winLoss;
   @override
+  final WinLoss? firstMatchWinLoss;
+  @override
+  final WinLoss? secondMatchWinLoss;
+  @override
+  final WinLoss? thirdMatchWinLoss;
+  @override
   @JsonKey()
   final FirstSecond firstSecond;
+  @override
+  final FirstSecond? firstMatchFirstSecond;
+  @override
+  final FirstSecond? secondMatchFirstSecond;
+  @override
+  final FirstSecond? thirdMatchFirstSecond;
+  final List<XFile> _images;
+  @override
+  @JsonKey()
+  List<XFile> get images {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_images);
+  }
 
   @override
   String toString() {
-    return 'InputViewState(record: $record, date: $date, useDeck: $useDeck, opponentDeck: $opponentDeck, tag: $tag, memo: $memo, winLoss: $winLoss, firstSecond: $firstSecond)';
+    return 'InputViewState(record: $record, date: $date, useDeck: $useDeck, opponentDeck: $opponentDeck, tag: $tag, memo: $memo, winLoss: $winLoss, firstMatchWinLoss: $firstMatchWinLoss, secondMatchWinLoss: $secondMatchWinLoss, thirdMatchWinLoss: $thirdMatchWinLoss, firstSecond: $firstSecond, firstMatchFirstSecond: $firstMatchFirstSecond, secondMatchFirstSecond: $secondMatchFirstSecond, thirdMatchFirstSecond: $thirdMatchFirstSecond, images: $images)';
   }
 
   @override
@@ -289,7 +407,20 @@ class _$_InputViewState implements _InputViewState {
             const DeepCollectionEquality().equals(other.memo, memo) &&
             const DeepCollectionEquality().equals(other.winLoss, winLoss) &&
             const DeepCollectionEquality()
-                .equals(other.firstSecond, firstSecond));
+                .equals(other.firstMatchWinLoss, firstMatchWinLoss) &&
+            const DeepCollectionEquality()
+                .equals(other.secondMatchWinLoss, secondMatchWinLoss) &&
+            const DeepCollectionEquality()
+                .equals(other.thirdMatchWinLoss, thirdMatchWinLoss) &&
+            const DeepCollectionEquality()
+                .equals(other.firstSecond, firstSecond) &&
+            const DeepCollectionEquality()
+                .equals(other.firstMatchFirstSecond, firstMatchFirstSecond) &&
+            const DeepCollectionEquality()
+                .equals(other.secondMatchFirstSecond, secondMatchFirstSecond) &&
+            const DeepCollectionEquality()
+                .equals(other.thirdMatchFirstSecond, thirdMatchFirstSecond) &&
+            const DeepCollectionEquality().equals(other._images, _images));
   }
 
   @override
@@ -302,7 +433,14 @@ class _$_InputViewState implements _InputViewState {
       const DeepCollectionEquality().hash(tag),
       const DeepCollectionEquality().hash(memo),
       const DeepCollectionEquality().hash(winLoss),
-      const DeepCollectionEquality().hash(firstSecond));
+      const DeepCollectionEquality().hash(firstMatchWinLoss),
+      const DeepCollectionEquality().hash(secondMatchWinLoss),
+      const DeepCollectionEquality().hash(thirdMatchWinLoss),
+      const DeepCollectionEquality().hash(firstSecond),
+      const DeepCollectionEquality().hash(firstMatchFirstSecond),
+      const DeepCollectionEquality().hash(secondMatchFirstSecond),
+      const DeepCollectionEquality().hash(thirdMatchFirstSecond),
+      const DeepCollectionEquality().hash(_images));
 
   @JsonKey(ignore: true)
   @override
@@ -319,7 +457,14 @@ abstract class _InputViewState implements InputViewState {
       final Tag? tag,
       final String? memo,
       final WinLoss winLoss,
-      final FirstSecond firstSecond}) = _$_InputViewState;
+      final WinLoss? firstMatchWinLoss,
+      final WinLoss? secondMatchWinLoss,
+      final WinLoss? thirdMatchWinLoss,
+      final FirstSecond firstSecond,
+      final FirstSecond? firstMatchFirstSecond,
+      final FirstSecond? secondMatchFirstSecond,
+      final FirstSecond? thirdMatchFirstSecond,
+      final List<XFile> images}) = _$_InputViewState;
 
   @override
   Record? get record => throw _privateConstructorUsedError;
@@ -336,7 +481,21 @@ abstract class _InputViewState implements InputViewState {
   @override
   WinLoss get winLoss => throw _privateConstructorUsedError;
   @override
+  WinLoss? get firstMatchWinLoss => throw _privateConstructorUsedError;
+  @override
+  WinLoss? get secondMatchWinLoss => throw _privateConstructorUsedError;
+  @override
+  WinLoss? get thirdMatchWinLoss => throw _privateConstructorUsedError;
+  @override
   FirstSecond get firstSecond => throw _privateConstructorUsedError;
+  @override
+  FirstSecond? get firstMatchFirstSecond => throw _privateConstructorUsedError;
+  @override
+  FirstSecond? get secondMatchFirstSecond => throw _privateConstructorUsedError;
+  @override
+  FirstSecond? get thirdMatchFirstSecond => throw _privateConstructorUsedError;
+  @override
+  List<XFile> get images => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_InputViewStateCopyWith<_$_InputViewState> get copyWith =>

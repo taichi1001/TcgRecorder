@@ -7,10 +7,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:settings_ui/settings_ui.dart';
-import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/game.dart';
 import 'package:tcg_manager/entity/record.dart';
-import 'package:tcg_manager/entity/tag.dart';
 import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/helper/edit_record_helper.dart';
@@ -24,9 +22,7 @@ import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 import 'package:tcg_manager/provider/theme_provider.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
-import 'package:tcg_manager/repository/game_repository.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
-import 'package:tcg_manager/repository/tag_repository.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
 import 'package:tcg_manager/selector/game_tag_list_selector.dart';
 import 'package:tcg_manager/view/component/custom_textfield.dart';
@@ -57,36 +53,36 @@ class OtherView extends HookConsumerWidget {
           settingsListBackground: Theme.of(context).scaffoldBackgroundColor,
         ),
         sections: [
-          // SettingsSection(
-          //   title: Text(S.of(context).settingSection),
-          //   tiles: [
-          //     // テーマ設定画面を開放するときにコメントアウト
-          //     // SettingsTile.navigation(
-          //     //   title: Text(S.of(context).themeChange),
-          //     //   leading: const Icon(Icons.palette),
-          //     //   onPressed: (context) {
-          //     //     Navigator.push(
-          //     //       context,
-          //     //       MaterialPageRoute(
-          //     //         builder: (context) => const _ThemeChangeView(),
-          //     //       ),
-          //     //     );
-          //     //   },
-          //     // ),
-          //     SettingsTile.navigation(
-          //       title: Text(S.of(context).inputViewSettings),
-          //       leading: const Icon(Icons.settings_applications),
-          //       onPressed: (context) {
-          //         Navigator.push(
-          //           context,
-          //           MaterialPageRoute(
-          //             builder: (context) => const _InputViewSettingsView(),
-          //           ),
-          //         );
-          //       },
-          //     ),
-          //   ],
-          // ),
+          SettingsSection(
+            title: Text(S.of(context).settingSection),
+            tiles: [
+              // テーマ設定画面を開放するときにコメントアウト
+              SettingsTile.navigation(
+                title: Text(S.of(context).themeChange),
+                leading: const Icon(Icons.palette),
+                onPressed: (context) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const _ThemeChangeView(),
+                    ),
+                  );
+                },
+              ),
+              // SettingsTile.navigation(
+              //   title: Text(S.of(context).inputViewSettings),
+              //   leading: const Icon(Icons.settings_applications),
+              //   onPressed: (context) {
+              //     Navigator.push(
+              //       context,
+              //       MaterialPageRoute(
+              //         builder: (context) => const _InputViewSettingsView(),
+              //       ),
+              //     );
+              //   },
+              // ),
+            ],
+          ),
           SettingsSection(
             title: Text(S.of(context).editSection),
             tiles: [
@@ -203,6 +199,7 @@ class OtherView extends HookConsumerWidget {
   }
 }
 
+// ignore: unused_element
 class _InputViewSettingsView extends HookConsumerWidget {
   const _InputViewSettingsView({key}) : super(key: key);
 
@@ -630,8 +627,8 @@ class _ThemeChangeView extends HookConsumerWidget {
     final themeNotifier = ref.watch(themeNotifierProvider.notifier);
     final currentScheme = ref.watch(themeNotifierProvider.select((value) => value.scheme));
     final previewScheme = ref.watch(themeNotifierProvider.select((value) => value.previewScheme));
-    final previewThemeDataList = ref.watch(previewThemeDataListProvider);
     final isDarkMode = MediaQuery.of(context).platformBrightness == Brightness.dark;
+    final previewThemeDataList = ref.watch(previewThemeDataListProvider(isDarkMode));
     final itemScrollController = ItemScrollController();
 
     useEffect(() {

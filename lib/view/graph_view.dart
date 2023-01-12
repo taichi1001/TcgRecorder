@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
@@ -12,8 +13,8 @@ import 'package:tcg_manager/provider/use_deck_data_by_game_provider.dart';
 import 'package:tcg_manager/selector/filter_record_list_selector.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
 import 'package:tcg_manager/view/component/custom_scaffold.dart';
-import 'package:tcg_manager/view/filter_modal_bottom_sheet.dart';
 import 'package:tcg_manager/view/data_grid.dart';
+import 'package:tcg_manager/view/filter_modal_bottom_sheet.dart';
 
 class GraphView extends HookConsumerWidget {
   const GraphView({Key? key}) : super(key: key);
@@ -142,71 +143,74 @@ class _UseRateChart extends StatelessWidget {
   final String title;
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        // 機能開放時にコメントアウト
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => _UseRateDetailChart(data: data, title: title),
-        //   ),
-        // );
-      },
-      child: Card(
-        margin: EdgeInsets.zero,
-        child: SizedBox(
-          height: 250.h,
-          child: SfCircularChart(
-            margin: const EdgeInsets.all(0),
-            onLegendItemRender: (args) {
-              if (args.text == 'Others') {
-                args.text = 'その他';
-              }
-            },
-            legend: Legend(
-              width: '30%',
-              isVisible: true,
-              itemPadding: 8,
-              overflowMode: LegendItemOverflowMode.scroll,
-              textStyle: Theme.of(context).textTheme.caption?.copyWith(fontSize: 10),
-            ),
-            annotations: [
-              CircularChartAnnotation(
-                widget: Text(
-                  title,
-                  style: Theme.of(context).textTheme.overline?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+    return Stack(
+      alignment: AlignmentDirectional.topEnd,
+      children: [
+        Card(
+          margin: EdgeInsets.zero,
+          child: SizedBox(
+            height: 250.h,
+            child: SfCircularChart(
+              margin: const EdgeInsets.all(0),
+              onLegendItemRender: (args) {
+                if (args.text == 'Others') {
+                  args.text = 'その他';
+                }
+              },
+              legend: Legend(
+                width: '30%',
+                isVisible: true,
+                itemPadding: 8,
+                overflowMode: LegendItemOverflowMode.scroll,
+                textStyle: Theme.of(context).textTheme.caption?.copyWith(fontSize: 10),
+              ),
+              annotations: [
+                CircularChartAnnotation(
+                  widget: Text(
+                    title,
+                    style: Theme.of(context).textTheme.overline?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
                 ),
-              ),
-            ],
-            onTooltipRender: (args) {
-              // args.textの中身は test : 0.333 みたいな形で入ってる
-              final reg = RegExp('^.* '); // test : を抽出する正規表現
-              var firstString = reg.firstMatch(args.text!)!.group(0)!;
-              final secondString = args.text!.replaceAll(firstString, '');
-              if (firstString.contains('Others')) firstString = 'その他 : ';
-              final doubleArgs = double.parse(secondString);
-              args.text = '$firstString${(doubleArgs * 100).toStringAsFixed(1)}%';
-            },
-            tooltipBehavior: TooltipBehavior(enable: true),
-            series: [
-              DoughnutSeries<WinRateData, String>(
-                dataSource: data,
-                animationDuration: 0,
-                sortingOrder: SortingOrder.descending,
-                enableTooltip: true,
-                sortFieldValueMapper: (data, index) => data.useRate.toString(),
-                xValueMapper: (data, index) => data.deck,
-                yValueMapper: (data, index) => data.useRate,
-                groupMode: CircularChartGroupMode.point,
-                groupTo: 5,
-                innerRadius: '60%',
-              ),
-            ],
+              ],
+              onTooltipRender: (args) {
+                // args.textの中身は test : 0.333 みたいな形で入ってる
+                final reg = RegExp('^.* '); // test : を抽出する正規表現
+                var firstString = reg.firstMatch(args.text!)!.group(0)!;
+                final secondString = args.text!.replaceAll(firstString, '');
+                if (firstString.contains('Others')) firstString = 'その他 : ';
+                final doubleArgs = double.parse(secondString);
+                args.text = '$firstString${(doubleArgs * 100).toStringAsFixed(1)}%';
+              },
+              tooltipBehavior: TooltipBehavior(enable: true),
+              series: [
+                DoughnutSeries<WinRateData, String>(
+                  dataSource: data,
+                  animationDuration: 0,
+                  sortingOrder: SortingOrder.descending,
+                  enableTooltip: true,
+                  sortFieldValueMapper: (data, index) => data.useRate.toString(),
+                  xValueMapper: (data, index) => data.deck,
+                  yValueMapper: (data, index) => data.useRate,
+                  groupMode: CircularChartGroupMode.point,
+                  groupTo: 5,
+                  innerRadius: '60%',
+                ),
+              ],
+            ),
           ),
         ),
-      ),
+        IconButton(
+          icon: const Icon(Icons.launch),
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => _UseRateDetailChart(data: data, title: title),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -224,18 +228,41 @@ class _UseRateDetailChart extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          title,
+          style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+        ),
+      ),
       body: Center(
         child: SfCartesianChart(
-          primaryXAxis: CategoryAxis(),
+          primaryXAxis: CategoryAxis(
+            labelAlignment: LabelAlignment.center,
+            maximumLabels: 2,
+            labelsExtent: 80,
+            labelStyle: Theme.of(context).primaryTextTheme.bodySmall?.copyWith(fontSize: 10),
+          ),
+          primaryYAxis: NumericAxis(
+            numberFormat: NumberFormat.percentPattern(),
+          ),
           series: [
             BarSeries<WinRateData, String>(
               dataSource: data,
               xValueMapper: (data, index) => data.deck,
               yValueMapper: (data, index) => data.useRate,
-              width: 0.1,
+              width: 0.2,
+              spacing: 0.3,
+              borderRadius: const BorderRadius.only(
+                topRight: Radius.circular(10),
+                bottomRight: Radius.circular(10),
+              ),
             ),
           ],
+          tooltipBehavior: TooltipBehavior(
+            enable: true,
+            header: 'デッキ名',
+          ),
         ),
       ),
     );
@@ -316,6 +343,15 @@ class _SettingModalBottomSheet extends HookConsumerWidget {
                 SwitchListTile.adaptive(
                   contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
                   title: Text(
+                    '引き分け数',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  value: graphViewSettings.draw,
+                  onChanged: graphViewSettingsController.changeDraw,
+                ),
+                SwitchListTile.adaptive(
+                  contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                  title: Text(
                     '先攻勝ち数',
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
@@ -334,6 +370,15 @@ class _SettingModalBottomSheet extends HookConsumerWidget {
                 SwitchListTile.adaptive(
                   contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
                   title: Text(
+                    '先攻引き分け数',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  value: graphViewSettings.firstMatchesDraw,
+                  onChanged: graphViewSettingsController.changeFirstMatchesDraw,
+                ),
+                SwitchListTile.adaptive(
+                  contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                  title: Text(
                     '後攻勝ち数',
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
@@ -348,6 +393,15 @@ class _SettingModalBottomSheet extends HookConsumerWidget {
                   ),
                   value: graphViewSettings.secondMatchesLoss,
                   onChanged: graphViewSettingsController.changeSecondMatchesLoss,
+                ),
+                SwitchListTile.adaptive(
+                  contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                  title: Text(
+                    '後攻引き分け数',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  value: graphViewSettings.secondMatchesDraw,
+                  onChanged: graphViewSettingsController.changeSecondMatchesDraw,
                 ),
                 SwitchListTile.adaptive(
                   contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),

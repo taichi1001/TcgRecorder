@@ -1,70 +1,67 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tcg_manager/main.dart';
 import 'package:tcg_manager/state/input_view_settings_state.dart';
 
 class InputViewSettingsNotifier extends StateNotifier<InputViewSettingsState> {
-  InputViewSettingsNotifier(this.read) : super(InputViewSettingsState());
+  InputViewSettingsNotifier(this.read) : super(InputViewSettingsState()) {
+    _init();
+  }
 
   final Reader read;
   static const fixUseDeckKey = 'fixUseDeck';
   static const fixOpponentDeckKey = 'fixOpponentDeck';
   static const fixTagKey = 'fixTag';
+  static const drawKey = 'draw';
+  static const bo3Key = 'bo3';
 
-  Future settingsInitialize() async {
-    final fixUseDeck = await _getFixUseDeck();
-    final fixOpponentDeck = await _getFixOpponentDeck();
-    final fixTag = await _getFixTag();
+  late final prefs = read(sharedPreferencesProvider);
+
+  void _init() {
     state = state.copyWith(
-      fixUseDeck: fixUseDeck ?? false,
-      fixOpponentDeck: fixOpponentDeck ?? false,
-      fixTag: fixTag ?? false,
+      fixUseDeck: _getFixUseDeck() ?? false,
+      fixOpponentDeck: _getFixOpponentDeck() ?? false,
+      fixTag: _getFixTag() ?? false,
+      draw: _getDraw() ?? false,
+      bo3: _getBO3() ?? false,
     );
   }
 
-  Future changeFixUseDeck(bool settings) async {
+  void changeFixUseDeck(bool settings) {
     state = state.copyWith(fixUseDeck: settings);
-    await _saveFixUseDeck(state.fixUseDeck);
+    _saveFixUseDeck(state.fixUseDeck);
   }
 
-  Future changeFixOpponentDeck(bool settings) async {
+  void changeFixOpponentDeck(bool settings) {
     state = state.copyWith(fixOpponentDeck: settings);
-    await _saveFixOpponentDeck(state.fixOpponentDeck);
+    _saveFixOpponentDeck(state.fixOpponentDeck);
   }
 
-  Future changeFixTag(bool settings) async {
+  void changeFixTag(bool settings) {
     state = state.copyWith(fixTag: settings);
-    await _saveFixTag(state.fixTag);
+    _saveFixTag(state.fixTag);
   }
 
-  Future<bool?> _getFixUseDeck() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(fixUseDeckKey);
+  void changeDraw(bool settings) {
+    state = state.copyWith(draw: settings);
+    _saveDraw(state.draw);
   }
 
-  Future<bool?> _getFixOpponentDeck() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(fixOpponentDeckKey);
+  void changeBO3(bool settings) {
+    state = state.copyWith(bo3: settings);
+    _saveBO3(state.bo3);
   }
 
-  Future<bool?> _getFixTag() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(fixTagKey);
-  }
+  bool? _getFixUseDeck() => prefs.getBool(fixUseDeckKey);
+  bool? _getFixOpponentDeck() => prefs.getBool(fixOpponentDeckKey);
+  bool? _getFixTag() => prefs.getBool(fixTagKey);
+  bool? _getDraw() => prefs.getBool(drawKey);
+  bool? _getBO3() => prefs.getBool(bo3Key);
 
-  Future _saveFixUseDeck(bool settings) async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setBool(fixUseDeckKey, settings);
-  }
-
-  Future _saveFixOpponentDeck(bool settings) async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setBool(fixOpponentDeckKey, settings);
-  }
-
-  Future _saveFixTag(bool settings) async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setBool(fixTagKey, settings);
-  }
+  void _saveFixUseDeck(bool settings) => prefs.setBool(fixUseDeckKey, settings);
+  void _saveFixOpponentDeck(bool settings) => prefs.setBool(fixOpponentDeckKey, settings);
+  void _saveFixTag(bool settings) => prefs.setBool(fixTagKey, settings);
+  void _saveDraw(bool settings) => prefs.setBool(drawKey, settings);
+  void _saveBO3(bool settings) => prefs.setBool(bo3Key, settings);
 }
 
 final inputViewSettingsNotifierProvider = StateNotifierProvider<InputViewSettingsNotifier, InputViewSettingsState>(

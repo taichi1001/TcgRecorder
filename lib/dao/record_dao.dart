@@ -18,6 +18,12 @@ class RecordDao {
     return records;
   }
 
+  Future<Record?> getRecordId(int id) async {
+    final db = await dbProvider.database;
+    final result = await db.query(tableName, where: 'record_id = ?', whereArgs: [id]);
+    return result.isNotEmpty ? result.map((item) => Record.fromJson(item)).toList().first : null;
+  }
+
   Future<List<Record>> getGameRecord(int id) async {
     final db = await dbProvider.database;
     final result = await db.query(tableName, where: 'game_id = ?', whereArgs: [id]);

@@ -7,6 +7,8 @@ final recordRepository = Provider.autoDispose<RecordRepository>((ref) => RecordR
 abstract class RecordRepository {
   Future<List<Record>> getAll();
 
+  Future<Record?> getRecordId(int id);
+
   Future<List<Record>> getGameRecord(int id);
 
   Future<List<Record>> getTagRecord(int id);
@@ -30,6 +32,9 @@ class RecordRepositoryImpl implements RecordRepository {
 
   @override
   Future<List<Record>> getAll() => recordDao.getAll();
+
+  @override
+  Future<Record?> getRecordId(int id) => recordDao.getRecordId(id);
 
   @override
   Future<List<Record>> getGameRecord(int id) => recordDao.getGameRecord(id);

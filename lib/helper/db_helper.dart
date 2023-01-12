@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/game.dart';
+import 'package:tcg_manager/entity/record.dart';
 import 'package:tcg_manager/entity/tag.dart';
+import 'package:tcg_manager/main.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
@@ -73,6 +77,7 @@ class DbHelper {
     final deckRecord = allRecord.where((record) => record.useDeckId == deck.deckId || record.opponentDeckId == deck.deckId).toList();
     for (final record in deckRecord) {
       await ref.read(recordRepository).deleteById(record.recordId!);
+      removeRecordImage(record);
     }
   }
 
@@ -82,6 +87,15 @@ class DbHelper {
     for (var record in tagRecord) {
       record = record.copyWith(tagId: null);
       await ref.read(recordRepository).update(record);
+    }
+  }
+
+  void removeRecordImage(Record record) {
+    if (record.imagePath == null) return;
+    final appPath = ref.read(imagePathProvider);
+    for (final path in record.imagePath!) {
+      final dir = Directory('$appPath/$path');
+      dir.deleteSync(recursive: true);
     }
   }
 

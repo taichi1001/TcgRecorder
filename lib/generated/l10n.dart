@@ -370,6 +370,16 @@ class S {
     );
   }
 
+  /// `Draw`
+  String get draw {
+    return Intl.message(
+      'Draw',
+      name: 'draw',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Use Deck: `
   String get listUseDeck {
     return Intl.message(
@@ -655,6 +665,16 @@ class S {
     return Intl.message(
       'dd/MM/yyyy',
       name: 'dateFormat',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `yyyy/MM/dd日 HH:mm`
+  String get dateFormatIncludeTime {
+    return Intl.message(
+      'yyyy/MM/dd日 HH:mm',
+      name: 'dateFormatIncludeTime',
       desc: '',
       args: [],
     );

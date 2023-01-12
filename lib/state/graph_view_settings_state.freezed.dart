@@ -25,6 +25,9 @@ mixin _$GraphViewSettingsState {
   bool get loss => throw _privateConstructorUsedError;
   bool get firstMatchesLoss => throw _privateConstructorUsedError;
   bool get secondMatchesLoss => throw _privateConstructorUsedError;
+  bool get draw => throw _privateConstructorUsedError;
+  bool get firstMatchesDraw => throw _privateConstructorUsedError;
+  bool get secondMatchesDraw => throw _privateConstructorUsedError;
   bool get winRate => throw _privateConstructorUsedError;
   bool get firstWinRate => throw _privateConstructorUsedError;
   bool get secondWinRate => throw _privateConstructorUsedError;
@@ -49,6 +52,9 @@ abstract class $GraphViewSettingsStateCopyWith<$Res> {
       bool loss,
       bool firstMatchesLoss,
       bool secondMatchesLoss,
+      bool draw,
+      bool firstMatchesDraw,
+      bool secondMatchesDraw,
       bool winRate,
       bool firstWinRate,
       bool secondWinRate});
@@ -74,6 +80,9 @@ class _$GraphViewSettingsStateCopyWithImpl<$Res>
     Object? loss = freezed,
     Object? firstMatchesLoss = freezed,
     Object? secondMatchesLoss = freezed,
+    Object? draw = freezed,
+    Object? firstMatchesDraw = freezed,
+    Object? secondMatchesDraw = freezed,
     Object? winRate = freezed,
     Object? firstWinRate = freezed,
     Object? secondWinRate = freezed,
@@ -115,6 +124,18 @@ class _$GraphViewSettingsStateCopyWithImpl<$Res>
           ? _value.secondMatchesLoss
           : secondMatchesLoss // ignore: cast_nullable_to_non_nullable
               as bool,
+      draw: draw == freezed
+          ? _value.draw
+          : draw // ignore: cast_nullable_to_non_nullable
+              as bool,
+      firstMatchesDraw: firstMatchesDraw == freezed
+          ? _value.firstMatchesDraw
+          : firstMatchesDraw // ignore: cast_nullable_to_non_nullable
+              as bool,
+      secondMatchesDraw: secondMatchesDraw == freezed
+          ? _value.secondMatchesDraw
+          : secondMatchesDraw // ignore: cast_nullable_to_non_nullable
+              as bool,
       winRate: winRate == freezed
           ? _value.winRate
           : winRate // ignore: cast_nullable_to_non_nullable
@@ -148,6 +169,9 @@ abstract class _$$_GraphViewSettingsStateCopyWith<$Res>
       bool loss,
       bool firstMatchesLoss,
       bool secondMatchesLoss,
+      bool draw,
+      bool firstMatchesDraw,
+      bool secondMatchesDraw,
       bool winRate,
       bool firstWinRate,
       bool secondWinRate});
@@ -176,6 +200,9 @@ class __$$_GraphViewSettingsStateCopyWithImpl<$Res>
     Object? loss = freezed,
     Object? firstMatchesLoss = freezed,
     Object? secondMatchesLoss = freezed,
+    Object? draw = freezed,
+    Object? firstMatchesDraw = freezed,
+    Object? secondMatchesDraw = freezed,
     Object? winRate = freezed,
     Object? firstWinRate = freezed,
     Object? secondWinRate = freezed,
@@ -217,6 +244,18 @@ class __$$_GraphViewSettingsStateCopyWithImpl<$Res>
           ? _value.secondMatchesLoss
           : secondMatchesLoss // ignore: cast_nullable_to_non_nullable
               as bool,
+      draw: draw == freezed
+          ? _value.draw
+          : draw // ignore: cast_nullable_to_non_nullable
+              as bool,
+      firstMatchesDraw: firstMatchesDraw == freezed
+          ? _value.firstMatchesDraw
+          : firstMatchesDraw // ignore: cast_nullable_to_non_nullable
+              as bool,
+      secondMatchesDraw: secondMatchesDraw == freezed
+          ? _value.secondMatchesDraw
+          : secondMatchesDraw // ignore: cast_nullable_to_non_nullable
+              as bool,
       winRate: winRate == freezed
           ? _value.winRate
           : winRate // ignore: cast_nullable_to_non_nullable
@@ -246,6 +285,9 @@ class _$_GraphViewSettingsState implements _GraphViewSettingsState {
       this.loss = true,
       this.firstMatchesLoss = true,
       this.secondMatchesLoss = true,
+      this.draw = true,
+      this.firstMatchesDraw = true,
+      this.secondMatchesDraw = true,
       this.winRate = true,
       this.firstWinRate = true,
       this.secondWinRate = true});
@@ -279,6 +321,15 @@ class _$_GraphViewSettingsState implements _GraphViewSettingsState {
   final bool secondMatchesLoss;
   @override
   @JsonKey()
+  final bool draw;
+  @override
+  @JsonKey()
+  final bool firstMatchesDraw;
+  @override
+  @JsonKey()
+  final bool secondMatchesDraw;
+  @override
+  @JsonKey()
   final bool winRate;
   @override
   @JsonKey()
@@ -289,7 +340,7 @@ class _$_GraphViewSettingsState implements _GraphViewSettingsState {
 
   @override
   String toString() {
-    return 'GraphViewSettingsState(matches: $matches, firstMatches: $firstMatches, secondMatches: $secondMatches, win: $win, firstMatchesWin: $firstMatchesWin, secondMatchesWin: $secondMatchesWin, loss: $loss, firstMatchesLoss: $firstMatchesLoss, secondMatchesLoss: $secondMatchesLoss, winRate: $winRate, firstWinRate: $firstWinRate, secondWinRate: $secondWinRate)';
+    return 'GraphViewSettingsState(matches: $matches, firstMatches: $firstMatches, secondMatches: $secondMatches, win: $win, firstMatchesWin: $firstMatchesWin, secondMatchesWin: $secondMatchesWin, loss: $loss, firstMatchesLoss: $firstMatchesLoss, secondMatchesLoss: $secondMatchesLoss, draw: $draw, firstMatchesDraw: $firstMatchesDraw, secondMatchesDraw: $secondMatchesDraw, winRate: $winRate, firstWinRate: $firstWinRate, secondWinRate: $secondWinRate)';
   }
 
   @override
@@ -312,6 +363,11 @@ class _$_GraphViewSettingsState implements _GraphViewSettingsState {
                 .equals(other.firstMatchesLoss, firstMatchesLoss) &&
             const DeepCollectionEquality()
                 .equals(other.secondMatchesLoss, secondMatchesLoss) &&
+            const DeepCollectionEquality().equals(other.draw, draw) &&
+            const DeepCollectionEquality()
+                .equals(other.firstMatchesDraw, firstMatchesDraw) &&
+            const DeepCollectionEquality()
+                .equals(other.secondMatchesDraw, secondMatchesDraw) &&
             const DeepCollectionEquality().equals(other.winRate, winRate) &&
             const DeepCollectionEquality()
                 .equals(other.firstWinRate, firstWinRate) &&
@@ -331,6 +387,9 @@ class _$_GraphViewSettingsState implements _GraphViewSettingsState {
       const DeepCollectionEquality().hash(loss),
       const DeepCollectionEquality().hash(firstMatchesLoss),
       const DeepCollectionEquality().hash(secondMatchesLoss),
+      const DeepCollectionEquality().hash(draw),
+      const DeepCollectionEquality().hash(firstMatchesDraw),
+      const DeepCollectionEquality().hash(secondMatchesDraw),
       const DeepCollectionEquality().hash(winRate),
       const DeepCollectionEquality().hash(firstWinRate),
       const DeepCollectionEquality().hash(secondWinRate));
@@ -353,6 +412,9 @@ abstract class _GraphViewSettingsState implements GraphViewSettingsState {
       final bool loss,
       final bool firstMatchesLoss,
       final bool secondMatchesLoss,
+      final bool draw,
+      final bool firstMatchesDraw,
+      final bool secondMatchesDraw,
       final bool winRate,
       final bool firstWinRate,
       final bool secondWinRate}) = _$_GraphViewSettingsState;
@@ -375,6 +437,12 @@ abstract class _GraphViewSettingsState implements GraphViewSettingsState {
   bool get firstMatchesLoss => throw _privateConstructorUsedError;
   @override
   bool get secondMatchesLoss => throw _privateConstructorUsedError;
+  @override
+  bool get draw => throw _privateConstructorUsedError;
+  @override
+  bool get firstMatchesDraw => throw _privateConstructorUsedError;
+  @override
+  bool get secondMatchesDraw => throw _privateConstructorUsedError;
   @override
   bool get winRate => throw _privateConstructorUsedError;
   @override

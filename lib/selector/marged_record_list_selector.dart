@@ -23,10 +23,18 @@ final margedRecordListProvider = FutureProvider.autoDispose<List<MargedRecord>>(
       useDeck: useDeck.deck,
       opponentDeck: opponentDeck.deck,
       tag: tagList.isEmpty ? null : tagList.first.tag,
+      bo: record.bo,
       firstSecond: record.firstSecond,
+      firstMatchFirstSecond: record.firstMatchFirstSecond,
+      secondMatchFirstSecond: record.secondMatchFirstSecond,
+      thirdMatchFirstSecond: record.thiredMatchFirstSecond,
       winLoss: record.winLoss,
+      firstMatchWinLoss: record.firstMatchWinLoss,
+      secondMatchWinLoss: record.secondMatchWinLoss,
+      thirdMatchWinLoss: record.thirdMatchWinLoss,
       date: record.date!,
       memo: record.memo,
+      imagePaths: record.imagePath,
     );
   }).toList();
   ref.keepAlive();

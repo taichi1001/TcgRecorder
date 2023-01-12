@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -6,11 +9,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:tcg_manager/entity/marged_record.dart';
+import 'package:tcg_manager/enum/bo.dart';
 import 'package:tcg_manager/enum/first_second.dart';
 import 'package:tcg_manager/enum/win_loss.dart';
 import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/helper/convert_sort_string.dart';
+import 'package:tcg_manager/helper/db_helper.dart';
+import 'package:tcg_manager/main.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/record_list_view_provider.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
@@ -136,6 +143,7 @@ final currentMargedRecord = Provider<MargedRecord>((ref) => MargedRecord(
       useDeck: '',
       opponentDeck: '',
       tag: '',
+      bo: BO.bo1,
       firstSecond: FirstSecond.first,
       winLoss: WinLoss.win,
       date: DateTime.now(),
@@ -149,10 +157,13 @@ class _BrandListTile extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final record = ref.watch(currentMargedRecord);
+    final imagePath = ref.watch(imagePathProvider);
     final isMemo = record.memo != null && record.memo != '';
+    final isImage = record.imagePaths != null && record.imagePaths != [];
+
     return SlidableExpansionTileCard(
       key: UniqueKey(),
-      isExpansion: isMemo,
+      isExpansion: isMemo || record.bo == BO.bo3 || isImage,
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -228,7 +239,7 @@ class _BrandListTile extends HookConsumerWidget {
         ],
       ),
       trailing: SizedBox(
-        width: 110,
+        width: 130,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
@@ -237,42 +248,27 @@ class _BrandListTile extends HookConsumerWidget {
               width: 24,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: record.firstSecond == FirstSecond.first
-                    ? Theme.of(context).colorScheme.primary
-                    : Theme.of(context).colorScheme.secondary,
+                color: record.bo == BO.bo1 ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.secondary,
               ),
               child: Center(
                 child: Text(
-                  record.firstSecond == FirstSecond.first ? S.of(context).recordListFirst : S.of(context).recordListSecond,
+                  record.bo == BO.bo1 ? 'BO1' : 'BO3',
                   style: Theme.of(context).primaryTextTheme.labelMedium?.copyWith(
+                        fontSize: 9,
                         fontWeight: FontWeight.bold,
                         height: 1,
                       ),
                 ),
               ),
             ),
-            Container(
-              width: 45,
-              height: 30,
-              decoration: BoxDecoration(
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.circular(6),
-                color: record.winLoss == WinLoss.win ? const Color(0xFFA21F16) : const Color(0xFF3547AC),
-              ),
-              child: Center(
-                child: Text(
-                  record.winLoss == WinLoss.win ? 'Win' : 'Loss',
-                  style: GoogleFonts.bangers(
-                    fontSize: 22,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
+            _FirstSecondIcon(firstSecond: record.firstSecond),
+            _WinLossIcon(winLoss: record.winLoss),
           ],
         ),
       ),
       deleteFunc: () async {
+        final targetRecord = await ref.read(recordRepository).getRecordId(record.recordId);
+        ref.read(dbHelper).removeRecordImage(targetRecord!);
         await ref.read(recordRepository).deleteById(record.recordId);
         ref.refresh(allRecordListProvider);
       },
@@ -299,28 +295,101 @@ class _BrandListTile extends HookConsumerWidget {
           widthFactor: 1,
           child: Padding(
             padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
-            child: Row(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  S.of(context).recordListMemo,
-                  style: Theme.of(context).textTheme.caption?.copyWith(
-                        leadingDistribution: TextLeadingDistribution.even,
-                        height: 1,
-                        fontSize: 10,
-                      ),
-                ),
-                Flexible(
-                  child: Text(
-                    record.memo ?? '',
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 100,
-                    style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                          leadingDistribution: TextLeadingDistribution.even,
-                          height: 1,
-                        ),
+                if (record.bo == BO.bo3)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 4),
+                    child: _BO3MatchRow(
+                      winLoss: record.firstMatchWinLoss,
+                      firstSecond: record.firstMatchFirstSecond,
+                      title: '1試合目:',
+                    ),
                   ),
-                ),
+                if (record.bo == BO.bo3)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 4),
+                    child: _BO3MatchRow(
+                      winLoss: record.secondMatchWinLoss,
+                      firstSecond: record.secondMatchFirstSecond,
+                      title: '2試合目:',
+                    ),
+                  ),
+                if (record.bo == BO.bo3)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 4),
+                    child: _BO3MatchRow(
+                      winLoss: record.thirdMatchWinLoss,
+                      firstSecond: record.thirdMatchFirstSecond,
+                      title: '3試合目:',
+                    ),
+                  ),
+                if (isMemo)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 4),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          S.of(context).recordListMemo,
+                          style: Theme.of(context).textTheme.caption?.copyWith(
+                                leadingDistribution: TextLeadingDistribution.even,
+                                height: 1,
+                                fontSize: 10,
+                              ),
+                        ),
+                        Flexible(
+                          child: Text(
+                            record.memo ?? '',
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 100,
+                            style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                                  leadingDistribution: TextLeadingDistribution.even,
+                                  height: 1,
+                                ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                if (isImage)
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        ...record.imagePaths!.asMap().entries.map(
+                              (image) => GestureDetector(
+                                onTap: () {
+                                  final customImageProvider = CustomImageProvider(
+                                    imageUrls: [
+                                      ...record.imagePaths!.map((image) => '$imagePath/$image'),
+                                    ].toList(),
+                                    initialIndex: image.key,
+                                  );
+                                  showImageViewerPager(
+                                    context,
+                                    customImageProvider,
+                                    swipeDismissible: true,
+                                    useSafeArea: true,
+                                  );
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 8),
+                                  child: SizedBox(
+                                    width: 80,
+                                    height: 80,
+                                    child: Image.file(
+                                      File('$imagePath/${image.value}'),
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                      ],
+                    ),
+                  ),
               ],
             ),
           ),
@@ -343,4 +412,149 @@ class _BrandListTile extends HookConsumerWidget {
       },
     );
   }
+}
+
+class _FirstSecondIcon extends StatelessWidget {
+  const _FirstSecondIcon({
+    required this.firstSecond,
+    this.width = 24,
+    this.height = 24,
+    this.fontSize = 12,
+    Key? key,
+  }) : super(key: key);
+  final FirstSecond firstSecond;
+  final double width;
+  final double height;
+  final double fontSize;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: width,
+      height: height,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: firstSecond == FirstSecond.first ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.secondary,
+      ),
+      child: Center(
+        child: Text(
+          firstSecond == FirstSecond.first ? S.of(context).recordListFirst : S.of(context).recordListSecond,
+          style: Theme.of(context).primaryTextTheme.labelMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+                height: 1,
+                fontSize: fontSize,
+              ),
+        ),
+      ),
+    );
+  }
+}
+
+class _WinLossIcon extends StatelessWidget {
+  const _WinLossIcon({
+    required this.winLoss,
+    this.height = 30,
+    this.width = 45,
+    this.fontSize = 22,
+    Key? key,
+  }) : super(key: key);
+
+  final WinLoss winLoss;
+  final double height;
+  final double width;
+  final double fontSize;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: width,
+      height: height,
+      decoration: BoxDecoration(
+        shape: BoxShape.rectangle,
+        borderRadius: BorderRadius.circular(6),
+        color: winLoss == WinLoss.win
+            ? const Color(0xFFA21F16)
+            : winLoss == WinLoss.loss
+                ? const Color(0xFF3547AC)
+                : Colors.grey,
+      ),
+      child: Center(
+        child: Text(
+          winLoss == WinLoss.win
+              ? 'Win'
+              : winLoss == WinLoss.loss
+                  ? 'Loss'
+                  : 'Draw',
+          style: GoogleFonts.bangers(
+            fontSize: fontSize,
+            color: Colors.white,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _BO3MatchRow extends StatelessWidget {
+  const _BO3MatchRow({
+    required this.winLoss,
+    required this.firstSecond,
+    required this.title,
+    Key? key,
+  }) : super(key: key);
+
+  final WinLoss? winLoss;
+  final FirstSecond? firstSecond;
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 100,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: Theme.of(context).textTheme.caption?.copyWith(fontSize: 10),
+          ),
+          if (winLoss == null)
+            const SizedBox(
+              height: 16,
+              width: 30,
+              child: Text('-'),
+            ),
+          if (firstSecond != null)
+            _FirstSecondIcon(
+              firstSecond: firstSecond!,
+              width: 16,
+              height: 16,
+              fontSize: 9,
+            ),
+          if (winLoss != null)
+            _WinLossIcon(
+              winLoss: winLoss!,
+              height: 16,
+              width: 30,
+              fontSize: 12,
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class CustomImageProvider extends EasyImageProvider {
+  @override
+  final int initialIndex;
+  final List<String> imageUrls;
+
+  CustomImageProvider({required this.imageUrls, this.initialIndex = 0}) : super();
+
+  @override
+  ImageProvider<Object> imageBuilder(BuildContext context, int index) {
+    return Image.file(File(imageUrls[index])).image;
+  }
+
+  @override
+  int get imageCount => imageUrls.length;
 }

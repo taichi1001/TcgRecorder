@@ -32,14 +32,51 @@ mixin _$Record {
   int? get opponentDeckId => throw _privateConstructorUsedError;
   @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson)
   DateTime? get date => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: _boFromJson, toJson: _boToJson)
+  BO get bo => throw _privateConstructorUsedError;
   @JsonKey(
       fromJson: _firstSecondFromJson,
       toJson: _firstSecondToJson,
       name: 'first_second')
   FirstSecond get firstSecond => throw _privateConstructorUsedError;
+  @JsonKey(
+      fromJson: _nullableFirstSecondFromJson,
+      toJson: _nullableFirstSecondToJson,
+      name: 'first_match_first_second')
+  FirstSecond? get firstMatchFirstSecond => throw _privateConstructorUsedError;
+  @JsonKey(
+      fromJson: _nullableFirstSecondFromJson,
+      toJson: _nullableFirstSecondToJson,
+      name: 'second_match_first_second')
+  FirstSecond? get secondMatchFirstSecond => throw _privateConstructorUsedError;
+  @JsonKey(
+      fromJson: _nullableFirstSecondFromJson,
+      toJson: _nullableFirstSecondToJson,
+      name: 'third_match_first_second')
+  FirstSecond? get thiredMatchFirstSecond => throw _privateConstructorUsedError;
   @JsonKey(fromJson: _winLossFromJson, toJson: _winLossToJson, name: 'win_loss')
   WinLoss get winLoss => throw _privateConstructorUsedError;
+  @JsonKey(
+      fromJson: _nullableWinLossFromJson,
+      toJson: _nullableWinLossToJson,
+      name: 'first_match_win_loss')
+  WinLoss? get firstMatchWinLoss => throw _privateConstructorUsedError;
+  @JsonKey(
+      fromJson: _nullableWinLossFromJson,
+      toJson: _nullableWinLossToJson,
+      name: 'second_match_win_loss')
+  WinLoss? get secondMatchWinLoss => throw _privateConstructorUsedError;
+  @JsonKey(
+      fromJson: _nullableWinLossFromJson,
+      toJson: _nullableWinLossToJson,
+      name: 'third_match_win_loss')
+  WinLoss? get thirdMatchWinLoss => throw _privateConstructorUsedError;
   String? get memo => throw _privateConstructorUsedError;
+  @JsonKey(
+      fromJson: _stringListFromJson,
+      toJson: _stringListToJson,
+      name: 'image_path')
+  List<String>? get imagePath => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -63,11 +100,27 @@ abstract class $RecordCopyWith<$Res> {
           int? opponentDeckId,
       @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson)
           DateTime? date,
+      @JsonKey(fromJson: _boFromJson, toJson: _boToJson)
+          BO bo,
       @JsonKey(fromJson: _firstSecondFromJson, toJson: _firstSecondToJson, name: 'first_second')
           FirstSecond firstSecond,
+      @JsonKey(fromJson: _nullableFirstSecondFromJson, toJson: _nullableFirstSecondToJson, name: 'first_match_first_second')
+          FirstSecond? firstMatchFirstSecond,
+      @JsonKey(fromJson: _nullableFirstSecondFromJson, toJson: _nullableFirstSecondToJson, name: 'second_match_first_second')
+          FirstSecond? secondMatchFirstSecond,
+      @JsonKey(fromJson: _nullableFirstSecondFromJson, toJson: _nullableFirstSecondToJson, name: 'third_match_first_second')
+          FirstSecond? thiredMatchFirstSecond,
       @JsonKey(fromJson: _winLossFromJson, toJson: _winLossToJson, name: 'win_loss')
           WinLoss winLoss,
-      String? memo});
+      @JsonKey(fromJson: _nullableWinLossFromJson, toJson: _nullableWinLossToJson, name: 'first_match_win_loss')
+          WinLoss? firstMatchWinLoss,
+      @JsonKey(fromJson: _nullableWinLossFromJson, toJson: _nullableWinLossToJson, name: 'second_match_win_loss')
+          WinLoss? secondMatchWinLoss,
+      @JsonKey(fromJson: _nullableWinLossFromJson, toJson: _nullableWinLossToJson, name: 'third_match_win_loss')
+          WinLoss? thirdMatchWinLoss,
+      String? memo,
+      @JsonKey(fromJson: _stringListFromJson, toJson: _stringListToJson, name: 'image_path')
+          List<String>? imagePath});
 }
 
 /// @nodoc
@@ -86,9 +139,17 @@ class _$RecordCopyWithImpl<$Res> implements $RecordCopyWith<$Res> {
     Object? useDeckId = freezed,
     Object? opponentDeckId = freezed,
     Object? date = freezed,
+    Object? bo = freezed,
     Object? firstSecond = freezed,
+    Object? firstMatchFirstSecond = freezed,
+    Object? secondMatchFirstSecond = freezed,
+    Object? thiredMatchFirstSecond = freezed,
     Object? winLoss = freezed,
+    Object? firstMatchWinLoss = freezed,
+    Object? secondMatchWinLoss = freezed,
+    Object? thirdMatchWinLoss = freezed,
     Object? memo = freezed,
+    Object? imagePath = freezed,
   }) {
     return _then(_value.copyWith(
       recordId: recordId == freezed
@@ -115,18 +176,50 @@ class _$RecordCopyWithImpl<$Res> implements $RecordCopyWith<$Res> {
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      bo: bo == freezed
+          ? _value.bo
+          : bo // ignore: cast_nullable_to_non_nullable
+              as BO,
       firstSecond: firstSecond == freezed
           ? _value.firstSecond
           : firstSecond // ignore: cast_nullable_to_non_nullable
               as FirstSecond,
+      firstMatchFirstSecond: firstMatchFirstSecond == freezed
+          ? _value.firstMatchFirstSecond
+          : firstMatchFirstSecond // ignore: cast_nullable_to_non_nullable
+              as FirstSecond?,
+      secondMatchFirstSecond: secondMatchFirstSecond == freezed
+          ? _value.secondMatchFirstSecond
+          : secondMatchFirstSecond // ignore: cast_nullable_to_non_nullable
+              as FirstSecond?,
+      thiredMatchFirstSecond: thiredMatchFirstSecond == freezed
+          ? _value.thiredMatchFirstSecond
+          : thiredMatchFirstSecond // ignore: cast_nullable_to_non_nullable
+              as FirstSecond?,
       winLoss: winLoss == freezed
           ? _value.winLoss
           : winLoss // ignore: cast_nullable_to_non_nullable
               as WinLoss,
+      firstMatchWinLoss: firstMatchWinLoss == freezed
+          ? _value.firstMatchWinLoss
+          : firstMatchWinLoss // ignore: cast_nullable_to_non_nullable
+              as WinLoss?,
+      secondMatchWinLoss: secondMatchWinLoss == freezed
+          ? _value.secondMatchWinLoss
+          : secondMatchWinLoss // ignore: cast_nullable_to_non_nullable
+              as WinLoss?,
+      thirdMatchWinLoss: thirdMatchWinLoss == freezed
+          ? _value.thirdMatchWinLoss
+          : thirdMatchWinLoss // ignore: cast_nullable_to_non_nullable
+              as WinLoss?,
       memo: memo == freezed
           ? _value.memo
           : memo // ignore: cast_nullable_to_non_nullable
               as String?,
+      imagePath: imagePath == freezed
+          ? _value.imagePath
+          : imagePath // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
     ));
   }
 }
@@ -149,11 +242,27 @@ abstract class _$$_RecordCopyWith<$Res> implements $RecordCopyWith<$Res> {
           int? opponentDeckId,
       @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson)
           DateTime? date,
+      @JsonKey(fromJson: _boFromJson, toJson: _boToJson)
+          BO bo,
       @JsonKey(fromJson: _firstSecondFromJson, toJson: _firstSecondToJson, name: 'first_second')
           FirstSecond firstSecond,
+      @JsonKey(fromJson: _nullableFirstSecondFromJson, toJson: _nullableFirstSecondToJson, name: 'first_match_first_second')
+          FirstSecond? firstMatchFirstSecond,
+      @JsonKey(fromJson: _nullableFirstSecondFromJson, toJson: _nullableFirstSecondToJson, name: 'second_match_first_second')
+          FirstSecond? secondMatchFirstSecond,
+      @JsonKey(fromJson: _nullableFirstSecondFromJson, toJson: _nullableFirstSecondToJson, name: 'third_match_first_second')
+          FirstSecond? thiredMatchFirstSecond,
       @JsonKey(fromJson: _winLossFromJson, toJson: _winLossToJson, name: 'win_loss')
           WinLoss winLoss,
-      String? memo});
+      @JsonKey(fromJson: _nullableWinLossFromJson, toJson: _nullableWinLossToJson, name: 'first_match_win_loss')
+          WinLoss? firstMatchWinLoss,
+      @JsonKey(fromJson: _nullableWinLossFromJson, toJson: _nullableWinLossToJson, name: 'second_match_win_loss')
+          WinLoss? secondMatchWinLoss,
+      @JsonKey(fromJson: _nullableWinLossFromJson, toJson: _nullableWinLossToJson, name: 'third_match_win_loss')
+          WinLoss? thirdMatchWinLoss,
+      String? memo,
+      @JsonKey(fromJson: _stringListFromJson, toJson: _stringListToJson, name: 'image_path')
+          List<String>? imagePath});
 }
 
 /// @nodoc
@@ -173,9 +282,17 @@ class __$$_RecordCopyWithImpl<$Res> extends _$RecordCopyWithImpl<$Res>
     Object? useDeckId = freezed,
     Object? opponentDeckId = freezed,
     Object? date = freezed,
+    Object? bo = freezed,
     Object? firstSecond = freezed,
+    Object? firstMatchFirstSecond = freezed,
+    Object? secondMatchFirstSecond = freezed,
+    Object? thiredMatchFirstSecond = freezed,
     Object? winLoss = freezed,
+    Object? firstMatchWinLoss = freezed,
+    Object? secondMatchWinLoss = freezed,
+    Object? thirdMatchWinLoss = freezed,
     Object? memo = freezed,
+    Object? imagePath = freezed,
   }) {
     return _then(_$_Record(
       recordId: recordId == freezed
@@ -202,18 +319,50 @@ class __$$_RecordCopyWithImpl<$Res> extends _$RecordCopyWithImpl<$Res>
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      bo: bo == freezed
+          ? _value.bo
+          : bo // ignore: cast_nullable_to_non_nullable
+              as BO,
       firstSecond: firstSecond == freezed
           ? _value.firstSecond
           : firstSecond // ignore: cast_nullable_to_non_nullable
               as FirstSecond,
+      firstMatchFirstSecond: firstMatchFirstSecond == freezed
+          ? _value.firstMatchFirstSecond
+          : firstMatchFirstSecond // ignore: cast_nullable_to_non_nullable
+              as FirstSecond?,
+      secondMatchFirstSecond: secondMatchFirstSecond == freezed
+          ? _value.secondMatchFirstSecond
+          : secondMatchFirstSecond // ignore: cast_nullable_to_non_nullable
+              as FirstSecond?,
+      thiredMatchFirstSecond: thiredMatchFirstSecond == freezed
+          ? _value.thiredMatchFirstSecond
+          : thiredMatchFirstSecond // ignore: cast_nullable_to_non_nullable
+              as FirstSecond?,
       winLoss: winLoss == freezed
           ? _value.winLoss
           : winLoss // ignore: cast_nullable_to_non_nullable
               as WinLoss,
+      firstMatchWinLoss: firstMatchWinLoss == freezed
+          ? _value.firstMatchWinLoss
+          : firstMatchWinLoss // ignore: cast_nullable_to_non_nullable
+              as WinLoss?,
+      secondMatchWinLoss: secondMatchWinLoss == freezed
+          ? _value.secondMatchWinLoss
+          : secondMatchWinLoss // ignore: cast_nullable_to_non_nullable
+              as WinLoss?,
+      thirdMatchWinLoss: thirdMatchWinLoss == freezed
+          ? _value.thirdMatchWinLoss
+          : thirdMatchWinLoss // ignore: cast_nullable_to_non_nullable
+              as WinLoss?,
       memo: memo == freezed
           ? _value.memo
           : memo // ignore: cast_nullable_to_non_nullable
               as String?,
+      imagePath: imagePath == freezed
+          ? _value._imagePath
+          : imagePath // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
     ));
   }
 }
@@ -234,11 +383,28 @@ class _$_Record implements _Record {
           this.opponentDeckId,
       @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson)
           this.date,
+      @JsonKey(fromJson: _boFromJson, toJson: _boToJson)
+          this.bo = BO.bo1,
       @JsonKey(fromJson: _firstSecondFromJson, toJson: _firstSecondToJson, name: 'first_second')
           this.firstSecond = FirstSecond.first,
+      @JsonKey(fromJson: _nullableFirstSecondFromJson, toJson: _nullableFirstSecondToJson, name: 'first_match_first_second')
+          this.firstMatchFirstSecond,
+      @JsonKey(fromJson: _nullableFirstSecondFromJson, toJson: _nullableFirstSecondToJson, name: 'second_match_first_second')
+          this.secondMatchFirstSecond,
+      @JsonKey(fromJson: _nullableFirstSecondFromJson, toJson: _nullableFirstSecondToJson, name: 'third_match_first_second')
+          this.thiredMatchFirstSecond,
       @JsonKey(fromJson: _winLossFromJson, toJson: _winLossToJson, name: 'win_loss')
           this.winLoss = WinLoss.win,
-      this.memo});
+      @JsonKey(fromJson: _nullableWinLossFromJson, toJson: _nullableWinLossToJson, name: 'first_match_win_loss')
+          this.firstMatchWinLoss,
+      @JsonKey(fromJson: _nullableWinLossFromJson, toJson: _nullableWinLossToJson, name: 'second_match_win_loss')
+          this.secondMatchWinLoss,
+      @JsonKey(fromJson: _nullableWinLossFromJson, toJson: _nullableWinLossToJson, name: 'third_match_win_loss')
+          this.thirdMatchWinLoss,
+      this.memo,
+      @JsonKey(fromJson: _stringListFromJson, toJson: _stringListToJson, name: 'image_path')
+          final List<String>? imagePath})
+      : _imagePath = imagePath;
 
   factory _$_Record.fromJson(Map<String, dynamic> json) =>
       _$$_RecordFromJson(json);
@@ -262,20 +428,71 @@ class _$_Record implements _Record {
   @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson)
   final DateTime? date;
   @override
+  @JsonKey(fromJson: _boFromJson, toJson: _boToJson)
+  final BO bo;
+  @override
   @JsonKey(
       fromJson: _firstSecondFromJson,
       toJson: _firstSecondToJson,
       name: 'first_second')
   final FirstSecond firstSecond;
   @override
+  @JsonKey(
+      fromJson: _nullableFirstSecondFromJson,
+      toJson: _nullableFirstSecondToJson,
+      name: 'first_match_first_second')
+  final FirstSecond? firstMatchFirstSecond;
+  @override
+  @JsonKey(
+      fromJson: _nullableFirstSecondFromJson,
+      toJson: _nullableFirstSecondToJson,
+      name: 'second_match_first_second')
+  final FirstSecond? secondMatchFirstSecond;
+  @override
+  @JsonKey(
+      fromJson: _nullableFirstSecondFromJson,
+      toJson: _nullableFirstSecondToJson,
+      name: 'third_match_first_second')
+  final FirstSecond? thiredMatchFirstSecond;
+  @override
   @JsonKey(fromJson: _winLossFromJson, toJson: _winLossToJson, name: 'win_loss')
   final WinLoss winLoss;
   @override
+  @JsonKey(
+      fromJson: _nullableWinLossFromJson,
+      toJson: _nullableWinLossToJson,
+      name: 'first_match_win_loss')
+  final WinLoss? firstMatchWinLoss;
+  @override
+  @JsonKey(
+      fromJson: _nullableWinLossFromJson,
+      toJson: _nullableWinLossToJson,
+      name: 'second_match_win_loss')
+  final WinLoss? secondMatchWinLoss;
+  @override
+  @JsonKey(
+      fromJson: _nullableWinLossFromJson,
+      toJson: _nullableWinLossToJson,
+      name: 'third_match_win_loss')
+  final WinLoss? thirdMatchWinLoss;
+  @override
   final String? memo;
+  final List<String>? _imagePath;
+  @override
+  @JsonKey(
+      fromJson: _stringListFromJson,
+      toJson: _stringListToJson,
+      name: 'image_path')
+  List<String>? get imagePath {
+    final value = _imagePath;
+    if (value == null) return null;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'Record(recordId: $recordId, gameId: $gameId, tagId: $tagId, useDeckId: $useDeckId, opponentDeckId: $opponentDeckId, date: $date, firstSecond: $firstSecond, winLoss: $winLoss, memo: $memo)';
+    return 'Record(recordId: $recordId, gameId: $gameId, tagId: $tagId, useDeckId: $useDeckId, opponentDeckId: $opponentDeckId, date: $date, bo: $bo, firstSecond: $firstSecond, firstMatchFirstSecond: $firstMatchFirstSecond, secondMatchFirstSecond: $secondMatchFirstSecond, thiredMatchFirstSecond: $thiredMatchFirstSecond, winLoss: $winLoss, firstMatchWinLoss: $firstMatchWinLoss, secondMatchWinLoss: $secondMatchWinLoss, thirdMatchWinLoss: $thirdMatchWinLoss, memo: $memo, imagePath: $imagePath)';
   }
 
   @override
@@ -290,10 +507,25 @@ class _$_Record implements _Record {
             const DeepCollectionEquality()
                 .equals(other.opponentDeckId, opponentDeckId) &&
             const DeepCollectionEquality().equals(other.date, date) &&
+            const DeepCollectionEquality().equals(other.bo, bo) &&
             const DeepCollectionEquality()
                 .equals(other.firstSecond, firstSecond) &&
+            const DeepCollectionEquality()
+                .equals(other.firstMatchFirstSecond, firstMatchFirstSecond) &&
+            const DeepCollectionEquality()
+                .equals(other.secondMatchFirstSecond, secondMatchFirstSecond) &&
+            const DeepCollectionEquality()
+                .equals(other.thiredMatchFirstSecond, thiredMatchFirstSecond) &&
             const DeepCollectionEquality().equals(other.winLoss, winLoss) &&
-            const DeepCollectionEquality().equals(other.memo, memo));
+            const DeepCollectionEquality()
+                .equals(other.firstMatchWinLoss, firstMatchWinLoss) &&
+            const DeepCollectionEquality()
+                .equals(other.secondMatchWinLoss, secondMatchWinLoss) &&
+            const DeepCollectionEquality()
+                .equals(other.thirdMatchWinLoss, thirdMatchWinLoss) &&
+            const DeepCollectionEquality().equals(other.memo, memo) &&
+            const DeepCollectionEquality()
+                .equals(other._imagePath, _imagePath));
   }
 
   @JsonKey(ignore: true)
@@ -306,9 +538,17 @@ class _$_Record implements _Record {
       const DeepCollectionEquality().hash(useDeckId),
       const DeepCollectionEquality().hash(opponentDeckId),
       const DeepCollectionEquality().hash(date),
+      const DeepCollectionEquality().hash(bo),
       const DeepCollectionEquality().hash(firstSecond),
+      const DeepCollectionEquality().hash(firstMatchFirstSecond),
+      const DeepCollectionEquality().hash(secondMatchFirstSecond),
+      const DeepCollectionEquality().hash(thiredMatchFirstSecond),
       const DeepCollectionEquality().hash(winLoss),
-      const DeepCollectionEquality().hash(memo));
+      const DeepCollectionEquality().hash(firstMatchWinLoss),
+      const DeepCollectionEquality().hash(secondMatchWinLoss),
+      const DeepCollectionEquality().hash(thirdMatchWinLoss),
+      const DeepCollectionEquality().hash(memo),
+      const DeepCollectionEquality().hash(_imagePath));
 
   @JsonKey(ignore: true)
   @override
@@ -335,11 +575,27 @@ abstract class _Record implements Record {
           final int? opponentDeckId,
       @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson)
           final DateTime? date,
+      @JsonKey(fromJson: _boFromJson, toJson: _boToJson)
+          final BO bo,
       @JsonKey(fromJson: _firstSecondFromJson, toJson: _firstSecondToJson, name: 'first_second')
           final FirstSecond firstSecond,
+      @JsonKey(fromJson: _nullableFirstSecondFromJson, toJson: _nullableFirstSecondToJson, name: 'first_match_first_second')
+          final FirstSecond? firstMatchFirstSecond,
+      @JsonKey(fromJson: _nullableFirstSecondFromJson, toJson: _nullableFirstSecondToJson, name: 'second_match_first_second')
+          final FirstSecond? secondMatchFirstSecond,
+      @JsonKey(fromJson: _nullableFirstSecondFromJson, toJson: _nullableFirstSecondToJson, name: 'third_match_first_second')
+          final FirstSecond? thiredMatchFirstSecond,
       @JsonKey(fromJson: _winLossFromJson, toJson: _winLossToJson, name: 'win_loss')
           final WinLoss winLoss,
-      final String? memo}) = _$_Record;
+      @JsonKey(fromJson: _nullableWinLossFromJson, toJson: _nullableWinLossToJson, name: 'first_match_win_loss')
+          final WinLoss? firstMatchWinLoss,
+      @JsonKey(fromJson: _nullableWinLossFromJson, toJson: _nullableWinLossToJson, name: 'second_match_win_loss')
+          final WinLoss? secondMatchWinLoss,
+      @JsonKey(fromJson: _nullableWinLossFromJson, toJson: _nullableWinLossToJson, name: 'third_match_win_loss')
+          final WinLoss? thirdMatchWinLoss,
+      final String? memo,
+      @JsonKey(fromJson: _stringListFromJson, toJson: _stringListToJson, name: 'image_path')
+          final List<String>? imagePath}) = _$_Record;
 
   factory _Record.fromJson(Map<String, dynamic> json) = _$_Record.fromJson;
 
@@ -362,16 +618,61 @@ abstract class _Record implements Record {
   @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson)
   DateTime? get date => throw _privateConstructorUsedError;
   @override
+  @JsonKey(fromJson: _boFromJson, toJson: _boToJson)
+  BO get bo => throw _privateConstructorUsedError;
+  @override
   @JsonKey(
       fromJson: _firstSecondFromJson,
       toJson: _firstSecondToJson,
       name: 'first_second')
   FirstSecond get firstSecond => throw _privateConstructorUsedError;
   @override
+  @JsonKey(
+      fromJson: _nullableFirstSecondFromJson,
+      toJson: _nullableFirstSecondToJson,
+      name: 'first_match_first_second')
+  FirstSecond? get firstMatchFirstSecond => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(
+      fromJson: _nullableFirstSecondFromJson,
+      toJson: _nullableFirstSecondToJson,
+      name: 'second_match_first_second')
+  FirstSecond? get secondMatchFirstSecond => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(
+      fromJson: _nullableFirstSecondFromJson,
+      toJson: _nullableFirstSecondToJson,
+      name: 'third_match_first_second')
+  FirstSecond? get thiredMatchFirstSecond => throw _privateConstructorUsedError;
+  @override
   @JsonKey(fromJson: _winLossFromJson, toJson: _winLossToJson, name: 'win_loss')
   WinLoss get winLoss => throw _privateConstructorUsedError;
   @override
+  @JsonKey(
+      fromJson: _nullableWinLossFromJson,
+      toJson: _nullableWinLossToJson,
+      name: 'first_match_win_loss')
+  WinLoss? get firstMatchWinLoss => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(
+      fromJson: _nullableWinLossFromJson,
+      toJson: _nullableWinLossToJson,
+      name: 'second_match_win_loss')
+  WinLoss? get secondMatchWinLoss => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(
+      fromJson: _nullableWinLossFromJson,
+      toJson: _nullableWinLossToJson,
+      name: 'third_match_win_loss')
+  WinLoss? get thirdMatchWinLoss => throw _privateConstructorUsedError;
+  @override
   String? get memo => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(
+      fromJson: _stringListFromJson,
+      toJson: _stringListToJson,
+      name: 'image_path')
+  List<String>? get imagePath => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_RecordCopyWith<_$_Record> get copyWith =>
