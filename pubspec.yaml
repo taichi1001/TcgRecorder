@@ -93,6 +93,9 @@ dependencies:
 
   easy_image_viewer: ^1.1.0
 
+  share_plus: ^4.0.10+1
+
+  csv: ^5.0.1
 
 flutter_native_splash:
   image: "assets/images/icon.png"

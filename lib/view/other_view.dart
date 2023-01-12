@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
@@ -7,12 +9,15 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:settings_ui/settings_ui.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:tcg_manager/entity/game.dart';
 import 'package:tcg_manager/entity/record.dart';
 import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/helper/edit_record_helper.dart';
+import 'package:tcg_manager/helper/list_to_csv.dart';
 import 'package:tcg_manager/helper/theme_data.dart';
+import 'package:tcg_manager/main.dart';
 import 'package:tcg_manager/provider/bottom_navigation_bar_provider.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
@@ -25,6 +30,7 @@ import 'package:tcg_manager/repository/deck_repository.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
 import 'package:tcg_manager/selector/game_tag_list_selector.dart';
+import 'package:tcg_manager/selector/marged_record_list_selector.dart';
 import 'package:tcg_manager/view/component/custom_textfield.dart';
 import 'package:tcg_manager/view/component/slidable_tile.dart';
 import 'package:tcg_manager/view/component/web_view_screen.dart';
@@ -156,6 +162,24 @@ class OtherView extends HookConsumerWidget {
           SettingsSection(
             title: Text(S.of(context).otherSection),
             tiles: [
+              SettingsTile.navigation(
+                title: const Text('CSV出力'),
+                leading: const Icon(Icons.data_object),
+                onPressed: (context) async {
+                  final margedRecordList = await ref.read(allMargedRecordListProvider.future);
+                  final csv = ListToCSV.margeRecordListToCSV(margedRecordList);
+                  final savePath = ref.read(imagePathProvider);
+                  final logPath = '$savePath/toremane_output.csv';
+                  final textfilePath = File(logPath);
+                  await textfilePath.writeAsString(csv);
+                  Share.shareFiles([logPath]);
+                },
+              ),
+              SettingsTile.navigation(
+                title: const Text('バックアップ'),
+                leading: const Icon(Icons.restore),
+                onPressed: (context) async {},
+              ),
               SettingsTile.navigation(
                 title: Text(S.of(context).review),
                 leading: const Icon(Icons.reviews),
