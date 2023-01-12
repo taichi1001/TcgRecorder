@@ -94,7 +94,7 @@ class InputView extends HookConsumerWidget {
           children: [
             Expanded(
               child: CustomScaffold(
-                padding: const EdgeInsets.only(right: 8, left: 8, bottom: 8),
+                padding: const EdgeInsets.only(right: 8, left: 8),
                 leading: IconButton(
                   icon: const Icon(Icons.tune),
                   onPressed: () async {
@@ -632,7 +632,7 @@ class InputView extends HookConsumerWidget {
                                   child: Text(S.of(context).save),
                                 ),
                               ),
-                              const SizedBox(height: 8),
+                              const SizedBox(height: 16),
                             ],
                           ),
                         ),
