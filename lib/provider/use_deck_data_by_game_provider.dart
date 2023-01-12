@@ -30,7 +30,7 @@ final useDeckDataByGameProvider = FutureProvider.autoDispose<List<WinRateData>>(
             secondMatches: calc.countUseDeckSecondMatches(useDeck),
             win: calc.countUseDeckWins(useDeck),
             firstMatchesWin: calc.countUseDeckFirstMatchesWins(useDeck),
-            secondMatchesWin: calc.countUseDeckFirstMatchesLoss(useDeck),
+            secondMatchesWin: calc.countUseDeckSecondMatchesWins(useDeck),
             loss: calc.countUseDeckLoss(useDeck),
             firstMatchesLoss: calc.countUseDeckFirstMatchesLoss(useDeck),
             secondMatchesLoss: calc.countUseDeckSecondMatchesLoss(useDeck),
