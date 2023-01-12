@@ -153,6 +153,12 @@ class _BrandListTile extends HookConsumerWidget {
     key,
   }) : super(key: key);
 
+  double _makeWidth(bool isImage, bool isMemo) {
+    if (isImage && isMemo) return 154;
+    if (isImage || isMemo) return 130;
+    return 106;
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final record = ref.watch(currentMargedRecord);
@@ -238,11 +244,12 @@ class _BrandListTile extends HookConsumerWidget {
         ],
       ),
       trailing: SizedBox(
-        width: 130,
+        width: _makeWidth(isImage, isMemo),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            isMemo ? const Icon(Icons.description) : const SizedBox(width: 24),
+            if (isImage) const Icon(Icons.image),
+            if (isMemo) const Icon(Icons.description),
             Container(
               width: 24,
               decoration: BoxDecoration(
