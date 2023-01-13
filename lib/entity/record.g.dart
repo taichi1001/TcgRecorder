@@ -9,7 +9,7 @@ part of 'record.dart';
 _$_Record _$$_RecordFromJson(Map<String, dynamic> json) => _$_Record(
       recordId: json['record_id'] as int?,
       gameId: json['game_id'] as int?,
-      tagId: json['tag_id'] as int?,
+      tagId: _stringToInt(json['tag_id'] as String?),
       useDeckId: json['use_deck_id'] as int?,
       opponentDeckId: json['opponent_deck_id'] as int?,
       date: _dateTimeFromJson(json['date'] as String),
@@ -39,7 +39,7 @@ _$_Record _$$_RecordFromJson(Map<String, dynamic> json) => _$_Record(
 Map<String, dynamic> _$$_RecordToJson(_$_Record instance) => <String, dynamic>{
       'record_id': instance.recordId,
       'game_id': instance.gameId,
-      'tag_id': instance.tagId,
+      'tag_id': _intToString(instance.tagId),
       'use_deck_id': instance.useDeckId,
       'opponent_deck_id': instance.opponentDeckId,
       'date': _dateTimeToJson(instance.date),

@@ -11,7 +11,7 @@ class Record with _$Record {
   factory Record({
     @JsonKey(name: 'record_id') int? recordId,
     @JsonKey(name: 'game_id') int? gameId,
-    @JsonKey(name: 'tag_id') int? tagId,
+    @JsonKey(fromJson: _stringToInt, toJson: _intToString, name: 'tag_id') int? tagId,
     @JsonKey(name: 'use_deck_id') int? useDeckId,
     @JsonKey(name: 'opponent_deck_id') int? opponentDeckId,
     @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson) DateTime? date,
@@ -33,6 +33,16 @@ class Record with _$Record {
     @JsonKey(fromJson: _stringListFromJson, toJson: _stringListToJson, name: 'image_path') List<String>? imagePath,
   }) = _Record;
   factory Record.fromJson(Map<String, dynamic> json) => _$RecordFromJson(json);
+}
+
+int? _stringToInt(String? value) {
+  if (value == null) return null;
+  return int.parse(value);
+}
+
+String? _intToString(int? value) {
+  if (value == null) return null;
+  return value.toString();
 }
 
 FirstSecond _firstSecondFromJson(int value) {
@@ -152,6 +162,28 @@ String? _stringListToJson(List<String>? values) {
     if (count == 0) {
       // ignore: unnecessary_string_interpolations
       result = value;
+    } else {
+      result = '$result,$value';
+    }
+    count++;
+  }
+  return result;
+}
+
+List<int>? _intListFromJson(String? value) {
+  if (value == null) return null;
+  final splitList = value.split(',');
+  return splitList.map((e) => int.parse(e)).toList();
+}
+
+String? _intListToJson(List<int>? values) {
+  if (values == null || values.isEmpty) return null;
+  var result = '';
+  var count = 0;
+  for (final value in values) {
+    if (count == 0) {
+      // ignore: unnecessary_string_interpolations
+      result = value.toString();
     } else {
       result = '$result,$value';
     }

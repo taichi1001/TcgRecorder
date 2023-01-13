@@ -24,7 +24,7 @@ mixin _$Record {
   int? get recordId => throw _privateConstructorUsedError;
   @JsonKey(name: 'game_id')
   int? get gameId => throw _privateConstructorUsedError;
-  @JsonKey(name: 'tag_id')
+  @JsonKey(fromJson: _stringToInt, toJson: _intToString, name: 'tag_id')
   int? get tagId => throw _privateConstructorUsedError;
   @JsonKey(name: 'use_deck_id')
   int? get useDeckId => throw _privateConstructorUsedError;
@@ -92,7 +92,7 @@ abstract class $RecordCopyWith<$Res> {
           int? recordId,
       @JsonKey(name: 'game_id')
           int? gameId,
-      @JsonKey(name: 'tag_id')
+      @JsonKey(fromJson: _stringToInt, toJson: _intToString, name: 'tag_id')
           int? tagId,
       @JsonKey(name: 'use_deck_id')
           int? useDeckId,
@@ -234,7 +234,7 @@ abstract class _$$_RecordCopyWith<$Res> implements $RecordCopyWith<$Res> {
           int? recordId,
       @JsonKey(name: 'game_id')
           int? gameId,
-      @JsonKey(name: 'tag_id')
+      @JsonKey(fromJson: _stringToInt, toJson: _intToString, name: 'tag_id')
           int? tagId,
       @JsonKey(name: 'use_deck_id')
           int? useDeckId,
@@ -375,7 +375,7 @@ class _$_Record implements _Record {
           this.recordId,
       @JsonKey(name: 'game_id')
           this.gameId,
-      @JsonKey(name: 'tag_id')
+      @JsonKey(fromJson: _stringToInt, toJson: _intToString, name: 'tag_id')
           this.tagId,
       @JsonKey(name: 'use_deck_id')
           this.useDeckId,
@@ -416,7 +416,7 @@ class _$_Record implements _Record {
   @JsonKey(name: 'game_id')
   final int? gameId;
   @override
-  @JsonKey(name: 'tag_id')
+  @JsonKey(fromJson: _stringToInt, toJson: _intToString, name: 'tag_id')
   final int? tagId;
   @override
   @JsonKey(name: 'use_deck_id')
@@ -567,7 +567,7 @@ abstract class _Record implements Record {
           final int? recordId,
       @JsonKey(name: 'game_id')
           final int? gameId,
-      @JsonKey(name: 'tag_id')
+      @JsonKey(fromJson: _stringToInt, toJson: _intToString, name: 'tag_id')
           final int? tagId,
       @JsonKey(name: 'use_deck_id')
           final int? useDeckId,
@@ -606,7 +606,7 @@ abstract class _Record implements Record {
   @JsonKey(name: 'game_id')
   int? get gameId => throw _privateConstructorUsedError;
   @override
-  @JsonKey(name: 'tag_id')
+  @JsonKey(fromJson: _stringToInt, toJson: _intToString, name: 'tag_id')
   int? get tagId => throw _privateConstructorUsedError;
   @override
   @JsonKey(name: 'use_deck_id')
