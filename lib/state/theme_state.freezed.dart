@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'theme_state.dart';
 
@@ -28,33 +28,37 @@ mixin _$ThemeState {
 abstract class $ThemeStateCopyWith<$Res> {
   factory $ThemeStateCopyWith(
           ThemeState value, $Res Function(ThemeState) then) =
-      _$ThemeStateCopyWithImpl<$Res>;
+      _$ThemeStateCopyWithImpl<$Res, ThemeState>;
+  @useResult
   $Res call({FlexScheme scheme, FlexScheme previewScheme});
 }
 
 /// @nodoc
-class _$ThemeStateCopyWithImpl<$Res> implements $ThemeStateCopyWith<$Res> {
+class _$ThemeStateCopyWithImpl<$Res, $Val extends ThemeState>
+    implements $ThemeStateCopyWith<$Res> {
   _$ThemeStateCopyWithImpl(this._value, this._then);
 
-  final ThemeState _value;
   // ignore: unused_field
-  final $Res Function(ThemeState) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? scheme = freezed,
-    Object? previewScheme = freezed,
+    Object? scheme = null,
+    Object? previewScheme = null,
   }) {
     return _then(_value.copyWith(
-      scheme: scheme == freezed
+      scheme: null == scheme
           ? _value.scheme
           : scheme // ignore: cast_nullable_to_non_nullable
               as FlexScheme,
-      previewScheme: previewScheme == freezed
+      previewScheme: null == previewScheme
           ? _value.previewScheme
           : previewScheme // ignore: cast_nullable_to_non_nullable
               as FlexScheme,
-    ));
+    ) as $Val);
   }
 }
 
@@ -65,30 +69,30 @@ abstract class _$$_ThemeStateCopyWith<$Res>
           _$_ThemeState value, $Res Function(_$_ThemeState) then) =
       __$$_ThemeStateCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call({FlexScheme scheme, FlexScheme previewScheme});
 }
 
 /// @nodoc
-class __$$_ThemeStateCopyWithImpl<$Res> extends _$ThemeStateCopyWithImpl<$Res>
+class __$$_ThemeStateCopyWithImpl<$Res>
+    extends _$ThemeStateCopyWithImpl<$Res, _$_ThemeState>
     implements _$$_ThemeStateCopyWith<$Res> {
   __$$_ThemeStateCopyWithImpl(
       _$_ThemeState _value, $Res Function(_$_ThemeState) _then)
-      : super(_value, (v) => _then(v as _$_ThemeState));
+      : super(_value, _then);
 
-  @override
-  _$_ThemeState get _value => super._value as _$_ThemeState;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? scheme = freezed,
-    Object? previewScheme = freezed,
+    Object? scheme = null,
+    Object? previewScheme = null,
   }) {
     return _then(_$_ThemeState(
-      scheme: scheme == freezed
+      scheme: null == scheme
           ? _value.scheme
           : scheme // ignore: cast_nullable_to_non_nullable
               as FlexScheme,
-      previewScheme: previewScheme == freezed
+      previewScheme: null == previewScheme
           ? _value.previewScheme
           : previewScheme // ignore: cast_nullable_to_non_nullable
               as FlexScheme,
@@ -120,19 +124,17 @@ class _$_ThemeState implements _ThemeState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_ThemeState &&
-            const DeepCollectionEquality().equals(other.scheme, scheme) &&
-            const DeepCollectionEquality()
-                .equals(other.previewScheme, previewScheme));
+            (identical(other.scheme, scheme) || other.scheme == scheme) &&
+            (identical(other.previewScheme, previewScheme) ||
+                other.previewScheme == previewScheme));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(scheme),
-      const DeepCollectionEquality().hash(previewScheme));
+  int get hashCode => Object.hash(runtimeType, scheme, previewScheme);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_ThemeStateCopyWith<_$_ThemeState> get copyWith =>
       __$$_ThemeStateCopyWithImpl<_$_ThemeState>(this, _$identity);
 }
@@ -143,9 +145,9 @@ abstract class _ThemeState implements ThemeState {
       final FlexScheme previewScheme}) = _$_ThemeState;
 
   @override
-  FlexScheme get scheme => throw _privateConstructorUsedError;
+  FlexScheme get scheme;
   @override
-  FlexScheme get previewScheme => throw _privateConstructorUsedError;
+  FlexScheme get previewScheme;
   @override
   @JsonKey(ignore: true)
   _$$_ThemeStateCopyWith<_$_ThemeState> get copyWith =>

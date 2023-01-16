@@ -287,6 +287,7 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                       context: context,
                       backgroundColor: Colors.transparent,
                       builder: (BuildContext context) => SelectTagView(
+                        tagCount: 0,
                         selectTagFunc: recordListViewNotifier.selectTag,
                       ),
                     );

@@ -1,3 +1,5 @@
+// ignore_for_file: unused_result
+
 import 'dart:io';
 
 import 'package:adaptive_dialog/adaptive_dialog.dart';
@@ -613,7 +615,7 @@ class _TagListView extends HookConsumerWidget {
                             final targetTagList = isTagList.where((record) => record.tagId! == tagList[index].tagId).toList();
                             final List<Record> newTagRecordList = [];
                             for (var tag in targetTagList) {
-                              tag = tag.copyWith(tagId: oldTag.tag!.tagId);
+                              tag = tag.copyWith(tagId: [oldTag.tag!.tagId!]); // TODO 複数入力対応が必要
                               newTagRecordList.add(tag);
                             }
                             await ref.read(recordRepository).updateRecordList(newTagRecordList);

@@ -111,7 +111,13 @@ class _EditView extends HookConsumerWidget {
     final winLoss = ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.editMargedRecord.winLoss));
     final useDeckTextController = useTextEditingController(text: editMargedRecord.useDeck);
     final opponentDeckTextController = useTextEditingController(text: editMargedRecord.opponentDeck);
-    final tagTextController = useTextEditingController(text: editMargedRecord.tag);
+
+    TextEditingController tagTextController;
+    if (editMargedRecord.tag.isNotEmpty) {
+      tagTextController = useTextEditingController(text: editMargedRecord.tag.first); // TODO 複数入力対応が必要
+    } else {
+      tagTextController = useTextEditingController(text: '');
+    }
     final memoTextController = useTextEditingController(text: editMargedRecord.memo);
     final outputFormat = DateFormat(S.of(context).dateFormat);
     final isSelectPicker = useState(false);
@@ -124,7 +130,7 @@ class _EditView extends HookConsumerWidget {
     if (isSelectPicker.value) {
       useDeckTextController.text = editMargedRecord.useDeck;
       opponentDeckTextController.text = editMargedRecord.opponentDeck;
-      tagTextController.text = editMargedRecord.tag ?? '';
+      tagTextController.text = editMargedRecord.tag.first; // TODO 複数入力対応が必要
       memoTextController.text = editMargedRecord.memo ?? '';
       isSelectPicker.value = false;
     }
@@ -341,6 +347,7 @@ class _EditView extends HookConsumerWidget {
                                   builder: (BuildContext context) {
                                     return SelectTagView(
                                       selectTagFunc: recordDetailNotifier.selectTag,
+                                      tagCount: 0,
                                     );
                                   },
                                 );

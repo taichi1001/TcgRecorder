@@ -3,18 +3,18 @@ import 'package:tcg_manager/main.dart';
 import 'package:tcg_manager/state/input_view_settings_state.dart';
 
 class InputViewSettingsNotifier extends StateNotifier<InputViewSettingsState> {
-  InputViewSettingsNotifier(this.read) : super(InputViewSettingsState()) {
+  InputViewSettingsNotifier(this.ref) : super(InputViewSettingsState()) {
     _init();
   }
 
-  final Reader read;
+  final Ref ref;
   static const fixUseDeckKey = 'fixUseDeck';
   static const fixOpponentDeckKey = 'fixOpponentDeck';
   static const fixTagKey = 'fixTag';
   static const drawKey = 'draw';
   static const bo3Key = 'bo3';
 
-  late final prefs = read(sharedPreferencesProvider);
+  late final prefs = ref.read(sharedPreferencesProvider);
 
   void _init() {
     state = state.copyWith(
@@ -65,5 +65,5 @@ class InputViewSettingsNotifier extends StateNotifier<InputViewSettingsState> {
 }
 
 final inputViewSettingsNotifierProvider = StateNotifierProvider<InputViewSettingsNotifier, InputViewSettingsState>(
-  (ref) => InputViewSettingsNotifier(ref.read),
+  (ref) => InputViewSettingsNotifier(ref),
 );

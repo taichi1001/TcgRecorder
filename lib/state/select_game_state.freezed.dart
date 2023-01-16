@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'select_game_state.dart';
 
@@ -28,7 +28,8 @@ mixin _$SelectGameState {
 abstract class $SelectGameStateCopyWith<$Res> {
   factory $SelectGameStateCopyWith(
           SelectGameState value, $Res Function(SelectGameState) then) =
-      _$SelectGameStateCopyWithImpl<$Res>;
+      _$SelectGameStateCopyWithImpl<$Res, SelectGameState>;
+  @useResult
   $Res call({Game? selectGame, Game? cacheSelectGame});
 
   $GameCopyWith<$Res>? get selectGame;
@@ -36,50 +37,54 @@ abstract class $SelectGameStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$SelectGameStateCopyWithImpl<$Res>
+class _$SelectGameStateCopyWithImpl<$Res, $Val extends SelectGameState>
     implements $SelectGameStateCopyWith<$Res> {
   _$SelectGameStateCopyWithImpl(this._value, this._then);
 
-  final SelectGameState _value;
   // ignore: unused_field
-  final $Res Function(SelectGameState) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? selectGame = freezed,
     Object? cacheSelectGame = freezed,
   }) {
     return _then(_value.copyWith(
-      selectGame: selectGame == freezed
+      selectGame: freezed == selectGame
           ? _value.selectGame
           : selectGame // ignore: cast_nullable_to_non_nullable
               as Game?,
-      cacheSelectGame: cacheSelectGame == freezed
+      cacheSelectGame: freezed == cacheSelectGame
           ? _value.cacheSelectGame
           : cacheSelectGame // ignore: cast_nullable_to_non_nullable
               as Game?,
-    ));
+    ) as $Val);
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $GameCopyWith<$Res>? get selectGame {
     if (_value.selectGame == null) {
       return null;
     }
 
     return $GameCopyWith<$Res>(_value.selectGame!, (value) {
-      return _then(_value.copyWith(selectGame: value));
+      return _then(_value.copyWith(selectGame: value) as $Val);
     });
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $GameCopyWith<$Res>? get cacheSelectGame {
     if (_value.cacheSelectGame == null) {
       return null;
     }
 
     return $GameCopyWith<$Res>(_value.cacheSelectGame!, (value) {
-      return _then(_value.copyWith(cacheSelectGame: value));
+      return _then(_value.copyWith(cacheSelectGame: value) as $Val);
     });
   }
 }
@@ -91,6 +96,7 @@ abstract class _$$_SelectGameStateCopyWith<$Res>
           _$_SelectGameState value, $Res Function(_$_SelectGameState) then) =
       __$$_SelectGameStateCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call({Game? selectGame, Game? cacheSelectGame});
 
   @override
@@ -101,26 +107,24 @@ abstract class _$$_SelectGameStateCopyWith<$Res>
 
 /// @nodoc
 class __$$_SelectGameStateCopyWithImpl<$Res>
-    extends _$SelectGameStateCopyWithImpl<$Res>
+    extends _$SelectGameStateCopyWithImpl<$Res, _$_SelectGameState>
     implements _$$_SelectGameStateCopyWith<$Res> {
   __$$_SelectGameStateCopyWithImpl(
       _$_SelectGameState _value, $Res Function(_$_SelectGameState) _then)
-      : super(_value, (v) => _then(v as _$_SelectGameState));
+      : super(_value, _then);
 
-  @override
-  _$_SelectGameState get _value => super._value as _$_SelectGameState;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? selectGame = freezed,
     Object? cacheSelectGame = freezed,
   }) {
     return _then(_$_SelectGameState(
-      selectGame: selectGame == freezed
+      selectGame: freezed == selectGame
           ? _value.selectGame
           : selectGame // ignore: cast_nullable_to_non_nullable
               as Game?,
-      cacheSelectGame: cacheSelectGame == freezed
+      cacheSelectGame: freezed == cacheSelectGame
           ? _value.cacheSelectGame
           : cacheSelectGame // ignore: cast_nullable_to_non_nullable
               as Game?,
@@ -148,20 +152,18 @@ class _$_SelectGameState implements _SelectGameState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_SelectGameState &&
-            const DeepCollectionEquality()
-                .equals(other.selectGame, selectGame) &&
-            const DeepCollectionEquality()
-                .equals(other.cacheSelectGame, cacheSelectGame));
+            (identical(other.selectGame, selectGame) ||
+                other.selectGame == selectGame) &&
+            (identical(other.cacheSelectGame, cacheSelectGame) ||
+                other.cacheSelectGame == cacheSelectGame));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(selectGame),
-      const DeepCollectionEquality().hash(cacheSelectGame));
+  int get hashCode => Object.hash(runtimeType, selectGame, cacheSelectGame);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_SelectGameStateCopyWith<_$_SelectGameState> get copyWith =>
       __$$_SelectGameStateCopyWithImpl<_$_SelectGameState>(this, _$identity);
 }
@@ -172,9 +174,9 @@ abstract class _SelectGameState implements SelectGameState {
       final Game? cacheSelectGame}) = _$_SelectGameState;
 
   @override
-  Game? get selectGame => throw _privateConstructorUsedError;
+  Game? get selectGame;
   @override
-  Game? get cacheSelectGame => throw _privateConstructorUsedError;
+  Game? get cacheSelectGame;
   @override
   @JsonKey(ignore: true)
   _$$_SelectGameStateCopyWith<_$_SelectGameState> get copyWith =>

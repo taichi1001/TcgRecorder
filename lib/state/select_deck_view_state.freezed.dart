@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'select_deck_view_state.dart';
 
@@ -29,39 +29,42 @@ mixin _$SelectDeckViewState {
 abstract class $SelectDeckViewStateCopyWith<$Res> {
   factory $SelectDeckViewStateCopyWith(
           SelectDeckViewState value, $Res Function(SelectDeckViewState) then) =
-      _$SelectDeckViewStateCopyWithImpl<$Res>;
+      _$SelectDeckViewStateCopyWithImpl<$Res, SelectDeckViewState>;
+  @useResult
   $Res call({Sort sortType, bool isSearch, String searchText});
 }
 
 /// @nodoc
-class _$SelectDeckViewStateCopyWithImpl<$Res>
+class _$SelectDeckViewStateCopyWithImpl<$Res, $Val extends SelectDeckViewState>
     implements $SelectDeckViewStateCopyWith<$Res> {
   _$SelectDeckViewStateCopyWithImpl(this._value, this._then);
 
-  final SelectDeckViewState _value;
   // ignore: unused_field
-  final $Res Function(SelectDeckViewState) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? sortType = freezed,
-    Object? isSearch = freezed,
-    Object? searchText = freezed,
+    Object? sortType = null,
+    Object? isSearch = null,
+    Object? searchText = null,
   }) {
     return _then(_value.copyWith(
-      sortType: sortType == freezed
+      sortType: null == sortType
           ? _value.sortType
           : sortType // ignore: cast_nullable_to_non_nullable
               as Sort,
-      isSearch: isSearch == freezed
+      isSearch: null == isSearch
           ? _value.isSearch
           : isSearch // ignore: cast_nullable_to_non_nullable
               as bool,
-      searchText: searchText == freezed
+      searchText: null == searchText
           ? _value.searchText
           : searchText // ignore: cast_nullable_to_non_nullable
               as String,
-    ));
+    ) as $Val);
   }
 }
 
@@ -72,36 +75,35 @@ abstract class _$$_SelectDeckViewStateCopyWith<$Res>
           $Res Function(_$_SelectDeckViewState) then) =
       __$$_SelectDeckViewStateCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call({Sort sortType, bool isSearch, String searchText});
 }
 
 /// @nodoc
 class __$$_SelectDeckViewStateCopyWithImpl<$Res>
-    extends _$SelectDeckViewStateCopyWithImpl<$Res>
+    extends _$SelectDeckViewStateCopyWithImpl<$Res, _$_SelectDeckViewState>
     implements _$$_SelectDeckViewStateCopyWith<$Res> {
   __$$_SelectDeckViewStateCopyWithImpl(_$_SelectDeckViewState _value,
       $Res Function(_$_SelectDeckViewState) _then)
-      : super(_value, (v) => _then(v as _$_SelectDeckViewState));
+      : super(_value, _then);
 
-  @override
-  _$_SelectDeckViewState get _value => super._value as _$_SelectDeckViewState;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? sortType = freezed,
-    Object? isSearch = freezed,
-    Object? searchText = freezed,
+    Object? sortType = null,
+    Object? isSearch = null,
+    Object? searchText = null,
   }) {
     return _then(_$_SelectDeckViewState(
-      sortType: sortType == freezed
+      sortType: null == sortType
           ? _value.sortType
           : sortType // ignore: cast_nullable_to_non_nullable
               as Sort,
-      isSearch: isSearch == freezed
+      isSearch: null == isSearch
           ? _value.isSearch
           : isSearch // ignore: cast_nullable_to_non_nullable
               as bool,
-      searchText: searchText == freezed
+      searchText: null == searchText
           ? _value.searchText
           : searchText // ignore: cast_nullable_to_non_nullable
               as String,
@@ -137,21 +139,20 @@ class _$_SelectDeckViewState implements _SelectDeckViewState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_SelectDeckViewState &&
-            const DeepCollectionEquality().equals(other.sortType, sortType) &&
-            const DeepCollectionEquality().equals(other.isSearch, isSearch) &&
-            const DeepCollectionEquality()
-                .equals(other.searchText, searchText));
+            (identical(other.sortType, sortType) ||
+                other.sortType == sortType) &&
+            (identical(other.isSearch, isSearch) ||
+                other.isSearch == isSearch) &&
+            (identical(other.searchText, searchText) ||
+                other.searchText == searchText));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(sortType),
-      const DeepCollectionEquality().hash(isSearch),
-      const DeepCollectionEquality().hash(searchText));
+  int get hashCode => Object.hash(runtimeType, sortType, isSearch, searchText);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_SelectDeckViewStateCopyWith<_$_SelectDeckViewState> get copyWith =>
       __$$_SelectDeckViewStateCopyWithImpl<_$_SelectDeckViewState>(
           this, _$identity);
@@ -164,11 +165,11 @@ abstract class _SelectDeckViewState implements SelectDeckViewState {
       final String searchText}) = _$_SelectDeckViewState;
 
   @override
-  Sort get sortType => throw _privateConstructorUsedError;
+  Sort get sortType;
   @override
-  bool get isSearch => throw _privateConstructorUsedError;
+  bool get isSearch;
   @override
-  String get searchText => throw _privateConstructorUsedError;
+  String get searchText;
   @override
   @JsonKey(ignore: true)
   _$$_SelectDeckViewStateCopyWith<_$_SelectDeckViewState> get copyWith =>

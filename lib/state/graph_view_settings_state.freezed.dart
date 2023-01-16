@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'graph_view_settings_state.dart';
 
@@ -41,7 +41,8 @@ mixin _$GraphViewSettingsState {
 abstract class $GraphViewSettingsStateCopyWith<$Res> {
   factory $GraphViewSettingsStateCopyWith(GraphViewSettingsState value,
           $Res Function(GraphViewSettingsState) then) =
-      _$GraphViewSettingsStateCopyWithImpl<$Res>;
+      _$GraphViewSettingsStateCopyWithImpl<$Res, GraphViewSettingsState>;
+  @useResult
   $Res call(
       {bool matches,
       bool firstMatches,
@@ -61,94 +62,97 @@ abstract class $GraphViewSettingsStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$GraphViewSettingsStateCopyWithImpl<$Res>
+class _$GraphViewSettingsStateCopyWithImpl<$Res,
+        $Val extends GraphViewSettingsState>
     implements $GraphViewSettingsStateCopyWith<$Res> {
   _$GraphViewSettingsStateCopyWithImpl(this._value, this._then);
 
-  final GraphViewSettingsState _value;
   // ignore: unused_field
-  final $Res Function(GraphViewSettingsState) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? matches = freezed,
-    Object? firstMatches = freezed,
-    Object? secondMatches = freezed,
-    Object? win = freezed,
-    Object? firstMatchesWin = freezed,
-    Object? secondMatchesWin = freezed,
-    Object? loss = freezed,
-    Object? firstMatchesLoss = freezed,
-    Object? secondMatchesLoss = freezed,
-    Object? draw = freezed,
-    Object? firstMatchesDraw = freezed,
-    Object? secondMatchesDraw = freezed,
-    Object? winRate = freezed,
-    Object? firstWinRate = freezed,
-    Object? secondWinRate = freezed,
+    Object? matches = null,
+    Object? firstMatches = null,
+    Object? secondMatches = null,
+    Object? win = null,
+    Object? firstMatchesWin = null,
+    Object? secondMatchesWin = null,
+    Object? loss = null,
+    Object? firstMatchesLoss = null,
+    Object? secondMatchesLoss = null,
+    Object? draw = null,
+    Object? firstMatchesDraw = null,
+    Object? secondMatchesDraw = null,
+    Object? winRate = null,
+    Object? firstWinRate = null,
+    Object? secondWinRate = null,
   }) {
     return _then(_value.copyWith(
-      matches: matches == freezed
+      matches: null == matches
           ? _value.matches
           : matches // ignore: cast_nullable_to_non_nullable
               as bool,
-      firstMatches: firstMatches == freezed
+      firstMatches: null == firstMatches
           ? _value.firstMatches
           : firstMatches // ignore: cast_nullable_to_non_nullable
               as bool,
-      secondMatches: secondMatches == freezed
+      secondMatches: null == secondMatches
           ? _value.secondMatches
           : secondMatches // ignore: cast_nullable_to_non_nullable
               as bool,
-      win: win == freezed
+      win: null == win
           ? _value.win
           : win // ignore: cast_nullable_to_non_nullable
               as bool,
-      firstMatchesWin: firstMatchesWin == freezed
+      firstMatchesWin: null == firstMatchesWin
           ? _value.firstMatchesWin
           : firstMatchesWin // ignore: cast_nullable_to_non_nullable
               as bool,
-      secondMatchesWin: secondMatchesWin == freezed
+      secondMatchesWin: null == secondMatchesWin
           ? _value.secondMatchesWin
           : secondMatchesWin // ignore: cast_nullable_to_non_nullable
               as bool,
-      loss: loss == freezed
+      loss: null == loss
           ? _value.loss
           : loss // ignore: cast_nullable_to_non_nullable
               as bool,
-      firstMatchesLoss: firstMatchesLoss == freezed
+      firstMatchesLoss: null == firstMatchesLoss
           ? _value.firstMatchesLoss
           : firstMatchesLoss // ignore: cast_nullable_to_non_nullable
               as bool,
-      secondMatchesLoss: secondMatchesLoss == freezed
+      secondMatchesLoss: null == secondMatchesLoss
           ? _value.secondMatchesLoss
           : secondMatchesLoss // ignore: cast_nullable_to_non_nullable
               as bool,
-      draw: draw == freezed
+      draw: null == draw
           ? _value.draw
           : draw // ignore: cast_nullable_to_non_nullable
               as bool,
-      firstMatchesDraw: firstMatchesDraw == freezed
+      firstMatchesDraw: null == firstMatchesDraw
           ? _value.firstMatchesDraw
           : firstMatchesDraw // ignore: cast_nullable_to_non_nullable
               as bool,
-      secondMatchesDraw: secondMatchesDraw == freezed
+      secondMatchesDraw: null == secondMatchesDraw
           ? _value.secondMatchesDraw
           : secondMatchesDraw // ignore: cast_nullable_to_non_nullable
               as bool,
-      winRate: winRate == freezed
+      winRate: null == winRate
           ? _value.winRate
           : winRate // ignore: cast_nullable_to_non_nullable
               as bool,
-      firstWinRate: firstWinRate == freezed
+      firstWinRate: null == firstWinRate
           ? _value.firstWinRate
           : firstWinRate // ignore: cast_nullable_to_non_nullable
               as bool,
-      secondWinRate: secondWinRate == freezed
+      secondWinRate: null == secondWinRate
           ? _value.secondWinRate
           : secondWinRate // ignore: cast_nullable_to_non_nullable
               as bool,
-    ));
+    ) as $Val);
   }
 }
 
@@ -159,6 +163,7 @@ abstract class _$$_GraphViewSettingsStateCopyWith<$Res>
           $Res Function(_$_GraphViewSettingsState) then) =
       __$$_GraphViewSettingsStateCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {bool matches,
       bool firstMatches,
@@ -179,92 +184,90 @@ abstract class _$$_GraphViewSettingsStateCopyWith<$Res>
 
 /// @nodoc
 class __$$_GraphViewSettingsStateCopyWithImpl<$Res>
-    extends _$GraphViewSettingsStateCopyWithImpl<$Res>
+    extends _$GraphViewSettingsStateCopyWithImpl<$Res,
+        _$_GraphViewSettingsState>
     implements _$$_GraphViewSettingsStateCopyWith<$Res> {
   __$$_GraphViewSettingsStateCopyWithImpl(_$_GraphViewSettingsState _value,
       $Res Function(_$_GraphViewSettingsState) _then)
-      : super(_value, (v) => _then(v as _$_GraphViewSettingsState));
+      : super(_value, _then);
 
-  @override
-  _$_GraphViewSettingsState get _value =>
-      super._value as _$_GraphViewSettingsState;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? matches = freezed,
-    Object? firstMatches = freezed,
-    Object? secondMatches = freezed,
-    Object? win = freezed,
-    Object? firstMatchesWin = freezed,
-    Object? secondMatchesWin = freezed,
-    Object? loss = freezed,
-    Object? firstMatchesLoss = freezed,
-    Object? secondMatchesLoss = freezed,
-    Object? draw = freezed,
-    Object? firstMatchesDraw = freezed,
-    Object? secondMatchesDraw = freezed,
-    Object? winRate = freezed,
-    Object? firstWinRate = freezed,
-    Object? secondWinRate = freezed,
+    Object? matches = null,
+    Object? firstMatches = null,
+    Object? secondMatches = null,
+    Object? win = null,
+    Object? firstMatchesWin = null,
+    Object? secondMatchesWin = null,
+    Object? loss = null,
+    Object? firstMatchesLoss = null,
+    Object? secondMatchesLoss = null,
+    Object? draw = null,
+    Object? firstMatchesDraw = null,
+    Object? secondMatchesDraw = null,
+    Object? winRate = null,
+    Object? firstWinRate = null,
+    Object? secondWinRate = null,
   }) {
     return _then(_$_GraphViewSettingsState(
-      matches: matches == freezed
+      matches: null == matches
           ? _value.matches
           : matches // ignore: cast_nullable_to_non_nullable
               as bool,
-      firstMatches: firstMatches == freezed
+      firstMatches: null == firstMatches
           ? _value.firstMatches
           : firstMatches // ignore: cast_nullable_to_non_nullable
               as bool,
-      secondMatches: secondMatches == freezed
+      secondMatches: null == secondMatches
           ? _value.secondMatches
           : secondMatches // ignore: cast_nullable_to_non_nullable
               as bool,
-      win: win == freezed
+      win: null == win
           ? _value.win
           : win // ignore: cast_nullable_to_non_nullable
               as bool,
-      firstMatchesWin: firstMatchesWin == freezed
+      firstMatchesWin: null == firstMatchesWin
           ? _value.firstMatchesWin
           : firstMatchesWin // ignore: cast_nullable_to_non_nullable
               as bool,
-      secondMatchesWin: secondMatchesWin == freezed
+      secondMatchesWin: null == secondMatchesWin
           ? _value.secondMatchesWin
           : secondMatchesWin // ignore: cast_nullable_to_non_nullable
               as bool,
-      loss: loss == freezed
+      loss: null == loss
           ? _value.loss
           : loss // ignore: cast_nullable_to_non_nullable
               as bool,
-      firstMatchesLoss: firstMatchesLoss == freezed
+      firstMatchesLoss: null == firstMatchesLoss
           ? _value.firstMatchesLoss
           : firstMatchesLoss // ignore: cast_nullable_to_non_nullable
               as bool,
-      secondMatchesLoss: secondMatchesLoss == freezed
+      secondMatchesLoss: null == secondMatchesLoss
           ? _value.secondMatchesLoss
           : secondMatchesLoss // ignore: cast_nullable_to_non_nullable
               as bool,
-      draw: draw == freezed
+      draw: null == draw
           ? _value.draw
           : draw // ignore: cast_nullable_to_non_nullable
               as bool,
-      firstMatchesDraw: firstMatchesDraw == freezed
+      firstMatchesDraw: null == firstMatchesDraw
           ? _value.firstMatchesDraw
           : firstMatchesDraw // ignore: cast_nullable_to_non_nullable
               as bool,
-      secondMatchesDraw: secondMatchesDraw == freezed
+      secondMatchesDraw: null == secondMatchesDraw
           ? _value.secondMatchesDraw
           : secondMatchesDraw // ignore: cast_nullable_to_non_nullable
               as bool,
-      winRate: winRate == freezed
+      winRate: null == winRate
           ? _value.winRate
           : winRate // ignore: cast_nullable_to_non_nullable
               as bool,
-      firstWinRate: firstWinRate == freezed
+      firstWinRate: null == firstWinRate
           ? _value.firstWinRate
           : firstWinRate // ignore: cast_nullable_to_non_nullable
               as bool,
-      secondWinRate: secondWinRate == freezed
+      secondWinRate: null == secondWinRate
           ? _value.secondWinRate
           : secondWinRate // ignore: cast_nullable_to_non_nullable
               as bool,
@@ -348,54 +351,55 @@ class _$_GraphViewSettingsState implements _GraphViewSettingsState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_GraphViewSettingsState &&
-            const DeepCollectionEquality().equals(other.matches, matches) &&
-            const DeepCollectionEquality()
-                .equals(other.firstMatches, firstMatches) &&
-            const DeepCollectionEquality()
-                .equals(other.secondMatches, secondMatches) &&
-            const DeepCollectionEquality().equals(other.win, win) &&
-            const DeepCollectionEquality()
-                .equals(other.firstMatchesWin, firstMatchesWin) &&
-            const DeepCollectionEquality()
-                .equals(other.secondMatchesWin, secondMatchesWin) &&
-            const DeepCollectionEquality().equals(other.loss, loss) &&
-            const DeepCollectionEquality()
-                .equals(other.firstMatchesLoss, firstMatchesLoss) &&
-            const DeepCollectionEquality()
-                .equals(other.secondMatchesLoss, secondMatchesLoss) &&
-            const DeepCollectionEquality().equals(other.draw, draw) &&
-            const DeepCollectionEquality()
-                .equals(other.firstMatchesDraw, firstMatchesDraw) &&
-            const DeepCollectionEquality()
-                .equals(other.secondMatchesDraw, secondMatchesDraw) &&
-            const DeepCollectionEquality().equals(other.winRate, winRate) &&
-            const DeepCollectionEquality()
-                .equals(other.firstWinRate, firstWinRate) &&
-            const DeepCollectionEquality()
-                .equals(other.secondWinRate, secondWinRate));
+            (identical(other.matches, matches) || other.matches == matches) &&
+            (identical(other.firstMatches, firstMatches) ||
+                other.firstMatches == firstMatches) &&
+            (identical(other.secondMatches, secondMatches) ||
+                other.secondMatches == secondMatches) &&
+            (identical(other.win, win) || other.win == win) &&
+            (identical(other.firstMatchesWin, firstMatchesWin) ||
+                other.firstMatchesWin == firstMatchesWin) &&
+            (identical(other.secondMatchesWin, secondMatchesWin) ||
+                other.secondMatchesWin == secondMatchesWin) &&
+            (identical(other.loss, loss) || other.loss == loss) &&
+            (identical(other.firstMatchesLoss, firstMatchesLoss) ||
+                other.firstMatchesLoss == firstMatchesLoss) &&
+            (identical(other.secondMatchesLoss, secondMatchesLoss) ||
+                other.secondMatchesLoss == secondMatchesLoss) &&
+            (identical(other.draw, draw) || other.draw == draw) &&
+            (identical(other.firstMatchesDraw, firstMatchesDraw) ||
+                other.firstMatchesDraw == firstMatchesDraw) &&
+            (identical(other.secondMatchesDraw, secondMatchesDraw) ||
+                other.secondMatchesDraw == secondMatchesDraw) &&
+            (identical(other.winRate, winRate) || other.winRate == winRate) &&
+            (identical(other.firstWinRate, firstWinRate) ||
+                other.firstWinRate == firstWinRate) &&
+            (identical(other.secondWinRate, secondWinRate) ||
+                other.secondWinRate == secondWinRate));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(matches),
-      const DeepCollectionEquality().hash(firstMatches),
-      const DeepCollectionEquality().hash(secondMatches),
-      const DeepCollectionEquality().hash(win),
-      const DeepCollectionEquality().hash(firstMatchesWin),
-      const DeepCollectionEquality().hash(secondMatchesWin),
-      const DeepCollectionEquality().hash(loss),
-      const DeepCollectionEquality().hash(firstMatchesLoss),
-      const DeepCollectionEquality().hash(secondMatchesLoss),
-      const DeepCollectionEquality().hash(draw),
-      const DeepCollectionEquality().hash(firstMatchesDraw),
-      const DeepCollectionEquality().hash(secondMatchesDraw),
-      const DeepCollectionEquality().hash(winRate),
-      const DeepCollectionEquality().hash(firstWinRate),
-      const DeepCollectionEquality().hash(secondWinRate));
+      matches,
+      firstMatches,
+      secondMatches,
+      win,
+      firstMatchesWin,
+      secondMatchesWin,
+      loss,
+      firstMatchesLoss,
+      secondMatchesLoss,
+      draw,
+      firstMatchesDraw,
+      secondMatchesDraw,
+      winRate,
+      firstWinRate,
+      secondWinRate);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_GraphViewSettingsStateCopyWith<_$_GraphViewSettingsState> get copyWith =>
       __$$_GraphViewSettingsStateCopyWithImpl<_$_GraphViewSettingsState>(
           this, _$identity);
@@ -420,35 +424,35 @@ abstract class _GraphViewSettingsState implements GraphViewSettingsState {
       final bool secondWinRate}) = _$_GraphViewSettingsState;
 
   @override
-  bool get matches => throw _privateConstructorUsedError;
+  bool get matches;
   @override
-  bool get firstMatches => throw _privateConstructorUsedError;
+  bool get firstMatches;
   @override
-  bool get secondMatches => throw _privateConstructorUsedError;
+  bool get secondMatches;
   @override
-  bool get win => throw _privateConstructorUsedError;
+  bool get win;
   @override
-  bool get firstMatchesWin => throw _privateConstructorUsedError;
+  bool get firstMatchesWin;
   @override
-  bool get secondMatchesWin => throw _privateConstructorUsedError;
+  bool get secondMatchesWin;
   @override
-  bool get loss => throw _privateConstructorUsedError;
+  bool get loss;
   @override
-  bool get firstMatchesLoss => throw _privateConstructorUsedError;
+  bool get firstMatchesLoss;
   @override
-  bool get secondMatchesLoss => throw _privateConstructorUsedError;
+  bool get secondMatchesLoss;
   @override
-  bool get draw => throw _privateConstructorUsedError;
+  bool get draw;
   @override
-  bool get firstMatchesDraw => throw _privateConstructorUsedError;
+  bool get firstMatchesDraw;
   @override
-  bool get secondMatchesDraw => throw _privateConstructorUsedError;
+  bool get secondMatchesDraw;
   @override
-  bool get winRate => throw _privateConstructorUsedError;
+  bool get winRate;
   @override
-  bool get firstWinRate => throw _privateConstructorUsedError;
+  bool get firstWinRate;
   @override
-  bool get secondWinRate => throw _privateConstructorUsedError;
+  bool get secondWinRate;
   @override
   @JsonKey(ignore: true)
   _$$_GraphViewSettingsStateCopyWith<_$_GraphViewSettingsState> get copyWith =>

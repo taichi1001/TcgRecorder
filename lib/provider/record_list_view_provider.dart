@@ -8,9 +8,9 @@ import 'package:tcg_manager/state/record_list_view_state.dart';
 
 class RecordListViewNotifier extends StateNotifier<RecordListViewState> {
   RecordListViewNotifier(
-    this.read,
+    this.ref,
   ) : super(RecordListViewState());
-  final Reader read;
+  final Ref ref;
 
   void scrollSort(int index) {
     state = state.copyWith(cacheOrder: Sort.values[index]);
@@ -48,7 +48,7 @@ class RecordListViewNotifier extends StateNotifier<RecordListViewState> {
     if (index == 0) {
       state = state.copyWith(cacheUseDeck: null);
     } else {
-      final gameDeckList = await read(gameDeckListProvider.future);
+      final gameDeckList = await ref.read(gameDeckListProvider.future);
       state = state.copyWith(cacheUseDeck: gameDeckList[index - 1]);
     }
   }
@@ -65,7 +65,7 @@ class RecordListViewNotifier extends StateNotifier<RecordListViewState> {
     if (index == 0) {
       state = state.copyWith(cacheOpponentDeck: null);
     } else {
-      final gameDeckList = await read(gameDeckListProvider.future);
+      final gameDeckList = await ref.read(gameDeckListProvider.future);
       state = state.copyWith(cacheOpponentDeck: gameDeckList[index - 1]);
     }
   }
@@ -82,7 +82,7 @@ class RecordListViewNotifier extends StateNotifier<RecordListViewState> {
     if (index == 0) {
       state = state.copyWith(cacheTag: null);
     } else {
-      final gameTagList = await read(gameTagListProvider.future);
+      final gameTagList = await ref.read(gameTagListProvider.future);
       state = state.copyWith(cacheTag: gameTagList[index - 1]);
     }
   }
@@ -91,7 +91,7 @@ class RecordListViewNotifier extends StateNotifier<RecordListViewState> {
     state = state.copyWith(tag: state.cacheTag);
   }
 
-  void selectTag(Tag tag) {
+  void selectTag(Tag tag, int tagCount) {
     state = state.copyWith(tag: tag);
   }
 
@@ -101,5 +101,5 @@ class RecordListViewNotifier extends StateNotifier<RecordListViewState> {
 }
 
 final recordListViewNotifierProvider = StateNotifierProvider.autoDispose<RecordListViewNotifier, RecordListViewState>((ref) {
-  return RecordListViewNotifier(ref.read);
+  return RecordListViewNotifier(ref);
 });

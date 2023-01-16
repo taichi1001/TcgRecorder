@@ -1,6 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/marged_record.dart';
 import 'package:tcg_manager/entity/record.dart';
+import 'package:tcg_manager/entity/tag.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
@@ -17,13 +18,17 @@ final margedRecordListProvider = FutureProvider.autoDispose<List<MargedRecord>>(
     final game = allGameList.singleWhere((value) => value.gameId == record.gameId);
     final useDeck = allDeckList.singleWhere((value) => value.deckId == record.useDeckId);
     final opponentDeck = allDeckList.singleWhere((value) => value.deckId == record.opponentDeckId);
-    final tagList = allTagList.where((value) => value.tagId == record.tagId).toList();
+    List<Tag> tagList = [];
+    for (final tagId in record.tagId) {
+      final tag = allTagList.firstWhere((value) => value.tagId == tagId);
+      tagList.add(tag);
+    }
     return MargedRecord(
       recordId: record.recordId!,
       game: game.game,
       useDeck: useDeck.deck,
       opponentDeck: opponentDeck.deck,
-      tag: tagList.isEmpty ? null : tagList.first.tag,
+      tag: tagList.map((e) => e.tag).toList(),
       bo: record.bo,
       firstSecond: record.firstSecond,
       firstMatchFirstSecond: record.firstMatchFirstSecond,
@@ -58,7 +63,7 @@ final allMargedRecordListProvider = FutureProvider.autoDispose<List<MargedRecord
       game: game.game,
       useDeck: useDeck.deck,
       opponentDeck: opponentDeck.deck,
-      tag: tagList.isEmpty ? null : tagList.first.tag,
+      tag: tagList.isEmpty ? [] : [tagList.first.tag],
       bo: record.bo,
       firstSecond: record.firstSecond,
       firstMatchFirstSecond: record.firstMatchFirstSecond,

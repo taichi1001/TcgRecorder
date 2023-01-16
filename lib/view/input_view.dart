@@ -1,3 +1,5 @@
+// ignore_for_file: unused_result
+
 import 'dart:io';
 
 import 'package:adaptive_dialog/adaptive_dialog.dart';
@@ -57,6 +59,66 @@ final inputViewInfoProvider = FutureProvider.autoDispose<InputViewInfo>((ref) as
 class InputView extends HookConsumerWidget {
   const InputView({Key? key}) : super(key: key);
 
+  List<Widget> inputTagList({
+    required int count,
+    required BuildContext context,
+    required Function(String, int) inputTag,
+    required List<TextEditingController> controllers,
+    required List<FocusNode> focusNodes,
+    required bool isDropDown,
+    required Function(Tag, int) selectTagFunc,
+    required void Function()? addFunc,
+  }) {
+    final List<Widget> result = [];
+    for (int i = 0; i < count; i++) {
+      result.add(
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Flexible(
+              child: Stack(
+                alignment: Alignment.centerRight,
+                fit: StackFit.loose,
+                children: [
+                  CustomTextField(
+                    labelText: S.of(context).tag + (i + 1).toString(),
+                    indexOnChanged: inputTag,
+                    controller: controllers[i],
+                    focusNode: focusNodes[i],
+                    index: i,
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.arrow_drop_down),
+                    onPressed: isDropDown
+                        ? null
+                        : () {
+                            showCupertinoModalBottomSheet(
+                              expand: true,
+                              context: context,
+                              backgroundColor: Colors.transparent,
+                              builder: (BuildContext context) => SelectTagView(
+                                selectTagFunc: selectTagFunc,
+                                tagCount: i,
+                                afterFunc: FocusScope.of(context).unfocus,
+                                enableVisiblity: true,
+                              ),
+                            );
+                          },
+                  ),
+                ],
+              ),
+            ),
+            IconButton(
+              onPressed: addFunc,
+              icon: const Icon(Icons.add_circle),
+            ),
+          ],
+        ),
+      );
+    }
+    return result;
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final date = ref.watch(inputViewNotifierProvider.select((value) => value.date));
@@ -72,6 +134,7 @@ class InputView extends HookConsumerWidget {
     final opponentDeck = ref.watch(inputViewNotifierProvider.select((value) => value.opponentDeck));
     final images = ref.watch(inputViewNotifierProvider.select((value) => value.images));
     final inputViewNotifier = ref.read(inputViewNotifierProvider.notifier);
+    final textEditingControllerNotifier = ref.read(textEditingControllerNotifierProvider.notifier);
     final useDeckTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.useDeckController));
     final opponentDeckTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.opponentDeckController));
     final tagTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.tagController));
@@ -83,9 +146,14 @@ class InputView extends HookConsumerWidget {
 
     final inputViewInfo = ref.watch(inputViewInfoProvider);
 
+    final tagCounter = useState(1);
+
     final useDeckFocusnode = useFocusNode();
     final opponentDeckFocusnode = useFocusNode();
-    final tagFocusnode = useFocusNode();
+    final List<FocusNode> tagFocusNodes = [];
+    for (var i = 0; i < tagCounter.value; i++) {
+      tagFocusNodes.add(useFocusNode());
+    }
     final memoFocusnode = useFocusNode();
 
     return inputViewInfo.when(
@@ -114,7 +182,7 @@ class InputView extends HookConsumerWidget {
                     actions: [
                       KeyboardActionsItem(focusNode: useDeckFocusnode),
                       KeyboardActionsItem(focusNode: opponentDeckFocusnode),
-                      KeyboardActionsItem(focusNode: tagFocusnode),
+                      for (final tagFocusNode in tagFocusNodes) KeyboardActionsItem(focusNode: tagFocusNode),
                       KeyboardActionsItem(focusNode: memoFocusnode),
                     ],
                   ),
@@ -510,33 +578,18 @@ class InputView extends HookConsumerWidget {
                                   ],
                                 ),
                                 const SizedBox(height: 8),
-                                Stack(
-                                  alignment: Alignment.centerRight,
-                                  children: [
-                                    CustomTextField(
-                                      labelText: S.of(context).tag,
-                                      onChanged: inputViewNotifier.inputTag,
-                                      controller: tagTextController,
-                                      focusNode: tagFocusnode,
-                                    ),
-                                    IconButton(
-                                      icon: const Icon(Icons.arrow_drop_down),
-                                      onPressed: inputViewInfo.gameDeckList.isEmpty
-                                          ? null
-                                          : () {
-                                              showCupertinoModalBottomSheet(
-                                                expand: true,
-                                                context: context,
-                                                backgroundColor: Colors.transparent,
-                                                builder: (BuildContext context) => SelectTagView(
-                                                  selectTagFunc: inputViewNotifier.selectTag,
-                                                  afterFunc: FocusScope.of(context).unfocus,
-                                                  enableVisiblity: true,
-                                                ),
-                                              );
-                                            },
-                                    ),
-                                  ],
+                                ...inputTagList(
+                                  count: tagCounter.value,
+                                  context: context,
+                                  inputTag: inputViewNotifier.inputTag,
+                                  controllers: tagTextController,
+                                  focusNodes: tagFocusNodes,
+                                  isDropDown: inputViewInfo.gameDeckList.isEmpty,
+                                  selectTagFunc: inputViewNotifier.selectTag,
+                                  addFunc: () {
+                                    textEditingControllerNotifier.addTagController();
+                                    tagCounter.value++;
+                                  },
                                 ),
                                 const SizedBox(height: 8),
                                 CustomTextField(

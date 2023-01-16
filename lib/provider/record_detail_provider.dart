@@ -75,8 +75,9 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
     state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(opponentDeck: deck.deck));
   }
 
+  // TODO 複数入力対応が必要
   void editTag(String name) {
-    state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(tag: name));
+    state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(tag: [name]));
   }
 
   Future scrollTag(int index) async {
@@ -84,14 +85,16 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
     state = state.copyWith(cacheTag: gameTagList[index]);
   }
 
+  // TODO 複数入力対応が必要
   void setTag() {
     if (state.cacheTag != null) {
-      state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(tag: state.cacheTag!.tag));
+      state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(tag: [state.cacheTag!.tag]));
     }
   }
 
-  void selectTag(Tag tag) {
-    state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(tag: tag.tag));
+  // TODO 複数入力対応が必要
+  void selectTag(Tag tag, int tagCounter) {
+    state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(tag: [tag.tag]));
   }
 
   void scrollDate(DateTime date) {
@@ -188,26 +191,24 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
   }
 
   Future _saveEditTag() async {
-    if (state.margedRecord.tag == null) return;
-    // 入力されたタグが新規のものかどうかを判定
-    final checkTag = await ref.read(editRecordHelper).checkIfSelectedTagIsNew(state.margedRecord.tag!);
-
-    // 新規だった場合
-    if (checkTag.isNew) {
-      // 入力された対戦デッキをDBに登録しデッキIDを取得
-      final newId = await ref.read(tagRepository).insert(
-            Tag(
-              tag: state.margedRecord.tag!,
-              gameId: state.record.gameId,
-            ),
-          );
-
-      // recordに新しいタグIDを登録
-      state = state.copyWith(record: state.record.copyWith(tagId: newId));
-    } else {
-      // 既に登録済みのタグだった場合、そのタグのIDをrecordに登録
-      state = state.copyWith(record: state.record.copyWith(tagId: checkTag.tag!.tagId));
+    if (state.margedRecord.tag.isEmpty) return;
+    final List<int> newTags = [];
+    for (final tag in margedRecord.tag) {
+      // 入力されたタグが新規のものかどうかを判定
+      final checkTag = await ref.read(editRecordHelper).checkIfSelectedTagIsNew(tag);
+      // 新規だった場合
+      if (checkTag.isNew) {
+        // 入力された対戦デッキをDBに登録しデッキIDを取得
+        final newId = await ref.read(tagRepository).insert(
+              Tag(tag: tag, gameId: state.record.gameId),
+            );
+        newTags.add(newId);
+      } else {
+        // 既に登録済みのタグだった場合、そのタグのIDをrecordに登録
+        newTags.add(checkTag.tag!.tagId!);
+      }
     }
+    state = state.copyWith(record: state.record.copyWith(tagId: newTags));
   }
 }
 

@@ -2,7 +2,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/dao/record_dao.dart';
 import 'package:tcg_manager/entity/record.dart';
 
-final recordRepository = Provider.autoDispose<RecordRepository>((ref) => RecordRepositoryImpl(ref.read));
+final recordRepository = Provider.autoDispose<RecordRepository>((ref) => RecordRepositoryImpl(ref));
 
 abstract class RecordRepository {
   Future<List<Record>> getAll();
@@ -25,9 +25,9 @@ abstract class RecordRepository {
 }
 
 class RecordRepositoryImpl implements RecordRepository {
-  RecordRepositoryImpl(this.read);
+  RecordRepositoryImpl(this.ref);
 
-  final Reader read;
+  final Ref ref;
   final recordDao = RecordDao();
 
   @override

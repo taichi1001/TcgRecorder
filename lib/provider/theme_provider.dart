@@ -4,14 +4,14 @@ import 'package:tcg_manager/main.dart';
 import 'package:tcg_manager/state/theme_state.dart';
 
 class ThemeNotifier extends StateNotifier<ThemeState> {
-  ThemeNotifier(this.read) : super(ThemeState()) {
+  ThemeNotifier(this.ref) : super(ThemeState()) {
     _init();
   }
 
-  final Reader read;
+  final Ref ref;
   static const themePrefsKey = 'selectedTheme';
 
-  late final prefs = read(sharedPreferencesProvider);
+  late final prefs = ref.read(sharedPreferencesProvider);
 
   void _init() {
     final themeName = _getTheme();
@@ -37,5 +37,5 @@ class ThemeNotifier extends StateNotifier<ThemeState> {
 }
 
 final themeNotifierProvider = StateNotifierProvider<ThemeNotifier, ThemeState>(
-  (ref) => ThemeNotifier(ref.read),
+  (ref) => ThemeNotifier(ref),
 );

@@ -1,3 +1,5 @@
+// ignore_for_file: unused_result
+
 import 'dart:io';
 
 import 'package:easy_image_viewer/easy_image_viewer.dart';
@@ -141,7 +143,7 @@ final currentMargedRecord = Provider<MargedRecord>((ref) => MargedRecord(
       game: '',
       useDeck: '',
       opponentDeck: '',
-      tag: '',
+      tag: [],
       bo: BO.bo1,
       firstSecond: FirstSecond.first,
       winLoss: WinLoss.win,
@@ -230,7 +232,7 @@ class _BrandListTile extends HookConsumerWidget {
               ),
               Flexible(
                 child: Text(
-                  record.tag ?? S.of(context).noTag,
+                  record.tag.isEmpty ? S.of(context).noTag : record.tag.first, //TODO 複数入力対応が必要
                   softWrap: false,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.bodyText2?.copyWith(

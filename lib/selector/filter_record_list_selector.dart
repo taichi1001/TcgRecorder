@@ -54,7 +54,16 @@ final filterRecordListProvider = FutureProvider.autoDispose<List<Record>>((ref) 
   }
 
   if (filter.tag != null) {
-    filterdList = filterdList.where((record) => record.tagId == filter.tag!.tagId).toList();
+    List<Record> newFilterdList = [];
+    for (final record in filterdList) {
+      for (final tagId in record.tagId) {
+        if (tagId == filter.tag!.tagId) {
+          newFilterdList.add(record);
+          break;
+        }
+      }
+    }
+    filterdList = newFilterdList;
   }
 
   return filterdList;
