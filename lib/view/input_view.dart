@@ -56,68 +56,88 @@ final inputViewInfoProvider = FutureProvider.autoDispose<InputViewInfo>((ref) as
   );
 });
 
+final tagFocusNodesProvider = Provider.autoDispose<List<FocusNode>>((ref) {
+  final tagTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.tagController));
+  final List<FocusNode> tagFocusNodes = [];
+  for (var i = 0; i < tagTextController.length; i++) {
+    tagFocusNodes.add(FocusNode());
+  }
+  return tagFocusNodes;
+});
+
+class _InputTagList extends StatelessWidget {
+  const _InputTagList({
+    this.addFunc,
+    required this.controllers,
+    required this.focusNodes,
+    required this.inputTag,
+    required this.isDropDown,
+    required this.selectTagFunc,
+    Key? key,
+  }) : super(key: key);
+
+  final Function(String, int) inputTag;
+  final List<TextEditingController> controllers;
+  final List<FocusNode> focusNodes;
+  final bool isDropDown;
+  final Function(Tag, int) selectTagFunc;
+  final void Function()? addFunc;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: controllers
+          .mapIndexed(
+            (index, controller) => Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Flexible(
+                  child: Stack(
+                    alignment: Alignment.centerRight,
+                    fit: StackFit.loose,
+                    children: [
+                      CustomTextField(
+                        labelText: S.of(context).tag + (index + 1).toString(),
+                        indexOnChanged: inputTag,
+                        controller: controller,
+                        focusNode: focusNodes[index],
+                        index: index,
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.arrow_drop_down),
+                        onPressed: isDropDown
+                            ? null
+                            : () {
+                                showCupertinoModalBottomSheet(
+                                  expand: true,
+                                  context: context,
+                                  backgroundColor: Colors.transparent,
+                                  builder: (BuildContext context) => SelectTagView(
+                                    selectTagFunc: selectTagFunc,
+                                    tagCount: index,
+                                    afterFunc: FocusScope.of(context).unfocus,
+                                    enableVisiblity: true,
+                                  ),
+                                );
+                              },
+                      ),
+                    ],
+                  ),
+                ),
+                IconButton(
+                  onPressed: addFunc,
+                  icon: const Icon(Icons.add_circle),
+                ),
+              ],
+            ),
+          )
+          .toList(),
+    );
+  }
+}
+
 class InputView extends HookConsumerWidget {
   const InputView({Key? key}) : super(key: key);
-
-  List<Widget> inputTagList({
-    required int count,
-    required BuildContext context,
-    required Function(String, int) inputTag,
-    required List<TextEditingController> controllers,
-    required List<FocusNode> focusNodes,
-    required bool isDropDown,
-    required Function(Tag, int) selectTagFunc,
-    required void Function()? addFunc,
-  }) {
-    final List<Widget> result = [];
-    for (int i = 0; i < count; i++) {
-      result.add(
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Flexible(
-              child: Stack(
-                alignment: Alignment.centerRight,
-                fit: StackFit.loose,
-                children: [
-                  CustomTextField(
-                    labelText: S.of(context).tag + (i + 1).toString(),
-                    indexOnChanged: inputTag,
-                    controller: controllers[i],
-                    focusNode: focusNodes[i],
-                    index: i,
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.arrow_drop_down),
-                    onPressed: isDropDown
-                        ? null
-                        : () {
-                            showCupertinoModalBottomSheet(
-                              expand: true,
-                              context: context,
-                              backgroundColor: Colors.transparent,
-                              builder: (BuildContext context) => SelectTagView(
-                                selectTagFunc: selectTagFunc,
-                                tagCount: i,
-                                afterFunc: FocusScope.of(context).unfocus,
-                                enableVisiblity: true,
-                              ),
-                            );
-                          },
-                  ),
-                ],
-              ),
-            ),
-            IconButton(
-              onPressed: addFunc,
-              icon: const Icon(Icons.add_circle),
-            ),
-          ],
-        ),
-      );
-    }
-    return result;
-  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -146,14 +166,13 @@ class InputView extends HookConsumerWidget {
 
     final inputViewInfo = ref.watch(inputViewInfoProvider);
 
-    final tagCounter = useState(1);
-
     final useDeckFocusnode = useFocusNode();
     final opponentDeckFocusnode = useFocusNode();
-    final List<FocusNode> tagFocusNodes = [];
-    for (var i = 0; i < tagCounter.value; i++) {
-      tagFocusNodes.add(useFocusNode());
-    }
+    final tagFocusNodes = ref.watch(tagFocusNodesProvider);
+    // final List<FocusNode> tagFocusNodes = [];
+    // for (var i = 0; i < tagTextController.length; i++) {
+    //   tagFocusNodes.add(useFocusNode());
+    // }
     final memoFocusnode = useFocusNode();
 
     return inputViewInfo.when(
@@ -578,9 +597,7 @@ class InputView extends HookConsumerWidget {
                                   ],
                                 ),
                                 const SizedBox(height: 8),
-                                ...inputTagList(
-                                  count: tagCounter.value,
-                                  context: context,
+                                _InputTagList(
                                   inputTag: inputViewNotifier.inputTag,
                                   controllers: tagTextController,
                                   focusNodes: tagFocusNodes,
@@ -588,7 +605,6 @@ class InputView extends HookConsumerWidget {
                                   selectTagFunc: inputViewNotifier.selectTag,
                                   addFunc: () {
                                     textEditingControllerNotifier.addTagController();
-                                    tagCounter.value++;
                                   },
                                 ),
                                 const SizedBox(height: 8),
