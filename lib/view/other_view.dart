@@ -726,35 +726,32 @@ class _ThemeChangeView extends HookConsumerWidget {
               child: Container(
                 height: 100,
                 color: Theme.of(context).dividerColor,
-                child: Scrollbar(
-                  controller: ScrollController(),
-                  child: ScrollablePositionedList.builder(
-                    itemScrollController: itemScrollController,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: FlexScheme.values.length - 1, // 最後の要素はカスタムカラーのため取り除く
-                    itemBuilder: ((context, index) => Padding(
-                          padding: const EdgeInsets.only(left: 8, right: 8),
-                          child: SizedBox(
-                            width: 55,
-                            height: 55,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                primary: previewThemeDataList[index].primaryColor,
-                                shape: CircleBorder(
-                                  side: previewScheme == FlexScheme.values[index]
-                                      ? BorderSide(
-                                          color: isDarkMode ? Colors.white : Colors.black,
-                                          width: 2,
-                                        )
-                                      : BorderSide.none,
-                                ),
+                child: ScrollablePositionedList.builder(
+                  itemScrollController: itemScrollController,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: FlexScheme.values.length - 1, // 最後の要素はカスタムカラーのため取り除く
+                  itemBuilder: ((context, index) => Padding(
+                        padding: const EdgeInsets.only(left: 8, right: 8),
+                        child: SizedBox(
+                          width: 55,
+                          height: 55,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: previewThemeDataList[index].primaryColor,
+                              shape: CircleBorder(
+                                side: previewScheme == FlexScheme.values[index]
+                                    ? BorderSide(
+                                        color: isDarkMode ? Colors.white : Colors.black,
+                                        width: 2,
+                                      )
+                                    : BorderSide.none,
                               ),
-                              onPressed: () => themeNotifier.changePreview(FlexScheme.values[index]),
-                              child: const Text(''),
                             ),
+                            onPressed: () => themeNotifier.changePreview(FlexScheme.values[index]),
+                            child: const Text(''),
                           ),
-                        )),
-                  ),
+                        ),
+                      )),
                 ),
               ),
             ),
