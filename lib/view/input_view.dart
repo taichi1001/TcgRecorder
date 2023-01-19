@@ -65,6 +65,62 @@ final _tagFocusNodesProvider = Provider.autoDispose<List<FocusNode>>((ref) {
   return tagFocusNodes;
 });
 
+class SelectableDateTime extends StatelessWidget {
+  const SelectableDateTime({
+    required this.controller,
+    required this.submiteAction,
+    required this.nowAction,
+    required this.datetime,
+    super.key,
+  });
+  final CustomModalDateTimePickerController controller;
+  final Function() submiteAction;
+  final Function() nowAction;
+  final DateTime datetime;
+  @override
+  Widget build(BuildContext context) {
+    final outputFormat = DateFormat(S.of(context).dateFormatIncludeTime);
+
+    return GestureDetector(
+      onTap: () async {
+        showCupertinoModalPopup(
+          context: context,
+          builder: (BuildContext context) {
+            return CustomModalDateTimePicker(
+              controller: controller,
+              submitedAction: () {
+                submiteAction();
+                Navigator.pop(context);
+              },
+              nowAction: () {
+                nowAction();
+                Navigator.pop(context);
+              },
+            );
+          },
+        );
+      },
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                outputFormat.format(datetime),
+              ),
+              const Icon(
+                Icons.calendar_today_rounded,
+                size: 16,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class InputTagList extends StatelessWidget {
   const InputTagList({
     this.addFunc,
@@ -73,8 +129,8 @@ class InputTagList extends StatelessWidget {
     required this.inputTag,
     required this.isDropDown,
     required this.selectTagFunc,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Function(String, int) inputTag;
   final List<TextEditingController> controllers;
@@ -162,7 +218,6 @@ class InputView extends HookConsumerWidget {
     final dateTimeController = useState(CustomModalDateTimePickerController(initialDateTime: DateTime.now()));
     final isDraw = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.draw));
     final isBO3 = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.bo3));
-    final outputFormat = DateFormat(S.of(context).dateFormatIncludeTime);
 
     final inputViewInfo = ref.watch(inputViewInfoProvider);
 
@@ -207,47 +262,20 @@ class InputView extends HookConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 8),
-                        GestureDetector(
-                          onTap: () async {
+                        SelectableDateTime(
+                          controller: dateTimeController.value,
+                          submiteAction: () {
+                            inputViewNotifier.selectDateTime(dateTimeController.value.selectedDateTime);
+                          },
+                          nowAction: () async {
                             try {
                               await ref.read(revenueCatNotifierProvider.notifier).purchasePremiumMonthly();
                               // ignore: empty_catches
                             } catch (e) {}
-                            showCupertinoModalPopup(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return CustomModalDateTimePicker(
-                                  controller: dateTimeController.value,
-                                  submitedAction: () {
-                                    inputViewNotifier.selectDateTime(dateTimeController.value.selectedDateTime);
-                                    Navigator.pop(context);
-                                  },
-                                  nowAction: () {
-                                    dateTimeController.value.setDateTimeNow();
-                                    inputViewNotifier.selectDateTime(dateTimeController.value.selectedDateTime);
-                                    Navigator.pop(context);
-                                  },
-                                );
-                              },
-                            );
+                            dateTimeController.value.setDateTimeNow();
+                            inputViewNotifier.selectDateTime(dateTimeController.value.selectedDateTime);
                           },
-                          child: Card(
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    outputFormat.format(date),
-                                  ),
-                                  const Icon(
-                                    Icons.calendar_today_rounded,
-                                    size: 16,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
+                          datetime: date,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,

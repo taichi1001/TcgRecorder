@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:intl/intl.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:tcg_manager/entity/deck.dart';
@@ -16,8 +15,8 @@ import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/provider/record_detail_provider.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
 import 'package:tcg_manager/selector/game_tag_list_selector.dart';
-import 'package:tcg_manager/view/component/custom_modal_date_picker.dart';
 import 'package:tcg_manager/view/component/custom_textfield.dart';
+import 'package:tcg_manager/view/component/cutom_date_time_picker.dart';
 import 'package:tcg_manager/view/input_view.dart';
 import 'package:tcg_manager/view/select_deck_view.dart';
 
@@ -137,7 +136,8 @@ class _EditView extends HookConsumerWidget {
     final tagFocusNodes = ref.watch(_tagFocusNodesProvider(editMargedRecord));
 
     final memoTextController = useTextEditingController(text: editMargedRecord.memo);
-    final outputFormat = DateFormat(S.of(context).dateFormat);
+    final dateTimeController = useState(CustomModalDateTimePickerController(initialDateTime: DateTime.now()));
+
     final isSelectPicker = useState(false);
 
     final useDeckFocusnode = useFocusNode();
@@ -175,38 +175,16 @@ class _EditView extends HookConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 8),
-                GestureDetector(
-                  onTap: () {
-                    showCupertinoModalPopup(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return CustomModalDatePicker(
-                          submited: () {
-                            recordDetailNotifier.setDate();
-                            Navigator.pop(context);
-                          },
-                          onDateTimeChanged: recordDetailNotifier.scrollDate,
-                        );
-                      },
-                    );
+                SelectableDateTime(
+                  controller: dateTimeController.value,
+                  submiteAction: () {
+                    recordDetailNotifier.selectDateTime(dateTimeController.value.selectedDateTime);
                   },
-                  child: Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            outputFormat.format(editMargedRecord.date),
-                          ),
-                          const Icon(
-                            Icons.calendar_today_rounded,
-                            size: 16,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  nowAction: () async {
+                    dateTimeController.value.setDateTimeNow();
+                    recordDetailNotifier.selectDateTime(dateTimeController.value.selectedDateTime);
+                  },
+                  datetime: editMargedRecord.date,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

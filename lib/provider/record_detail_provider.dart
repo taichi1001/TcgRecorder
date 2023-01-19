@@ -85,16 +85,12 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
     );
   }
 
-  void scrollDate(DateTime date) {
-    state = state.copyWith(cacheDate: date);
-  }
-
-  void setDate() {
-    if (state.cacheDate != null) {
-      state = state.copyWith(
-        editMargedRecord: state.editMargedRecord.copyWith(date: state.cacheDate!),
-      );
-    }
+  void selectDateTime(DateTime date) {
+    state = state.copyWith(
+      editMargedRecord: state.editMargedRecord.copyWith(
+        date: date,
+      ),
+    );
   }
 
   void editWinLoss(WinLoss winnLoss) {
