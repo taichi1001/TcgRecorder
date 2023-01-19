@@ -52,7 +52,7 @@ class DatabaseService {
         database.execute('ALTER TABLE $recordTableName ADD image_path TEXT');
       }
 
-      if (oldVersion < 4 && newVersion == 4) {
+      if (oldVersion < 4) {
         await database.execute(
             '''
           CREATE TABLE ${recordTableName}_new (
