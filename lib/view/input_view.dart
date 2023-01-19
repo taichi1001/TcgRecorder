@@ -56,7 +56,7 @@ final inputViewInfoProvider = FutureProvider.autoDispose<InputViewInfo>((ref) as
   );
 });
 
-final tagFocusNodesProvider = Provider.autoDispose<List<FocusNode>>((ref) {
+final _tagFocusNodesProvider = Provider.autoDispose<List<FocusNode>>((ref) {
   final tagTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.tagController));
   final List<FocusNode> tagFocusNodes = [];
   for (var i = 0; i < tagTextController.length; i++) {
@@ -65,8 +65,8 @@ final tagFocusNodesProvider = Provider.autoDispose<List<FocusNode>>((ref) {
   return tagFocusNodes;
 });
 
-class _InputTagList extends StatelessWidget {
-  const _InputTagList({
+class InputTagList extends StatelessWidget {
+  const InputTagList({
     this.addFunc,
     required this.controllers,
     required this.focusNodes,
@@ -168,11 +168,7 @@ class InputView extends HookConsumerWidget {
 
     final useDeckFocusnode = useFocusNode();
     final opponentDeckFocusnode = useFocusNode();
-    final tagFocusNodes = ref.watch(tagFocusNodesProvider);
-    // final List<FocusNode> tagFocusNodes = [];
-    // for (var i = 0; i < tagTextController.length; i++) {
-    //   tagFocusNodes.add(useFocusNode());
-    // }
+    final tagFocusNodes = ref.watch(_tagFocusNodesProvider);
     final memoFocusnode = useFocusNode();
 
     return inputViewInfo.when(
@@ -597,7 +593,7 @@ class InputView extends HookConsumerWidget {
                                   ],
                                 ),
                                 const SizedBox(height: 8),
-                                _InputTagList(
+                                InputTagList(
                                   inputTag: inputViewNotifier.inputTag,
                                   controllers: tagTextController,
                                   focusNodes: tagFocusNodes,

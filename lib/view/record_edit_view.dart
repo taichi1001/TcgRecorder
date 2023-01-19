@@ -18,8 +18,8 @@ import 'package:tcg_manager/selector/game_deck_list_selector.dart';
 import 'package:tcg_manager/selector/game_tag_list_selector.dart';
 import 'package:tcg_manager/view/component/custom_modal_date_picker.dart';
 import 'package:tcg_manager/view/component/custom_textfield.dart';
+import 'package:tcg_manager/view/input_view.dart';
 import 'package:tcg_manager/view/select_deck_view.dart';
-import 'package:tcg_manager/view/select_tag_view.dart';
 
 class RecordEditViewInfo {
   const RecordEditViewInfo({
@@ -38,6 +38,27 @@ final recordEditViewInfoProvider = FutureProvider.autoDispose<RecordEditViewInfo
     gameDeckList: gameDeckList,
     gameTagList: gameTagList,
   );
+});
+
+final _tagFocusNodesProvider = Provider.family.autoDispose<List<FocusNode>, MargedRecord>((ref, margedRecord) {
+  final tagTextController = ref.watch(_tagTextController(margedRecord));
+  final List<FocusNode> tagFocusNodes = [];
+  for (var i = 0; i < tagTextController.length; i++) {
+    tagFocusNodes.add(FocusNode());
+  }
+  return tagFocusNodes;
+});
+
+final _tagTextController = StateProvider.family.autoDispose<List<TextEditingController>, MargedRecord>((ref, margedRecord) {
+  final List<TextEditingController> tagTextControllers = [];
+  if (margedRecord.tag.isEmpty) {
+    tagTextControllers.add(TextEditingController());
+  } else {
+    for (final tag in margedRecord.tag) {
+      tagTextControllers.add(TextEditingController(text: tag));
+    }
+  }
+  return tagTextControllers;
 });
 
 class RecordEditView extends HookConsumerWidget {
@@ -112,25 +133,23 @@ class _EditView extends HookConsumerWidget {
     final useDeckTextController = useTextEditingController(text: editMargedRecord.useDeck);
     final opponentDeckTextController = useTextEditingController(text: editMargedRecord.opponentDeck);
 
-    TextEditingController tagTextController;
-    if (editMargedRecord.tag.isNotEmpty) {
-      tagTextController = useTextEditingController(text: editMargedRecord.tag.first); // TODO 複数入力対応が必要
-    } else {
-      tagTextController = useTextEditingController(text: '');
-    }
+    final tagTextControllers = ref.watch(_tagTextController(editMargedRecord));
+    final tagFocusNodes = ref.watch(_tagFocusNodesProvider(editMargedRecord));
+
     final memoTextController = useTextEditingController(text: editMargedRecord.memo);
     final outputFormat = DateFormat(S.of(context).dateFormat);
     final isSelectPicker = useState(false);
 
     final useDeckFocusnode = useFocusNode();
     final opponentDeckFocusnode = useFocusNode();
-    final tagFocusnode = useFocusNode();
     final memoFocusnode = useFocusNode();
 
     if (isSelectPicker.value) {
       useDeckTextController.text = editMargedRecord.useDeck;
       opponentDeckTextController.text = editMargedRecord.opponentDeck;
-      tagTextController.text = editMargedRecord.tag.first; // TODO 複数入力対応が必要
+      editMargedRecord.tag.asMap().forEach((index, value) {
+        tagTextControllers[index].text = value;
+      });
       memoTextController.text = editMargedRecord.memo ?? '';
       isSelectPicker.value = false;
     }
@@ -146,7 +165,7 @@ class _EditView extends HookConsumerWidget {
             actions: [
               KeyboardActionsItem(focusNode: useDeckFocusnode),
               KeyboardActionsItem(focusNode: opponentDeckFocusnode),
-              KeyboardActionsItem(focusNode: tagFocusnode),
+              for (final tagFocusNode in tagFocusNodes) KeyboardActionsItem(focusNode: tagFocusNode),
               KeyboardActionsItem(focusNode: memoFocusnode),
             ],
           ),
@@ -328,33 +347,18 @@ class _EditView extends HookConsumerWidget {
                           ],
                         ),
                         const SizedBox(height: 8),
-                        Stack(
-                          alignment: Alignment.centerRight,
-                          children: [
-                            CustomTextField(
-                              labelText: S.of(context).tag,
-                              onChanged: recordDetailNotifier.editTag,
-                              controller: tagTextController,
-                              focusNode: tagFocusnode,
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.arrow_drop_down),
-                              onPressed: () async {
-                                await showCupertinoModalBottomSheet(
-                                  expand: true,
-                                  context: context,
-                                  backgroundColor: Colors.transparent,
-                                  builder: (BuildContext context) {
-                                    return SelectTagView(
-                                      selectTagFunc: recordDetailNotifier.selectTag,
-                                      tagCount: 0,
-                                    );
-                                  },
-                                );
-                                isSelectPicker.value = true;
-                              },
-                            ),
-                          ],
+                        InputTagList(
+                          controllers: tagTextControllers,
+                          focusNodes: tagFocusNodes,
+                          inputTag: recordDetailNotifier.editTag,
+                          isDropDown: false,
+                          selectTagFunc: recordDetailNotifier.selectTag,
+                          addFunc: () {
+                            ref.read(_tagTextController(editMargedRecord).notifier).state = [
+                              ...tagTextControllers,
+                              TextEditingController()
+                            ];
+                          },
                         ),
                         const SizedBox(height: 8),
                         CustomTextField(

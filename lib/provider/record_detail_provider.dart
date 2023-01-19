@@ -11,8 +11,6 @@ import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
 import 'package:tcg_manager/repository/tag_repository.dart';
-import 'package:tcg_manager/selector/game_deck_list_selector.dart';
-import 'package:tcg_manager/selector/game_tag_list_selector.dart';
 import 'package:tcg_manager/state/record_detail_state.dart';
 
 class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
@@ -41,17 +39,6 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
     state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(useDeck: name));
   }
 
-  Future scrollUseDeck(int index) async {
-    final gameDeckList = await ref.read(gameDeckListProvider.future);
-    state = state.copyWith(cacheUseDeck: gameDeckList[index]);
-  }
-
-  void setUseDeck() {
-    if (state.cacheUseDeck != null) {
-      state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(useDeck: state.cacheUseDeck!.deck));
-    }
-  }
-
   void selectUseDeck(Deck deck) {
     state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(useDeck: deck.deck));
   }
@@ -60,41 +47,42 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
     state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(opponentDeck: name));
   }
 
-  Future scrollOpponentDeck(int index) async {
-    final gameDeckList = await ref.read(gameDeckListProvider.future);
-    state = state.copyWith(cacheOpponentDeck: gameDeckList[index]);
-  }
-
-  void setOpponentDeck() {
-    if (state.cacheOpponentDeck != null) {
-      state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(opponentDeck: state.cacheOpponentDeck!.deck));
-    }
-  }
-
   void selectOpponentDeck(Deck deck) {
     state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(opponentDeck: deck.deck));
   }
 
-  // TODO 複数入力対応が必要
-  void editTag(String name) {
-    state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(tag: [name]));
-  }
-
-  Future scrollTag(int index) async {
-    final gameTagList = await ref.read(gameTagListProvider.future);
-    state = state.copyWith(cacheTag: gameTagList[index]);
-  }
-
-  // TODO 複数入力対応が必要
-  void setTag() {
-    if (state.cacheTag != null) {
-      state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(tag: [state.cacheTag!.tag]));
+  void editTag(String name, int index) {
+    final newTags = [...state.editMargedRecord.tag];
+    if (newTags.length > index) {
+      newTags[index] = name;
+    } else if (newTags.length - index <= 0) {
+      for (var i = newTags.length - index; i < 0; i++) {
+        newTags.add('');
+      }
+      newTags.add(name);
     }
+    state = state.copyWith(
+      editMargedRecord: state.editMargedRecord.copyWith(
+        tag: newTags,
+      ),
+    );
   }
 
-  // TODO 複数入力対応が必要
-  void selectTag(Tag tag, int tagCounter) {
-    state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(tag: [tag.tag]));
+  void selectTag(Tag tag, int index) {
+    final newTags = [...state.editMargedRecord.tag];
+    if (newTags.length > index) {
+      newTags[index] = tag.tag;
+    } else if (newTags.length - index <= 0) {
+      for (var i = newTags.length - index; i < 0; i++) {
+        newTags.add('');
+      }
+      newTags.add(tag.tag);
+    }
+    state = state.copyWith(
+      editMargedRecord: state.editMargedRecord.copyWith(
+        tag: newTags,
+      ),
+    );
   }
 
   void scrollDate(DateTime date) {
@@ -124,7 +112,6 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
   Future saveEdit() async {
     // 編集したrecord(EditMargedRecord)を表示用のrecord(MargedRecord)に設定
     state = state.copyWith(margedRecord: state.editMargedRecord);
-
     // 各種値の保存、ID取得、recordへのID設定
     // ここの処理は各種値が編集済みが未編集かに関わらず実行される
     // 編集済みのみ実行するようにすればパフォーマンスは上がるかも
@@ -193,7 +180,8 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
   Future _saveEditTag() async {
     if (state.margedRecord.tag.isEmpty) return;
     final List<int> newTags = [];
-    for (final tag in margedRecord.tag) {
+    for (final tag in state.margedRecord.tag) {
+      if (tag == '') continue;
       // 入力されたタグが新規のものかどうかを判定
       final checkTag = await ref.read(editRecordHelper).checkIfSelectedTagIsNew(tag);
       // 新規だった場合
@@ -227,6 +215,5 @@ final recordDetailNotifierProvider =
   // 一覧からレコードを選択した瞬間の値のみがほしいため、watchで監視せずにreadで読み取っている
   final recordList = ref.read(recordListProvider);
   final record = recordList.firstWhere((record) => record.recordId == margedRecord.recordId);
-  final notifier = RecordDetailNotifier(ref: ref, record: record, margedRecord: margedRecord);
-  return notifier;
+  return RecordDetailNotifier(ref: ref, record: record, margedRecord: margedRecord);
 });
