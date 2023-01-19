@@ -160,25 +160,3 @@ String? _stringListToJson(List<String>? values) {
   }
   return result;
 }
-
-List<int> _intListFromJson(String? value) {
-  if (value == null) return [];
-  final splitList = value.split(',');
-  return splitList.map((e) => int.parse(e)).toList();
-}
-
-String? _intListToJson(List<int> values) {
-  if (values.isEmpty) return null;
-  var result = '';
-  var count = 0;
-  for (final value in values) {
-    if (count == 0) {
-      // ignore: unnecessary_string_interpolations
-      result = value.toString();
-    } else {
-      result = '$result,$value';
-    }
-    count++;
-  }
-  return result;
-}
