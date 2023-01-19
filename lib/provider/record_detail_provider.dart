@@ -208,8 +208,7 @@ final recordListProvider = Provider<List<Record>>((ref) {
 
 final recordDetailNotifierProvider =
     StateNotifierProvider.family.autoDispose<RecordDetailNotifier, RecordDetailState, MargedRecord>((ref, margedRecord) {
-  // 一覧からレコードを選択した瞬間の値のみがほしいため、watchで監視せずにreadで読み取っている
-  final recordList = ref.read(recordListProvider);
+  final recordList = ref.watch(recordListProvider);
   final record = recordList.firstWhere((record) => record.recordId == margedRecord.recordId);
   return RecordDetailNotifier(ref: ref, record: record, margedRecord: margedRecord);
 });
