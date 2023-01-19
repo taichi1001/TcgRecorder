@@ -102,8 +102,9 @@ class DatabaseService {
         for (final record in newRecordList) {
           batch.insert('${recordTableName}_new', record.toJson());
         }
+        await batch.commit();
         await database.execute('DROP TABLE $recordTableName');
-        await database.execute('ALTER TABLE ${recordTableName}_new RENAME TO $recordTableName');
+        await database.execute('ALTER TABLE ${recordTableName}_new RENAME TO $recordTableName;');
       }
     }
   }
