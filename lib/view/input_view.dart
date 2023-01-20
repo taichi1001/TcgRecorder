@@ -1,3 +1,5 @@
+// ignore_for_file: unused_result
+
 import 'dart:io';
 
 import 'package:adaptive_dialog/adaptive_dialog.dart';
@@ -54,6 +56,142 @@ final inputViewInfoProvider = FutureProvider.autoDispose<InputViewInfo>((ref) as
   );
 });
 
+final _tagFocusNodesProvider = Provider.autoDispose<List<FocusNode>>((ref) {
+  final tagTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.tagController));
+  final List<FocusNode> tagFocusNodes = [];
+  for (var i = 0; i < tagTextController.length; i++) {
+    tagFocusNodes.add(FocusNode());
+  }
+  return tagFocusNodes;
+});
+
+class SelectableDateTime extends StatelessWidget {
+  const SelectableDateTime({
+    required this.controller,
+    required this.submiteAction,
+    required this.nowAction,
+    required this.datetime,
+    super.key,
+  });
+  final CustomModalDateTimePickerController controller;
+  final Function() submiteAction;
+  final Function() nowAction;
+  final DateTime datetime;
+  @override
+  Widget build(BuildContext context) {
+    final outputFormat = DateFormat(S.of(context).dateFormatIncludeTime);
+
+    return GestureDetector(
+      onTap: () async {
+        showCupertinoModalPopup(
+          context: context,
+          builder: (BuildContext context) {
+            return CustomModalDateTimePicker(
+              controller: controller,
+              submitedAction: () {
+                submiteAction();
+                Navigator.pop(context);
+              },
+              nowAction: () {
+                nowAction();
+                Navigator.pop(context);
+              },
+            );
+          },
+        );
+      },
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                outputFormat.format(datetime),
+              ),
+              const Icon(
+                Icons.calendar_today_rounded,
+                size: 16,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class InputTagList extends StatelessWidget {
+  const InputTagList({
+    this.addFunc,
+    required this.controllers,
+    required this.focusNodes,
+    required this.inputTag,
+    required this.isDropDown,
+    required this.selectTagFunc,
+    super.key,
+  });
+
+  final Function(String, int) inputTag;
+  final List<TextEditingController> controllers;
+  final List<FocusNode> focusNodes;
+  final bool isDropDown;
+  final Function(Tag, int) selectTagFunc;
+  final void Function()? addFunc;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: controllers
+          .mapIndexed(
+            (index, controller) => Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Flexible(
+                  child: Stack(
+                    alignment: Alignment.centerRight,
+                    fit: StackFit.loose,
+                    children: [
+                      CustomTextField(
+                        labelText: S.of(context).tag + (index + 1).toString(),
+                        indexOnChanged: inputTag,
+                        controller: controller,
+                        focusNode: focusNodes[index],
+                        index: index,
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.arrow_drop_down),
+                        onPressed: isDropDown
+                            ? null
+                            : () {
+                                showCupertinoModalBottomSheet(
+                                  expand: true,
+                                  context: context,
+                                  backgroundColor: Colors.transparent,
+                                  builder: (BuildContext context) => SelectTagView(
+                                    selectTagFunc: selectTagFunc,
+                                    tagCount: index,
+                                    afterFunc: FocusScope.of(context).unfocus,
+                                    enableVisiblity: true,
+                                  ),
+                                );
+                              },
+                      ),
+                    ],
+                  ),
+                ),
+                IconButton(
+                  onPressed: addFunc,
+                  icon: const Icon(Icons.add_circle),
+                ),
+              ],
+            ),
+          )
+          .toList(),
+    );
+  }
+}
+
 class InputView extends HookConsumerWidget {
   const InputView({Key? key}) : super(key: key);
 
@@ -72,6 +210,7 @@ class InputView extends HookConsumerWidget {
     final opponentDeck = ref.watch(inputViewNotifierProvider.select((value) => value.opponentDeck));
     final images = ref.watch(inputViewNotifierProvider.select((value) => value.images));
     final inputViewNotifier = ref.read(inputViewNotifierProvider.notifier);
+    final textEditingControllerNotifier = ref.read(textEditingControllerNotifierProvider.notifier);
     final useDeckTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.useDeckController));
     final opponentDeckTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.opponentDeckController));
     final tagTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.tagController));
@@ -79,13 +218,12 @@ class InputView extends HookConsumerWidget {
     final dateTimeController = useState(CustomModalDateTimePickerController(initialDateTime: DateTime.now()));
     final isDraw = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.draw));
     final isBO3 = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.bo3));
-    final outputFormat = DateFormat(S.of(context).dateFormatIncludeTime);
 
     final inputViewInfo = ref.watch(inputViewInfoProvider);
 
     final useDeckFocusnode = useFocusNode();
     final opponentDeckFocusnode = useFocusNode();
-    final tagFocusnode = useFocusNode();
+    final tagFocusNodes = ref.watch(_tagFocusNodesProvider);
     final memoFocusnode = useFocusNode();
 
     return inputViewInfo.when(
@@ -114,7 +252,7 @@ class InputView extends HookConsumerWidget {
                     actions: [
                       KeyboardActionsItem(focusNode: useDeckFocusnode),
                       KeyboardActionsItem(focusNode: opponentDeckFocusnode),
-                      KeyboardActionsItem(focusNode: tagFocusnode),
+                      for (final tagFocusNode in tagFocusNodes) KeyboardActionsItem(focusNode: tagFocusNode),
                       KeyboardActionsItem(focusNode: memoFocusnode),
                     ],
                   ),
@@ -124,47 +262,20 @@ class InputView extends HookConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 8),
-                        GestureDetector(
-                          onTap: () async {
+                        SelectableDateTime(
+                          controller: dateTimeController.value,
+                          submiteAction: () {
+                            inputViewNotifier.selectDateTime(dateTimeController.value.selectedDateTime);
+                          },
+                          nowAction: () async {
                             try {
                               await ref.read(revenueCatNotifierProvider.notifier).purchasePremiumMonthly();
                               // ignore: empty_catches
                             } catch (e) {}
-                            showCupertinoModalPopup(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return CustomModalDateTimePicker(
-                                  controller: dateTimeController.value,
-                                  submitedAction: () {
-                                    inputViewNotifier.selectDateTime(dateTimeController.value.selectedDateTime);
-                                    Navigator.pop(context);
-                                  },
-                                  nowAction: () {
-                                    dateTimeController.value.setDateTimeNow();
-                                    inputViewNotifier.selectDateTime(dateTimeController.value.selectedDateTime);
-                                    Navigator.pop(context);
-                                  },
-                                );
-                              },
-                            );
+                            dateTimeController.value.setDateTimeNow();
+                            inputViewNotifier.selectDateTime(dateTimeController.value.selectedDateTime);
                           },
-                          child: Card(
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    outputFormat.format(date),
-                                  ),
-                                  const Icon(
-                                    Icons.calendar_today_rounded,
-                                    size: 16,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
+                          datetime: date,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -510,33 +621,15 @@ class InputView extends HookConsumerWidget {
                                   ],
                                 ),
                                 const SizedBox(height: 8),
-                                Stack(
-                                  alignment: Alignment.centerRight,
-                                  children: [
-                                    CustomTextField(
-                                      labelText: S.of(context).tag,
-                                      onChanged: inputViewNotifier.inputTag,
-                                      controller: tagTextController,
-                                      focusNode: tagFocusnode,
-                                    ),
-                                    IconButton(
-                                      icon: const Icon(Icons.arrow_drop_down),
-                                      onPressed: inputViewInfo.gameDeckList.isEmpty
-                                          ? null
-                                          : () {
-                                              showCupertinoModalBottomSheet(
-                                                expand: true,
-                                                context: context,
-                                                backgroundColor: Colors.transparent,
-                                                builder: (BuildContext context) => SelectTagView(
-                                                  selectTagFunc: inputViewNotifier.selectTag,
-                                                  afterFunc: FocusScope.of(context).unfocus,
-                                                  enableVisiblity: true,
-                                                ),
-                                              );
-                                            },
-                                    ),
-                                  ],
+                                InputTagList(
+                                  inputTag: inputViewNotifier.inputTag,
+                                  controllers: tagTextController,
+                                  focusNodes: tagFocusNodes,
+                                  isDropDown: inputViewInfo.gameDeckList.isEmpty,
+                                  selectTagFunc: inputViewNotifier.selectTag,
+                                  addFunc: () {
+                                    textEditingControllerNotifier.addTagController();
+                                  },
                                 ),
                                 const SizedBox(height: 8),
                                 CustomTextField(
@@ -814,7 +907,7 @@ class _AddPhotoWidget extends StatelessWidget {
                       height: 80,
                       child: Image.file(
                         File(file!.path),
-                        fit: BoxFit.fill,
+                        fit: BoxFit.contain,
                       ),
                     ),
                     const Padding(

@@ -3,11 +3,11 @@ import 'package:tcg_manager/main.dart';
 import 'package:tcg_manager/state/graph_view_settings_state.dart';
 
 class GraphViewSettingsNotifier extends StateNotifier<GraphViewSettingsState> {
-  GraphViewSettingsNotifier(this.read) : super(GraphViewSettingsState()) {
+  GraphViewSettingsNotifier(this.ref) : super(GraphViewSettingsState()) {
     _init();
   }
 
-  final Reader read;
+  final Ref ref;
   static const matchesKey = 'matches';
   static const firstMatchesKey = 'firstMatches';
   static const secondMatchesKey = 'secondMatches';
@@ -24,7 +24,7 @@ class GraphViewSettingsNotifier extends StateNotifier<GraphViewSettingsState> {
   static const firstWinRateKey = 'firstWinRate';
   static const secondWinRateKey = 'secondWinRate';
 
-  late final prefs = read(sharedPreferencesProvider);
+  late final prefs = ref.read(sharedPreferencesProvider);
 
   void _init() {
     state = state.copyWith(
@@ -155,5 +155,5 @@ class GraphViewSettingsNotifier extends StateNotifier<GraphViewSettingsState> {
 }
 
 final graphViewSettingsNotifierProvider = StateNotifierProvider<GraphViewSettingsNotifier, GraphViewSettingsState>(
-  (ref) => GraphViewSettingsNotifier(ref.read),
+  (ref) => GraphViewSettingsNotifier(ref),
 );

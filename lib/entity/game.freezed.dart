@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'game.dart';
 
@@ -37,7 +37,8 @@ mixin _$Game {
 /// @nodoc
 abstract class $GameCopyWith<$Res> {
   factory $GameCopyWith(Game value, $Res Function(Game) then) =
-      _$GameCopyWithImpl<$Res>;
+      _$GameCopyWithImpl<$Res, Game>;
+  @useResult
   $Res call(
       {@JsonKey(name: 'game_id')
           int? gameId,
@@ -47,33 +48,36 @@ abstract class $GameCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$GameCopyWithImpl<$Res> implements $GameCopyWith<$Res> {
+class _$GameCopyWithImpl<$Res, $Val extends Game>
+    implements $GameCopyWith<$Res> {
   _$GameCopyWithImpl(this._value, this._then);
 
-  final Game _value;
   // ignore: unused_field
-  final $Res Function(Game) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? gameId = freezed,
-    Object? game = freezed,
-    Object? isVisibleToPicker = freezed,
+    Object? game = null,
+    Object? isVisibleToPicker = null,
   }) {
     return _then(_value.copyWith(
-      gameId: gameId == freezed
+      gameId: freezed == gameId
           ? _value.gameId
           : gameId // ignore: cast_nullable_to_non_nullable
               as int?,
-      game: game == freezed
+      game: null == game
           ? _value.game
           : game // ignore: cast_nullable_to_non_nullable
               as String,
-      isVisibleToPicker: isVisibleToPicker == freezed
+      isVisibleToPicker: null == isVisibleToPicker
           ? _value.isVisibleToPicker
           : isVisibleToPicker // ignore: cast_nullable_to_non_nullable
               as bool,
-    ));
+    ) as $Val);
   }
 }
 
@@ -82,6 +86,7 @@ abstract class _$$_GameCopyWith<$Res> implements $GameCopyWith<$Res> {
   factory _$$_GameCopyWith(_$_Game value, $Res Function(_$_Game) then) =
       __$$_GameCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {@JsonKey(name: 'game_id')
           int? gameId,
@@ -91,30 +96,28 @@ abstract class _$$_GameCopyWith<$Res> implements $GameCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_GameCopyWithImpl<$Res> extends _$GameCopyWithImpl<$Res>
+class __$$_GameCopyWithImpl<$Res> extends _$GameCopyWithImpl<$Res, _$_Game>
     implements _$$_GameCopyWith<$Res> {
   __$$_GameCopyWithImpl(_$_Game _value, $Res Function(_$_Game) _then)
-      : super(_value, (v) => _then(v as _$_Game));
+      : super(_value, _then);
 
-  @override
-  _$_Game get _value => super._value as _$_Game;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? gameId = freezed,
-    Object? game = freezed,
-    Object? isVisibleToPicker = freezed,
+    Object? game = null,
+    Object? isVisibleToPicker = null,
   }) {
     return _then(_$_Game(
-      gameId: gameId == freezed
+      gameId: freezed == gameId
           ? _value.gameId
           : gameId // ignore: cast_nullable_to_non_nullable
               as int?,
-      game: game == freezed
+      game: null == game
           ? _value.game
           : game // ignore: cast_nullable_to_non_nullable
               as String,
-      isVisibleToPicker: isVisibleToPicker == freezed
+      isVisibleToPicker: null == isVisibleToPicker
           ? _value.isVisibleToPicker
           : isVisibleToPicker // ignore: cast_nullable_to_non_nullable
               as bool,
@@ -156,28 +159,27 @@ class _$_Game implements _Game {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Game &&
-            const DeepCollectionEquality().equals(other.gameId, gameId) &&
-            const DeepCollectionEquality().equals(other.game, game) &&
-            const DeepCollectionEquality()
-                .equals(other.isVisibleToPicker, isVisibleToPicker));
+            (identical(other.gameId, gameId) || other.gameId == gameId) &&
+            (identical(other.game, game) || other.game == game) &&
+            (identical(other.isVisibleToPicker, isVisibleToPicker) ||
+                other.isVisibleToPicker == isVisibleToPicker));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(gameId),
-      const DeepCollectionEquality().hash(game),
-      const DeepCollectionEquality().hash(isVisibleToPicker));
+  int get hashCode => Object.hash(runtimeType, gameId, game, isVisibleToPicker);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_GameCopyWith<_$_Game> get copyWith =>
       __$$_GameCopyWithImpl<_$_Game>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_GameToJson(this);
+    return _$$_GameToJson(
+      this,
+    );
   }
 }
 
@@ -193,15 +195,15 @@ abstract class _Game implements Game {
 
   @override
   @JsonKey(name: 'game_id')
-  int? get gameId => throw _privateConstructorUsedError;
+  int? get gameId;
   @override
-  String get game => throw _privateConstructorUsedError;
+  String get game;
   @override
   @JsonKey(
       fromJson: _boolFromJson,
       toJson: _boolToJson,
       name: 'is_visible_to_picker')
-  bool get isVisibleToPicker => throw _privateConstructorUsedError;
+  bool get isVisibleToPicker;
   @override
   @JsonKey(ignore: true)
   _$$_GameCopyWith<_$_Game> get copyWith => throw _privateConstructorUsedError;

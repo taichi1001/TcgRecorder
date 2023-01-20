@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'input_view_state.dart';
 
@@ -20,7 +20,7 @@ mixin _$InputViewState {
   DateTime get date => throw _privateConstructorUsedError;
   Deck? get useDeck => throw _privateConstructorUsedError;
   Deck? get opponentDeck => throw _privateConstructorUsedError;
-  Tag? get tag => throw _privateConstructorUsedError;
+  List<Tag> get tag => throw _privateConstructorUsedError;
   String? get memo => throw _privateConstructorUsedError;
   WinLoss get winLoss => throw _privateConstructorUsedError;
   WinLoss? get firstMatchWinLoss => throw _privateConstructorUsedError;
@@ -41,13 +41,14 @@ mixin _$InputViewState {
 abstract class $InputViewStateCopyWith<$Res> {
   factory $InputViewStateCopyWith(
           InputViewState value, $Res Function(InputViewState) then) =
-      _$InputViewStateCopyWithImpl<$Res>;
+      _$InputViewStateCopyWithImpl<$Res, InputViewState>;
+  @useResult
   $Res call(
       {Record? record,
       DateTime date,
       Deck? useDeck,
       Deck? opponentDeck,
-      Tag? tag,
+      List<Tag> tag,
       String? memo,
       WinLoss winLoss,
       WinLoss? firstMatchWinLoss,
@@ -62,141 +63,134 @@ abstract class $InputViewStateCopyWith<$Res> {
   $RecordCopyWith<$Res>? get record;
   $DeckCopyWith<$Res>? get useDeck;
   $DeckCopyWith<$Res>? get opponentDeck;
-  $TagCopyWith<$Res>? get tag;
 }
 
 /// @nodoc
-class _$InputViewStateCopyWithImpl<$Res>
+class _$InputViewStateCopyWithImpl<$Res, $Val extends InputViewState>
     implements $InputViewStateCopyWith<$Res> {
   _$InputViewStateCopyWithImpl(this._value, this._then);
 
-  final InputViewState _value;
   // ignore: unused_field
-  final $Res Function(InputViewState) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? record = freezed,
-    Object? date = freezed,
+    Object? date = null,
     Object? useDeck = freezed,
     Object? opponentDeck = freezed,
-    Object? tag = freezed,
+    Object? tag = null,
     Object? memo = freezed,
-    Object? winLoss = freezed,
+    Object? winLoss = null,
     Object? firstMatchWinLoss = freezed,
     Object? secondMatchWinLoss = freezed,
     Object? thirdMatchWinLoss = freezed,
-    Object? firstSecond = freezed,
+    Object? firstSecond = null,
     Object? firstMatchFirstSecond = freezed,
     Object? secondMatchFirstSecond = freezed,
     Object? thirdMatchFirstSecond = freezed,
-    Object? images = freezed,
+    Object? images = null,
   }) {
     return _then(_value.copyWith(
-      record: record == freezed
+      record: freezed == record
           ? _value.record
           : record // ignore: cast_nullable_to_non_nullable
               as Record?,
-      date: date == freezed
+      date: null == date
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      useDeck: useDeck == freezed
+      useDeck: freezed == useDeck
           ? _value.useDeck
           : useDeck // ignore: cast_nullable_to_non_nullable
               as Deck?,
-      opponentDeck: opponentDeck == freezed
+      opponentDeck: freezed == opponentDeck
           ? _value.opponentDeck
           : opponentDeck // ignore: cast_nullable_to_non_nullable
               as Deck?,
-      tag: tag == freezed
+      tag: null == tag
           ? _value.tag
           : tag // ignore: cast_nullable_to_non_nullable
-              as Tag?,
-      memo: memo == freezed
+              as List<Tag>,
+      memo: freezed == memo
           ? _value.memo
           : memo // ignore: cast_nullable_to_non_nullable
               as String?,
-      winLoss: winLoss == freezed
+      winLoss: null == winLoss
           ? _value.winLoss
           : winLoss // ignore: cast_nullable_to_non_nullable
               as WinLoss,
-      firstMatchWinLoss: firstMatchWinLoss == freezed
+      firstMatchWinLoss: freezed == firstMatchWinLoss
           ? _value.firstMatchWinLoss
           : firstMatchWinLoss // ignore: cast_nullable_to_non_nullable
               as WinLoss?,
-      secondMatchWinLoss: secondMatchWinLoss == freezed
+      secondMatchWinLoss: freezed == secondMatchWinLoss
           ? _value.secondMatchWinLoss
           : secondMatchWinLoss // ignore: cast_nullable_to_non_nullable
               as WinLoss?,
-      thirdMatchWinLoss: thirdMatchWinLoss == freezed
+      thirdMatchWinLoss: freezed == thirdMatchWinLoss
           ? _value.thirdMatchWinLoss
           : thirdMatchWinLoss // ignore: cast_nullable_to_non_nullable
               as WinLoss?,
-      firstSecond: firstSecond == freezed
+      firstSecond: null == firstSecond
           ? _value.firstSecond
           : firstSecond // ignore: cast_nullable_to_non_nullable
               as FirstSecond,
-      firstMatchFirstSecond: firstMatchFirstSecond == freezed
+      firstMatchFirstSecond: freezed == firstMatchFirstSecond
           ? _value.firstMatchFirstSecond
           : firstMatchFirstSecond // ignore: cast_nullable_to_non_nullable
               as FirstSecond?,
-      secondMatchFirstSecond: secondMatchFirstSecond == freezed
+      secondMatchFirstSecond: freezed == secondMatchFirstSecond
           ? _value.secondMatchFirstSecond
           : secondMatchFirstSecond // ignore: cast_nullable_to_non_nullable
               as FirstSecond?,
-      thirdMatchFirstSecond: thirdMatchFirstSecond == freezed
+      thirdMatchFirstSecond: freezed == thirdMatchFirstSecond
           ? _value.thirdMatchFirstSecond
           : thirdMatchFirstSecond // ignore: cast_nullable_to_non_nullable
               as FirstSecond?,
-      images: images == freezed
+      images: null == images
           ? _value.images
           : images // ignore: cast_nullable_to_non_nullable
               as List<XFile>,
-    ));
+    ) as $Val);
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $RecordCopyWith<$Res>? get record {
     if (_value.record == null) {
       return null;
     }
 
     return $RecordCopyWith<$Res>(_value.record!, (value) {
-      return _then(_value.copyWith(record: value));
+      return _then(_value.copyWith(record: value) as $Val);
     });
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $DeckCopyWith<$Res>? get useDeck {
     if (_value.useDeck == null) {
       return null;
     }
 
     return $DeckCopyWith<$Res>(_value.useDeck!, (value) {
-      return _then(_value.copyWith(useDeck: value));
+      return _then(_value.copyWith(useDeck: value) as $Val);
     });
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $DeckCopyWith<$Res>? get opponentDeck {
     if (_value.opponentDeck == null) {
       return null;
     }
 
     return $DeckCopyWith<$Res>(_value.opponentDeck!, (value) {
-      return _then(_value.copyWith(opponentDeck: value));
-    });
-  }
-
-  @override
-  $TagCopyWith<$Res>? get tag {
-    if (_value.tag == null) {
-      return null;
-    }
-
-    return $TagCopyWith<$Res>(_value.tag!, (value) {
-      return _then(_value.copyWith(tag: value));
+      return _then(_value.copyWith(opponentDeck: value) as $Val);
     });
   }
 }
@@ -208,12 +202,13 @@ abstract class _$$_InputViewStateCopyWith<$Res>
           _$_InputViewState value, $Res Function(_$_InputViewState) then) =
       __$$_InputViewStateCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {Record? record,
       DateTime date,
       Deck? useDeck,
       Deck? opponentDeck,
-      Tag? tag,
+      List<Tag> tag,
       String? memo,
       WinLoss winLoss,
       WinLoss? firstMatchWinLoss,
@@ -231,97 +226,93 @@ abstract class _$$_InputViewStateCopyWith<$Res>
   $DeckCopyWith<$Res>? get useDeck;
   @override
   $DeckCopyWith<$Res>? get opponentDeck;
-  @override
-  $TagCopyWith<$Res>? get tag;
 }
 
 /// @nodoc
 class __$$_InputViewStateCopyWithImpl<$Res>
-    extends _$InputViewStateCopyWithImpl<$Res>
+    extends _$InputViewStateCopyWithImpl<$Res, _$_InputViewState>
     implements _$$_InputViewStateCopyWith<$Res> {
   __$$_InputViewStateCopyWithImpl(
       _$_InputViewState _value, $Res Function(_$_InputViewState) _then)
-      : super(_value, (v) => _then(v as _$_InputViewState));
+      : super(_value, _then);
 
-  @override
-  _$_InputViewState get _value => super._value as _$_InputViewState;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? record = freezed,
-    Object? date = freezed,
+    Object? date = null,
     Object? useDeck = freezed,
     Object? opponentDeck = freezed,
-    Object? tag = freezed,
+    Object? tag = null,
     Object? memo = freezed,
-    Object? winLoss = freezed,
+    Object? winLoss = null,
     Object? firstMatchWinLoss = freezed,
     Object? secondMatchWinLoss = freezed,
     Object? thirdMatchWinLoss = freezed,
-    Object? firstSecond = freezed,
+    Object? firstSecond = null,
     Object? firstMatchFirstSecond = freezed,
     Object? secondMatchFirstSecond = freezed,
     Object? thirdMatchFirstSecond = freezed,
-    Object? images = freezed,
+    Object? images = null,
   }) {
     return _then(_$_InputViewState(
-      record: record == freezed
+      record: freezed == record
           ? _value.record
           : record // ignore: cast_nullable_to_non_nullable
               as Record?,
-      date: date == freezed
+      date: null == date
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      useDeck: useDeck == freezed
+      useDeck: freezed == useDeck
           ? _value.useDeck
           : useDeck // ignore: cast_nullable_to_non_nullable
               as Deck?,
-      opponentDeck: opponentDeck == freezed
+      opponentDeck: freezed == opponentDeck
           ? _value.opponentDeck
           : opponentDeck // ignore: cast_nullable_to_non_nullable
               as Deck?,
-      tag: tag == freezed
-          ? _value.tag
+      tag: null == tag
+          ? _value._tag
           : tag // ignore: cast_nullable_to_non_nullable
-              as Tag?,
-      memo: memo == freezed
+              as List<Tag>,
+      memo: freezed == memo
           ? _value.memo
           : memo // ignore: cast_nullable_to_non_nullable
               as String?,
-      winLoss: winLoss == freezed
+      winLoss: null == winLoss
           ? _value.winLoss
           : winLoss // ignore: cast_nullable_to_non_nullable
               as WinLoss,
-      firstMatchWinLoss: firstMatchWinLoss == freezed
+      firstMatchWinLoss: freezed == firstMatchWinLoss
           ? _value.firstMatchWinLoss
           : firstMatchWinLoss // ignore: cast_nullable_to_non_nullable
               as WinLoss?,
-      secondMatchWinLoss: secondMatchWinLoss == freezed
+      secondMatchWinLoss: freezed == secondMatchWinLoss
           ? _value.secondMatchWinLoss
           : secondMatchWinLoss // ignore: cast_nullable_to_non_nullable
               as WinLoss?,
-      thirdMatchWinLoss: thirdMatchWinLoss == freezed
+      thirdMatchWinLoss: freezed == thirdMatchWinLoss
           ? _value.thirdMatchWinLoss
           : thirdMatchWinLoss // ignore: cast_nullable_to_non_nullable
               as WinLoss?,
-      firstSecond: firstSecond == freezed
+      firstSecond: null == firstSecond
           ? _value.firstSecond
           : firstSecond // ignore: cast_nullable_to_non_nullable
               as FirstSecond,
-      firstMatchFirstSecond: firstMatchFirstSecond == freezed
+      firstMatchFirstSecond: freezed == firstMatchFirstSecond
           ? _value.firstMatchFirstSecond
           : firstMatchFirstSecond // ignore: cast_nullable_to_non_nullable
               as FirstSecond?,
-      secondMatchFirstSecond: secondMatchFirstSecond == freezed
+      secondMatchFirstSecond: freezed == secondMatchFirstSecond
           ? _value.secondMatchFirstSecond
           : secondMatchFirstSecond // ignore: cast_nullable_to_non_nullable
               as FirstSecond?,
-      thirdMatchFirstSecond: thirdMatchFirstSecond == freezed
+      thirdMatchFirstSecond: freezed == thirdMatchFirstSecond
           ? _value.thirdMatchFirstSecond
           : thirdMatchFirstSecond // ignore: cast_nullable_to_non_nullable
               as FirstSecond?,
-      images: images == freezed
+      images: null == images
           ? _value._images
           : images // ignore: cast_nullable_to_non_nullable
               as List<XFile>,
@@ -337,7 +328,7 @@ class _$_InputViewState implements _InputViewState {
       required this.date,
       this.useDeck,
       this.opponentDeck,
-      this.tag,
+      final List<Tag> tag = const [],
       this.memo,
       this.winLoss = WinLoss.win,
       this.firstMatchWinLoss,
@@ -348,7 +339,8 @@ class _$_InputViewState implements _InputViewState {
       this.secondMatchFirstSecond,
       this.thirdMatchFirstSecond,
       final List<XFile> images = const []})
-      : _images = images;
+      : _tag = tag,
+        _images = images;
 
   @override
   final Record? record;
@@ -358,8 +350,15 @@ class _$_InputViewState implements _InputViewState {
   final Deck? useDeck;
   @override
   final Deck? opponentDeck;
+  final List<Tag> _tag;
   @override
-  final Tag? tag;
+  @JsonKey()
+  List<Tag> get tag {
+    if (_tag is EqualUnmodifiableListView) return _tag;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_tag);
+  }
+
   @override
   final String? memo;
   @override
@@ -384,6 +383,7 @@ class _$_InputViewState implements _InputViewState {
   @override
   @JsonKey()
   List<XFile> get images {
+    if (_images is EqualUnmodifiableListView) return _images;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_images);
   }
@@ -398,52 +398,53 @@ class _$_InputViewState implements _InputViewState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_InputViewState &&
-            const DeepCollectionEquality().equals(other.record, record) &&
-            const DeepCollectionEquality().equals(other.date, date) &&
-            const DeepCollectionEquality().equals(other.useDeck, useDeck) &&
-            const DeepCollectionEquality()
-                .equals(other.opponentDeck, opponentDeck) &&
-            const DeepCollectionEquality().equals(other.tag, tag) &&
-            const DeepCollectionEquality().equals(other.memo, memo) &&
-            const DeepCollectionEquality().equals(other.winLoss, winLoss) &&
-            const DeepCollectionEquality()
-                .equals(other.firstMatchWinLoss, firstMatchWinLoss) &&
-            const DeepCollectionEquality()
-                .equals(other.secondMatchWinLoss, secondMatchWinLoss) &&
-            const DeepCollectionEquality()
-                .equals(other.thirdMatchWinLoss, thirdMatchWinLoss) &&
-            const DeepCollectionEquality()
-                .equals(other.firstSecond, firstSecond) &&
-            const DeepCollectionEquality()
-                .equals(other.firstMatchFirstSecond, firstMatchFirstSecond) &&
-            const DeepCollectionEquality()
-                .equals(other.secondMatchFirstSecond, secondMatchFirstSecond) &&
-            const DeepCollectionEquality()
-                .equals(other.thirdMatchFirstSecond, thirdMatchFirstSecond) &&
+            (identical(other.record, record) || other.record == record) &&
+            (identical(other.date, date) || other.date == date) &&
+            (identical(other.useDeck, useDeck) || other.useDeck == useDeck) &&
+            (identical(other.opponentDeck, opponentDeck) ||
+                other.opponentDeck == opponentDeck) &&
+            const DeepCollectionEquality().equals(other._tag, _tag) &&
+            (identical(other.memo, memo) || other.memo == memo) &&
+            (identical(other.winLoss, winLoss) || other.winLoss == winLoss) &&
+            (identical(other.firstMatchWinLoss, firstMatchWinLoss) ||
+                other.firstMatchWinLoss == firstMatchWinLoss) &&
+            (identical(other.secondMatchWinLoss, secondMatchWinLoss) ||
+                other.secondMatchWinLoss == secondMatchWinLoss) &&
+            (identical(other.thirdMatchWinLoss, thirdMatchWinLoss) ||
+                other.thirdMatchWinLoss == thirdMatchWinLoss) &&
+            (identical(other.firstSecond, firstSecond) ||
+                other.firstSecond == firstSecond) &&
+            (identical(other.firstMatchFirstSecond, firstMatchFirstSecond) ||
+                other.firstMatchFirstSecond == firstMatchFirstSecond) &&
+            (identical(other.secondMatchFirstSecond, secondMatchFirstSecond) ||
+                other.secondMatchFirstSecond == secondMatchFirstSecond) &&
+            (identical(other.thirdMatchFirstSecond, thirdMatchFirstSecond) ||
+                other.thirdMatchFirstSecond == thirdMatchFirstSecond) &&
             const DeepCollectionEquality().equals(other._images, _images));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(record),
-      const DeepCollectionEquality().hash(date),
-      const DeepCollectionEquality().hash(useDeck),
-      const DeepCollectionEquality().hash(opponentDeck),
-      const DeepCollectionEquality().hash(tag),
-      const DeepCollectionEquality().hash(memo),
-      const DeepCollectionEquality().hash(winLoss),
-      const DeepCollectionEquality().hash(firstMatchWinLoss),
-      const DeepCollectionEquality().hash(secondMatchWinLoss),
-      const DeepCollectionEquality().hash(thirdMatchWinLoss),
-      const DeepCollectionEquality().hash(firstSecond),
-      const DeepCollectionEquality().hash(firstMatchFirstSecond),
-      const DeepCollectionEquality().hash(secondMatchFirstSecond),
-      const DeepCollectionEquality().hash(thirdMatchFirstSecond),
+      record,
+      date,
+      useDeck,
+      opponentDeck,
+      const DeepCollectionEquality().hash(_tag),
+      memo,
+      winLoss,
+      firstMatchWinLoss,
+      secondMatchWinLoss,
+      thirdMatchWinLoss,
+      firstSecond,
+      firstMatchFirstSecond,
+      secondMatchFirstSecond,
+      thirdMatchFirstSecond,
       const DeepCollectionEquality().hash(_images));
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_InputViewStateCopyWith<_$_InputViewState> get copyWith =>
       __$$_InputViewStateCopyWithImpl<_$_InputViewState>(this, _$identity);
 }
@@ -454,7 +455,7 @@ abstract class _InputViewState implements InputViewState {
       required final DateTime date,
       final Deck? useDeck,
       final Deck? opponentDeck,
-      final Tag? tag,
+      final List<Tag> tag,
       final String? memo,
       final WinLoss winLoss,
       final WinLoss? firstMatchWinLoss,
@@ -467,35 +468,35 @@ abstract class _InputViewState implements InputViewState {
       final List<XFile> images}) = _$_InputViewState;
 
   @override
-  Record? get record => throw _privateConstructorUsedError;
+  Record? get record;
   @override
-  DateTime get date => throw _privateConstructorUsedError;
+  DateTime get date;
   @override
-  Deck? get useDeck => throw _privateConstructorUsedError;
+  Deck? get useDeck;
   @override
-  Deck? get opponentDeck => throw _privateConstructorUsedError;
+  Deck? get opponentDeck;
   @override
-  Tag? get tag => throw _privateConstructorUsedError;
+  List<Tag> get tag;
   @override
-  String? get memo => throw _privateConstructorUsedError;
+  String? get memo;
   @override
-  WinLoss get winLoss => throw _privateConstructorUsedError;
+  WinLoss get winLoss;
   @override
-  WinLoss? get firstMatchWinLoss => throw _privateConstructorUsedError;
+  WinLoss? get firstMatchWinLoss;
   @override
-  WinLoss? get secondMatchWinLoss => throw _privateConstructorUsedError;
+  WinLoss? get secondMatchWinLoss;
   @override
-  WinLoss? get thirdMatchWinLoss => throw _privateConstructorUsedError;
+  WinLoss? get thirdMatchWinLoss;
   @override
-  FirstSecond get firstSecond => throw _privateConstructorUsedError;
+  FirstSecond get firstSecond;
   @override
-  FirstSecond? get firstMatchFirstSecond => throw _privateConstructorUsedError;
+  FirstSecond? get firstMatchFirstSecond;
   @override
-  FirstSecond? get secondMatchFirstSecond => throw _privateConstructorUsedError;
+  FirstSecond? get secondMatchFirstSecond;
   @override
-  FirstSecond? get thirdMatchFirstSecond => throw _privateConstructorUsedError;
+  FirstSecond? get thirdMatchFirstSecond;
   @override
-  List<XFile> get images => throw _privateConstructorUsedError;
+  List<XFile> get images;
   @override
   @JsonKey(ignore: true)
   _$$_InputViewStateCopyWith<_$_InputViewState> get copyWith =>

@@ -1,3 +1,5 @@
+// ignore_for_file: unrelated_type_equality_checks, unused_result
+
 import 'dart:io';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -85,7 +87,7 @@ class DbHelper {
     final allRecord = await ref.read(allRecordListProvider.future);
     final tagRecord = allRecord.where((record) => record.tagId == tag.tagId).toList();
     for (var record in tagRecord) {
-      record = record.copyWith(tagId: null);
+      record = record.copyWith(tagId: []);
       await ref.read(recordRepository).update(record);
     }
   }

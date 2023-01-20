@@ -15,7 +15,7 @@ abstract class InputViewState with _$InputViewState {
     required DateTime date,
     Deck? useDeck,
     Deck? opponentDeck,
-    Tag? tag,
+    @Default([]) List<Tag> tag,
     String? memo,
     @Default(WinLoss.win) WinLoss winLoss,
     WinLoss? firstMatchWinLoss,

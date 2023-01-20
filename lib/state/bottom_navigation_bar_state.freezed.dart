@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'bottom_navigation_bar_state.dart';
 
@@ -27,29 +27,33 @@ mixin _$BottomNavigationBarState {
 abstract class $BottomNavigationBarStateCopyWith<$Res> {
   factory $BottomNavigationBarStateCopyWith(BottomNavigationBarState value,
           $Res Function(BottomNavigationBarState) then) =
-      _$BottomNavigationBarStateCopyWithImpl<$Res>;
+      _$BottomNavigationBarStateCopyWithImpl<$Res, BottomNavigationBarState>;
+  @useResult
   $Res call({BottomTabItem viewItem});
 }
 
 /// @nodoc
-class _$BottomNavigationBarStateCopyWithImpl<$Res>
+class _$BottomNavigationBarStateCopyWithImpl<$Res,
+        $Val extends BottomNavigationBarState>
     implements $BottomNavigationBarStateCopyWith<$Res> {
   _$BottomNavigationBarStateCopyWithImpl(this._value, this._then);
 
-  final BottomNavigationBarState _value;
   // ignore: unused_field
-  final $Res Function(BottomNavigationBarState) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? viewItem = freezed,
+    Object? viewItem = null,
   }) {
     return _then(_value.copyWith(
-      viewItem: viewItem == freezed
+      viewItem: null == viewItem
           ? _value.viewItem
           : viewItem // ignore: cast_nullable_to_non_nullable
               as BottomTabItem,
-    ));
+    ) as $Val);
   }
 }
 
@@ -61,27 +65,26 @@ abstract class _$$_BottomNavigationBarStateCopyWith<$Res>
           $Res Function(_$_BottomNavigationBarState) then) =
       __$$_BottomNavigationBarStateCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call({BottomTabItem viewItem});
 }
 
 /// @nodoc
 class __$$_BottomNavigationBarStateCopyWithImpl<$Res>
-    extends _$BottomNavigationBarStateCopyWithImpl<$Res>
+    extends _$BottomNavigationBarStateCopyWithImpl<$Res,
+        _$_BottomNavigationBarState>
     implements _$$_BottomNavigationBarStateCopyWith<$Res> {
   __$$_BottomNavigationBarStateCopyWithImpl(_$_BottomNavigationBarState _value,
       $Res Function(_$_BottomNavigationBarState) _then)
-      : super(_value, (v) => _then(v as _$_BottomNavigationBarState));
+      : super(_value, _then);
 
-  @override
-  _$_BottomNavigationBarState get _value =>
-      super._value as _$_BottomNavigationBarState;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? viewItem = freezed,
+    Object? viewItem = null,
   }) {
     return _then(_$_BottomNavigationBarState(
-      viewItem: viewItem == freezed
+      viewItem: null == viewItem
           ? _value.viewItem
           : viewItem // ignore: cast_nullable_to_non_nullable
               as BottomTabItem,
@@ -108,15 +111,16 @@ class _$_BottomNavigationBarState implements _BottomNavigationBarState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_BottomNavigationBarState &&
-            const DeepCollectionEquality().equals(other.viewItem, viewItem));
+            (identical(other.viewItem, viewItem) ||
+                other.viewItem == viewItem));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(viewItem));
+  int get hashCode => Object.hash(runtimeType, viewItem);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_BottomNavigationBarStateCopyWith<_$_BottomNavigationBarState>
       get copyWith => __$$_BottomNavigationBarStateCopyWithImpl<
           _$_BottomNavigationBarState>(this, _$identity);
@@ -127,7 +131,7 @@ abstract class _BottomNavigationBarState implements BottomNavigationBarState {
       _$_BottomNavigationBarState;
 
   @override
-  BottomTabItem get viewItem => throw _privateConstructorUsedError;
+  BottomTabItem get viewItem;
   @override
   @JsonKey(ignore: true)
   _$$_BottomNavigationBarStateCopyWith<_$_BottomNavigationBarState>

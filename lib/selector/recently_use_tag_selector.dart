@@ -22,8 +22,8 @@ final recentlyUseTagProvider = FutureProvider.autoDispose<List<Tag>>((ref) async
       recentlyTagIdList.removeLast();
       break;
     }
-    if (record.tagId != null) {
-      recentlyTagIdList.add(record.tagId!);
+    if (record.tagId.isNotEmpty) {
+      recentlyTagIdList.addAll(record.tagId);
       recentlyTagIdList = recentlyTagIdList.toSet().toList();
     }
   }

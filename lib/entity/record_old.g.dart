@@ -1,17 +1,15 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'record.dart';
+part of 'record_old.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_Record _$$_RecordFromJson(Map<String, dynamic> json) => _$_Record(
+_$_RecordOld _$$_RecordOldFromJson(Map<String, dynamic> json) => _$_RecordOld(
       recordId: json['record_id'] as int?,
       gameId: json['game_id'] as int?,
-      tagId: json['tag_id'] == null
-          ? const []
-          : _intListFromJson(json['tag_id'] as String?),
+      tagId: json['tag_id'] as int?,
       useDeckId: json['use_deck_id'] as int?,
       opponentDeckId: json['opponent_deck_id'] as int?,
       date: _dateTimeFromJson(json['date'] as String),
@@ -38,10 +36,11 @@ _$_Record _$$_RecordFromJson(Map<String, dynamic> json) => _$_Record(
       imagePath: _stringListFromJson(json['image_path'] as String?),
     );
 
-Map<String, dynamic> _$$_RecordToJson(_$_Record instance) => <String, dynamic>{
+Map<String, dynamic> _$$_RecordOldToJson(_$_RecordOld instance) =>
+    <String, dynamic>{
       'record_id': instance.recordId,
       'game_id': instance.gameId,
-      'tag_id': _intListToJson(instance.tagId),
+      'tag_id': instance.tagId,
       'use_deck_id': instance.useDeckId,
       'opponent_deck_id': instance.opponentDeckId,
       'date': _dateTimeToJson(instance.date),

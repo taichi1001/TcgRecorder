@@ -1,3 +1,5 @@
+// ignore_for_file: unused_result
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -41,14 +43,16 @@ final selectTagViewInfoProvider = FutureProvider.autoDispose<SelectTagViewInfo>(
 class SelectTagView extends HookConsumerWidget {
   const SelectTagView({
     required this.selectTagFunc,
+    required this.tagCount,
     this.afterFunc,
     this.enableVisiblity = false,
     key,
   }) : super(key: key);
 
-  final Function(Tag) selectTagFunc;
+  final Function(Tag, int) selectTagFunc;
   final Function? afterFunc;
   final bool enableVisiblity;
+  final int tagCount;
 
   @override
   // ignore: avoid_renaming_method_parameters
@@ -168,6 +172,7 @@ class SelectTagView extends HookConsumerWidget {
                                       selectTagFunc: selectTagFunc,
                                       enableVisibility: false,
                                       afterFunc: afterFunc,
+                                      tagCount: tagCount,
                                     ),
                                   ],
                                 );
@@ -207,6 +212,7 @@ class SelectTagView extends HookConsumerWidget {
                                       selectTagFunc: selectTagFunc,
                                       enableVisibility: false,
                                       afterFunc: afterFunc,
+                                      tagCount: tagCount,
                                     ),
                                   ],
                                 );
@@ -229,6 +235,7 @@ class SelectTagView extends HookConsumerWidget {
                                       selectTagFunc: selectTagFunc,
                                       enableVisibility: false,
                                       afterFunc: afterFunc,
+                                      tagCount: tagCount,
                                     ),
                                     _AllListViewTitle(
                                       enableVisiblity: enableVisiblity,
@@ -239,6 +246,7 @@ class SelectTagView extends HookConsumerWidget {
                                       selectTagFunc: selectTagFunc,
                                       enableVisibility: enableVisiblity,
                                       afterFunc: afterFunc,
+                                      tagCount: tagCount,
                                     ),
                                   ],
                                 );
@@ -325,14 +333,16 @@ class _TagListView extends StatelessWidget {
     required this.rootContext,
     required this.selectTagFunc,
     required this.enableVisibility,
+    required this.tagCount,
     this.afterFunc,
     key,
   }) : super(key: key);
 
   final List<Tag> tagList;
   final BuildContext rootContext;
-  final Function(Tag) selectTagFunc;
+  final Function(Tag, int) selectTagFunc;
   final Function? afterFunc;
+  final int tagCount;
 
   final bool enableVisibility;
 
@@ -345,7 +355,7 @@ class _TagListView extends StatelessWidget {
         if (enableVisibility && !tagList[index].isVisibleToPicker) return Container();
         return GestureDetector(
           onTap: () {
-            selectTagFunc(tagList[index]);
+            selectTagFunc(tagList[index], tagCount);
             Navigator.pop(rootContext);
             if (afterFunc != null) afterFunc!();
           },

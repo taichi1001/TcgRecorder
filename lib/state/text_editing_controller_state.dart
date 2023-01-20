@@ -8,7 +8,7 @@ abstract class TextEditingControllerState with _$TextEditingControllerState {
   factory TextEditingControllerState({
     required TextEditingController useDeckController,
     required TextEditingController opponentDeckController,
-    required TextEditingController tagController,
+    required List<TextEditingController> tagController,
     required TextEditingController memoController,
   }) = _TextEditingControllerState;
 }

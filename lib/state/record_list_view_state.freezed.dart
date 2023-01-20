@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'record_list_view_state.dart';
 
@@ -40,7 +40,8 @@ mixin _$RecordListViewState {
 abstract class $RecordListViewStateCopyWith<$Res> {
   factory $RecordListViewStateCopyWith(
           RecordListViewState value, $Res Function(RecordListViewState) then) =
-      _$RecordListViewStateCopyWithImpl<$Res>;
+      _$RecordListViewStateCopyWithImpl<$Res, RecordListViewState>;
+  @useResult
   $Res call(
       {Sort sort,
       DateTime? startDate,
@@ -66,17 +67,19 @@ abstract class $RecordListViewStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$RecordListViewStateCopyWithImpl<$Res>
+class _$RecordListViewStateCopyWithImpl<$Res, $Val extends RecordListViewState>
     implements $RecordListViewStateCopyWith<$Res> {
   _$RecordListViewStateCopyWithImpl(this._value, this._then);
 
-  final RecordListViewState _value;
   // ignore: unused_field
-  final $Res Function(RecordListViewState) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? sort = freezed,
+    Object? sort = null,
     Object? startDate = freezed,
     Object? endDate = freezed,
     Object? startTime = freezed,
@@ -84,7 +87,7 @@ class _$RecordListViewStateCopyWithImpl<$Res>
     Object? useDeck = freezed,
     Object? opponentDeck = freezed,
     Object? tag = freezed,
-    Object? cacheOrder = freezed,
+    Object? cacheOrder = null,
     Object? cacheStartDate = freezed,
     Object? cacheEndDate = freezed,
     Object? cacheUseDeck = freezed,
@@ -92,128 +95,134 @@ class _$RecordListViewStateCopyWithImpl<$Res>
     Object? cacheTag = freezed,
   }) {
     return _then(_value.copyWith(
-      sort: sort == freezed
+      sort: null == sort
           ? _value.sort
           : sort // ignore: cast_nullable_to_non_nullable
               as Sort,
-      startDate: startDate == freezed
+      startDate: freezed == startDate
           ? _value.startDate
           : startDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      endDate: endDate == freezed
+      endDate: freezed == endDate
           ? _value.endDate
           : endDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      startTime: startTime == freezed
+      startTime: freezed == startTime
           ? _value.startTime
           : startTime // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      endTime: endTime == freezed
+      endTime: freezed == endTime
           ? _value.endTime
           : endTime // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      useDeck: useDeck == freezed
+      useDeck: freezed == useDeck
           ? _value.useDeck
           : useDeck // ignore: cast_nullable_to_non_nullable
               as Deck?,
-      opponentDeck: opponentDeck == freezed
+      opponentDeck: freezed == opponentDeck
           ? _value.opponentDeck
           : opponentDeck // ignore: cast_nullable_to_non_nullable
               as Deck?,
-      tag: tag == freezed
+      tag: freezed == tag
           ? _value.tag
           : tag // ignore: cast_nullable_to_non_nullable
               as Tag?,
-      cacheOrder: cacheOrder == freezed
+      cacheOrder: null == cacheOrder
           ? _value.cacheOrder
           : cacheOrder // ignore: cast_nullable_to_non_nullable
               as Sort,
-      cacheStartDate: cacheStartDate == freezed
+      cacheStartDate: freezed == cacheStartDate
           ? _value.cacheStartDate
           : cacheStartDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      cacheEndDate: cacheEndDate == freezed
+      cacheEndDate: freezed == cacheEndDate
           ? _value.cacheEndDate
           : cacheEndDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      cacheUseDeck: cacheUseDeck == freezed
+      cacheUseDeck: freezed == cacheUseDeck
           ? _value.cacheUseDeck
           : cacheUseDeck // ignore: cast_nullable_to_non_nullable
               as Deck?,
-      cacheOpponentDeck: cacheOpponentDeck == freezed
+      cacheOpponentDeck: freezed == cacheOpponentDeck
           ? _value.cacheOpponentDeck
           : cacheOpponentDeck // ignore: cast_nullable_to_non_nullable
               as Deck?,
-      cacheTag: cacheTag == freezed
+      cacheTag: freezed == cacheTag
           ? _value.cacheTag
           : cacheTag // ignore: cast_nullable_to_non_nullable
               as Tag?,
-    ));
+    ) as $Val);
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $DeckCopyWith<$Res>? get useDeck {
     if (_value.useDeck == null) {
       return null;
     }
 
     return $DeckCopyWith<$Res>(_value.useDeck!, (value) {
-      return _then(_value.copyWith(useDeck: value));
+      return _then(_value.copyWith(useDeck: value) as $Val);
     });
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $DeckCopyWith<$Res>? get opponentDeck {
     if (_value.opponentDeck == null) {
       return null;
     }
 
     return $DeckCopyWith<$Res>(_value.opponentDeck!, (value) {
-      return _then(_value.copyWith(opponentDeck: value));
+      return _then(_value.copyWith(opponentDeck: value) as $Val);
     });
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $TagCopyWith<$Res>? get tag {
     if (_value.tag == null) {
       return null;
     }
 
     return $TagCopyWith<$Res>(_value.tag!, (value) {
-      return _then(_value.copyWith(tag: value));
+      return _then(_value.copyWith(tag: value) as $Val);
     });
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $DeckCopyWith<$Res>? get cacheUseDeck {
     if (_value.cacheUseDeck == null) {
       return null;
     }
 
     return $DeckCopyWith<$Res>(_value.cacheUseDeck!, (value) {
-      return _then(_value.copyWith(cacheUseDeck: value));
+      return _then(_value.copyWith(cacheUseDeck: value) as $Val);
     });
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $DeckCopyWith<$Res>? get cacheOpponentDeck {
     if (_value.cacheOpponentDeck == null) {
       return null;
     }
 
     return $DeckCopyWith<$Res>(_value.cacheOpponentDeck!, (value) {
-      return _then(_value.copyWith(cacheOpponentDeck: value));
+      return _then(_value.copyWith(cacheOpponentDeck: value) as $Val);
     });
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $TagCopyWith<$Res>? get cacheTag {
     if (_value.cacheTag == null) {
       return null;
     }
 
     return $TagCopyWith<$Res>(_value.cacheTag!, (value) {
-      return _then(_value.copyWith(cacheTag: value));
+      return _then(_value.copyWith(cacheTag: value) as $Val);
     });
   }
 }
@@ -225,6 +234,7 @@ abstract class _$$_RecordListViewStateCopyWith<$Res>
           $Res Function(_$_RecordListViewState) then) =
       __$$_RecordListViewStateCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {Sort sort,
       DateTime? startDate,
@@ -257,18 +267,16 @@ abstract class _$$_RecordListViewStateCopyWith<$Res>
 
 /// @nodoc
 class __$$_RecordListViewStateCopyWithImpl<$Res>
-    extends _$RecordListViewStateCopyWithImpl<$Res>
+    extends _$RecordListViewStateCopyWithImpl<$Res, _$_RecordListViewState>
     implements _$$_RecordListViewStateCopyWith<$Res> {
   __$$_RecordListViewStateCopyWithImpl(_$_RecordListViewState _value,
       $Res Function(_$_RecordListViewState) _then)
-      : super(_value, (v) => _then(v as _$_RecordListViewState));
+      : super(_value, _then);
 
-  @override
-  _$_RecordListViewState get _value => super._value as _$_RecordListViewState;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? sort = freezed,
+    Object? sort = null,
     Object? startDate = freezed,
     Object? endDate = freezed,
     Object? startTime = freezed,
@@ -276,7 +284,7 @@ class __$$_RecordListViewStateCopyWithImpl<$Res>
     Object? useDeck = freezed,
     Object? opponentDeck = freezed,
     Object? tag = freezed,
-    Object? cacheOrder = freezed,
+    Object? cacheOrder = null,
     Object? cacheStartDate = freezed,
     Object? cacheEndDate = freezed,
     Object? cacheUseDeck = freezed,
@@ -284,59 +292,59 @@ class __$$_RecordListViewStateCopyWithImpl<$Res>
     Object? cacheTag = freezed,
   }) {
     return _then(_$_RecordListViewState(
-      sort: sort == freezed
+      sort: null == sort
           ? _value.sort
           : sort // ignore: cast_nullable_to_non_nullable
               as Sort,
-      startDate: startDate == freezed
+      startDate: freezed == startDate
           ? _value.startDate
           : startDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      endDate: endDate == freezed
+      endDate: freezed == endDate
           ? _value.endDate
           : endDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      startTime: startTime == freezed
+      startTime: freezed == startTime
           ? _value.startTime
           : startTime // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      endTime: endTime == freezed
+      endTime: freezed == endTime
           ? _value.endTime
           : endTime // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      useDeck: useDeck == freezed
+      useDeck: freezed == useDeck
           ? _value.useDeck
           : useDeck // ignore: cast_nullable_to_non_nullable
               as Deck?,
-      opponentDeck: opponentDeck == freezed
+      opponentDeck: freezed == opponentDeck
           ? _value.opponentDeck
           : opponentDeck // ignore: cast_nullable_to_non_nullable
               as Deck?,
-      tag: tag == freezed
+      tag: freezed == tag
           ? _value.tag
           : tag // ignore: cast_nullable_to_non_nullable
               as Tag?,
-      cacheOrder: cacheOrder == freezed
+      cacheOrder: null == cacheOrder
           ? _value.cacheOrder
           : cacheOrder // ignore: cast_nullable_to_non_nullable
               as Sort,
-      cacheStartDate: cacheStartDate == freezed
+      cacheStartDate: freezed == cacheStartDate
           ? _value.cacheStartDate
           : cacheStartDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      cacheEndDate: cacheEndDate == freezed
+      cacheEndDate: freezed == cacheEndDate
           ? _value.cacheEndDate
           : cacheEndDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      cacheUseDeck: cacheUseDeck == freezed
+      cacheUseDeck: freezed == cacheUseDeck
           ? _value.cacheUseDeck
           : cacheUseDeck // ignore: cast_nullable_to_non_nullable
               as Deck?,
-      cacheOpponentDeck: cacheOpponentDeck == freezed
+      cacheOpponentDeck: freezed == cacheOpponentDeck
           ? _value.cacheOpponentDeck
           : cacheOpponentDeck // ignore: cast_nullable_to_non_nullable
               as Deck?,
-      cacheTag: cacheTag == freezed
+      cacheTag: freezed == cacheTag
           ? _value.cacheTag
           : cacheTag // ignore: cast_nullable_to_non_nullable
               as Tag?,
@@ -404,48 +412,52 @@ class _$_RecordListViewState implements _RecordListViewState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_RecordListViewState &&
-            const DeepCollectionEquality().equals(other.sort, sort) &&
-            const DeepCollectionEquality().equals(other.startDate, startDate) &&
-            const DeepCollectionEquality().equals(other.endDate, endDate) &&
-            const DeepCollectionEquality().equals(other.startTime, startTime) &&
-            const DeepCollectionEquality().equals(other.endTime, endTime) &&
-            const DeepCollectionEquality().equals(other.useDeck, useDeck) &&
-            const DeepCollectionEquality()
-                .equals(other.opponentDeck, opponentDeck) &&
-            const DeepCollectionEquality().equals(other.tag, tag) &&
-            const DeepCollectionEquality()
-                .equals(other.cacheOrder, cacheOrder) &&
-            const DeepCollectionEquality()
-                .equals(other.cacheStartDate, cacheStartDate) &&
-            const DeepCollectionEquality()
-                .equals(other.cacheEndDate, cacheEndDate) &&
-            const DeepCollectionEquality()
-                .equals(other.cacheUseDeck, cacheUseDeck) &&
-            const DeepCollectionEquality()
-                .equals(other.cacheOpponentDeck, cacheOpponentDeck) &&
-            const DeepCollectionEquality().equals(other.cacheTag, cacheTag));
+            (identical(other.sort, sort) || other.sort == sort) &&
+            (identical(other.startDate, startDate) ||
+                other.startDate == startDate) &&
+            (identical(other.endDate, endDate) || other.endDate == endDate) &&
+            (identical(other.startTime, startTime) ||
+                other.startTime == startTime) &&
+            (identical(other.endTime, endTime) || other.endTime == endTime) &&
+            (identical(other.useDeck, useDeck) || other.useDeck == useDeck) &&
+            (identical(other.opponentDeck, opponentDeck) ||
+                other.opponentDeck == opponentDeck) &&
+            (identical(other.tag, tag) || other.tag == tag) &&
+            (identical(other.cacheOrder, cacheOrder) ||
+                other.cacheOrder == cacheOrder) &&
+            (identical(other.cacheStartDate, cacheStartDate) ||
+                other.cacheStartDate == cacheStartDate) &&
+            (identical(other.cacheEndDate, cacheEndDate) ||
+                other.cacheEndDate == cacheEndDate) &&
+            (identical(other.cacheUseDeck, cacheUseDeck) ||
+                other.cacheUseDeck == cacheUseDeck) &&
+            (identical(other.cacheOpponentDeck, cacheOpponentDeck) ||
+                other.cacheOpponentDeck == cacheOpponentDeck) &&
+            (identical(other.cacheTag, cacheTag) ||
+                other.cacheTag == cacheTag));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(sort),
-      const DeepCollectionEquality().hash(startDate),
-      const DeepCollectionEquality().hash(endDate),
-      const DeepCollectionEquality().hash(startTime),
-      const DeepCollectionEquality().hash(endTime),
-      const DeepCollectionEquality().hash(useDeck),
-      const DeepCollectionEquality().hash(opponentDeck),
-      const DeepCollectionEquality().hash(tag),
-      const DeepCollectionEquality().hash(cacheOrder),
-      const DeepCollectionEquality().hash(cacheStartDate),
-      const DeepCollectionEquality().hash(cacheEndDate),
-      const DeepCollectionEquality().hash(cacheUseDeck),
-      const DeepCollectionEquality().hash(cacheOpponentDeck),
-      const DeepCollectionEquality().hash(cacheTag));
+      sort,
+      startDate,
+      endDate,
+      startTime,
+      endTime,
+      useDeck,
+      opponentDeck,
+      tag,
+      cacheOrder,
+      cacheStartDate,
+      cacheEndDate,
+      cacheUseDeck,
+      cacheOpponentDeck,
+      cacheTag);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_RecordListViewStateCopyWith<_$_RecordListViewState> get copyWith =>
       __$$_RecordListViewStateCopyWithImpl<_$_RecordListViewState>(
           this, _$identity);
@@ -469,33 +481,33 @@ abstract class _RecordListViewState implements RecordListViewState {
       final Tag? cacheTag}) = _$_RecordListViewState;
 
   @override
-  Sort get sort => throw _privateConstructorUsedError;
+  Sort get sort;
   @override
-  DateTime? get startDate => throw _privateConstructorUsedError;
+  DateTime? get startDate;
   @override
-  DateTime? get endDate => throw _privateConstructorUsedError;
+  DateTime? get endDate;
   @override
-  DateTime? get startTime => throw _privateConstructorUsedError;
+  DateTime? get startTime;
   @override
-  DateTime? get endTime => throw _privateConstructorUsedError;
+  DateTime? get endTime;
   @override
-  Deck? get useDeck => throw _privateConstructorUsedError;
+  Deck? get useDeck;
   @override
-  Deck? get opponentDeck => throw _privateConstructorUsedError;
+  Deck? get opponentDeck;
   @override
-  Tag? get tag => throw _privateConstructorUsedError;
+  Tag? get tag;
   @override
-  Sort get cacheOrder => throw _privateConstructorUsedError;
+  Sort get cacheOrder;
   @override
-  DateTime? get cacheStartDate => throw _privateConstructorUsedError;
+  DateTime? get cacheStartDate;
   @override
-  DateTime? get cacheEndDate => throw _privateConstructorUsedError;
+  DateTime? get cacheEndDate;
   @override
-  Deck? get cacheUseDeck => throw _privateConstructorUsedError;
+  Deck? get cacheUseDeck;
   @override
-  Deck? get cacheOpponentDeck => throw _privateConstructorUsedError;
+  Deck? get cacheOpponentDeck;
   @override
-  Tag? get cacheTag => throw _privateConstructorUsedError;
+  Tag? get cacheTag;
   @override
   @JsonKey(ignore: true)
   _$$_RecordListViewStateCopyWith<_$_RecordListViewState> get copyWith =>

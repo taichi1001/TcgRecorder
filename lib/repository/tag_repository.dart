@@ -2,7 +2,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/dao/tag_dao.dart';
 import 'package:tcg_manager/entity/tag.dart';
 
-final tagRepository = Provider.autoDispose<TagRepository>((ref) => TagRepositoryImpl(ref.read));
+final tagRepository = Provider.autoDispose<TagRepository>((ref) => TagRepositoryImpl(ref));
 
 abstract class TagRepository {
   Future<List<Tag>> getAll();
@@ -21,9 +21,9 @@ abstract class TagRepository {
 }
 
 class TagRepositoryImpl implements TagRepository {
-  TagRepositoryImpl(this.read);
+  TagRepositoryImpl(this.ref);
 
-  final Reader read;
+  final Ref ref;
   final tagDao = TagDao();
 
   @override

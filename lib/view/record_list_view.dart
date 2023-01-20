@@ -141,7 +141,7 @@ final currentMargedRecord = Provider<MargedRecord>((ref) => MargedRecord(
       game: '',
       useDeck: '',
       opponentDeck: '',
-      tag: '',
+      tag: [],
       bo: BO.bo1,
       firstSecond: FirstSecond.first,
       winLoss: WinLoss.win,
@@ -221,26 +221,7 @@ class _BrandListTile extends HookConsumerWidget {
             ],
           ),
           const SizedBox(height: 8),
-          Row(
-            children: [
-              Icon(
-                Icons.tag,
-                size: 12,
-                color: Theme.of(context).textTheme.caption?.color!,
-              ),
-              Flexible(
-                child: Text(
-                  record.tag ?? S.of(context).noTag,
-                  softWrap: false,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                        leadingDistribution: TextLeadingDistribution.even,
-                        height: 1,
-                      ),
-                ),
-              ),
-            ],
-          ),
+          _TagIcons(margedRecord: record),
         ],
       ),
       trailing: SizedBox(
@@ -387,7 +368,7 @@ class _BrandListTile extends HookConsumerWidget {
                                     height: 80,
                                     child: Image.file(
                                       File('$imagePath/${image.value}'),
-                                      fit: BoxFit.fill,
+                                      fit: BoxFit.contain,
                                     ),
                                   ),
                                 ),
@@ -496,6 +477,58 @@ class _WinLossIcon extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _TagIcons extends StatelessWidget {
+  const _TagIcons({
+    required this.margedRecord,
+  });
+
+  final MargedRecord margedRecord;
+
+  @override
+  Widget build(BuildContext context) {
+    if (margedRecord.tag.isEmpty) {
+      return Text(
+        S.of(context).noTag,
+        softWrap: false,
+        overflow: TextOverflow.ellipsis,
+        style: Theme.of(context).textTheme.bodyText2?.copyWith(
+              leadingDistribution: TextLeadingDistribution.even,
+              height: 1,
+              fontSize: 11,
+            ),
+      );
+    }
+    return Row(
+      children: margedRecord.tag.map((tag) {
+        return Padding(
+          padding: const EdgeInsets.only(right: 4),
+          child: Container(
+            padding: const EdgeInsets.all(2),
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(Radius.circular(4)),
+              border: Border.all(
+                width: 2,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+            child: Text(
+              tag,
+              softWrap: false,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).primaryTextTheme.bodyText2?.copyWith(
+                    leadingDistribution: TextLeadingDistribution.even,
+                    height: 1,
+                    fontSize: 11,
+                  ),
+            ),
+          ),
+        );
+      }).toList(),
     );
   }
 }

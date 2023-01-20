@@ -1,3 +1,5 @@
+// ignore_for_file: unused_result
+
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/tag.dart';
 import 'package:tcg_manager/enum/sort.dart';

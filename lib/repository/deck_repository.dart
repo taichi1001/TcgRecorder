@@ -2,7 +2,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/dao/deck_dao.dart';
 import 'package:tcg_manager/entity/deck.dart';
 
-final deckRepository = Provider.autoDispose<DeckRepository>((ref) => DeckRepositoryImpl(ref.read));
+final deckRepository = Provider.autoDispose<DeckRepository>((ref) => DeckRepositoryImpl(ref));
 
 abstract class DeckRepository {
   Future<List<Deck>> getAll();
@@ -21,9 +21,9 @@ abstract class DeckRepository {
 }
 
 class DeckRepositoryImpl implements DeckRepository {
-  DeckRepositoryImpl(this.read);
+  DeckRepositoryImpl(this.ref);
 
-  final Reader read;
+  final Ref ref;
   final deckDao = DeckDao();
 
   @override

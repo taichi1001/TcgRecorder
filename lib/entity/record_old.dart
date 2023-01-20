@@ -3,15 +3,16 @@ import 'package:tcg_manager/enum/bo.dart';
 import 'package:tcg_manager/enum/first_second.dart';
 import 'package:tcg_manager/enum/win_loss.dart';
 
-part 'record.freezed.dart';
-part 'record.g.dart';
+part 'record_old.freezed.dart';
+part 'record_old.g.dart';
 
+/// データベースVer3からVer4へのアップデート時にタグIDをintからStringに変更するために必要なエンティティ
 @freezed
-class Record with _$Record {
-  factory Record({
+class RecordOld with _$RecordOld {
+  factory RecordOld({
     @JsonKey(name: 'record_id') int? recordId,
     @JsonKey(name: 'game_id') int? gameId,
-    @Default([]) @JsonKey(fromJson: _intListFromJson, toJson: _intListToJson, name: 'tag_id') List<int> tagId,
+    @JsonKey(name: 'tag_id') int? tagId,
     @JsonKey(name: 'use_deck_id') int? useDeckId,
     @JsonKey(name: 'opponent_deck_id') int? opponentDeckId,
     @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson) DateTime? date,
@@ -31,8 +32,8 @@ class Record with _$Record {
     @JsonKey(fromJson: _nullableWinLossFromJson, toJson: _nullableWinLossToJson, name: 'third_match_win_loss') WinLoss? thirdMatchWinLoss,
     String? memo,
     @JsonKey(fromJson: _stringListFromJson, toJson: _stringListToJson, name: 'image_path') List<String>? imagePath,
-  }) = _Record;
-  factory Record.fromJson(Map<String, dynamic> json) => _$RecordFromJson(json);
+  }) = _RecordOld;
+  factory RecordOld.fromJson(Map<String, dynamic> json) => _$RecordOldFromJson(json);
 }
 
 FirstSecond _firstSecondFromJson(int value) {
@@ -152,28 +153,6 @@ String? _stringListToJson(List<String>? values) {
     if (count == 0) {
       // ignore: unnecessary_string_interpolations
       result = value;
-    } else {
-      result = '$result,$value';
-    }
-    count++;
-  }
-  return result;
-}
-
-List<int> _intListFromJson(String? value) {
-  if (value == null) return [];
-  final splitList = value.split(',');
-  return splitList.map((e) => int.parse(e)).toList();
-}
-
-String? _intListToJson(List<int> values) {
-  if (values.isEmpty) return null;
-  var result = '';
-  var count = 0;
-  for (final value in values) {
-    if (count == 0) {
-      // ignore: unnecessary_string_interpolations
-      result = value.toString();
     } else {
       result = '$result,$value';
     }

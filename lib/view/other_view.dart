@@ -1,3 +1,5 @@
+// ignore_for_file: unused_result
+
 import 'dart:io';
 
 import 'package:adaptive_dialog/adaptive_dialog.dart';
@@ -28,6 +30,7 @@ import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 import 'package:tcg_manager/provider/theme_provider.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
+import 'package:tcg_manager/repository/tag_repository.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
 import 'package:tcg_manager/selector/game_tag_list_selector.dart';
 import 'package:tcg_manager/selector/marged_record_list_selector.dart';
@@ -613,11 +616,11 @@ class _TagListView extends HookConsumerWidget {
                             final targetTagList = isTagList.where((record) => record.tagId! == tagList[index].tagId).toList();
                             final List<Record> newTagRecordList = [];
                             for (var tag in targetTagList) {
-                              tag = tag.copyWith(tagId: oldTag.tag!.tagId);
+                              tag = tag.copyWith(tagId: [oldTag.tag!.tagId!]); // TODO 複数入力対応が必要
                               newTagRecordList.add(tag);
                             }
                             await ref.read(recordRepository).updateRecordList(newTagRecordList);
-                            await ref.read(deckRepository).deleteById(tagList[index].tagId!);
+                            await ref.read(tagRepository).deleteById(tagList[index].tagId!);
                             ref.refresh(allTagListProvider);
                             ref.refresh(allRecordListProvider);
                           }
@@ -724,35 +727,32 @@ class _ThemeChangeView extends HookConsumerWidget {
               child: Container(
                 height: 100,
                 color: Theme.of(context).dividerColor,
-                child: Scrollbar(
-                  controller: ScrollController(),
-                  child: ScrollablePositionedList.builder(
-                    itemScrollController: itemScrollController,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: FlexScheme.values.length - 1, // 最後の要素はカスタムカラーのため取り除く
-                    itemBuilder: ((context, index) => Padding(
-                          padding: const EdgeInsets.only(left: 8, right: 8),
-                          child: SizedBox(
-                            width: 55,
-                            height: 55,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                primary: previewThemeDataList[index].primaryColor,
-                                shape: CircleBorder(
-                                  side: previewScheme == FlexScheme.values[index]
-                                      ? BorderSide(
-                                          color: isDarkMode ? Colors.white : Colors.black,
-                                          width: 2,
-                                        )
-                                      : BorderSide.none,
-                                ),
+                child: ScrollablePositionedList.builder(
+                  itemScrollController: itemScrollController,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: FlexScheme.values.length - 1, // 最後の要素はカスタムカラーのため取り除く
+                  itemBuilder: ((context, index) => Padding(
+                        padding: const EdgeInsets.only(left: 8, right: 8),
+                        child: SizedBox(
+                          width: 55,
+                          height: 55,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: previewThemeDataList[index].primaryColor,
+                              shape: CircleBorder(
+                                side: previewScheme == FlexScheme.values[index]
+                                    ? BorderSide(
+                                        color: isDarkMode ? Colors.white : Colors.black,
+                                        width: 2,
+                                      )
+                                    : BorderSide.none,
                               ),
-                              onPressed: () => themeNotifier.changePreview(FlexScheme.values[index]),
-                              child: const Text(''),
                             ),
+                            onPressed: () => themeNotifier.changePreview(FlexScheme.values[index]),
+                            child: const Text(''),
                           ),
-                        )),
-                  ),
+                        ),
+                      )),
                 ),
               ),
             ),

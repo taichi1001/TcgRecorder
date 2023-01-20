@@ -4,9 +4,9 @@ import 'package:tcg_manager/repository/game_repository.dart';
 import 'package:tcg_manager/state/initial_game_registration_state.dart';
 
 class InitialGameRegistrationNotifier extends StateNotifier<InitialGameRegistrationState> {
-  InitialGameRegistrationNotifier(this.read) : super(InitialGameRegistrationState());
+  InitialGameRegistrationNotifier(this.ref) : super(InitialGameRegistrationState());
 
-  final Reader read;
+  final Ref ref;
 
   void changeGameForString(String name) {
     state = state.copyWith(initialGame: Game(game: name));
@@ -17,10 +17,10 @@ class InitialGameRegistrationNotifier extends StateNotifier<InitialGameRegistrat
   }
 
   Future save() async {
-    if (state.initialGame != null) read(gameRepository).insert(state.initialGame!);
+    if (state.initialGame != null) ref.read(gameRepository).insert(state.initialGame!);
   }
 }
 
 final initialGameRegistrationNotifierProvider = StateNotifierProvider<InitialGameRegistrationNotifier, InitialGameRegistrationState>(
-  (ref) => InitialGameRegistrationNotifier(ref.read),
+  (ref) => InitialGameRegistrationNotifier(ref),
 );

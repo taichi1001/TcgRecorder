@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'select_tag_view_state.dart';
 
@@ -29,39 +29,42 @@ mixin _$SelectTagViewState {
 abstract class $SelectTagViewStateCopyWith<$Res> {
   factory $SelectTagViewStateCopyWith(
           SelectTagViewState value, $Res Function(SelectTagViewState) then) =
-      _$SelectTagViewStateCopyWithImpl<$Res>;
+      _$SelectTagViewStateCopyWithImpl<$Res, SelectTagViewState>;
+  @useResult
   $Res call({Sort sortType, bool isSearch, String searchText});
 }
 
 /// @nodoc
-class _$SelectTagViewStateCopyWithImpl<$Res>
+class _$SelectTagViewStateCopyWithImpl<$Res, $Val extends SelectTagViewState>
     implements $SelectTagViewStateCopyWith<$Res> {
   _$SelectTagViewStateCopyWithImpl(this._value, this._then);
 
-  final SelectTagViewState _value;
   // ignore: unused_field
-  final $Res Function(SelectTagViewState) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? sortType = freezed,
-    Object? isSearch = freezed,
-    Object? searchText = freezed,
+    Object? sortType = null,
+    Object? isSearch = null,
+    Object? searchText = null,
   }) {
     return _then(_value.copyWith(
-      sortType: sortType == freezed
+      sortType: null == sortType
           ? _value.sortType
           : sortType // ignore: cast_nullable_to_non_nullable
               as Sort,
-      isSearch: isSearch == freezed
+      isSearch: null == isSearch
           ? _value.isSearch
           : isSearch // ignore: cast_nullable_to_non_nullable
               as bool,
-      searchText: searchText == freezed
+      searchText: null == searchText
           ? _value.searchText
           : searchText // ignore: cast_nullable_to_non_nullable
               as String,
-    ));
+    ) as $Val);
   }
 }
 
@@ -72,36 +75,35 @@ abstract class _$$_SelectTagViewStateCopyWith<$Res>
           $Res Function(_$_SelectTagViewState) then) =
       __$$_SelectTagViewStateCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call({Sort sortType, bool isSearch, String searchText});
 }
 
 /// @nodoc
 class __$$_SelectTagViewStateCopyWithImpl<$Res>
-    extends _$SelectTagViewStateCopyWithImpl<$Res>
+    extends _$SelectTagViewStateCopyWithImpl<$Res, _$_SelectTagViewState>
     implements _$$_SelectTagViewStateCopyWith<$Res> {
   __$$_SelectTagViewStateCopyWithImpl(
       _$_SelectTagViewState _value, $Res Function(_$_SelectTagViewState) _then)
-      : super(_value, (v) => _then(v as _$_SelectTagViewState));
+      : super(_value, _then);
 
-  @override
-  _$_SelectTagViewState get _value => super._value as _$_SelectTagViewState;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? sortType = freezed,
-    Object? isSearch = freezed,
-    Object? searchText = freezed,
+    Object? sortType = null,
+    Object? isSearch = null,
+    Object? searchText = null,
   }) {
     return _then(_$_SelectTagViewState(
-      sortType: sortType == freezed
+      sortType: null == sortType
           ? _value.sortType
           : sortType // ignore: cast_nullable_to_non_nullable
               as Sort,
-      isSearch: isSearch == freezed
+      isSearch: null == isSearch
           ? _value.isSearch
           : isSearch // ignore: cast_nullable_to_non_nullable
               as bool,
-      searchText: searchText == freezed
+      searchText: null == searchText
           ? _value.searchText
           : searchText // ignore: cast_nullable_to_non_nullable
               as String,
@@ -137,21 +139,20 @@ class _$_SelectTagViewState implements _SelectTagViewState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_SelectTagViewState &&
-            const DeepCollectionEquality().equals(other.sortType, sortType) &&
-            const DeepCollectionEquality().equals(other.isSearch, isSearch) &&
-            const DeepCollectionEquality()
-                .equals(other.searchText, searchText));
+            (identical(other.sortType, sortType) ||
+                other.sortType == sortType) &&
+            (identical(other.isSearch, isSearch) ||
+                other.isSearch == isSearch) &&
+            (identical(other.searchText, searchText) ||
+                other.searchText == searchText));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(sortType),
-      const DeepCollectionEquality().hash(isSearch),
-      const DeepCollectionEquality().hash(searchText));
+  int get hashCode => Object.hash(runtimeType, sortType, isSearch, searchText);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_SelectTagViewStateCopyWith<_$_SelectTagViewState> get copyWith =>
       __$$_SelectTagViewStateCopyWithImpl<_$_SelectTagViewState>(
           this, _$identity);
@@ -164,11 +165,11 @@ abstract class _SelectTagViewState implements SelectTagViewState {
       final String searchText}) = _$_SelectTagViewState;
 
   @override
-  Sort get sortType => throw _privateConstructorUsedError;
+  Sort get sortType;
   @override
-  bool get isSearch => throw _privateConstructorUsedError;
+  bool get isSearch;
   @override
-  String get searchText => throw _privateConstructorUsedError;
+  String get searchText;
   @override
   @JsonKey(ignore: true)
   _$$_SelectTagViewStateCopyWith<_$_SelectTagViewState> get copyWith =>

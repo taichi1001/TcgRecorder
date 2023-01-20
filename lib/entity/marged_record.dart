@@ -10,7 +10,7 @@ class MargedRecord with _$MargedRecord {
   factory MargedRecord({
     required int recordId,
     required String game,
-    @Default('分類無し') String? tag,
+    @Default([]) List<String> tag,
     required BO bo,
     required String useDeck,
     required String opponentDeck,

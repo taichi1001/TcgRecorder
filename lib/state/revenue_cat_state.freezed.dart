@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'revenue_cat_state.dart';
 
@@ -30,7 +30,8 @@ mixin _$RevenueCatState {
 abstract class $RevenueCatStateCopyWith<$Res> {
   factory $RevenueCatStateCopyWith(
           RevenueCatState value, $Res Function(RevenueCatState) then) =
-      _$RevenueCatStateCopyWithImpl<$Res>;
+      _$RevenueCatStateCopyWithImpl<$Res, RevenueCatState>;
+  @useResult
   $Res call(
       {CustomerInfo? customerInfo,
       Offerings? offerings,
@@ -42,60 +43,64 @@ abstract class $RevenueCatStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$RevenueCatStateCopyWithImpl<$Res>
+class _$RevenueCatStateCopyWithImpl<$Res, $Val extends RevenueCatState>
     implements $RevenueCatStateCopyWith<$Res> {
   _$RevenueCatStateCopyWithImpl(this._value, this._then);
 
-  final RevenueCatState _value;
   // ignore: unused_field
-  final $Res Function(RevenueCatState) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? customerInfo = freezed,
     Object? offerings = freezed,
     Object? exception = freezed,
-    Object? isPremium = freezed,
+    Object? isPremium = null,
   }) {
     return _then(_value.copyWith(
-      customerInfo: customerInfo == freezed
+      customerInfo: freezed == customerInfo
           ? _value.customerInfo
           : customerInfo // ignore: cast_nullable_to_non_nullable
               as CustomerInfo?,
-      offerings: offerings == freezed
+      offerings: freezed == offerings
           ? _value.offerings
           : offerings // ignore: cast_nullable_to_non_nullable
               as Offerings?,
-      exception: exception == freezed
+      exception: freezed == exception
           ? _value.exception
           : exception // ignore: cast_nullable_to_non_nullable
               as Exception?,
-      isPremium: isPremium == freezed
+      isPremium: null == isPremium
           ? _value.isPremium
           : isPremium // ignore: cast_nullable_to_non_nullable
               as bool,
-    ));
+    ) as $Val);
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $CustomerInfoCopyWith<$Res>? get customerInfo {
     if (_value.customerInfo == null) {
       return null;
     }
 
     return $CustomerInfoCopyWith<$Res>(_value.customerInfo!, (value) {
-      return _then(_value.copyWith(customerInfo: value));
+      return _then(_value.copyWith(customerInfo: value) as $Val);
     });
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $OfferingsCopyWith<$Res>? get offerings {
     if (_value.offerings == null) {
       return null;
     }
 
     return $OfferingsCopyWith<$Res>(_value.offerings!, (value) {
-      return _then(_value.copyWith(offerings: value));
+      return _then(_value.copyWith(offerings: value) as $Val);
     });
   }
 }
@@ -107,6 +112,7 @@ abstract class _$$_RevenueCatStateCopyWith<$Res>
           _$_RevenueCatState value, $Res Function(_$_RevenueCatState) then) =
       __$$_RevenueCatStateCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {CustomerInfo? customerInfo,
       Offerings? offerings,
@@ -121,36 +127,34 @@ abstract class _$$_RevenueCatStateCopyWith<$Res>
 
 /// @nodoc
 class __$$_RevenueCatStateCopyWithImpl<$Res>
-    extends _$RevenueCatStateCopyWithImpl<$Res>
+    extends _$RevenueCatStateCopyWithImpl<$Res, _$_RevenueCatState>
     implements _$$_RevenueCatStateCopyWith<$Res> {
   __$$_RevenueCatStateCopyWithImpl(
       _$_RevenueCatState _value, $Res Function(_$_RevenueCatState) _then)
-      : super(_value, (v) => _then(v as _$_RevenueCatState));
+      : super(_value, _then);
 
-  @override
-  _$_RevenueCatState get _value => super._value as _$_RevenueCatState;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? customerInfo = freezed,
     Object? offerings = freezed,
     Object? exception = freezed,
-    Object? isPremium = freezed,
+    Object? isPremium = null,
   }) {
     return _then(_$_RevenueCatState(
-      customerInfo: customerInfo == freezed
+      customerInfo: freezed == customerInfo
           ? _value.customerInfo
           : customerInfo // ignore: cast_nullable_to_non_nullable
               as CustomerInfo?,
-      offerings: offerings == freezed
+      offerings: freezed == offerings
           ? _value.offerings
           : offerings // ignore: cast_nullable_to_non_nullable
               as Offerings?,
-      exception: exception == freezed
+      exception: freezed == exception
           ? _value.exception
           : exception // ignore: cast_nullable_to_non_nullable
               as Exception?,
-      isPremium: isPremium == freezed
+      isPremium: null == isPremium
           ? _value.isPremium
           : isPremium // ignore: cast_nullable_to_non_nullable
               as bool,
@@ -187,23 +191,23 @@ class _$_RevenueCatState implements _RevenueCatState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_RevenueCatState &&
-            const DeepCollectionEquality()
-                .equals(other.customerInfo, customerInfo) &&
-            const DeepCollectionEquality().equals(other.offerings, offerings) &&
-            const DeepCollectionEquality().equals(other.exception, exception) &&
-            const DeepCollectionEquality().equals(other.isPremium, isPremium));
+            (identical(other.customerInfo, customerInfo) ||
+                other.customerInfo == customerInfo) &&
+            (identical(other.offerings, offerings) ||
+                other.offerings == offerings) &&
+            (identical(other.exception, exception) ||
+                other.exception == exception) &&
+            (identical(other.isPremium, isPremium) ||
+                other.isPremium == isPremium));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(customerInfo),
-      const DeepCollectionEquality().hash(offerings),
-      const DeepCollectionEquality().hash(exception),
-      const DeepCollectionEquality().hash(isPremium));
+  int get hashCode =>
+      Object.hash(runtimeType, customerInfo, offerings, exception, isPremium);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_RevenueCatStateCopyWith<_$_RevenueCatState> get copyWith =>
       __$$_RevenueCatStateCopyWithImpl<_$_RevenueCatState>(this, _$identity);
 }
@@ -216,13 +220,13 @@ abstract class _RevenueCatState implements RevenueCatState {
       final bool isPremium}) = _$_RevenueCatState;
 
   @override
-  CustomerInfo? get customerInfo => throw _privateConstructorUsedError;
+  CustomerInfo? get customerInfo;
   @override
-  Offerings? get offerings => throw _privateConstructorUsedError;
+  Offerings? get offerings;
   @override
-  Exception? get exception => throw _privateConstructorUsedError;
+  Exception? get exception;
   @override
-  bool get isPremium => throw _privateConstructorUsedError;
+  bool get isPremium;
   @override
   @JsonKey(ignore: true)
   _$$_RevenueCatStateCopyWith<_$_RevenueCatState> get copyWith =>
