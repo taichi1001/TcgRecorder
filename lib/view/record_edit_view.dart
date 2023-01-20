@@ -13,6 +13,7 @@ import 'package:tcg_manager/enum/first_second.dart';
 import 'package:tcg_manager/enum/win_loss.dart';
 import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/provider/record_detail_provider.dart';
+import 'package:tcg_manager/provider/record_edit_view_settings_provider.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
 import 'package:tcg_manager/selector/game_tag_list_selector.dart';
 import 'package:tcg_manager/view/component/custom_textfield.dart';
@@ -71,6 +72,7 @@ class RecordEditView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final recordDetailNotifier = ref.watch(recordDetailNotifierProvider(margedRecord).notifier);
+    final isBO3 = ref.watch(recordEditViewSettingsNotifierProvider(margedRecord).select((value) => value.bo3));
     return WillPopScope(
       onWillPop: (() async {
         final okCancelResult = await showOkCancelAlertDialog(
@@ -90,13 +92,27 @@ class RecordEditView extends HookConsumerWidget {
             style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
           ),
           actions: [
+            IconButton(
+              icon: const Icon(Icons.tune),
+              onPressed: () async {
+                showCupertinoModalBottomSheet(
+                  expand: false,
+                  context: context,
+                  builder: (context) => _SettingModalBottomSheet(record: margedRecord),
+                );
+              },
+            ),
             CupertinoButton(
               child: Text(
                 S.of(context).save,
                 style: Theme.of(context).primaryTextTheme.bodyText1,
               ),
               onPressed: () {
-                recordDetailNotifier.saveEdit();
+                if (isBO3) {
+                  recordDetailNotifier.saveEditBO3();
+                } else {
+                  recordDetailNotifier.saveEdit();
+                }
                 recordDetailNotifier.changeIsEdit();
                 Navigator.pop(context);
               },
@@ -104,7 +120,7 @@ class RecordEditView extends HookConsumerWidget {
           ],
         ),
         body: Padding(
-          padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 0),
+          padding: const EdgeInsets.only(left: 8, right: 8),
           child: _EditView(margedRecord: margedRecord),
         ),
       ),
@@ -126,15 +142,21 @@ class _EditView extends HookConsumerWidget {
 
     final editMargedRecord = ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.editMargedRecord));
     final recordDetailNotifier = ref.watch(recordDetailNotifierProvider(margedRecord).notifier);
+    final recordDetailState = ref.watch(recordDetailNotifierProvider(margedRecord));
+    final firstSecond = recordDetailState.editMargedRecord.firstSecond;
+    final firstMatchFirstSecond = recordDetailState.editMargedRecord.firstMatchFirstSecond;
+    final secondMatchFirstSecond = recordDetailState.editMargedRecord.secondMatchFirstSecond;
+    final thirdMatchFirstSecond = recordDetailState.editMargedRecord.thirdMatchFirstSecond;
+    final winLoss = recordDetailState.editMargedRecord.winLoss;
+    final firstMatchWinLoss = recordDetailState.editMargedRecord.firstMatchWinLoss;
+    final secondMatchWinLoss = recordDetailState.editMargedRecord.secondMatchWinLoss;
+    final thirdMatchWinLoss = recordDetailState.editMargedRecord.thirdMatchWinLoss;
 
-    final firstSecond = ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.editMargedRecord.firstSecond));
-    final winLoss = ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.editMargedRecord.winLoss));
     final useDeckTextController = useTextEditingController(text: editMargedRecord.useDeck);
     final opponentDeckTextController = useTextEditingController(text: editMargedRecord.opponentDeck);
 
     final tagTextControllers = ref.watch(_tagTextController(editMargedRecord));
     final tagFocusNodes = ref.watch(_tagFocusNodesProvider(editMargedRecord));
-
     final memoTextController = useTextEditingController(text: editMargedRecord.memo);
     final dateTimeController = useState(CustomModalDateTimePickerController(initialDateTime: DateTime.now()));
 
@@ -143,6 +165,9 @@ class _EditView extends HookConsumerWidget {
     final useDeckFocusnode = useFocusNode();
     final opponentDeckFocusnode = useFocusNode();
     final memoFocusnode = useFocusNode();
+
+    final isDraw = ref.watch(recordEditViewSettingsNotifierProvider(margedRecord).select((value) => value.draw));
+    final isBO3 = ref.watch(recordEditViewSettingsNotifierProvider(margedRecord).select((value) => value.bo3));
 
     if (isSelectPicker.value) {
       useDeckTextController.text = editMargedRecord.useDeck;
@@ -188,20 +213,24 @@ class _EditView extends HookConsumerWidget {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      width: 195.w,
+                      width: 204.w,
                       child: Card(
                         child: Padding(
-                          padding: const EdgeInsets.all(16),
+                          padding: const EdgeInsets.all(8),
                           child: Column(
                             children: [
                               RadioListTile(
                                 title: Text(S.of(context).first),
+                                toggleable: true,
                                 value: FirstSecond.first,
-                                groupValue: firstSecond,
+                                groupValue: isBO3 ? firstMatchFirstSecond : firstSecond,
                                 onChanged: (FirstSecond? value) {
-                                  if (value != null) {
+                                  if (isBO3) {
+                                    recordDetailNotifier.editFirstMatchFirstSecond(value);
+                                  } else {
                                     recordDetailNotifier.editFirstSecond(value);
                                   }
                                 },
@@ -210,10 +239,13 @@ class _EditView extends HookConsumerWidget {
                               ),
                               RadioListTile(
                                 title: Text(S.of(context).second),
+                                toggleable: true,
                                 value: FirstSecond.second,
-                                groupValue: firstSecond,
+                                groupValue: isBO3 ? firstMatchFirstSecond : firstSecond,
                                 onChanged: (FirstSecond? value) {
-                                  if (value != null) {
+                                  if (isBO3) {
+                                    recordDetailNotifier.editFirstMatchFirstSecond(value);
+                                  } else {
                                     recordDetailNotifier.editFirstSecond(value);
                                   }
                                 },
@@ -226,18 +258,21 @@ class _EditView extends HookConsumerWidget {
                       ),
                     ),
                     SizedBox(
-                      width: 195.w,
+                      width: 204.w,
                       child: Card(
                         child: Padding(
-                          padding: const EdgeInsets.all(16),
+                          padding: const EdgeInsets.all(8),
                           child: Column(
                             children: [
                               RadioListTile(
                                 title: Text(S.of(context).win),
+                                toggleable: true,
                                 value: WinLoss.win,
-                                groupValue: winLoss,
+                                groupValue: isBO3 ? firstMatchWinLoss : winLoss,
                                 onChanged: (WinLoss? value) {
-                                  if (value != null) {
+                                  if (isBO3) {
+                                    recordDetailNotifier.editFirstMatchWinLoss(value);
+                                  } else {
                                     recordDetailNotifier.editWinLoss(value);
                                   }
                                 },
@@ -246,16 +281,35 @@ class _EditView extends HookConsumerWidget {
                               ),
                               RadioListTile(
                                 title: Text(S.of(context).loss),
+                                toggleable: true,
                                 value: WinLoss.loss,
-                                groupValue: winLoss,
+                                groupValue: isBO3 ? firstMatchWinLoss : winLoss,
                                 onChanged: (WinLoss? value) {
-                                  if (value != null) {
+                                  if (isBO3) {
+                                    recordDetailNotifier.editFirstMatchWinLoss(value);
+                                  } else {
                                     recordDetailNotifier.editWinLoss(value);
                                   }
                                 },
                                 contentPadding: const EdgeInsets.symmetric(horizontal: 0),
                                 dense: true,
                               ),
+                              if (isDraw)
+                                RadioListTile(
+                                  title: Text(S.of(context).draw),
+                                  value: WinLoss.draw,
+                                  toggleable: true,
+                                  groupValue: isBO3 ? firstMatchWinLoss : winLoss,
+                                  onChanged: (WinLoss? value) {
+                                    if (isBO3) {
+                                      recordDetailNotifier.editFirstMatchWinLoss(value);
+                                    } else {
+                                      recordDetailNotifier.editWinLoss(value);
+                                    }
+                                  },
+                                  contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                  dense: true,
+                                ),
                             ],
                           ),
                         ),
@@ -263,6 +317,180 @@ class _EditView extends HookConsumerWidget {
                     ),
                   ],
                 ),
+                if (isBO3)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: 204.w,
+                        child: Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: Column(
+                              children: [
+                                RadioListTile(
+                                  title: Text(S.of(context).first),
+                                  value: FirstSecond.first,
+                                  toggleable: true,
+                                  groupValue: secondMatchFirstSecond,
+                                  onChanged: (FirstSecond? value) {
+                                    recordDetailNotifier.editSecondMatchFirstSecond(value);
+                                  },
+                                  contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                  dense: true,
+                                ),
+                                RadioListTile(
+                                  title: Text(S.of(context).second),
+                                  value: FirstSecond.second,
+                                  toggleable: true,
+                                  groupValue: secondMatchFirstSecond,
+                                  onChanged: (FirstSecond? value) {
+                                    recordDetailNotifier.editSecondMatchFirstSecond(value);
+                                  },
+                                  contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                  dense: true,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 204.w,
+                        child: Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: Column(
+                              children: [
+                                RadioListTile(
+                                  title: Text(S.of(context).win),
+                                  value: WinLoss.win,
+                                  toggleable: true,
+                                  groupValue: secondMatchWinLoss,
+                                  onChanged: (WinLoss? value) {
+                                    recordDetailNotifier.editSecondMatchWinLoss(value);
+                                  },
+                                  contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                  dense: true,
+                                ),
+                                RadioListTile(
+                                  title: Text(S.of(context).loss),
+                                  value: WinLoss.loss,
+                                  toggleable: true,
+                                  groupValue: secondMatchWinLoss,
+                                  onChanged: (WinLoss? value) {
+                                    recordDetailNotifier.editSecondMatchWinLoss(value);
+                                  },
+                                  contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                  dense: true,
+                                ),
+                                if (isDraw)
+                                  RadioListTile(
+                                    title: Text(S.of(context).draw),
+                                    value: WinLoss.draw,
+                                    toggleable: true,
+                                    groupValue: secondMatchWinLoss,
+                                    onChanged: (WinLoss? value) {
+                                      recordDetailNotifier.editSecondMatchWinLoss(value);
+                                    },
+                                    contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                    dense: true,
+                                  ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                if (isBO3)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: 204.w,
+                        child: Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: Column(
+                              children: [
+                                RadioListTile(
+                                  title: Text(S.of(context).first),
+                                  toggleable: true,
+                                  value: FirstSecond.first,
+                                  groupValue: thirdMatchFirstSecond,
+                                  onChanged: (FirstSecond? value) {
+                                    recordDetailNotifier.editThirdMatchFirstSecond(value);
+                                  },
+                                  contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                  dense: true,
+                                ),
+                                RadioListTile(
+                                  title: Text(S.of(context).second),
+                                  value: FirstSecond.second,
+                                  toggleable: true,
+                                  groupValue: thirdMatchFirstSecond,
+                                  onChanged: (FirstSecond? value) {
+                                    recordDetailNotifier.editThirdMatchFirstSecond(value);
+                                  },
+                                  contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                  dense: true,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 204.w,
+                        child: Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: Column(
+                              children: [
+                                RadioListTile(
+                                  title: Text(S.of(context).win),
+                                  value: WinLoss.win,
+                                  toggleable: true,
+                                  groupValue: thirdMatchWinLoss,
+                                  onChanged: (WinLoss? value) {
+                                    recordDetailNotifier.editThirdMatchWinLoss(value);
+                                  },
+                                  contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                  dense: true,
+                                ),
+                                RadioListTile(
+                                  title: Text(S.of(context).loss),
+                                  value: WinLoss.loss,
+                                  toggleable: true,
+                                  groupValue: thirdMatchWinLoss,
+                                  onChanged: (WinLoss? value) {
+                                    recordDetailNotifier.editThirdMatchWinLoss(value);
+                                  },
+                                  contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                  dense: true,
+                                ),
+                                if (isDraw)
+                                  RadioListTile(
+                                    title: Text(S.of(context).draw),
+                                    value: WinLoss.draw,
+                                    toggleable: true,
+                                    groupValue: thirdMatchWinLoss,
+                                    onChanged: (WinLoss? value) {
+                                      recordDetailNotifier.editThirdMatchWinLoss(value);
+                                    },
+                                    contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                    dense: true,
+                                  ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 Card(
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
@@ -358,6 +586,60 @@ class _EditView extends HookConsumerWidget {
       },
       error: (error, stack) => Text('$error'),
       loading: () => const Center(child: CircularProgressIndicator()),
+    );
+  }
+}
+
+class _SettingModalBottomSheet extends HookConsumerWidget {
+  const _SettingModalBottomSheet({
+    required this.record,
+    key,
+  }) : super(key: key);
+  final MargedRecord record;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final draw = ref.watch(recordEditViewSettingsNotifierProvider(record).select((value) => value.draw));
+    final bo3 = ref.watch(recordEditViewSettingsNotifierProvider(record).select((value) => value.bo3));
+    final inputiViewSettingsController = ref.watch(recordEditViewSettingsNotifierProvider(record).notifier);
+    return Material(
+      child: SafeArea(
+        top: false,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 0, 0, 16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 16, 0, 8),
+                child: Text(
+                  '入力項目オプション',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
+                ),
+              ),
+              SwitchListTile.adaptive(
+                contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                title: Text(
+                  '引き分け',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                value: draw,
+                onChanged: inputiViewSettingsController.changeDraw,
+              ),
+              SwitchListTile.adaptive(
+                contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                title: Text(
+                  'BO3',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                value: bo3,
+                onChanged: inputiViewSettingsController.changeBO3,
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

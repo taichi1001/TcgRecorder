@@ -3,6 +3,7 @@ import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/marged_record.dart';
 import 'package:tcg_manager/entity/record.dart';
 import 'package:tcg_manager/entity/tag.dart';
+import 'package:tcg_manager/enum/bo.dart';
 import 'package:tcg_manager/enum/first_second.dart';
 import 'package:tcg_manager/enum/win_loss.dart';
 import 'package:tcg_manager/helper/db_helper.dart';
@@ -93,12 +94,38 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
     );
   }
 
-  void editWinLoss(WinLoss winnLoss) {
+  void editWinLoss(WinLoss? winnLoss) {
+    if (winnLoss == null) return;
     state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(winLoss: winnLoss));
   }
 
-  void editFirstSecond(FirstSecond firstSecond) {
+  void editFirstMatchWinLoss(WinLoss? winnLoss) {
+    state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(firstMatchWinLoss: winnLoss));
+  }
+
+  void editSecondMatchWinLoss(WinLoss? winnLoss) {
+    state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(secondMatchWinLoss: winnLoss));
+  }
+
+  void editThirdMatchWinLoss(WinLoss? winnLoss) {
+    state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(thirdMatchWinLoss: winnLoss));
+  }
+
+  void editFirstSecond(FirstSecond? firstSecond) {
+    if (firstSecond == null) return;
     state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(firstSecond: firstSecond));
+  }
+
+  void editFirstMatchFirstSecond(FirstSecond? firstSecond) {
+    state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(firstMatchFirstSecond: firstSecond));
+  }
+
+  void editSecondMatchFirstSecond(FirstSecond? firstSecond) {
+    state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(secondMatchFirstSecond: firstSecond));
+  }
+
+  void editThirdMatchFirstSecond(FirstSecond? firstSecond) {
+    state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(thirdMatchFirstSecond: firstSecond));
   }
 
   void editMemo(String memo) {
@@ -116,6 +143,7 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
     await _saveEditTag();
     state = state.copyWith(
       record: state.record.copyWith(
+        bo: BO.bo1,
         date: state.editMargedRecord.date,
         winLoss: state.editMargedRecord.winLoss,
         firstSecond: state.editMargedRecord.firstSecond,
@@ -127,6 +155,96 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
     await ref.read(recordRepository).update(state.record);
 
     await ref.read(dbHelper).fetchAll();
+  }
+
+  Future saveEditBO3() async {
+    state = state.copyWith(margedRecord: state.editMargedRecord);
+    await _saveEditUseDeck();
+    await _saveEditOpponentDeck();
+    await _saveEditTag();
+    _calcFirstSecondBO3();
+    _calcWinLossBO3();
+    state = state.copyWith(
+      record: state.record.copyWith(
+        bo: BO.bo3,
+        date: state.editMargedRecord.date,
+        firstSecond: state.margedRecord.firstSecond,
+        firstMatchFirstSecond: state.margedRecord.firstMatchFirstSecond,
+        secondMatchFirstSecond: state.margedRecord.secondMatchFirstSecond,
+        thiredMatchFirstSecond: state.margedRecord.firstMatchFirstSecond,
+        winLoss: state.margedRecord.winLoss,
+        firstMatchWinLoss: state.margedRecord.firstMatchWinLoss,
+        secondMatchWinLoss: state.margedRecord.secondMatchWinLoss,
+        thirdMatchWinLoss: state.margedRecord.thirdMatchWinLoss,
+        memo: state.editMargedRecord.memo,
+      ),
+    );
+    // recordを上書き
+    await ref.read(recordRepository).update(state.record);
+
+    await ref.read(dbHelper).fetchAll();
+  }
+
+  void _calcWinLossBO3() {
+    final winLossList = [
+      state.editMargedRecord.firstMatchWinLoss,
+      state.editMargedRecord.secondMatchWinLoss,
+      state.editMargedRecord.thirdMatchWinLoss
+    ];
+    final winCount = winLossList.where((winLoss) => winLoss == WinLoss.win).length;
+    final lossCount = winLossList.where((winLoss) => winLoss == WinLoss.loss).length;
+    if (winCount > lossCount) {
+      state = state.copyWith(
+        margedRecord: state.margedRecord.copyWith(
+          winLoss: WinLoss.win,
+        ),
+      );
+    }
+    if (winCount < lossCount) {
+      state = state.copyWith(
+        margedRecord: state.margedRecord.copyWith(
+          winLoss: WinLoss.loss,
+        ),
+      );
+    }
+    if (winCount == lossCount) {
+      state = state.copyWith(
+        margedRecord: state.margedRecord.copyWith(
+          winLoss: WinLoss.draw,
+        ),
+      );
+    }
+  }
+
+  void _calcFirstSecondBO3() {
+    final firstSecondList = [
+      state.editMargedRecord.firstMatchFirstSecond,
+      state.editMargedRecord.secondMatchFirstSecond,
+      state.editMargedRecord.thirdMatchFirstSecond
+    ];
+    final firstCount = firstSecondList.where((firstSecond) => firstSecond == FirstSecond.first).length;
+    final secondCount = firstSecondList.where((firstSecond) => firstSecond == FirstSecond.second).length;
+    if (firstCount > secondCount) {
+      state = state.copyWith(
+        margedRecord: state.margedRecord.copyWith(
+          firstSecond: FirstSecond.first,
+        ),
+      );
+    }
+    if (firstCount < secondCount) {
+      state = state.copyWith(
+        margedRecord: state.margedRecord.copyWith(
+          firstSecond: FirstSecond.second,
+        ),
+      );
+    }
+    if (firstCount == secondCount) {
+      state = state.copyWith(
+        margedRecord: state.margedRecord.copyWith(
+          firstSecond: state.editMargedRecord.firstMatchFirstSecond!,
+        ),
+      );
+    }
   }
 
   Future _saveEditUseDeck() async {
@@ -197,7 +315,7 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
 }
 
 final recordListProvider = Provider<List<Record>>((ref) {
-  final recordList = ref.read(allRecordListProvider);
+  final recordList = ref.watch(allRecordListProvider);
   final state = recordList.when(
     data: (recordList) => recordList,
     error: (_, __) => [],
