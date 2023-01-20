@@ -907,7 +907,7 @@ class _AddPhotoWidget extends StatelessWidget {
                       height: 80,
                       child: Image.file(
                         File(file!.path),
-                        fit: BoxFit.fill,
+                        fit: BoxFit.contain,
                       ),
                     ),
                     const Padding(

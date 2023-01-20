@@ -368,7 +368,7 @@ class _BrandListTile extends HookConsumerWidget {
                                     height: 80,
                                     child: Image.file(
                                       File('$imagePath/${image.value}'),
-                                      fit: BoxFit.fill,
+                                      fit: BoxFit.contain,
                                     ),
                                   ),
                                 ),
