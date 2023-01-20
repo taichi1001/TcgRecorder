@@ -1,4 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tcg_manager/entity/deck.dart';
+import 'package:tcg_manager/entity/game.dart';
 import 'package:tcg_manager/entity/marged_record.dart';
 import 'package:tcg_manager/entity/record.dart';
 import 'package:tcg_manager/entity/tag.dart';
@@ -13,6 +15,16 @@ final margedRecordListProvider = FutureProvider.autoDispose<List<MargedRecord>>(
   final allGameList = await ref.read(allGameListProvider.future);
   final allDeckList = await ref.read(allDeckListProvider.future);
   final allTagList = await ref.read(allTagListProvider.future);
+
+  // DB操作のバグによってレコードと何かしらのデータの間に整合性が取れなくなっている場合に
+  // removeWhere内でそのレコードを取り除く
+  filterRecordList.removeWhere((record) {
+    final game = allGameList.singleWhere((value) => value.gameId == record.gameId, orElse: () => Game(game: ''));
+    final useDeck = allDeckList.singleWhere((value) => value.deckId == record.useDeckId, orElse: () => Deck(deck: ''));
+    final opponentDeck = allDeckList.singleWhere((value) => value.deckId == record.opponentDeckId, orElse: () => Deck(deck: ''));
+    if (game.gameId == null || useDeck.deckId == null || opponentDeck.deckId == null) return true;
+    return false;
+  });
 
   final list = filterRecordList.map((Record record) {
     final game = allGameList.singleWhere((value) => value.gameId == record.gameId);
@@ -52,6 +64,16 @@ final allMargedRecordListProvider = FutureProvider.autoDispose<List<MargedRecord
   final allGameList = await ref.read(allGameListProvider.future);
   final allDeckList = await ref.read(allDeckListProvider.future);
   final allTagList = await ref.read(allTagListProvider.future);
+
+  // DB操作のバグによってレコードと何かしらのデータの間に整合性が取れなくなっている場合に
+  // removeWhere内でそのレコードを取り除く
+  allRecordList.removeWhere((record) {
+    final game = allGameList.singleWhere((value) => value.gameId == record.gameId, orElse: () => Game(game: ''));
+    final useDeck = allDeckList.singleWhere((value) => value.deckId == record.useDeckId, orElse: () => Deck(deck: ''));
+    final opponentDeck = allDeckList.singleWhere((value) => value.deckId == record.opponentDeckId, orElse: () => Deck(deck: ''));
+    if (game.gameId == null || useDeck.deckId == null || opponentDeck.deckId == null) return true;
+    return false;
+  });
 
   final list = allRecordList.map((Record record) {
     final game = allGameList.singleWhere((value) => value.gameId == record.gameId);

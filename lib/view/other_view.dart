@@ -30,6 +30,7 @@ import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 import 'package:tcg_manager/provider/theme_provider.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
+import 'package:tcg_manager/repository/tag_repository.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
 import 'package:tcg_manager/selector/game_tag_list_selector.dart';
 import 'package:tcg_manager/selector/marged_record_list_selector.dart';
@@ -619,7 +620,7 @@ class _TagListView extends HookConsumerWidget {
                               newTagRecordList.add(tag);
                             }
                             await ref.read(recordRepository).updateRecordList(newTagRecordList);
-                            await ref.read(deckRepository).deleteById(tagList[index].tagId!);
+                            await ref.read(tagRepository).deleteById(tagList[index].tagId!);
                             ref.refresh(allTagListProvider);
                             ref.refresh(allRecordListProvider);
                           }
