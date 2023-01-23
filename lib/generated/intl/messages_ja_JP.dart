@@ -72,6 +72,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "order": MessageLookupByLibrary.simpleMessage("手番"),
         "otherSection": MessageLookupByLibrary.simpleMessage("その他"),
         "otherTitle": MessageLookupByLibrary.simpleMessage("その他"),
+        "premiumPlan": MessageLookupByLibrary.simpleMessage("プレミアムプラン"),
         "privacyPolicy": MessageLookupByLibrary.simpleMessage("プライバシーポリシー"),
         "recordEditDialogMessage":
             MessageLookupByLibrary.simpleMessage("編集中の内容が保存されませんが戻ってもよろしいですか？"),

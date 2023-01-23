@@ -78,6 +78,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "order": MessageLookupByLibrary.simpleMessage("First/Second"),
         "otherSection": MessageLookupByLibrary.simpleMessage("Other"),
         "otherTitle": MessageLookupByLibrary.simpleMessage("Other"),
+        "premiumPlan": MessageLookupByLibrary.simpleMessage("Premium Plan"),
         "privacyPolicy": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
         "recordEditDialogMessage": MessageLookupByLibrary.simpleMessage(
             "The content I am editing is not saved, may I go back?"),

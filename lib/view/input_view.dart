@@ -25,7 +25,6 @@ import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/input_view_provider.dart';
 import 'package:tcg_manager/provider/input_view_settings_provider.dart';
-import 'package:tcg_manager/provider/revenue_cat_provider.dart';
 import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
 import 'package:tcg_manager/selector/game_tag_list_selector.dart';
@@ -267,11 +266,7 @@ class InputView extends HookConsumerWidget {
                           submiteAction: () {
                             inputViewNotifier.selectDateTime(dateTimeController.value.selectedDateTime);
                           },
-                          nowAction: () async {
-                            try {
-                              await ref.read(revenueCatNotifierProvider.notifier).purchasePremiumMonthly();
-                              // ignore: empty_catches
-                            } catch (e) {}
+                          nowAction: () {
                             dateTimeController.value.setDateTimeNow();
                             inputViewNotifier.selectDateTime(dateTimeController.value.selectedDateTime);
                           },

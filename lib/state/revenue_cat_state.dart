@@ -10,5 +10,6 @@ abstract class RevenueCatState with _$RevenueCatState {
     final Offerings? offerings,
     final Exception? exception,
     @Default(false) final bool isPremium,
+    @Default(false) final bool isLoading,
   }) = _RevenueCatState;
 }

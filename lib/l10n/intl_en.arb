@@ -70,5 +70,7 @@
     "recordListNoTag": "No tag",
     "recordEditDialogMessage": "The content I am editing is not saved, may I go back?",
     "themeChange": "Change theme",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "premiumPlan": "Premium Plan"
+
 }

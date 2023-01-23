@@ -29,11 +29,13 @@ class RevenueCatNotifier extends StateNotifier<RevenueCatState> {
     try {
       final package = state.offerings?.current?.monthly;
       if (package == null) return;
+      state = state.copyWith(isLoading: true);
       await Purchases.purchasePackage(package);
       final purchaseseInfo = await Purchases.getCustomerInfo();
       final isPremium = purchaseseInfo.entitlements.all['premium']?.isActive;
-      state = state.copyWith(isPremium: isPremium ?? false);
+      state = state.copyWith(isPremium: isPremium ?? false, isLoading: false);
     } catch (e) {
+      state = state.copyWith(isLoading: false);
       rethrow;
     }
   }

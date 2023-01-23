@@ -37,6 +37,7 @@ import 'package:tcg_manager/selector/marged_record_list_selector.dart';
 import 'package:tcg_manager/view/component/custom_textfield.dart';
 import 'package:tcg_manager/view/component/slidable_tile.dart';
 import 'package:tcg_manager/view/component/web_view_screen.dart';
+import 'package:tcg_manager/view/premium_plan_purchase_view.dart';
 
 class OtherView extends HookConsumerWidget {
   const OtherView({Key? key}) : super(key: key);
@@ -65,7 +66,22 @@ class OtherView extends HookConsumerWidget {
           SettingsSection(
             title: Text(S.of(context).settingSection),
             tiles: [
-              // テーマ設定画面を開放するときにコメントアウト
+              SettingsTile.navigation(
+                title: Text(S.of(context).premiumPlan),
+                leading: const Icon(
+                  Icons.auto_awesome,
+                  color: Colors.orange,
+                ),
+                onPressed: (context) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      fullscreenDialog: true,
+                      builder: (context) => const PremiumPlanPurchaseView(),
+                    ),
+                  );
+                },
+              ),
               SettingsTile.navigation(
                 title: Text(S.of(context).themeChange),
                 leading: const Icon(Icons.palette),
@@ -78,18 +94,6 @@ class OtherView extends HookConsumerWidget {
                   );
                 },
               ),
-              // SettingsTile.navigation(
-              //   title: Text(S.of(context).inputViewSettings),
-              //   leading: const Icon(Icons.settings_applications),
-              //   onPressed: (context) {
-              //     Navigator.push(
-              //       context,
-              //       MaterialPageRoute(
-              //         builder: (context) => const _InputViewSettingsView(),
-              //       ),
-              //     );
-              //   },
-              // ),
             ],
           ),
           SettingsSection(

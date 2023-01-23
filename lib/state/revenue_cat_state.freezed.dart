@@ -20,6 +20,7 @@ mixin _$RevenueCatState {
   Offerings? get offerings => throw _privateConstructorUsedError;
   Exception? get exception => throw _privateConstructorUsedError;
   bool get isPremium => throw _privateConstructorUsedError;
+  bool get isLoading => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $RevenueCatStateCopyWith<RevenueCatState> get copyWith =>
@@ -36,7 +37,8 @@ abstract class $RevenueCatStateCopyWith<$Res> {
       {CustomerInfo? customerInfo,
       Offerings? offerings,
       Exception? exception,
-      bool isPremium});
+      bool isPremium,
+      bool isLoading});
 
   $CustomerInfoCopyWith<$Res>? get customerInfo;
   $OfferingsCopyWith<$Res>? get offerings;
@@ -59,6 +61,7 @@ class _$RevenueCatStateCopyWithImpl<$Res, $Val extends RevenueCatState>
     Object? offerings = freezed,
     Object? exception = freezed,
     Object? isPremium = null,
+    Object? isLoading = null,
   }) {
     return _then(_value.copyWith(
       customerInfo: freezed == customerInfo
@@ -76,6 +79,10 @@ class _$RevenueCatStateCopyWithImpl<$Res, $Val extends RevenueCatState>
       isPremium: null == isPremium
           ? _value.isPremium
           : isPremium // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isLoading: null == isLoading
+          ? _value.isLoading
+          : isLoading // ignore: cast_nullable_to_non_nullable
               as bool,
     ) as $Val);
   }
@@ -117,7 +124,8 @@ abstract class _$$_RevenueCatStateCopyWith<$Res>
       {CustomerInfo? customerInfo,
       Offerings? offerings,
       Exception? exception,
-      bool isPremium});
+      bool isPremium,
+      bool isLoading});
 
   @override
   $CustomerInfoCopyWith<$Res>? get customerInfo;
@@ -140,6 +148,7 @@ class __$$_RevenueCatStateCopyWithImpl<$Res>
     Object? offerings = freezed,
     Object? exception = freezed,
     Object? isPremium = null,
+    Object? isLoading = null,
   }) {
     return _then(_$_RevenueCatState(
       customerInfo: freezed == customerInfo
@@ -158,6 +167,10 @@ class __$$_RevenueCatStateCopyWithImpl<$Res>
           ? _value.isPremium
           : isPremium // ignore: cast_nullable_to_non_nullable
               as bool,
+      isLoading: null == isLoading
+          ? _value.isLoading
+          : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -169,7 +182,8 @@ class _$_RevenueCatState implements _RevenueCatState {
       {this.customerInfo,
       this.offerings,
       this.exception,
-      this.isPremium = false});
+      this.isPremium = false,
+      this.isLoading = false});
 
   @override
   final CustomerInfo? customerInfo;
@@ -180,10 +194,13 @@ class _$_RevenueCatState implements _RevenueCatState {
   @override
   @JsonKey()
   final bool isPremium;
+  @override
+  @JsonKey()
+  final bool isLoading;
 
   @override
   String toString() {
-    return 'RevenueCatState(customerInfo: $customerInfo, offerings: $offerings, exception: $exception, isPremium: $isPremium)';
+    return 'RevenueCatState(customerInfo: $customerInfo, offerings: $offerings, exception: $exception, isPremium: $isPremium, isLoading: $isLoading)';
   }
 
   @override
@@ -198,12 +215,14 @@ class _$_RevenueCatState implements _RevenueCatState {
             (identical(other.exception, exception) ||
                 other.exception == exception) &&
             (identical(other.isPremium, isPremium) ||
-                other.isPremium == isPremium));
+                other.isPremium == isPremium) &&
+            (identical(other.isLoading, isLoading) ||
+                other.isLoading == isLoading));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, customerInfo, offerings, exception, isPremium);
+  int get hashCode => Object.hash(
+      runtimeType, customerInfo, offerings, exception, isPremium, isLoading);
 
   @JsonKey(ignore: true)
   @override
@@ -217,7 +236,8 @@ abstract class _RevenueCatState implements RevenueCatState {
       {final CustomerInfo? customerInfo,
       final Offerings? offerings,
       final Exception? exception,
-      final bool isPremium}) = _$_RevenueCatState;
+      final bool isPremium,
+      final bool isLoading}) = _$_RevenueCatState;
 
   @override
   CustomerInfo? get customerInfo;
@@ -227,6 +247,8 @@ abstract class _RevenueCatState implements RevenueCatState {
   Exception? get exception;
   @override
   bool get isPremium;
+  @override
+  bool get isLoading;
   @override
   @JsonKey(ignore: true)
   _$$_RevenueCatStateCopyWith<_$_RevenueCatState> get copyWith =>

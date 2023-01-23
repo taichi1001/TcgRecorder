@@ -70,5 +70,6 @@
     "recordListNoTag": "タグ無し",
     "recordEditDialogMessage": "編集中の内容が保存されませんが戻ってもよろしいですか？",
     "themeChange": "テーマ変更",
-    "cancel": "キャンセル"
+    "cancel": "キャンセル",
+    "premiumPlan": "プレミアムプラン"
 }
