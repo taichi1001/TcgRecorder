@@ -39,6 +39,17 @@ class RevenueCatNotifier extends StateNotifier<RevenueCatState> {
       rethrow;
     }
   }
+
+  Future restorePremium() async {
+    try {
+      state = state.copyWith(isLoading: true);
+      final restoredInfo = await Purchases.restorePurchases();
+      final isPremium = restoredInfo.entitlements.all['premium']?.isActive;
+      state = state.copyWith(isPremium: isPremium ?? false, isLoading: false);
+    } catch (e) {
+      state = state.copyWith(isLoading: false);
+    }
+  }
 }
 
 final revenueCatNotifierProvider = StateNotifierProvider<RevenueCatNotifier, RevenueCatState>(
