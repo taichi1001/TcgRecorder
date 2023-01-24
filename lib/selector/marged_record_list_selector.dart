@@ -12,9 +12,9 @@ import 'package:tcg_manager/selector/filter_record_list_selector.dart';
 
 final margedRecordListProvider = FutureProvider.autoDispose<List<MargedRecord>>((ref) async {
   final filterRecordList = await ref.watch(filterRecordListProvider.future);
-  final allGameList = await ref.read(allGameListProvider.future);
-  final allDeckList = await ref.read(allDeckListProvider.future);
-  final allTagList = await ref.read(allTagListProvider.future);
+  final allGameList = await ref.watch(allGameListProvider.future);
+  final allDeckList = await ref.watch(allDeckListProvider.future);
+  final allTagList = await ref.watch(allTagListProvider.future);
 
   // DB操作のバグによってレコードと何かしらのデータの間に整合性が取れなくなっている場合に
   // removeWhere内でそのレコードを取り除く
@@ -61,9 +61,9 @@ final margedRecordListProvider = FutureProvider.autoDispose<List<MargedRecord>>(
 
 final allMargedRecordListProvider = FutureProvider.autoDispose<List<MargedRecord>>((ref) async {
   final allRecordList = await ref.watch(allRecordListProvider.future);
-  final allGameList = await ref.read(allGameListProvider.future);
-  final allDeckList = await ref.read(allDeckListProvider.future);
-  final allTagList = await ref.read(allTagListProvider.future);
+  final allGameList = await ref.watch(allGameListProvider.future);
+  final allDeckList = await ref.watch(allDeckListProvider.future);
+  final allTagList = await ref.watch(allTagListProvider.future);
 
   // DB操作のバグによってレコードと何かしらのデータの間に整合性が取れなくなっている場合に
   // removeWhere内でそのレコードを取り除く

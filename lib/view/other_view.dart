@@ -179,7 +179,7 @@ class OtherView extends HookConsumerWidget {
                   final logPath = '$savePath/toremane_output.csv';
                   final textfilePath = File(logPath);
                   await textfilePath.writeAsString(csv);
-                  Share.shareFiles([logPath]);
+                  Share.shareXFiles([XFile(logPath)]);
                 },
               ),
               SettingsTile.navigation(
@@ -616,12 +616,22 @@ class _TagListView extends HookConsumerWidget {
                           if (result == OkCancelResult.ok) {
                             final oldTag = await ref.read(editRecordHelper).checkIfSelectedTagIsNew(newName.first);
                             final allRecordList = await ref.read(recordRepository).getAll();
-                            final isTagList = allRecordList.where((record) => record.tagId != null);
-                            final targetTagList = isTagList.where((record) => record.tagId! == tagList[index].tagId).toList();
+                            final isTagRecordList = allRecordList.where((record) => record.tagId.isNotEmpty);
+                            final targetRecordList =
+                                isTagRecordList.where((record) => record.tagId.contains(tagList[index].tagId)).toList();
+
                             final List<Record> newTagRecordList = [];
-                            for (var tag in targetTagList) {
-                              tag = tag.copyWith(tagId: [oldTag.tag!.tagId!]); // TODO 複数入力対応が必要
-                              newTagRecordList.add(tag);
+                            for (var record in targetRecordList) {
+                              List<int> newTagIdList = [];
+                              for (final tagId in record.tagId) {
+                                if (tagId == tagList[index].tagId) {
+                                  newTagIdList.add(oldTag.tag!.tagId!);
+                                } else {
+                                  newTagIdList.add(tagId);
+                                }
+                              }
+                              record = record.copyWith(tagId: newTagIdList.toSet().toList());
+                              newTagRecordList.add(record);
                             }
                             await ref.read(recordRepository).updateRecordList(newTagRecordList);
                             await ref.read(tagRepository).deleteById(tagList[index].tagId!);
@@ -742,7 +752,7 @@ class _ThemeChangeView extends HookConsumerWidget {
                           height: 55,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              primary: previewThemeDataList[index].primaryColor,
+                              backgroundColor: previewThemeDataList[index].primaryColor,
                               shape: CircleBorder(
                                 side: previewScheme == FlexScheme.values[index]
                                     ? BorderSide(
