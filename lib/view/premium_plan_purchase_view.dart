@@ -56,6 +56,7 @@ class PremiumPlanPurchaseView extends HookConsumerWidget {
                       child: Text('特典5: CSV出力'),
                     ),
                   ),
+                  const Divider(),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(

@@ -24,7 +24,7 @@ class ListToCSV {
     for (final margedRecord in list) {
       row = [];
       row.add(margedRecord.game);
-      row.add(margedRecord.tag);
+      row.add(_stringListToJson(margedRecord.tag));
       row.add(margedRecord.bo.name);
       row.add(margedRecord.useDeck);
       row.add(margedRecord.opponentDeck);
@@ -42,4 +42,20 @@ class ListToCSV {
     }
     return const ListToCsvConverter().convert(rows);
   }
+}
+
+String? _stringListToJson(List<String> values) {
+  if (values.isEmpty) return null;
+  var result = '';
+  var count = 0;
+  for (final value in values) {
+    if (count == 0) {
+      // ignore: unnecessary_string_interpolations
+      result = value;
+    } else {
+      result = '$result,$value';
+    }
+    count++;
+  }
+  return result;
 }
