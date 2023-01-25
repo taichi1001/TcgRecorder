@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
+import 'package:tcg_manager/entity/tag.dart';
 import 'package:tcg_manager/enum/sort.dart';
 import 'package:tcg_manager/helper/convert_sort_string.dart';
 import 'package:tcg_manager/provider/record_list_view_provider.dart';
@@ -27,6 +28,21 @@ class FilterModalBottomSheet extends HookConsumerWidget {
   final bool showUseDeck;
   final bool showOpponentDeck;
   final bool showTag;
+
+  String _makeTagString(List<Tag> tagList) {
+    if (tagList.isEmpty) return '';
+    var result = '';
+    var count = 0;
+    for (final tag in tagList) {
+      if (count == 0) {
+        result = tag.tag;
+      } else {
+        result = '$result,${tag.tag}';
+      }
+      count++;
+    }
+    return result;
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -289,6 +305,8 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                       builder: (BuildContext context) => SelectTagView(
                         tagCount: 0,
                         selectTagFunc: recordListViewNotifier.selectTag,
+                        deselectionFunc: recordListViewNotifier.deselectionTag,
+                        returnSelecting: false,
                       ),
                     );
                   },
@@ -297,7 +315,7 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        recordListViewState.tag == null ? const Text('全て') : Text(recordListViewState.tag!.tag),
+                        recordListViewState.tagList.isEmpty ? const Text('全て') : Text(_makeTagString(recordListViewState.tagList)),
                         const Icon(Icons.arrow_drop_down),
                       ],
                     ),

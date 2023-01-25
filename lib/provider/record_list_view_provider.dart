@@ -2,8 +2,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/tag.dart';
 import 'package:tcg_manager/enum/sort.dart';
-import 'package:tcg_manager/selector/game_deck_list_selector.dart';
-import 'package:tcg_manager/selector/game_tag_list_selector.dart';
 import 'package:tcg_manager/state/record_list_view_state.dart';
 
 class RecordListViewNotifier extends StateNotifier<RecordListViewState> {
@@ -44,55 +42,25 @@ class RecordListViewNotifier extends StateNotifier<RecordListViewState> {
     state = state.copyWith(endTime: time);
   }
 
-  Future scrollUseDeck(int index) async {
-    if (index == 0) {
-      state = state.copyWith(cacheUseDeck: null);
-    } else {
-      final gameDeckList = await ref.read(gameDeckListProvider.future);
-      state = state.copyWith(cacheUseDeck: gameDeckList[index - 1]);
-    }
-  }
-
-  void setUseDeck() {
-    state = state.copyWith(useDeck: state.cacheUseDeck);
-  }
-
   void selectUseDeck(Deck deck) {
     state = state.copyWith(useDeck: deck);
-  }
-
-  Future scrollOpponentDeck(int index) async {
-    if (index == 0) {
-      state = state.copyWith(cacheOpponentDeck: null);
-    } else {
-      final gameDeckList = await ref.read(gameDeckListProvider.future);
-      state = state.copyWith(cacheOpponentDeck: gameDeckList[index - 1]);
-    }
-  }
-
-  void setOpponentDeck() {
-    state = state.copyWith(opponentDeck: state.cacheOpponentDeck);
   }
 
   void selectOpponentDeck(Deck deck) {
     state = state.copyWith(opponentDeck: deck);
   }
 
-  Future scrollTag(int index) async {
-    if (index == 0) {
-      state = state.copyWith(cacheTag: null);
-    } else {
-      final gameTagList = await ref.read(gameTagListProvider.future);
-      state = state.copyWith(cacheTag: gameTagList[index - 1]);
-    }
+  // emptyは使用しないが、タグ選択ビューでintを引数に取る必要があるためつけたしている
+  void selectTag(Tag tag, int empty) {
+    final newTagList = [...state.tagList];
+    newTagList.add(tag);
+    state = state.copyWith(tagList: newTagList);
   }
 
-  void setTag() {
-    state = state.copyWith(tag: state.cacheTag);
-  }
-
-  void selectTag(Tag tag, int tagCount) {
-    state = state.copyWith(tag: tag);
+  void deselectionTag(Tag tag) {
+    final newTagList = [...state.tagList];
+    newTagList.removeWhere((element) => element.tagId == tag.tagId);
+    state = state.copyWith(tagList: newTagList);
   }
 
   void resetFilter() {

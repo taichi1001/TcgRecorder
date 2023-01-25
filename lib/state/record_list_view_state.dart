@@ -15,12 +15,9 @@ abstract class RecordListViewState with _$RecordListViewState {
     final DateTime? endTime,
     final Deck? useDeck,
     final Deck? opponentDeck,
-    final Tag? tag,
+    @Default([]) final List<Tag> tagList,
     @Default(Sort.newest) final Sort cacheOrder,
     final DateTime? cacheStartDate,
     final DateTime? cacheEndDate,
-    final Deck? cacheUseDeck,
-    final Deck? cacheOpponentDeck,
-    final Tag? cacheTag,
   }) = _RecordListViewState;
 }

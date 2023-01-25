@@ -53,14 +53,26 @@ final filterRecordListProvider = FutureProvider.autoDispose<List<Record>>((ref) 
     filterdList = filterdList.where((record) => record.opponentDeckId == filter.opponentDeck!.deckId).toList();
   }
 
-  if (filter.tag != null) {
+  if (filter.tagList.isNotEmpty) {
     List<Record> newFilterdList = [];
     for (final record in filterdList) {
-      for (final tagId in record.tagId) {
-        if (tagId == filter.tag!.tagId) {
-          newFilterdList.add(record);
-          break;
+      List<bool> judgeList = [];
+      for (final tag in filter.tagList) {
+        var i = 0;
+        for (final tagId in record.tagId) {
+          if (tagId == tag.tagId) {
+            judgeList.add(true);
+            break;
+          } else {
+            i++;
+            if (i == record.tagId.length) {
+              judgeList.add(false);
+            }
+          }
         }
+      }
+      if (judgeList.toSet().toList().length == 1 && judgeList.toSet().toList()[0]) {
+        newFilterdList.add(record);
       }
     }
     filterdList = newFilterdList;

@@ -9,6 +9,7 @@ import 'package:tcg_manager/entity/tag.dart';
 import 'package:tcg_manager/enum/sort.dart';
 import 'package:tcg_manager/helper/convert_sort_string.dart';
 import 'package:tcg_manager/helper/db_helper.dart';
+import 'package:tcg_manager/provider/record_list_view_provider.dart';
 import 'package:tcg_manager/provider/select_tag_view_provider.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/repository/tag_repository.dart';
@@ -44,15 +45,19 @@ class SelectTagView extends HookConsumerWidget {
   const SelectTagView({
     required this.selectTagFunc,
     required this.tagCount,
+    this.deselectionFunc,
     this.afterFunc,
     this.enableVisiblity = false,
+    this.returnSelecting = true,
     key,
   }) : super(key: key);
 
   final Function(Tag, int) selectTagFunc;
+  final Function(Tag)? deselectionFunc;
   final Function? afterFunc;
   final bool enableVisiblity;
   final int tagCount;
+  final bool returnSelecting;
 
   @override
   // ignore: avoid_renaming_method_parameters
@@ -89,6 +94,8 @@ class SelectTagView extends HookConsumerWidget {
                 final selectTagViewInfo = ref.watch(selectTagViewInfoProvider);
                 final searchText = ref.watch(selectTagViewNotifierProvider.select((value) => value.searchText));
                 final searchExactMatchTag = ref.watch(searchExactMatchTagProvider);
+                final selectetTagList = ref.watch(recordListViewNotifierProvider.select((value) => value.tagList));
+
                 return selectTagViewInfo.when(
                   data: (selectTagViewInfo) {
                     return Scaffold(
@@ -168,11 +175,14 @@ class SelectTagView extends HookConsumerWidget {
                                     ),
                                     _TagListView(
                                       tagList: selectTagViewInfo.searchTagList,
+                                      selectedTagList: selectetTagList,
                                       rootContext: rootContext,
                                       selectTagFunc: selectTagFunc,
                                       enableVisibility: false,
                                       afterFunc: afterFunc,
+                                      deselectionFunc: deselectionFunc,
                                       tagCount: tagCount,
+                                      returnSelecting: returnSelecting,
                                     ),
                                   ],
                                 );
@@ -208,11 +218,14 @@ class SelectTagView extends HookConsumerWidget {
                                     ),
                                     _TagListView(
                                       tagList: selectTagViewInfo.searchTagList,
+                                      selectedTagList: selectetTagList,
                                       rootContext: rootContext,
                                       selectTagFunc: selectTagFunc,
+                                      deselectionFunc: deselectionFunc,
                                       enableVisibility: false,
                                       afterFunc: afterFunc,
                                       tagCount: tagCount,
+                                      returnSelecting: returnSelecting,
                                     ),
                                   ],
                                 );
@@ -231,22 +244,28 @@ class SelectTagView extends HookConsumerWidget {
                                     ),
                                     _TagListView(
                                       tagList: selectTagViewInfo.recentlyUseTagList,
+                                      selectedTagList: selectetTagList,
                                       rootContext: rootContext,
                                       selectTagFunc: selectTagFunc,
+                                      deselectionFunc: deselectionFunc,
                                       enableVisibility: false,
                                       afterFunc: afterFunc,
                                       tagCount: tagCount,
+                                      returnSelecting: returnSelecting,
                                     ),
                                     _AllListViewTitle(
                                       enableVisiblity: enableVisiblity,
                                     ),
                                     _TagListView(
                                       tagList: selectTagViewInfo.gameTagList,
+                                      selectedTagList: selectetTagList,
                                       rootContext: rootContext,
                                       selectTagFunc: selectTagFunc,
+                                      deselectionFunc: deselectionFunc,
                                       enableVisibility: enableVisiblity,
                                       afterFunc: afterFunc,
                                       tagCount: tagCount,
+                                      returnSelecting: returnSelecting,
                                     ),
                                   ],
                                 );
@@ -330,21 +349,27 @@ class _AllListViewTitle extends HookConsumerWidget {
 class _TagListView extends StatelessWidget {
   const _TagListView({
     required this.tagList,
+    required this.selectedTagList,
     required this.rootContext,
     required this.selectTagFunc,
     required this.enableVisibility,
     required this.tagCount,
+    required this.returnSelecting,
+    this.deselectionFunc,
     this.afterFunc,
     key,
   }) : super(key: key);
 
   final List<Tag> tagList;
+  final List<Tag> selectedTagList;
   final BuildContext rootContext;
   final Function(Tag, int) selectTagFunc;
+  final Function(Tag)? deselectionFunc;
   final Function? afterFunc;
   final int tagCount;
 
   final bool enableVisibility;
+  final bool returnSelecting;
 
   @override
   Widget build(BuildContext context) {
@@ -353,15 +378,20 @@ class _TagListView extends StatelessWidget {
       shrinkWrap: true,
       itemBuilder: ((context, index) {
         if (enableVisibility && !tagList[index].isVisibleToPicker) return Container();
+        final isSelected = selectedTagList.contains(tagList[index]);
         return GestureDetector(
           onTap: () {
-            selectTagFunc(tagList[index], tagCount);
-            Navigator.pop(rootContext);
-            if (afterFunc != null) afterFunc!();
+            if (isSelected) {
+              if (deselectionFunc != null) deselectionFunc!(tagList[index]);
+            } else {
+              selectTagFunc(tagList[index], tagCount);
+              if (returnSelecting) Navigator.pop(rootContext);
+              if (afterFunc != null) afterFunc!();
+            }
           },
           child: Container(
             padding: const EdgeInsets.all(16),
-            color: Theme.of(context).colorScheme.surface,
+            color: isSelected ? Theme.of(context).hoverColor : Theme.of(context).colorScheme.surface,
             child: Text(
               tagList[index].tag,
               style: Theme.of(context).textTheme.bodyMedium,
