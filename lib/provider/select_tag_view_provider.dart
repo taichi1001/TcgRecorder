@@ -36,17 +36,6 @@ class SelectTagViewNotifier extends StateNotifier<SelectTagViewState> {
     ref.read(tagRepository).insert(tag);
     ref.refresh(allTagListProvider);
   }
-
-  void selectTag(Tag tag) {
-    final newTagList = [...state.selectedTagList];
-    newTagList.add(tag);
-    state = state.copyWith(selectedTagList: newTagList);
-  }
-
-  void deselectionTag(Tag tag) {
-    final newTagList = [...state.selectedTagList];
-    newTagList.removeWhere((element) => element.tagId == tag.tagId);
-  }
 }
 
 final selectTagViewNotifierProvider = StateNotifierProvider<SelectTagViewNotifier, SelectTagViewState>(
