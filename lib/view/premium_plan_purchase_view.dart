@@ -67,8 +67,8 @@ class PremiumPlanPurchaseView extends HookConsumerWidget {
                         icon: Icons.edit_note,
                       ),
                       const _ContentsCard(
-                        title: 'CSV出力',
-                        description: 'アイデア次第で自由に分析できます',
+                        title: 'エクスポート',
+                        description: 'CSV形式でエクスポートします。アイデア次第で自由に分析できます',
                         icon: Icons.note,
                       ),
                       const Divider(height: 24),
