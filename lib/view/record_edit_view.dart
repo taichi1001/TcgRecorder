@@ -87,10 +87,7 @@ class RecordEditView extends HookConsumerWidget {
         appBar: AppBar(
           centerTitle: true,
           elevation: 0.0,
-          title: Text(
-            S.of(context).editButton,
-            style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-          ),
+          title: Text(S.of(context).editButton),
           actions: [
             IconButton(
               icon: const Icon(Icons.tune),
@@ -105,7 +102,7 @@ class RecordEditView extends HookConsumerWidget {
             CupertinoButton(
               child: Text(
                 S.of(context).save,
-                style: Theme.of(context).primaryTextTheme.bodyText1,
+                style: Theme.of(context).textTheme.bodyText2,
               ),
               onPressed: () {
                 if (isBO3) {

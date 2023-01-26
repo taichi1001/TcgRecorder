@@ -135,8 +135,8 @@ class MainApp extends HookConsumerWidget {
       return;
     }, const []);
     final mainInfo = ref.watch(mainInfoProvider);
-    final lightThemeData = ref.watch(lightThemeDataProvider);
-    final darkThemeData = ref.watch(darkThemeDataProvider);
+    final lightThemeData = ref.watch(lightThemeDataProvider(context));
+    final darkThemeData = ref.watch(darkThemeDataProvider(context));
 
     return mainInfo.when(
       data: (mainInfo) {

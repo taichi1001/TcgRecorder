@@ -76,10 +76,7 @@ class DeckDataGrid extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(
-          deck,
-          style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-        ),
+        title: Text(deck),
         elevation: 0.0,
       ),
       body: gameWinRateDataList.when(

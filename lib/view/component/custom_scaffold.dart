@@ -33,7 +33,6 @@ class CustomScaffold extends HookConsumerWidget {
         centerTitle: true,
         title: Text(
           selectGame.selectGame != null ? selectGame.selectGame!.game : '',
-          style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
         ),
         leading: leading,
         actions: [

@@ -4,82 +4,74 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/provider/theme_provider.dart';
 
-final lightThemeDataProvider = Provider<ThemeData>(
-  ((ref) {
+final lightThemeDataProvider = Provider.family<ThemeData, BuildContext>(
+  ((ref, context) {
     final scheme = ref.watch(themeNotifierProvider.select((value) => value.scheme));
     return FlexThemeData.light(
       scheme: scheme,
-      surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
+      surfaceMode: FlexSurfaceMode.highScaffoldLowSurfacesVariantDialog,
       blendLevel: 9,
-      appBarStyle: FlexAppBarStyle.primary,
-      appBarOpacity: 0.95,
-      appBarElevation: 0.5,
-      transparentStatusBar: true,
-      tabBarStyle: FlexTabBarStyle.forAppBar,
-      tooltipsMatchBackground: true,
-      swapColors: false,
-      lightIsWhite: false,
-      keyColors: const FlexKeyColors(
-        useSecondary: true,
-        useTertiary: true,
-      ),
-      tones: FlexTones.material(Brightness.light),
-      visualDensity: FlexColorScheme.comfortablePlatformDensity,
-      // fontFamily: GoogleFonts.mPlus1p().fontFamily,
       subThemesData: const FlexSubThemesData(
-        useTextTheme: true,
-        fabUseShape: true,
-        interactionEffects: true,
-        bottomNavigationBarElevation: 0,
-        bottomNavigationBarOpacity: 0.95,
-        navigationBarOpacity: 0.95,
-        navigationBarMutedUnselectedLabel: true,
-        navigationBarMutedUnselectedIcon: true,
+        textButtonSchemeColor: SchemeColor.secondary,
+        elevatedButtonSchemeColor: SchemeColor.onSecondary,
+        elevatedButtonSecondarySchemeColor: SchemeColor.primary,
         inputDecoratorIsFilled: false,
         inputDecoratorBorderType: FlexInputBorderType.underline,
-        inputDecoratorUnfocusedHasBorder: true,
-        blendOnColors: true,
-        blendTextTheme: true,
-        popupMenuOpacity: 0.95,
+        bottomNavigationBarSelectedLabelSchemeColor: SchemeColor.secondary,
+        bottomNavigationBarSelectedIconSchemeColor: SchemeColor.secondary,
       ),
+      keyColors: const FlexKeyColors(
+        useTertiary: true,
+      ),
+      tones: FlexTones.jolly(Brightness.light),
+      visualDensity: FlexColorScheme.comfortablePlatformDensity,
+      useMaterial3: true,
+      swapLegacyOnMaterial3: true,
+      // To use the playground font, add GoogleFonts package and uncomment
+      // fontFamily: GoogleFonts.notoSans().fontFamily,
+    ).copyWith(
+      appBarTheme: Theme.of(context).appBarTheme.copyWith(
+            titleTextStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+          ),
     );
   }),
 );
 
-final darkThemeDataProvider = Provider<ThemeData>(
-  ((ref) {
+final darkThemeDataProvider = Provider.family<ThemeData, BuildContext>(
+  ((ref, context) {
     final scheme = ref.watch(themeNotifierProvider.select((value) => value.scheme));
     return FlexThemeData.dark(
       scheme: scheme,
-      surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
-      blendLevel: 9,
-      appBarStyle: FlexAppBarStyle.primary,
+      surfaceMode: FlexSurfaceMode.highScaffoldLowSurfacesVariantDialog,
+      blendLevel: 15,
       appBarOpacity: 0.95,
-      appBarElevation: 0.5,
-      transparentStatusBar: true,
-      tabBarStyle: FlexTabBarStyle.forAppBar,
-      tooltipsMatchBackground: true,
-      swapColors: false,
-      tones: FlexTones.material(Brightness.dark),
-      visualDensity: FlexColorScheme.comfortablePlatformDensity,
-      // fontFamily: GoogleFonts.mPlus1p().fontFamily,
       subThemesData: const FlexSubThemesData(
-        useTextTheme: true,
-        fabUseShape: true,
-        interactionEffects: true,
-        bottomNavigationBarElevation: 0,
-        bottomNavigationBarOpacity: 0.95,
-        navigationBarOpacity: 0.95,
-        navigationBarMutedUnselectedLabel: true,
-        navigationBarMutedUnselectedIcon: true,
+        textButtonSchemeColor: SchemeColor.secondary,
+        elevatedButtonSchemeColor: SchemeColor.onSecondary,
+        elevatedButtonSecondarySchemeColor: SchemeColor.primary,
         inputDecoratorIsFilled: false,
         inputDecoratorBorderType: FlexInputBorderType.underline,
-        inputDecoratorUnfocusedHasBorder: true,
-        blendOnColors: true,
-        blendTextTheme: true,
-        popupMenuOpacity: 0.95,
+        bottomNavigationBarSelectedLabelSchemeColor: SchemeColor.secondary,
+        bottomNavigationBarSelectedIconSchemeColor: SchemeColor.secondary,
       ),
+      keyColors: const FlexKeyColors(
+        useTertiary: true,
+        keepPrimary: true,
+      ),
+      tones: FlexTones.jolly(Brightness.dark).onMainsUseBW().onSurfacesUseBW(),
+      visualDensity: FlexColorScheme.comfortablePlatformDensity,
+      useMaterial3: true,
+      swapLegacyOnMaterial3: true,
+      // To use the Playground font, add GoogleFonts package and uncomment
+      // fontFamily: GoogleFonts.notoSans().fontFamily,
     ).copyWith(
+      appBarTheme: Theme.of(context).appBarTheme.copyWith(
+            titleTextStyle: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+          ),
       cupertinoOverrideTheme: const CupertinoThemeData(
         textTheme: CupertinoTextThemeData(),
       ),
@@ -92,39 +84,26 @@ final previewLightThemeDataProvider = Provider<ThemeData>(
     final scheme = ref.watch(themeNotifierProvider.select((value) => value.previewScheme));
     return FlexThemeData.light(
       scheme: scheme,
-      surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
+      surfaceMode: FlexSurfaceMode.highScaffoldLowSurfacesVariantDialog,
       blendLevel: 9,
-      appBarStyle: FlexAppBarStyle.primary,
-      appBarOpacity: 0.95,
-      appBarElevation: 0.5,
-      transparentStatusBar: true,
-      tabBarStyle: FlexTabBarStyle.forAppBar,
-      tooltipsMatchBackground: true,
-      swapColors: false,
-      lightIsWhite: false,
-      keyColors: const FlexKeyColors(
-        useSecondary: true,
-        useTertiary: true,
-      ),
-      tones: FlexTones.material(Brightness.light),
-      visualDensity: FlexColorScheme.comfortablePlatformDensity,
-      // fontFamily: GoogleFonts.mPlus1p().fontFamily,
       subThemesData: const FlexSubThemesData(
-        useTextTheme: true,
-        fabUseShape: true,
-        interactionEffects: true,
-        bottomNavigationBarElevation: 0,
-        bottomNavigationBarOpacity: 0.95,
-        navigationBarOpacity: 0.95,
-        navigationBarMutedUnselectedLabel: true,
-        navigationBarMutedUnselectedIcon: true,
+        textButtonSchemeColor: SchemeColor.secondary,
+        elevatedButtonSchemeColor: SchemeColor.onSecondary,
+        elevatedButtonSecondarySchemeColor: SchemeColor.primary,
         inputDecoratorIsFilled: false,
         inputDecoratorBorderType: FlexInputBorderType.underline,
-        inputDecoratorUnfocusedHasBorder: true,
-        blendOnColors: true,
-        blendTextTheme: true,
-        popupMenuOpacity: 0.95,
+        bottomNavigationBarSelectedLabelSchemeColor: SchemeColor.secondary,
+        bottomNavigationBarSelectedIconSchemeColor: SchemeColor.secondary,
       ),
+      keyColors: const FlexKeyColors(
+        useTertiary: true,
+      ),
+      tones: FlexTones.jolly(Brightness.light),
+      visualDensity: FlexColorScheme.comfortablePlatformDensity,
+      useMaterial3: true,
+      swapLegacyOnMaterial3: true,
+      // To use the playground font, add GoogleFonts package and uncomment
+      // fontFamily: GoogleFonts.notoSans().fontFamily,
     );
   }),
 );
@@ -134,38 +113,28 @@ final previewDarkThemeDataProvider = Provider<ThemeData>(
     final scheme = ref.watch(themeNotifierProvider.select((value) => value.previewScheme));
     return FlexThemeData.dark(
       scheme: scheme,
-      surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
-      blendLevel: 9,
-      appBarStyle: FlexAppBarStyle.primary,
+      surfaceMode: FlexSurfaceMode.highScaffoldLowSurfacesVariantDialog,
+      blendLevel: 15,
       appBarOpacity: 0.95,
-      appBarElevation: 0.5,
-      transparentStatusBar: true,
-      tabBarStyle: FlexTabBarStyle.forAppBar,
-      tooltipsMatchBackground: true,
-      swapColors: false,
-      tones: FlexTones.material(Brightness.dark),
-      visualDensity: FlexColorScheme.comfortablePlatformDensity,
-      // fontFamily: GoogleFonts.mPlus1p().fontFamily,
       subThemesData: const FlexSubThemesData(
-        useTextTheme: true,
-        fabUseShape: true,
-        interactionEffects: true,
-        bottomNavigationBarElevation: 0,
-        bottomNavigationBarOpacity: 0.95,
-        navigationBarOpacity: 0.95,
-        navigationBarMutedUnselectedLabel: true,
-        navigationBarMutedUnselectedIcon: true,
+        textButtonSchemeColor: SchemeColor.secondary,
+        elevatedButtonSchemeColor: SchemeColor.onSecondary,
+        elevatedButtonSecondarySchemeColor: SchemeColor.primary,
         inputDecoratorIsFilled: false,
         inputDecoratorBorderType: FlexInputBorderType.underline,
-        inputDecoratorUnfocusedHasBorder: true,
-        blendOnColors: true,
-        blendTextTheme: true,
-        popupMenuOpacity: 0.95,
+        bottomNavigationBarSelectedLabelSchemeColor: SchemeColor.secondary,
+        bottomNavigationBarSelectedIconSchemeColor: SchemeColor.secondary,
       ),
-    ).copyWith(
-      cupertinoOverrideTheme: const CupertinoThemeData(
-        textTheme: CupertinoTextThemeData(),
+      keyColors: const FlexKeyColors(
+        useTertiary: true,
+        keepPrimary: true,
       ),
+      tones: FlexTones.jolly(Brightness.dark).onMainsUseBW().onSurfacesUseBW(),
+      visualDensity: FlexColorScheme.comfortablePlatformDensity,
+      useMaterial3: true,
+      swapLegacyOnMaterial3: true,
+      // To use the Playground font, add GoogleFonts package and uncomment
+      // fontFamily: GoogleFonts.notoSans().fontFamily,
     );
   }),
 );
@@ -178,77 +147,54 @@ final previewThemeDataListProvider = Provider.family.autoDispose<List<ThemeData>
       result.add(
         FlexThemeData.dark(
           scheme: scheme,
-          surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
-          blendLevel: 9,
-          appBarStyle: FlexAppBarStyle.primary,
+          surfaceMode: FlexSurfaceMode.highScaffoldLowSurfacesVariantDialog,
+          blendLevel: 15,
           appBarOpacity: 0.95,
-          appBarElevation: 0.5,
-          transparentStatusBar: true,
-          tabBarStyle: FlexTabBarStyle.forAppBar,
-          tooltipsMatchBackground: true,
-          swapColors: false,
-          tones: FlexTones.material(Brightness.dark),
-          visualDensity: FlexColorScheme.comfortablePlatformDensity,
-          // fontFamily: GoogleFonts.mPlus1p().fontFamily,
           subThemesData: const FlexSubThemesData(
-            useTextTheme: true,
-            fabUseShape: true,
-            interactionEffects: true,
-            bottomNavigationBarElevation: 0,
-            bottomNavigationBarOpacity: 0.95,
-            navigationBarOpacity: 0.95,
-            navigationBarMutedUnselectedLabel: true,
-            navigationBarMutedUnselectedIcon: true,
+            textButtonSchemeColor: SchemeColor.secondary,
+            elevatedButtonSchemeColor: SchemeColor.onSecondary,
+            elevatedButtonSecondarySchemeColor: SchemeColor.primary,
             inputDecoratorIsFilled: false,
             inputDecoratorBorderType: FlexInputBorderType.underline,
-            inputDecoratorUnfocusedHasBorder: true,
-            blendOnColors: true,
-            blendTextTheme: true,
-            popupMenuOpacity: 0.95,
+            bottomNavigationBarSelectedLabelSchemeColor: SchemeColor.secondary,
+            bottomNavigationBarSelectedIconSchemeColor: SchemeColor.secondary,
           ),
-        ).copyWith(
-          cupertinoOverrideTheme: const CupertinoThemeData(
-            textTheme: CupertinoTextThemeData(),
+          keyColors: const FlexKeyColors(
+            useTertiary: true,
+            keepPrimary: true,
           ),
+          tones: FlexTones.jolly(Brightness.dark).onMainsUseBW().onSurfacesUseBW(),
+          visualDensity: FlexColorScheme.comfortablePlatformDensity,
+          useMaterial3: true,
+          swapLegacyOnMaterial3: true,
+          // To use the Playground font, add GoogleFonts package and uncomment
+          // fontFamily: GoogleFonts.notoSans().fontFamily,
         ),
       );
     } else {
       result.add(
         FlexThemeData.light(
           scheme: scheme,
-          surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
+          surfaceMode: FlexSurfaceMode.highScaffoldLowSurfacesVariantDialog,
           blendLevel: 9,
-          appBarStyle: FlexAppBarStyle.primary,
-          appBarOpacity: 0.95,
-          appBarElevation: 0.5,
-          transparentStatusBar: true,
-          tabBarStyle: FlexTabBarStyle.forAppBar,
-          tooltipsMatchBackground: true,
-          swapColors: false,
-          lightIsWhite: false,
-          keyColors: const FlexKeyColors(
-            useSecondary: true,
-            useTertiary: true,
-          ),
-          tones: FlexTones.material(Brightness.light),
-          visualDensity: FlexColorScheme.comfortablePlatformDensity,
-          // fontFamily: GoogleFonts.mPlus1p().fontFamily,
           subThemesData: const FlexSubThemesData(
-            useTextTheme: true,
-            fabUseShape: true,
-            interactionEffects: true,
-            bottomNavigationBarElevation: 0,
-            bottomNavigationBarOpacity: 0.95,
-            navigationBarOpacity: 0.95,
-            navigationBarMutedUnselectedLabel: true,
-            navigationBarMutedUnselectedIcon: true,
+            textButtonSchemeColor: SchemeColor.secondary,
+            elevatedButtonSchemeColor: SchemeColor.onSecondary,
+            elevatedButtonSecondarySchemeColor: SchemeColor.primary,
             inputDecoratorIsFilled: false,
             inputDecoratorBorderType: FlexInputBorderType.underline,
-            inputDecoratorUnfocusedHasBorder: true,
-            blendOnColors: true,
-            blendTextTheme: true,
-            popupMenuOpacity: 0.95,
+            bottomNavigationBarSelectedLabelSchemeColor: SchemeColor.secondary,
+            bottomNavigationBarSelectedIconSchemeColor: SchemeColor.secondary,
           ),
+          keyColors: const FlexKeyColors(
+            useTertiary: true,
+          ),
+          tones: FlexTones.jolly(Brightness.light),
+          visualDensity: FlexColorScheme.comfortablePlatformDensity,
+          useMaterial3: true,
+          swapLegacyOnMaterial3: true,
+          // To use the playground font, add GoogleFonts package and uncomment
+          // fontFamily: GoogleFonts.notoSans().fontFamily,
         ),
       );
     }

@@ -50,7 +50,6 @@ class OtherView extends HookConsumerWidget {
         elevation: 0.0,
         title: Text(
           S.of(context).otherTitle,
-          style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
         ),
       ),
       body: SettingsList(
@@ -245,10 +244,7 @@ class _InputViewSettingsView extends HookConsumerWidget {
       appBar: AppBar(
         centerTitle: true,
         elevation: 0.0,
-        title: Text(
-          '入力画面設定',
-          style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-        ),
+        title: const Text('入力画面設定'),
       ),
       body: SettingsList(
         lightTheme: SettingsThemeData(
@@ -317,10 +313,7 @@ class _GameListView extends HookConsumerWidget {
       appBar: AppBar(
         centerTitle: true,
         elevation: 0.0,
-        title: Text(
-          S.of(context).gameEdit,
-          style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-        ),
+        title: Text(S.of(context).gameEdit),
       ),
       body: gameList.when(
         data: (gameList) {
@@ -425,10 +418,7 @@ class _GameSelectView extends HookConsumerWidget {
           appBar: AppBar(
             centerTitle: true,
             elevation: 0.0,
-            title: Text(
-              'ゲーム選択',
-              style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-            ),
+            title: const Text('ゲーム選択'),
           ),
           body: ListView.separated(
             itemBuilder: (context, index) {
@@ -472,10 +462,7 @@ class _DeckListView extends HookConsumerWidget {
       appBar: AppBar(
         centerTitle: true,
         elevation: 0.0,
-        title: Text(
-          S.of(context).deckEdit,
-          style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-        ),
+        title: Text(S.of(context).deckEdit),
       ),
       body: deckList.when(
         data: (deckList) {
@@ -571,10 +558,7 @@ class _TagListView extends HookConsumerWidget {
       appBar: AppBar(
         centerTitle: true,
         elevation: 0.0,
-        title: Text(
-          S.of(context).tagEdit,
-          style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-        ),
+        title: Text(S.of(context).tagEdit),
       ),
       body: tagList.when(
         data: (tagList) {
@@ -692,7 +676,7 @@ class _ThemeChangeView extends HookConsumerWidget {
             },
             child: Text(
               S.of(context).cancel,
-              style: Theme.of(context).primaryTextTheme.bodyText1,
+              style: Theme.of(context).textTheme.bodyText1,
             ),
           ),
           actions: [
@@ -703,7 +687,7 @@ class _ThemeChangeView extends HookConsumerWidget {
               },
               child: Text(
                 S.of(context).submit,
-                style: Theme.of(context).primaryTextTheme.bodyText1,
+                style: Theme.of(context).textTheme.bodyText1,
               ),
             ),
           ],

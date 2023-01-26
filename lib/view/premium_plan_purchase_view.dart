@@ -26,10 +26,7 @@ class PremiumPlanPurchaseView extends HookConsumerWidget {
       children: [
         Scaffold(
           appBar: AppBar(
-            title: Text(
-              S.of(context).premiumPlan,
-              style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-            ),
+            title: Text(S.of(context).premiumPlan),
           ),
           body: SingleChildScrollView(
             child: SafeArea(
@@ -48,27 +45,27 @@ class PremiumPlanPurchaseView extends HookConsumerWidget {
                       const SizedBox(height: 16),
                       const _ContentsCard(
                         title: '複数タグを記録',
-                        description: '様々なタグを組み合わせて記録できます',
+                        description: '様々なタグを組み合わせて記録できます。',
                         icon: Icons.tag,
                       ),
                       const _ContentsCard(
                         title: '画像を記録',
-                        description: '画像も一緒に記録できるようになります',
+                        description: '画像も一緒に記録できるようになります。',
                         icon: Icons.image,
                       ),
                       const _ContentsCard(
                         title: '広告表示なし',
-                        description: 'アプリ内の広告が全て非表示になります',
+                        description: 'アプリ内の広告が全て非表示になります。',
                         icon: Icons.block,
                       ),
                       const _ContentsCard(
                         title: 'BO3・引き分けを記録',
-                        description: 'これまでは記録が難しかった試合も記録できます',
+                        description: 'これまでは記録が難しかった試合も記録できます。',
                         icon: Icons.edit_note,
                       ),
                       const _ContentsCard(
                         title: 'エクスポート',
-                        description: 'CSV形式でエクスポートします。アイデア次第で自由に分析できます',
+                        description: 'CSV形式でエクスポートします。アイデア次第で自由に分析できます。',
                         icon: Icons.note,
                       ),
                       const Divider(height: 24),
@@ -104,7 +101,10 @@ class PremiumPlanPurchaseView extends HookConsumerWidget {
                             children: [
                               Text(
                                 '無料でおためし',
-                                style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                                style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context).colorScheme.onPrimary,
+                                    ),
                               ),
                               Text(selectPlan.value == Plan.yearly ? '無料期間終了後から$yearPlanPrice/年' : '無料期間終了後から$monthlyPriceString/月'),
                             ],
@@ -187,7 +187,7 @@ class _ContentsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: const EdgeInsets.only(bottom: 8),
       color: Theme.of(context).hoverColor,
       child: Padding(
         padding: const EdgeInsets.all(16),

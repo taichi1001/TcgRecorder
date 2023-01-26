@@ -108,7 +108,7 @@ class RecordListView extends HookConsumerWidget {
                     },
                     child: Text(
                       ConvertSortString.convert(context, sort),
-                      style: Theme.of(context).primaryTextTheme.bodyText2,
+                      style: Theme.of(context).textTheme.bodyText2,
                     ),
                   ),
                 ],

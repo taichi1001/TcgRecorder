@@ -230,10 +230,7 @@ class _UseRateDetailChart extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(
-          title,
-          style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-        ),
+        title: Text(title),
       ),
       body: Center(
         child: SfCartesianChart(
