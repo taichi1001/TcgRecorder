@@ -31,55 +31,47 @@ class PremiumPlanPurchaseView extends HookConsumerWidget {
               style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
           ),
-          body: SafeArea(
-            child: SingleChildScrollView(
+          body: SingleChildScrollView(
+            child: SafeArea(
               child: Center(
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      _ContentsCard(
-                        title: '特典1: 複数タグ記録機能',
+                      Center(
+                        child: Text(
+                          'より詳細に記録・分析して試合に勝ちましょう',
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      const _ContentsCard(
+                        title: '複数タグを記録',
                         description: '様々なタグを組み合わせて記録できます',
-                        image: Image.asset(
-                          'assets/images/multiple_tag.png',
-                          filterQuality: FilterQuality.high,
-                        ),
+                        icon: Icons.tag,
                       ),
-                      _ContentsCard(
-                        title: '特典2: 画像を記録',
+                      const _ContentsCard(
+                        title: '画像を記録',
                         description: '画像も一緒に記録できるようになります',
-                        image: Image.asset(
-                          'assets/images/multiple_tag.png',
-                          filterQuality: FilterQuality.high,
-                        ),
+                        icon: Icons.image,
                       ),
-                      _ContentsCard(
-                        title: '特典3: 広告表示なし',
+                      const _ContentsCard(
+                        title: '広告表示なし',
                         description: 'アプリ内の広告が全て非表示になります',
-                        image: Image.asset(
-                          'assets/images/multiple_tag.png',
-                          filterQuality: FilterQuality.high,
-                        ),
+                        icon: Icons.block,
                       ),
-                      _ContentsCard(
-                        title: '特典4: BO3・引き分けを記録',
+                      const _ContentsCard(
+                        title: 'BO3・引き分けを記録',
                         description: 'これまでは記録が難しかった試合も記録できます',
-                        image: Image.asset(
-                          'assets/images/multiple_tag.png',
-                          filterQuality: FilterQuality.high,
-                        ),
+                        icon: Icons.edit_note,
                       ),
-                      _ContentsCard(
-                        title: '特典5: CSV出力',
+                      const _ContentsCard(
+                        title: 'CSV出力',
                         description: 'アイデア次第で自由に分析できます',
-                        image: Image.asset(
-                          'assets/images/multiple_tag.png',
-                          filterQuality: FilterQuality.high,
-                        ),
+                        icon: Icons.note,
                       ),
-                      const Divider(height: 48),
+                      const Divider(height: 24),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -184,13 +176,13 @@ class _ContentsCard extends StatelessWidget {
   const _ContentsCard({
     required this.title,
     required this.description,
-    required this.image,
+    required this.icon,
     Key? key,
   }) : super(key: key);
 
   final String title;
   final String description;
-  final Widget image;
+  final IconData icon;
 
   @override
   Widget build(BuildContext context) {
@@ -199,18 +191,27 @@ class _ContentsCard extends StatelessWidget {
       color: Theme.of(context).hoverColor,
       child: Padding(
         padding: const EdgeInsets.all(16),
-        child: Column(
+        child: Row(
           children: [
-            Text(
-              title,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            image,
-            const SizedBox(height: 8),
-            Text(
-              description,
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.normal),
+            Icon(icon, size: 32),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    description,
+                    style: Theme.of(context).textTheme.caption?.copyWith(
+                          fontWeight: FontWeight.normal,
+                        ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -290,12 +291,12 @@ class _BillingPlanContainer extends StatelessWidget {
           children: [
             Text(
               planName,
-              style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Text(
               planPrice,
-              style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
           ],
         ),
