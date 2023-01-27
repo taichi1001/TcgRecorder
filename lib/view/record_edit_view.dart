@@ -104,7 +104,7 @@ class RecordEditView extends HookConsumerWidget {
             CupertinoButton(
               child: Text(
                 S.of(context).save,
-                style: Theme.of(context).textTheme.bodyText2,
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
               onPressed: () {
                 if (isBO3) {

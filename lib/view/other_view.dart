@@ -135,12 +135,12 @@ class OtherView extends HookConsumerWidget {
                 title: Text(
                   S.of(context).allDelete,
                   style: TextStyle(
-                    color: Theme.of(context).errorColor,
+                    color: Theme.of(context).colorScheme.error,
                   ),
                 ),
                 leading: Icon(
                   Icons.delete_forever,
-                  color: Theme.of(context).errorColor,
+                  color: Theme.of(context).colorScheme.error,
                 ),
                 onPressed: (context) async {
                   final okCancelResult = await showOkCancelAlertDialog(
@@ -310,11 +310,11 @@ class _InputViewSettingsView extends HookConsumerWidget {
                 children: [
                   Text(
                     '設定ON:  記録保存時に入力欄の設定ONの項目が保持されます。',
-                    style: Theme.of(context).textTheme.caption?.copyWith(fontSize: 10),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 10),
                   ),
                   Text(
                     '設定OFF: 記録保存時に入力欄の設定OFFの項目がリセットされます。',
-                    style: Theme.of(context).textTheme.caption?.copyWith(fontSize: 10),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 10),
                   ),
                 ],
               ),
@@ -360,10 +360,12 @@ class _GameListView extends HookConsumerWidget {
                       await ref.read(dbHelper).updateGameName(gameList[index], newName.first);
                     } catch (e) {
                       if (e.toString().contains('2067')) {
-                        await showOkAlertDialog(
-                          context: context,
-                          title: '既に登録されているゲームです',
-                        );
+                        if (context.mounted) {
+                          await showOkAlertDialog(
+                            context: context,
+                            title: '既に登録されているゲームです',
+                          );
+                        }
                         // if (result == OkCancelResult.ok) {
                         //   // ゲームを統合したことで、ゲームID違いで同じ名前だったデッキやタグが
                         //   // ゲームIDも同じになってしまうことで重複エラーが出るようになっているため修正必要
@@ -401,10 +403,12 @@ class _GameListView extends HookConsumerWidget {
                         //   ref.refresh(allRecordListProvider);
                         // }
                       } else {
-                        await showOkAlertDialog(
-                          context: context,
-                          title: '予期せぬエラー',
-                        );
+                        if (context.mounted) {
+                          await showOkAlertDialog(
+                            context: context,
+                            title: '予期せぬエラー',
+                          );
+                        }
                       }
                     }
                   }
@@ -518,7 +522,7 @@ class _DeckListView extends HookConsumerWidget {
                       try {
                         await ref.read(dbHelper).updateDeckName(deckList[index], newName.first);
                       } catch (e) {
-                        if (e.toString().contains('2067')) {
+                        if (e.toString().contains('2067') && context.mounted) {
                           final result = await showOkCancelAlertDialog(
                             context: context,
                             title: '既に登録されているデッキです',
@@ -614,7 +618,7 @@ class _TagListView extends HookConsumerWidget {
                       try {
                         await ref.read(dbHelper).updateTagName(tagList[index], newName.first);
                       } catch (e) {
-                        if (e.toString().contains('2067')) {
+                        if (e.toString().contains('2067') && context.mounted) {
                           final result = await showOkCancelAlertDialog(
                             context: context,
                             title: '既に登録されているタグです。',
@@ -699,7 +703,7 @@ class _ThemeChangeView extends HookConsumerWidget {
             },
             child: Text(
               S.of(context).cancel,
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
           ),
           actions: [
@@ -710,7 +714,7 @@ class _ThemeChangeView extends HookConsumerWidget {
               },
               child: Text(
                 S.of(context).submit,
-                style: Theme.of(context).textTheme.bodyText1,
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
             ),
           ],

@@ -236,7 +236,7 @@ class _ContentsCard extends StatelessWidget {
                   const SizedBox(height: 8),
                   Text(
                     description,
-                    style: Theme.of(context).textTheme.caption?.copyWith(
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           fontWeight: FontWeight.normal,
                         ),
                   ),

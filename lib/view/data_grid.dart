@@ -348,7 +348,7 @@ class GameWinRateDataSource extends DataGridSource {
         return Text(
           cell.value.toString(),
           maxLines: 2,
-          style: Theme.of(context).textTheme.overline?.copyWith(
+          style: Theme.of(context).textTheme.labelSmall?.copyWith(
                 overflow: TextOverflow.ellipsis,
                 leadingDistribution: TextLeadingDistribution.even,
                 height: 1,

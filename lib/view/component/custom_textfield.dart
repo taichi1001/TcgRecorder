@@ -45,7 +45,7 @@ class CustomTextField extends StatelessWidget {
               obscureText: false,
               decoration: InputDecoration(
                 labelText: labelText,
-                labelStyle: Theme.of(context).textTheme.caption,
+                labelStyle: Theme.of(context).textTheme.bodySmall,
               ),
               textAlign: TextAlign.start,
             ),

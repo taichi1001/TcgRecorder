@@ -108,7 +108,7 @@ class RecordListView extends HookConsumerWidget {
                     },
                     child: Text(
                       ConvertSortString.convert(context, sort),
-                      style: Theme.of(context).textTheme.bodyText2,
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   ),
                 ],
@@ -177,7 +177,7 @@ class _BrandListTile extends HookConsumerWidget {
             children: [
               Text(
                 S.of(context).listUseDeck,
-                style: Theme.of(context).textTheme.caption?.copyWith(
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       leadingDistribution: TextLeadingDistribution.even,
                       height: 1,
                       fontSize: 10,
@@ -188,7 +188,7 @@ class _BrandListTile extends HookConsumerWidget {
                   record.useDeck,
                   softWrap: false,
                   overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         leadingDistribution: TextLeadingDistribution.even,
                         height: 1,
                       ),
@@ -201,7 +201,7 @@ class _BrandListTile extends HookConsumerWidget {
             children: [
               Text(
                 S.of(context).listOpponentDeck,
-                style: Theme.of(context).textTheme.caption?.copyWith(
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       leadingDistribution: TextLeadingDistribution.even,
                       height: 1,
                       fontSize: 10,
@@ -212,7 +212,7 @@ class _BrandListTile extends HookConsumerWidget {
                   record.opponentDeck,
                   softWrap: false,
                   overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         leadingDistribution: TextLeadingDistribution.even,
                         height: 1,
                       ),
@@ -320,7 +320,7 @@ class _BrandListTile extends HookConsumerWidget {
                       children: [
                         Text(
                           S.of(context).recordListMemo,
-                          style: Theme.of(context).textTheme.caption?.copyWith(
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                 leadingDistribution: TextLeadingDistribution.even,
                                 height: 1,
                                 fontSize: 10,
@@ -331,7 +331,7 @@ class _BrandListTile extends HookConsumerWidget {
                             record.memo ?? '',
                             overflow: TextOverflow.ellipsis,
                             maxLines: 100,
-                            style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                   leadingDistribution: TextLeadingDistribution.even,
                                   height: 1,
                                 ),
@@ -495,7 +495,7 @@ class _TagIcons extends StatelessWidget {
         S.of(context).noTag,
         softWrap: false,
         overflow: TextOverflow.ellipsis,
-        style: Theme.of(context).textTheme.bodyText2?.copyWith(
+        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               leadingDistribution: TextLeadingDistribution.even,
               height: 1,
               fontSize: 11,
@@ -520,7 +520,7 @@ class _TagIcons extends StatelessWidget {
               tag,
               softWrap: false,
               overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).primaryTextTheme.bodyText2?.copyWith(
+              style: Theme.of(context).primaryTextTheme.bodyMedium?.copyWith(
                     leadingDistribution: TextLeadingDistribution.even,
                     height: 1,
                     fontSize: 11,
@@ -555,7 +555,7 @@ class _BO3MatchRow extends StatelessWidget {
         children: [
           Text(
             title,
-            style: Theme.of(context).textTheme.caption?.copyWith(fontSize: 10),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 10),
           ),
           if (winLoss == null)
             const SizedBox(

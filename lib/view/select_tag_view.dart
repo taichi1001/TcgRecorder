@@ -114,8 +114,8 @@ class SelectTagView extends HookConsumerWidget {
                             child: Text(
                               'クリア',
                               style: searchTextController.text == ''
-                                  ? Theme.of(context).textTheme.caption?.copyWith(color: Colors.grey)
-                                  : Theme.of(context).textTheme.caption,
+                                  ? Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.grey)
+                                  : Theme.of(context).textTheme.bodySmall,
                             ),
                           ),
                         ],
@@ -170,7 +170,7 @@ class SelectTagView extends HookConsumerWidget {
                                       padding: const EdgeInsets.all(16),
                                       child: Text(
                                         '検索結果',
-                                        style: Theme.of(context).textTheme.caption,
+                                        style: Theme.of(context).textTheme.bodySmall,
                                       ),
                                     ),
                                     _TagListView(
@@ -213,7 +213,7 @@ class SelectTagView extends HookConsumerWidget {
                                       padding: const EdgeInsets.all(16),
                                       child: Text(
                                         '検索結果',
-                                        style: Theme.of(context).textTheme.caption,
+                                        style: Theme.of(context).textTheme.bodySmall,
                                       ),
                                     ),
                                     _TagListView(
@@ -239,7 +239,7 @@ class SelectTagView extends HookConsumerWidget {
                                       padding: const EdgeInsets.all(16),
                                       child: Text(
                                         '最近記録したタグ',
-                                        style: Theme.of(context).textTheme.caption,
+                                        style: Theme.of(context).textTheme.bodySmall,
                                       ),
                                     ),
                                     _TagListView(
@@ -307,7 +307,7 @@ class _AllListViewTitle extends HookConsumerWidget {
         children: [
           Text(
             '一覧',
-            style: Theme.of(context).textTheme.caption,
+            style: Theme.of(context).textTheme.bodySmall,
           ),
           Row(
             children: [
@@ -327,7 +327,7 @@ class _AllListViewTitle extends HookConsumerWidget {
                   },
                   child: Text(
                     '設定',
-                    style: Theme.of(context).textTheme.bodyText2,
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ),
               ),
@@ -335,7 +335,7 @@ class _AllListViewTitle extends HookConsumerWidget {
                 onPressed: () => selectTagViewNotifier.changeSort(),
                 child: Text(
                   ConvertSortString.convert(context, sort),
-                  style: Theme.of(context).textTheme.bodyText2,
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ),
             ],

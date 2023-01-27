@@ -8,7 +8,7 @@ import Foundation
 import dynamic_color
 import in_app_review
 import macos_ui
-import path_provider_macos
+import path_provider_foundation
 import purchases_flutter
 import share_plus
 import shared_preferences_foundation

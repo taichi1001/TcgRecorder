@@ -10,12 +10,14 @@ Future premiumPlanDialog(BuildContext context) async {
     okLabel: '詳細を見る',
   );
   if (result == OkCancelResult.ok) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        fullscreenDialog: true,
-        builder: (context) => const PremiumPlanPurchaseView(),
-      ),
-    );
+    if (context.mounted) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          fullscreenDialog: true,
+          builder: (context) => const PremiumPlanPurchaseView(),
+        ),
+      );
+    }
   }
 }

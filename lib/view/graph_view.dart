@@ -162,13 +162,13 @@ class _UseRateChart extends StatelessWidget {
                 isVisible: true,
                 itemPadding: 8,
                 overflowMode: LegendItemOverflowMode.scroll,
-                textStyle: Theme.of(context).textTheme.caption?.copyWith(fontSize: 10),
+                textStyle: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 10),
               ),
               annotations: [
                 CircularChartAnnotation(
                   widget: Text(
                     title,
-                    style: Theme.of(context).textTheme.overline?.copyWith(
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                   ),
