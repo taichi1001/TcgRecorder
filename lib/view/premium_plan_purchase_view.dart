@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/provider/revenue_cat_provider.dart';
 import 'package:tcg_manager/view/component/web_view_screen.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 enum Plan {
   yearly,
@@ -47,32 +48,32 @@ class PremiumPlanPurchaseView extends HookConsumerWidget {
                       const _ContentsCard(
                         title: '複数タグを記録',
                         description: '様々なタグを組み合わせて記録できます。',
-                        icon: Icons.tag,
+                        icon: FontAwesomeIcons.tags,
                         iconColor: Colors.purple,
                       ),
                       const _ContentsCard(
+                        title: 'BO3・引き分けを記録',
+                        description: '様々な試合形式の記録に対応できます。',
+                        icon: Icons.edit_note,
+                        iconColor: Colors.orange,
+                      ),
+                      const _ContentsCard(
                         title: '画像を記録',
-                        description: '画像も一緒に記録できるようになります。',
+                        description: '画像も一緒に記録できるようになります。\nデッキレシピを載せたりしてはどうでしょうか。',
                         icon: Icons.image,
                         iconColor: Colors.green,
+                      ),
+                      const _ContentsCard(
+                        title: 'エクスポート',
+                        description: 'CSV形式でエクスポートします。\nアイデア次第で自由に分析できます。',
+                        icon: FontAwesomeIcons.fileCsv,
+                        iconColor: Colors.lightBlue,
                       ),
                       const _ContentsCard(
                         title: '広告表示なし',
                         description: 'アプリ内の広告が全て非表示になります。',
                         icon: Icons.block,
                         iconColor: Colors.red,
-                      ),
-                      const _ContentsCard(
-                        title: 'BO3・引き分けを記録',
-                        description: 'これまでは記録が難しかった試合も記録できます。',
-                        icon: Icons.edit_note,
-                        iconColor: Colors.orange,
-                      ),
-                      const _ContentsCard(
-                        title: 'エクスポート',
-                        description: 'CSV形式でエクスポートします。アイデア次第で自由に分析できます。',
-                        icon: Icons.note,
-                        iconColor: Colors.lightBlue,
                       ),
                       const Divider(height: 24),
                       Row(
@@ -135,7 +136,16 @@ class PremiumPlanPurchaseView extends HookConsumerWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const WebViewScreen(
+                                    url: 'https://phrygian-jellyfish-595.notion.site/067af33073004575b08a958497083e30',
+                                  ),
+                                ),
+                              );
+                            },
                             child: const Text('利用規約'),
                           ),
                           TextButton(

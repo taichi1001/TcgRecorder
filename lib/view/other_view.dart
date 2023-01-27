@@ -7,6 +7,7 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -174,7 +175,7 @@ class OtherView extends HookConsumerWidget {
               ),
               SettingsTile.navigation(
                 title: const Text('CSV出力'),
-                leading: const Icon(Icons.data_object),
+                leading: const Icon(FontAwesomeIcons.fileCsv),
                 onPressed: (context) async {
                   if (isPremium) {
                     final margedRecordList = await ref.read(allMargedRecordListProvider.future);
@@ -210,6 +211,20 @@ class OtherView extends HookConsumerWidget {
                     MaterialPageRoute(
                       builder: (context) => const WebViewScreen(
                         url: 'https://docs.google.com/forms/d/e/1FAIpQLSd5ilK8mF76ZnLIPirTFPo0A5fQucYTMf9uDkdD--SkRbczjA/viewform',
+                      ),
+                    ),
+                  );
+                },
+              ),
+              SettingsTile.navigation(
+                title: const Text('利用規約'),
+                leading: const Icon(Icons.assignment_turned_in),
+                onPressed: (context) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const WebViewScreen(
+                        url: 'https://phrygian-jellyfish-595.notion.site/067af33073004575b08a958497083e30',
                       ),
                     ),
                   );
