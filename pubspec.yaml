@@ -120,7 +120,12 @@ flutter:
   fonts:
     - family: NotoSansJP
       fonts:
+        - asset: assets/fonts/NotoSansJP-Black.otf
+        - asset: assets/fonts/NotoSansJP-Bold.otf
+        - asset: assets/fonts/NotoSansJP-Light.otf
+        - asset: assets/fonts/NotoSansJP-Medium.otf
         - asset: assets/fonts/NotoSansJP-Regular.otf
+        - asset: assets/fonts/NotoSansJP-Thin.otf
   
   assets:
     - assets/images/multiple_tag.png

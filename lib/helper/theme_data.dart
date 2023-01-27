@@ -29,6 +29,7 @@ final lightThemeDataProvider = Provider.family<ThemeData, BuildContext>(
       swapLegacyOnMaterial3: true,
       // To use the playground font, add GoogleFonts package and uncomment
       // fontFamily: GoogleFonts.notoSans().fontFamily,
+      // fontFamily: 'NotoSansJP',
     ).copyWith(
       appBarTheme: Theme.of(context).appBarTheme.copyWith(
             titleTextStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -103,7 +104,7 @@ final previewLightThemeDataProvider = Provider<ThemeData>(
       useMaterial3: true,
       swapLegacyOnMaterial3: true,
       // To use the playground font, add GoogleFonts package and uncomment
-      // fontFamily: GoogleFonts.notoSans().fontFamily,
+      // fontFamily: GoogleFonts().notoSans().fontFamily,
     );
   }),
 );
