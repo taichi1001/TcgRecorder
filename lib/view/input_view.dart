@@ -22,9 +22,11 @@ import 'package:tcg_manager/enum/first_second.dart';
 import 'package:tcg_manager/enum/win_loss.dart';
 import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/helper/db_helper.dart';
+import 'package:tcg_manager/helper/premium_plan_dialog.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/input_view_provider.dart';
 import 'package:tcg_manager/provider/input_view_settings_provider.dart';
+import 'package:tcg_manager/provider/revenue_cat_provider.dart';
 import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
 import 'package:tcg_manager/selector/game_tag_list_selector.dart';
@@ -120,7 +122,7 @@ class SelectableDateTime extends StatelessWidget {
   }
 }
 
-class InputTagList extends StatelessWidget {
+class InputTagList extends HookConsumerWidget {
   const InputTagList({
     this.addFunc,
     required this.controllers,
@@ -139,7 +141,8 @@ class InputTagList extends StatelessWidget {
   final void Function()? addFunc;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isPremium = ref.watch(revenueCatNotifierProvider.select((value) => value.isPremium));
     return Column(
       children: controllers
           .mapIndexed(
@@ -180,7 +183,13 @@ class InputTagList extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                  onPressed: addFunc,
+                  onPressed: () async {
+                    if (addFunc != null && isPremium) {
+                      addFunc!();
+                    } else if (!isPremium) {
+                      await premiumPlanDialog(context);
+                    }
+                  },
                   icon: const Icon(Icons.add_circle),
                 ),
               ],
@@ -773,6 +782,8 @@ class _SettingModalBottomSheet extends HookConsumerWidget {
     final draw = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.draw));
     final bo3 = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.bo3));
     final inputiViewSettingsController = ref.watch(inputViewSettingsNotifierProvider.notifier);
+    final isPremium = ref.watch(revenueCatNotifierProvider.select((value) => value.isPremium));
+
     return Material(
       child: SafeArea(
         top: false,
@@ -830,7 +841,13 @@ class _SettingModalBottomSheet extends HookConsumerWidget {
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 value: draw,
-                onChanged: inputiViewSettingsController.changeDraw,
+                onChanged: (value) async {
+                  if (isPremium) {
+                    inputiViewSettingsController.changeDraw(value);
+                  } else {
+                    await premiumPlanDialog(context);
+                  }
+                },
               ),
               SwitchListTile.adaptive(
                 contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
@@ -839,7 +856,13 @@ class _SettingModalBottomSheet extends HookConsumerWidget {
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 value: bo3,
-                onChanged: inputiViewSettingsController.changeBO3,
+                onChanged: (value) async {
+                  if (isPremium) {
+                    inputiViewSettingsController.changeBO3(value);
+                  } else {
+                    await premiumPlanDialog(context);
+                  }
+                },
               ),
             ],
           ),
@@ -849,7 +872,7 @@ class _SettingModalBottomSheet extends HookConsumerWidget {
   }
 }
 
-class _AddPhotoWidget extends StatelessWidget {
+class _AddPhotoWidget extends HookConsumerWidget {
   const _AddPhotoWidget({
     required this.selectImageFunc,
     required this.deleteImageFunc,
@@ -864,14 +887,22 @@ class _AddPhotoWidget extends StatelessWidget {
   final int? index;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isPremium = ref.watch(revenueCatNotifierProvider.select((value) => value.isPremium));
+
     return Padding(
       padding: const EdgeInsets.only(right: 8),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(15),
         child: file == null
             ? GestureDetector(
-                onTap: selectImageFunc,
+                onTap: () async {
+                  if (isPremium) {
+                    selectImageFunc();
+                  } else {
+                    await premiumPlanDialog(context);
+                  }
+                },
                 child: Stack(
                   alignment: AlignmentDirectional.bottomEnd,
                   children: [

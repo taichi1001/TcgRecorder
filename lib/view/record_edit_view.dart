@@ -12,8 +12,10 @@ import 'package:tcg_manager/entity/tag.dart';
 import 'package:tcg_manager/enum/first_second.dart';
 import 'package:tcg_manager/enum/win_loss.dart';
 import 'package:tcg_manager/generated/l10n.dart';
+import 'package:tcg_manager/helper/premium_plan_dialog.dart';
 import 'package:tcg_manager/provider/record_detail_provider.dart';
 import 'package:tcg_manager/provider/record_edit_view_settings_provider.dart';
+import 'package:tcg_manager/provider/revenue_cat_provider.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
 import 'package:tcg_manager/selector/game_tag_list_selector.dart';
 import 'package:tcg_manager/view/component/custom_textfield.dart';
@@ -599,6 +601,8 @@ class _SettingModalBottomSheet extends HookConsumerWidget {
     final draw = ref.watch(recordEditViewSettingsNotifierProvider(record).select((value) => value.draw));
     final bo3 = ref.watch(recordEditViewSettingsNotifierProvider(record).select((value) => value.bo3));
     final inputiViewSettingsController = ref.watch(recordEditViewSettingsNotifierProvider(record).notifier);
+    final isPremium = ref.watch(revenueCatNotifierProvider.select((value) => value.isPremium));
+
     return Material(
       child: SafeArea(
         top: false,
@@ -622,7 +626,13 @@ class _SettingModalBottomSheet extends HookConsumerWidget {
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 value: draw,
-                onChanged: inputiViewSettingsController.changeDraw,
+                onChanged: (value) async {
+                  if (isPremium) {
+                    inputiViewSettingsController.changeDraw(value);
+                  } else {
+                    await premiumPlanDialog(context);
+                  }
+                },
               ),
               SwitchListTile.adaptive(
                 contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
@@ -631,7 +641,13 @@ class _SettingModalBottomSheet extends HookConsumerWidget {
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 value: bo3,
-                onChanged: inputiViewSettingsController.changeBO3,
+                onChanged: (value) async {
+                  if (isPremium) {
+                    inputiViewSettingsController.changeBO3(value);
+                  } else {
+                    await premiumPlanDialog(context);
+                  }
+                },
               ),
             ],
           ),

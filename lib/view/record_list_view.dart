@@ -524,6 +524,7 @@ class _TagIcons extends StatelessWidget {
                     leadingDistribution: TextLeadingDistribution.even,
                     height: 1,
                     fontSize: 11,
+                    color: Theme.of(context).colorScheme.onSecondary,
                   ),
             ),
           ),

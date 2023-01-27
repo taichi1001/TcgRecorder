@@ -18,6 +18,7 @@ import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/helper/edit_record_helper.dart';
 import 'package:tcg_manager/helper/list_to_csv.dart';
+import 'package:tcg_manager/helper/premium_plan_dialog.dart';
 import 'package:tcg_manager/helper/theme_data.dart';
 import 'package:tcg_manager/main.dart';
 import 'package:tcg_manager/provider/bottom_navigation_bar_provider.dart';
@@ -25,6 +26,7 @@ import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/input_view_settings_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
+import 'package:tcg_manager/provider/revenue_cat_provider.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 import 'package:tcg_manager/provider/theme_provider.dart';
@@ -44,6 +46,8 @@ class OtherView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isPremium = ref.watch(revenueCatNotifierProvider.select((value) => value.isPremium));
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -63,7 +67,7 @@ class OtherView extends HookConsumerWidget {
         ),
         sections: [
           SettingsSection(
-            title: Text(S.of(context).settingSection),
+            // title: Text(S.of(context).settingSection),
             tiles: [
               SettingsTile.navigation(
                 title: Text(S.of(context).premiumPlan),
@@ -77,18 +81,6 @@ class OtherView extends HookConsumerWidget {
                     MaterialPageRoute(
                       fullscreenDialog: true,
                       builder: (context) => const PremiumPlanPurchaseView(),
-                    ),
-                  );
-                },
-              ),
-              SettingsTile.navigation(
-                title: Text(S.of(context).themeChange),
-                leading: const Icon(Icons.palette),
-                onPressed: (context) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const _ThemeChangeView(),
                     ),
                   );
                 },
@@ -169,23 +161,39 @@ class OtherView extends HookConsumerWidget {
             title: Text(S.of(context).otherSection),
             tiles: [
               SettingsTile.navigation(
-                title: const Text('CSV出力'),
-                leading: const Icon(Icons.data_object),
-                onPressed: (context) async {
-                  final margedRecordList = await ref.read(allMargedRecordListProvider.future);
-                  final csv = ListToCSV.margeRecordListToCSV(margedRecordList);
-                  final savePath = ref.read(imagePathProvider);
-                  final logPath = '$savePath/toremane_output.csv';
-                  final textfilePath = File(logPath);
-                  await textfilePath.writeAsString(csv);
-                  Share.shareXFiles([XFile(logPath)]);
+                title: Text(S.of(context).themeChange),
+                leading: const Icon(Icons.palette),
+                onPressed: (context) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const _ThemeChangeView(),
+                    ),
+                  );
                 },
               ),
               SettingsTile.navigation(
-                title: const Text('バックアップ'),
-                leading: const Icon(Icons.restore),
-                onPressed: (context) async {},
+                title: const Text('CSV出力'),
+                leading: const Icon(Icons.data_object),
+                onPressed: (context) async {
+                  if (isPremium) {
+                    final margedRecordList = await ref.read(allMargedRecordListProvider.future);
+                    final csv = ListToCSV.margeRecordListToCSV(margedRecordList);
+                    final savePath = ref.read(imagePathProvider);
+                    final logPath = '$savePath/toremane_output.csv';
+                    final textfilePath = File(logPath);
+                    await textfilePath.writeAsString(csv);
+                    Share.shareXFiles([XFile(logPath)]);
+                  } else {
+                    await premiumPlanDialog(context);
+                  }
+                },
               ),
+              // SettingsTile.navigation(
+              //   title: const Text('バックアップ'),
+              //   leading: const Icon(Icons.restore),
+              //   onPressed: (context) async {},
+              // ),
               SettingsTile.navigation(
                 title: Text(S.of(context).review),
                 leading: const Icon(Icons.reviews),
