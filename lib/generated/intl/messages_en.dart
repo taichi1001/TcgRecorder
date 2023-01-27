@@ -22,6 +22,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "afterFree": MessageLookupByLibrary.simpleMessage(
+            "From the end of the free period"),
         "allDelete": MessageLookupByLibrary.simpleMessage("Delete All Data"),
         "allDeleteDialog":
             MessageLookupByLibrary.simpleMessage("Delete All Data"),
@@ -45,6 +47,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "editButton": MessageLookupByLibrary.simpleMessage("Edit"),
         "editSection": MessageLookupByLibrary.simpleMessage("Edit"),
         "first": MessageLookupByLibrary.simpleMessage("First"),
+        "freePlanButton": MessageLookupByLibrary.simpleMessage("Free Trial"),
+        "freePlanDescription": MessageLookupByLibrary.simpleMessage(
+            "● The Free Trial is only available to first time Premium Plan subscribers. \nIf you do not cancel at least 24 hours before the end of the trial period, you will automatically be charged for the continued purchase."),
         "gameEdit": MessageLookupByLibrary.simpleMessage("Edit Game"),
         "initializeGame": MessageLookupByLibrary.simpleMessage(
             "Enter the name of the game you want to record."),
@@ -60,6 +65,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "memo": MessageLookupByLibrary.simpleMessage("Memo"),
         "memoTag": MessageLookupByLibrary.simpleMessage(
             "Keep notes to look back on. (Optional)"),
+        "month": MessageLookupByLibrary.simpleMessage("month"),
+        "monthPlan": MessageLookupByLibrary.simpleMessage("Monthly Plan"),
         "newGame": MessageLookupByLibrary.simpleMessage("New"),
         "newGameDialog": MessageLookupByLibrary.simpleMessage("Input New Game"),
         "newest": MessageLookupByLibrary.simpleMessage("Newest"),
@@ -78,7 +85,31 @@ class MessageLookup extends MessageLookupByLibrary {
         "order": MessageLookupByLibrary.simpleMessage("First/Second"),
         "otherSection": MessageLookupByLibrary.simpleMessage("Other"),
         "otherTitle": MessageLookupByLibrary.simpleMessage("Other"),
+        "planUpdateDescription": MessageLookupByLibrary.simpleMessage(
+            "● If you wish to terminate your subscription, please cancel at least 24 hours prior to the end of your subscription period."),
         "premiumPlan": MessageLookupByLibrary.simpleMessage("Premium Plan"),
+        "premiumPlanADBlockDescription": MessageLookupByLibrary.simpleMessage(
+            "All advertisements in the application will be hidden."),
+        "premiumPlanADBlockTitle":
+            MessageLookupByLibrary.simpleMessage("No ads displayed"),
+        "premiumPlanCatchCopy": MessageLookupByLibrary.simpleMessage(
+            "Win the game with more detailed recording and analysis!"),
+        "premiumPlanDrawDescription": MessageLookupByLibrary.simpleMessage(
+            "It can be used to record a variety of match formats."),
+        "premiumPlanDrawTitle":
+            MessageLookupByLibrary.simpleMessage("Recorded BO3 and draw"),
+        "premiumPlanExportDescription": MessageLookupByLibrary.simpleMessage(
+            "Export in CSV format. \nYou can analyze freely according to your ideas."),
+        "premiumPlanExportTitle":
+            MessageLookupByLibrary.simpleMessage("Export"),
+        "premiumPlanImageDescription": MessageLookupByLibrary.simpleMessage(
+            "Images can be recorded with them. \nHow about putting up a Јn deck recipe or something?"),
+        "premiumPlanImageTitle":
+            MessageLookupByLibrary.simpleMessage("Record Images\'"),
+        "premiumPlanTagDescription": MessageLookupByLibrary.simpleMessage(
+            "Various tag combinations can be recorded."),
+        "premiumPlanTagTitle":
+            MessageLookupByLibrary.simpleMessage("Record multiple tags"),
         "privacyPolicy": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
         "recordEditDialogMessage": MessageLookupByLibrary.simpleMessage(
             "The content I am editing is not saved, may I go back?"),
@@ -90,6 +121,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "recordListMemo": MessageLookupByLibrary.simpleMessage("Memo: "),
         "recordListNoTag": MessageLookupByLibrary.simpleMessage("No tag"),
         "recordListSecond": MessageLookupByLibrary.simpleMessage("2"),
+        "restoreButton":
+            MessageLookupByLibrary.simpleMessage("Restore Subscriptions"),
         "review": MessageLookupByLibrary.simpleMessage("App Review"),
         "save": MessageLookupByLibrary.simpleMessage("Save"),
         "second": MessageLookupByLibrary.simpleMessage("Second"),
@@ -109,11 +142,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "tableWinRate": MessageLookupByLibrary.simpleMessage("Win Rate"),
         "tag": MessageLookupByLibrary.simpleMessage("Tag (Optional)"),
         "tagEdit": MessageLookupByLibrary.simpleMessage("Edit Tag"),
+        "termsOfUse": MessageLookupByLibrary.simpleMessage("Terms of Use"),
         "themeChange": MessageLookupByLibrary.simpleMessage("Change theme"),
         "useDeck": MessageLookupByLibrary.simpleMessage("Use Deck"),
         "useDeckDistribution":
             MessageLookupByLibrary.simpleMessage("Use deck distribution"),
+        "value2Mont": MessageLookupByLibrary.simpleMessage("Save 2 months"),
         "win": MessageLookupByLibrary.simpleMessage("Win"),
-        "winOrLoss": MessageLookupByLibrary.simpleMessage("Win/Loss")
+        "winOrLoss": MessageLookupByLibrary.simpleMessage("Win/Loss"),
+        "year": MessageLookupByLibrary.simpleMessage("year"),
+        "yearPlan": MessageLookupByLibrary.simpleMessage("Annual Plan")
       };
 }

@@ -40,38 +40,38 @@ class PremiumPlanPurchaseView extends HookConsumerWidget {
                       const SizedBox(height: 16),
                       Center(
                         child: Text(
-                          'より詳細に記録・分析して試合に勝ちましょう',
+                          S.of(context).premiumPlanCatchCopy,
                           style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
                         ),
                       ),
                       const SizedBox(height: 32),
-                      const _ContentsCard(
-                        title: '複数タグを記録',
-                        description: '様々なタグを組み合わせて記録できます。',
+                      _ContentsCard(
+                        title: S.of(context).premiumPlanTagTitle,
+                        description: S.of(context).premiumPlanTagDescription,
                         icon: FontAwesomeIcons.tags,
                         iconColor: Colors.purple,
                       ),
-                      const _ContentsCard(
-                        title: 'BO3・引き分けを記録',
-                        description: '様々な試合形式の記録に対応できます。',
+                      _ContentsCard(
+                        title: S.of(context).premiumPlanDrawTitle,
+                        description: S.of(context).premiumPlanDrawDescription,
                         icon: Icons.edit_note,
                         iconColor: Colors.orange,
                       ),
-                      const _ContentsCard(
-                        title: '画像を記録',
-                        description: '画像も一緒に記録できるようになります。\nデッキレシピを載せたりしてはどうでしょうか。',
+                      _ContentsCard(
+                        title: S.of(context).premiumPlanImageTitle,
+                        description: S.of(context).premiumPlanImageDescription,
                         icon: Icons.image,
                         iconColor: Colors.green,
                       ),
-                      const _ContentsCard(
-                        title: 'エクスポート',
-                        description: 'CSV形式でエクスポートします。\nアイデア次第で自由に分析できます。',
+                      _ContentsCard(
+                        title: S.of(context).premiumPlanExportTitle,
+                        description: S.of(context).premiumPlanExportDescription,
                         icon: FontAwesomeIcons.fileCsv,
                         iconColor: Colors.lightBlue,
                       ),
-                      const _ContentsCard(
-                        title: '広告表示なし',
-                        description: 'アプリ内の広告が全て非表示になります。',
+                      _ContentsCard(
+                        title: S.of(context).premiumPlanADBlockTitle,
+                        description: S.of(context).premiumPlanADBlockDescription,
                         icon: Icons.block,
                         iconColor: Colors.red,
                       ),
@@ -82,7 +82,7 @@ class PremiumPlanPurchaseView extends HookConsumerWidget {
                           GestureDetector(
                             onTap: () => selectPlan.value = Plan.yearly,
                             child: _YearlyPlanContainer(
-                              yearPlanPrice: '$yearPlanPrice/年',
+                              yearPlanPrice: '$yearPlanPrice/${S.of(context).year}',
                               isSelect: selectPlan.value == Plan.yearly,
                             ),
                           ),
@@ -90,8 +90,8 @@ class PremiumPlanPurchaseView extends HookConsumerWidget {
                           GestureDetector(
                             onTap: () => selectPlan.value = Plan.monthly,
                             child: _BillingPlanContainer(
-                              planPrice: '$monthlyPriceString/月',
-                              planName: '月額プラン',
+                              planPrice: '$monthlyPriceString/${S.of(context).month}',
+                              planName: S.of(context).monthPlan,
                               isSelect: selectPlan.value == Plan.monthly,
                             ),
                           ),
@@ -109,14 +109,16 @@ class PremiumPlanPurchaseView extends HookConsumerWidget {
                             child: Column(
                               children: [
                                 Text(
-                                  '無料でおためし',
+                                  S.of(context).freePlanButton,
                                   style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(
                                         fontWeight: FontWeight.bold,
                                         color: Theme.of(context).colorScheme.onPrimary,
                                       ),
                                 ),
                                 Text(
-                                  selectPlan.value == Plan.yearly ? '無料期間終了後から$yearPlanPrice/年' : '無料期間終了後から$monthlyPriceString/月',
+                                  selectPlan.value == Plan.yearly
+                                      ? '${S.of(context).afterFree}$yearPlanPrice/${S.of(context).year}'
+                                      : '${S.of(context).afterFree}$monthlyPriceString/${S.of(context).month}',
                                   style: Theme.of(context).primaryTextTheme.labelSmall?.copyWith(
                                         color: Theme.of(context).colorScheme.onPrimary,
                                       ),
@@ -130,7 +132,7 @@ class PremiumPlanPurchaseView extends HookConsumerWidget {
                         onPressed: () {
                           revenuecatController.restorePremium();
                         },
-                        child: const Text('購読を復元する'),
+                        child: Text(S.of(context).restoreButton),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -146,7 +148,7 @@ class PremiumPlanPurchaseView extends HookConsumerWidget {
                                 ),
                               );
                             },
-                            child: const Text('利用規約'),
+                            child: Text(S.of(context).termsOfUse),
                           ),
                           TextButton(
                             onPressed: () {
@@ -159,17 +161,17 @@ class PremiumPlanPurchaseView extends HookConsumerWidget {
                                 ),
                               );
                             },
-                            child: const Text('プライバシーポリシー'),
+                            child: Text(S.of(context).privacyPolicy),
                           ),
                         ],
                       ),
                       Text(
-                        '●無料おためしについて\n無料お試しは初めてプレミアムプランに登録する方が対象です。\nお試し期間が終了する24時間前までにキャンセルしない場合、自動的に継続購入となり料金が請求されます。',
+                        S.of(context).freePlanDescription,
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        '●プランの更新について\n利用を終了する場合は、購読期間終了の24時間前までに解約してください。',
+                        S.of(context).planUpdateDescription,
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                     ],
@@ -266,7 +268,7 @@ class _YearlyPlanContainer extends StatelessWidget {
       children: [
         _BillingPlanContainer(
           planPrice: yearPlanPrice,
-          planName: '年額プラン',
+          planName: S.of(context).yearPlan,
           isSelect: isSelect,
         ),
         Container(
@@ -278,7 +280,7 @@ class _YearlyPlanContainer extends StatelessWidget {
           ),
           child: Center(
             child: Text(
-              '2ヶ月お得',
+              S.of(context).value2Mont,
               style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(
                     fontSize: 11,
                     fontWeight: FontWeight.bold,
