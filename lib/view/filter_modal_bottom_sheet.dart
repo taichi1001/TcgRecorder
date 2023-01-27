@@ -160,49 +160,60 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                   child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(8),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            recordListViewState.startDate == null && recordListViewState.endDate == null
-                                ? Row(
-                                    children: [
-                                      Text('日時:    ', style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold)),
-                                      const Text('全て'),
-                                    ],
-                                  )
-                                : Row(
-                                    children: [
-                                      Text('日時:    ', style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold)),
-                                      Text(outputDateFormat.format(recordListViewState.startDate!)),
-                                      const Text(' - '),
-                                      Text(outputDateFormat.format(recordListViewState.endDate!)),
-                                    ],
-                                  ),
-                            const Icon(Icons.arrow_drop_down),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            recordListViewState.startTime == null && recordListViewState.endTime == null
-                                ? Row(
-                                    children: [
-                                      Text('時間帯:    ', style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold)),
-                                      const Text('全て'),
-                                    ],
-                                  )
-                                : Row(
-                                    children: [
-                                      Text('時間帯:    ', style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold)),
-                                      Text(outputTimeFormat.format(recordListViewState.startTime!)),
-                                      const Text(' - '),
-                                      Text(outputTimeFormat.format(recordListViewState.endTime!)),
-                                    ],
-                                  ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    recordListViewState.startDate == null && recordListViewState.endDate == null
+                                        ? Row(
+                                            children: [
+                                              Text('日時:    ',
+                                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold)),
+                                              const Text('全て'),
+                                            ],
+                                          )
+                                        : Row(
+                                            children: [
+                                              Text('日時:    ',
+                                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold)),
+                                              Text(outputDateFormat.format(recordListViewState.startDate!)),
+                                              const Text(' - '),
+                                              Text(outputDateFormat.format(recordListViewState.endDate!)),
+                                            ],
+                                          ),
+                                  ],
+                                ),
+                                const SizedBox(height: 8),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    recordListViewState.startTime == null && recordListViewState.endTime == null
+                                        ? Row(
+                                            children: [
+                                              Text('時間帯:    ',
+                                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold)),
+                                              const Text('全て'),
+                                            ],
+                                          )
+                                        : Row(
+                                            children: [
+                                              Text('時間帯:    ',
+                                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold)),
+                                              Text(outputTimeFormat.format(recordListViewState.startTime!)),
+                                              const Text(' - '),
+                                              Text(outputTimeFormat.format(recordListViewState.endTime!)),
+                                            ],
+                                          ),
+                                  ],
+                                ),
+                              ],
+                            ),
                             const Icon(Icons.arrow_drop_down),
                           ],
                         ),

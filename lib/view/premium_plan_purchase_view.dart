@@ -48,11 +48,13 @@ class PremiumPlanPurchaseView extends HookConsumerWidget {
                         title: '複数タグを記録',
                         description: '様々なタグを組み合わせて記録できます。',
                         icon: Icons.tag,
+                        iconColor: Colors.purple,
                       ),
                       const _ContentsCard(
                         title: '画像を記録',
                         description: '画像も一緒に記録できるようになります。',
                         icon: Icons.image,
+                        iconColor: Colors.green,
                       ),
                       const _ContentsCard(
                         title: '広告表示なし',
@@ -64,6 +66,7 @@ class PremiumPlanPurchaseView extends HookConsumerWidget {
                         title: 'BO3・引き分けを記録',
                         description: 'これまでは記録が難しかった試合も記録できます。',
                         icon: Icons.edit_note,
+                        iconColor: Colors.orange,
                       ),
                       const _ContentsCard(
                         title: 'エクスポート',

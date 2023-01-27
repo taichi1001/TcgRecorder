@@ -111,7 +111,8 @@ class __RangeSliderState extends State<_RangeSlider> {
         data: SfRangeSelectorThemeData(
           activeLabelStyle: Theme.of(context).textTheme.bodySmall,
           inactiveLabelStyle: Theme.of(context).textTheme.bodySmall,
-          tooltipTextStyle: Theme.of(context).primaryTextTheme.bodyMedium,
+          tooltipTextStyle: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.onSecondary),
+          tooltipBackgroundColor: Theme.of(context).colorScheme.secondary,
           activeTrackHeight: 4,
           inactiveTrackHeight: 4,
         ),
