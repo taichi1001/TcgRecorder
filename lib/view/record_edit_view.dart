@@ -42,21 +42,25 @@ final recordEditViewInfoProvider = FutureProvider.autoDispose<RecordEditViewInfo
   );
 });
 
-final _tagFocusNodesProvider = Provider.family.autoDispose<List<FocusNode>, MargedRecord>((ref, margedRecord) {
-  final tagTextController = ref.watch(_tagTextController(margedRecord));
+final originalTagLength = StateProvider.autoDispose<int>((ref) => 1);
+final originalTag = StateProvider.autoDispose<List<String>>((ref) => []);
+
+final _tagFocusNodesProvider = Provider.autoDispose<List<FocusNode>>((ref) {
+  final tagTextControllerLength = ref.watch(originalTagLength);
   final List<FocusNode> tagFocusNodes = [];
-  for (var i = 0; i < tagTextController.length; i++) {
+  for (var i = 0; i < tagTextControllerLength; i++) {
     tagFocusNodes.add(FocusNode());
   }
   return tagFocusNodes;
 });
 
-final _tagTextController = StateProvider.family.autoDispose<List<TextEditingController>, MargedRecord>((ref, margedRecord) {
+final _tagTextController = StateProvider.autoDispose<List<TextEditingController>>((ref) {
   final List<TextEditingController> tagTextControllers = [];
-  if (margedRecord.tag.isEmpty) {
+  final tags = ref.watch(originalTag);
+  if (tags.isEmpty) {
     tagTextControllers.add(TextEditingController());
   } else {
-    for (final tag in margedRecord.tag) {
+    for (final tag in tags) {
       tagTextControllers.add(TextEditingController(text: tag));
     }
   }
@@ -137,6 +141,11 @@ class _EditView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    useEffect(() {
+      ref.read(originalTagLength.notifier).state = margedRecord.tag.isEmpty ? 1 : margedRecord.tag.length;
+      ref.read(originalTag.notifier).state = margedRecord.tag;
+      return;
+    }, const []);
     final recordEditViewInfo = ref.watch(recordEditViewInfoProvider);
 
     final editMargedRecord = ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.editMargedRecord));
@@ -154,8 +163,8 @@ class _EditView extends HookConsumerWidget {
     final useDeckTextController = useTextEditingController(text: editMargedRecord.useDeck);
     final opponentDeckTextController = useTextEditingController(text: editMargedRecord.opponentDeck);
 
-    final tagTextControllers = ref.watch(_tagTextController(editMargedRecord));
-    final tagFocusNodes = ref.watch(_tagFocusNodesProvider(editMargedRecord));
+    final tagTextControllers = ref.watch(_tagTextController);
+    final tagFocusNodes = ref.watch(_tagFocusNodesProvider);
     final memoTextController = useTextEditingController(text: editMargedRecord.memo);
     final dateTimeController = useState(CustomModalDateTimePickerController(initialDateTime: DateTime.now()));
 
@@ -559,10 +568,7 @@ class _EditView extends HookConsumerWidget {
                           isDropDown: false,
                           selectTagFunc: recordDetailNotifier.selectTag,
                           addFunc: () {
-                            ref.read(_tagTextController(editMargedRecord).notifier).state = [
-                              ...tagTextControllers,
-                              TextEditingController()
-                            ];
+                            ref.read(_tagTextController.notifier).state = [...tagTextControllers, TextEditingController()];
                           },
                         ),
                         const SizedBox(height: 8),
