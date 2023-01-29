@@ -81,7 +81,7 @@ class GraphView extends HookConsumerWidget {
                         ),
                 ),
                 recordList.isEmpty
-                    ? Text(S.of(context).noDataMessage)
+                    ? Center(child: Text(S.of(context).noDataMessage))
                     : Column(
                         children: [
                           Expanded(
@@ -201,15 +201,16 @@ class _UseRateChart extends StatelessWidget {
             ),
           ),
         ),
-        IconButton(
-          icon: const Icon(Icons.launch),
-          onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => _UseRateDetailChart(data: data, title: title),
-            ),
-          ),
-        ),
+        // 使用率詳細ページ開放するときにコメントアウト
+        // IconButton(
+        //   icon: const Icon(Icons.launch),
+        //   onPressed: () => Navigator.push(
+        //     context,
+        //     MaterialPageRoute(
+        //       builder: (context) => _UseRateDetailChart(data: data, title: title),
+        //     ),
+        //   ),
+        // ),
       ],
     );
   }
