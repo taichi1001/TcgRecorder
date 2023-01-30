@@ -20,10 +20,8 @@ mixin _$RecordDetailState {
   Record get record => throw _privateConstructorUsedError;
   MargedRecord get margedRecord => throw _privateConstructorUsedError;
   MargedRecord get editMargedRecord => throw _privateConstructorUsedError;
-  Deck? get cacheUseDeck => throw _privateConstructorUsedError;
-  Deck? get cacheOpponentDeck => throw _privateConstructorUsedError;
-  Tag? get cacheTag => throw _privateConstructorUsedError;
-  DateTime? get cacheDate => throw _privateConstructorUsedError;
+  List<XFile> get images => throw _privateConstructorUsedError;
+  List<XFile> get removeImages => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $RecordDetailStateCopyWith<RecordDetailState> get copyWith =>
@@ -41,17 +39,12 @@ abstract class $RecordDetailStateCopyWith<$Res> {
       Record record,
       MargedRecord margedRecord,
       MargedRecord editMargedRecord,
-      Deck? cacheUseDeck,
-      Deck? cacheOpponentDeck,
-      Tag? cacheTag,
-      DateTime? cacheDate});
+      List<XFile> images,
+      List<XFile> removeImages});
 
   $RecordCopyWith<$Res> get record;
   $MargedRecordCopyWith<$Res> get margedRecord;
   $MargedRecordCopyWith<$Res> get editMargedRecord;
-  $DeckCopyWith<$Res>? get cacheUseDeck;
-  $DeckCopyWith<$Res>? get cacheOpponentDeck;
-  $TagCopyWith<$Res>? get cacheTag;
 }
 
 /// @nodoc
@@ -71,10 +64,8 @@ class _$RecordDetailStateCopyWithImpl<$Res, $Val extends RecordDetailState>
     Object? record = null,
     Object? margedRecord = null,
     Object? editMargedRecord = null,
-    Object? cacheUseDeck = freezed,
-    Object? cacheOpponentDeck = freezed,
-    Object? cacheTag = freezed,
-    Object? cacheDate = freezed,
+    Object? images = null,
+    Object? removeImages = null,
   }) {
     return _then(_value.copyWith(
       isEdit: null == isEdit
@@ -93,22 +84,14 @@ class _$RecordDetailStateCopyWithImpl<$Res, $Val extends RecordDetailState>
           ? _value.editMargedRecord
           : editMargedRecord // ignore: cast_nullable_to_non_nullable
               as MargedRecord,
-      cacheUseDeck: freezed == cacheUseDeck
-          ? _value.cacheUseDeck
-          : cacheUseDeck // ignore: cast_nullable_to_non_nullable
-              as Deck?,
-      cacheOpponentDeck: freezed == cacheOpponentDeck
-          ? _value.cacheOpponentDeck
-          : cacheOpponentDeck // ignore: cast_nullable_to_non_nullable
-              as Deck?,
-      cacheTag: freezed == cacheTag
-          ? _value.cacheTag
-          : cacheTag // ignore: cast_nullable_to_non_nullable
-              as Tag?,
-      cacheDate: freezed == cacheDate
-          ? _value.cacheDate
-          : cacheDate // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+      images: null == images
+          ? _value.images
+          : images // ignore: cast_nullable_to_non_nullable
+              as List<XFile>,
+      removeImages: null == removeImages
+          ? _value.removeImages
+          : removeImages // ignore: cast_nullable_to_non_nullable
+              as List<XFile>,
     ) as $Val);
   }
 
@@ -135,42 +118,6 @@ class _$RecordDetailStateCopyWithImpl<$Res, $Val extends RecordDetailState>
       return _then(_value.copyWith(editMargedRecord: value) as $Val);
     });
   }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $DeckCopyWith<$Res>? get cacheUseDeck {
-    if (_value.cacheUseDeck == null) {
-      return null;
-    }
-
-    return $DeckCopyWith<$Res>(_value.cacheUseDeck!, (value) {
-      return _then(_value.copyWith(cacheUseDeck: value) as $Val);
-    });
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $DeckCopyWith<$Res>? get cacheOpponentDeck {
-    if (_value.cacheOpponentDeck == null) {
-      return null;
-    }
-
-    return $DeckCopyWith<$Res>(_value.cacheOpponentDeck!, (value) {
-      return _then(_value.copyWith(cacheOpponentDeck: value) as $Val);
-    });
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $TagCopyWith<$Res>? get cacheTag {
-    if (_value.cacheTag == null) {
-      return null;
-    }
-
-    return $TagCopyWith<$Res>(_value.cacheTag!, (value) {
-      return _then(_value.copyWith(cacheTag: value) as $Val);
-    });
-  }
 }
 
 /// @nodoc
@@ -186,10 +133,8 @@ abstract class _$$_RecordDetailStateCopyWith<$Res>
       Record record,
       MargedRecord margedRecord,
       MargedRecord editMargedRecord,
-      Deck? cacheUseDeck,
-      Deck? cacheOpponentDeck,
-      Tag? cacheTag,
-      DateTime? cacheDate});
+      List<XFile> images,
+      List<XFile> removeImages});
 
   @override
   $RecordCopyWith<$Res> get record;
@@ -197,12 +142,6 @@ abstract class _$$_RecordDetailStateCopyWith<$Res>
   $MargedRecordCopyWith<$Res> get margedRecord;
   @override
   $MargedRecordCopyWith<$Res> get editMargedRecord;
-  @override
-  $DeckCopyWith<$Res>? get cacheUseDeck;
-  @override
-  $DeckCopyWith<$Res>? get cacheOpponentDeck;
-  @override
-  $TagCopyWith<$Res>? get cacheTag;
 }
 
 /// @nodoc
@@ -220,10 +159,8 @@ class __$$_RecordDetailStateCopyWithImpl<$Res>
     Object? record = null,
     Object? margedRecord = null,
     Object? editMargedRecord = null,
-    Object? cacheUseDeck = freezed,
-    Object? cacheOpponentDeck = freezed,
-    Object? cacheTag = freezed,
-    Object? cacheDate = freezed,
+    Object? images = null,
+    Object? removeImages = null,
   }) {
     return _then(_$_RecordDetailState(
       isEdit: null == isEdit
@@ -242,22 +179,14 @@ class __$$_RecordDetailStateCopyWithImpl<$Res>
           ? _value.editMargedRecord
           : editMargedRecord // ignore: cast_nullable_to_non_nullable
               as MargedRecord,
-      cacheUseDeck: freezed == cacheUseDeck
-          ? _value.cacheUseDeck
-          : cacheUseDeck // ignore: cast_nullable_to_non_nullable
-              as Deck?,
-      cacheOpponentDeck: freezed == cacheOpponentDeck
-          ? _value.cacheOpponentDeck
-          : cacheOpponentDeck // ignore: cast_nullable_to_non_nullable
-              as Deck?,
-      cacheTag: freezed == cacheTag
-          ? _value.cacheTag
-          : cacheTag // ignore: cast_nullable_to_non_nullable
-              as Tag?,
-      cacheDate: freezed == cacheDate
-          ? _value.cacheDate
-          : cacheDate // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+      images: null == images
+          ? _value._images
+          : images // ignore: cast_nullable_to_non_nullable
+              as List<XFile>,
+      removeImages: null == removeImages
+          ? _value._removeImages
+          : removeImages // ignore: cast_nullable_to_non_nullable
+              as List<XFile>,
     ));
   }
 }
@@ -270,10 +199,10 @@ class _$_RecordDetailState implements _RecordDetailState {
       required this.record,
       required this.margedRecord,
       required this.editMargedRecord,
-      this.cacheUseDeck,
-      this.cacheOpponentDeck,
-      this.cacheTag,
-      this.cacheDate});
+      final List<XFile> images = const [],
+      final List<XFile> removeImages = const []})
+      : _images = images,
+        _removeImages = removeImages;
 
   @override
   @JsonKey()
@@ -284,18 +213,27 @@ class _$_RecordDetailState implements _RecordDetailState {
   final MargedRecord margedRecord;
   @override
   final MargedRecord editMargedRecord;
+  final List<XFile> _images;
   @override
-  final Deck? cacheUseDeck;
+  @JsonKey()
+  List<XFile> get images {
+    if (_images is EqualUnmodifiableListView) return _images;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_images);
+  }
+
+  final List<XFile> _removeImages;
   @override
-  final Deck? cacheOpponentDeck;
-  @override
-  final Tag? cacheTag;
-  @override
-  final DateTime? cacheDate;
+  @JsonKey()
+  List<XFile> get removeImages {
+    if (_removeImages is EqualUnmodifiableListView) return _removeImages;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_removeImages);
+  }
 
   @override
   String toString() {
-    return 'RecordDetailState(isEdit: $isEdit, record: $record, margedRecord: $margedRecord, editMargedRecord: $editMargedRecord, cacheUseDeck: $cacheUseDeck, cacheOpponentDeck: $cacheOpponentDeck, cacheTag: $cacheTag, cacheDate: $cacheDate)';
+    return 'RecordDetailState(isEdit: $isEdit, record: $record, margedRecord: $margedRecord, editMargedRecord: $editMargedRecord, images: $images, removeImages: $removeImages)';
   }
 
   @override
@@ -309,19 +247,20 @@ class _$_RecordDetailState implements _RecordDetailState {
                 other.margedRecord == margedRecord) &&
             (identical(other.editMargedRecord, editMargedRecord) ||
                 other.editMargedRecord == editMargedRecord) &&
-            (identical(other.cacheUseDeck, cacheUseDeck) ||
-                other.cacheUseDeck == cacheUseDeck) &&
-            (identical(other.cacheOpponentDeck, cacheOpponentDeck) ||
-                other.cacheOpponentDeck == cacheOpponentDeck) &&
-            (identical(other.cacheTag, cacheTag) ||
-                other.cacheTag == cacheTag) &&
-            (identical(other.cacheDate, cacheDate) ||
-                other.cacheDate == cacheDate));
+            const DeepCollectionEquality().equals(other._images, _images) &&
+            const DeepCollectionEquality()
+                .equals(other._removeImages, _removeImages));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isEdit, record, margedRecord,
-      editMargedRecord, cacheUseDeck, cacheOpponentDeck, cacheTag, cacheDate);
+  int get hashCode => Object.hash(
+      runtimeType,
+      isEdit,
+      record,
+      margedRecord,
+      editMargedRecord,
+      const DeepCollectionEquality().hash(_images),
+      const DeepCollectionEquality().hash(_removeImages));
 
   @JsonKey(ignore: true)
   @override
@@ -337,10 +276,8 @@ abstract class _RecordDetailState implements RecordDetailState {
       required final Record record,
       required final MargedRecord margedRecord,
       required final MargedRecord editMargedRecord,
-      final Deck? cacheUseDeck,
-      final Deck? cacheOpponentDeck,
-      final Tag? cacheTag,
-      final DateTime? cacheDate}) = _$_RecordDetailState;
+      final List<XFile> images,
+      final List<XFile> removeImages}) = _$_RecordDetailState;
 
   @override
   bool get isEdit;
@@ -351,13 +288,9 @@ abstract class _RecordDetailState implements RecordDetailState {
   @override
   MargedRecord get editMargedRecord;
   @override
-  Deck? get cacheUseDeck;
+  List<XFile> get images;
   @override
-  Deck? get cacheOpponentDeck;
-  @override
-  Tag? get cacheTag;
-  @override
-  DateTime? get cacheDate;
+  List<XFile> get removeImages;
   @override
   @JsonKey(ignore: true)
   _$$_RecordDetailStateCopyWith<_$_RecordDetailState> get copyWith =>

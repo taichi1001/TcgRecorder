@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:tcg_manager/entity/deck.dart';
@@ -149,6 +150,7 @@ class _EditView extends HookConsumerWidget {
     final recordEditViewInfo = ref.watch(recordEditViewInfoProvider);
 
     final editMargedRecord = ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.editMargedRecord));
+    final images = ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.images));
     final recordDetailNotifier = ref.watch(recordDetailNotifierProvider(margedRecord).notifier);
     final recordDetailState = ref.watch(recordDetailNotifierProvider(margedRecord));
     final firstSecond = recordDetailState.editMargedRecord.firstSecond;
@@ -581,6 +583,34 @@ class _EditView extends HookConsumerWidget {
                           focusNode: memoFocusnode,
                         ),
                       ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  child: Card(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                      child: Center(
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: addPhotoWidgets(
+                              images: images,
+                              selectImageFunc: () async {
+                                final picker = ImagePicker();
+                                final image = await picker.pickImage(source: ImageSource.gallery);
+                                if (image == null) return;
+                                recordDetailNotifier.inputImage(image);
+                              },
+                              deleteImageFunc: (value) {
+                                recordDetailNotifier.removeImage(value);
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),

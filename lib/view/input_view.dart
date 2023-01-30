@@ -658,7 +658,7 @@ class InputView extends HookConsumerWidget {
                                   scrollDirection: Axis.horizontal,
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    children: _addPhotoWidgets(
+                                    children: addPhotoWidgets(
                                       images: images,
                                       selectImageFunc: () async {
                                         final picker = ImagePicker();
@@ -749,7 +749,7 @@ class InputView extends HookConsumerWidget {
   }
 }
 
-List<Widget> _addPhotoWidgets({
+List<Widget> addPhotoWidgets({
   required List<XFile> images,
   required Function() selectImageFunc,
   required Function(int) deleteImageFunc,

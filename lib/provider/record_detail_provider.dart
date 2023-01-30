@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/marged_record.dart';
 import 'package:tcg_manager/entity/record.dart';
@@ -8,6 +11,7 @@ import 'package:tcg_manager/enum/first_second.dart';
 import 'package:tcg_manager/enum/win_loss.dart';
 import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/helper/edit_record_helper.dart';
+import 'package:tcg_manager/main.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
@@ -19,18 +23,19 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
     required this.ref,
     required this.record,
     required this.margedRecord,
+    required this.imagePath,
   }) : super(
           RecordDetailState(
-            record: record,
-            margedRecord: margedRecord,
-            cacheDate: record.date,
-            editMargedRecord: margedRecord,
-          ),
+              record: record,
+              margedRecord: margedRecord,
+              editMargedRecord: margedRecord,
+              images: margedRecord.imagePaths == null ? [] : margedRecord.imagePaths!.map((e) => XFile('$imagePath/$e')).toList()),
         );
 
   final Ref ref;
   final Record record;
   final MargedRecord margedRecord;
+  final String imagePath;
 
   void changeIsEdit() {
     state = state.copyWith(isEdit: !state.isEdit);
@@ -132,6 +137,21 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
     state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(memo: memo));
   }
 
+  void inputImage(XFile image) {
+    final newImages = [...state.images, image];
+    state = state.copyWith(images: newImages);
+  }
+
+  void removeImage(int index) {
+    final newImages = [...state.images];
+    final removeImage = newImages.removeAt(index);
+    final newRemoveImages = [...state.removeImages, removeImage];
+    state = state.copyWith(
+      images: newImages,
+      removeImages: newRemoveImages,
+    );
+  }
+
   Future saveEdit() async {
     // 編集したrecord(EditMargedRecord)を表示用のrecord(MargedRecord)に設定
     state = state.copyWith(margedRecord: state.editMargedRecord);
@@ -141,6 +161,7 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
     await _saveEditUseDeck();
     await _saveEditOpponentDeck();
     await _saveEditTag();
+    await _saveImage();
     state = state.copyWith(
       record: state.record.copyWith(
         bo: BO.bo1,
@@ -164,6 +185,7 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
     await _saveEditTag();
     _calcFirstSecondBO3();
     _calcWinLossBO3();
+    await _saveImage();
     state = state.copyWith(
       record: state.record.copyWith(
         bo: BO.bo3,
@@ -312,6 +334,23 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
     }
     state = state.copyWith(record: state.record.copyWith(tagId: newTags));
   }
+
+  Future _saveImage() async {
+    final savePath = ref.read(imagePathProvider);
+
+    //　アプリ内で削除した画像を実際に削除する場所
+    final removeImagePaths = state.removeImages.map((image) => '$savePath/${image.name}').toList();
+    for (final path in removeImagePaths) {
+      final dir = Directory(path);
+      dir.deleteSync(recursive: true);
+    }
+
+    for (final image in state.images) {
+      await image.saveTo('$savePath/${image.name}');
+    }
+    final imagePaths = state.images.map((image) => image.name).toList();
+    state = state.copyWith(record: state.record.copyWith(imagePath: imagePaths));
+  }
 }
 
 final recordListProvider = Provider<List<Record>>((ref) {
@@ -328,5 +367,6 @@ final recordDetailNotifierProvider =
     StateNotifierProvider.family.autoDispose<RecordDetailNotifier, RecordDetailState, MargedRecord>((ref, margedRecord) {
   final recordList = ref.watch(recordListProvider);
   final record = recordList.firstWhere((record) => record.recordId == margedRecord.recordId);
-  return RecordDetailNotifier(ref: ref, record: record, margedRecord: margedRecord);
+  final imagePath = ref.read(imagePathProvider);
+  return RecordDetailNotifier(ref: ref, record: record, margedRecord: margedRecord, imagePath: imagePath);
 });
