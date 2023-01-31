@@ -97,8 +97,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("エクスポート"),
         "premiumPlanImageDescription": MessageLookupByLibrary.simpleMessage(
             "画像も一緒に記録できるようになります。\nデッキレシピを載せたりしてはどうでしょうか。"),
-        "premiumPlanImageTitle":
-            MessageLookupByLibrary.simpleMessage("画像を記録\'"),
+        "premiumPlanImageTitle": MessageLookupByLibrary.simpleMessage("画像を記録"),
         "premiumPlanTagDescription":
             MessageLookupByLibrary.simpleMessage("様々なタグを組み合わせて記録できます。"),
         "premiumPlanTagTitle": MessageLookupByLibrary.simpleMessage("複数タグを記録"),

@@ -89,47 +89,56 @@ class OtherView extends HookConsumerWidget {
             ],
           ),
           SettingsSection(
-            title: Text(S.of(context).editSection),
+            title: Text(S.of(context).editSection + 'は調整中により使用不可能です。アップデートをお待ち下さい'),
             tiles: [
               SettingsTile.navigation(
-                title: Text(S.of(context).gameEdit),
+                title: Text(
+                  S.of(context).gameEdit,
+                  style: TextStyle(color: Theme.of(context).disabledColor),
+                ),
                 leading: const Icon(Icons.edit),
-                onPressed: (context) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const _GameListView(),
-                    ),
-                  );
-                },
+                // onPressed: (context) {
+                //   Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //       builder: (context) => const _GameListView(),
+                //     ),
+                //   );
+                // },
               ),
               SettingsTile.navigation(
-                title: Text(S.of(context).deckEdit),
+                title: Text(
+                  S.of(context).deckEdit,
+                  style: TextStyle(color: Theme.of(context).disabledColor),
+                ),
                 leading: const Icon(Icons.edit),
-                onPressed: (context) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const _GameSelectView(
-                        nextPage: _DeckListView(),
-                      ),
-                    ),
-                  );
-                },
+                // onPressed: (context) {
+                //   Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //       builder: (context) => const _GameSelectView(
+                //         nextPage: _DeckListView(),
+                //       ),
+                //     ),
+                //   );
+                // },
               ),
               SettingsTile.navigation(
-                title: Text(S.of(context).tagEdit),
+                title: Text(
+                  S.of(context).tagEdit,
+                  style: TextStyle(color: Theme.of(context).disabledColor),
+                ),
                 leading: const Icon(Icons.edit),
-                onPressed: (context) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const _GameSelectView(
-                        nextPage: _TagListView(),
-                      ),
-                    ),
-                  );
-                },
+                // onPressed: (context) {
+                //   Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //       builder: (context) => const _GameSelectView(
+                //         nextPage: _TagListView(),
+                //       ),
+                //     ),
+                //   );
+                // },
               ),
               SettingsTile.navigation(
                 title: Text(
