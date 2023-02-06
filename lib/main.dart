@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -16,10 +16,12 @@ import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/game.dart';
 import 'package:tcg_manager/entity/record.dart';
 import 'package:tcg_manager/entity/tag.dart';
+import 'package:tcg_manager/firebase_options.dart';
 import 'package:tcg_manager/helper/att.dart';
 import 'package:tcg_manager/helper/theme_data.dart';
 import 'package:tcg_manager/provider/adaptive_banner_ad_provider.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
+import 'package:tcg_manager/provider/firebase_auth_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/revenue_cat_provider.dart';
@@ -44,6 +46,14 @@ void main() async {
   late final String imagePath;
 
   await Future.wait([
+    // Firebase初期化
+    Future(
+      () async {
+        await Firebase.initializeApp(
+          options: DefaultFirebaseOptions.currentPlatform,
+        );
+      },
+    ),
     // 課金関連初期化
     Future(() async {
       try {
@@ -114,6 +124,8 @@ final mainInfoProvider = FutureProvider.autoDispose<MainInfo>((ref) async {
   final allDeckList = await ref.watch(allDeckListProvider.future);
   final allTagList = await ref.watch(allTagListProvider.future);
   final allRecordList = await ref.watch(allRecordListProvider.future);
+  await ref.read(firebaseAuthNotifierProvider.notifier).signInAnonymously();
+
   ref.keepAlive();
   return MainInfo(
     allGameList: allGameList,

@@ -30,8 +30,10 @@ dependencies:
 
   sqflite: ^2.0.2+1
   path_provider: ^2.0.10
-
   path: ^1.8.0
+
+  firebase_core: ^2.4.1
+  firebase_auth: ^4.2.5
 
   shared_preferences: ^2.0.15
 
