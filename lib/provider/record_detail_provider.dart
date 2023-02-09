@@ -137,8 +137,8 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
     state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(memo: memo));
   }
 
-  void inputImage(XFile image) {
-    final newImages = [...state.images, image];
+  void inputImage(List<XFile> images) {
+    final newImages = [...state.images, ...images];
     state = state.copyWith(images: newImages);
   }
 

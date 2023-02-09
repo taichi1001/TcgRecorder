@@ -600,9 +600,9 @@ class _EditView extends HookConsumerWidget {
                               images: images,
                               selectImageFunc: () async {
                                 final picker = ImagePicker();
-                                final image = await picker.pickImage(source: ImageSource.gallery);
-                                if (image == null) return;
-                                recordDetailNotifier.inputImage(image);
+                                final images = await picker.pickMultiImage();
+                                if (images.isEmpty) return;
+                                recordDetailNotifier.inputImage(images);
                               },
                               deleteImageFunc: (value) {
                                 recordDetailNotifier.removeImage(value);

@@ -662,9 +662,9 @@ class InputView extends HookConsumerWidget {
                                       images: images,
                                       selectImageFunc: () async {
                                         final picker = ImagePicker();
-                                        final image = await picker.pickImage(source: ImageSource.gallery);
-                                        if (image == null) return;
-                                        inputViewNotifier.inputImage(image);
+                                        final images = await picker.pickMultiImage();
+                                        if (images.isEmpty) return;
+                                        inputViewNotifier.inputImage(images);
                                       },
                                       deleteImageFunc: (value) {
                                         inputViewNotifier.removeImage(value);

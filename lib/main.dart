@@ -21,6 +21,7 @@ import 'package:tcg_manager/helper/theme_data.dart';
 import 'package:tcg_manager/provider/adaptive_banner_ad_provider.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
+import 'package:tcg_manager/provider/input_view_settings_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/revenue_cat_provider.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
@@ -128,10 +129,15 @@ class MainApp extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isPremium = ref.watch(revenueCatProvider.select((value) => value.isPremium));
     useEffect(() {
       Future.microtask(() {
         ref.read(adaptiveBannerAdNotifierProvider.notifier).getAd(context);
       });
+      if (!isPremium) {
+        ref.read(inputViewSettingsNotifierProvider.notifier).changeBO3(false);
+        ref.read(inputViewSettingsNotifierProvider.notifier).changeDraw(false);
+      }
       return;
     }, const []);
     final mainInfo = ref.watch(mainInfoProvider);

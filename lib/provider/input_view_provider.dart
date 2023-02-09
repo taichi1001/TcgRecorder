@@ -126,8 +126,8 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     state = state.copyWith(memo: memo);
   }
 
-  void inputImage(XFile image) {
-    final newImages = [...state.images, image];
+  void inputImage(List<XFile> image) {
+    final newImages = [...state.images, ...image];
     state = state.copyWith(images: newImages);
   }
 

@@ -378,7 +378,7 @@ class _TagListView extends StatelessWidget {
       shrinkWrap: true,
       itemBuilder: ((context, index) {
         if (enableVisibility && !tagList[index].isVisibleToPicker) return Container();
-        final isSelected = selectedTagList.contains(tagList[index]);
+        final isSelected = selectedTagList.contains(tagList[index]) && !returnSelecting;
         return GestureDetector(
           onTap: () {
             if (isSelected) {
