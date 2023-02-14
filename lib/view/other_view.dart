@@ -32,6 +32,7 @@ import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 import 'package:tcg_manager/provider/theme_provider.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
+import 'package:tcg_manager/repository/record_firestore_repository.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
 import 'package:tcg_manager/repository/tag_repository.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
@@ -89,7 +90,7 @@ class OtherView extends HookConsumerWidget {
             ],
           ),
           SettingsSection(
-            title: Text(S.of(context).editSection + 'は調整中により使用不可能です。アップデートをお待ち下さい'),
+            title: Text(S.of(context).editSection),
             tiles: [
               SettingsTile.navigation(
                 title: Text(
@@ -97,14 +98,14 @@ class OtherView extends HookConsumerWidget {
                   style: TextStyle(color: Theme.of(context).disabledColor),
                 ),
                 leading: const Icon(Icons.edit),
-                // onPressed: (context) {
-                //   Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //       builder: (context) => const _GameListView(),
-                //     ),
-                //   );
-                // },
+                onPressed: (context) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const _GameListView(),
+                    ),
+                  );
+                },
               ),
               SettingsTile.navigation(
                 title: Text(
@@ -112,16 +113,16 @@ class OtherView extends HookConsumerWidget {
                   style: TextStyle(color: Theme.of(context).disabledColor),
                 ),
                 leading: const Icon(Icons.edit),
-                // onPressed: (context) {
-                //   Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //       builder: (context) => const _GameSelectView(
-                //         nextPage: _DeckListView(),
-                //       ),
-                //     ),
-                //   );
-                // },
+                onPressed: (context) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const _GameSelectView(
+                        nextPage: _DeckListView(),
+                      ),
+                    ),
+                  );
+                },
               ),
               SettingsTile.navigation(
                 title: Text(
@@ -129,16 +130,16 @@ class OtherView extends HookConsumerWidget {
                   style: TextStyle(color: Theme.of(context).disabledColor),
                 ),
                 leading: const Icon(Icons.edit),
-                // onPressed: (context) {
-                //   Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //       builder: (context) => const _GameSelectView(
-                //         nextPage: _TagListView(),
-                //       ),
-                //     ),
-                //   );
-                // },
+                onPressed: (context) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const _GameSelectView(
+                        nextPage: _TagListView(),
+                      ),
+                    ),
+                  );
+                },
               ),
               SettingsTile.navigation(
                 title: Text(
@@ -199,11 +200,20 @@ class OtherView extends HookConsumerWidget {
                   }
                 },
               ),
-              // SettingsTile.navigation(
-              //   title: const Text('バックアップ'),
-              //   leading: const Icon(Icons.restore),
-              //   onPressed: (context) async {},
-              // ),
+              SettingsTile.navigation(
+                title: const Text('バックアップ'),
+                leading: const Icon(Icons.backup_outlined),
+                onPressed: (context) async {
+                  await ref.read(firestoreRepository).setAll();
+                },
+              ),
+              SettingsTile.navigation(
+                title: const Text('リストア'),
+                leading: const Icon(Icons.restore),
+                onPressed: (context) async {
+                  await ref.read(firestoreRepository).restoreAll();
+                },
+              ),
               SettingsTile.navigation(
                 title: Text(S.of(context).review),
                 leading: const Icon(Icons.reviews),

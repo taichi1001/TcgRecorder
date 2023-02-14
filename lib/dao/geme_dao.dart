@@ -30,6 +30,16 @@ class GameDao {
     return result;
   }
 
+  Future<List<Object?>> insertGameList(List<Game> gameList) async {
+    final db = await dbProvider.database;
+    final batch = db.batch();
+    for (final game in gameList) {
+      batch.insert(tableName, game.toJson());
+    }
+    final result = await batch.commit();
+    return result;
+  }
+
   //not use this sample
   Future deleteAll() async {
     final db = await dbProvider.database;

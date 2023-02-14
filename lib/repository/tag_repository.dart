@@ -13,6 +13,8 @@ abstract class TagRepository {
 
   Future<int> update(Tag tag);
 
+  Future insertList(List<Tag> games);
+
   Future<List<Object?>> updateTagList(List<Tag> tagList);
 
   Future<int> deleteById(int id);
@@ -37,6 +39,9 @@ class TagRepositoryImpl implements TagRepository {
 
   @override
   Future<int> update(Tag tag) => tagDao.update(tag);
+
+  @override
+  Future insertList(List<Tag> tags) => tagDao.insertTagList(tags);
 
   @override
   Future<List<Object?>> updateTagList(List<Tag> tagList) => tagDao.updateTagList(tagList);

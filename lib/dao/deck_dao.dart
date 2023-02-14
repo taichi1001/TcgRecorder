@@ -35,6 +35,16 @@ class DeckDao {
     }
   }
 
+  Future<List<Object?>> insertDeckList(List<Deck> deckList) async {
+    final db = await dbProvider.database;
+    final batch = db.batch();
+    for (final deck in deckList) {
+      batch.insert(tableName, deck.toJson());
+    }
+    final result = await batch.commit();
+    return result;
+  }
+
   Future<List<Object?>> updateDeckList(List<Deck> deckList) async {
     final db = await dbProvider.database;
     final batch = db.batch();

@@ -44,6 +44,16 @@ class RecordDao {
     return result;
   }
 
+  Future<List<Object?>> insertRecordList(List<Record> recordList) async {
+    final db = await dbProvider.database;
+    final batch = db.batch();
+    for (final record in recordList) {
+      batch.insert(tableName, record.toJson());
+    }
+    final result = await batch.commit();
+    return result;
+  }
+
   Future<List<Object?>> updateRecordList(List<Record> recordList) async {
     final db = await dbProvider.database;
     final batch = db.batch();

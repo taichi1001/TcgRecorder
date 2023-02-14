@@ -13,6 +13,8 @@ abstract class GameRepository {
 
   Future<int> deleteById(int id);
 
+  Future insertList(List<Game> games);
+
   Future deleteAll();
 }
 
@@ -33,6 +35,9 @@ class GameRepositoryImpl implements GameRepository {
 
   @override
   Future<int> deleteById(int id) => gameDao.delete(id);
+
+  @override
+  Future insertList(List<Game> games) => gameDao.insertGameList(games);
 
   @override
   Future deleteAll() => gameDao.deleteAll();

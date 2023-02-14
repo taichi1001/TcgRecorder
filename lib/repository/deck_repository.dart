@@ -13,6 +13,8 @@ abstract class DeckRepository {
 
   Future<int> update(Deck deck);
 
+  Future insertList(List<Deck> decks);
+
   Future<List<Object?>> updateDeckList(List<Deck> deckList);
 
   Future<int> deleteById(int id);
@@ -37,6 +39,9 @@ class DeckRepositoryImpl implements DeckRepository {
 
   @override
   Future<int> update(Deck deck) => deckDao.update(deck);
+
+  @override
+  Future insertList(List<Deck> decks) => deckDao.insertDeckList(decks);
 
   @override
   Future<List<Object?>> updateDeckList(List<Deck> deckList) => deckDao.updateDeckList(deckList);

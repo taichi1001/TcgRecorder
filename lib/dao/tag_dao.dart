@@ -31,6 +31,16 @@ class TagDao {
     return result;
   }
 
+  Future<List<Object?>> insertTagList(List<Tag> tagList) async {
+    final db = await dbProvider.database;
+    final batch = db.batch();
+    for (final tag in tagList) {
+      batch.insert(tableName, tag.toJson());
+    }
+    final result = await batch.commit();
+    return result;
+  }
+
   Future<List<Object?>> updateTagList(List<Tag> tagList) async {
     final db = await dbProvider.database;
     final batch = db.batch();

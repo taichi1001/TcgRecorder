@@ -17,6 +17,8 @@ abstract class RecordRepository {
 
   Future<int> update(Record record);
 
+  Future insertList(List<Record> records);
+
   Future<List<Object?>> updateRecordList(List<Record> recordList);
 
   Future<int> deleteById(int id);
@@ -47,6 +49,9 @@ class RecordRepositoryImpl implements RecordRepository {
 
   @override
   Future<int> update(Record record) => recordDao.update(record);
+
+  @override
+  Future insertList(List<Record> records) => recordDao.insertRecordList(records);
 
   @override
   Future<List<Object?>> updateRecordList(List<Record> recordList) => recordDao.updateRecordList(recordList);
