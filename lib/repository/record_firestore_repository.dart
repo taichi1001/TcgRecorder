@@ -28,7 +28,7 @@ class FirestoreRepository {
     final deck = await ref.read(allDeckListProvider.future);
     final tag = await ref.read(allTagListProvider.future);
     final game = await ref.read(allGameListProvider.future);
-    final user = ref.read(firebaseAuthNotifierProvider).userCredential?.user?.uid;
+    final user = ref.read(firebaseAuthNotifierProvider).user?.uid;
 
     if (user != null) {
       await firestoreDao.setAll(
@@ -44,7 +44,7 @@ class FirestoreRepository {
   }
 
   Future restoreAll() async {
-    final user = ref.read(firebaseAuthNotifierProvider).userCredential?.user?.uid;
+    final user = ref.read(firebaseAuthNotifierProvider).user?.uid;
     if (user == null) return;
     final allData = await firestoreDao.getAll(user);
     if (allData == null) return;

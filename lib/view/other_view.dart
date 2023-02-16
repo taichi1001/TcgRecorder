@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -24,6 +25,7 @@ import 'package:tcg_manager/helper/theme_data.dart';
 import 'package:tcg_manager/main.dart';
 import 'package:tcg_manager/provider/bottom_navigation_bar_provider.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
+import 'package:tcg_manager/provider/firebase_auth_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/input_view_settings_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
@@ -205,6 +207,65 @@ class OtherView extends HookConsumerWidget {
                 leading: const Icon(Icons.backup_outlined),
                 onPressed: (context) async {
                   await ref.read(firestoreRepository).setAll();
+                },
+              ),
+              SettingsTile.navigation(
+                title: const Text('リストア'),
+                leading: const Icon(Icons.restore),
+                onPressed: (context) async {
+                  await ref.read(firestoreRepository).restoreAll();
+                },
+              ),
+              SettingsTile.navigation(
+                title: const Text('電話番号認証'),
+                leading: const Icon(Icons.phone),
+                onPressed: (context) async {
+                  await FirebaseAuth.instance.verifyPhoneNumber(
+                    phoneNumber: '+8109076265788',
+                    verificationCompleted: (PhoneAuthCredential credential) {},
+                    verificationFailed: (FirebaseAuthException e) {
+                      print(e);
+                      if (e.code == 'invalid-phone-number') {
+                        print('電話番号が正しくありません。');
+                      }
+                    },
+                    codeSent: (String verificationId, int? resendToken) async {
+                      var smsCode = '';
+                      await showDialog(
+                        context: context,
+                        builder: (_) {
+                          return AlertDialog(
+                            title: const Text("認証コード"),
+                            content: const Text("SMS宛に届いた認証コードを入力してください"),
+                            actions: <Widget>[
+                              TextFormField(
+                                onChanged: (value) {
+                                  smsCode = value;
+                                },
+                              ),
+                              ElevatedButton(
+                                child: const Text("認証"),
+                                onPressed: () => Navigator.pop(context),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                      final credential = PhoneAuthProvider.credential(
+                        verificationId: verificationId,
+                        smsCode: smsCode,
+                      );
+                      await ref.read(firebaseAuthNotifierProvider).user?.linkWithCredential(credential);
+                      // final a = await FirebaseAuth.instance.signInWithCredential(
+                      //   credential,
+                      // );
+                      // print(a);
+                    },
+                    codeAutoRetrievalTimeout: (String verificationId) {
+// タイムアウト時の挙動を指定しない場合は空欄でも問題なし
+                    },
+                  );
+                  // await googleAuthNotifier.loginWithGoogle();
                 },
               ),
               SettingsTile.navigation(

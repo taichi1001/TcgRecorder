@@ -8,9 +8,10 @@ class FirebaseAuthNotifier extends StateNotifier<FirebaseAuthState> {
   final Ref ref;
 
   Future signInAnonymously() async {
+    if (state.user != null) return;
     try {
       final user = await FirebaseAuth.instance.signInAnonymously();
-      state = state.copyWith(userCredential: user);
+      state = state.copyWith(user: user.user);
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
         case "operation-not-allowed":
@@ -22,8 +23,16 @@ class FirebaseAuthNotifier extends StateNotifier<FirebaseAuthState> {
     }
   }
 
+  void login() {
+    state = state.copyWith(user: FirebaseAuth.instance.currentUser);
+  }
+
   Future singOut() async {
     await FirebaseAuth.instance.signOut();
+  }
+
+  void inputSmsCode(String code) {
+    state = state.copyWith(smsCode: code);
   }
 }
 

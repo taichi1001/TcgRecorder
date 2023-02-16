@@ -4,8 +4,10 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'firebase_auth_state.freezed.dart';
 
 @freezed
-abstract class FirebaseAuthState with _$FirebaseAuthState {
+class FirebaseAuthState with _$FirebaseAuthState {
   factory FirebaseAuthState({
-    UserCredential? userCredential,
+    User? user,
+    @Default(false) bool isCodeSent,
+    @Default('') String smsCode,
   }) = _FirebaseAuthState;
 }

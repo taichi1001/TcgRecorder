@@ -16,7 +16,9 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$FirebaseAuthState {
-  UserCredential? get userCredential => throw _privateConstructorUsedError;
+  User? get user => throw _privateConstructorUsedError;
+  bool get isCodeSent => throw _privateConstructorUsedError;
+  String get smsCode => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $FirebaseAuthStateCopyWith<FirebaseAuthState> get copyWith =>
@@ -29,7 +31,7 @@ abstract class $FirebaseAuthStateCopyWith<$Res> {
           FirebaseAuthState value, $Res Function(FirebaseAuthState) then) =
       _$FirebaseAuthStateCopyWithImpl<$Res, FirebaseAuthState>;
   @useResult
-  $Res call({UserCredential? userCredential});
+  $Res call({User? user, bool isCodeSent, String smsCode});
 }
 
 /// @nodoc
@@ -45,13 +47,23 @@ class _$FirebaseAuthStateCopyWithImpl<$Res, $Val extends FirebaseAuthState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? userCredential = freezed,
+    Object? user = freezed,
+    Object? isCodeSent = null,
+    Object? smsCode = null,
   }) {
     return _then(_value.copyWith(
-      userCredential: freezed == userCredential
-          ? _value.userCredential
-          : userCredential // ignore: cast_nullable_to_non_nullable
-              as UserCredential?,
+      user: freezed == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as User?,
+      isCodeSent: null == isCodeSent
+          ? _value.isCodeSent
+          : isCodeSent // ignore: cast_nullable_to_non_nullable
+              as bool,
+      smsCode: null == smsCode
+          ? _value.smsCode
+          : smsCode // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -64,7 +76,7 @@ abstract class _$$_FirebaseAuthStateCopyWith<$Res>
       __$$_FirebaseAuthStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({UserCredential? userCredential});
+  $Res call({User? user, bool isCodeSent, String smsCode});
 }
 
 /// @nodoc
@@ -78,13 +90,23 @@ class __$$_FirebaseAuthStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? userCredential = freezed,
+    Object? user = freezed,
+    Object? isCodeSent = null,
+    Object? smsCode = null,
   }) {
     return _then(_$_FirebaseAuthState(
-      userCredential: freezed == userCredential
-          ? _value.userCredential
-          : userCredential // ignore: cast_nullable_to_non_nullable
-              as UserCredential?,
+      user: freezed == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as User?,
+      isCodeSent: null == isCodeSent
+          ? _value.isCodeSent
+          : isCodeSent // ignore: cast_nullable_to_non_nullable
+              as bool,
+      smsCode: null == smsCode
+          ? _value.smsCode
+          : smsCode // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -92,14 +114,20 @@ class __$$_FirebaseAuthStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_FirebaseAuthState implements _FirebaseAuthState {
-  _$_FirebaseAuthState({this.userCredential});
+  _$_FirebaseAuthState({this.user, this.isCodeSent = false, this.smsCode = ''});
 
   @override
-  final UserCredential? userCredential;
+  final User? user;
+  @override
+  @JsonKey()
+  final bool isCodeSent;
+  @override
+  @JsonKey()
+  final String smsCode;
 
   @override
   String toString() {
-    return 'FirebaseAuthState(userCredential: $userCredential)';
+    return 'FirebaseAuthState(user: $user, isCodeSent: $isCodeSent, smsCode: $smsCode)';
   }
 
   @override
@@ -107,12 +135,14 @@ class _$_FirebaseAuthState implements _FirebaseAuthState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_FirebaseAuthState &&
-            (identical(other.userCredential, userCredential) ||
-                other.userCredential == userCredential));
+            (identical(other.user, user) || other.user == user) &&
+            (identical(other.isCodeSent, isCodeSent) ||
+                other.isCodeSent == isCodeSent) &&
+            (identical(other.smsCode, smsCode) || other.smsCode == smsCode));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, userCredential);
+  int get hashCode => Object.hash(runtimeType, user, isCodeSent, smsCode);
 
   @JsonKey(ignore: true)
   @override
@@ -123,11 +153,17 @@ class _$_FirebaseAuthState implements _FirebaseAuthState {
 }
 
 abstract class _FirebaseAuthState implements FirebaseAuthState {
-  factory _FirebaseAuthState({final UserCredential? userCredential}) =
-      _$_FirebaseAuthState;
+  factory _FirebaseAuthState(
+      {final User? user,
+      final bool isCodeSent,
+      final String smsCode}) = _$_FirebaseAuthState;
 
   @override
-  UserCredential? get userCredential;
+  User? get user;
+  @override
+  bool get isCodeSent;
+  @override
+  String get smsCode;
   @override
   @JsonKey(ignore: true)
   _$$_FirebaseAuthStateCopyWith<_$_FirebaseAuthState> get copyWith =>

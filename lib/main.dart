@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -87,6 +88,7 @@ void main() async {
     }),
     MobileAds.instance.initialize(),
   ]);
+  await generateNoticeSetting();
 
   runApp(
     ScreenUtilInit(
@@ -124,8 +126,8 @@ final mainInfoProvider = FutureProvider.autoDispose<MainInfo>((ref) async {
   final allDeckList = await ref.watch(allDeckListProvider.future);
   final allTagList = await ref.watch(allTagListProvider.future);
   final allRecordList = await ref.watch(allRecordListProvider.future);
+  ref.read(firebaseAuthNotifierProvider.notifier).login();
   await ref.read(firebaseAuthNotifierProvider.notifier).signInAnonymously();
-
   ref.keepAlive();
   return MainInfo(
     allGameList: allGameList,
@@ -174,4 +176,30 @@ class MainApp extends HookConsumerWidget {
       loading: () => const Center(child: CircularProgressIndicator()),
     );
   }
+}
+
+Future generateNoticeSetting() async {
+  final messaging = FirebaseMessaging.instance;
+  NotificationSettings settings = await messaging.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
+  );
+  print('⭐ User granted permission: ${settings.authorizationStatus}');
+
+  final token = await messaging.getToken();
+  print('🔥 FCM TOKEN: $token');
+
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    print('Got a message in the foreground!');
+
+    if (message.notification != null) {
+      print('ForegroundMessage Title: ${message.notification?.title}');
+      print('ForegroundMessage Body: ${message.notification?.body}');
+    }
+  });
 }
