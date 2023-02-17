@@ -1,10 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/helper/authentication_erro_to_ja.dart';
-import 'package:tcg_manager/provider/firebase_auth_provider.dart';
 import 'package:tcg_manager/provider/google_auth_model.dart';
 
 class LoginView extends HookConsumerWidget {
@@ -13,102 +11,34 @@ class LoginView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final googleAuthNotifier = ref.watch(googleAuthNotifierProvider.notifier);
-
-    ref.listen(firebaseAuthNotifierProvider.select((value) => value.isCodeSent), ((previous, next) async {
-      if (next == true) {
-        await showDialog(
-            context: context,
-            builder: (_) {
-              return AlertDialog(
-                title: const Text("認証コード"),
-                content: const Text("SMS宛に届いた認証コードを入力してください"),
-                actions: <Widget>[
-                  TextFormField(
-                    onChanged: (value) {
-                      ref.read(firebaseAuthNotifierProvider.notifier).inputSmsCode(value);
-                    },
-                  ),
-                  ElevatedButton(
-                    child: Text("認証"),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                ],
-              );
-            });
-      }
-    }));
     return Scaffold(
       body: Center(
-        child: Theme(
-          data: ThemeData(),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'ログイン方法選択',
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const SizedBox(height: 16),
-              SignInButton(
-                Buttons.email,
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const _MailLoginView(),
-                    ),
-                  );
-                },
-              ),
-              SignInButton(
-                Buttons.google,
-                onPressed: () async {
-                  await FirebaseAuth.instance.verifyPhoneNumber(
-                    phoneNumber: '+8109076265787',
-                    verificationCompleted: (PhoneAuthCredential credential) {
-                      print('bb');
-// iosの場合は空欄で問題なし
-                    },
-                    verificationFailed: (FirebaseAuthException e) {
-                      if (e.code == 'invalid-phone-number') {
-                        print('電話番号が正しくありません。');
-                      }
-                    },
-                    codeSent: (String verificationId, int? resendToken) async {
-                      var smsCode = '';
-                      await showDialog(
-                        context: context,
-                        builder: (_) {
-                          return AlertDialog(
-                            title: Text("認証コード"),
-                            content: Text("SMS宛に届いた認証コードを入力してください"),
-                            actions: <Widget>[
-                              TextFormField(
-                                onChanged: (value) {
-                                  smsCode = value;
-                                },
-                              ),
-                              ElevatedButton(
-                                child: Text("認証"),
-                                onPressed: () => Navigator.pop(context),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                      final credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: smsCode);
-                      final a = await FirebaseAuth.instance.signInWithCredential(credential);
-                      print(a);
-                    },
-                    codeAutoRetrievalTimeout: (String verificationId) {
-// タイムアウト時の挙動を指定しない場合は空欄でも問題なし
-                    },
-                  );
-                  // await googleAuthNotifier.loginWithGoogle();
-                },
-              ),
-            ],
-          ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'ログイン方法選択',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            const SizedBox(height: 16),
+            SignInButton(
+              Buttons.email,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const _MailLoginView(),
+                  ),
+                );
+              },
+            ),
+            SignInButton(
+              Buttons.google,
+              onPressed: () async {
+                await googleAuthNotifier.loginWithGoogle();
+              },
+            ),
+          ],
         ),
       ),
     );
@@ -335,7 +265,7 @@ class MailRegistrationView extends HookConsumerWidget {
                     const SizedBox(height: 8),
                     Text(
                       errorText.value,
-                      style: TextStyle(color: Theme.of(context).errorColor),
+                      style: TextStyle(color: Theme.of(context).colorScheme.error),
                     ),
                     const SizedBox(height: 32),
                     ElevatedButton(

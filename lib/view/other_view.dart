@@ -3,7 +3,6 @@
 import 'dart:io';
 
 import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -25,7 +24,6 @@ import 'package:tcg_manager/helper/theme_data.dart';
 import 'package:tcg_manager/main.dart';
 import 'package:tcg_manager/provider/bottom_navigation_bar_provider.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
-import 'package:tcg_manager/provider/firebase_auth_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/input_view_settings_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
@@ -43,6 +41,7 @@ import 'package:tcg_manager/selector/marged_record_list_selector.dart';
 import 'package:tcg_manager/view/component/custom_textfield.dart';
 import 'package:tcg_manager/view/component/slidable_tile.dart';
 import 'package:tcg_manager/view/component/web_view_screen.dart';
+import 'package:tcg_manager/view/phone_number_auth_view.dart';
 import 'package:tcg_manager/view/premium_plan_purchase_view.dart';
 
 class OtherView extends HookConsumerWidget {
@@ -85,6 +84,21 @@ class OtherView extends HookConsumerWidget {
                     MaterialPageRoute(
                       fullscreenDialog: true,
                       builder: (context) => const PremiumPlanPurchaseView(),
+                    ),
+                  );
+                },
+              ),
+              SettingsTile.navigation(
+                title: const Text('電話番号認証'),
+                leading: const Icon(
+                  Icons.phone,
+                  color: Colors.green,
+                ),
+                onPressed: (context) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const PhoneNumberAuthView(),
                     ),
                   );
                 },
@@ -207,65 +221,6 @@ class OtherView extends HookConsumerWidget {
                 leading: const Icon(Icons.backup_outlined),
                 onPressed: (context) async {
                   await ref.read(firestoreRepository).setAll();
-                },
-              ),
-              SettingsTile.navigation(
-                title: const Text('リストア'),
-                leading: const Icon(Icons.restore),
-                onPressed: (context) async {
-                  await ref.read(firestoreRepository).restoreAll();
-                },
-              ),
-              SettingsTile.navigation(
-                title: const Text('電話番号認証'),
-                leading: const Icon(Icons.phone),
-                onPressed: (context) async {
-                  await FirebaseAuth.instance.verifyPhoneNumber(
-                    phoneNumber: '+8109076265788',
-                    verificationCompleted: (PhoneAuthCredential credential) {},
-                    verificationFailed: (FirebaseAuthException e) {
-                      print(e);
-                      if (e.code == 'invalid-phone-number') {
-                        print('電話番号が正しくありません。');
-                      }
-                    },
-                    codeSent: (String verificationId, int? resendToken) async {
-                      var smsCode = '';
-                      await showDialog(
-                        context: context,
-                        builder: (_) {
-                          return AlertDialog(
-                            title: const Text("認証コード"),
-                            content: const Text("SMS宛に届いた認証コードを入力してください"),
-                            actions: <Widget>[
-                              TextFormField(
-                                onChanged: (value) {
-                                  smsCode = value;
-                                },
-                              ),
-                              ElevatedButton(
-                                child: const Text("認証"),
-                                onPressed: () => Navigator.pop(context),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                      final credential = PhoneAuthProvider.credential(
-                        verificationId: verificationId,
-                        smsCode: smsCode,
-                      );
-                      await ref.read(firebaseAuthNotifierProvider).user?.linkWithCredential(credential);
-                      // final a = await FirebaseAuth.instance.signInWithCredential(
-                      //   credential,
-                      // );
-                      // print(a);
-                    },
-                    codeAutoRetrievalTimeout: (String verificationId) {
-// タイムアウト時の挙動を指定しない場合は空欄でも問題なし
-                    },
-                  );
-                  // await googleAuthNotifier.loginWithGoogle();
                 },
               ),
               SettingsTile.navigation(

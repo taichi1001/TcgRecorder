@@ -7,7 +7,5 @@ part 'firebase_auth_state.freezed.dart';
 class FirebaseAuthState with _$FirebaseAuthState {
   factory FirebaseAuthState({
     User? user,
-    @Default(false) bool isCodeSent,
-    @Default('') String smsCode,
   }) = _FirebaseAuthState;
 }

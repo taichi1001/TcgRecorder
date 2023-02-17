@@ -38,7 +38,6 @@ dependencies:
   cloud_firestore: ^4.3.2
   google_sign_in: ^5.4.4
 
-
   shared_preferences: ^2.0.15
 
   adaptive_dialog: ^1.6.4+2
@@ -110,6 +109,8 @@ dependencies:
   font_awesome_flutter: ^10.3.0
 
   csv: ^5.0.1
+
+  intl_phone_field: ^3.1.0
 
 flutter_native_splash:
   image: "assets/images/icon.png"

@@ -15,10 +15,9 @@ class FirebaseAuthNotifier extends StateNotifier<FirebaseAuthState> {
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
         case "operation-not-allowed":
-          print("Anonymous auth hasn't been enabled for this project.");
           break;
         default:
-          print("Unknown error.");
+          break;
       }
     }
   }
@@ -29,10 +28,7 @@ class FirebaseAuthNotifier extends StateNotifier<FirebaseAuthState> {
 
   Future singOut() async {
     await FirebaseAuth.instance.signOut();
-  }
-
-  void inputSmsCode(String code) {
-    state = state.copyWith(smsCode: code);
+    state = state.copyWith(user: null);
   }
 }
 
