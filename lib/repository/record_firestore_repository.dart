@@ -43,11 +43,11 @@ class FirestoreRepository {
     }
   }
 
-  Future restoreAll() async {
+  Future<bool> restoreAll() async {
     final user = ref.read(firebaseAuthNotifierProvider).user?.uid;
-    if (user == null) return;
+    if (user == null) return false;
     final allData = await firestoreDao.getAll(user);
-    if (allData == null) return;
+    if (allData == null) return false;
     final gameJson = allData['game'] as List;
     final gameList = gameJson.map((e) => Game.fromJson(e)).toList();
     final deckJson = allData['deck'] as List;
@@ -65,5 +65,6 @@ class FirestoreRepository {
     await ref.read(recordRepository).insertList(recordList);
 
     await ref.read(dbHelper).fetchAll();
+    return true;
   }
 }

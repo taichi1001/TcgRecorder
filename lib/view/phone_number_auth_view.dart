@@ -51,7 +51,10 @@ class PhoneNumberAuthView extends HookConsumerWidget {
                     verificationFailed: (FirebaseAuthException e) {
                       switch (e.code) {
                         case 'invalid-phone-number':
-                          errorText.value = '電話番号が正しくありません';
+                          errorText.value = '電話番号が正しくありません。';
+                          break;
+                        case 'too-many-requests':
+                          errorText.value = 'リクエストの上限に達しました。時間を開けて再度お試しください。';
                           break;
                         default:
                           errorText.value = '予期せぬエラーが発生しました。';
@@ -93,9 +96,11 @@ class AuthAlertDialog extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final smsCode = useState('');
     final errorCode = useState('');
+    final isLogin = ref.watch(firebaseAuthNotifierProvider.select((value) => value.user)) != null;
     return AlertDialog(
       title: const Text("認証コード"),
       content: const Text("SMS宛に届いた認証コードを入力してください"),
+      actionsAlignment: MainAxisAlignment.center,
       actions: <Widget>[
         TextFormField(
           onChanged: (value) {
@@ -122,9 +127,13 @@ class AuthAlertDialog extends HookConsumerWidget {
               onPressed: () async {
                 try {
                   errorCode.value = '';
-                  final credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: smsCode.value);
-                  await ref.read(firebaseAuthNotifierProvider).user?.linkWithCredential(credential);
+                  if (isLogin) {
+                    await ref.read(firebaseAuthNotifierProvider.notifier).linkPhoneNumber(verificationId, smsCode.value);
+                  } else {
+                    await ref.read(firebaseAuthNotifierProvider.notifier).signInPhoneNumber(verificationId, smsCode.value);
+                  }
                   if (context.mounted) {
+                    Navigator.pop(context);
                     Navigator.pop(context);
                   }
                 } on FirebaseException catch (e) {
@@ -134,6 +143,9 @@ class AuthAlertDialog extends HookConsumerWidget {
                       break;
                     case 'credential-already-in-use':
                       errorCode.value = 'すでに利用中のアカウントが存在します。ログアウトして、そのアカウントでログインしてください。(現在登録されている情報は全て削除されます。)';
+                      break;
+                    case 'provider-already-linked':
+                      errorCode.value = 'すでに他の電話番号で認証されています。認証した電話番号をお試しください。';
                       break;
                     default:
                       errorCode.value = '予期せぬエラーが発生しました。';

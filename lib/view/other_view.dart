@@ -24,6 +24,7 @@ import 'package:tcg_manager/helper/theme_data.dart';
 import 'package:tcg_manager/main.dart';
 import 'package:tcg_manager/provider/bottom_navigation_bar_provider.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
+import 'package:tcg_manager/provider/firebase_auth_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/input_view_settings_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
@@ -280,6 +281,14 @@ class OtherView extends HookConsumerWidget {
                 },
               ),
             ],
+          ),
+          CustomSettingsSection(
+            child: TextButton(
+              onPressed: () {
+                ref.read(firebaseAuthNotifierProvider.notifier).singOut();
+              },
+              child: const Text('ログアウト'),
+            ),
           ),
         ],
       ),

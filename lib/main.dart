@@ -31,6 +31,7 @@ import 'package:tcg_manager/state/revenue_cat_state.dart';
 import 'package:tcg_manager/view/bottom_navigation_view.dart';
 import 'package:tcg_manager/view/initial_game_registration_view.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:tcg_manager/view/login_view.dart';
 
 import 'generated/l10n.dart';
 
@@ -127,7 +128,7 @@ final mainInfoProvider = FutureProvider.autoDispose<MainInfo>((ref) async {
   final allTagList = await ref.watch(allTagListProvider.future);
   final allRecordList = await ref.watch(allRecordListProvider.future);
   ref.read(firebaseAuthNotifierProvider.notifier).login();
-  await ref.read(firebaseAuthNotifierProvider.notifier).signInAnonymously();
+  // await ref.read(firebaseAuthNotifierProvider.notifier).signInAnonymously();
   ref.keepAlive();
   return MainInfo(
     allGameList: allGameList,
@@ -151,7 +152,8 @@ class MainApp extends HookConsumerWidget {
     final mainInfo = ref.watch(mainInfoProvider);
     final lightThemeData = ref.watch(lightThemeDataProvider(context));
     final darkThemeData = ref.watch(darkThemeDataProvider(context));
-
+    final isLogin = ref.watch(firebaseAuthNotifierProvider.select((value) => value.user)) != null;
+    print(ref.watch(firebaseAuthNotifierProvider.select((value) => value.user)));
     return mainInfo.when(
       data: (mainInfo) {
         return MaterialApp(
@@ -167,7 +169,11 @@ class MainApp extends HookConsumerWidget {
           theme: lightThemeData,
           darkTheme: darkThemeData,
           themeMode: ThemeMode.system,
-          home: mainInfo.allGameList.isEmpty ? const InitialGameRegistrationView() : const BottomNavigationView(),
+          home: isLogin
+              ? mainInfo.allGameList.isEmpty
+                  ? const InitialGameRegistrationView()
+                  : const BottomNavigationView()
+              : const LoginView(),
           navigatorObservers: [FlutterSmartDialog.observer],
           builder: FlutterSmartDialog.init(),
         );

@@ -1,5 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/state/firebase_auth_state.dart';
 
 class FirebaseAuthNotifier extends StateNotifier<FirebaseAuthState> {
@@ -22,12 +23,33 @@ class FirebaseAuthNotifier extends StateNotifier<FirebaseAuthState> {
     }
   }
 
+  Future signInPhoneNumber(String verificationId, String smsCode) async {
+    try {
+      final credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: smsCode);
+      final userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+      state = state.copyWith(user: userCredential.user);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future linkPhoneNumber(String verificationId, String smsCode) async {
+    try {
+      final credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: smsCode);
+      final userCredential = await state.user?.linkWithCredential(credential);
+      state = state.copyWith(user: userCredential!.user);
+    } on FirebaseAuthException catch (_) {
+      rethrow;
+    }
+  }
+
   void login() {
     state = state.copyWith(user: FirebaseAuth.instance.currentUser);
   }
 
   Future singOut() async {
     await FirebaseAuth.instance.signOut();
+    await ref.read(dbHelper).deleteAll();
     state = state.copyWith(user: null);
   }
 }
