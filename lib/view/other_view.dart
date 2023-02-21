@@ -43,6 +43,7 @@ import 'package:tcg_manager/view/component/custom_textfield.dart';
 import 'package:tcg_manager/view/component/slidable_tile.dart';
 import 'package:tcg_manager/view/component/web_view_screen.dart';
 import 'package:tcg_manager/view/phone_number_auth_view.dart';
+import 'package:tcg_manager/view/phone_number_deactivation_view.dart';
 import 'package:tcg_manager/view/premium_plan_purchase_view.dart';
 
 class OtherView extends HookConsumerWidget {
@@ -51,6 +52,8 @@ class OtherView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isPremium = ref.watch(revenueCatNotifierProvider.select((value) => value.isPremium));
+    final user = ref.watch(firebaseAuthNotifierProvider.select((value) => value.user));
+    final isAnonymous = user?.phoneNumber == null;
 
     return Scaffold(
       appBar: AppBar(
@@ -90,7 +93,7 @@ class OtherView extends HookConsumerWidget {
                 },
               ),
               SettingsTile.navigation(
-                title: const Text('電話番号認証'),
+                title: Text(isAnonymous ? '電話番号認証' : '電話番号認証の解除'),
                 leading: const Icon(
                   Icons.phone,
                   color: Colors.green,
@@ -99,7 +102,9 @@ class OtherView extends HookConsumerWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const PhoneNumberAuthView(),
+                      builder: (context) {
+                        return isAnonymous ? const PhoneNumberAuthView() : const PhoneNumberDeactivationView();
+                      },
                     ),
                   );
                 },

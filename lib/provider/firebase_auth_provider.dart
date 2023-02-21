@@ -43,6 +43,11 @@ class FirebaseAuthNotifier extends StateNotifier<FirebaseAuthState> {
     }
   }
 
+  Future unlinkPhoneNumber() async {
+    final newUser = await state.user?.unlink('phone');
+    state = state.copyWith(user: newUser);
+  }
+
   void login() {
     state = state.copyWith(user: FirebaseAuth.instance.currentUser);
   }
