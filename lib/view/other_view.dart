@@ -26,7 +26,6 @@ import 'package:tcg_manager/provider/bottom_navigation_bar_provider.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/firebase_auth_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
-import 'package:tcg_manager/provider/input_view_settings_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/revenue_cat_provider.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
@@ -39,6 +38,7 @@ import 'package:tcg_manager/repository/tag_repository.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
 import 'package:tcg_manager/selector/game_tag_list_selector.dart';
 import 'package:tcg_manager/selector/marged_record_list_selector.dart';
+import 'package:tcg_manager/view/backup_settings_view.dart';
 import 'package:tcg_manager/view/component/custom_textfield.dart';
 import 'package:tcg_manager/view/component/slidable_tile.dart';
 import 'package:tcg_manager/view/component/web_view_screen.dart';
@@ -74,7 +74,6 @@ class OtherView extends HookConsumerWidget {
         ),
         sections: [
           SettingsSection(
-            // title: Text(S.of(context).settingSection),
             tiles: [
               SettingsTile.navigation(
                 title: Text(S.of(context).premiumPlan),
@@ -105,6 +104,21 @@ class OtherView extends HookConsumerWidget {
                       builder: (context) {
                         return isAnonymous ? const PhoneNumberAuthView() : const PhoneNumberDeactivationView();
                       },
+                    ),
+                  );
+                },
+              ),
+              SettingsTile.navigation(
+                title: const Text('バックアップ・復元'),
+                leading: const Icon(
+                  Icons.backup_outlined,
+                  color: Colors.lightBlue,
+                ),
+                onPressed: (context) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const BackupSettingsView(),
                     ),
                   );
                 },
@@ -223,20 +237,6 @@ class OtherView extends HookConsumerWidget {
                 },
               ),
               SettingsTile.navigation(
-                title: const Text('バックアップ'),
-                leading: const Icon(Icons.backup_outlined),
-                onPressed: (context) async {
-                  await ref.read(firestoreRepository).setAll();
-                },
-              ),
-              SettingsTile.navigation(
-                title: const Text('リストア'),
-                leading: const Icon(Icons.restore),
-                onPressed: (context) async {
-                  await ref.read(firestoreRepository).restoreAll();
-                },
-              ),
-              SettingsTile.navigation(
                 title: Text(S.of(context).review),
                 leading: const Icon(Icons.reviews),
                 onPressed: (context) async {
@@ -295,78 +295,10 @@ class OtherView extends HookConsumerWidget {
               child: const Text('ログアウト'),
             ),
           ),
-        ],
-      ),
-    );
-  }
-}
-
-// ignore: unused_element
-class _InputViewSettingsView extends HookConsumerWidget {
-  const _InputViewSettingsView({key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final fixUseDeck = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.fixUseDeck));
-    final fixOpponentDeck = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.fixOpponentDeck));
-    final fixTag = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.fixTag));
-    final inputiViewSettingsController = ref.watch(inputViewSettingsNotifierProvider.notifier);
-
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        elevation: 0.0,
-        title: const Text('入力画面設定'),
-      ),
-      body: SettingsList(
-        lightTheme: SettingsThemeData(
-          settingsSectionBackground: Theme.of(context).canvasColor,
-          settingsListBackground: Theme.of(context).scaffoldBackgroundColor,
-        ),
-        darkTheme: SettingsThemeData(
-          settingsSectionBackground: Theme.of(context).canvasColor,
-          settingsListBackground: Theme.of(context).scaffoldBackgroundColor,
-        ),
-        sections: [
-          SettingsSection(
-            title: const Text('入力固定オプション'),
-            tiles: [
-              SettingsTile.switchTile(
-                initialValue: fixUseDeck,
-                onToggle: (settings) => inputiViewSettingsController.changeFixUseDeck(settings),
-                title: const Text('使用デッキ'),
-                leading: const Icon(Icons.settings_applications),
-              ),
-              SettingsTile.switchTile(
-                initialValue: fixOpponentDeck,
-                onToggle: (settings) => inputiViewSettingsController.changeFixOpponentDeck(settings),
-                title: const Text('対戦相手デッキ'),
-                leading: const Icon(Icons.settings_applications),
-              ),
-              SettingsTile.switchTile(
-                initialValue: fixTag,
-                onToggle: (settings) => inputiViewSettingsController.changeFixTag(settings),
-                title: const Text('タグ'),
-                leading: const Icon(Icons.settings_applications),
-              ),
-            ],
-          ),
           CustomSettingsSection(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 24, right: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '設定ON:  記録保存時に入力欄の設定ONの項目が保持されます。',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 10),
-                  ),
-                  Text(
-                    '設定OFF: 記録保存時に入力欄の設定OFFの項目がリセットされます。',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 10),
-                  ),
-                ],
-              ),
+            child: TextButton(
+              onPressed: () {},
+              child: const Text('退会する'),
             ),
           ),
         ],

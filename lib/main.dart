@@ -128,7 +128,6 @@ final mainInfoProvider = FutureProvider.autoDispose<MainInfo>((ref) async {
   final allTagList = await ref.watch(allTagListProvider.future);
   final allRecordList = await ref.watch(allRecordListProvider.future);
   ref.read(firebaseAuthNotifierProvider.notifier).login();
-  // await ref.read(firebaseAuthNotifierProvider.notifier).signInAnonymously();
   ref.keepAlive();
   return MainInfo(
     allGameList: allGameList,
@@ -153,7 +152,6 @@ class MainApp extends HookConsumerWidget {
     final lightThemeData = ref.watch(lightThemeDataProvider(context));
     final darkThemeData = ref.watch(darkThemeDataProvider(context));
     final isLogin = ref.watch(firebaseAuthNotifierProvider.select((value) => value.user)) != null;
-    print(ref.watch(firebaseAuthNotifierProvider.select((value) => value.user)));
     return mainInfo.when(
       data: (mainInfo) {
         return MaterialApp(
