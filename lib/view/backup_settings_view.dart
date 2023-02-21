@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:settings_ui/settings_ui.dart';
+import 'package:tcg_manager/helper/premium_plan_dialog.dart';
+import 'package:tcg_manager/provider/backup_provider.dart';
+import 'package:tcg_manager/provider/revenue_cat_provider.dart';
 import 'package:tcg_manager/repository/record_firestore_repository.dart';
 
 class BackupSettingsView extends HookConsumerWidget {
   const BackupSettingsView({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final autoBackup = ref.watch(backupNotifierProvider);
+    final isPremium = ref.watch(revenueCatNotifierProvider.select((value) => value.isPremium));
     return Scaffold(
       appBar: AppBar(
         title: const Text('バックアップ設定'),
@@ -24,8 +29,14 @@ class BackupSettingsView extends HookConsumerWidget {
           SettingsSection(
             tiles: [
               SettingsTile.switchTile(
-                initialValue: false,
-                onToggle: (value) {},
+                initialValue: autoBackup,
+                onToggle: (value) async {
+                  if (isPremium) {
+                    ref.read(backupNotifierProvider.notifier).changeSetting(value);
+                  } else {
+                    await premiumPlanDialog(context);
+                  }
+                },
                 title: const Text('データ更新時に自動でバックアップする'),
                 description: const Text('自動でバックアップをONにすると常に最新の状態がバックアップされます。'),
               ),
