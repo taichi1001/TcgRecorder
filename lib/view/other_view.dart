@@ -32,7 +32,6 @@ import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 import 'package:tcg_manager/provider/theme_provider.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
-import 'package:tcg_manager/repository/record_firestore_repository.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
 import 'package:tcg_manager/repository/tag_repository.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
