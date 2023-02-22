@@ -37,7 +37,7 @@ class BackupSettingsView extends HookConsumerWidget {
                     await premiumPlanDialog(context);
                   }
                 },
-                title: const Text('データ更新時に自動でバックアップする'),
+                title: const Text('自動でバックアップする'),
                 description: const Text('自動でバックアップをONにすると常に最新の状態がバックアップされます。'),
               ),
               SettingsTile.navigation(
