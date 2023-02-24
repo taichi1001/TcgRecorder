@@ -3,9 +3,11 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/enum/sort.dart';
+import 'package:tcg_manager/provider/backup_provider.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
+import 'package:tcg_manager/repository/record_firestore_repository.dart';
 import 'package:tcg_manager/state/select_deck_view_state.dart';
 
 class SelectDeckViewNotifier extends StateNotifier<SelectDeckViewState> {
@@ -27,7 +29,7 @@ class SelectDeckViewNotifier extends StateNotifier<SelectDeckViewState> {
     state = state.copyWith(searchText: searchText);
   }
 
-  void saveDeck(String deckName) {
+  Future saveDeck(String deckName) async {
     final selectGame = ref.read(selectGameNotifierProvider).selectGame;
     final deck = Deck(
       deck: deckName,
@@ -35,6 +37,7 @@ class SelectDeckViewNotifier extends StateNotifier<SelectDeckViewState> {
     );
     ref.read(deckRepository).insert(deck);
     ref.refresh(allDeckListProvider);
+    if (ref.read(backupNotifierProvider)) await ref.read(firestoreRepository).setAll();
   }
 }
 

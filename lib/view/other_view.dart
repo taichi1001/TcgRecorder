@@ -22,6 +22,7 @@ import 'package:tcg_manager/helper/list_to_csv.dart';
 import 'package:tcg_manager/helper/premium_plan_dialog.dart';
 import 'package:tcg_manager/helper/theme_data.dart';
 import 'package:tcg_manager/main.dart';
+import 'package:tcg_manager/provider/backup_provider.dart';
 import 'package:tcg_manager/provider/bottom_navigation_bar_provider.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/firebase_auth_provider.dart';
@@ -32,6 +33,7 @@ import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 import 'package:tcg_manager/provider/theme_provider.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
+import 'package:tcg_manager/repository/record_firestore_repository.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
 import 'package:tcg_manager/repository/tag_repository.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
@@ -287,9 +289,22 @@ class OtherView extends HookConsumerWidget {
             ],
           ),
           CustomSettingsSection(
+            child: Text(ref.read(firebaseAuthNotifierProvider).user!.uid),
+          ),
+          CustomSettingsSection(
             child: TextButton(
-              onPressed: () {
-                ref.read(firebaseAuthNotifierProvider.notifier).singOut();
+              onPressed: () async {
+                final okCancelResult = await showOkCancelAlertDialog(
+                  context: context,
+                  title: 'ログアウト',
+                  message: isAnonymous
+                      ? 'ログアウトするとこれまで記録したデータにアクセスできなくなります。ログアウトしてもよろしいですか？\n(電話番号認証を有効にしデータをバックアップすると、ログアウト後にもバックアップから復帰できるようになります。)'
+                      : 'ログアウトしてもよろしいですか？',
+                  isDestructiveAction: true,
+                );
+                if (okCancelResult == OkCancelResult.ok) {
+                  ref.read(firebaseAuthNotifierProvider.notifier).singOut();
+                }
               },
               child: const Text('ログアウト'),
             ),
@@ -530,8 +545,10 @@ class _DeckListView extends HookConsumerWidget {
                             await ref.read(recordRepository).updateRecordList(newOpponentDeckRecordList);
 
                             await ref.read(deckRepository).deleteById(deckList[index].deckId!);
+
                             ref.refresh(allDeckListProvider);
                             ref.refresh(allRecordListProvider);
+                            if (ref.read(backupNotifierProvider)) await ref.read(firestoreRepository).setAll();
                           }
                         } else {
                           await showOkAlertDialog(
@@ -626,8 +643,10 @@ class _TagListView extends HookConsumerWidget {
                             }
                             await ref.read(recordRepository).updateRecordList(newTagRecordList);
                             await ref.read(tagRepository).deleteById(tagList[index].tagId!);
+
                             ref.refresh(allTagListProvider);
                             ref.refresh(allRecordListProvider);
+                            if (ref.read(backupNotifierProvider)) await ref.read(firestoreRepository).setAll();
                           }
                         } else {
                           await showOkAlertDialog(

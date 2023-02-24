@@ -8,6 +8,7 @@ import 'package:tcg_manager/entity/game.dart';
 import 'package:tcg_manager/entity/record.dart';
 import 'package:tcg_manager/entity/tag.dart';
 import 'package:tcg_manager/main.dart';
+import 'package:tcg_manager/provider/backup_provider.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
@@ -15,6 +16,7 @@ import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
 import 'package:tcg_manager/repository/game_repository.dart';
+import 'package:tcg_manager/repository/record_firestore_repository.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
 import 'package:tcg_manager/repository/tag_repository.dart';
 
@@ -28,6 +30,7 @@ class DbHelper {
     await ref.read(deckRepository).deleteAll();
     await ref.read(gameRepository).deleteAll();
     await fetchAll();
+    if (ref.read(backupNotifierProvider)) await ref.read(firestoreRepository).setAll();
   }
 
   Future deleteGame(Game game) async {
@@ -36,18 +39,21 @@ class DbHelper {
     await _deleteGameTag(game);
     await ref.read(gameRepository).deleteById(game.gameId!);
     await fetchAll();
+    if (ref.read(backupNotifierProvider)) await ref.read(firestoreRepository).setAll();
   }
 
   Future deleteDeck(Deck deck) async {
     await _deleteDeckRecord(deck);
     await ref.read(deckRepository).deleteById(deck.deckId!);
     await fetchAll();
+    if (ref.read(backupNotifierProvider)) await ref.read(firestoreRepository).setAll();
   }
 
   Future deleteTag(Tag tag) async {
     await _removeTagFromRecord(tag);
     await ref.read(tagRepository).deleteById(tag.tagId!);
     await fetchAll();
+    if (ref.read(backupNotifierProvider)) await ref.read(firestoreRepository).setAll();
   }
 
   Future _deleteGameRecord(Game game) async {
