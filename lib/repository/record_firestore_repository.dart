@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/dao/record_firestore_dao.dart';
 import 'package:tcg_manager/entity/deck.dart';
@@ -5,6 +8,7 @@ import 'package:tcg_manager/entity/game.dart';
 import 'package:tcg_manager/entity/record.dart';
 import 'package:tcg_manager/entity/tag.dart';
 import 'package:tcg_manager/helper/db_helper.dart';
+import 'package:tcg_manager/main.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/firebase_auth_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
@@ -40,6 +44,7 @@ class FirestoreRepository {
         },
         user,
       );
+      await _saveImage();
     }
   }
 
@@ -65,6 +70,33 @@ class FirestoreRepository {
     await ref.read(recordRepository).insertList(recordList);
 
     await ref.read(dbHelper).fetchAll();
+    await _restoreImage();
     return true;
+  }
+
+  Future _saveImage() async {
+    final allRecordList = await ref.read(allRecordListProvider.future);
+    final isImageRecordList = allRecordList.where((record) => record.imagePath != null && record.imagePath!.isNotEmpty).toList();
+    for (final record in isImageRecordList) {
+      for (final imagePath in record.imagePath!) {
+        final strageRef = FirebaseStorage.instance.ref().child('user/${ref.read(firebaseAuthNotifierProvider).user?.uid}/$imagePath');
+        final savePath = ref.read(imagePathProvider);
+        final file = File('$savePath/$imagePath');
+        await strageRef.putFile(file);
+      }
+    }
+  }
+
+  Future _restoreImage() async {
+    final allRecordList = await ref.read(allRecordListProvider.future);
+    final isImageRecordList = allRecordList.where((record) => record.imagePath != null && record.imagePath!.isNotEmpty).toList();
+    for (final record in isImageRecordList) {
+      for (final imagePath in record.imagePath!) {
+        final strageRef = FirebaseStorage.instance.ref().child('user/${ref.read(firebaseAuthNotifierProvider).user?.uid}/$imagePath');
+        final savePath = ref.read(imagePathProvider);
+        final file = File('$savePath/$imagePath');
+        await strageRef.writeToFile(file);
+      }
+    }
   }
 }

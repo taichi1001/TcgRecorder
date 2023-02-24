@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tcg_manager/entity/deck.dart';
@@ -346,7 +345,6 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
       final dir = Directory(path);
       dir.deleteSync(recursive: true);
     }
-
     for (final image in state.images) {
       await image.saveTo('$savePath/${image.name}');
     }
