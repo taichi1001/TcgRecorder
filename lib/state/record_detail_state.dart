@@ -13,6 +13,7 @@ abstract class RecordDetailState with _$RecordDetailState {
     required MargedRecord margedRecord,
     required MargedRecord editMargedRecord,
     @Default([]) List<XFile> images,
+    @Default([]) List<XFile> addImages,
     @Default([]) List<XFile> removeImages,
   }) = _RecordDetailState;
 }

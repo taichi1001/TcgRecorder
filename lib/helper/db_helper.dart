@@ -30,7 +30,7 @@ class DbHelper {
     await ref.read(deckRepository).deleteAll();
     await ref.read(gameRepository).deleteAll();
     await fetchAll();
-    if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).setAll();
+    if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).addAll();
   }
 
   Future deleteGame(Game game) async {
@@ -39,21 +39,21 @@ class DbHelper {
     await _deleteGameTag(game);
     await ref.read(gameRepository).deleteById(game.gameId!);
     await fetchAll();
-    if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).setAll();
+    if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).addAll();
   }
 
   Future deleteDeck(Deck deck) async {
     await _deleteDeckRecord(deck);
     await ref.read(deckRepository).deleteById(deck.deckId!);
     await fetchAll();
-    if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).setAll();
+    if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).addAll();
   }
 
   Future deleteTag(Tag tag) async {
     await _removeTagFromRecord(tag);
     await ref.read(tagRepository).deleteById(tag.tagId!);
     await fetchAll();
-    if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).setAll();
+    if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).addAll();
   }
 
   Future _deleteGameRecord(Game game) async {

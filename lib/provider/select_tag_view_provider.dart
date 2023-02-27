@@ -37,7 +37,7 @@ class SelectTagViewNotifier extends StateNotifier<SelectTagViewState> {
     );
     ref.read(tagRepository).insert(tag);
     ref.refresh(allTagListProvider);
-    if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).setAll();
+    if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).addAll();
   }
 }
 

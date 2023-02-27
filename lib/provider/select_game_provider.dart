@@ -39,7 +39,7 @@ class SelectGameNotifier extends StateNotifier<SelectGameState> {
     if (await _checkIfSelectedGamekNew(name)) {
       await ref.read(gameRepository).insert(newGame);
       ref.refresh(allGameListProvider);
-      if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).setAll();
+      if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).addAll();
       final allGameList = await ref.read(allGameListProvider.future);
       final game = allGameList.last;
       state = state.copyWith(selectGame: game);

@@ -18,6 +18,7 @@ import 'package:tcg_manager/repository/deck_repository.dart';
 import 'package:tcg_manager/repository/game_repository.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
 import 'package:tcg_manager/repository/tag_repository.dart';
+import 'package:tcg_manager/state/record_detail_state.dart';
 
 final firestoreController = Provider.autoDispose<FirestoreController>((ref) => FirestoreController(ref));
 
@@ -26,26 +27,44 @@ class FirestoreController {
 
   final Ref ref;
 
+  late final isUser = ref.read(firebaseAuthNotifierProvider).user != null;
+
   FirestoreRepository get firestoreRepo => ref.read(firestoreRepository);
 
-  Future setAll() async {
-    final record = await ref.read(allRecordListProvider.future);
-    final deck = await ref.read(allDeckListProvider.future);
-    final tag = await ref.read(allTagListProvider.future);
-    final game = await ref.read(allGameListProvider.future);
-    final user = ref.read(firebaseAuthNotifierProvider).user?.uid;
+  Future addAll() async {
+    if (!isUser) return;
+    await _setAll();
+    await _deleteAllImage();
+    await _saveAllImage();
+  }
 
-    if (user != null) {
-      await firestoreRepo.setAll(
-        {
-          'game': game.map((e) => e.toJson()).toList(),
-          'deck': deck.map((e) => e.toJson()).toList(),
-          'tag': tag.map((e) => e.toJson()).toList(),
-          'record': record.map((e) => e.toJson()).toList(),
-        },
-        user,
-      );
-      await _saveImage();
+  Future addRecord(Record record) async {
+    if (!isUser) return;
+    _setAll();
+    if (record.imagePath == null || record.imagePath!.isEmpty) return;
+    for (final imagePath in record.imagePath!) {
+      await _saveImage(imagePath);
+    }
+  }
+
+  Future deleteRecord(Record record) async {
+    if (!isUser) return;
+    _setAll();
+    if (record.imagePath == null || record.imagePath!.isEmpty) return;
+    for (final imagePath in record.imagePath!) {
+      await _deleteImage(imagePath);
+    }
+  }
+
+  Future editRecord(RecordDetailState recordDetailState) async {
+    if (!isUser) return;
+    _setAll();
+    if (recordDetailState.addImages.isEmpty && recordDetailState.removeImages.isEmpty) return;
+    for (final imagePath in recordDetailState.addImages) {
+      await _saveImage(imagePath.name);
+    }
+    for (final imagePath in recordDetailState.removeImages) {
+      await _deleteImage(imagePath.name);
     }
   }
 
@@ -75,15 +94,38 @@ class FirestoreController {
     return true;
   }
 
-  Future _saveImage() async {
+  Future _setAll() async {
+    final record = await ref.read(allRecordListProvider.future);
+    final deck = await ref.read(allDeckListProvider.future);
+    final tag = await ref.read(allTagListProvider.future);
+    final game = await ref.read(allGameListProvider.future);
+    final user = ref.read(firebaseAuthNotifierProvider).user?.uid;
+
+    if (!isUser) return;
+    await firestoreRepo.setAll(
+      {
+        'game': game.map((e) => e.toJson()).toList(),
+        'deck': deck.map((e) => e.toJson()).toList(),
+        'tag': tag.map((e) => e.toJson()).toList(),
+        'record': record.map((e) => e.toJson()).toList(),
+      },
+      user!,
+    );
+  }
+
+  Future _saveImage(String imagePath) async {
+    final strageRef = FirebaseStorage.instance.ref().child('user/${ref.read(firebaseAuthNotifierProvider).user?.uid}/$imagePath');
+    final savePath = ref.read(imagePathProvider);
+    final file = File('$savePath/$imagePath');
+    await strageRef.putFile(file);
+  }
+
+  Future _saveAllImage() async {
     final allRecordList = await ref.read(allRecordListProvider.future);
     final isImageRecordList = allRecordList.where((record) => record.imagePath != null && record.imagePath!.isNotEmpty).toList();
     for (final record in isImageRecordList) {
       for (final imagePath in record.imagePath!) {
-        final strageRef = FirebaseStorage.instance.ref().child('user/${ref.read(firebaseAuthNotifierProvider).user?.uid}/$imagePath');
-        final savePath = ref.read(imagePathProvider);
-        final file = File('$savePath/$imagePath');
-        await strageRef.putFile(file);
+        _saveImage(imagePath);
       }
     }
   }
@@ -101,11 +143,16 @@ class FirestoreController {
     }
   }
 
-  Future deleteAllImage() async {
+  Future _deleteImage(String imagePath) async {
+    final strageRef = FirebaseStorage.instance.ref().child('user/${ref.read(firebaseAuthNotifierProvider).user!.uid}/$imagePath');
+    await strageRef.delete();
+  }
+
+  Future _deleteAllImage() async {
     final firebaseRef = FirebaseStorage.instance.ref().child('user/${ref.read(firebaseAuthNotifierProvider).user!.uid}');
     final list = await firebaseRef.listAll();
     for (final item in list.items) {
-      item.delete();
+      await item.delete();
     }
   }
 }

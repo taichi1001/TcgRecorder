@@ -140,7 +140,11 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
 
   void inputImage(XFile image) {
     final newImages = [...state.images, image];
-    state = state.copyWith(images: newImages);
+    final newAddImages = [...state.addImages, image];
+    state = state.copyWith(
+      images: newImages,
+      addImages: newAddImages,
+    );
   }
 
   void removeImage(int index) {
@@ -176,7 +180,7 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
     // recordを上書き
     await ref.read(recordRepository).update(state.record);
     await ref.read(dbHelper).fetchAll();
-    if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).setAll();
+    if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).addAll();
   }
 
   Future saveEditBO3() async {
@@ -205,7 +209,7 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
     // recordを上書き
     await ref.read(recordRepository).update(state.record);
     await ref.read(dbHelper).fetchAll();
-    if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).setAll();
+    if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).editRecord(state);
   }
 
   void _calcWinLossBO3() {

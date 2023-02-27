@@ -260,7 +260,7 @@ class _BrandListTile extends HookConsumerWidget {
         ref.read(dbHelper).removeRecordImage(targetRecord!);
         await ref.read(recordRepository).deleteById(record.recordId);
         ref.refresh(allRecordListProvider);
-        if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).setAll();
+        if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).deleteRecord(targetRecord);
       },
       editFunc: () async {
         await Navigator.push(

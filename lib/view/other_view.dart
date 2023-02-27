@@ -548,7 +548,7 @@ class _DeckListView extends HookConsumerWidget {
 
                             ref.refresh(allDeckListProvider);
                             ref.refresh(allRecordListProvider);
-                            if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).setAll();
+                            if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).addAll();
                           }
                         } else {
                           await showOkAlertDialog(
@@ -646,7 +646,7 @@ class _TagListView extends HookConsumerWidget {
 
                             ref.refresh(allTagListProvider);
                             ref.refresh(allRecordListProvider);
-                            if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).setAll();
+                            if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).addAll();
                           }
                         } else {
                           await showOkAlertDialog(

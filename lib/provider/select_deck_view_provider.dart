@@ -37,7 +37,7 @@ class SelectDeckViewNotifier extends StateNotifier<SelectDeckViewState> {
     );
     ref.read(deckRepository).insert(deck);
     ref.refresh(allDeckListProvider);
-    if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).setAll();
+    if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).addAll();
   }
 }
 

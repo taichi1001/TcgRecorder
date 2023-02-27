@@ -21,6 +21,7 @@ mixin _$RecordDetailState {
   MargedRecord get margedRecord => throw _privateConstructorUsedError;
   MargedRecord get editMargedRecord => throw _privateConstructorUsedError;
   List<XFile> get images => throw _privateConstructorUsedError;
+  List<XFile> get addImages => throw _privateConstructorUsedError;
   List<XFile> get removeImages => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -40,6 +41,7 @@ abstract class $RecordDetailStateCopyWith<$Res> {
       MargedRecord margedRecord,
       MargedRecord editMargedRecord,
       List<XFile> images,
+      List<XFile> addImages,
       List<XFile> removeImages});
 
   $RecordCopyWith<$Res> get record;
@@ -65,6 +67,7 @@ class _$RecordDetailStateCopyWithImpl<$Res, $Val extends RecordDetailState>
     Object? margedRecord = null,
     Object? editMargedRecord = null,
     Object? images = null,
+    Object? addImages = null,
     Object? removeImages = null,
   }) {
     return _then(_value.copyWith(
@@ -87,6 +90,10 @@ class _$RecordDetailStateCopyWithImpl<$Res, $Val extends RecordDetailState>
       images: null == images
           ? _value.images
           : images // ignore: cast_nullable_to_non_nullable
+              as List<XFile>,
+      addImages: null == addImages
+          ? _value.addImages
+          : addImages // ignore: cast_nullable_to_non_nullable
               as List<XFile>,
       removeImages: null == removeImages
           ? _value.removeImages
@@ -134,6 +141,7 @@ abstract class _$$_RecordDetailStateCopyWith<$Res>
       MargedRecord margedRecord,
       MargedRecord editMargedRecord,
       List<XFile> images,
+      List<XFile> addImages,
       List<XFile> removeImages});
 
   @override
@@ -160,6 +168,7 @@ class __$$_RecordDetailStateCopyWithImpl<$Res>
     Object? margedRecord = null,
     Object? editMargedRecord = null,
     Object? images = null,
+    Object? addImages = null,
     Object? removeImages = null,
   }) {
     return _then(_$_RecordDetailState(
@@ -183,6 +192,10 @@ class __$$_RecordDetailStateCopyWithImpl<$Res>
           ? _value._images
           : images // ignore: cast_nullable_to_non_nullable
               as List<XFile>,
+      addImages: null == addImages
+          ? _value._addImages
+          : addImages // ignore: cast_nullable_to_non_nullable
+              as List<XFile>,
       removeImages: null == removeImages
           ? _value._removeImages
           : removeImages // ignore: cast_nullable_to_non_nullable
@@ -200,8 +213,10 @@ class _$_RecordDetailState implements _RecordDetailState {
       required this.margedRecord,
       required this.editMargedRecord,
       final List<XFile> images = const [],
+      final List<XFile> addImages = const [],
       final List<XFile> removeImages = const []})
       : _images = images,
+        _addImages = addImages,
         _removeImages = removeImages;
 
   @override
@@ -222,6 +237,15 @@ class _$_RecordDetailState implements _RecordDetailState {
     return EqualUnmodifiableListView(_images);
   }
 
+  final List<XFile> _addImages;
+  @override
+  @JsonKey()
+  List<XFile> get addImages {
+    if (_addImages is EqualUnmodifiableListView) return _addImages;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_addImages);
+  }
+
   final List<XFile> _removeImages;
   @override
   @JsonKey()
@@ -233,7 +257,7 @@ class _$_RecordDetailState implements _RecordDetailState {
 
   @override
   String toString() {
-    return 'RecordDetailState(isEdit: $isEdit, record: $record, margedRecord: $margedRecord, editMargedRecord: $editMargedRecord, images: $images, removeImages: $removeImages)';
+    return 'RecordDetailState(isEdit: $isEdit, record: $record, margedRecord: $margedRecord, editMargedRecord: $editMargedRecord, images: $images, addImages: $addImages, removeImages: $removeImages)';
   }
 
   @override
@@ -249,6 +273,8 @@ class _$_RecordDetailState implements _RecordDetailState {
                 other.editMargedRecord == editMargedRecord) &&
             const DeepCollectionEquality().equals(other._images, _images) &&
             const DeepCollectionEquality()
+                .equals(other._addImages, _addImages) &&
+            const DeepCollectionEquality()
                 .equals(other._removeImages, _removeImages));
   }
 
@@ -260,6 +286,7 @@ class _$_RecordDetailState implements _RecordDetailState {
       margedRecord,
       editMargedRecord,
       const DeepCollectionEquality().hash(_images),
+      const DeepCollectionEquality().hash(_addImages),
       const DeepCollectionEquality().hash(_removeImages));
 
   @JsonKey(ignore: true)
@@ -277,6 +304,7 @@ abstract class _RecordDetailState implements RecordDetailState {
       required final MargedRecord margedRecord,
       required final MargedRecord editMargedRecord,
       final List<XFile> images,
+      final List<XFile> addImages,
       final List<XFile> removeImages}) = _$_RecordDetailState;
 
   @override
@@ -289,6 +317,8 @@ abstract class _RecordDetailState implements RecordDetailState {
   MargedRecord get editMargedRecord;
   @override
   List<XFile> get images;
+  @override
+  List<XFile> get addImages;
   @override
   List<XFile> get removeImages;
   @override

@@ -50,7 +50,7 @@ class BackupSettingsView extends HookConsumerWidget {
                     leading: const Icon(Icons.backup_outlined),
                     onPressed: (context) async {
                       isLoading.value = true;
-                      await ref.read(firestoreController).setAll();
+                      await ref.read(firestoreController).addAll();
                       isLoading.value = false;
                       if (context.mounted) {
                         await showOkAlertDialog(
