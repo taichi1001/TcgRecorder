@@ -8,7 +8,7 @@ import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/initital_game_registration_provider.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
-import 'package:tcg_manager/repository/record_firestore_repository.dart';
+import 'package:tcg_manager/provider/firestore_controller.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
 import 'package:tcg_manager/view/component/custom_textfield.dart';
 
@@ -66,7 +66,7 @@ class InitialGameRegistrationView extends HookConsumerWidget {
                     ),
                     ElevatedButton(
                       onPressed: () async {
-                        final isSuccess = await ref.read(firestoreRepository).restoreAll();
+                        final isSuccess = await ref.read(firestoreController).restoreAll();
                         if (context.mounted) {
                           await showOkAlertDialog(
                             context: context,

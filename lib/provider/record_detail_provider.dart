@@ -14,7 +14,7 @@ import 'package:tcg_manager/main.dart';
 import 'package:tcg_manager/provider/backup_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
-import 'package:tcg_manager/repository/record_firestore_repository.dart';
+import 'package:tcg_manager/provider/firestore_controller.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
 import 'package:tcg_manager/repository/tag_repository.dart';
 import 'package:tcg_manager/state/record_detail_state.dart';
@@ -176,7 +176,7 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
     // recordを上書き
     await ref.read(recordRepository).update(state.record);
     await ref.read(dbHelper).fetchAll();
-    if (ref.read(backupNotifierProvider)) await ref.read(firestoreRepository).setAll();
+    if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).setAll();
   }
 
   Future saveEditBO3() async {
@@ -205,7 +205,7 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
     // recordを上書き
     await ref.read(recordRepository).update(state.record);
     await ref.read(dbHelper).fetchAll();
-    if (ref.read(backupNotifierProvider)) await ref.read(firestoreRepository).setAll();
+    if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).setAll();
   }
 
   void _calcWinLossBO3() {

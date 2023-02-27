@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tcg_manager/dao/record_firestore_dao.dart';
+import 'package:tcg_manager/repository/firestore_repository.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/game.dart';
 import 'package:tcg_manager/entity/record.dart';
@@ -19,13 +19,14 @@ import 'package:tcg_manager/repository/game_repository.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
 import 'package:tcg_manager/repository/tag_repository.dart';
 
-final firestoreRepository = Provider.autoDispose<FirestoreRepository>((ref) => FirestoreRepository(ref));
+final firestoreController = Provider.autoDispose<FirestoreController>((ref) => FirestoreController(ref));
 
-class FirestoreRepository {
-  FirestoreRepository(this.ref);
+class FirestoreController {
+  FirestoreController(this.ref);
 
   final Ref ref;
-  final firestoreDao = FirestoreDao();
+
+  FirestoreRepository get firestoreRepo => ref.read(firestoreRepository);
 
   Future setAll() async {
     final record = await ref.read(allRecordListProvider.future);
@@ -35,7 +36,7 @@ class FirestoreRepository {
     final user = ref.read(firebaseAuthNotifierProvider).user?.uid;
 
     if (user != null) {
-      await firestoreDao.setAll(
+      await firestoreRepo.setAll(
         {
           'game': game.map((e) => e.toJson()).toList(),
           'deck': deck.map((e) => e.toJson()).toList(),
@@ -51,7 +52,7 @@ class FirestoreRepository {
   Future<bool> restoreAll() async {
     final user = ref.read(firebaseAuthNotifierProvider).user?.uid;
     if (user == null) return false;
-    final allData = await firestoreDao.getAll(user);
+    final allData = await firestoreRepo.getAll(user);
     if (allData == null) return false;
     final gameJson = allData['game'] as List;
     final gameList = gameJson.map((e) => Game.fromJson(e)).toList();
@@ -97,6 +98,14 @@ class FirestoreRepository {
         final file = File('$savePath/$imagePath');
         await strageRef.writeToFile(file);
       }
+    }
+  }
+
+  Future deleteAllImage() async {
+    final firebaseRef = FirebaseStorage.instance.ref().child('user/${ref.read(firebaseAuthNotifierProvider).user!.uid}');
+    final list = await firebaseRef.listAll();
+    for (final item in list.items) {
+      item.delete();
     }
   }
 }

@@ -33,7 +33,7 @@ import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 import 'package:tcg_manager/provider/theme_provider.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
-import 'package:tcg_manager/repository/record_firestore_repository.dart';
+import 'package:tcg_manager/provider/firestore_controller.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
 import 'package:tcg_manager/repository/tag_repository.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
@@ -548,7 +548,7 @@ class _DeckListView extends HookConsumerWidget {
 
                             ref.refresh(allDeckListProvider);
                             ref.refresh(allRecordListProvider);
-                            if (ref.read(backupNotifierProvider)) await ref.read(firestoreRepository).setAll();
+                            if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).setAll();
                           }
                         } else {
                           await showOkAlertDialog(
@@ -646,7 +646,7 @@ class _TagListView extends HookConsumerWidget {
 
                             ref.refresh(allTagListProvider);
                             ref.refresh(allRecordListProvider);
-                            if (ref.read(backupNotifierProvider)) await ref.read(firestoreRepository).setAll();
+                            if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).setAll();
                           }
                         } else {
                           await showOkAlertDialog(

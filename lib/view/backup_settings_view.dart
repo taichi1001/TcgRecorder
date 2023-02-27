@@ -6,7 +6,7 @@ import 'package:settings_ui/settings_ui.dart';
 import 'package:tcg_manager/helper/premium_plan_dialog.dart';
 import 'package:tcg_manager/provider/backup_provider.dart';
 import 'package:tcg_manager/provider/revenue_cat_provider.dart';
-import 'package:tcg_manager/repository/record_firestore_repository.dart';
+import 'package:tcg_manager/provider/firestore_controller.dart';
 
 class BackupSettingsView extends HookConsumerWidget {
   const BackupSettingsView({super.key});
@@ -50,7 +50,7 @@ class BackupSettingsView extends HookConsumerWidget {
                     leading: const Icon(Icons.backup_outlined),
                     onPressed: (context) async {
                       isLoading.value = true;
-                      await ref.read(firestoreRepository).setAll();
+                      await ref.read(firestoreController).setAll();
                       isLoading.value = false;
                       if (context.mounted) {
                         await showOkAlertDialog(
@@ -67,7 +67,7 @@ class BackupSettingsView extends HookConsumerWidget {
                     leading: const Icon(Icons.restore),
                     onPressed: (context) async {
                       isLoading.value = true;
-                      await ref.read(firestoreRepository).restoreAll();
+                      await ref.read(firestoreController).restoreAll();
                       isLoading.value = false;
                       if (context.mounted) {
                         await showOkAlertDialog(

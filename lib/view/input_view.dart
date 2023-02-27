@@ -29,7 +29,7 @@ import 'package:tcg_manager/provider/input_view_provider.dart';
 import 'package:tcg_manager/provider/input_view_settings_provider.dart';
 import 'package:tcg_manager/provider/revenue_cat_provider.dart';
 import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
-import 'package:tcg_manager/repository/record_firestore_repository.dart';
+import 'package:tcg_manager/provider/firestore_controller.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
 import 'package:tcg_manager/selector/game_tag_list_selector.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
@@ -717,7 +717,7 @@ class InputView extends HookConsumerWidget {
                                               }
                                             }
                                             ref.refresh(allDeckListProvider);
-                                            if (ref.read(backupNotifierProvider)) await ref.read(firestoreRepository).setAll();
+                                            if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).setAll();
                                             inputViewNotifier.resetView();
                                             SmartDialog.dismiss();
                                           }

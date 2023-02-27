@@ -6,7 +6,7 @@ import 'package:tcg_manager/enum/sort.dart';
 import 'package:tcg_manager/provider/backup_provider.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
-import 'package:tcg_manager/repository/record_firestore_repository.dart';
+import 'package:tcg_manager/provider/firestore_controller.dart';
 import 'package:tcg_manager/repository/tag_repository.dart';
 import 'package:tcg_manager/state/select_tag_view_state.dart';
 
@@ -37,7 +37,7 @@ class SelectTagViewNotifier extends StateNotifier<SelectTagViewState> {
     );
     ref.read(tagRepository).insert(tag);
     ref.refresh(allTagListProvider);
-    if (ref.read(backupNotifierProvider)) await ref.read(firestoreRepository).setAll();
+    if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).setAll();
   }
 }
 

@@ -7,7 +7,7 @@ import 'package:tcg_manager/provider/backup_provider.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
-import 'package:tcg_manager/repository/record_firestore_repository.dart';
+import 'package:tcg_manager/provider/firestore_controller.dart';
 import 'package:tcg_manager/state/select_deck_view_state.dart';
 
 class SelectDeckViewNotifier extends StateNotifier<SelectDeckViewState> {
@@ -37,7 +37,7 @@ class SelectDeckViewNotifier extends StateNotifier<SelectDeckViewState> {
     );
     ref.read(deckRepository).insert(deck);
     ref.refresh(allDeckListProvider);
-    if (ref.read(backupNotifierProvider)) await ref.read(firestoreRepository).setAll();
+    if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).setAll();
   }
 }
 

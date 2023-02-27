@@ -20,7 +20,7 @@ import 'package:tcg_manager/main.dart';
 import 'package:tcg_manager/provider/backup_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/record_list_view_provider.dart';
-import 'package:tcg_manager/repository/record_firestore_repository.dart';
+import 'package:tcg_manager/provider/firestore_controller.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
 import 'package:tcg_manager/selector/marged_record_list_selector.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
@@ -260,7 +260,7 @@ class _BrandListTile extends HookConsumerWidget {
         ref.read(dbHelper).removeRecordImage(targetRecord!);
         await ref.read(recordRepository).deleteById(record.recordId);
         ref.refresh(allRecordListProvider);
-        if (ref.read(backupNotifierProvider)) await ref.read(firestoreRepository).setAll();
+        if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).setAll();
       },
       editFunc: () async {
         await Navigator.push(

@@ -1,7 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tcg_manager/service/firestore.dart';
 
-class FirestoreDao {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+final firestoreRepository = Provider.autoDispose<FirestoreRepository>((ref) => FirestoreRepository(ref.watch(firestoreServiceProvider)));
+
+class FirestoreRepository {
+  final FirebaseFirestore _firestore;
+  FirestoreRepository(this._firestore);
 
   Future<Map<String, dynamic>?> getAll(String user) async {
     final result = await _firestore.collection('user').doc(user).get();
