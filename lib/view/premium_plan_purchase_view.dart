@@ -75,6 +75,12 @@ class PremiumPlanPurchaseView extends HookConsumerWidget {
                         icon: Icons.block,
                         iconColor: Colors.red,
                       ),
+                      _ContentsCard(
+                        title: S.of(context).premiumPlanBackupTitle,
+                        description: S.of(context).premiumPlanBackupDescription,
+                        icon: Icons.backup,
+                        iconColor: Colors.pink,
+                      ),
                       const Divider(height: 24),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,

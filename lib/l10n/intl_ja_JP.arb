@@ -83,6 +83,8 @@
     "premiumPlanExportDescription":"CSV形式でエクスポートします。\nアイデア次第で自由に分析できます。",
     "premiumPlanADBlockTitle":"広告表示なし",
     "premiumPlanADBlockDescription":"アプリ内の広告が全て非表示になります。",
+    "premiumPlanBackupTitle":"自動バックアップ",
+    "premiumPlanBackupDescription":"常に最新のデータをバックアップすることができます。",
     "year":"年",
     "month":"月",
     "yearPlan":"年額プラン",

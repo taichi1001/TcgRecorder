@@ -85,6 +85,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("アプリ内の広告が全て非表示になります。"),
         "premiumPlanADBlockTitle":
             MessageLookupByLibrary.simpleMessage("広告表示なし"),
+        "premiumPlanBackupDescription":
+            MessageLookupByLibrary.simpleMessage("常に最新のデータをバックアップすることができます。"),
+        "premiumPlanBackupTitle":
+            MessageLookupByLibrary.simpleMessage("自動バックアップ"),
         "premiumPlanCatchCopy":
             MessageLookupByLibrary.simpleMessage("より詳細に記録・分析して試合に勝ちましょう"),
         "premiumPlanDrawDescription":

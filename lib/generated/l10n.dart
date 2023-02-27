@@ -890,6 +890,26 @@ class S {
     );
   }
 
+  /// `Automatic backup`
+  String get premiumPlanBackupTitle {
+    return Intl.message(
+      'Automatic backup',
+      name: 'premiumPlanBackupTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You can always backup the latest data.`
+  String get premiumPlanBackupDescription {
+    return Intl.message(
+      'You can always backup the latest data.',
+      name: 'premiumPlanBackupDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `year`
   String get year {
     return Intl.message(
