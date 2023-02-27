@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:tcg_manager/helper/premium_plan_dialog.dart';
 import 'package:tcg_manager/provider/backup_provider.dart';
+import 'package:tcg_manager/provider/execution_limit_cound_provider.dart';
 import 'package:tcg_manager/provider/revenue_cat_provider.dart';
 import 'package:tcg_manager/provider/firestore_controller.dart';
 
@@ -14,6 +15,7 @@ class BackupSettingsView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final autoBackup = ref.watch(backupNotifierProvider);
     final isPremium = ref.watch(revenueCatNotifierProvider.select((value) => value.isPremium));
+    final executionCount = ref.watch(executionCountProvider);
     final isLoading = useState(false);
     return Stack(
       children: [
@@ -48,15 +50,27 @@ class BackupSettingsView extends HookConsumerWidget {
                   SettingsTile.navigation(
                     title: const Text('手動でバックアップ'),
                     leading: const Icon(Icons.backup_outlined),
+                    description: Text('本日のバックアップ回数: $executionCount/3'),
                     onPressed: (context) async {
-                      isLoading.value = true;
-                      await ref.read(firestoreController).addAll();
-                      isLoading.value = false;
-                      if (context.mounted) {
+                      if (ref.read(canExecuteProvider)) {
+                        isLoading.value = true;
+                        await ref.read(firestoreController).addAll();
+                        isLoading.value = false;
+                        if (context.mounted) {
+                          await showOkAlertDialog(
+                            context: context,
+                            title: 'バックアップ完了',
+                            message: 'バックアップが正常に完了しました。',
+                          );
+                          if (context.mounted) {
+                            ref.read(executionCountProvider.notifier).increment();
+                          }
+                        }
+                      } else {
                         await showOkAlertDialog(
                           context: context,
-                          title: 'バックアップ完了',
-                          message: 'バックアップが正常に完了しました。',
+                          title: 'バックアップ回数の上限到達',
+                          message: '手動バックアップは一日に3回までです。明日以降に再実行してください。',
                         );
                       }
                     },
