@@ -1,54 +1,67 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tcg_manager/dao/deck_dao.dart';
 import 'package:tcg_manager/entity/deck.dart';
+import 'package:tcg_manager/service/database.dart';
 
-final deckRepository = Provider.autoDispose<DeckRepository>((ref) => DeckRepositoryImpl(ref));
+final deckRepository = Provider.autoDispose<DeckRepository>((ref) => DeckRepository(ref));
 
-abstract class DeckRepository {
-  Future<List<Deck>> getAll();
-
-  Future<List<Deck>> getGameDeck(int id);
-
-  Future<int> insert(Deck deck);
-
-  Future<int> update(Deck deck);
-
-  Future insertList(List<Deck> decks);
-
-  Future<List<Object?>> updateDeckList(List<Deck> deckList);
-
-  Future<int> deleteById(int id);
-
-  Future deleteAll();
-}
-
-class DeckRepositoryImpl implements DeckRepository {
-  DeckRepositoryImpl(this.ref);
+class DeckRepository {
+  DeckRepository(this.ref);
 
   final Ref ref;
-  final deckDao = DeckDao();
+  final dbProvider = DatabaseService.dbProvider;
+  final tableName = DatabaseService.deckTableName;
 
-  @override
-  Future<List<Deck>> getAll() => deckDao.getAll();
+  Future<List<Deck>> getAll() async {
+    final db = await dbProvider.database;
+    final result = await db.query(tableName);
+    return result.isNotEmpty ? result.map((item) => Deck.fromJson(item)).toList() : [];
+  }
 
-  @override
-  Future<List<Deck>> getGameDeck(int id) => deckDao.getGameDeck(id);
+  Future<List<Deck>> getGameDeck(int id) async {
+    final db = await dbProvider.database;
+    final result = await db.query(tableName, where: 'game_id = ?', whereArgs: [id]);
+    return result.isNotEmpty ? result.map((item) => Deck.fromJson(item)).toList() : [];
+  }
 
-  @override
-  Future<int> insert(Deck deck) => deckDao.create(deck);
+  Future<int> insert(Deck deck) async {
+    final db = await dbProvider.database;
+    return db.insert(tableName, deck.toJson());
+  }
 
-  @override
-  Future<int> update(Deck deck) => deckDao.update(deck);
+  Future<int> update(Deck deck) async {
+    final db = await dbProvider.database;
+    try {
+      return await db.update(tableName, deck.toJson(), where: 'deck_id = ?', whereArgs: [deck.deckId]);
+    } catch (e) {
+      rethrow;
+    }
+  }
 
-  @override
-  Future insertList(List<Deck> decks) => deckDao.insertDeckList(decks);
+  Future<List<Object?>> insertList(List<Deck> decks) async {
+    final db = await dbProvider.database;
+    final batch = db.batch();
+    for (final deck in decks) {
+      batch.insert(tableName, deck.toJson());
+    }
+    return await batch.commit();
+  }
 
-  @override
-  Future<List<Object?>> updateDeckList(List<Deck> deckList) => deckDao.updateDeckList(deckList);
+  Future<List<Object?>> updateDeckList(List<Deck> deckList) async {
+    final db = await dbProvider.database;
+    final batch = db.batch();
+    for (final deck in deckList) {
+      batch.update(tableName, deck.toJson(), where: 'deck_id = ?', whereArgs: [deck.deckId]);
+    }
+    return await batch.commit();
+  }
 
-  @override
-  Future<int> deleteById(int id) => deckDao.delete(id);
+  Future<int> deleteById(int id) async {
+    final db = await dbProvider.database;
+    return await db.delete(tableName, where: 'deck_id = ?', whereArgs: [id]);
+  }
 
-  @override
-  Future deleteAll() => deckDao.deleteAll();
+  Future<int> deleteAll() async {
+    final db = await dbProvider.database;
+    return await db.delete(tableName);
+  }
 }
