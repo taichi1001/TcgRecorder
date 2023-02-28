@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tcg_manager/entity/firestore_backup.dart';
 import 'package:tcg_manager/service/firestore.dart';
 
 final firestoreRepository = Provider.autoDispose<FirestoreRepository>((ref) => FirestoreRepository(ref.watch(firestoreServiceProvider)));
@@ -8,13 +9,23 @@ class FirestoreRepository {
   final FirebaseFirestore _firestore;
   FirestoreRepository(this._firestore);
 
-  Future<Map<String, dynamic>?> getAll(String user) async {
+  // Future<Map<String, dynamic>?> getAll(String user) async {
+  //   final result = await _firestore.collection('user').doc(user).get();
+  //   return result.exists ? result.data() : null;
+  // }
+
+  Future<FirestoreBackup> getAll(String user) async {
     final result = await _firestore.collection('user').doc(user).get();
-    return result.exists ? result.data() : null;
+    return result.exists ? FirestoreBackup.fromJson(result.data()!) : FirestoreBackup();
   }
 
-  Future<bool> setAll(Map<String, dynamic> data, String user) async {
-    await _firestore.collection('user').doc(user).set(data);
+  // Future<bool> setAll(Map<String, dynamic> data, String user) async {
+  //   await _firestore.collection('user').doc(user).set(data);
+  //   return true;
+  // }
+
+  Future<bool> setAll(FirestoreBackup data, String user) async {
+    await _firestore.collection('user').doc(user).set(data.toJson());
     return true;
   }
 }

@@ -6,14 +6,26 @@ part of 'tag.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_Tag _$$_TagFromJson(Map<String, dynamic> json) => _$_Tag(
-      tagId: json['tag_id'] as int?,
-      tag: json['tag'] as String,
-      gameId: json['game_id'] as int?,
-      isVisibleToPicker: json['is_visible_to_picker'] == null
-          ? true
-          : _boolFromJson(json['is_visible_to_picker']),
-      sortIndex: json['sort_index'] as int?,
+_$_Tag _$$_TagFromJson(Map<String, dynamic> json) => $checkedCreate(
+      r'_$_Tag',
+      json,
+      ($checkedConvert) {
+        final val = _$_Tag(
+          tagId: $checkedConvert('tag_id', (v) => v as int?),
+          tag: $checkedConvert('tag', (v) => v as String),
+          gameId: $checkedConvert('game_id', (v) => v as int?),
+          isVisibleToPicker: $checkedConvert('is_visible_to_picker',
+              (v) => v == null ? true : _boolFromJson(v)),
+          sortIndex: $checkedConvert('sort_index', (v) => v as int?),
+        );
+        return val;
+      },
+      fieldKeyMap: const {
+        'tagId': 'tag_id',
+        'gameId': 'game_id',
+        'isVisibleToPicker': 'is_visible_to_picker',
+        'sortIndex': 'sort_index'
+      },
     );
 
 Map<String, dynamic> _$$_TagToJson(_$_Tag instance) => <String, dynamic>{
