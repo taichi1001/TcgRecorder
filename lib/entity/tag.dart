@@ -6,11 +6,11 @@ part 'tag.g.dart';
 @freezed
 class Tag with _$Tag {
   factory Tag({
-    @JsonKey(name: 'tag_id') int? tagId,
+    int? tagId,
     required String tag,
-    @JsonKey(name: 'game_id') int? gameId,
-    @Default(true) @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker') bool isVisibleToPicker,
-    @JsonKey(name: 'sort_index') int? sortIndex,
+    int? gameId,
+    @Default(true) @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson) bool isVisibleToPicker,
+    int? sortIndex,
   }) = _Tag;
   factory Tag.fromJson(Map<String, dynamic> json) => _$TagFromJson(json);
 }

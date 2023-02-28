@@ -20,17 +20,11 @@ Deck _$DeckFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Deck {
-  @JsonKey(name: 'deck_id')
   int? get deckId => throw _privateConstructorUsedError;
   String get deck => throw _privateConstructorUsedError;
-  @JsonKey(name: 'game_id')
   int? get gameId => throw _privateConstructorUsedError;
-  @JsonKey(
-      fromJson: _boolFromJson,
-      toJson: _boolToJson,
-      name: 'is_visible_to_picker')
+  @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
   bool get isVisibleToPicker => throw _privateConstructorUsedError;
-  @JsonKey(name: 'sort_index')
   int? get sortIndex => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -44,15 +38,12 @@ abstract class $DeckCopyWith<$Res> {
       _$DeckCopyWithImpl<$Res, Deck>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'deck_id')
-          int? deckId,
+      {int? deckId,
       String deck,
-      @JsonKey(name: 'game_id')
-          int? gameId,
-      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker')
+      int? gameId,
+      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
           bool isVisibleToPicker,
-      @JsonKey(name: 'sort_index')
-          int? sortIndex});
+      int? sortIndex});
 }
 
 /// @nodoc
@@ -106,15 +97,12 @@ abstract class _$$_DeckCopyWith<$Res> implements $DeckCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'deck_id')
-          int? deckId,
+      {int? deckId,
       String deck,
-      @JsonKey(name: 'game_id')
-          int? gameId,
-      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker')
+      int? gameId,
+      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
           bool isVisibleToPicker,
-      @JsonKey(name: 'sort_index')
-          int? sortIndex});
+      int? sortIndex});
 }
 
 /// @nodoc
@@ -161,34 +149,25 @@ class __$$_DeckCopyWithImpl<$Res> extends _$DeckCopyWithImpl<$Res, _$_Deck>
 @JsonSerializable()
 class _$_Deck implements _Deck {
   _$_Deck(
-      {@JsonKey(name: 'deck_id')
-          this.deckId,
+      {this.deckId,
       required this.deck,
-      @JsonKey(name: 'game_id')
-          this.gameId,
-      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker')
+      this.gameId,
+      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
           this.isVisibleToPicker = true,
-      @JsonKey(name: 'sort_index')
-          this.sortIndex});
+      this.sortIndex});
 
   factory _$_Deck.fromJson(Map<String, dynamic> json) => _$$_DeckFromJson(json);
 
   @override
-  @JsonKey(name: 'deck_id')
   final int? deckId;
   @override
   final String deck;
   @override
-  @JsonKey(name: 'game_id')
   final int? gameId;
   @override
-  @JsonKey(
-      fromJson: _boolFromJson,
-      toJson: _boolToJson,
-      name: 'is_visible_to_picker')
+  @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
   final bool isVisibleToPicker;
   @override
-  @JsonKey(name: 'sort_index')
   final int? sortIndex;
 
   @override
@@ -231,34 +210,25 @@ class _$_Deck implements _Deck {
 
 abstract class _Deck implements Deck {
   factory _Deck(
-      {@JsonKey(name: 'deck_id')
-          final int? deckId,
+      {final int? deckId,
       required final String deck,
-      @JsonKey(name: 'game_id')
-          final int? gameId,
-      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker')
+      final int? gameId,
+      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
           final bool isVisibleToPicker,
-      @JsonKey(name: 'sort_index')
-          final int? sortIndex}) = _$_Deck;
+      final int? sortIndex}) = _$_Deck;
 
   factory _Deck.fromJson(Map<String, dynamic> json) = _$_Deck.fromJson;
 
   @override
-  @JsonKey(name: 'deck_id')
   int? get deckId;
   @override
   String get deck;
   @override
-  @JsonKey(name: 'game_id')
   int? get gameId;
   @override
-  @JsonKey(
-      fromJson: _boolFromJson,
-      toJson: _boolToJson,
-      name: 'is_visible_to_picker')
+  @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
   bool get isVisibleToPicker;
   @override
-  @JsonKey(name: 'sort_index')
   int? get sortIndex;
   @override
   @JsonKey(ignore: true)

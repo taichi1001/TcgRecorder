@@ -20,17 +20,11 @@ Tag _$TagFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Tag {
-  @JsonKey(name: 'tag_id')
   int? get tagId => throw _privateConstructorUsedError;
   String get tag => throw _privateConstructorUsedError;
-  @JsonKey(name: 'game_id')
   int? get gameId => throw _privateConstructorUsedError;
-  @JsonKey(
-      fromJson: _boolFromJson,
-      toJson: _boolToJson,
-      name: 'is_visible_to_picker')
+  @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
   bool get isVisibleToPicker => throw _privateConstructorUsedError;
-  @JsonKey(name: 'sort_index')
   int? get sortIndex => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -44,15 +38,12 @@ abstract class $TagCopyWith<$Res> {
       _$TagCopyWithImpl<$Res, Tag>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'tag_id')
-          int? tagId,
+      {int? tagId,
       String tag,
-      @JsonKey(name: 'game_id')
-          int? gameId,
-      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker')
+      int? gameId,
+      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
           bool isVisibleToPicker,
-      @JsonKey(name: 'sort_index')
-          int? sortIndex});
+      int? sortIndex});
 }
 
 /// @nodoc
@@ -105,15 +96,12 @@ abstract class _$$_TagCopyWith<$Res> implements $TagCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'tag_id')
-          int? tagId,
+      {int? tagId,
       String tag,
-      @JsonKey(name: 'game_id')
-          int? gameId,
-      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker')
+      int? gameId,
+      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
           bool isVisibleToPicker,
-      @JsonKey(name: 'sort_index')
-          int? sortIndex});
+      int? sortIndex});
 }
 
 /// @nodoc
@@ -160,34 +148,25 @@ class __$$_TagCopyWithImpl<$Res> extends _$TagCopyWithImpl<$Res, _$_Tag>
 @JsonSerializable()
 class _$_Tag implements _Tag {
   _$_Tag(
-      {@JsonKey(name: 'tag_id')
-          this.tagId,
+      {this.tagId,
       required this.tag,
-      @JsonKey(name: 'game_id')
-          this.gameId,
-      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker')
+      this.gameId,
+      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
           this.isVisibleToPicker = true,
-      @JsonKey(name: 'sort_index')
-          this.sortIndex});
+      this.sortIndex});
 
   factory _$_Tag.fromJson(Map<String, dynamic> json) => _$$_TagFromJson(json);
 
   @override
-  @JsonKey(name: 'tag_id')
   final int? tagId;
   @override
   final String tag;
   @override
-  @JsonKey(name: 'game_id')
   final int? gameId;
   @override
-  @JsonKey(
-      fromJson: _boolFromJson,
-      toJson: _boolToJson,
-      name: 'is_visible_to_picker')
+  @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
   final bool isVisibleToPicker;
   @override
-  @JsonKey(name: 'sort_index')
   final int? sortIndex;
 
   @override
@@ -230,34 +209,25 @@ class _$_Tag implements _Tag {
 
 abstract class _Tag implements Tag {
   factory _Tag(
-      {@JsonKey(name: 'tag_id')
-          final int? tagId,
+      {final int? tagId,
       required final String tag,
-      @JsonKey(name: 'game_id')
-          final int? gameId,
-      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker')
+      final int? gameId,
+      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
           final bool isVisibleToPicker,
-      @JsonKey(name: 'sort_index')
-          final int? sortIndex}) = _$_Tag;
+      final int? sortIndex}) = _$_Tag;
 
   factory _Tag.fromJson(Map<String, dynamic> json) = _$_Tag.fromJson;
 
   @override
-  @JsonKey(name: 'tag_id')
   int? get tagId;
   @override
   String get tag;
   @override
-  @JsonKey(name: 'game_id')
   int? get gameId;
   @override
-  @JsonKey(
-      fromJson: _boolFromJson,
-      toJson: _boolToJson,
-      name: 'is_visible_to_picker')
+  @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
   bool get isVisibleToPicker;
   @override
-  @JsonKey(name: 'sort_index')
   int? get sortIndex;
   @override
   @JsonKey(ignore: true)

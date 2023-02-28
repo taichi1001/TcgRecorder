@@ -29,7 +29,7 @@ _$_Record _$$_RecordFromJson(Map<String, dynamic> json) => $checkedCreate(
               (v) => _nullableFirstSecondFromJson(v as int?)),
           secondMatchFirstSecond: $checkedConvert('second_match_first_second',
               (v) => _nullableFirstSecondFromJson(v as int?)),
-          thiredMatchFirstSecond: $checkedConvert('third_match_first_second',
+          thiredMatchFirstSecond: $checkedConvert('thired_match_first_second',
               (v) => _nullableFirstSecondFromJson(v as int?)),
           winLoss: $checkedConvert('win_loss',
               (v) => v == null ? WinLoss.win : _winLossFromJson(v as int)),
@@ -54,7 +54,7 @@ _$_Record _$$_RecordFromJson(Map<String, dynamic> json) => $checkedCreate(
         'firstSecond': 'first_second',
         'firstMatchFirstSecond': 'first_match_first_second',
         'secondMatchFirstSecond': 'second_match_first_second',
-        'thiredMatchFirstSecond': 'third_match_first_second',
+        'thiredMatchFirstSecond': 'thired_match_first_second',
         'winLoss': 'win_loss',
         'firstMatchWinLoss': 'first_match_win_loss',
         'secondMatchWinLoss': 'second_match_win_loss',
@@ -76,7 +76,7 @@ Map<String, dynamic> _$$_RecordToJson(_$_Record instance) => <String, dynamic>{
           _nullableFirstSecondToJson(instance.firstMatchFirstSecond),
       'second_match_first_second':
           _nullableFirstSecondToJson(instance.secondMatchFirstSecond),
-      'third_match_first_second':
+      'thired_match_first_second':
           _nullableFirstSecondToJson(instance.thiredMatchFirstSecond),
       'win_loss': _winLossToJson(instance.winLoss),
       'first_match_win_loss':
