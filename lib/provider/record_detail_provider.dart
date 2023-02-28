@@ -19,14 +19,14 @@ import 'package:tcg_manager/repository/record_repository.dart';
 import 'package:tcg_manager/repository/tag_repository.dart';
 import 'package:tcg_manager/state/record_detail_state.dart';
 
-class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
-  RecordDetailNotifier({
+class RecordEditViewNotifier extends StateNotifier<RecordEditViewState> {
+  RecordEditViewNotifier({
     required this.ref,
     required this.record,
     required this.margedRecord,
     required this.imagePath,
   }) : super(
-          RecordDetailState(
+          RecordEditViewState(
               record: record,
               margedRecord: margedRecord,
               editMargedRecord: margedRecord,
@@ -367,10 +367,10 @@ final recordListProvider = Provider<List<Record>>((ref) {
   return state.cast();
 });
 
-final recordDetailNotifierProvider =
-    StateNotifierProvider.family.autoDispose<RecordDetailNotifier, RecordDetailState, MargedRecord>((ref, margedRecord) {
+final recordEditViewNotifierProvider =
+    StateNotifierProvider.family.autoDispose<RecordEditViewNotifier, RecordEditViewState, MargedRecord>((ref, margedRecord) {
   final recordList = ref.watch(recordListProvider);
   final record = recordList.firstWhere((record) => record.recordId == margedRecord.recordId);
   final imagePath = ref.read(imagePathProvider);
-  return RecordDetailNotifier(ref: ref, record: record, margedRecord: margedRecord, imagePath: imagePath);
+  return RecordEditViewNotifier(ref: ref, record: record, margedRecord: margedRecord, imagePath: imagePath);
 });

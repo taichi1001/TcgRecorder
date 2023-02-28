@@ -54,7 +54,7 @@ class FirestoreController {
     }
   }
 
-  Future editRecord(RecordDetailState recordDetailState) async {
+  Future editRecord(RecordEditViewState recordDetailState) async {
     if (!isUser) return;
     _setAll();
     if (recordDetailState.addImages.isEmpty && recordDetailState.removeImages.isEmpty) return;

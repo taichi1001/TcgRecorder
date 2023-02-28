@@ -6,8 +6,8 @@ import 'package:tcg_manager/entity/record.dart';
 part 'record_detail_state.freezed.dart';
 
 @freezed
-abstract class RecordDetailState with _$RecordDetailState {
-  factory RecordDetailState({
+abstract class RecordEditViewState with _$RecordEditViewState {
+  factory RecordEditViewState({
     @Default(false) bool isEdit,
     required Record record,
     required MargedRecord margedRecord,
@@ -15,5 +15,5 @@ abstract class RecordDetailState with _$RecordDetailState {
     @Default([]) List<XFile> images,
     @Default([]) List<XFile> addImages,
     @Default([]) List<XFile> removeImages,
-  }) = _RecordDetailState;
+  }) = _RecordEditViewState;
 }

@@ -78,7 +78,7 @@ class RecordEditView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final recordDetailNotifier = ref.watch(recordDetailNotifierProvider(margedRecord).notifier);
+    final recordDetailNotifier = ref.watch(recordEditViewNotifierProvider(margedRecord).notifier);
     final isBO3 = ref.watch(recordEditViewSettingsNotifierProvider(margedRecord).select((value) => value.bo3));
     return WillPopScope(
       onWillPop: (() async {
@@ -149,10 +149,10 @@ class _EditView extends HookConsumerWidget {
     }, const []);
     final recordEditViewInfo = ref.watch(recordEditViewInfoProvider);
 
-    final editMargedRecord = ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.editMargedRecord));
-    final images = ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.images));
-    final recordDetailNotifier = ref.watch(recordDetailNotifierProvider(margedRecord).notifier);
-    final recordDetailState = ref.watch(recordDetailNotifierProvider(margedRecord));
+    final editMargedRecord = ref.watch(recordEditViewNotifierProvider(margedRecord).select((value) => value.editMargedRecord));
+    final images = ref.watch(recordEditViewNotifierProvider(margedRecord).select((value) => value.images));
+    final recordDetailNotifier = ref.watch(recordEditViewNotifierProvider(margedRecord).notifier);
+    final recordDetailState = ref.watch(recordEditViewNotifierProvider(margedRecord));
     final firstSecond = recordDetailState.editMargedRecord.firstSecond;
     final firstMatchFirstSecond = recordDetailState.editMargedRecord.firstMatchFirstSecond;
     final secondMatchFirstSecond = recordDetailState.editMargedRecord.secondMatchFirstSecond;
