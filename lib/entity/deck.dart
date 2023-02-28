@@ -1,13 +1,14 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:tcg_manager/entity/domain_data.dart';
 
 part 'deck.freezed.dart';
 part 'deck.g.dart';
 
 @freezed
-class Deck with _$Deck {
+class Deck with _$Deck implements DomainData {
   factory Deck({
-    int? deckId,
-    required String deck,
+    @JsonKey(name: 'deck_id') int? id,
+    @JsonKey(name: 'deck') required String name,
     int? gameId,
     @Default(true) @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson) bool isVisibleToPicker,
     int? sortIndex,

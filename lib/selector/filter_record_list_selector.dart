@@ -46,11 +46,11 @@ final filterRecordListProvider = FutureProvider.autoDispose<List<Record>>((ref) 
   }
 
   if (filter.useDeck != null) {
-    filterdList = filterdList.where((record) => record.useDeckId == filter.useDeck!.deckId).toList();
+    filterdList = filterdList.where((record) => record.useDeckId == filter.useDeck!.id).toList();
   }
 
   if (filter.opponentDeck != null) {
-    filterdList = filterdList.where((record) => record.opponentDeckId == filter.opponentDeck!.deckId).toList();
+    filterdList = filterdList.where((record) => record.opponentDeckId == filter.opponentDeck!.id).toList();
   }
 
   if (filter.tagList.isNotEmpty) {
@@ -60,7 +60,7 @@ final filterRecordListProvider = FutureProvider.autoDispose<List<Record>>((ref) 
       for (final tag in filter.tagList) {
         var i = 0;
         for (final tagId in record.tagId) {
-          if (tagId == tag.tagId) {
+          if (tagId == tag.id) {
             judgeList.add(true);
             break;
           } else {

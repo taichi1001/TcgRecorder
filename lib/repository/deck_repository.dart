@@ -31,7 +31,7 @@ class DeckRepository {
   Future<int> update(Deck deck) async {
     final db = await dbProvider.database;
     try {
-      return await db.update(tableName, deck.toJson(), where: 'deck_id = ?', whereArgs: [deck.deckId]);
+      return await db.update(tableName, deck.toJson(), where: 'deck_id = ?', whereArgs: [deck.id]);
     } catch (e) {
       rethrow;
     }
@@ -50,7 +50,7 @@ class DeckRepository {
     final db = await dbProvider.database;
     final batch = db.batch();
     for (final deck in deckList) {
-      batch.update(tableName, deck.toJson(), where: 'deck_id = ?', whereArgs: [deck.deckId]);
+      batch.update(tableName, deck.toJson(), where: 'deck_id = ?', whereArgs: [deck.id]);
     }
     return await batch.commit();
   }

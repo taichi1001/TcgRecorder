@@ -53,8 +53,7 @@ class DatabaseService {
       }
 
       if (oldVersion < 4) {
-        await database.execute(
-            '''
+        await database.execute('''
           CREATE TABLE ${recordTableName}_new (
           record_id INTEGER PRIMARY KEY AUTOINCREMENT,
           date TEXT NOT NULL,
@@ -89,7 +88,7 @@ class DatabaseService {
                   firstSecond: recordOld.firstSecond,
                   firstMatchFirstSecond: recordOld.firstMatchFirstSecond,
                   secondMatchFirstSecond: recordOld.secondMatchFirstSecond,
-                  thiredMatchFirstSecond: recordOld.thiredMatchFirstSecond,
+                  thirdMatchFirstSecond: recordOld.thiredMatchFirstSecond,
                   winLoss: recordOld.winLoss,
                   firstMatchWinLoss: recordOld.firstMatchWinLoss,
                   secondMatchWinLoss: recordOld.secondMatchWinLoss,
@@ -110,8 +109,7 @@ class DatabaseService {
   }
 
   Future initDB(Database database, int version) async {
-    await database.execute(
-        '''
+    await database.execute('''
       CREATE TABLE $recordTableName (
         record_id INTEGER PRIMARY KEY AUTOINCREMENT,
         date TEXT NOT NULL,
@@ -132,8 +130,7 @@ class DatabaseService {
         image_path TEXT
       )
     ''');
-    await database.execute(
-        '''
+    await database.execute('''
       CREATE TABLE $gameTableName (
         game_id INTEGER PRIMARY KEY AUTOINCREMENT,
         game TEXT NOT NULL,
@@ -141,8 +138,7 @@ class DatabaseService {
         unique(game)
       )
     ''');
-    await database.execute(
-        '''
+    await database.execute('''
       CREATE TABLE $deckTableName (
         deck_id INTEGER PRIMARY KEY AUTOINCREMENT,
         deck TEXT NOT NULL,
@@ -152,8 +148,7 @@ class DatabaseService {
         unique(deck, game_id)
       )
     ''');
-    await database.execute(
-        '''
+    await database.execute('''
       CREATE TABLE $tagTableName (
         tag_id INTEGER PRIMARY KEY AUTOINCREMENT,
         tag TEXT NOT NULL,

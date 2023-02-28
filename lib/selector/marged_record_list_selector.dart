@@ -20,32 +20,32 @@ final margedRecordListProvider = FutureProvider.autoDispose<List<MargedRecord>>(
   // removeWhere内でそのレコードを取り除く
   filterRecordList.removeWhere((record) {
     final game = allGameList.singleWhere((value) => value.gameId == record.gameId, orElse: () => Game(game: ''));
-    final useDeck = allDeckList.singleWhere((value) => value.deckId == record.useDeckId, orElse: () => Deck(deck: ''));
-    final opponentDeck = allDeckList.singleWhere((value) => value.deckId == record.opponentDeckId, orElse: () => Deck(deck: ''));
-    if (game.gameId == null || useDeck.deckId == null || opponentDeck.deckId == null) return true;
+    final useDeck = allDeckList.singleWhere((value) => value.id == record.useDeckId, orElse: () => Deck(name: ''));
+    final opponentDeck = allDeckList.singleWhere((value) => value.id == record.opponentDeckId, orElse: () => Deck(name: ''));
+    if (game.gameId == null || useDeck.id == null || opponentDeck.id == null) return true;
     return false;
   });
 
   final list = filterRecordList.map((Record record) {
     final game = allGameList.singleWhere((value) => value.gameId == record.gameId);
-    final useDeck = allDeckList.singleWhere((value) => value.deckId == record.useDeckId);
-    final opponentDeck = allDeckList.singleWhere((value) => value.deckId == record.opponentDeckId);
+    final useDeck = allDeckList.singleWhere((value) => value.id == record.useDeckId);
+    final opponentDeck = allDeckList.singleWhere((value) => value.id == record.opponentDeckId);
     List<Tag> tagList = [];
     for (final tagId in record.tagId) {
-      final tag = allTagList.firstWhere((value) => value.tagId == tagId);
+      final tag = allTagList.firstWhere((value) => value.id == tagId);
       tagList.add(tag);
     }
     return MargedRecord(
       recordId: record.recordId!,
       game: game.game,
-      useDeck: useDeck.deck,
-      opponentDeck: opponentDeck.deck,
-      tag: tagList.map((e) => e.tag).toList(),
+      useDeck: useDeck.name,
+      opponentDeck: opponentDeck.name,
+      tag: tagList.map((e) => e.name).toList(),
       bo: record.bo,
       firstSecond: record.firstSecond,
       firstMatchFirstSecond: record.firstMatchFirstSecond,
       secondMatchFirstSecond: record.secondMatchFirstSecond,
-      thirdMatchFirstSecond: record.thiredMatchFirstSecond,
+      thirdMatchFirstSecond: record.thirdMatchFirstSecond,
       winLoss: record.winLoss,
       firstMatchWinLoss: record.firstMatchWinLoss,
       secondMatchWinLoss: record.secondMatchWinLoss,
@@ -69,32 +69,32 @@ final allMargedRecordListProvider = FutureProvider.autoDispose<List<MargedRecord
   // removeWhere内でそのレコードを取り除く
   allRecordList.removeWhere((record) {
     final game = allGameList.singleWhere((value) => value.gameId == record.gameId, orElse: () => Game(game: ''));
-    final useDeck = allDeckList.singleWhere((value) => value.deckId == record.useDeckId, orElse: () => Deck(deck: ''));
-    final opponentDeck = allDeckList.singleWhere((value) => value.deckId == record.opponentDeckId, orElse: () => Deck(deck: ''));
-    if (game.gameId == null || useDeck.deckId == null || opponentDeck.deckId == null) return true;
+    final useDeck = allDeckList.singleWhere((value) => value.id == record.useDeckId, orElse: () => Deck(name: ''));
+    final opponentDeck = allDeckList.singleWhere((value) => value.id == record.opponentDeckId, orElse: () => Deck(name: ''));
+    if (game.gameId == null || useDeck.id == null || opponentDeck.id == null) return true;
     return false;
   });
 
   final list = allRecordList.map((Record record) {
     final game = allGameList.singleWhere((value) => value.gameId == record.gameId);
-    final useDeck = allDeckList.singleWhere((value) => value.deckId == record.useDeckId);
-    final opponentDeck = allDeckList.singleWhere((value) => value.deckId == record.opponentDeckId);
+    final useDeck = allDeckList.singleWhere((value) => value.id == record.useDeckId);
+    final opponentDeck = allDeckList.singleWhere((value) => value.id == record.opponentDeckId);
     List<Tag> tagList = [];
     for (final tagId in record.tagId) {
-      final tag = allTagList.firstWhere((value) => value.tagId == tagId);
+      final tag = allTagList.firstWhere((value) => value.id == tagId);
       tagList.add(tag);
     }
     return MargedRecord(
       recordId: record.recordId!,
       game: game.game,
-      useDeck: useDeck.deck,
-      opponentDeck: opponentDeck.deck,
-      tag: tagList.map((e) => e.tag).toList(),
+      useDeck: useDeck.name,
+      opponentDeck: opponentDeck.name,
+      tag: tagList.map((e) => e.name).toList(),
       bo: record.bo,
       firstSecond: record.firstSecond,
       firstMatchFirstSecond: record.firstMatchFirstSecond,
       secondMatchFirstSecond: record.secondMatchFirstSecond,
-      thirdMatchFirstSecond: record.thiredMatchFirstSecond,
+      thirdMatchFirstSecond: record.thirdMatchFirstSecond,
       winLoss: record.winLoss,
       firstMatchWinLoss: record.firstMatchWinLoss,
       secondMatchWinLoss: record.secondMatchWinLoss,

@@ -20,8 +20,10 @@ Tag _$TagFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Tag {
-  int? get tagId => throw _privateConstructorUsedError;
-  String get tag => throw _privateConstructorUsedError;
+  @JsonKey(name: 'tag_id')
+  int? get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'tag')
+  String get name => throw _privateConstructorUsedError;
   int? get gameId => throw _privateConstructorUsedError;
   @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
   bool get isVisibleToPicker => throw _privateConstructorUsedError;
@@ -38,8 +40,10 @@ abstract class $TagCopyWith<$Res> {
       _$TagCopyWithImpl<$Res, Tag>;
   @useResult
   $Res call(
-      {int? tagId,
-      String tag,
+      {@JsonKey(name: 'tag_id')
+          int? id,
+      @JsonKey(name: 'tag')
+          String name,
       int? gameId,
       @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
           bool isVisibleToPicker,
@@ -58,20 +62,20 @@ class _$TagCopyWithImpl<$Res, $Val extends Tag> implements $TagCopyWith<$Res> {
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? tagId = freezed,
-    Object? tag = null,
+    Object? id = freezed,
+    Object? name = null,
     Object? gameId = freezed,
     Object? isVisibleToPicker = null,
     Object? sortIndex = freezed,
   }) {
     return _then(_value.copyWith(
-      tagId: freezed == tagId
-          ? _value.tagId
-          : tagId // ignore: cast_nullable_to_non_nullable
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as int?,
-      tag: null == tag
-          ? _value.tag
-          : tag // ignore: cast_nullable_to_non_nullable
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
               as String,
       gameId: freezed == gameId
           ? _value.gameId
@@ -96,8 +100,10 @@ abstract class _$$_TagCopyWith<$Res> implements $TagCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {int? tagId,
-      String tag,
+      {@JsonKey(name: 'tag_id')
+          int? id,
+      @JsonKey(name: 'tag')
+          String name,
       int? gameId,
       @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
           bool isVisibleToPicker,
@@ -113,20 +119,20 @@ class __$$_TagCopyWithImpl<$Res> extends _$TagCopyWithImpl<$Res, _$_Tag>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? tagId = freezed,
-    Object? tag = null,
+    Object? id = freezed,
+    Object? name = null,
     Object? gameId = freezed,
     Object? isVisibleToPicker = null,
     Object? sortIndex = freezed,
   }) {
     return _then(_$_Tag(
-      tagId: freezed == tagId
-          ? _value.tagId
-          : tagId // ignore: cast_nullable_to_non_nullable
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as int?,
-      tag: null == tag
-          ? _value.tag
-          : tag // ignore: cast_nullable_to_non_nullable
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
               as String,
       gameId: freezed == gameId
           ? _value.gameId
@@ -148,8 +154,10 @@ class __$$_TagCopyWithImpl<$Res> extends _$TagCopyWithImpl<$Res, _$_Tag>
 @JsonSerializable()
 class _$_Tag implements _Tag {
   _$_Tag(
-      {this.tagId,
-      required this.tag,
+      {@JsonKey(name: 'tag_id')
+          this.id,
+      @JsonKey(name: 'tag')
+          required this.name,
       this.gameId,
       @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
           this.isVisibleToPicker = true,
@@ -158,9 +166,11 @@ class _$_Tag implements _Tag {
   factory _$_Tag.fromJson(Map<String, dynamic> json) => _$$_TagFromJson(json);
 
   @override
-  final int? tagId;
+  @JsonKey(name: 'tag_id')
+  final int? id;
   @override
-  final String tag;
+  @JsonKey(name: 'tag')
+  final String name;
   @override
   final int? gameId;
   @override
@@ -171,7 +181,7 @@ class _$_Tag implements _Tag {
 
   @override
   String toString() {
-    return 'Tag(tagId: $tagId, tag: $tag, gameId: $gameId, isVisibleToPicker: $isVisibleToPicker, sortIndex: $sortIndex)';
+    return 'Tag(id: $id, name: $name, gameId: $gameId, isVisibleToPicker: $isVisibleToPicker, sortIndex: $sortIndex)';
   }
 
   @override
@@ -179,8 +189,8 @@ class _$_Tag implements _Tag {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Tag &&
-            (identical(other.tagId, tagId) || other.tagId == tagId) &&
-            (identical(other.tag, tag) || other.tag == tag) &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.name, name) || other.name == name) &&
             (identical(other.gameId, gameId) || other.gameId == gameId) &&
             (identical(other.isVisibleToPicker, isVisibleToPicker) ||
                 other.isVisibleToPicker == isVisibleToPicker) &&
@@ -190,8 +200,8 @@ class _$_Tag implements _Tag {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, tagId, tag, gameId, isVisibleToPicker, sortIndex);
+  int get hashCode =>
+      Object.hash(runtimeType, id, name, gameId, isVisibleToPicker, sortIndex);
 
   @JsonKey(ignore: true)
   @override
@@ -209,8 +219,10 @@ class _$_Tag implements _Tag {
 
 abstract class _Tag implements Tag {
   factory _Tag(
-      {final int? tagId,
-      required final String tag,
+      {@JsonKey(name: 'tag_id')
+          final int? id,
+      @JsonKey(name: 'tag')
+          required final String name,
       final int? gameId,
       @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
           final bool isVisibleToPicker,
@@ -219,9 +231,11 @@ abstract class _Tag implements Tag {
   factory _Tag.fromJson(Map<String, dynamic> json) = _$_Tag.fromJson;
 
   @override
-  int? get tagId;
+  @JsonKey(name: 'tag_id')
+  int? get id;
   @override
-  String get tag;
+  @JsonKey(name: 'tag')
+  String get name;
   @override
   int? get gameId;
   @override

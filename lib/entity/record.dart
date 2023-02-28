@@ -19,7 +19,7 @@ class Record with _$Record {
     @Default(FirstSecond.first) @JsonKey(fromJson: _firstSecondFromJson, toJson: _firstSecondToJson) FirstSecond firstSecond,
     @JsonKey(fromJson: _nullableFirstSecondFromJson, toJson: _nullableFirstSecondToJson) FirstSecond? firstMatchFirstSecond,
     @JsonKey(fromJson: _nullableFirstSecondFromJson, toJson: _nullableFirstSecondToJson) FirstSecond? secondMatchFirstSecond,
-    @JsonKey(fromJson: _nullableFirstSecondFromJson, toJson: _nullableFirstSecondToJson) FirstSecond? thiredMatchFirstSecond,
+    @JsonKey(fromJson: _nullableFirstSecondFromJson, toJson: _nullableFirstSecondToJson) FirstSecond? thirdMatchFirstSecond,
     @Default(WinLoss.win) @JsonKey(fromJson: _winLossFromJson, toJson: _winLossToJson) WinLoss winLoss,
     @JsonKey(fromJson: _nullableWinLossFromJson, toJson: _nullableWinLossToJson) WinLoss? firstMatchWinLoss,
     @JsonKey(fromJson: _nullableWinLossFromJson, toJson: _nullableWinLossToJson) WinLoss? secondMatchWinLoss,

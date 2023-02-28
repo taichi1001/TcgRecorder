@@ -11,8 +11,8 @@ _$_Deck _$$_DeckFromJson(Map<String, dynamic> json) => $checkedCreate(
       json,
       ($checkedConvert) {
         final val = _$_Deck(
-          deckId: $checkedConvert('deck_id', (v) => v as int?),
-          deck: $checkedConvert('deck', (v) => v as String),
+          id: $checkedConvert('deck_id', (v) => v as int?),
+          name: $checkedConvert('deck', (v) => v as String),
           gameId: $checkedConvert('game_id', (v) => v as int?),
           isVisibleToPicker: $checkedConvert('is_visible_to_picker',
               (v) => v == null ? true : _boolFromJson(v)),
@@ -21,7 +21,8 @@ _$_Deck _$$_DeckFromJson(Map<String, dynamic> json) => $checkedCreate(
         return val;
       },
       fieldKeyMap: const {
-        'deckId': 'deck_id',
+        'id': 'deck_id',
+        'name': 'deck',
         'gameId': 'game_id',
         'isVisibleToPicker': 'is_visible_to_picker',
         'sortIndex': 'sort_index'
@@ -29,8 +30,8 @@ _$_Deck _$$_DeckFromJson(Map<String, dynamic> json) => $checkedCreate(
     );
 
 Map<String, dynamic> _$$_DeckToJson(_$_Deck instance) => <String, dynamic>{
-      'deck_id': instance.deckId,
-      'deck': instance.deck,
+      'deck_id': instance.id,
+      'deck': instance.name,
       'game_id': instance.gameId,
       'is_visible_to_picker': _boolToJson(instance.isVisibleToPicker),
       'sort_index': instance.sortIndex,

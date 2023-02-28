@@ -30,7 +30,7 @@ class TagRepository {
 
   Future<int> update(Tag tag) async {
     final db = await dbProvider.database;
-    return await db.update(tableName, tag.toJson(), where: 'tag_id = ?', whereArgs: [tag.tagId]);
+    return await db.update(tableName, tag.toJson(), where: 'tag_id = ?', whereArgs: [tag.id]);
   }
 
   Future<List<Object?>> insertList(List<Tag> tagList) async {
@@ -46,7 +46,7 @@ class TagRepository {
     final db = await dbProvider.database;
     final batch = db.batch();
     for (final tag in tagList) {
-      batch.update(tableName, tag.toJson(), where: 'tag_id = ?', whereArgs: [tag.tagId]);
+      batch.update(tableName, tag.toJson(), where: 'tag_id = ?', whereArgs: [tag.id]);
     }
     return await batch.commit();
   }

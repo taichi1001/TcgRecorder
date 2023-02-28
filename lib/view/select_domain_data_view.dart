@@ -5,46 +5,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:tcg_manager/entity/deck.dart';
+import 'package:tcg_manager/entity/domain_data.dart';
+import 'package:tcg_manager/entity/game.dart';
 import 'package:tcg_manager/entity/tag.dart';
+import 'package:tcg_manager/enum/domain_data_type.dart';
 import 'package:tcg_manager/enum/sort.dart';
 import 'package:tcg_manager/helper/convert_sort_string.dart';
-import 'package:tcg_manager/helper/db_helper.dart';
+import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/record_list_view_provider.dart';
-import 'package:tcg_manager/provider/select_tag_view_provider.dart';
+import 'package:tcg_manager/provider/select_domain_data_view_provider.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
+import 'package:tcg_manager/repository/deck_repository.dart';
 import 'package:tcg_manager/repository/tag_repository.dart';
-import 'package:tcg_manager/selector/recently_use_tag_selector.dart';
-import 'package:tcg_manager/selector/search_exact_match_tag_selector.dart';
-import 'package:tcg_manager/selector/search_tag_list_selector.dart';
-import 'package:tcg_manager/selector/sorted_tag_list_selector.dart';
+import 'package:tcg_manager/selector/search_exact_match_domain_data_selector.dart';
+import 'package:tcg_manager/selector/select_domain_view_info_selector.dart';
+import 'package:tcg_manager/selector/sorted_domain_data_list_selector.dart';
 
-class SelectTagViewInfo {
-  const SelectTagViewInfo({
-    required this.gameTagList,
-    required this.searchTagList,
-    required this.recentlyUseTagList,
-  });
-
-  final List<Tag> gameTagList;
-  final List<Tag> searchTagList;
-  final List<Tag> recentlyUseTagList;
-}
-
-final selectTagViewInfoProvider = FutureProvider.autoDispose<SelectTagViewInfo>((ref) async {
-  final gameTagList = await ref.watch(sortedTagListProvider.future);
-  final searchTagList = await ref.watch(searchTagListProvider.future);
-  final recentlyUseTagList = await ref.watch(recentlyUseTagProvider.future);
-  return SelectTagViewInfo(
-    gameTagList: gameTagList,
-    searchTagList: searchTagList,
-    recentlyUseTagList: recentlyUseTagList,
-  );
-});
-
-class SelectTagView extends HookConsumerWidget {
-  const SelectTagView({
-    required this.selectTagFunc,
+class SelectDomainDataView extends HookConsumerWidget {
+  const SelectDomainDataView({
+    required this.selectDomainDataFunc,
     required this.tagCount,
+    required this.dataType,
     this.deselectionFunc,
     this.afterFunc,
     this.enableVisiblity = false,
@@ -52,8 +34,9 @@ class SelectTagView extends HookConsumerWidget {
     key,
   }) : super(key: key);
 
-  final Function(Tag, int) selectTagFunc;
-  final Function(Tag)? deselectionFunc;
+  final Function(DomainData, int) selectDomainDataFunc;
+  final Function(DomainData)? deselectionFunc;
+  final DomainDataType dataType;
   final Function? afterFunc;
   final bool enableVisiblity;
   final int tagCount;
@@ -62,7 +45,7 @@ class SelectTagView extends HookConsumerWidget {
   @override
   // ignore: avoid_renaming_method_parameters
   Widget build(BuildContext rootContext, WidgetRef ref) {
-    final selectTagViewNotifier = ref.watch(selectTagViewNotifierProvider.notifier);
+    final selectDomainDataViewNotifier = ref.watch(selectDomainDataViewNotifierProvider(dataType).notifier);
     final searchTextController = useTextEditingController(text: '');
     final searchFocusNode = useFocusNode();
     final isSearchFocus = useState(false);
@@ -75,7 +58,7 @@ class SelectTagView extends HookConsumerWidget {
     });
 
     searchTextController.addListener(() {
-      selectTagViewNotifier.setSearchText(searchTextController.text);
+      selectDomainDataViewNotifier.setSearchText(searchTextController.text);
       if (searchTextController.text == '') {
         isSearchText.value = false;
       } else {
@@ -91,13 +74,13 @@ class SelectTagView extends HookConsumerWidget {
             builder: (context2) => Builder(
               builder: (context) {
                 // こいつだけここに置かないと更新されなかった。理由は不明。
-                final selectTagViewInfo = ref.watch(selectTagViewInfoProvider);
-                final searchText = ref.watch(selectTagViewNotifierProvider.select((value) => value.searchText));
-                final searchExactMatchTag = ref.watch(searchExactMatchTagProvider);
-                final selectetTagList = ref.watch(recordListViewNotifierProvider.select((value) => value.tagList));
+                final selectDomainViewInfo = ref.watch(selectDomainViewInfoProvider(dataType));
+                final searchText = ref.watch(selectDomainDataViewNotifierProvider(dataType).select((value) => value.searchText));
+                final searchExactMatchDomainData = ref.watch(searchExactMatchDomainDataProvider(dataType));
+                final selectetDomainDataList = ref.watch(recordListViewNotifierProvider.select((value) => value.tagList));
 
-                return selectTagViewInfo.when(
-                  data: (selectTagViewInfo) {
+                return selectDomainViewInfo.when(
+                  data: (selectDomainViewInfo) {
                     return Scaffold(
                       appBar: AppBar(
                         leading: Icon(
@@ -142,10 +125,10 @@ class SelectTagView extends HookConsumerWidget {
                             controller: ModalScrollController.of(context),
                             child: (() {
                               // 検索結果がなかった場合
-                              if (isSearch.value && selectTagViewInfo.searchTagList.isEmpty && searchText != '') {
+                              if (isSearch.value && selectDomainViewInfo.searchDomainDataList.isEmpty && searchText != '') {
                                 return GestureDetector(
                                   onTap: () {
-                                    selectTagViewNotifier.saveTag(searchText);
+                                    selectDomainDataViewNotifier.saveDomainData(searchText);
                                   },
                                   child: Container(
                                     padding: const EdgeInsets.all(16),
@@ -159,8 +142,8 @@ class SelectTagView extends HookConsumerWidget {
                                 );
                                 // 完全一致の検索結果があった場合
                               } else if (isSearch.value &&
-                                  selectTagViewInfo.searchTagList.isNotEmpty &&
-                                  searchExactMatchTag.asData?.value != null &&
+                                  selectDomainViewInfo.searchDomainDataList.isNotEmpty &&
+                                  searchExactMatchDomainData.asData?.value != null &&
                                   searchText != '') {
                                 return Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
@@ -173,11 +156,11 @@ class SelectTagView extends HookConsumerWidget {
                                         style: Theme.of(context).textTheme.bodySmall,
                                       ),
                                     ),
-                                    _TagListView(
-                                      tagList: selectTagViewInfo.searchTagList,
-                                      selectedTagList: selectetTagList,
+                                    _DomainDataListView(
+                                      domainDataList: selectDomainViewInfo.searchDomainDataList,
+                                      selectedDomainDataList: selectetDomainDataList,
                                       rootContext: rootContext,
-                                      selectTagFunc: selectTagFunc,
+                                      selectDomainDataFunc: selectDomainDataFunc,
                                       enableVisibility: false,
                                       afterFunc: afterFunc,
                                       deselectionFunc: deselectionFunc,
@@ -188,8 +171,8 @@ class SelectTagView extends HookConsumerWidget {
                                 );
                                 // 完全一致はないが検索結果がある場合
                               } else if (isSearch.value &&
-                                  selectTagViewInfo.searchTagList.isNotEmpty &&
-                                  searchExactMatchTag.asData?.value == null &&
+                                  selectDomainViewInfo.searchDomainDataList.isNotEmpty &&
+                                  searchExactMatchDomainData.asData?.value == null &&
                                   searchText != '') {
                                 return Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
@@ -197,7 +180,7 @@ class SelectTagView extends HookConsumerWidget {
                                   children: [
                                     GestureDetector(
                                       onTap: () {
-                                        selectTagViewNotifier.saveTag(searchText);
+                                        selectDomainDataViewNotifier.saveDomainData(searchText);
                                       },
                                       child: Container(
                                         padding: const EdgeInsets.all(16),
@@ -216,11 +199,11 @@ class SelectTagView extends HookConsumerWidget {
                                         style: Theme.of(context).textTheme.bodySmall,
                                       ),
                                     ),
-                                    _TagListView(
-                                      tagList: selectTagViewInfo.searchTagList,
-                                      selectedTagList: selectetTagList,
+                                    _DomainDataListView(
+                                      domainDataList: selectDomainViewInfo.searchDomainDataList,
+                                      selectedDomainDataList: selectetDomainDataList,
                                       rootContext: rootContext,
-                                      selectTagFunc: selectTagFunc,
+                                      selectDomainDataFunc: selectDomainDataFunc,
                                       deselectionFunc: deselectionFunc,
                                       enableVisibility: false,
                                       afterFunc: afterFunc,
@@ -242,11 +225,11 @@ class SelectTagView extends HookConsumerWidget {
                                         style: Theme.of(context).textTheme.bodySmall,
                                       ),
                                     ),
-                                    _TagListView(
-                                      tagList: selectTagViewInfo.recentlyUseTagList,
-                                      selectedTagList: selectetTagList,
+                                    _DomainDataListView(
+                                      domainDataList: selectDomainViewInfo.recentlyUseDomainDataList,
+                                      selectedDomainDataList: selectetDomainDataList,
                                       rootContext: rootContext,
-                                      selectTagFunc: selectTagFunc,
+                                      selectDomainDataFunc: selectDomainDataFunc,
                                       deselectionFunc: deselectionFunc,
                                       enableVisibility: false,
                                       afterFunc: afterFunc,
@@ -255,12 +238,13 @@ class SelectTagView extends HookConsumerWidget {
                                     ),
                                     _AllListViewTitle(
                                       enableVisiblity: enableVisiblity,
+                                      dataType: dataType,
                                     ),
-                                    _TagListView(
-                                      tagList: selectTagViewInfo.gameTagList,
-                                      selectedTagList: selectetTagList,
+                                    _DomainDataListView(
+                                      domainDataList: selectDomainViewInfo.gameDomainDataList,
+                                      selectedDomainDataList: selectetDomainDataList,
                                       rootContext: rootContext,
-                                      selectTagFunc: selectTagFunc,
+                                      selectDomainDataFunc: selectDomainDataFunc,
                                       deselectionFunc: deselectionFunc,
                                       enableVisibility: enableVisiblity,
                                       afterFunc: afterFunc,
@@ -291,15 +275,17 @@ class SelectTagView extends HookConsumerWidget {
 class _AllListViewTitle extends HookConsumerWidget {
   const _AllListViewTitle({
     required this.enableVisiblity,
+    required this.dataType,
     key,
   }) : super(key: key);
 
   final bool enableVisiblity;
+  final DomainDataType dataType;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final sort = ref.watch(selectTagViewNotifierProvider.select((value) => value.sortType));
-    final selectTagViewNotifier = ref.watch(selectTagViewNotifierProvider.notifier);
+    final sort = ref.watch(selectDomainDataViewNotifierProvider(dataType).select((value) => value.sortType));
+    final selectDomainDataViewNotifier = ref.watch(selectDomainDataViewNotifierProvider(dataType).notifier);
     return Padding(
       padding: const EdgeInsets.only(left: 16),
       child: Row(
@@ -319,7 +305,8 @@ class _AllListViewTitle extends HookConsumerWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ReordableTagView(
+                        builder: (context) => ReordableDomainDataView(
+                          datatype: dataType,
                           enableVisiblity: enableVisiblity,
                         ),
                       ),
@@ -332,7 +319,7 @@ class _AllListViewTitle extends HookConsumerWidget {
                 ),
               ),
               CupertinoButton(
-                onPressed: () => selectTagViewNotifier.changeSort(),
+                onPressed: () => selectDomainDataViewNotifier.changeSort(),
                 child: Text(
                   ConvertSortString.convert(context, sort),
                   style: Theme.of(context).textTheme.bodyMedium,
@@ -346,12 +333,12 @@ class _AllListViewTitle extends HookConsumerWidget {
   }
 }
 
-class _TagListView extends StatelessWidget {
-  const _TagListView({
-    required this.tagList,
-    required this.selectedTagList,
+class _DomainDataListView extends StatelessWidget {
+  const _DomainDataListView({
+    required this.domainDataList,
+    required this.selectedDomainDataList,
     required this.rootContext,
-    required this.selectTagFunc,
+    required this.selectDomainDataFunc,
     required this.enableVisibility,
     required this.tagCount,
     required this.returnSelecting,
@@ -360,11 +347,11 @@ class _TagListView extends StatelessWidget {
     key,
   }) : super(key: key);
 
-  final List<Tag> tagList;
-  final List<Tag> selectedTagList;
+  final List<DomainData> domainDataList;
+  final List<DomainData> selectedDomainDataList;
   final BuildContext rootContext;
-  final Function(Tag, int) selectTagFunc;
-  final Function(Tag)? deselectionFunc;
+  final Function(DomainData, int) selectDomainDataFunc;
+  final Function(DomainData)? deselectionFunc;
   final Function? afterFunc;
   final int tagCount;
 
@@ -377,14 +364,14 @@ class _TagListView extends StatelessWidget {
       padding: EdgeInsets.zero,
       shrinkWrap: true,
       itemBuilder: ((context, index) {
-        if (enableVisibility && !tagList[index].isVisibleToPicker) return Container();
-        final isSelected = selectedTagList.contains(tagList[index]);
+        if (enableVisibility && !domainDataList[index].isVisibleToPicker) return Container();
+        final isSelected = selectedDomainDataList.contains(domainDataList[index]);
         return GestureDetector(
           onTap: () {
             if (isSelected) {
-              if (deselectionFunc != null) deselectionFunc!(tagList[index]);
+              if (deselectionFunc != null) deselectionFunc!(domainDataList[index]);
             } else {
-              selectTagFunc(tagList[index], tagCount);
+              selectDomainDataFunc(domainDataList[index], tagCount);
               if (returnSelecting) Navigator.pop(rootContext);
               if (afterFunc != null) afterFunc!();
             }
@@ -393,34 +380,36 @@ class _TagListView extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             color: isSelected ? Theme.of(context).hoverColor : Theme.of(context).colorScheme.surface,
             child: Text(
-              tagList[index].tag,
+              domainDataList[index].name,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
           ),
         );
       }),
       separatorBuilder: ((context, index) {
-        if (enableVisibility && !tagList[index].isVisibleToPicker) return Container();
+        if (enableVisibility && !domainDataList[index].isVisibleToPicker) return Container();
         return const Divider(
           indent: 16,
           thickness: 1,
           height: 0,
         );
       }),
-      itemCount: tagList.length,
+      itemCount: domainDataList.length,
     );
   }
 }
 
-class _ReorderableTagListView extends HookConsumerWidget {
-  const _ReorderableTagListView({
-    required this.tagList,
+class _ReorderableDomainDataListView extends HookConsumerWidget {
+  const _ReorderableDomainDataListView({
+    required this.domainDataList,
     required this.enableVisibility,
+    required this.dataType,
     key,
   }) : super(key: key);
 
-  final List<Tag> tagList;
+  final List<DomainData> domainDataList;
   final bool enableVisibility;
+  final DomainDataType dataType;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -433,11 +422,11 @@ class _ReorderableTagListView extends HookConsumerWidget {
         shrinkWrap: true,
         itemBuilder: ((context, index) {
           return ListTile(
-            key: Key(tagList[index].tagId.toString()),
+            key: Key(domainDataList[index].id.toString()),
             tileColor: Theme.of(context).colorScheme.surface,
             title: Text(
-              tagList[index].tag,
-              style: tagList[index].isVisibleToPicker
+              domainDataList[index].name,
+              style: domainDataList[index].isVisibleToPicker
                   ? Theme.of(context).textTheme.bodyMedium
                   : Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Theme.of(context).disabledColor,
@@ -448,7 +437,7 @@ class _ReorderableTagListView extends HookConsumerWidget {
               child: const Icon(Icons.drag_handle),
             ),
             onTap: () async {
-              await ref.read(dbHelper).toggleIsVisibleToPickerOfTag(tagList[index]);
+              await ref.read(selectDomainDataViewNotifierProvider(dataType).notifier).toggleIsVisibleToPicker(domainDataList[index]);
             },
           );
         }),
@@ -456,32 +445,50 @@ class _ReorderableTagListView extends HookConsumerWidget {
           if (oldIndex < newIndex) {
             newIndex -= 1;
           }
-          final moveTag = tagList.removeAt(oldIndex);
-          tagList.insert(newIndex, moveTag);
-          final List<Tag> newTagList = [];
-          tagList.asMap().forEach((index, tag) {
-            tag = tag.copyWith(sortIndex: index);
-            newTagList.add(tag);
+          final moveDomainData = domainDataList.removeAt(oldIndex);
+          domainDataList.insert(newIndex, moveDomainData);
+          List<DomainData> newDomainDataList = [];
+          domainDataList.asMap().forEach((index, domainData) {
+            if (dataType == DomainDataType.game) {
+              domainData as Game;
+            } else if (dataType == DomainDataType.deck) {
+              domainData as Deck;
+              domainData = domainData.copyWith(sortIndex: index);
+              newDomainDataList.add(domainData);
+            } else if (dataType == DomainDataType.tag) {
+              domainData as Tag;
+              domainData = domainData.copyWith(sortIndex: index);
+              newDomainDataList.add(domainData);
+            }
           });
-          await ref.read(tagRepository).updateTagList(newTagList);
-          ref.refresh(allTagListProvider);
+          if (dataType == DomainDataType.game) {
+            newDomainDataList as List<Game>;
+          } else if (dataType == DomainDataType.deck) {
+            await ref.read(deckRepository).updateDeckList(newDomainDataList.map((e) => e as Deck).toList());
+            ref.refresh(allDeckListProvider);
+          } else if (dataType == DomainDataType.tag) {
+            await ref.read(tagRepository).updateTagList(newDomainDataList.map((e) => e as Tag).toList());
+            ref.refresh(allTagListProvider);
+          }
         },
-        itemCount: tagList.length,
+        itemCount: domainDataList.length,
       ),
     );
   }
 }
 
-class ReordableTagView extends HookConsumerWidget {
-  const ReordableTagView({
+class ReordableDomainDataView extends HookConsumerWidget {
+  const ReordableDomainDataView({
     required this.enableVisiblity,
+    required this.datatype,
     key,
   }) : super(key: key);
   final bool enableVisiblity;
+  final DomainDataType datatype;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final gameTagList = ref.watch(sortedTagListProvider);
+    final domainDataList = ref.watch(sortedDomainDataListProvider(datatype));
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -495,14 +502,15 @@ class ReordableTagView extends HookConsumerWidget {
           style: Theme.of(context).textTheme.titleMedium,
         ),
       ),
-      body: gameTagList.when(
-        data: (gameTagList) {
+      body: domainDataList.when(
+        data: (domainDataList) {
           return Column(
             children: [
               Expanded(
-                child: _ReorderableTagListView(
-                  tagList: gameTagList,
+                child: _ReorderableDomainDataListView(
+                  domainDataList: domainDataList,
                   enableVisibility: enableVisiblity,
+                  dataType: datatype,
                 ),
               ),
               Container(

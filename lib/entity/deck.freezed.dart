@@ -20,8 +20,10 @@ Deck _$DeckFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Deck {
-  int? get deckId => throw _privateConstructorUsedError;
-  String get deck => throw _privateConstructorUsedError;
+  @JsonKey(name: 'deck_id')
+  int? get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'deck')
+  String get name => throw _privateConstructorUsedError;
   int? get gameId => throw _privateConstructorUsedError;
   @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
   bool get isVisibleToPicker => throw _privateConstructorUsedError;
@@ -38,8 +40,10 @@ abstract class $DeckCopyWith<$Res> {
       _$DeckCopyWithImpl<$Res, Deck>;
   @useResult
   $Res call(
-      {int? deckId,
-      String deck,
+      {@JsonKey(name: 'deck_id')
+          int? id,
+      @JsonKey(name: 'deck')
+          String name,
       int? gameId,
       @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
           bool isVisibleToPicker,
@@ -59,20 +63,20 @@ class _$DeckCopyWithImpl<$Res, $Val extends Deck>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? deckId = freezed,
-    Object? deck = null,
+    Object? id = freezed,
+    Object? name = null,
     Object? gameId = freezed,
     Object? isVisibleToPicker = null,
     Object? sortIndex = freezed,
   }) {
     return _then(_value.copyWith(
-      deckId: freezed == deckId
-          ? _value.deckId
-          : deckId // ignore: cast_nullable_to_non_nullable
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as int?,
-      deck: null == deck
-          ? _value.deck
-          : deck // ignore: cast_nullable_to_non_nullable
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
               as String,
       gameId: freezed == gameId
           ? _value.gameId
@@ -97,8 +101,10 @@ abstract class _$$_DeckCopyWith<$Res> implements $DeckCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {int? deckId,
-      String deck,
+      {@JsonKey(name: 'deck_id')
+          int? id,
+      @JsonKey(name: 'deck')
+          String name,
       int? gameId,
       @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
           bool isVisibleToPicker,
@@ -114,20 +120,20 @@ class __$$_DeckCopyWithImpl<$Res> extends _$DeckCopyWithImpl<$Res, _$_Deck>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? deckId = freezed,
-    Object? deck = null,
+    Object? id = freezed,
+    Object? name = null,
     Object? gameId = freezed,
     Object? isVisibleToPicker = null,
     Object? sortIndex = freezed,
   }) {
     return _then(_$_Deck(
-      deckId: freezed == deckId
-          ? _value.deckId
-          : deckId // ignore: cast_nullable_to_non_nullable
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as int?,
-      deck: null == deck
-          ? _value.deck
-          : deck // ignore: cast_nullable_to_non_nullable
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
               as String,
       gameId: freezed == gameId
           ? _value.gameId
@@ -149,8 +155,10 @@ class __$$_DeckCopyWithImpl<$Res> extends _$DeckCopyWithImpl<$Res, _$_Deck>
 @JsonSerializable()
 class _$_Deck implements _Deck {
   _$_Deck(
-      {this.deckId,
-      required this.deck,
+      {@JsonKey(name: 'deck_id')
+          this.id,
+      @JsonKey(name: 'deck')
+          required this.name,
       this.gameId,
       @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
           this.isVisibleToPicker = true,
@@ -159,9 +167,11 @@ class _$_Deck implements _Deck {
   factory _$_Deck.fromJson(Map<String, dynamic> json) => _$$_DeckFromJson(json);
 
   @override
-  final int? deckId;
+  @JsonKey(name: 'deck_id')
+  final int? id;
   @override
-  final String deck;
+  @JsonKey(name: 'deck')
+  final String name;
   @override
   final int? gameId;
   @override
@@ -172,7 +182,7 @@ class _$_Deck implements _Deck {
 
   @override
   String toString() {
-    return 'Deck(deckId: $deckId, deck: $deck, gameId: $gameId, isVisibleToPicker: $isVisibleToPicker, sortIndex: $sortIndex)';
+    return 'Deck(id: $id, name: $name, gameId: $gameId, isVisibleToPicker: $isVisibleToPicker, sortIndex: $sortIndex)';
   }
 
   @override
@@ -180,8 +190,8 @@ class _$_Deck implements _Deck {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Deck &&
-            (identical(other.deckId, deckId) || other.deckId == deckId) &&
-            (identical(other.deck, deck) || other.deck == deck) &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.name, name) || other.name == name) &&
             (identical(other.gameId, gameId) || other.gameId == gameId) &&
             (identical(other.isVisibleToPicker, isVisibleToPicker) ||
                 other.isVisibleToPicker == isVisibleToPicker) &&
@@ -191,8 +201,8 @@ class _$_Deck implements _Deck {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, deckId, deck, gameId, isVisibleToPicker, sortIndex);
+  int get hashCode =>
+      Object.hash(runtimeType, id, name, gameId, isVisibleToPicker, sortIndex);
 
   @JsonKey(ignore: true)
   @override
@@ -210,8 +220,10 @@ class _$_Deck implements _Deck {
 
 abstract class _Deck implements Deck {
   factory _Deck(
-      {final int? deckId,
-      required final String deck,
+      {@JsonKey(name: 'deck_id')
+          final int? id,
+      @JsonKey(name: 'deck')
+          required final String name,
       final int? gameId,
       @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
           final bool isVisibleToPicker,
@@ -220,9 +232,11 @@ abstract class _Deck implements Deck {
   factory _Deck.fromJson(Map<String, dynamic> json) = _$_Deck.fromJson;
 
   @override
-  int? get deckId;
+  @JsonKey(name: 'deck_id')
+  int? get id;
   @override
-  String get deck;
+  @JsonKey(name: 'deck')
+  String get name;
   @override
   int? get gameId;
   @override

@@ -43,7 +43,7 @@ mixin _$Record {
   @JsonKey(
       fromJson: _nullableFirstSecondFromJson,
       toJson: _nullableFirstSecondToJson)
-  FirstSecond? get thiredMatchFirstSecond => throw _privateConstructorUsedError;
+  FirstSecond? get thirdMatchFirstSecond => throw _privateConstructorUsedError;
   @JsonKey(fromJson: _winLossFromJson, toJson: _winLossToJson)
   WinLoss get winLoss => throw _privateConstructorUsedError;
   @JsonKey(fromJson: _nullableWinLossFromJson, toJson: _nullableWinLossToJson)
@@ -84,7 +84,7 @@ abstract class $RecordCopyWith<$Res> {
       @JsonKey(fromJson: _nullableFirstSecondFromJson, toJson: _nullableFirstSecondToJson)
           FirstSecond? secondMatchFirstSecond,
       @JsonKey(fromJson: _nullableFirstSecondFromJson, toJson: _nullableFirstSecondToJson)
-          FirstSecond? thiredMatchFirstSecond,
+          FirstSecond? thirdMatchFirstSecond,
       @JsonKey(fromJson: _winLossFromJson, toJson: _winLossToJson)
           WinLoss winLoss,
       @JsonKey(fromJson: _nullableWinLossFromJson, toJson: _nullableWinLossToJson)
@@ -121,7 +121,7 @@ class _$RecordCopyWithImpl<$Res, $Val extends Record>
     Object? firstSecond = null,
     Object? firstMatchFirstSecond = freezed,
     Object? secondMatchFirstSecond = freezed,
-    Object? thiredMatchFirstSecond = freezed,
+    Object? thirdMatchFirstSecond = freezed,
     Object? winLoss = null,
     Object? firstMatchWinLoss = freezed,
     Object? secondMatchWinLoss = freezed,
@@ -170,9 +170,9 @@ class _$RecordCopyWithImpl<$Res, $Val extends Record>
           ? _value.secondMatchFirstSecond
           : secondMatchFirstSecond // ignore: cast_nullable_to_non_nullable
               as FirstSecond?,
-      thiredMatchFirstSecond: freezed == thiredMatchFirstSecond
-          ? _value.thiredMatchFirstSecond
-          : thiredMatchFirstSecond // ignore: cast_nullable_to_non_nullable
+      thirdMatchFirstSecond: freezed == thirdMatchFirstSecond
+          ? _value.thirdMatchFirstSecond
+          : thirdMatchFirstSecond // ignore: cast_nullable_to_non_nullable
               as FirstSecond?,
       winLoss: null == winLoss
           ? _value.winLoss
@@ -226,7 +226,7 @@ abstract class _$$_RecordCopyWith<$Res> implements $RecordCopyWith<$Res> {
       @JsonKey(fromJson: _nullableFirstSecondFromJson, toJson: _nullableFirstSecondToJson)
           FirstSecond? secondMatchFirstSecond,
       @JsonKey(fromJson: _nullableFirstSecondFromJson, toJson: _nullableFirstSecondToJson)
-          FirstSecond? thiredMatchFirstSecond,
+          FirstSecond? thirdMatchFirstSecond,
       @JsonKey(fromJson: _winLossFromJson, toJson: _winLossToJson)
           WinLoss winLoss,
       @JsonKey(fromJson: _nullableWinLossFromJson, toJson: _nullableWinLossToJson)
@@ -260,7 +260,7 @@ class __$$_RecordCopyWithImpl<$Res>
     Object? firstSecond = null,
     Object? firstMatchFirstSecond = freezed,
     Object? secondMatchFirstSecond = freezed,
-    Object? thiredMatchFirstSecond = freezed,
+    Object? thirdMatchFirstSecond = freezed,
     Object? winLoss = null,
     Object? firstMatchWinLoss = freezed,
     Object? secondMatchWinLoss = freezed,
@@ -309,9 +309,9 @@ class __$$_RecordCopyWithImpl<$Res>
           ? _value.secondMatchFirstSecond
           : secondMatchFirstSecond // ignore: cast_nullable_to_non_nullable
               as FirstSecond?,
-      thiredMatchFirstSecond: freezed == thiredMatchFirstSecond
-          ? _value.thiredMatchFirstSecond
-          : thiredMatchFirstSecond // ignore: cast_nullable_to_non_nullable
+      thirdMatchFirstSecond: freezed == thirdMatchFirstSecond
+          ? _value.thirdMatchFirstSecond
+          : thirdMatchFirstSecond // ignore: cast_nullable_to_non_nullable
               as FirstSecond?,
       winLoss: null == winLoss
           ? _value.winLoss
@@ -362,7 +362,7 @@ class _$_Record implements _Record {
       @JsonKey(fromJson: _nullableFirstSecondFromJson, toJson: _nullableFirstSecondToJson)
           this.secondMatchFirstSecond,
       @JsonKey(fromJson: _nullableFirstSecondFromJson, toJson: _nullableFirstSecondToJson)
-          this.thiredMatchFirstSecond,
+          this.thirdMatchFirstSecond,
       @JsonKey(fromJson: _winLossFromJson, toJson: _winLossToJson)
           this.winLoss = WinLoss.win,
       @JsonKey(fromJson: _nullableWinLossFromJson, toJson: _nullableWinLossToJson)
@@ -420,7 +420,7 @@ class _$_Record implements _Record {
   @JsonKey(
       fromJson: _nullableFirstSecondFromJson,
       toJson: _nullableFirstSecondToJson)
-  final FirstSecond? thiredMatchFirstSecond;
+  final FirstSecond? thirdMatchFirstSecond;
   @override
   @JsonKey(fromJson: _winLossFromJson, toJson: _winLossToJson)
   final WinLoss winLoss;
@@ -448,7 +448,7 @@ class _$_Record implements _Record {
 
   @override
   String toString() {
-    return 'Record(recordId: $recordId, gameId: $gameId, tagId: $tagId, useDeckId: $useDeckId, opponentDeckId: $opponentDeckId, date: $date, bo: $bo, firstSecond: $firstSecond, firstMatchFirstSecond: $firstMatchFirstSecond, secondMatchFirstSecond: $secondMatchFirstSecond, thiredMatchFirstSecond: $thiredMatchFirstSecond, winLoss: $winLoss, firstMatchWinLoss: $firstMatchWinLoss, secondMatchWinLoss: $secondMatchWinLoss, thirdMatchWinLoss: $thirdMatchWinLoss, memo: $memo, imagePath: $imagePath)';
+    return 'Record(recordId: $recordId, gameId: $gameId, tagId: $tagId, useDeckId: $useDeckId, opponentDeckId: $opponentDeckId, date: $date, bo: $bo, firstSecond: $firstSecond, firstMatchFirstSecond: $firstMatchFirstSecond, secondMatchFirstSecond: $secondMatchFirstSecond, thirdMatchFirstSecond: $thirdMatchFirstSecond, winLoss: $winLoss, firstMatchWinLoss: $firstMatchWinLoss, secondMatchWinLoss: $secondMatchWinLoss, thirdMatchWinLoss: $thirdMatchWinLoss, memo: $memo, imagePath: $imagePath)';
   }
 
   @override
@@ -472,8 +472,8 @@ class _$_Record implements _Record {
                 other.firstMatchFirstSecond == firstMatchFirstSecond) &&
             (identical(other.secondMatchFirstSecond, secondMatchFirstSecond) ||
                 other.secondMatchFirstSecond == secondMatchFirstSecond) &&
-            (identical(other.thiredMatchFirstSecond, thiredMatchFirstSecond) ||
-                other.thiredMatchFirstSecond == thiredMatchFirstSecond) &&
+            (identical(other.thirdMatchFirstSecond, thirdMatchFirstSecond) ||
+                other.thirdMatchFirstSecond == thirdMatchFirstSecond) &&
             (identical(other.winLoss, winLoss) || other.winLoss == winLoss) &&
             (identical(other.firstMatchWinLoss, firstMatchWinLoss) ||
                 other.firstMatchWinLoss == firstMatchWinLoss) &&
@@ -500,7 +500,7 @@ class _$_Record implements _Record {
       firstSecond,
       firstMatchFirstSecond,
       secondMatchFirstSecond,
-      thiredMatchFirstSecond,
+      thirdMatchFirstSecond,
       winLoss,
       firstMatchWinLoss,
       secondMatchWinLoss,
@@ -541,7 +541,7 @@ abstract class _Record implements Record {
       @JsonKey(fromJson: _nullableFirstSecondFromJson, toJson: _nullableFirstSecondToJson)
           final FirstSecond? secondMatchFirstSecond,
       @JsonKey(fromJson: _nullableFirstSecondFromJson, toJson: _nullableFirstSecondToJson)
-          final FirstSecond? thiredMatchFirstSecond,
+          final FirstSecond? thirdMatchFirstSecond,
       @JsonKey(fromJson: _winLossFromJson, toJson: _winLossToJson)
           final WinLoss winLoss,
       @JsonKey(fromJson: _nullableWinLossFromJson, toJson: _nullableWinLossToJson)
@@ -590,7 +590,7 @@ abstract class _Record implements Record {
   @JsonKey(
       fromJson: _nullableFirstSecondFromJson,
       toJson: _nullableFirstSecondToJson)
-  FirstSecond? get thiredMatchFirstSecond;
+  FirstSecond? get thirdMatchFirstSecond;
   @override
   @JsonKey(fromJson: _winLossFromJson, toJson: _winLossToJson)
   WinLoss get winLoss;

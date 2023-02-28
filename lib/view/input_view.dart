@@ -17,7 +17,9 @@ import 'package:intl/intl.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:tcg_manager/entity/deck.dart';
+import 'package:tcg_manager/entity/domain_data.dart';
 import 'package:tcg_manager/entity/tag.dart';
+import 'package:tcg_manager/enum/domain_data_type.dart';
 import 'package:tcg_manager/enum/first_second.dart';
 import 'package:tcg_manager/enum/win_loss.dart';
 import 'package:tcg_manager/generated/l10n.dart';
@@ -36,8 +38,7 @@ import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
 import 'package:tcg_manager/view/component/custom_scaffold.dart';
 import 'package:tcg_manager/view/component/custom_textfield.dart';
 import 'package:tcg_manager/view/component/cutom_date_time_picker.dart';
-import 'package:tcg_manager/view/select_deck_view.dart';
-import 'package:tcg_manager/view/select_tag_view.dart';
+import 'package:tcg_manager/view/select_domain_data_view.dart';
 
 class InputViewInfo {
   const InputViewInfo({
@@ -139,7 +140,7 @@ class InputTagList extends HookConsumerWidget {
   final List<TextEditingController> controllers;
   final List<FocusNode> focusNodes;
   final bool isDropDown;
-  final Function(Tag, int) selectTagFunc;
+  final Function(DomainData, int) selectTagFunc;
   final void Function()? addFunc;
 
   @override
@@ -172,8 +173,9 @@ class InputTagList extends HookConsumerWidget {
                                   expand: true,
                                   context: context,
                                   backgroundColor: Colors.transparent,
-                                  builder: (BuildContext context) => SelectTagView(
-                                    selectTagFunc: selectTagFunc,
+                                  builder: (BuildContext context) => SelectDomainDataView(
+                                    dataType: DomainDataType.tag,
+                                    selectDomainDataFunc: selectTagFunc,
                                     tagCount: index,
                                     afterFunc: FocusScope.of(context).unfocus,
                                     enableVisiblity: true,
@@ -587,8 +589,10 @@ class InputView extends HookConsumerWidget {
                                                 expand: true,
                                                 context: context,
                                                 backgroundColor: Colors.transparent,
-                                                builder: (BuildContext context) => SelectDeckView(
-                                                  selectDeckFunc: inputViewNotifier.selectUseDeck,
+                                                builder: (BuildContext context) => SelectDomainDataView(
+                                                  dataType: DomainDataType.deck,
+                                                  selectDomainDataFunc: inputViewNotifier.selectUseDeck,
+                                                  tagCount: 0,
                                                   afterFunc: FocusScope.of(context).unfocus,
                                                   enableVisiblity: true,
                                                 ),
@@ -616,8 +620,10 @@ class InputView extends HookConsumerWidget {
                                                 expand: true,
                                                 context: context,
                                                 backgroundColor: Colors.transparent,
-                                                builder: (BuildContext context) => SelectDeckView(
-                                                  selectDeckFunc: inputViewNotifier.selectOpponentDeck,
+                                                builder: (BuildContext context) => SelectDomainDataView(
+                                                  dataType: DomainDataType.deck,
+                                                  selectDomainDataFunc: inputViewNotifier.selectOpponentDeck,
+                                                  tagCount: 0,
                                                   afterFunc: FocusScope.of(context).unfocus,
                                                   enableVisiblity: true,
                                                 ),
