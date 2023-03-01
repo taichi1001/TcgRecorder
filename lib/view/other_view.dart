@@ -311,7 +311,17 @@ class OtherView extends HookConsumerWidget {
           ),
           CustomSettingsSection(
             child: TextButton(
-              onPressed: () {},
+              onPressed: () async {
+                final okCancelResult = await showOkCancelAlertDialog(
+                  context: context,
+                  title: '退会する',
+                  message: '退会すると全てのデータが削除され復元不可能になります。退会してもよろしいですか？',
+                  isDestructiveAction: true,
+                );
+                if (okCancelResult == OkCancelResult.ok) {
+                  ref.read(firebaseAuthNotifierProvider.notifier).quiteUser();
+                }
+              },
               child: const Text('退会する'),
             ),
           ),

@@ -32,7 +32,7 @@ class FirestoreController {
   Future addAll() async {
     if (!isUser) return;
     await _setAll();
-    await _deleteAllImage();
+    await deleteAllImage();
     await _saveAllImage();
   }
 
@@ -131,7 +131,7 @@ class FirestoreController {
     await strageRef.delete();
   }
 
-  Future _deleteAllImage() async {
+  Future deleteAllImage() async {
     final firebaseRef = FirebaseStorage.instance.ref().child('user/${ref.read(firebaseAuthNotifierProvider).user!.uid}');
     final list = await firebaseRef.listAll();
     for (final item in list.items) {

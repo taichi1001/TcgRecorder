@@ -9,23 +9,18 @@ class FirestoreRepository {
   final FirebaseFirestore _firestore;
   FirestoreRepository(this._firestore);
 
-  // Future<Map<String, dynamic>?> getAll(String user) async {
-  //   final result = await _firestore.collection('user').doc(user).get();
-  //   return result.exists ? result.data() : null;
-  // }
-
   Future<FirestoreBackup> getAll(String user) async {
     final result = await _firestore.collection('user').doc(user).get();
     return result.exists ? FirestoreBackup.fromJson(result.data()!) : FirestoreBackup();
   }
 
-  // Future<bool> setAll(Map<String, dynamic> data, String user) async {
-  //   await _firestore.collection('user').doc(user).set(data);
-  //   return true;
-  // }
-
   Future<bool> setAll(FirestoreBackup data, String user) async {
     await _firestore.collection('user').doc(user).set(data.toJson());
+    return true;
+  }
+
+  Future<bool> deleteAll(String user) async {
+    await _firestore.collection('user').doc(user).delete();
     return true;
   }
 }
