@@ -576,7 +576,6 @@ class _EditView extends HookConsumerWidget {
                           controllers: tagTextControllers,
                           focusNodes: tagFocusNodes,
                           inputTag: recordDetailNotifier.editTag,
-                          isDropDown: false,
                           selectTagFunc: recordDetailNotifier.selectTag,
                           addFunc: () {
                             ref.read(_tagTextController.notifier).state = [...tagTextControllers, TextEditingController()];

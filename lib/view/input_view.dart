@@ -16,9 +16,7 @@ import 'package:in_app_review/in_app_review.dart';
 import 'package:intl/intl.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/domain_data.dart';
-import 'package:tcg_manager/entity/tag.dart';
 import 'package:tcg_manager/enum/domain_data_type.dart';
 import 'package:tcg_manager/enum/first_second.dart';
 import 'package:tcg_manager/enum/win_loss.dart';
@@ -26,39 +24,16 @@ import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/helper/premium_plan_dialog.dart';
 import 'package:tcg_manager/provider/backup_provider.dart';
-import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/input_view_provider.dart';
 import 'package:tcg_manager/provider/input_view_settings_provider.dart';
 import 'package:tcg_manager/provider/revenue_cat_provider.dart';
 import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 import 'package:tcg_manager/provider/firestore_controller.dart';
-import 'package:tcg_manager/selector/game_deck_list_selector.dart';
-import 'package:tcg_manager/selector/game_tag_list_selector.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
 import 'package:tcg_manager/view/component/custom_scaffold.dart';
 import 'package:tcg_manager/view/component/custom_textfield.dart';
 import 'package:tcg_manager/view/component/cutom_date_time_picker.dart';
 import 'package:tcg_manager/view/select_domain_data_view.dart';
-
-class InputViewInfo {
-  const InputViewInfo({
-    required this.gameDeckList,
-    required this.gameTagList,
-  });
-
-  final List<Deck> gameDeckList;
-  final List<Tag> gameTagList;
-}
-
-final inputViewInfoProvider = FutureProvider.autoDispose<InputViewInfo>((ref) async {
-  final gameDeckList = await ref.watch(gameDeckListProvider.future);
-  final gameTagList = await ref.watch(gameTagListProvider.future);
-  ref.keepAlive();
-  return InputViewInfo(
-    gameDeckList: gameDeckList,
-    gameTagList: gameTagList,
-  );
-});
 
 final _tagFocusNodesProvider = Provider.autoDispose<List<FocusNode>>((ref) {
   final tagTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.tagController));
@@ -131,7 +106,6 @@ class InputTagList extends HookConsumerWidget {
     required this.controllers,
     required this.focusNodes,
     required this.inputTag,
-    required this.isDropDown,
     required this.selectTagFunc,
     super.key,
   });
@@ -139,7 +113,6 @@ class InputTagList extends HookConsumerWidget {
   final Function(String, int) inputTag;
   final List<TextEditingController> controllers;
   final List<FocusNode> focusNodes;
-  final bool isDropDown;
   final Function(DomainData, int) selectTagFunc;
   final void Function()? addFunc;
 
@@ -166,22 +139,20 @@ class InputTagList extends HookConsumerWidget {
                       ),
                       IconButton(
                         icon: const Icon(Icons.arrow_drop_down),
-                        onPressed: isDropDown
-                            ? null
-                            : () {
-                                showCupertinoModalBottomSheet(
-                                  expand: true,
-                                  context: context,
-                                  backgroundColor: Colors.transparent,
-                                  builder: (BuildContext context) => SelectDomainDataView(
-                                    dataType: DomainDataType.tag,
-                                    selectDomainDataFunc: selectTagFunc,
-                                    tagCount: index,
-                                    afterFunc: FocusScope.of(context).unfocus,
-                                    enableVisiblity: true,
-                                  ),
-                                );
-                              },
+                        onPressed: () {
+                          showCupertinoModalBottomSheet(
+                            expand: true,
+                            context: context,
+                            backgroundColor: Colors.transparent,
+                            builder: (BuildContext context) => SelectDomainDataView(
+                              dataType: DomainDataType.tag,
+                              selectDomainDataFunc: selectTagFunc,
+                              tagCount: index,
+                              afterFunc: FocusScope.of(context).unfocus,
+                              enableVisiblity: true,
+                            ),
+                          );
+                        },
                       ),
                     ],
                   ),
@@ -231,531 +202,517 @@ class InputView extends HookConsumerWidget {
     final isDraw = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.draw));
     final isBO3 = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.bo3));
 
-    final inputViewInfo = ref.watch(inputViewInfoProvider);
+    // final inputViewInfo = ref.watch(inputViewInfoProvider);
 
     final useDeckFocusnode = useFocusNode();
     final opponentDeckFocusnode = useFocusNode();
     final tagFocusNodes = ref.watch(_tagFocusNodesProvider);
     final memoFocusnode = useFocusNode();
-
-    return inputViewInfo.when(
-      data: (inputViewInfo) {
-        return Column(
-          children: [
-            Expanded(
-              child: CustomScaffold(
-                padding: const EdgeInsets.only(right: 8, left: 8),
-                leading: IconButton(
-                  icon: const Icon(Icons.tune),
-                  onPressed: () async {
-                    showCupertinoModalBottomSheet(
-                      expand: false,
-                      context: context,
-                      builder: (context) => const _SettingModalBottomSheet(),
-                    );
-                  },
-                ),
-                body: KeyboardActions(
-                  config: KeyboardActionsConfig(
-                    keyboardBarColor: Theme.of(context).canvasColor,
-                    keyboardSeparatorColor: Theme.of(context).dividerColor,
-                    keyboardActionsPlatform: KeyboardActionsPlatform.ALL,
-                    nextFocus: true,
-                    actions: [
-                      KeyboardActionsItem(focusNode: useDeckFocusnode),
-                      KeyboardActionsItem(focusNode: opponentDeckFocusnode),
-                      for (final tagFocusNode in tagFocusNodes) KeyboardActionsItem(focusNode: tagFocusNode),
-                      KeyboardActionsItem(focusNode: memoFocusnode),
-                    ],
-                  ),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
+    return Column(
+      children: [
+        Expanded(
+          child: CustomScaffold(
+            padding: const EdgeInsets.only(right: 8, left: 8),
+            leading: IconButton(
+              icon: const Icon(Icons.tune),
+              onPressed: () async {
+                showCupertinoModalBottomSheet(
+                  expand: false,
+                  context: context,
+                  builder: (context) => const _SettingModalBottomSheet(),
+                );
+              },
+            ),
+            body: KeyboardActions(
+              config: KeyboardActionsConfig(
+                keyboardBarColor: Theme.of(context).canvasColor,
+                keyboardSeparatorColor: Theme.of(context).dividerColor,
+                keyboardActionsPlatform: KeyboardActionsPlatform.ALL,
+                nextFocus: true,
+                actions: [
+                  KeyboardActionsItem(focusNode: useDeckFocusnode),
+                  KeyboardActionsItem(focusNode: opponentDeckFocusnode),
+                  for (final tagFocusNode in tagFocusNodes) KeyboardActionsItem(focusNode: tagFocusNode),
+                  KeyboardActionsItem(focusNode: memoFocusnode),
+                ],
+              ),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 8),
+                    SelectableDateTime(
+                      controller: dateTimeController.value,
+                      submiteAction: () => inputViewNotifier.selectDateTime(dateTimeController.value.selectedDateTime),
+                      nowAction: () {
+                        dateTimeController.value.setDateTimeNow();
+                        inputViewNotifier.selectDateTime(dateTimeController.value.selectedDateTime);
+                      },
+                      datetime: date,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 8),
-                        SelectableDateTime(
-                          controller: dateTimeController.value,
-                          submiteAction: () {
-                            inputViewNotifier.selectDateTime(dateTimeController.value.selectedDateTime);
-                          },
-                          nowAction: () {
-                            dateTimeController.value.setDateTimeNow();
-                            inputViewNotifier.selectDateTime(dateTimeController.value.selectedDateTime);
-                          },
-                          datetime: date,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              width: 204.w,
-                              child: Card(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8),
-                                  child: Column(
-                                    children: [
-                                      RadioListTile(
-                                        title: Text(S.of(context).first),
-                                        toggleable: true,
-                                        value: FirstSecond.first,
-                                        groupValue: isBO3 ? firstMatchFirstSecond : firstSecond,
-                                        onChanged: (FirstSecond? value) {
-                                          if (isBO3) {
-                                            inputViewNotifier.selectFirstMatchFirstSecond(value);
-                                          } else {
-                                            inputViewNotifier.selectFirstSecond(value);
-                                          }
-                                        },
-                                        contentPadding: const EdgeInsets.symmetric(horizontal: 0),
-                                        dense: true,
-                                      ),
-                                      RadioListTile(
-                                        title: Text(S.of(context).second),
-                                        toggleable: true,
-                                        value: FirstSecond.second,
-                                        groupValue: isBO3 ? firstMatchFirstSecond : firstSecond,
-                                        onChanged: (FirstSecond? value) {
-                                          if (isBO3) {
-                                            inputViewNotifier.selectFirstMatchFirstSecond(value);
-                                          } else {
-                                            inputViewNotifier.selectFirstSecond(value);
-                                          }
-                                        },
-                                        contentPadding: const EdgeInsets.symmetric(horizontal: 0),
-                                        dense: true,
-                                      ),
-                                    ],
+                        SizedBox(
+                          width: 204.w,
+                          child: Card(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: Column(
+                                children: [
+                                  RadioListTile(
+                                    title: Text(S.of(context).first),
+                                    toggleable: true,
+                                    value: FirstSecond.first,
+                                    groupValue: isBO3 ? firstMatchFirstSecond : firstSecond,
+                                    onChanged: (FirstSecond? value) {
+                                      if (isBO3) {
+                                        inputViewNotifier.selectFirstMatchFirstSecond(value);
+                                      } else {
+                                        inputViewNotifier.selectFirstSecond(value);
+                                      }
+                                    },
+                                    contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                    dense: true,
                                   ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 204.w,
-                              child: Card(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8),
-                                  child: Column(
-                                    children: [
-                                      RadioListTile(
-                                        title: Text(S.of(context).win),
-                                        toggleable: true,
-                                        value: WinLoss.win,
-                                        groupValue: isBO3 ? firstMatchWinLoss : winLoss,
-                                        onChanged: (WinLoss? value) {
-                                          if (isBO3) {
-                                            inputViewNotifier.selectFirstMatchWinLoss(value);
-                                          } else {
-                                            inputViewNotifier.selectWinLoss(value);
-                                          }
-                                        },
-                                        contentPadding: const EdgeInsets.symmetric(horizontal: 0),
-                                        dense: true,
-                                      ),
-                                      RadioListTile(
-                                        title: Text(S.of(context).loss),
-                                        toggleable: true,
-                                        value: WinLoss.loss,
-                                        groupValue: isBO3 ? firstMatchWinLoss : winLoss,
-                                        onChanged: (WinLoss? value) {
-                                          if (isBO3) {
-                                            inputViewNotifier.selectFirstMatchWinLoss(value);
-                                          } else {
-                                            inputViewNotifier.selectWinLoss(value);
-                                          }
-                                        },
-                                        contentPadding: const EdgeInsets.symmetric(horizontal: 0),
-                                        dense: true,
-                                      ),
-                                      if (isDraw)
-                                        RadioListTile(
-                                          title: Text(S.of(context).draw),
-                                          value: WinLoss.draw,
-                                          toggleable: true,
-                                          groupValue: isBO3 ? firstMatchWinLoss : winLoss,
-                                          onChanged: (WinLoss? value) {
-                                            if (isBO3) {
-                                              inputViewNotifier.selectFirstMatchWinLoss(value);
-                                            } else {
-                                              inputViewNotifier.selectWinLoss(value);
-                                            }
-                                          },
-                                          contentPadding: const EdgeInsets.symmetric(horizontal: 0),
-                                          dense: true,
-                                        ),
-                                    ],
+                                  RadioListTile(
+                                    title: Text(S.of(context).second),
+                                    toggleable: true,
+                                    value: FirstSecond.second,
+                                    groupValue: isBO3 ? firstMatchFirstSecond : firstSecond,
+                                    onChanged: (FirstSecond? value) {
+                                      if (isBO3) {
+                                        inputViewNotifier.selectFirstMatchFirstSecond(value);
+                                      } else {
+                                        inputViewNotifier.selectFirstSecond(value);
+                                      }
+                                    },
+                                    contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                    dense: true,
                                   ),
-                                ),
+                                ],
                               ),
-                            ),
-                          ],
-                        ),
-                        if (isBO3)
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                width: 204.w,
-                                child: Card(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8),
-                                    child: Column(
-                                      children: [
-                                        RadioListTile(
-                                          title: Text(S.of(context).first),
-                                          value: FirstSecond.first,
-                                          toggleable: true,
-                                          groupValue: secondMatchFirstSecond,
-                                          onChanged: (FirstSecond? value) {
-                                            inputViewNotifier.selectSecondMatchFirstSecond(value);
-                                          },
-                                          contentPadding: const EdgeInsets.symmetric(horizontal: 0),
-                                          dense: true,
-                                        ),
-                                        RadioListTile(
-                                          title: Text(S.of(context).second),
-                                          value: FirstSecond.second,
-                                          toggleable: true,
-                                          groupValue: secondMatchFirstSecond,
-                                          onChanged: (FirstSecond? value) {
-                                            inputViewNotifier.selectSecondMatchFirstSecond(value);
-                                          },
-                                          contentPadding: const EdgeInsets.symmetric(horizontal: 0),
-                                          dense: true,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 204.w,
-                                child: Card(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8),
-                                    child: Column(
-                                      children: [
-                                        RadioListTile(
-                                          title: Text(S.of(context).win),
-                                          value: WinLoss.win,
-                                          toggleable: true,
-                                          groupValue: secondMatchWinLoss,
-                                          onChanged: (WinLoss? value) {
-                                            inputViewNotifier.selectSecondMatchWinLoss(value);
-                                          },
-                                          contentPadding: const EdgeInsets.symmetric(horizontal: 0),
-                                          dense: true,
-                                        ),
-                                        RadioListTile(
-                                          title: Text(S.of(context).loss),
-                                          value: WinLoss.loss,
-                                          toggleable: true,
-                                          groupValue: secondMatchWinLoss,
-                                          onChanged: (WinLoss? value) {
-                                            inputViewNotifier.selectSecondMatchWinLoss(value);
-                                          },
-                                          contentPadding: const EdgeInsets.symmetric(horizontal: 0),
-                                          dense: true,
-                                        ),
-                                        if (isDraw)
-                                          RadioListTile(
-                                            title: Text(S.of(context).draw),
-                                            value: WinLoss.draw,
-                                            toggleable: true,
-                                            groupValue: secondMatchWinLoss,
-                                            onChanged: (WinLoss? value) {
-                                              inputViewNotifier.selectSecondMatchWinLoss(value);
-                                            },
-                                            contentPadding: const EdgeInsets.symmetric(horizontal: 0),
-                                            dense: true,
-                                          ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        if (isBO3)
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                width: 204.w,
-                                child: Card(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8),
-                                    child: Column(
-                                      children: [
-                                        RadioListTile(
-                                          title: Text(S.of(context).first),
-                                          toggleable: true,
-                                          value: FirstSecond.first,
-                                          groupValue: thirdMatchFirstSecond,
-                                          onChanged: (FirstSecond? value) {
-                                            inputViewNotifier.selectThirdMatchFirstSecond(value);
-                                          },
-                                          contentPadding: const EdgeInsets.symmetric(horizontal: 0),
-                                          dense: true,
-                                        ),
-                                        RadioListTile(
-                                          title: Text(S.of(context).second),
-                                          value: FirstSecond.second,
-                                          toggleable: true,
-                                          groupValue: thirdMatchFirstSecond,
-                                          onChanged: (FirstSecond? value) {
-                                            inputViewNotifier.selectThirdMatchFirstSecond(value);
-                                          },
-                                          contentPadding: const EdgeInsets.symmetric(horizontal: 0),
-                                          dense: true,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 204.w,
-                                child: Card(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8),
-                                    child: Column(
-                                      children: [
-                                        RadioListTile(
-                                          title: Text(S.of(context).win),
-                                          value: WinLoss.win,
-                                          toggleable: true,
-                                          groupValue: thirdMatchWinLoss,
-                                          onChanged: (WinLoss? value) {
-                                            inputViewNotifier.selectThirdMatchWinLoss(value);
-                                          },
-                                          contentPadding: const EdgeInsets.symmetric(horizontal: 0),
-                                          dense: true,
-                                        ),
-                                        RadioListTile(
-                                          title: Text(S.of(context).loss),
-                                          value: WinLoss.loss,
-                                          toggleable: true,
-                                          groupValue: thirdMatchWinLoss,
-                                          onChanged: (WinLoss? value) {
-                                            inputViewNotifier.selectThirdMatchWinLoss(value);
-                                          },
-                                          contentPadding: const EdgeInsets.symmetric(horizontal: 0),
-                                          dense: true,
-                                        ),
-                                        if (isDraw)
-                                          RadioListTile(
-                                            title: Text(S.of(context).draw),
-                                            value: WinLoss.draw,
-                                            toggleable: true,
-                                            groupValue: thirdMatchWinLoss,
-                                            onChanged: (WinLoss? value) {
-                                              inputViewNotifier.selectThirdMatchWinLoss(value);
-                                            },
-                                            contentPadding: const EdgeInsets.symmetric(horizontal: 0),
-                                            dense: true,
-                                          ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        Card(
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Stack(
-                                  alignment: Alignment.centerRight,
-                                  children: [
-                                    CustomTextField(
-                                      labelText: S.of(context).useDeck,
-                                      onChanged: inputViewNotifier.inputUseDeck,
-                                      controller: useDeckTextController,
-                                      focusNode: useDeckFocusnode,
-                                    ),
-                                    IconButton(
-                                      icon: const Icon(Icons.arrow_drop_down),
-                                      onPressed: inputViewInfo.gameDeckList.isEmpty
-                                          ? null
-                                          : () {
-                                              showCupertinoModalBottomSheet(
-                                                expand: true,
-                                                context: context,
-                                                backgroundColor: Colors.transparent,
-                                                builder: (BuildContext context) => SelectDomainDataView(
-                                                  dataType: DomainDataType.deck,
-                                                  selectDomainDataFunc: inputViewNotifier.selectUseDeck,
-                                                  tagCount: 0,
-                                                  afterFunc: FocusScope.of(context).unfocus,
-                                                  enableVisiblity: true,
-                                                ),
-                                              );
-                                            },
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 8),
-                                Stack(
-                                  alignment: Alignment.centerRight,
-                                  children: [
-                                    CustomTextField(
-                                      labelText: S.of(context).opponentDeck,
-                                      onChanged: inputViewNotifier.inputOpponentDeck,
-                                      controller: opponentDeckTextController,
-                                      focusNode: opponentDeckFocusnode,
-                                    ),
-                                    IconButton(
-                                      icon: const Icon(Icons.arrow_drop_down),
-                                      onPressed: inputViewInfo.gameDeckList.isEmpty
-                                          ? null
-                                          : () {
-                                              showCupertinoModalBottomSheet(
-                                                expand: true,
-                                                context: context,
-                                                backgroundColor: Colors.transparent,
-                                                builder: (BuildContext context) => SelectDomainDataView(
-                                                  dataType: DomainDataType.deck,
-                                                  selectDomainDataFunc: inputViewNotifier.selectOpponentDeck,
-                                                  tagCount: 0,
-                                                  afterFunc: FocusScope.of(context).unfocus,
-                                                  enableVisiblity: true,
-                                                ),
-                                              );
-                                            },
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 8),
-                                InputTagList(
-                                  inputTag: inputViewNotifier.inputTag,
-                                  controllers: tagTextController,
-                                  focusNodes: tagFocusNodes,
-                                  isDropDown: inputViewInfo.gameDeckList.isEmpty,
-                                  selectTagFunc: inputViewNotifier.selectTag,
-                                  addFunc: () {
-                                    textEditingControllerNotifier.addTagController();
-                                  },
-                                ),
-                                const SizedBox(height: 8),
-                                CustomTextField(
-                                  controller: memoTextController,
-                                  focusNode: memoFocusnode,
-                                  onChanged: inputViewNotifier.inputMemo,
-                                  labelText: S.of(context).memoTag,
-                                  keyboardType: TextInputType.multiline,
-                                  maxLines: null,
-                                ),
-                              ],
                             ),
                           ),
                         ),
                         SizedBox(
-                          width: double.infinity,
+                          width: 204.w,
                           child: Card(
                             child: Padding(
-                              padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                              child: Center(
-                                child: SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: addPhotoWidgets(
-                                      images: images,
-                                      selectImageFunc: () async {
-                                        final picker = ImagePicker();
-                                        final image = await picker.pickImage(source: ImageSource.gallery);
-                                        if (image == null) return;
-                                        inputViewNotifier.inputImage(image);
-                                      },
-                                      deleteImageFunc: (value) {
-                                        inputViewNotifier.removeImage(value);
-                                      },
-                                    ),
+                              padding: const EdgeInsets.all(8),
+                              child: Column(
+                                children: [
+                                  RadioListTile(
+                                    title: Text(S.of(context).win),
+                                    toggleable: true,
+                                    value: WinLoss.win,
+                                    groupValue: isBO3 ? firstMatchWinLoss : winLoss,
+                                    onChanged: (WinLoss? value) {
+                                      if (isBO3) {
+                                        inputViewNotifier.selectFirstMatchWinLoss(value);
+                                      } else {
+                                        inputViewNotifier.selectWinLoss(value);
+                                      }
+                                    },
+                                    contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                    dense: true,
                                   ),
+                                  RadioListTile(
+                                    title: Text(S.of(context).loss),
+                                    toggleable: true,
+                                    value: WinLoss.loss,
+                                    groupValue: isBO3 ? firstMatchWinLoss : winLoss,
+                                    onChanged: (WinLoss? value) {
+                                      if (isBO3) {
+                                        inputViewNotifier.selectFirstMatchWinLoss(value);
+                                      } else {
+                                        inputViewNotifier.selectWinLoss(value);
+                                      }
+                                    },
+                                    contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                    dense: true,
+                                  ),
+                                  if (isDraw)
+                                    RadioListTile(
+                                      title: Text(S.of(context).draw),
+                                      value: WinLoss.draw,
+                                      toggleable: true,
+                                      groupValue: isBO3 ? firstMatchWinLoss : winLoss,
+                                      onChanged: (WinLoss? value) {
+                                        if (isBO3) {
+                                          inputViewNotifier.selectFirstMatchWinLoss(value);
+                                        } else {
+                                          inputViewNotifier.selectWinLoss(value);
+                                        }
+                                      },
+                                      contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                      dense: true,
+                                    ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    if (isBO3)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: 204.w,
+                            child: Card(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8),
+                                child: Column(
+                                  children: [
+                                    RadioListTile(
+                                      title: Text(S.of(context).first),
+                                      value: FirstSecond.first,
+                                      toggleable: true,
+                                      groupValue: secondMatchFirstSecond,
+                                      onChanged: (FirstSecond? value) {
+                                        inputViewNotifier.selectSecondMatchFirstSecond(value);
+                                      },
+                                      contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                      dense: true,
+                                    ),
+                                    RadioListTile(
+                                      title: Text(S.of(context).second),
+                                      value: FirstSecond.second,
+                                      toggleable: true,
+                                      groupValue: secondMatchFirstSecond,
+                                      onChanged: (FirstSecond? value) {
+                                        inputViewNotifier.selectSecondMatchFirstSecond(value);
+                                      },
+                                      contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                      dense: true,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 204.w,
+                            child: Card(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8),
+                                child: Column(
+                                  children: [
+                                    RadioListTile(
+                                      title: Text(S.of(context).win),
+                                      value: WinLoss.win,
+                                      toggleable: true,
+                                      groupValue: secondMatchWinLoss,
+                                      onChanged: (WinLoss? value) {
+                                        inputViewNotifier.selectSecondMatchWinLoss(value);
+                                      },
+                                      contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                      dense: true,
+                                    ),
+                                    RadioListTile(
+                                      title: Text(S.of(context).loss),
+                                      value: WinLoss.loss,
+                                      toggleable: true,
+                                      groupValue: secondMatchWinLoss,
+                                      onChanged: (WinLoss? value) {
+                                        inputViewNotifier.selectSecondMatchWinLoss(value);
+                                      },
+                                      contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                      dense: true,
+                                    ),
+                                    if (isDraw)
+                                      RadioListTile(
+                                        title: Text(S.of(context).draw),
+                                        value: WinLoss.draw,
+                                        toggleable: true,
+                                        groupValue: secondMatchWinLoss,
+                                        onChanged: (WinLoss? value) {
+                                          inputViewNotifier.selectSecondMatchWinLoss(value);
+                                        },
+                                        contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                        dense: true,
+                                      ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    if (isBO3)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: 204.w,
+                            child: Card(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8),
+                                child: Column(
+                                  children: [
+                                    RadioListTile(
+                                      title: Text(S.of(context).first),
+                                      toggleable: true,
+                                      value: FirstSecond.first,
+                                      groupValue: thirdMatchFirstSecond,
+                                      onChanged: (FirstSecond? value) {
+                                        inputViewNotifier.selectThirdMatchFirstSecond(value);
+                                      },
+                                      contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                      dense: true,
+                                    ),
+                                    RadioListTile(
+                                      title: Text(S.of(context).second),
+                                      value: FirstSecond.second,
+                                      toggleable: true,
+                                      groupValue: thirdMatchFirstSecond,
+                                      onChanged: (FirstSecond? value) {
+                                        inputViewNotifier.selectThirdMatchFirstSecond(value);
+                                      },
+                                      contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                      dense: true,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 204.w,
+                            child: Card(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8),
+                                child: Column(
+                                  children: [
+                                    RadioListTile(
+                                      title: Text(S.of(context).win),
+                                      value: WinLoss.win,
+                                      toggleable: true,
+                                      groupValue: thirdMatchWinLoss,
+                                      onChanged: (WinLoss? value) {
+                                        inputViewNotifier.selectThirdMatchWinLoss(value);
+                                      },
+                                      contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                      dense: true,
+                                    ),
+                                    RadioListTile(
+                                      title: Text(S.of(context).loss),
+                                      value: WinLoss.loss,
+                                      toggleable: true,
+                                      groupValue: thirdMatchWinLoss,
+                                      onChanged: (WinLoss? value) {
+                                        inputViewNotifier.selectThirdMatchWinLoss(value);
+                                      },
+                                      contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                      dense: true,
+                                    ),
+                                    if (isDraw)
+                                      RadioListTile(
+                                        title: Text(S.of(context).draw),
+                                        value: WinLoss.draw,
+                                        toggleable: true,
+                                        groupValue: thirdMatchWinLoss,
+                                        onChanged: (WinLoss? value) {
+                                          inputViewNotifier.selectThirdMatchWinLoss(value);
+                                        },
+                                        contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                        dense: true,
+                                      ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    Card(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Stack(
+                              alignment: Alignment.centerRight,
+                              children: [
+                                CustomTextField(
+                                  labelText: S.of(context).useDeck,
+                                  onChanged: inputViewNotifier.inputUseDeck,
+                                  controller: useDeckTextController,
+                                  focusNode: useDeckFocusnode,
+                                ),
+                                IconButton(
+                                  icon: const Icon(Icons.arrow_drop_down),
+                                  onPressed: () {
+                                    showCupertinoModalBottomSheet(
+                                      expand: true,
+                                      context: context,
+                                      backgroundColor: Colors.transparent,
+                                      builder: (BuildContext context) => SelectDomainDataView(
+                                        dataType: DomainDataType.deck,
+                                        selectDomainDataFunc: inputViewNotifier.selectUseDeck,
+                                        tagCount: 0,
+                                        afterFunc: FocusScope.of(context).unfocus,
+                                        enableVisiblity: true,
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            Stack(
+                              alignment: Alignment.centerRight,
+                              children: [
+                                CustomTextField(
+                                  labelText: S.of(context).opponentDeck,
+                                  onChanged: inputViewNotifier.inputOpponentDeck,
+                                  controller: opponentDeckTextController,
+                                  focusNode: opponentDeckFocusnode,
+                                ),
+                                IconButton(
+                                  icon: const Icon(Icons.arrow_drop_down),
+                                  onPressed: () {
+                                    showCupertinoModalBottomSheet(
+                                      expand: true,
+                                      context: context,
+                                      backgroundColor: Colors.transparent,
+                                      builder: (BuildContext context) => SelectDomainDataView(
+                                        dataType: DomainDataType.deck,
+                                        selectDomainDataFunc: inputViewNotifier.selectOpponentDeck,
+                                        tagCount: 0,
+                                        afterFunc: FocusScope.of(context).unfocus,
+                                        enableVisiblity: true,
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            InputTagList(
+                              inputTag: inputViewNotifier.inputTag,
+                              controllers: tagTextController,
+                              focusNodes: tagFocusNodes,
+                              selectTagFunc: inputViewNotifier.selectTag,
+                              addFunc: () {
+                                textEditingControllerNotifier.addTagController();
+                              },
+                            ),
+                            const SizedBox(height: 8),
+                            CustomTextField(
+                              controller: memoTextController,
+                              focusNode: memoFocusnode,
+                              onChanged: inputViewNotifier.inputMemo,
+                              labelText: S.of(context).memoTag,
+                              keyboardType: TextInputType.multiline,
+                              maxLines: null,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      child: Card(
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                          child: Center(
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: addPhotoWidgets(
+                                  images: images,
+                                  selectImageFunc: () async {
+                                    final picker = ImagePicker();
+                                    final image = await picker.pickImage(source: ImageSource.gallery);
+                                    if (image == null) return;
+                                    inputViewNotifier.inputImage(image);
+                                  },
+                                  deleteImageFunc: (value) {
+                                    inputViewNotifier.removeImage(value);
+                                  },
                                 ),
                               ),
                             ),
                           ),
                         ),
-                        const SizedBox(height: 16),
-                        Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              SizedBox(
-                                width: 300,
-                                height: 50,
-                                child: ElevatedButton(
-                                  onPressed: useDeck == null ||
-                                          opponentDeck == null ||
-                                          (isBO3 && (firstMatchFirstSecond == null || firstMatchWinLoss == null)) ||
-                                          (isBO3 && secondMatchFirstSecond != null && secondMatchWinLoss == null) ||
-                                          (isBO3 && secondMatchFirstSecond == null && secondMatchWinLoss != null) ||
-                                          (isBO3 && thirdMatchFirstSecond != null && thirdMatchWinLoss == null) ||
-                                          (isBO3 && thirdMatchFirstSecond == null && thirdMatchWinLoss != null)
-                                      ? null
-                                      : () async {
-                                          final okCancelResult = await showOkCancelAlertDialog(
-                                            context: context,
-                                            message: S.of(context).isSave,
-                                            isDestructiveAction: true,
-                                          );
-                                          if (okCancelResult == OkCancelResult.ok) {
-                                            SmartDialog.showLoading();
-                                            int recordCount;
-                                            if (isBO3) {
-                                              recordCount = await inputViewNotifier.saveBO3();
-                                            } else {
-                                              recordCount = await inputViewNotifier.saveBO1();
-                                            }
-                                            await ref.read(dbHelper).fetchAll();
-                                            if (recordCount % 200 == 0) {
-                                              final inAppReview = InAppReview.instance;
-                                              if (await inAppReview.isAvailable()) {
-                                                inAppReview.requestReview();
-                                              }
-                                            }
-                                            ref.refresh(allDeckListProvider);
-                                            if (ref.read(backupNotifierProvider)) {
-                                              await ref.read(firestoreController).addRecord(ref.read(inputViewNotifierProvider).record!);
-                                            }
-                                            inputViewNotifier.resetView();
-                                            SmartDialog.dismiss();
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          SizedBox(
+                            width: 300,
+                            height: 50,
+                            child: ElevatedButton(
+                              onPressed: useDeck == null ||
+                                      opponentDeck == null ||
+                                      (isBO3 && (firstMatchFirstSecond == null || firstMatchWinLoss == null)) ||
+                                      (isBO3 && secondMatchFirstSecond != null && secondMatchWinLoss == null) ||
+                                      (isBO3 && secondMatchFirstSecond == null && secondMatchWinLoss != null) ||
+                                      (isBO3 && thirdMatchFirstSecond != null && thirdMatchWinLoss == null) ||
+                                      (isBO3 && thirdMatchFirstSecond == null && thirdMatchWinLoss != null)
+                                  ? null
+                                  : () async {
+                                      final okCancelResult = await showOkCancelAlertDialog(
+                                        context: context,
+                                        message: S.of(context).isSave,
+                                        isDestructiveAction: true,
+                                      );
+                                      if (okCancelResult == OkCancelResult.ok) {
+                                        SmartDialog.showLoading();
+                                        int recordCount;
+                                        if (isBO3) {
+                                          recordCount = await inputViewNotifier.saveBO3();
+                                        } else {
+                                          recordCount = await inputViewNotifier.saveBO1();
+                                        }
+                                        await ref.read(dbHelper).fetchAll();
+                                        if (recordCount % 200 == 0) {
+                                          final inAppReview = InAppReview.instance;
+                                          if (await inAppReview.isAvailable()) {
+                                            inAppReview.requestReview();
                                           }
-                                          // ignore: use_build_context_synchronously
-                                          FocusScope.of(context).unfocus();
-                                        },
-                                  style: ElevatedButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                  ),
-                                  child: Text(S.of(context).save),
+                                        }
+                                        if (ref.read(backupNotifierProvider)) {
+                                          await ref.read(firestoreController).addRecord(ref.read(inputViewNotifierProvider).record!);
+                                        }
+                                        inputViewNotifier.resetView();
+                                        SmartDialog.dismiss();
+                                      }
+                                      if (context.mounted) {
+                                        FocusScope.of(context).unfocus();
+                                      }
+                                    },
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
                               ),
-                              const SizedBox(height: 16),
-                            ],
+                              child: Text(S.of(context).save),
+                            ),
                           ),
-                        ),
-                      ],
+                          const SizedBox(height: 16),
+                        ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               ),
             ),
-            const AdaptiveBannerAd(),
-          ],
-        );
-      },
-      error: (error, stack) => Text('$error'),
-      loading: () => const Center(child: CircularProgressIndicator()),
+          ),
+        ),
+        const AdaptiveBannerAd(),
+      ],
     );
   }
 }

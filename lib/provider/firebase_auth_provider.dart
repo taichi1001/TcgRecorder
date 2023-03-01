@@ -49,7 +49,9 @@ class FirebaseAuthNotifier extends StateNotifier<FirebaseAuthState> {
   }
 
   void login() {
-    state = state.copyWith(user: FirebaseAuth.instance.currentUser);
+    if (state.user == null) {
+      state = state.copyWith(user: FirebaseAuth.instance.currentUser);
+    }
   }
 
   Future singOut() async {
