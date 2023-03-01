@@ -6,8 +6,12 @@ import 'package:settings_ui/settings_ui.dart';
 import 'package:tcg_manager/helper/premium_plan_dialog.dart';
 import 'package:tcg_manager/provider/backup_provider.dart';
 import 'package:tcg_manager/provider/execution_limit_cound_provider.dart';
+import 'package:tcg_manager/provider/input_view_provider.dart';
+import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/revenue_cat_provider.dart';
 import 'package:tcg_manager/provider/firestore_controller.dart';
+import 'package:tcg_manager/provider/select_game_provider.dart';
+import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 
 class BackupSettingsView extends HookConsumerWidget {
   const BackupSettingsView({super.key});
@@ -82,6 +86,16 @@ class BackupSettingsView extends HookConsumerWidget {
                     onPressed: (context) async {
                       isLoading.value = true;
                       await ref.read(firestoreController).restoreAll();
+                      final recordList = await ref.read(allRecordListProvider.future);
+                      if (recordList.isNotEmpty) {
+                        await ref.read(selectGameNotifierProvider.notifier).changeGameForId(recordList.last.gameId!);
+                        await ref.read(inputViewNotifierProvider.notifier).init();
+                        ref.read(textEditingControllerNotifierProvider.notifier).resetInputViewController();
+                      } else {
+                        await ref.read(selectGameNotifierProvider.notifier).changeGameForLast();
+                        await ref.read(inputViewNotifierProvider.notifier).init();
+                        ref.read(textEditingControllerNotifierProvider.notifier).resetInputViewController();
+                      }
                       isLoading.value = false;
                       if (context.mounted) {
                         await showOkAlertDialog(

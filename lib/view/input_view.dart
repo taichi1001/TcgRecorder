@@ -21,12 +21,14 @@ import 'package:tcg_manager/enum/domain_data_type.dart';
 import 'package:tcg_manager/enum/first_second.dart';
 import 'package:tcg_manager/enum/win_loss.dart';
 import 'package:tcg_manager/generated/l10n.dart';
-import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/helper/premium_plan_dialog.dart';
 import 'package:tcg_manager/provider/backup_provider.dart';
+import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/input_view_provider.dart';
 import 'package:tcg_manager/provider/input_view_settings_provider.dart';
+import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/revenue_cat_provider.dart';
+import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 import 'package:tcg_manager/provider/firestore_controller.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
@@ -201,8 +203,6 @@ class InputView extends HookConsumerWidget {
     final dateTimeController = useState(CustomModalDateTimePickerController(initialDateTime: DateTime.now()));
     final isDraw = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.draw));
     final isBO3 = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.bo3));
-
-    // final inputViewInfo = ref.watch(inputViewInfoProvider);
 
     final useDeckFocusnode = useFocusNode();
     final opponentDeckFocusnode = useFocusNode();
@@ -676,7 +676,9 @@ class InputView extends HookConsumerWidget {
                                         } else {
                                           recordCount = await inputViewNotifier.saveBO1();
                                         }
-                                        await ref.read(dbHelper).fetchAll();
+                                        ref.invalidate(allDeckListProvider);
+                                        ref.invalidate(allTagListProvider);
+                                        ref.invalidate(allRecordListProvider);
                                         if (recordCount % 200 == 0) {
                                           final inAppReview = InAppReview.instance;
                                           if (await inAppReview.isAvailable()) {

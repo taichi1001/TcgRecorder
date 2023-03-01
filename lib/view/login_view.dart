@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/provider/firebase_auth_provider.dart';
+import 'package:tcg_manager/provider/firestore_controller.dart';
 import 'package:tcg_manager/view/phone_number_auth_view.dart';
+
+final fromPhoneAuthProvider = StateProvider((ref) => false);
 
 class LoginView extends HookConsumerWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -25,13 +28,16 @@ class LoginView extends HookConsumerWidget {
               child: const Text('はじめてみる'),
             ),
             ElevatedButton(
-              onPressed: () {
-                Navigator.push(
+              onPressed: () async {
+                await Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => const PhoneNumberAuthView(),
                   ),
                 );
+                if (context.mounted && ref.read(firebaseAuthNotifierProvider).user != null) {
+                  await ref.read(firestoreController).restoreAll();
+                }
               },
               child: const Text('以前に電話番号認証していた方はこちら'),
             ),

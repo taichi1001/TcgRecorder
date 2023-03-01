@@ -64,18 +64,6 @@ class InitialGameRegistrationView extends HookConsumerWidget {
                         child: Text(S.of(context).save),
                       ),
                     ),
-                    ElevatedButton(
-                      onPressed: () async {
-                        final isSuccess = await ref.read(firestoreController).restoreAll();
-                        if (context.mounted) {
-                          await showOkAlertDialog(
-                            context: context,
-                            title: isSuccess ? '復旧に成功しました' : 'バックアップデータが見つかりませんでした',
-                          );
-                        }
-                      },
-                      child: const Text('バックアップデータから復旧する'),
-                    ),
                   ],
                 ),
               ),

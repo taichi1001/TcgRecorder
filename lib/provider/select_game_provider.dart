@@ -14,7 +14,7 @@ class SelectGameNotifier extends StateNotifier<SelectGameState> {
     startupGame();
   }
 
-  final StateNotifierProviderRef ref;
+  final Ref ref;
 
   void changeGame(Game game) {
     state = state.copyWith(selectGame: game);
@@ -22,6 +22,17 @@ class SelectGameNotifier extends StateNotifier<SelectGameState> {
 
   void changeGameForString(String name) {
     state = state.copyWith(selectGame: Game(game: name));
+  }
+
+  Future changeGameForId(int id) async {
+    final gameList = await ref.read(allGameListProvider.future);
+    final targetGame = gameList.firstWhere((element) => element.gameId == id, orElse: () => gameList.last);
+    state = state.copyWith(selectGame: targetGame);
+  }
+
+  Future changeGameForLast() async {
+    final gameList = await ref.read(allGameListProvider.future);
+    state = state.copyWith(selectGame: gameList.last);
   }
 
   void scrollSelectGame(int index) async {
@@ -73,6 +84,6 @@ class SelectGameNotifier extends StateNotifier<SelectGameState> {
   }
 }
 
-final selectGameNotifierProvider = StateNotifierProvider<SelectGameNotifier, SelectGameState>(
+final selectGameNotifierProvider = StateNotifierProvider.autoDispose<SelectGameNotifier, SelectGameState>(
   (ref) => SelectGameNotifier(ref),
 );

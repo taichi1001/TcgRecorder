@@ -27,6 +27,7 @@ import 'package:tcg_manager/provider/bottom_navigation_bar_provider.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/firebase_auth_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
+import 'package:tcg_manager/provider/input_view_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/revenue_cat_provider.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
@@ -198,8 +199,8 @@ class OtherView extends HookConsumerWidget {
                   );
                   if (okCancelResult == OkCancelResult.ok) {
                     ref.read(bottomNavigationBarNotifierProvider.notifier).select(0);
-                    ref.read(textEditingControllerNotifierProvider.notifier).resetInputViewController();
                     await ref.read(dbHelper).deleteAll();
+                    await ref.read(inputViewNotifierProvider.notifier).init();
                   }
                 },
               ),
@@ -304,6 +305,7 @@ class OtherView extends HookConsumerWidget {
                 );
                 if (okCancelResult == OkCancelResult.ok) {
                   ref.read(firebaseAuthNotifierProvider.notifier).singOut();
+                  ref.read(bottomNavigationBarNotifierProvider.notifier).select(0);
                 }
               },
               child: const Text('ログアウト'),

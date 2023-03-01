@@ -108,10 +108,10 @@ class DbHelper {
   }
 
   Future fetchAll() async {
-    ref.refresh(allGameListProvider);
-    ref.refresh(allDeckListProvider);
-    ref.refresh(allTagListProvider);
-    ref.refresh(allRecordListProvider);
+    ref.invalidate(allGameListProvider);
+    ref.invalidate(allDeckListProvider);
+    ref.invalidate(allTagListProvider);
+    ref.invalidate(allRecordListProvider);
   }
 
   Future updateDeckName(Deck deck, String newName) async {

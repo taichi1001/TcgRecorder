@@ -27,7 +27,6 @@ class CustomScaffold extends HookConsumerWidget {
     final selectGame = ref.watch(selectGameNotifierProvider);
     final games = ref.watch(allGameListProvider);
     final selectGameNotifier = ref.read(selectGameNotifierProvider.notifier);
-    final inputViewNotifier = ref.read(inputViewNotifierProvider.notifier);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -39,7 +38,7 @@ class CustomScaffold extends HookConsumerWidget {
           _GameListPickerButton(
             submited: () {
               selectGameNotifier.setSelectGame();
-              inputViewNotifier.resetView();
+              ref.read(inputViewNotifierProvider.notifier).resetView();
             },
             onSelectedItemChanged: selectGameNotifier.scrollSelectGame,
             children: games.when(

@@ -287,6 +287,9 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
           ref.read(textEditingControllerNotifierProvider.notifier).setTagController(tag.name, index);
         });
       }
+    } else {
+      state = InputViewState(date: DateTime.now());
+      ref.read(textEditingControllerNotifierProvider.notifier).resetInputViewController();
     }
   }
 
