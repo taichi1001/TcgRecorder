@@ -1,64 +1,75 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tcg_manager/dao/record_dao.dart';
 import 'package:tcg_manager/entity/record.dart';
+import 'package:tcg_manager/service/database.dart';
 
-final recordRepository = Provider.autoDispose<RecordRepository>((ref) => RecordRepositoryImpl(ref));
+final recordRepository = Provider.autoDispose<RecordRepository>((ref) => RecordRepository(ref));
 
-abstract class RecordRepository {
-  Future<List<Record>> getAll();
-
-  Future<Record?> getRecordId(int id);
-
-  Future<List<Record>> getGameRecord(int id);
-
-  Future<List<Record>> getTagRecord(int id);
-
-  Future<int> insert(Record record);
-
-  Future<int> update(Record record);
-
-  Future insertList(List<Record> records);
-
-  Future<List<Object?>> updateRecordList(List<Record> recordList);
-
-  Future<int> deleteById(int id);
-
-  Future deleteAll();
-}
-
-class RecordRepositoryImpl implements RecordRepository {
-  RecordRepositoryImpl(this.ref);
+class RecordRepository {
+  RecordRepository(this.ref);
 
   final Ref ref;
-  final recordDao = RecordDao();
+  final dbProvider = DatabaseService.dbProvider;
+  final tableName = DatabaseService.recordTableName;
 
-  @override
-  Future<List<Record>> getAll() => recordDao.getAll();
+  Future<List<Record>> getAll() async {
+    final db = await dbProvider.database;
+    final result = await db.query(tableName);
+    return result.isNotEmpty ? result.map((item) => Record.fromJson(item)).toList() : [];
+  }
 
-  @override
-  Future<Record?> getRecordId(int id) => recordDao.getRecordId(id);
+  Future<Record?> getRecordId(int id) async {
+    final db = await dbProvider.database;
+    final result = await db.query(tableName, where: 'record_id = ?', whereArgs: [id]);
+    return result.isNotEmpty ? result.map((item) => Record.fromJson(item)).toList().first : null;
+  }
 
-  @override
-  Future<List<Record>> getGameRecord(int id) => recordDao.getGameRecord(id);
+  Future<List<Record>> getGameRecord(int id) async {
+    final db = await dbProvider.database;
+    final result = await db.query(tableName, where: 'game_id = ?', whereArgs: [id]);
+    return result.isNotEmpty ? result.map((item) => Record.fromJson(item)).toList() : [];
+  }
 
-  @override
-  Future<List<Record>> getTagRecord(int id) => recordDao.getTagRecord(id);
+  Future<List<Record>> getTagRecord(int id) async {
+    final db = await dbProvider.database;
+    final result = await db.query(tableName, where: 'tag_id = ?', whereArgs: [id]);
+    return result.isNotEmpty ? result.map((item) => Record.fromJson(item)).toList() : [];
+  }
 
-  @override
-  Future<int> insert(Record record) => recordDao.create(record);
+  Future<int> insert(Record record) async {
+    final db = await dbProvider.database;
+    return db.insert(tableName, record.toJson());
+  }
 
-  @override
-  Future<int> update(Record record) => recordDao.update(record);
+  Future<int> update(Record record) async {
+    final db = await dbProvider.database;
+    return await db.update(tableName, record.toJson(), where: 'record_id = ?', whereArgs: [record.recordId]);
+  }
 
-  @override
-  Future insertList(List<Record> records) => recordDao.insertRecordList(records);
+  Future<List<Object?>> insertList(List<Record> records) async {
+    final db = await dbProvider.database;
+    final batch = db.batch();
+    for (final record in records) {
+      batch.insert(tableName, record.toJson());
+    }
+    return await batch.commit();
+  }
 
-  @override
-  Future<List<Object?>> updateRecordList(List<Record> recordList) => recordDao.updateRecordList(recordList);
+  Future<List<Object?>> updateRecordList(List<Record> recordList) async {
+    final db = await dbProvider.database;
+    final batch = db.batch();
+    for (final record in recordList) {
+      batch.update(tableName, record.toJson(), where: 'record_id = ?', whereArgs: [record.recordId]);
+    }
+    return await batch.commit();
+  }
 
-  @override
-  Future<int> deleteById(int id) => recordDao.delete(id);
+  Future<int> deleteById(int id) async {
+    final db = await dbProvider.database;
+    return await db.delete(tableName, where: 'record_id = ?', whereArgs: [id]);
+  }
 
-  @override
-  Future deleteAll() => recordDao.deleteAll();
+  Future<int> deleteAll() async {
+    final db = await dbProvider.database;
+    return await db.delete(tableName);
+  }
 }

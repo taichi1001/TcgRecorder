@@ -498,7 +498,7 @@ class _DeckListView extends HookConsumerWidget {
                 child: SlidableTile(
                   key: ObjectKey(deckList[index]),
                   title: Text(
-                    deckList[index].deck,
+                    deckList[index].name,
                     style: deckList[index].isVisibleToPicker
                         ? Theme.of(context).textTheme.bodyMedium
                         : Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -511,7 +511,7 @@ class _DeckListView extends HookConsumerWidget {
                     final newName = await showTextInputDialog(
                       context: context,
                       title: '名前変更',
-                      textFields: [DialogTextField(initialText: deckList[index].deck)],
+                      textFields: [DialogTextField(initialText: deckList[index].name)],
                     );
                     if (newName != null && newName.first != '') {
                       try {
@@ -526,25 +526,25 @@ class _DeckListView extends HookConsumerWidget {
                           if (result == OkCancelResult.ok) {
                             final oldDeck = await ref.read(editRecordHelper).checkIfSelectedUseDeckIsNew(newName.first);
                             var allRecordList = await ref.read(recordRepository).getAll();
-                            final targetUseDeckList = allRecordList.where((record) => record.useDeckId! == deckList[index].deckId).toList();
+                            final targetUseDeckList = allRecordList.where((record) => record.useDeckId! == deckList[index].id).toList();
                             final List<Record> newUseDeckRecordList = [];
                             for (var deck in targetUseDeckList) {
-                              deck = deck.copyWith(useDeckId: oldDeck.deck!.deckId);
+                              deck = deck.copyWith(useDeckId: oldDeck.deck!.id);
                               newUseDeckRecordList.add(deck);
                             }
                             await ref.read(recordRepository).updateRecordList(newUseDeckRecordList);
 
                             allRecordList = await ref.read(recordRepository).getAll();
                             final targetOpponentDeckList =
-                                allRecordList.where((record) => record.opponentDeckId! == deckList[index].deckId).toList();
+                                allRecordList.where((record) => record.opponentDeckId! == deckList[index].id).toList();
                             final List<Record> newOpponentDeckRecordList = [];
                             for (var deck in targetOpponentDeckList) {
-                              deck = deck.copyWith(opponentDeckId: oldDeck.deck!.deckId);
+                              deck = deck.copyWith(opponentDeckId: oldDeck.deck!.id);
                               newOpponentDeckRecordList.add(deck);
                             }
                             await ref.read(recordRepository).updateRecordList(newOpponentDeckRecordList);
 
-                            await ref.read(deckRepository).deleteById(deckList[index].deckId!);
+                            await ref.read(deckRepository).deleteById(deckList[index].id!);
 
                             ref.refresh(allDeckListProvider);
                             ref.refresh(allRecordListProvider);
@@ -596,7 +596,7 @@ class _TagListView extends HookConsumerWidget {
                 child: SlidableTile(
                   key: ObjectKey(tagList[index]),
                   title: Text(
-                    tagList[index].tag,
+                    tagList[index].name,
                     style: tagList[index].isVisibleToPicker
                         ? Theme.of(context).textTheme.bodyMedium
                         : Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -609,7 +609,7 @@ class _TagListView extends HookConsumerWidget {
                     final newName = await showTextInputDialog(
                       context: context,
                       title: '名前変更',
-                      textFields: [DialogTextField(initialText: tagList[index].tag)],
+                      textFields: [DialogTextField(initialText: tagList[index].name)],
                     );
                     if (newName != null && newName.first != '') {
                       try {
@@ -625,15 +625,14 @@ class _TagListView extends HookConsumerWidget {
                             final oldTag = await ref.read(editRecordHelper).checkIfSelectedTagIsNew(newName.first);
                             final allRecordList = await ref.read(recordRepository).getAll();
                             final isTagRecordList = allRecordList.where((record) => record.tagId.isNotEmpty);
-                            final targetRecordList =
-                                isTagRecordList.where((record) => record.tagId.contains(tagList[index].tagId)).toList();
+                            final targetRecordList = isTagRecordList.where((record) => record.tagId.contains(tagList[index].id)).toList();
 
                             final List<Record> newTagRecordList = [];
                             for (var record in targetRecordList) {
                               List<int> newTagIdList = [];
                               for (final tagId in record.tagId) {
-                                if (tagId == tagList[index].tagId) {
-                                  newTagIdList.add(oldTag.tag!.tagId!);
+                                if (tagId == tagList[index].id) {
+                                  newTagIdList.add(oldTag.tag!.id!);
                                 } else {
                                   newTagIdList.add(tagId);
                                 }
@@ -642,7 +641,7 @@ class _TagListView extends HookConsumerWidget {
                               newTagRecordList.add(record);
                             }
                             await ref.read(recordRepository).updateRecordList(newTagRecordList);
-                            await ref.read(tagRepository).deleteById(tagList[index].tagId!);
+                            await ref.read(tagRepository).deleteById(tagList[index].id!);
 
                             ref.refresh(allTagListProvider);
                             ref.refresh(allRecordListProvider);

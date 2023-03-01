@@ -32,7 +32,7 @@ final recentlyUseTagProvider = FutureProvider.autoDispose<List<Tag>>((ref) async
   final List<Tag> recentlyTagList = [];
   for (final id in recentlyTagIdList) {
     for (final tag in tagList) {
-      if (id == tag.tagId) {
+      if (id == tag.id) {
         recentlyTagList.add(tag);
         break;
       }

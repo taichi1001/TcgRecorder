@@ -45,7 +45,7 @@ class EditRecordHelper {
   /// 存在する場合にFalse, しない場合にTrueを返す
   Future<CheckDeckResult> checkIfSelectedUseDeckIsNew(String deckName) async {
     final gameDeckList = await ref.read(gameDeckListProvider.future);
-    final matchList = gameDeckList.where((Deck deck) => deck.deck == deckName);
+    final matchList = gameDeckList.where((Deck deck) => deck.name == deckName);
     if (matchList.isEmpty) {
       return CheckDeckResult(isNew: true);
     }
@@ -57,7 +57,7 @@ class EditRecordHelper {
   /// 存在する場合にFalse, しない場合にTrueを返す
   Future<CheckTagResult> checkIfSelectedTagIsNew(String tagName) async {
     final gameTagList = await ref.read(gameTagListProvider.future);
-    final matchList = gameTagList.where((Tag tag) => tag.tag == tagName);
+    final matchList = gameTagList.where((Tag tag) => tag.name == tagName);
     if (matchList.isEmpty) {
       return CheckTagResult(isNew: true);
     }

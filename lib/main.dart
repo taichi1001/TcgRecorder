@@ -13,20 +13,14 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/game.dart';
-import 'package:tcg_manager/entity/record.dart';
-import 'package:tcg_manager/entity/tag.dart';
 import 'package:tcg_manager/firebase_options.dart';
 import 'package:tcg_manager/helper/att.dart';
 import 'package:tcg_manager/helper/theme_data.dart';
 import 'package:tcg_manager/provider/adaptive_banner_ad_provider.dart';
-import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/firebase_auth_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
-import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/revenue_cat_provider.dart';
-import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/state/revenue_cat_state.dart';
 import 'package:tcg_manager/view/bottom_navigation_view.dart';
 import 'package:tcg_manager/view/initial_game_registration_view.dart';
@@ -112,28 +106,16 @@ final imagePathProvider = Provider<String>((ref) => throw UnimplementedError);
 class MainInfo {
   const MainInfo({
     required this.allGameList,
-    required this.allDeckList,
-    required this.allTagList,
-    required this.allRecordList,
   });
   final List<Game> allGameList;
-  final List<Deck> allDeckList;
-  final List<Tag> allTagList;
-  final List<Record> allRecordList;
 }
 
 final mainInfoProvider = FutureProvider.autoDispose<MainInfo>((ref) async {
   final allGameList = await ref.watch(allGameListProvider.future);
-  final allDeckList = await ref.watch(allDeckListProvider.future);
-  final allTagList = await ref.watch(allTagListProvider.future);
-  final allRecordList = await ref.watch(allRecordListProvider.future);
   ref.read(firebaseAuthNotifierProvider.notifier).login();
-  ref.keepAlive();
+
   return MainInfo(
     allGameList: allGameList,
-    allDeckList: allDeckList,
-    allTagList: allTagList,
-    allRecordList: allRecordList,
   );
 });
 

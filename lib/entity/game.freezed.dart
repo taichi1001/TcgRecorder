@@ -20,13 +20,9 @@ Game _$GameFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Game {
-  @JsonKey(name: 'game_id')
   int? get gameId => throw _privateConstructorUsedError;
   String get game => throw _privateConstructorUsedError;
-  @JsonKey(
-      fromJson: _boolFromJson,
-      toJson: _boolToJson,
-      name: 'is_visible_to_picker')
+  @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
   bool get isVisibleToPicker => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -40,10 +36,9 @@ abstract class $GameCopyWith<$Res> {
       _$GameCopyWithImpl<$Res, Game>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'game_id')
-          int? gameId,
+      {int? gameId,
       String game,
-      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker')
+      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
           bool isVisibleToPicker});
 }
 
@@ -88,10 +83,9 @@ abstract class _$$_GameCopyWith<$Res> implements $GameCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'game_id')
-          int? gameId,
+      {int? gameId,
       String game,
-      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker')
+      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
           bool isVisibleToPicker});
 }
 
@@ -129,24 +123,19 @@ class __$$_GameCopyWithImpl<$Res> extends _$GameCopyWithImpl<$Res, _$_Game>
 @JsonSerializable()
 class _$_Game implements _Game {
   _$_Game(
-      {@JsonKey(name: 'game_id')
-          this.gameId,
+      {this.gameId,
       required this.game,
-      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker')
+      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
           this.isVisibleToPicker = true});
 
   factory _$_Game.fromJson(Map<String, dynamic> json) => _$$_GameFromJson(json);
 
   @override
-  @JsonKey(name: 'game_id')
   final int? gameId;
   @override
   final String game;
   @override
-  @JsonKey(
-      fromJson: _boolFromJson,
-      toJson: _boolToJson,
-      name: 'is_visible_to_picker')
+  @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
   final bool isVisibleToPicker;
 
   @override
@@ -185,24 +174,19 @@ class _$_Game implements _Game {
 
 abstract class _Game implements Game {
   factory _Game(
-      {@JsonKey(name: 'game_id')
-          final int? gameId,
+      {final int? gameId,
       required final String game,
-      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker')
+      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
           final bool isVisibleToPicker}) = _$_Game;
 
   factory _Game.fromJson(Map<String, dynamic> json) = _$_Game.fromJson;
 
   @override
-  @JsonKey(name: 'game_id')
   int? get gameId;
   @override
   String get game;
   @override
-  @JsonKey(
-      fromJson: _boolFromJson,
-      toJson: _boolToJson,
-      name: 'is_visible_to_picker')
+  @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
   bool get isVisibleToPicker;
   @override
   @JsonKey(ignore: true)

@@ -44,14 +44,14 @@ class DbHelper {
 
   Future deleteDeck(Deck deck) async {
     await _deleteDeckRecord(deck);
-    await ref.read(deckRepository).deleteById(deck.deckId!);
+    await ref.read(deckRepository).deleteById(deck.id!);
     await fetchAll();
     if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).addAll();
   }
 
   Future deleteTag(Tag tag) async {
     await _removeTagFromRecord(tag);
-    await ref.read(tagRepository).deleteById(tag.tagId!);
+    await ref.read(tagRepository).deleteById(tag.id!);
     await fetchAll();
     if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).addAll();
   }
@@ -68,7 +68,7 @@ class DbHelper {
     final allDeck = await ref.read(allDeckListProvider.future);
     final gameDeck = allDeck.where((deck) => deck.gameId == game.gameId).toList();
     for (final deck in gameDeck) {
-      await ref.read(deckRepository).deleteById(deck.deckId!);
+      await ref.read(deckRepository).deleteById(deck.id!);
     }
   }
 
@@ -76,13 +76,13 @@ class DbHelper {
     final allTag = await ref.read(allTagListProvider.future);
     final gameTag = allTag.where((tag) => tag.gameId == game.gameId).toList();
     for (final tag in gameTag) {
-      await ref.read(tagRepository).deleteById(tag.tagId!);
+      await ref.read(tagRepository).deleteById(tag.id!);
     }
   }
 
   Future _deleteDeckRecord(Deck deck) async {
     final allRecord = await ref.read(allRecordListProvider.future);
-    final deckRecord = allRecord.where((record) => record.useDeckId == deck.deckId || record.opponentDeckId == deck.deckId).toList();
+    final deckRecord = allRecord.where((record) => record.useDeckId == deck.id || record.opponentDeckId == deck.id).toList();
     for (final record in deckRecord) {
       await ref.read(recordRepository).deleteById(record.recordId!);
       removeRecordImage(record);
@@ -91,7 +91,7 @@ class DbHelper {
 
   Future _removeTagFromRecord(Tag tag) async {
     final allRecord = await ref.read(allRecordListProvider.future);
-    final tagRecord = allRecord.where((record) => record.tagId == tag.tagId).toList();
+    final tagRecord = allRecord.where((record) => record.tagId == tag.id).toList();
     for (var record in tagRecord) {
       record = record.copyWith(tagId: []);
       await ref.read(recordRepository).update(record);
@@ -115,7 +115,7 @@ class DbHelper {
   }
 
   Future updateDeckName(Deck deck, String newName) async {
-    final newDeck = deck.copyWith(deck: newName);
+    final newDeck = deck.copyWith(name: newName);
     try {
       await ref.read(deckRepository).update(newDeck);
       ref.refresh(allDeckListProvider);
@@ -139,7 +139,7 @@ class DbHelper {
   }
 
   Future updateTagName(Tag tag, String newName) async {
-    final newTag = tag.copyWith(tag: newName);
+    final newTag = tag.copyWith(name: newName);
     try {
       await ref.read(tagRepository).update(newTag);
       ref.refresh(allTagListProvider);

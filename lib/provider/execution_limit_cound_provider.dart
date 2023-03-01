@@ -1,4 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:tcg_manager/main.dart';
 
 final executionCountProvider = StateNotifierProvider.autoDispose<ExecutionCountNotifier, int>((ref) => ExecutionCountNotifier(ref));
@@ -18,18 +19,20 @@ class ExecutionCountNotifier extends StateNotifier<int> {
   }
 
   final Ref ref;
+  final DateFormat dateFormat = DateFormat('yyyy-MM-dd');
 
   Future increment() async {
     state++;
     final prefs = ref.read(sharedPreferencesProvider);
     await prefs.setInt('executionCount', state);
+    await prefs.setString('lastExecutedAt', dateFormat.format(DateTime.now()).toString());
+    _loadState();
   }
 
   void reset() {
     state = 0;
     final prefs = ref.read(sharedPreferencesProvider);
     prefs.setInt('executionCount', state);
-    prefs.setString('lastExecutedAt', DateTime.now().toString());
   }
 
   void _loadState() {
@@ -41,7 +44,7 @@ class ExecutionCountNotifier extends StateNotifier<int> {
     }
     if (lastExecutedAt != null) {
       final lastExecutedDateTime = DateTime.parse(lastExecutedAt);
-      final today = DateTime.now();
+      final today = DateTime.parse(dateFormat.format(DateTime.now()));
       if (today.difference(lastExecutedDateTime).inDays > 0) {
         reset();
       }

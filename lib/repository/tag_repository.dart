@@ -1,54 +1,63 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tcg_manager/dao/tag_dao.dart';
 import 'package:tcg_manager/entity/tag.dart';
+import 'package:tcg_manager/service/database.dart';
 
-final tagRepository = Provider.autoDispose<TagRepository>((ref) => TagRepositoryImpl(ref));
+final tagRepository = Provider.autoDispose<TagRepository>((ref) => TagRepository(ref));
 
-abstract class TagRepository {
-  Future<List<Tag>> getAll();
-
-  Future<List<Tag>> getGameTag(int id);
-
-  Future<int> insert(Tag tag);
-
-  Future<int> update(Tag tag);
-
-  Future insertList(List<Tag> games);
-
-  Future<List<Object?>> updateTagList(List<Tag> tagList);
-
-  Future<int> deleteById(int id);
-
-  Future deleteAll();
-}
-
-class TagRepositoryImpl implements TagRepository {
-  TagRepositoryImpl(this.ref);
+class TagRepository {
+  TagRepository(this.ref);
 
   final Ref ref;
-  final tagDao = TagDao();
+  final dbProvider = DatabaseService.dbProvider;
+  final tableName = DatabaseService.tagTableName;
 
-  @override
-  Future<List<Tag>> getAll() => tagDao.getAll();
+  Future<int> insert(Tag tag) async {
+    final db = await dbProvider.database;
+    return db.insert(tableName, tag.toJson());
+  }
 
-  @override
-  Future<List<Tag>> getGameTag(int id) => tagDao.getGameTag(id);
+  Future<List<Tag>> getAll() async {
+    final db = await dbProvider.database;
+    final result = await db.query(tableName);
+    return result.isNotEmpty ? result.map((item) => Tag.fromJson(item)).toList() : [];
+  }
 
-  @override
-  Future<int> insert(Tag tag) => tagDao.create(tag);
+  Future<List<Tag>> getGameTag(int id) async {
+    final db = await dbProvider.database;
+    final result = await db.query(tableName, where: 'game_id = ?', whereArgs: [id]);
+    return result.isNotEmpty ? result.map((item) => Tag.fromJson(item)).toList() : [];
+  }
 
-  @override
-  Future<int> update(Tag tag) => tagDao.update(tag);
+  Future<int> update(Tag tag) async {
+    final db = await dbProvider.database;
+    return await db.update(tableName, tag.toJson(), where: 'tag_id = ?', whereArgs: [tag.id]);
+  }
 
-  @override
-  Future insertList(List<Tag> tags) => tagDao.insertTagList(tags);
+  Future<List<Object?>> insertList(List<Tag> tagList) async {
+    final db = await dbProvider.database;
+    final batch = db.batch();
+    for (final tag in tagList) {
+      batch.insert(tableName, tag.toJson());
+    }
+    return await batch.commit();
+  }
 
-  @override
-  Future<List<Object?>> updateTagList(List<Tag> tagList) => tagDao.updateTagList(tagList);
+  Future<List<Object?>> updateTagList(List<Tag> tagList) async {
+    final db = await dbProvider.database;
+    final batch = db.batch();
+    for (final tag in tagList) {
+      batch.update(tableName, tag.toJson(), where: 'tag_id = ?', whereArgs: [tag.id]);
+    }
+    return await batch.commit();
+  }
 
-  @override
-  Future<int> deleteById(int id) => tagDao.delete(id);
+  Future<int> deleteById(int id) async {
+    final db = await dbProvider.database;
+    return await db.delete(tableName, where: 'tag_id = ?', whereArgs: [id]);
+  }
 
-  @override
-  Future deleteAll() => tagDao.deleteAll();
+  Future<int> deleteAll() async {
+    final db = await dbProvider.database;
+    return await db.delete(tableName);
+  }
 }

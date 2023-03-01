@@ -14,7 +14,7 @@ final opponentDeckDataByGameProvider = FutureProvider.autoDispose<List<WinRateDa
     final List<Deck> opponentDeckList = [];
     for (final deck in gameDeckList) {
       for (final record in filterRecordList) {
-        if (record.opponentDeckId == deck.deckId) {
+        if (record.opponentDeckId == deck.id) {
           opponentDeckList.add(deck);
           break;
         }
@@ -24,7 +24,7 @@ final opponentDeckDataByGameProvider = FutureProvider.autoDispose<List<WinRateDa
     return opponentDeckList
         .map(
           (useDeck) => WinRateData(
-            deck: useDeck.deck,
+            deck: useDeck.name,
             matches: calc.countOpponentDeckMatches2(useDeck),
             useRate: calc.calcOpponentDeckUseRate(useDeck),
           ),

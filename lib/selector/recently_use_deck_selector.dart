@@ -31,7 +31,7 @@ final recentlyUseDeckProvider = FutureProvider.autoDispose<List<Deck>>((ref) asy
   final List<Deck> recentlyDeckList = [];
   for (final id in recentlyDeckIdList) {
     for (final deck in deckList) {
-      if (id == deck.deckId) {
+      if (id == deck.id) {
         recentlyDeckList.add(deck);
         break;
       }

@@ -458,10 +458,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_hooks
-      sha256: "2b202559a4ed3656bbb7aae9d8b335fb0037b23acc7ae3f377d1ba0b95c21aec"
+      sha256: "6a126f703b89499818d73305e4ce1e3de33b4ae1c5512e3b8eab4b986f46774c"
       url: "https://pub.dev"
     source: hosted
-    version: "0.18.5+1"
+    version: "0.18.6"
   flutter_launcher_icons:
     dependency: "direct main"
     description:
@@ -503,10 +503,10 @@ packages:
     dependency: transitive
     description:
       name: flutter_riverpod
-      sha256: "8d6b4e2b224901b90ff053ecd224474d53d2575f38e3b9431b4488b976d83630"
+      sha256: "40c0d7d03ccd24fa32ea08dcfc4df9bb92c4c26c9a91938945da3be10ed8ca83"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.0-dev.9"
+    version: "2.3.0"
   flutter_screenutil:
     dependency: "direct main"
     description:
@@ -657,10 +657,10 @@ packages:
     dependency: "direct main"
     description:
       name: hooks_riverpod
-      sha256: af4f474c5cba30898f6a0b062cefed7f7e2107d6412c34c723714e1dd058cd3e
+      sha256: "048d5d912b9e5ef9db4d274d201a2bfe4270e5694ff5c6719b593d4ae9c512c7"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.0-dev.9"
+    version: "2.3.0"
   html:
     dependency: transitive
     description:
@@ -1058,10 +1058,10 @@ packages:
     dependency: transitive
     description:
       name: riverpod
-      sha256: ccf595808054c1db8b9e087f0653e169758de196b49c5a9251c2c08d4c81ab2c
+      sha256: c5aea6c3fed340707f013a023a37ab388bf45611a8a4f7e76b5e9007eb76cd25
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.0-dev.9"
+    version: "2.3.0"
   scrollable_positioned_list:
     dependency: "direct main"
     description:

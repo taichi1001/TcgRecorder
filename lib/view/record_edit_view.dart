@@ -10,6 +10,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/marged_record.dart';
 import 'package:tcg_manager/entity/tag.dart';
+import 'package:tcg_manager/enum/domain_data_type.dart';
 import 'package:tcg_manager/enum/first_second.dart';
 import 'package:tcg_manager/enum/win_loss.dart';
 import 'package:tcg_manager/generated/l10n.dart';
@@ -22,7 +23,7 @@ import 'package:tcg_manager/selector/game_tag_list_selector.dart';
 import 'package:tcg_manager/view/component/custom_textfield.dart';
 import 'package:tcg_manager/view/component/cutom_date_time_picker.dart';
 import 'package:tcg_manager/view/input_view.dart';
-import 'package:tcg_manager/view/select_deck_view.dart';
+import 'package:tcg_manager/view/select_domain_data_view.dart';
 
 class RecordEditViewInfo {
   const RecordEditViewInfo({
@@ -78,7 +79,7 @@ class RecordEditView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final recordDetailNotifier = ref.watch(recordDetailNotifierProvider(margedRecord).notifier);
+    final recordDetailNotifier = ref.watch(recordEditViewNotifierProvider(margedRecord).notifier);
     final isBO3 = ref.watch(recordEditViewSettingsNotifierProvider(margedRecord).select((value) => value.bo3));
     return WillPopScope(
       onWillPop: (() async {
@@ -149,10 +150,10 @@ class _EditView extends HookConsumerWidget {
     }, const []);
     final recordEditViewInfo = ref.watch(recordEditViewInfoProvider);
 
-    final editMargedRecord = ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.editMargedRecord));
-    final images = ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.images));
-    final recordDetailNotifier = ref.watch(recordDetailNotifierProvider(margedRecord).notifier);
-    final recordDetailState = ref.watch(recordDetailNotifierProvider(margedRecord));
+    final editMargedRecord = ref.watch(recordEditViewNotifierProvider(margedRecord).select((value) => value.editMargedRecord));
+    final images = ref.watch(recordEditViewNotifierProvider(margedRecord).select((value) => value.images));
+    final recordDetailNotifier = ref.watch(recordEditViewNotifierProvider(margedRecord).notifier);
+    final recordDetailState = ref.watch(recordEditViewNotifierProvider(margedRecord));
     final firstSecond = recordDetailState.editMargedRecord.firstSecond;
     final firstMatchFirstSecond = recordDetailState.editMargedRecord.firstMatchFirstSecond;
     final secondMatchFirstSecond = recordDetailState.editMargedRecord.secondMatchFirstSecond;
@@ -524,8 +525,12 @@ class _EditView extends HookConsumerWidget {
                                   context: context,
                                   backgroundColor: Colors.transparent,
                                   builder: (BuildContext context) {
-                                    return SelectDeckView(
-                                      selectDeckFunc: recordDetailNotifier.selectUseDeck,
+                                    return SelectDomainDataView(
+                                      dataType: DomainDataType.deck,
+                                      selectDomainDataFunc: recordDetailNotifier.selectUseDeck,
+                                      tagCount: 0,
+                                      afterFunc: FocusScope.of(context).unfocus,
+                                      enableVisiblity: true,
                                     );
                                   },
                                 );
@@ -552,8 +557,12 @@ class _EditView extends HookConsumerWidget {
                                   context: context,
                                   backgroundColor: Colors.transparent,
                                   builder: (BuildContext context) {
-                                    return SelectDeckView(
-                                      selectDeckFunc: recordDetailNotifier.selectOpponentDeck,
+                                    return SelectDomainDataView(
+                                      dataType: DomainDataType.deck,
+                                      selectDomainDataFunc: recordDetailNotifier.selectOpponentDeck,
+                                      tagCount: 0,
+                                      afterFunc: FocusScope.of(context).unfocus,
+                                      enableVisiblity: true,
                                     );
                                   },
                                 );
@@ -567,7 +576,6 @@ class _EditView extends HookConsumerWidget {
                           controllers: tagTextControllers,
                           focusNodes: tagFocusNodes,
                           inputTag: recordDetailNotifier.editTag,
-                          isDropDown: false,
                           selectTagFunc: recordDetailNotifier.selectTag,
                           addFunc: () {
                             ref.read(_tagTextController.notifier).state = [...tagTextControllers, TextEditingController()];

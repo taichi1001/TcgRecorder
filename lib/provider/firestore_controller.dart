@@ -2,11 +2,9 @@ import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tcg_manager/entity/firestore_backup.dart';
 import 'package:tcg_manager/repository/firestore_repository.dart';
-import 'package:tcg_manager/entity/deck.dart';
-import 'package:tcg_manager/entity/game.dart';
 import 'package:tcg_manager/entity/record.dart';
-import 'package:tcg_manager/entity/tag.dart';
 import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/main.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
@@ -56,7 +54,7 @@ class FirestoreController {
     }
   }
 
-  Future editRecord(RecordDetailState recordDetailState) async {
+  Future editRecord(RecordEditViewState recordDetailState) async {
     if (!isUser) return;
     _setAll();
     if (recordDetailState.addImages.isEmpty && recordDetailState.removeImages.isEmpty) return;
@@ -71,24 +69,12 @@ class FirestoreController {
   Future<bool> restoreAll() async {
     final user = ref.read(firebaseAuthNotifierProvider).user?.uid;
     if (user == null) return false;
-    final allData = await firestoreRepo.getAll(user);
-    if (allData == null) return false;
-    final gameJson = allData['game'] as List;
-    final gameList = gameJson.map((e) => Game.fromJson(e)).toList();
-    final deckJson = allData['deck'] as List;
-    final deckList = deckJson.map((e) => Deck.fromJson(e)).toList();
-    final tagJson = allData['tag'] as List;
-    final tagList = tagJson.map((e) => Tag.fromJson(e)).toList();
-    final recordJson = allData['record'] as List;
-    final recordList = recordJson.map((e) => Record.fromJson(e)).toList();
-
+    final backup = await firestoreRepo.getAll(user);
     await ref.read(dbHelper).deleteAll();
-
-    await ref.read(gameRepository).insertList(gameList);
-    await ref.read(deckRepository).insertList(deckList);
-    await ref.read(tagRepository).insertList(tagList);
-    await ref.read(recordRepository).insertList(recordList);
-
+    await ref.read(gameRepository).insertList(backup.gameList);
+    await ref.read(deckRepository).insertList(backup.deckList);
+    await ref.read(tagRepository).insertList(backup.tagList);
+    await ref.read(recordRepository).insertList(backup.recordList);
     await ref.read(dbHelper).fetchAll();
     await _restoreImage();
     return true;
@@ -100,17 +86,14 @@ class FirestoreController {
     final tag = await ref.read(allTagListProvider.future);
     final game = await ref.read(allGameListProvider.future);
     final user = ref.read(firebaseAuthNotifierProvider).user?.uid;
-
-    if (!isUser) return;
-    await firestoreRepo.setAll(
-      {
-        'game': game.map((e) => e.toJson()).toList(),
-        'deck': deck.map((e) => e.toJson()).toList(),
-        'tag': tag.map((e) => e.toJson()).toList(),
-        'record': record.map((e) => e.toJson()).toList(),
-      },
-      user!,
+    final backup = FirestoreBackup(
+      gameList: game,
+      deckList: deck,
+      tagList: tag,
+      recordList: record,
     );
+    if (!isUser) return;
+    await firestoreRepo.setAll(backup, user!);
   }
 
   Future _saveImage(String imagePath) async {

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tcg_manager/entity/deck.dart';
+import 'package:tcg_manager/entity/domain_data.dart';
 import 'package:tcg_manager/entity/marged_record.dart';
 import 'package:tcg_manager/entity/record.dart';
 import 'package:tcg_manager/entity/tag.dart';
@@ -19,14 +20,14 @@ import 'package:tcg_manager/repository/record_repository.dart';
 import 'package:tcg_manager/repository/tag_repository.dart';
 import 'package:tcg_manager/state/record_detail_state.dart';
 
-class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
-  RecordDetailNotifier({
+class RecordEditViewNotifier extends StateNotifier<RecordEditViewState> {
+  RecordEditViewNotifier({
     required this.ref,
     required this.record,
     required this.margedRecord,
     required this.imagePath,
   }) : super(
-          RecordDetailState(
+          RecordEditViewState(
               record: record,
               margedRecord: margedRecord,
               editMargedRecord: margedRecord,
@@ -46,16 +47,16 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
     state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(useDeck: name));
   }
 
-  void selectUseDeck(Deck deck) {
-    state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(useDeck: deck.deck));
+  void selectUseDeck(DomainData deck, int empty) {
+    state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(useDeck: deck.name));
   }
 
   void editOpponentDeck(String name) {
     state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(opponentDeck: name));
   }
 
-  void selectOpponentDeck(Deck deck) {
-    state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(opponentDeck: deck.deck));
+  void selectOpponentDeck(DomainData deck, int empty) {
+    state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(opponentDeck: deck.name));
   }
 
   void editTag(String name, int index) {
@@ -75,15 +76,15 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
     );
   }
 
-  void selectTag(Tag tag, int index) {
+  void selectTag(DomainData tag, int index) {
     final newTags = [...state.editMargedRecord.tag];
     if (newTags.length > index) {
-      newTags[index] = tag.tag;
+      newTags[index] = tag.name;
     } else if (newTags.length - index <= 0) {
       for (var i = newTags.length - index; i < 0; i++) {
         newTags.add('');
       }
-      newTags.add(tag.tag);
+      newTags.add(tag.name);
     }
     state = state.copyWith(
       editMargedRecord: state.editMargedRecord.copyWith(
@@ -198,7 +199,7 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
         firstSecond: state.margedRecord.firstSecond,
         firstMatchFirstSecond: state.margedRecord.firstMatchFirstSecond,
         secondMatchFirstSecond: state.margedRecord.secondMatchFirstSecond,
-        thiredMatchFirstSecond: state.margedRecord.firstMatchFirstSecond,
+        thirdMatchFirstSecond: state.margedRecord.firstMatchFirstSecond,
         winLoss: state.margedRecord.winLoss,
         firstMatchWinLoss: state.margedRecord.firstMatchWinLoss,
         secondMatchWinLoss: state.margedRecord.secondMatchWinLoss,
@@ -283,7 +284,7 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
       // 入力された使用デッキをDBに登録しデッキIDを取得
       final newId = await ref.read(deckRepository).insert(
             Deck(
-              deck: state.margedRecord.useDeck,
+              name: state.margedRecord.useDeck,
               gameId: state.record.gameId,
             ),
           );
@@ -292,7 +293,7 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
       state = state.copyWith(record: state.record.copyWith(useDeckId: newId));
     } else {
       // 既に登録済みのデッキだった場合、そのデッキのIDをrecordに登録
-      state = state.copyWith(record: state.record.copyWith(useDeckId: checkUseDeck.deck!.deckId));
+      state = state.copyWith(record: state.record.copyWith(useDeckId: checkUseDeck.deck!.id));
     }
   }
 
@@ -305,7 +306,7 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
       // 入力された対戦デッキをDBに登録しデッキIDを取得
       final newId = await ref.read(deckRepository).insert(
             Deck(
-              deck: state.margedRecord.opponentDeck,
+              name: state.margedRecord.opponentDeck,
               gameId: state.record.gameId,
             ),
           );
@@ -314,7 +315,7 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
       state = state.copyWith(record: state.record.copyWith(opponentDeckId: newId));
     } else {
       // 既に登録済みのデッキだった場合、そのデッキのIDをrecordに登録
-      state = state.copyWith(record: state.record.copyWith(opponentDeckId: checkOpponentDeck.deck!.deckId));
+      state = state.copyWith(record: state.record.copyWith(opponentDeckId: checkOpponentDeck.deck!.id));
     }
   }
 
@@ -329,12 +330,12 @@ class RecordDetailNotifier extends StateNotifier<RecordDetailState> {
       if (checkTag.isNew) {
         // 入力された対戦デッキをDBに登録しデッキIDを取得
         final newId = await ref.read(tagRepository).insert(
-              Tag(tag: tag, gameId: state.record.gameId),
+              Tag(name: tag, gameId: state.record.gameId),
             );
         newTags.add(newId);
       } else {
         // 既に登録済みのタグだった場合、そのタグのIDをrecordに登録
-        newTags.add(checkTag.tag!.tagId!);
+        newTags.add(checkTag.tag!.id!);
       }
     }
     state = state.copyWith(record: state.record.copyWith(tagId: newTags));
@@ -367,10 +368,10 @@ final recordListProvider = Provider<List<Record>>((ref) {
   return state.cast();
 });
 
-final recordDetailNotifierProvider =
-    StateNotifierProvider.family.autoDispose<RecordDetailNotifier, RecordDetailState, MargedRecord>((ref, margedRecord) {
+final recordEditViewNotifierProvider =
+    StateNotifierProvider.family.autoDispose<RecordEditViewNotifier, RecordEditViewState, MargedRecord>((ref, margedRecord) {
   final recordList = ref.watch(recordListProvider);
   final record = recordList.firstWhere((record) => record.recordId == margedRecord.recordId);
   final imagePath = ref.read(imagePathProvider);
-  return RecordDetailNotifier(ref: ref, record: record, margedRecord: margedRecord, imagePath: imagePath);
+  return RecordEditViewNotifier(ref: ref, record: record, margedRecord: margedRecord, imagePath: imagePath);
 });
