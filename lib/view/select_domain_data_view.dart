@@ -221,7 +221,7 @@ class SelectDomainDataView extends HookConsumerWidget {
                                     Padding(
                                       padding: const EdgeInsets.all(16),
                                       child: Text(
-                                        '最近記録したタグ',
+                                        '最近記録した${dataType.displayName}',
                                         style: Theme.of(context).textTheme.bodySmall,
                                       ),
                                     ),

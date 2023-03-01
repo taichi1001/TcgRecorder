@@ -1,5 +1,9 @@
 enum DomainDataType {
-  game,
-  deck,
-  tag,
+  game('ゲーム'),
+  deck('デッキ'),
+  tag('タグ'),
+  ;
+
+  const DomainDataType(this.displayName);
+  final String displayName;
 }
