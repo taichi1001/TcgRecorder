@@ -45,7 +45,7 @@ class GameRepository {
     final db = await dbProvider.database;
     final batch = db.batch();
     for (final game in gameList) {
-      batch.update(tableName, game.toJson(), where: 'deck_id = ?', whereArgs: [game.id]);
+      batch.update(tableName, game.toJson(), where: 'game_id = ?', whereArgs: [game.id]);
     }
     return await batch.commit();
   }

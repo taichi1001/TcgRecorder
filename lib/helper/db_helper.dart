@@ -151,7 +151,7 @@ class DbHelper {
   Future toggleIsVisibleToPickerOfGame(Game game) async {
     final newGame = game.copyWith(isVisibleToPicker: !game.isVisibleToPicker);
     await ref.read(gameRepository).update(newGame);
-    ref.refresh(allDeckListProvider);
+    ref.refresh(allGameListProvider);
   }
 
   Future toggleIsVisibleToPickerOfDeck(Deck deck) async {
