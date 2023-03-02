@@ -109,8 +109,9 @@ class SelectDomainDataView extends HookConsumerWidget {
                         title: TextField(
                           controller: searchTextController,
                           focusNode: searchFocusNode,
-                          decoration: const InputDecoration(
-                            labelText: '検索',
+                          decoration: InputDecoration(
+                            labelText: '検索・新規登録',
+                            labelStyle: Theme.of(context).textTheme.bodyMedium,
                           ),
                         ),
                       ),
