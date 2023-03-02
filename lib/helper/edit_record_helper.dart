@@ -33,7 +33,7 @@ class EditRecordHelper {
   /// 存在する場合にFalse, しない場合にTrueを返す
   Future<CheckGameResult> checkIfSelectedGameIsNew(String gameName) async {
     final gameList = await ref.read(allGameListProvider.future);
-    final matchList = gameList.where((game) => game.game == gameName);
+    final matchList = gameList.where((game) => game.name == gameName);
     if (matchList.isEmpty) {
       return CheckGameResult(isNew: true);
     }

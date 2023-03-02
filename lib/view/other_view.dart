@@ -31,7 +31,6 @@ import 'package:tcg_manager/provider/input_view_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/revenue_cat_provider.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
-import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 import 'package:tcg_manager/provider/theme_provider.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
 import 'package:tcg_manager/provider/firestore_controller.dart';
@@ -353,14 +352,14 @@ class _GameListView extends HookConsumerWidget {
             itemBuilder: (context, index) {
               return SlidableTile(
                 key: ObjectKey(gameList[index]),
-                title: Text(gameList[index].game),
+                title: Text(gameList[index].name),
                 alertMessage: '削除したゲームのデータが全て削除されます。(デッキ名やタグ名も削除されます。)',
                 deleteFunc: () async => await ref.read(dbHelper).deleteGame(gameList[index]),
                 editFunc: () async {
                   final newName = await showTextInputDialog(
                     context: context,
                     title: '名前変更',
-                    textFields: [DialogTextField(initialText: gameList[index].game)],
+                    textFields: [DialogTextField(initialText: gameList[index].name)],
                   );
                   if (newName != null && newName.first != '') {
                     try {
@@ -459,7 +458,7 @@ class _GameSelectView extends HookConsumerWidget {
               return Container(
                 color: Theme.of(context).colorScheme.surface,
                 child: ListTile(
-                  title: Text(gameList[index].game),
+                  title: Text(gameList[index].name),
                   onTap: () {
                     Navigator.push(
                       context,

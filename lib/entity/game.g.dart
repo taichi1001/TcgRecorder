@@ -11,21 +11,25 @@ _$_Game _$$_GameFromJson(Map<String, dynamic> json) => $checkedCreate(
       json,
       ($checkedConvert) {
         final val = _$_Game(
-          gameId: $checkedConvert('game_id', (v) => v as int?),
-          game: $checkedConvert('game', (v) => v as String),
+          id: $checkedConvert('game_id', (v) => v as int?),
+          name: $checkedConvert('game', (v) => v as String),
           isVisibleToPicker: $checkedConvert('is_visible_to_picker',
               (v) => v == null ? true : _boolFromJson(v)),
+          sortIndex: $checkedConvert('sort_index', (v) => v as int?),
         );
         return val;
       },
       fieldKeyMap: const {
-        'gameId': 'game_id',
-        'isVisibleToPicker': 'is_visible_to_picker'
+        'id': 'game_id',
+        'name': 'game',
+        'isVisibleToPicker': 'is_visible_to_picker',
+        'sortIndex': 'sort_index'
       },
     );
 
 Map<String, dynamic> _$$_GameToJson(_$_Game instance) => <String, dynamic>{
-      'game_id': instance.gameId,
-      'game': instance.game,
+      'game_id': instance.id,
+      'game': instance.name,
       'is_visible_to_picker': _boolToJson(instance.isVisibleToPicker),
+      'sort_index': instance.sortIndex,
     };

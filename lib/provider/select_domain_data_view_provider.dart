@@ -3,16 +3,19 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/domain_data.dart';
+import 'package:tcg_manager/entity/game.dart';
 import 'package:tcg_manager/entity/tag.dart';
 import 'package:tcg_manager/enum/domain_data_type.dart';
 import 'package:tcg_manager/enum/sort.dart';
 import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/provider/backup_provider.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
+import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/provider/firestore_controller.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
+import 'package:tcg_manager/repository/game_repository.dart';
 import 'package:tcg_manager/repository/tag_repository.dart';
 import 'package:tcg_manager/state/select_domain_data_view_state.dart';
 
@@ -39,27 +42,30 @@ class SelectDomainDataViewNotifier extends StateNotifier<SelectDomainDataViewSta
   Future saveDomainData(String name) async {
     final selectGame = ref.read(selectGameNotifierProvider).selectGame;
     if (dataType == DomainDataType.game) {
+      final game = Game(name: name);
+      ref.read(gameRepository).insert(game);
+      ref.invalidate(allGameListProvider);
     } else if (dataType == DomainDataType.deck) {
       final deck = Deck(
         name: name,
-        gameId: selectGame!.gameId,
+        gameId: selectGame!.id,
       );
       ref.read(deckRepository).insert(deck);
       ref.refresh(allDeckListProvider);
-      if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).addAll();
     } else if (dataType == DomainDataType.tag) {
       final tag = Tag(
         name: name,
-        gameId: selectGame!.gameId,
+        gameId: selectGame!.id,
       );
       ref.read(tagRepository).insert(tag);
       ref.refresh(allTagListProvider);
-      if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).addAll();
     }
+    if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).addAll();
   }
 
   Future toggleIsVisibleToPicker(DomainData data) async {
     if (dataType == DomainDataType.game) {
+      await ref.read(dbHelper).toggleIsVisibleToPickerOfGame(data as Game);
     } else if (dataType == DomainDataType.deck) {
       await ref.read(dbHelper).toggleIsVisibleToPickerOfDeck(data as Deck);
     } else if (dataType == DomainDataType.tag) {

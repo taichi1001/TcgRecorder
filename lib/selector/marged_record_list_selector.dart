@@ -19,15 +19,15 @@ final margedRecordListProvider = FutureProvider.autoDispose<List<MargedRecord>>(
   // DB操作のバグによってレコードと何かしらのデータの間に整合性が取れなくなっている場合に
   // removeWhere内でそのレコードを取り除く
   filterRecordList.removeWhere((record) {
-    final game = allGameList.singleWhere((value) => value.gameId == record.gameId, orElse: () => Game(game: ''));
+    final game = allGameList.singleWhere((value) => value.id == record.gameId, orElse: () => Game(name: ''));
     final useDeck = allDeckList.singleWhere((value) => value.id == record.useDeckId, orElse: () => Deck(name: ''));
     final opponentDeck = allDeckList.singleWhere((value) => value.id == record.opponentDeckId, orElse: () => Deck(name: ''));
-    if (game.gameId == null || useDeck.id == null || opponentDeck.id == null) return true;
+    if (game.id == null || useDeck.id == null || opponentDeck.id == null) return true;
     return false;
   });
 
   final list = filterRecordList.map((Record record) {
-    final game = allGameList.singleWhere((value) => value.gameId == record.gameId);
+    final game = allGameList.singleWhere((value) => value.id == record.gameId);
     final useDeck = allDeckList.singleWhere((value) => value.id == record.useDeckId);
     final opponentDeck = allDeckList.singleWhere((value) => value.id == record.opponentDeckId);
     List<Tag> tagList = [];
@@ -37,7 +37,7 @@ final margedRecordListProvider = FutureProvider.autoDispose<List<MargedRecord>>(
     }
     return MargedRecord(
       recordId: record.recordId!,
-      game: game.game,
+      game: game.name,
       useDeck: useDeck.name,
       opponentDeck: opponentDeck.name,
       tag: tagList.map((e) => e.name).toList(),
@@ -68,15 +68,15 @@ final allMargedRecordListProvider = FutureProvider.autoDispose<List<MargedRecord
   // DB操作のバグによってレコードと何かしらのデータの間に整合性が取れなくなっている場合に
   // removeWhere内でそのレコードを取り除く
   allRecordList.removeWhere((record) {
-    final game = allGameList.singleWhere((value) => value.gameId == record.gameId, orElse: () => Game(game: ''));
+    final game = allGameList.singleWhere((value) => value.id == record.gameId, orElse: () => Game(name: ''));
     final useDeck = allDeckList.singleWhere((value) => value.id == record.useDeckId, orElse: () => Deck(name: ''));
     final opponentDeck = allDeckList.singleWhere((value) => value.id == record.opponentDeckId, orElse: () => Deck(name: ''));
-    if (game.gameId == null || useDeck.id == null || opponentDeck.id == null) return true;
+    if (game.id == null || useDeck.id == null || opponentDeck.id == null) return true;
     return false;
   });
 
   final list = allRecordList.map((Record record) {
-    final game = allGameList.singleWhere((value) => value.gameId == record.gameId);
+    final game = allGameList.singleWhere((value) => value.id == record.gameId);
     final useDeck = allDeckList.singleWhere((value) => value.id == record.useDeckId);
     final opponentDeck = allDeckList.singleWhere((value) => value.id == record.opponentDeckId);
     List<Tag> tagList = [];
@@ -86,7 +86,7 @@ final allMargedRecordListProvider = FutureProvider.autoDispose<List<MargedRecord
     }
     return MargedRecord(
       recordId: record.recordId!,
-      game: game.game,
+      game: game.name,
       useDeck: useDeck.name,
       opponentDeck: opponentDeck.name,
       tag: tagList.map((e) => e.name).toList(),

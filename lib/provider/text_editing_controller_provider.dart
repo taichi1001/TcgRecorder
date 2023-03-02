@@ -55,6 +55,15 @@ class TextEditingControllerNotifier extends StateNotifier<TextEditingControllerS
       memoController: TextEditingController(),
     );
   }
+
+  void resetAllInputViewController() {
+    state = TextEditingControllerState(
+      useDeckController: TextEditingController(),
+      opponentDeckController: TextEditingController(),
+      tagController: [TextEditingController()],
+      memoController: TextEditingController(),
+    );
+  }
 }
 
 final textEditingControllerNotifierProvider = StateNotifierProvider<TextEditingControllerNotifier, TextEditingControllerState>(

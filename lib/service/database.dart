@@ -7,7 +7,7 @@ import 'package:tcg_manager/entity/record.dart';
 import 'package:tcg_manager/entity/record_old.dart';
 
 class DatabaseService {
-  static const _databaseVersion = 4;
+  static const _databaseVersion = 5;
   static const _databaseName = 'record.db';
 
   //tableName
@@ -105,6 +105,9 @@ class DatabaseService {
         await database.execute('DROP TABLE $recordTableName');
         await database.execute('ALTER TABLE ${recordTableName}_new RENAME TO $recordTableName;');
       }
+      if (oldVersion < 5) {
+        database.execute('ALTER TABLE $gameTableName ADD sort_index INTEGER');
+      }
     }
   }
 
@@ -135,6 +138,7 @@ class DatabaseService {
         game_id INTEGER PRIMARY KEY AUTOINCREMENT,
         game TEXT NOT NULL,
         is_visible_to_picker INTEGER NOT NULL,
+        sort_index INTEGER,
         unique(game)
       )
     ''');

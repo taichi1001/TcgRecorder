@@ -1,14 +1,16 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:tcg_manager/entity/domain_data.dart';
 
 part 'game.freezed.dart';
 part 'game.g.dart';
 
 @freezed
-class Game with _$Game {
+class Game with _$Game implements DomainData {
   factory Game({
-    int? gameId,
-    required String game,
+    @JsonKey(name: 'game_id') int? id,
+    @JsonKey(name: 'game') required String name,
     @Default(true) @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson) bool isVisibleToPicker,
+    int? sortIndex,
   }) = _Game;
   factory Game.fromJson(Map<String, dynamic> json) => _$GameFromJson(json);
 }

@@ -1,12 +1,12 @@
-import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tcg_manager/generated/l10n.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:tcg_manager/entity/game.dart';
+import 'package:tcg_manager/enum/domain_data_type.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/input_view_provider.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
-import 'package:tcg_manager/view/component/custom_modal_list_picker.dart';
+import 'package:tcg_manager/view/select_domain_data_view.dart';
 
 class CustomScaffold extends HookConsumerWidget {
   const CustomScaffold({
@@ -31,7 +31,7 @@ class CustomScaffold extends HookConsumerWidget {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          selectGame.selectGame != null ? selectGame.selectGame!.game : '',
+          selectGame.selectGame != null ? selectGame.selectGame!.name : '',
         ),
         leading: leading,
         actions: [
@@ -47,7 +47,7 @@ class CustomScaffold extends HookConsumerWidget {
                     .map((game) => Padding(
                           padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
                           child: Text(
-                            game.game,
+                            game.name,
                             // softWrap: false,
                             overflow: TextOverflow.ellipsis,
                             style: Theme.of(context).textTheme.titleLarge?.copyWith(height: 1),
@@ -89,36 +89,17 @@ class _GameListPickerButton extends HookConsumerWidget {
     return IconButton(
       icon: const Icon(Icons.arrow_drop_down),
       onPressed: () {
-        showCupertinoModalPopup(
+        showCupertinoModalBottomSheet(
           context: context,
           builder: (BuildContext context) {
-            return CustomModalListPicker(
-              actionButton: CupertinoButton(
-                onPressed: () async {
-                  final games = await showTextInputDialog(
-                    context: context,
-                    title: S.of(context).newGameDialog,
-                    textFields: [const DialogTextField()],
-                  );
-                  if (games != null && games.first != '') {
-                    await selectGameNotifier.saveGame(games.first);
-                    inputViewNotifier.resetView();
-                    // ignore: use_build_context_synchronously
-                    Navigator.pop(context);
-                  }
-                },
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 5,
-                ),
-                child: Text(S.of(context).newGame),
-              ),
-              submited: () {
-                submited();
-                Navigator.pop(context);
+            return SelectDomainDataView(
+              dataType: DomainDataType.game,
+              selectDomainDataFunc: (data, count) {
+                selectGameNotifier.selectGame(data as Game, count);
               },
-              onSelectedItemChanged: onSelectedItemChanged,
-              children: children,
+              tagCount: 0,
+              afterFunc: inputViewNotifier.resetViewAll,
+              enableVisiblity: true,
             );
           },
         );

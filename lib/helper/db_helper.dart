@@ -37,7 +37,7 @@ class DbHelper {
     await _deleteGameRecord(game);
     await _deleteGameDeck(game);
     await _deleteGameTag(game);
-    await ref.read(gameRepository).deleteById(game.gameId!);
+    await ref.read(gameRepository).deleteById(game.id!);
     await fetchAll();
     if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).addAll();
   }
@@ -58,7 +58,7 @@ class DbHelper {
 
   Future _deleteGameRecord(Game game) async {
     final allRecord = await ref.read(allRecordListProvider.future);
-    final gameRecord = allRecord.where((record) => record.gameId == game.gameId).toList();
+    final gameRecord = allRecord.where((record) => record.gameId == game.id).toList();
     for (final record in gameRecord) {
       await ref.read(recordRepository).deleteById(record.recordId!);
     }
@@ -66,7 +66,7 @@ class DbHelper {
 
   Future _deleteGameDeck(Game game) async {
     final allDeck = await ref.read(allDeckListProvider.future);
-    final gameDeck = allDeck.where((deck) => deck.gameId == game.gameId).toList();
+    final gameDeck = allDeck.where((deck) => deck.gameId == game.id).toList();
     for (final deck in gameDeck) {
       await ref.read(deckRepository).deleteById(deck.id!);
     }
@@ -74,7 +74,7 @@ class DbHelper {
 
   Future _deleteGameTag(Game game) async {
     final allTag = await ref.read(allTagListProvider.future);
-    final gameTag = allTag.where((tag) => tag.gameId == game.gameId).toList();
+    final gameTag = allTag.where((tag) => tag.gameId == game.id).toList();
     for (final tag in gameTag) {
       await ref.read(tagRepository).deleteById(tag.id!);
     }
@@ -125,12 +125,12 @@ class DbHelper {
   }
 
   Future updateGameName(Game game, String newName) async {
-    final newGame = game.copyWith(game: newName);
+    final newGame = game.copyWith(name: newName);
     try {
       await ref.read(gameRepository).update(newGame);
       ref.refresh(allGameListProvider);
       // 編集したゲームがselectGameと同じだった場合の処理
-      if (ref.read(selectGameNotifierProvider).selectGame!.gameId == newGame.gameId) {
+      if (ref.read(selectGameNotifierProvider).selectGame!.id == newGame.id) {
         ref.read(selectGameNotifierProvider.notifier).changeGame(newGame);
       }
     } catch (e) {
@@ -146,6 +146,12 @@ class DbHelper {
     } catch (e) {
       rethrow;
     }
+  }
+
+  Future toggleIsVisibleToPickerOfGame(Game game) async {
+    final newGame = game.copyWith(isVisibleToPicker: !game.isVisibleToPicker);
+    await ref.read(gameRepository).update(newGame);
+    ref.refresh(allDeckListProvider);
   }
 
   Future toggleIsVisibleToPickerOfDeck(Deck deck) async {

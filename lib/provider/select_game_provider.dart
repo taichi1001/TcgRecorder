@@ -20,13 +20,17 @@ class SelectGameNotifier extends StateNotifier<SelectGameState> {
     state = state.copyWith(selectGame: game);
   }
 
+  void selectGame(Game game, int empty) {
+    state = state.copyWith(selectGame: game);
+  }
+
   void changeGameForString(String name) {
-    state = state.copyWith(selectGame: Game(game: name));
+    state = state.copyWith(selectGame: Game(name: name));
   }
 
   Future changeGameForId(int id) async {
     final gameList = await ref.read(allGameListProvider.future);
-    final targetGame = gameList.firstWhere((element) => element.gameId == id, orElse: () => gameList.last);
+    final targetGame = gameList.firstWhere((element) => element.id == id, orElse: () => gameList.last);
     state = state.copyWith(selectGame: targetGame);
   }
 
@@ -46,7 +50,7 @@ class SelectGameNotifier extends StateNotifier<SelectGameState> {
   }
 
   Future<bool> saveGame(String name) async {
-    final newGame = Game(game: name);
+    final newGame = Game(name: name);
     if (await _checkIfSelectedGamekNew(name)) {
       await ref.read(gameRepository).insert(newGame);
       ref.refresh(allGameListProvider);
@@ -65,7 +69,7 @@ class SelectGameNotifier extends StateNotifier<SelectGameState> {
     if (records.isNotEmpty) {
       // レコードが存在する場合、最後に登録したレコードのゲームを選択ゲームとする
       final record = records.last;
-      final game = games.where((game) => game.gameId == record.gameId).last;
+      final game = games.where((game) => game.id == record.gameId).last;
       state = state.copyWith(selectGame: game, cacheSelectGame: game);
     } else {
       // レコードが存在しない場合、最後に登録したゲームを選択ゲームとする
@@ -75,7 +79,7 @@ class SelectGameNotifier extends StateNotifier<SelectGameState> {
 
   Future<bool> _checkIfSelectedGamekNew(String name) async {
     final gameList = await ref.read(allGameListProvider.future);
-    final matchList = gameList.where((game) => game.game == name);
+    final matchList = gameList.where((game) => game.name == name);
     if (matchList.isNotEmpty) {
       state = state.copyWith(selectGame: matchList.first);
       return false;

@@ -308,9 +308,14 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     ref.read(textEditingControllerNotifierProvider.notifier).resetInputViewController();
   }
 
+  void resetViewAll() {
+    state = InputViewState(date: DateTime.now());
+    ref.read(textEditingControllerNotifierProvider.notifier).resetAllInputViewController();
+  }
+
   Future<int> saveBO1() async {
     if (state.useDeck == null || state.opponentDeck == null) return 0;
-    final selectGameId = ref.read(selectGameNotifierProvider).selectGame!.gameId;
+    final selectGameId = ref.read(selectGameNotifierProvider).selectGame!.id;
     await _saveUseDeck(selectGameId);
     if (state.useDeck!.name == state.opponentDeck!.name) {
       state = state.copyWith(opponentDeck: state.useDeck);
@@ -344,7 +349,7 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
 
   Future saveBO3() async {
     if (state.useDeck == null || state.opponentDeck == null) return 0;
-    final selectGameId = ref.read(selectGameNotifierProvider).selectGame!.gameId;
+    final selectGameId = ref.read(selectGameNotifierProvider).selectGame!.id;
     await _saveUseDeck(selectGameId);
     if (state.useDeck!.name == state.opponentDeck!.name) {
       state = state.copyWith(opponentDeck: state.useDeck);

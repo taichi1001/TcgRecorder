@@ -24,7 +24,7 @@ class GameRepository {
 
   Future<int> update(Game game) async {
     final db = await dbProvider.database;
-    return await db.update(tableName, game.toJson(), where: 'game_id = ?', whereArgs: [game.gameId]);
+    return await db.update(tableName, game.toJson(), where: 'game_id = ?', whereArgs: [game.id]);
   }
 
   Future<int> deleteById(int id) async {
@@ -37,6 +37,15 @@ class GameRepository {
     final batch = db.batch();
     for (final game in games) {
       batch.insert(tableName, game.toJson());
+    }
+    return await batch.commit();
+  }
+
+  Future<List<Object?>> updateGameList(List<Game> gameList) async {
+    final db = await dbProvider.database;
+    final batch = db.batch();
+    for (final game in gameList) {
+      batch.update(tableName, game.toJson(), where: 'deck_id = ?', whereArgs: [game.id]);
     }
     return await batch.commit();
   }

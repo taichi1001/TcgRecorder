@@ -13,10 +13,12 @@ import 'package:tcg_manager/enum/domain_data_type.dart';
 import 'package:tcg_manager/enum/sort.dart';
 import 'package:tcg_manager/helper/convert_sort_string.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
+import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/record_list_view_provider.dart';
 import 'package:tcg_manager/provider/select_domain_data_view_provider.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
+import 'package:tcg_manager/repository/game_repository.dart';
 import 'package:tcg_manager/repository/tag_repository.dart';
 import 'package:tcg_manager/selector/search_exact_match_domain_data_selector.dart';
 import 'package:tcg_manager/selector/select_domain_view_info_selector.dart';
@@ -218,24 +220,26 @@ class SelectDomainDataView extends HookConsumerWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(16),
-                                      child: Text(
-                                        '最近記録した${dataType.displayName}',
-                                        style: Theme.of(context).textTheme.bodySmall,
+                                    if (dataType != DomainDataType.game)
+                                      Padding(
+                                        padding: const EdgeInsets.all(16),
+                                        child: Text(
+                                          '最近記録した${dataType.displayName}',
+                                          style: Theme.of(context).textTheme.bodySmall,
+                                        ),
                                       ),
-                                    ),
-                                    _DomainDataListView(
-                                      domainDataList: selectDomainViewInfo.recentlyUseDomainDataList,
-                                      selectedDomainDataList: selectetDomainDataList,
-                                      rootContext: rootContext,
-                                      selectDomainDataFunc: selectDomainDataFunc,
-                                      deselectionFunc: deselectionFunc,
-                                      enableVisibility: false,
-                                      afterFunc: afterFunc,
-                                      tagCount: tagCount,
-                                      returnSelecting: returnSelecting,
-                                    ),
+                                    if (dataType != DomainDataType.game)
+                                      _DomainDataListView(
+                                        domainDataList: selectDomainViewInfo.recentlyUseDomainDataList,
+                                        selectedDomainDataList: selectetDomainDataList,
+                                        rootContext: rootContext,
+                                        selectDomainDataFunc: selectDomainDataFunc,
+                                        deselectionFunc: deselectionFunc,
+                                        enableVisibility: false,
+                                        afterFunc: afterFunc,
+                                        tagCount: tagCount,
+                                        returnSelecting: returnSelecting,
+                                      ),
                                     _AllListViewTitle(
                                       enableVisiblity: enableVisiblity,
                                       dataType: dataType,
@@ -451,6 +455,8 @@ class _ReorderableDomainDataListView extends HookConsumerWidget {
           domainDataList.asMap().forEach((index, domainData) {
             if (dataType == DomainDataType.game) {
               domainData as Game;
+              domainData = domainData.copyWith(sortIndex: index);
+              newDomainDataList.add(domainData);
             } else if (dataType == DomainDataType.deck) {
               domainData as Deck;
               domainData = domainData.copyWith(sortIndex: index);
@@ -462,7 +468,8 @@ class _ReorderableDomainDataListView extends HookConsumerWidget {
             }
           });
           if (dataType == DomainDataType.game) {
-            newDomainDataList as List<Game>;
+            await ref.read(gameRepository).updateGameList(newDomainDataList.map((e) => e as Game).toList());
+            ref.refresh(allGameListProvider);
           } else if (dataType == DomainDataType.deck) {
             await ref.read(deckRepository).updateDeckList(newDomainDataList.map((e) => e as Deck).toList());
             ref.refresh(allDeckListProvider);

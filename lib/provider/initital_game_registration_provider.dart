@@ -9,7 +9,7 @@ class InitialGameRegistrationNotifier extends StateNotifier<InitialGameRegistrat
   final Ref ref;
 
   void changeGameForString(String name) {
-    state = state.copyWith(initialGame: Game(game: name));
+    state = state.copyWith(initialGame: Game(name: name));
   }
 
   void reset() {
