@@ -5,8 +5,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/provider/firebase_auth_provider.dart';
 import 'package:tcg_manager/provider/firestore_controller.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
-import 'package:tcg_manager/provider/record_detail_provider.dart';
-import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/view/phone_number_auth_view.dart';
 
 final fromPhoneAuthProvider = StateProvider((ref) => false);
