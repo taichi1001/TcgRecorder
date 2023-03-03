@@ -686,7 +686,7 @@ class InputView extends HookConsumerWidget {
                                           }
                                         }
                                         if (ref.read(backupNotifierProvider)) {
-                                          await ref.read(firestoreController).addRecord(ref.read(inputViewNotifierProvider).record!);
+                                          ref.read(firestoreController).addRecord(ref.read(inputViewNotifierProvider).record!);
                                         }
                                         inputViewNotifier.resetView();
                                         SmartDialog.dismiss();

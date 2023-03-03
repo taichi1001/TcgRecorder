@@ -82,6 +82,10 @@ class OtherView extends HookConsumerWidget {
                   Icons.auto_awesome,
                   color: Colors.orange,
                 ),
+                value: Text(
+                  isPremium ? '登録済み' : '未登録',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
                 onPressed: (context) {
                   Navigator.push(
                     context,
@@ -303,7 +307,7 @@ class OtherView extends HookConsumerWidget {
                   isDestructiveAction: true,
                 );
                 if (okCancelResult == OkCancelResult.ok) {
-                  ref.read(firebaseAuthNotifierProvider.notifier).singOut();
+                  await ref.read(firebaseAuthNotifierProvider.notifier).singOut();
                   ref.read(bottomNavigationBarNotifierProvider.notifier).select(0);
                 }
               },

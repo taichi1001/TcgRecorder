@@ -48,6 +48,8 @@ class ExecutionCountNotifier extends StateNotifier<int> {
       if (today.difference(lastExecutedDateTime).inDays > 0) {
         reset();
       }
+    } else {
+      reset();
     }
   }
 }

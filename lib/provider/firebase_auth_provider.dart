@@ -58,9 +58,9 @@ class FirebaseAuthNotifier extends StateNotifier<FirebaseAuthState> {
 
   Future singOut() async {
     if (state.user?.phoneNumber == null) {
-      await state.user?.delete();
       await ref.read(firestoreRepository).deleteAll(state.user!.uid);
       await ref.read(firestoreController).deleteAllImage();
+      await state.user?.delete();
     }
     await FirebaseAuth.instance.signOut();
     await ref.read(dbHelper).deleteAll();

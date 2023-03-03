@@ -134,6 +134,7 @@ class MainApp extends HookConsumerWidget {
     final lightThemeData = ref.watch(lightThemeDataProvider(context));
     final darkThemeData = ref.watch(darkThemeDataProvider(context));
     final isLogin = ref.watch(firebaseAuthNotifierProvider.select((value) => value.user)) != null;
+
     return mainInfo.when(
       data: (mainInfo) {
         return MaterialApp(

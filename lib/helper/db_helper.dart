@@ -30,7 +30,6 @@ class DbHelper {
     await ref.read(deckRepository).deleteAll();
     await ref.read(gameRepository).deleteAll();
     await fetchAll();
-    if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).addAll();
   }
 
   Future deleteGame(Game game) async {
