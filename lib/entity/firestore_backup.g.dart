@@ -40,6 +40,8 @@ _$_FirestoreBackup _$$_FirestoreBackupFromJson(Map<String, dynamic> json) =>
                       ?.map((e) => Record.fromJson(e as Map<String, dynamic>))
                       .toList() ??
                   const []),
+          lastBackup: $checkedConvert('last_backup',
+              (v) => v == null ? null : DateTime.parse(v as String)),
         );
         return val;
       },
@@ -47,7 +49,8 @@ _$_FirestoreBackup _$$_FirestoreBackupFromJson(Map<String, dynamic> json) =>
         'gameList': 'game_list',
         'deckList': 'deck_list',
         'tagList': 'tag_list',
-        'recordList': 'record_list'
+        'recordList': 'record_list',
+        'lastBackup': 'last_backup'
       },
     );
 
@@ -57,4 +60,5 @@ Map<String, dynamic> _$$_FirestoreBackupToJson(_$_FirestoreBackup instance) =>
       'deck_list': instance.deckList.map((e) => e.toJson()).toList(),
       'tag_list': instance.tagList.map((e) => e.toJson()).toList(),
       'record_list': instance.recordList.map((e) => e.toJson()).toList(),
+      'last_backup': instance.lastBackup?.toIso8601String(),
     };

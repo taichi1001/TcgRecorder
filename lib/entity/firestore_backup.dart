@@ -15,6 +15,7 @@ class FirestoreBackup with _$FirestoreBackup {
     @Default([]) List<Deck> deckList,
     @Default([]) List<Tag> tagList,
     @Default([]) List<Record> recordList,
+    DateTime? lastBackup,
   }) = _FirestoreBackup;
   factory FirestoreBackup.fromJson(Map<String, dynamic> json) => _$FirestoreBackupFromJson(json);
 }

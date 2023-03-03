@@ -24,6 +24,7 @@ mixin _$FirestoreBackup {
   List<Deck> get deckList => throw _privateConstructorUsedError;
   List<Tag> get tagList => throw _privateConstructorUsedError;
   List<Record> get recordList => throw _privateConstructorUsedError;
+  DateTime? get lastBackup => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -41,7 +42,8 @@ abstract class $FirestoreBackupCopyWith<$Res> {
       {List<Game> gameList,
       List<Deck> deckList,
       List<Tag> tagList,
-      List<Record> recordList});
+      List<Record> recordList,
+      DateTime? lastBackup});
 }
 
 /// @nodoc
@@ -61,6 +63,7 @@ class _$FirestoreBackupCopyWithImpl<$Res, $Val extends FirestoreBackup>
     Object? deckList = null,
     Object? tagList = null,
     Object? recordList = null,
+    Object? lastBackup = freezed,
   }) {
     return _then(_value.copyWith(
       gameList: null == gameList
@@ -79,6 +82,10 @@ class _$FirestoreBackupCopyWithImpl<$Res, $Val extends FirestoreBackup>
           ? _value.recordList
           : recordList // ignore: cast_nullable_to_non_nullable
               as List<Record>,
+      lastBackup: freezed == lastBackup
+          ? _value.lastBackup
+          : lastBackup // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ) as $Val);
   }
 }
@@ -95,7 +102,8 @@ abstract class _$$_FirestoreBackupCopyWith<$Res>
       {List<Game> gameList,
       List<Deck> deckList,
       List<Tag> tagList,
-      List<Record> recordList});
+      List<Record> recordList,
+      DateTime? lastBackup});
 }
 
 /// @nodoc
@@ -113,6 +121,7 @@ class __$$_FirestoreBackupCopyWithImpl<$Res>
     Object? deckList = null,
     Object? tagList = null,
     Object? recordList = null,
+    Object? lastBackup = freezed,
   }) {
     return _then(_$_FirestoreBackup(
       gameList: null == gameList
@@ -131,6 +140,10 @@ class __$$_FirestoreBackupCopyWithImpl<$Res>
           ? _value._recordList
           : recordList // ignore: cast_nullable_to_non_nullable
               as List<Record>,
+      lastBackup: freezed == lastBackup
+          ? _value.lastBackup
+          : lastBackup // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -143,7 +156,8 @@ class _$_FirestoreBackup implements _FirestoreBackup {
       {final List<Game> gameList = const [],
       final List<Deck> deckList = const [],
       final List<Tag> tagList = const [],
-      final List<Record> recordList = const []})
+      final List<Record> recordList = const [],
+      this.lastBackup})
       : _gameList = gameList,
         _deckList = deckList,
         _tagList = tagList,
@@ -189,8 +203,11 @@ class _$_FirestoreBackup implements _FirestoreBackup {
   }
 
   @override
+  final DateTime? lastBackup;
+
+  @override
   String toString() {
-    return 'FirestoreBackup(gameList: $gameList, deckList: $deckList, tagList: $tagList, recordList: $recordList)';
+    return 'FirestoreBackup(gameList: $gameList, deckList: $deckList, tagList: $tagList, recordList: $recordList, lastBackup: $lastBackup)';
   }
 
   @override
@@ -202,7 +219,9 @@ class _$_FirestoreBackup implements _FirestoreBackup {
             const DeepCollectionEquality().equals(other._deckList, _deckList) &&
             const DeepCollectionEquality().equals(other._tagList, _tagList) &&
             const DeepCollectionEquality()
-                .equals(other._recordList, _recordList));
+                .equals(other._recordList, _recordList) &&
+            (identical(other.lastBackup, lastBackup) ||
+                other.lastBackup == lastBackup));
   }
 
   @JsonKey(ignore: true)
@@ -212,7 +231,8 @@ class _$_FirestoreBackup implements _FirestoreBackup {
       const DeepCollectionEquality().hash(_gameList),
       const DeepCollectionEquality().hash(_deckList),
       const DeepCollectionEquality().hash(_tagList),
-      const DeepCollectionEquality().hash(_recordList));
+      const DeepCollectionEquality().hash(_recordList),
+      lastBackup);
 
   @JsonKey(ignore: true)
   @override
@@ -233,7 +253,8 @@ abstract class _FirestoreBackup implements FirestoreBackup {
       {final List<Game> gameList,
       final List<Deck> deckList,
       final List<Tag> tagList,
-      final List<Record> recordList}) = _$_FirestoreBackup;
+      final List<Record> recordList,
+      final DateTime? lastBackup}) = _$_FirestoreBackup;
 
   factory _FirestoreBackup.fromJson(Map<String, dynamic> json) =
       _$_FirestoreBackup.fromJson;
@@ -246,6 +267,8 @@ abstract class _FirestoreBackup implements FirestoreBackup {
   List<Tag> get tagList;
   @override
   List<Record> get recordList;
+  @override
+  DateTime? get lastBackup;
   @override
   @JsonKey(ignore: true)
   _$$_FirestoreBackupCopyWith<_$_FirestoreBackup> get copyWith =>

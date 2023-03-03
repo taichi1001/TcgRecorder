@@ -20,6 +20,8 @@ import 'package:tcg_manager/state/record_detail_state.dart';
 
 final firestoreController = Provider.autoDispose<FirestoreController>((ref) => FirestoreController(ref));
 
+final lastBackup = StateProvider.autoDispose<DateTime?>(((ref) => ref.read(firestoreController).loadLastBackupDate()));
+
 class FirestoreController {
   FirestoreController(this.ref);
 
@@ -34,6 +36,7 @@ class FirestoreController {
     await _setAll();
     await deleteAllImage();
     await _saveAllImage();
+    await saveLastBackup();
   }
 
   Future addRecord(Record record) async {
@@ -43,6 +46,7 @@ class FirestoreController {
     for (final imagePath in record.imagePath!) {
       await _saveImage(imagePath);
     }
+    await saveLastBackup();
   }
 
   Future deleteRecord(Record record) async {
@@ -52,6 +56,7 @@ class FirestoreController {
     for (final imagePath in record.imagePath!) {
       await _deleteImage(imagePath);
     }
+    await saveLastBackup();
   }
 
   Future editRecord(RecordEditViewState recordDetailState) async {
@@ -64,12 +69,14 @@ class FirestoreController {
     for (final imagePath in recordDetailState.removeImages) {
       await _deleteImage(imagePath.name);
     }
+    await saveLastBackup();
   }
 
   Future<bool> restoreAll() async {
     final user = ref.read(firebaseAuthNotifierProvider).user?.uid;
     if (user == null) return false;
     final backup = await firestoreRepo.getAll(user);
+    await _setLastBackup(backup.lastBackup);
     await ref.read(dbHelper).deleteAll();
     await ref.read(gameRepository).insertList(backup.gameList);
     await ref.read(deckRepository).insertList(backup.deckList);
@@ -78,6 +85,25 @@ class FirestoreController {
     await ref.read(dbHelper).fetchAll();
     await _restoreImage();
     return true;
+  }
+
+  Future saveLastBackup() async {
+    final prefs = ref.read(sharedPreferencesProvider);
+    await prefs.setString('lastBackup', DateTime.now().toString());
+    ref.read(lastBackup.notifier).state = loadLastBackupDate();
+  }
+
+  Future _setLastBackup(DateTime? date) async {
+    if (date == null) return;
+    final prefs = ref.read(sharedPreferencesProvider);
+    await prefs.setString('lastBackup', date.toString());
+    ref.read(lastBackup.notifier).state = date;
+  }
+
+  DateTime? loadLastBackupDate() {
+    final prefs = ref.read(sharedPreferencesProvider);
+    final lastBackupString = prefs.getString('lastBackup');
+    return lastBackupString != null ? DateTime.parse(lastBackupString) : null;
   }
 
   Future _setAll() async {
@@ -91,6 +117,7 @@ class FirestoreController {
       deckList: deck,
       tagList: tag,
       recordList: record,
+      lastBackup: DateTime.now(),
     );
     if (!isUser) return;
     await firestoreRepo.setAll(backup, user!);

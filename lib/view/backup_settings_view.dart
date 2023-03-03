@@ -2,6 +2,7 @@ import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:tcg_manager/helper/premium_plan_dialog.dart';
 import 'package:tcg_manager/provider/backup_provider.dart';
@@ -19,6 +20,8 @@ class BackupSettingsView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final autoBackup = ref.watch(backupNotifierProvider);
     final isPremium = ref.watch(revenueCatNotifierProvider.select((value) => value.isPremium));
+    final lastBackupDate = ref.watch(lastBackup);
+    final outputFormat = DateFormat('yyyy-MM-dd HH:mm');
     final executionCount = ref.watch(executionCountProvider);
     final isLoading = useState(false);
     return Stack(
@@ -81,7 +84,8 @@ class BackupSettingsView extends HookConsumerWidget {
                   ),
                   SettingsTile.navigation(
                     title: const Text('バックアップから復元'),
-                    description: const Text('最終バックアップ：'),
+                    description:
+                        lastBackupDate == null ? const Text('バックアップはありません') : Text('最終バックアップ：${outputFormat.format(lastBackupDate)}'),
                     leading: const Icon(Icons.restore),
                     onPressed: (context) async {
                       isLoading.value = true;
