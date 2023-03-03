@@ -99,7 +99,7 @@ class AuthAlertDialog extends HookConsumerWidget {
     final isLogin = ref.watch(firebaseAuthNotifierProvider.select((value) => value.user)) != null;
     return AlertDialog(
       title: const Text("認証コード"),
-      content: const Text("SMS宛に届いた認証コードを入力してください"),
+      content: const Text("SMS宛に届いた認証コードを入力してください。\n届くまでに30秒程度かかる場合があります。"),
       actionsAlignment: MainAxisAlignment.center,
       actions: <Widget>[
         TextFormField(

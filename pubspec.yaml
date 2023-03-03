@@ -113,6 +113,8 @@ dependencies:
 
   intl_phone_field: ^3.1.0
 
+  flutter_svg: ^2.0.2
+
 flutter_native_splash:
   image: "assets/images/icon.png"
   color: "FFFFFF"
@@ -144,7 +146,7 @@ flutter:
         - asset: assets/fonts/NotoSansJP-Thin.otf
   
   assets:
-    - assets/images/multiple_tag.png
+    - assets/images/login_view_image.svg
 
   uses-material-design: true
 flutter_intl:

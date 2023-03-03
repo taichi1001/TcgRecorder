@@ -42,11 +42,11 @@ class FirestoreController {
   Future addRecord(Record record) async {
     if (!isUser) return;
     _setAll();
+    await saveLastBackup();
     if (record.imagePath == null || record.imagePath!.isEmpty) return;
     for (final imagePath in record.imagePath!) {
       await _saveImage(imagePath);
     }
-    await saveLastBackup();
   }
 
   Future deleteRecord(Record record) async {
