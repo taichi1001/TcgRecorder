@@ -16,62 +16,52 @@ class LoginView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: Center(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 140, bottom: 140, left: 16, right: 16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                children: [
-                  Text(
-                    'トレマネへようこそ',
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    '記録・分析して勝利への近道を探しましょう。',
-                    style: Theme.of(context).textTheme.titleSmall,
-                  ),
-                ],
-              ),
-              SvgPicture.asset(
-                'assets/images/login_view_image.svg',
-                height: 200.w,
-              ),
-              Column(
-                children: [
-                  SizedBox(
-                    width: 300.w,
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const PhoneNumberAuthView(),
-                          ),
-                        );
-                        final gameList = await ref.read(allGameListProvider.future);
-                        if (context.mounted && ref.read(firebaseAuthNotifierProvider).user != null && gameList.isEmpty) {
-                          await ref.read(firestoreController).restoreAll();
-                        }
-                      },
-                      child: Text(
-                        '電話番号でログイン',
-                        style: Theme.of(context).primaryTextTheme.bodyMedium,
-                      ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'トレマネへようこそ',
+              style: Theme.of(context).textTheme.displaySmall,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              '記録・分析して勝利への近道を探しましょう',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            const SizedBox(height: 32),
+            SvgPicture.asset(
+              'assets/images/login_view_image.svg',
+              height: 200.w,
+            ),
+            const SizedBox(height: 32),
+            SizedBox(
+              width: 300.w,
+              child: ElevatedButton(
+                onPressed: () async {
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const PhoneNumberAuthView(),
                     ),
-                  ),
-                  TextButton(
-                    onPressed: () async {
-                      await ref.read(firebaseAuthNotifierProvider.notifier).signInAnonymously();
-                    },
-                    child: const Text('ログインせずに始める'),
-                  ),
-                  const SizedBox(height: 8),
-                ],
+                  );
+                  final gameList = await ref.read(allGameListProvider.future);
+                  if (context.mounted && ref.read(firebaseAuthNotifierProvider).user != null && gameList.isEmpty) {
+                    await ref.read(firestoreController).restoreAll();
+                  }
+                },
+                child: Text(
+                  '電話番号でログイン',
+                  style: Theme.of(context).primaryTextTheme.titleMedium,
+                ),
               ),
-            ],
-          ),
+            ),
+            TextButton(
+              onPressed: () async {
+                await ref.read(firebaseAuthNotifierProvider.notifier).signInAnonymously();
+              },
+              child: const Text('ログインせずに始める'),
+            ),
+          ],
         ),
       ),
     );
