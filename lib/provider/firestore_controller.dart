@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/firestore_backup.dart';
-import 'package:tcg_manager/repository/firestore_repository.dart';
+import 'package:tcg_manager/repository/firestore_user_repository.dart';
 import 'package:tcg_manager/entity/record.dart';
 import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/main.dart';
@@ -29,7 +29,7 @@ class FirestoreController {
 
   late final isUser = ref.read(firebaseAuthNotifierProvider).user != null;
 
-  FirestoreRepository get firestoreRepo => ref.read(firestoreRepository);
+  FirestoreUserRepository get firestoreRepo => ref.read(firestoreUserRepository);
 
   Future addAll() async {
     if (!isUser) return;

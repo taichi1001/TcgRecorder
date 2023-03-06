@@ -3,11 +3,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/firestore_backup.dart';
 import 'package:tcg_manager/service/firestore.dart';
 
-final firestoreRepository = Provider.autoDispose<FirestoreRepository>((ref) => FirestoreRepository(ref.watch(firestoreServiceProvider)));
+final firestoreUserRepository =
+    Provider.autoDispose<FirestoreUserRepository>((ref) => FirestoreUserRepository(ref.watch(firestoreServiceProvider)));
 
-class FirestoreRepository {
+class FirestoreUserRepository {
   final FirebaseFirestore _firestore;
-  FirestoreRepository(this._firestore);
+  FirestoreUserRepository(this._firestore);
 
   Future<FirestoreBackup> getAll(String user) async {
     final result = await _firestore.collection('user').doc(user).get();

@@ -115,6 +115,10 @@ dependencies:
 
   flutter_svg: ^2.0.2
 
+  package_info_plus: ^3.0.3
+
+  version: ^3.0.2
+
 flutter_native_splash:
   image: "assets/images/icon.png"
   color: "FFFFFF"

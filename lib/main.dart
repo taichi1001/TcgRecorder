@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,6 +11,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,6 +21,7 @@ import 'package:tcg_manager/helper/att.dart';
 import 'package:tcg_manager/helper/theme_data.dart';
 import 'package:tcg_manager/provider/adaptive_banner_ad_provider.dart';
 import 'package:tcg_manager/provider/firebase_auth_provider.dart';
+import 'package:tcg_manager/provider/firestor_config_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/revenue_cat_provider.dart';
 import 'package:tcg_manager/state/revenue_cat_state.dart';
@@ -26,6 +29,8 @@ import 'package:tcg_manager/view/bottom_navigation_view.dart';
 import 'package:tcg_manager/view/initial_game_registration_view.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:tcg_manager/view/login_view.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:version/version.dart';
 
 import 'generated/l10n.dart';
 
@@ -106,16 +111,24 @@ final imagePathProvider = Provider<String>((ref) => throw UnimplementedError);
 class MainInfo {
   const MainInfo({
     required this.allGameList,
+    required this.requiredVersion,
+    required this.packageInfo,
   });
   final List<Game> allGameList;
+  final String requiredVersion;
+  final PackageInfo packageInfo;
 }
 
 final mainInfoProvider = FutureProvider.autoDispose<MainInfo>((ref) async {
   final allGameList = await ref.watch(allGameListProvider.future);
+  final version = await ref.watch(requiredVersionProvider.future);
+  final packgaeInfo = await PackageInfo.fromPlatform();
   ref.read(firebaseAuthNotifierProvider.notifier).login();
 
   return MainInfo(
     allGameList: allGameList,
+    requiredVersion: version,
+    packageInfo: packgaeInfo,
   );
 });
 
@@ -137,6 +150,7 @@ class MainApp extends HookConsumerWidget {
 
     return mainInfo.when(
       data: (mainInfo) {
+        final versionIsOk = Version.parse(mainInfo.requiredVersion) < Version.parse(mainInfo.packageInfo.version);
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           localizationsDelegates: const [
@@ -150,11 +164,13 @@ class MainApp extends HookConsumerWidget {
           theme: lightThemeData,
           darkTheme: darkThemeData,
           themeMode: ThemeMode.system,
-          home: isLogin
-              ? mainInfo.allGameList.isEmpty
-                  ? const InitialGameRegistrationView()
-                  : const BottomNavigationView()
-              : const LoginView(),
+          home: versionIsOk
+              ? isLogin
+                  ? mainInfo.allGameList.isEmpty
+                      ? const InitialGameRegistrationView()
+                      : const BottomNavigationView()
+                  : const LoginView()
+              : const UpdaterView(),
           navigatorObservers: [FlutterSmartDialog.observer],
           builder: FlutterSmartDialog.init(),
         );
@@ -189,4 +205,29 @@ Future generateNoticeSetting() async {
       print('ForegroundMessage Body: ${message.notification?.body}');
     }
   });
+}
+
+class UpdaterView extends HookConsumerWidget {
+  const UpdaterView({super.key});
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) async {
+        await showOkAlertDialog(
+          context: context,
+          title: 'バージョン更新のお知らせ',
+          message: '新しいバージョンのアプリが利用可能です。ストアより更新版を入手して、ご利用下さい。',
+          okLabel: '今すぐ更新',
+        );
+        await launchUrl(
+          Uri.parse(
+            Platform.isIOS
+                ? 'https://apps.apple.com/jp/app/トレカ戦績管理アプリ-トレマネ/id1609073371'
+                : 'https://applion.jp/android/app/com.taichi1001.tcg_manager/',
+          ),
+        );
+      },
+    );
+    return Container();
+  }
 }
