@@ -88,6 +88,6 @@ class SelectGameNotifier extends StateNotifier<SelectGameState> {
   }
 }
 
-final selectGameNotifierProvider = StateNotifierProvider.autoDispose<SelectGameNotifier, SelectGameState>(
+final selectGameNotifierProvider = StateNotifierProvider<SelectGameNotifier, SelectGameState>(
   (ref) => SelectGameNotifier(ref),
 );

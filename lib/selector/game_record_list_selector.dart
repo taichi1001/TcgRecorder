@@ -5,7 +5,8 @@ import 'package:tcg_manager/selector/sorted_record_list_selector.dart';
 
 final gameRecordListProvider = FutureProvider.autoDispose<List<Record>>((ref) async {
   final selectGame = ref.watch(selectGameNotifierProvider).selectGame;
+  if (selectGame == null) return [];
   final sortedRecordList = await ref.watch(sortedRecordListProvider.future);
-  final gameRecordList = sortedRecordList.where((record) => record.gameId! == selectGame!.id).toList();
+  final gameRecordList = sortedRecordList.where((record) => record.gameId! == selectGame.id).toList();
   return gameRecordList;
 });
