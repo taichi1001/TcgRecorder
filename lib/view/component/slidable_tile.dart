@@ -97,7 +97,6 @@ class SlidableExpansionTileCard extends StatelessWidget {
     this.children = const [],
     this.deleteFunc,
     this.editFunc,
-    this.onTap,
     this.onExpansionChanged,
     key,
   }) : super(key: key);
@@ -112,7 +111,6 @@ class SlidableExpansionTileCard extends StatelessWidget {
   final bool isExpansion;
   final Future Function()? deleteFunc;
   final Future Function()? editFunc;
-  final Future Function()? onTap;
   final void Function(bool)? onExpansionChanged;
   @override
   Widget build(BuildContext context) {

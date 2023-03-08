@@ -170,7 +170,6 @@ class _BrandListTile extends HookConsumerWidget {
 
     return SlidableExpansionTileCard(
       key: UniqueKey(),
-      isExpansion: isMemo || record.bo == BO.bo3 || isImage,
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -380,26 +379,13 @@ class _BrandListTile extends HookConsumerWidget {
                       ],
                     ),
                   ),
+                const _EditDeleteButtonRow()
               ],
             ),
           ),
         ),
         const SizedBox(height: 8)
       ],
-      onTap: () async {
-        await Navigator.push(
-          context,
-          MaterialPageRoute(
-            fullscreenDialog: true,
-            builder: (context) => ProviderScope(
-              overrides: [currentMargedRecord.overrideWithValue(record)],
-              child: RecordEditView(
-                margedRecord: record,
-              ),
-            ),
-          ),
-        );
-      },
     );
   }
 }
@@ -600,4 +586,61 @@ class CustomImageProvider extends EasyImageProvider {
 
   @override
   int get imageCount => imageUrls.length;
+}
+
+class _EditDeleteButtonRow extends HookConsumerWidget {
+  const _EditDeleteButtonRow();
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final record = ref.watch(currentMargedRecord);
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: ElevatedButton(
+              style: ButtonStyle(
+                minimumSize: MaterialStateProperty.all(const Size.fromHeight(32)),
+              ),
+              onPressed: () async {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    fullscreenDialog: true,
+                    builder: (context) => ProviderScope(
+                      overrides: [currentMargedRecord.overrideWithValue(record)],
+                      child: RecordEditView(
+                        margedRecord: record,
+                      ),
+                    ),
+                  ),
+                );
+              },
+              child: const Text('編集'),
+            ),
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: ElevatedButton(
+              style: ButtonStyle(
+                minimumSize: MaterialStateProperty.all(const Size.fromHeight(32)),
+                backgroundColor: MaterialStateColor.resolveWith((states) => Theme.of(context).colorScheme.error),
+              ),
+              onPressed: () async {
+                final targetRecord = await ref.read(recordRepository).getRecordId(record.recordId);
+                ref.read(dbHelper).removeRecordImage(targetRecord!);
+                await ref.read(recordRepository).deleteById(record.recordId);
+                ref.invalidate(allRecordListProvider);
+                if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).deleteRecord(targetRecord);
+              },
+              child: const Text('削除'),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 }
