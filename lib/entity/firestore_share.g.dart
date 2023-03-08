@@ -1,0 +1,45 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'firestore_share.dart';
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+_$_FirestoreShare _$$_FirestoreShareFromJson(Map<String, dynamic> json) =>
+    $checkedCreate(
+      r'_$_FirestoreShare',
+      json,
+      ($checkedConvert) {
+        final val = _$_FirestoreShare(
+          pendingUserList: $checkedConvert(
+              'pending_user_list',
+              (v) =>
+                  (v as List<dynamic>?)
+                      ?.map(
+                          (e) => ShareUser.fromJson(e as Map<String, dynamic>))
+                      .toList() ??
+                  const []),
+          shareUserList: $checkedConvert(
+              'share_user_list',
+              (v) =>
+                  (v as List<dynamic>?)
+                      ?.map(
+                          (e) => ShareUser.fromJson(e as Map<String, dynamic>))
+                      .toList() ??
+                  const []),
+        );
+        return val;
+      },
+      fieldKeyMap: const {
+        'pendingUserList': 'pending_user_list',
+        'shareUserList': 'share_user_list'
+      },
+    );
+
+Map<String, dynamic> _$$_FirestoreShareToJson(_$_FirestoreShare instance) =>
+    <String, dynamic>{
+      'pending_user_list':
+          instance.pendingUserList.map((e) => e.toJson()).toList(),
+      'share_user_list': instance.shareUserList.map((e) => e.toJson()).toList(),
+    };
