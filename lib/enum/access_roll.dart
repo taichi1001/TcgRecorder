@@ -1,7 +1,7 @@
 enum AccessRoll {
-  owner('ゲーム'),
-  writer('デッキ'),
-  reader('タグ'),
+  owner('owner'),
+  writer('writer'),
+  reader('reader'),
   ;
 
   const AccessRoll(this.displayName);

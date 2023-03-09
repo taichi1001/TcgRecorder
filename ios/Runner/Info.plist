@@ -32,6 +32,14 @@
 				<string>com.googleusercontent.apps.105648170735-i6eeemv57tkkbql8lnof3amov3it504g</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.taichi1001.tcg-manager</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>

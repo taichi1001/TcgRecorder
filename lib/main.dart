@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -24,6 +25,7 @@ import 'package:tcg_manager/provider/firebase_auth_provider.dart';
 import 'package:tcg_manager/provider/firestor_config_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/revenue_cat_provider.dart';
+import 'package:tcg_manager/repository/dynamic_links_repository.dart';
 import 'package:tcg_manager/state/revenue_cat_state.dart';
 import 'package:tcg_manager/view/bottom_navigation_view.dart';
 import 'package:tcg_manager/view/initial_game_registration_view.dart';
@@ -98,6 +100,7 @@ void main() async {
           revenueCatProvider.overrideWithValue(revenueCat),
           sharedPreferencesProvider.overrideWithValue(prefs),
           imagePathProvider.overrideWithValue(imagePath),
+          // dynamicLinkProvider.overrideWithValue(initialLink?.link),
         ],
         child: const MainApp(),
       ),
@@ -107,6 +110,7 @@ void main() async {
 
 final sharedPreferencesProvider = Provider<SharedPreferences>((ref) => throw UnimplementedError);
 final imagePathProvider = Provider<String>((ref) => throw UnimplementedError);
+final dynamicLinkProvider = Provider<Uri?>((ref) => throw UnimplementedError);
 
 class MainInfo {
   const MainInfo({

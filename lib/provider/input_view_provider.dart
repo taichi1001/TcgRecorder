@@ -275,11 +275,6 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
         final previousTag = tagList.firstWhere((tag) => tag.id == tagId);
         previousTagList.add(previousTag);
       }
-      state = state.copyWith(
-        useDeck: fixUseDeck ? previousUseDeck : null,
-        opponentDeck: fixOpponentDeck ? previousOpponentDeck : null,
-        tag: fixTag ? previousTagList : [],
-      );
       if (fixUseDeck) ref.read(textEditingControllerNotifierProvider.notifier).setUseDeckController(previousUseDeck.name);
       if (fixOpponentDeck) ref.read(textEditingControllerNotifierProvider.notifier).setOpponentDeckController(previousOpponentDeck.name);
       if (fixTag && previousTagList.isNotEmpty) {
@@ -287,9 +282,14 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
           ref.read(textEditingControllerNotifierProvider.notifier).setTagController(tag.name, index);
         });
       }
+      state = state.copyWith(
+        useDeck: fixUseDeck ? previousUseDeck : null,
+        opponentDeck: fixOpponentDeck ? previousOpponentDeck : null,
+        tag: fixTag ? previousTagList : [],
+      );
     } else {
-      state = InputViewState(date: DateTime.now());
       ref.read(textEditingControllerNotifierProvider.notifier).resetInputViewController();
+      state = InputViewState(date: DateTime.now());
     }
   }
 
