@@ -23,7 +23,6 @@ import 'package:tcg_manager/helper/premium_plan_dialog.dart';
 import 'package:tcg_manager/helper/theme_data.dart';
 import 'package:tcg_manager/main.dart';
 import 'package:tcg_manager/provider/backup_provider.dart';
-import 'package:tcg_manager/provider/bottom_navigation_bar_provider.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/firebase_auth_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
@@ -40,6 +39,7 @@ import 'package:tcg_manager/selector/game_deck_list_selector.dart';
 import 'package:tcg_manager/selector/game_tag_list_selector.dart';
 import 'package:tcg_manager/selector/marged_record_list_selector.dart';
 import 'package:tcg_manager/view/backup_settings_view.dart';
+import 'package:tcg_manager/view/bottom_navigation_view.dart';
 import 'package:tcg_manager/view/component/custom_textfield.dart';
 import 'package:tcg_manager/view/component/slidable_tile.dart';
 import 'package:tcg_manager/view/component/web_view_screen.dart';
@@ -201,7 +201,7 @@ class OtherView extends HookConsumerWidget {
                     isDestructiveAction: true,
                   );
                   if (okCancelResult == OkCancelResult.ok) {
-                    ref.read(bottomNavigationBarNotifierProvider.notifier).select(0);
+                    ref.read(selectIndexProvider.notifier).state = 0;
                     await ref.read(dbHelper).deleteAll();
                     await ref.read(inputViewNotifierProvider.notifier).init();
                   }
@@ -308,7 +308,7 @@ class OtherView extends HookConsumerWidget {
                 );
                 if (okCancelResult == OkCancelResult.ok) {
                   await ref.read(firebaseAuthNotifierProvider.notifier).singOut();
-                  ref.read(bottomNavigationBarNotifierProvider.notifier).select(0);
+                  ref.read(selectIndexProvider.notifier).state = 0;
                 }
               },
               child: const Text('ログアウト'),

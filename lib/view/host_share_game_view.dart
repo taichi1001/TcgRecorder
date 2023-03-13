@@ -1,0 +1,92 @@
+import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tcg_manager/repository/firestore_share_repository.dart';
+import 'package:tcg_manager/view/component/list_tile_ontap.dart';
+import 'package:tcg_manager/view/component/sliver_header.dart';
+import 'package:tcg_manager/view/share_view.dart';
+
+class HostShareGameView extends HookConsumerWidget {
+  const HostShareGameView({
+    super.key,
+  });
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final gameName = ref.watch(currentShareProvider.select((value) => value.game.name));
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(gameName),
+      ),
+      body: const CustomScrollView(
+        slivers: [
+          SliverHeader(title: '共有中ユーザー'),
+          _SharedUserSliverList(),
+          SliverHeader(title: '共有申請ユーザー'),
+          _PendingUserSliverList(),
+        ],
+      ),
+    );
+  }
+}
+
+class _SharedUserSliverList extends HookConsumerWidget {
+  const _SharedUserSliverList();
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final hostShareList = ref.watch(hostShareDataProvider);
+    final currentIndex = ref.watch(currentShareIndexProvider);
+    return hostShareList.maybeWhen(
+      data: (data) => SliverListEx.separated(
+        itemCount: data[currentIndex].shareUserList.length,
+        itemBuilder: (context, index) => ListTileOnTap(
+          title: data[currentIndex].shareUserList[index].id,
+        ),
+        separatorBuilder: (context, index) => const Divider(indent: 16, thickness: 1, height: 0),
+      ),
+      orElse: () => SliverToBoxAdapter(child: Container()),
+    );
+  }
+}
+
+class _PendingUserSliverList extends HookConsumerWidget {
+  const _PendingUserSliverList();
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final hostShareList = ref.watch(hostShareDataProvider);
+    final currentIndex = ref.watch(currentShareIndexProvider);
+    return hostShareList.maybeWhen(
+      data: (data) => SliverListEx.separated(
+        itemCount: data[currentIndex].pendingUserList.length,
+        itemBuilder: (context, index) => ListTileOnTap(
+          title: data[currentIndex].pendingUserList[index].id,
+          onTap: () async => await ref
+              .read(firestoreShareRepository)
+              .allowSharing(data[currentIndex].pendingUserList[index], '${data[currentIndex].ownerName}-${data[currentIndex].game.name}'),
+          trailing: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              InkWell(
+                onTap: () async => await ref.read(firestoreShareRepository).noallowSharing(
+                    data[currentIndex].pendingUserList[index], '${data[currentIndex].ownerName}-${data[currentIndex].game.name}'),
+                child: Icon(
+                  Icons.remove_circle,
+                  color: Theme.of(context).colorScheme.error,
+                ),
+              ),
+              const SizedBox(width: 8),
+              InkWell(
+                onTap: () async => await ref.read(firestoreShareRepository).allowSharing(
+                    data[currentIndex].pendingUserList[index], '${data[currentIndex].ownerName}-${data[currentIndex].game.name}'),
+                child: Icon(
+                  Icons.check_circle,
+                  color: Theme.of(context).colorScheme.tertiary,
+                ),
+              ),
+            ],
+          ),
+        ),
+        separatorBuilder: (context, index) => const Divider(indent: 16, thickness: 1, height: 0),
+      ),
+      orElse: () => SliverToBoxAdapter(child: Container()),
+    );
+  }
+}

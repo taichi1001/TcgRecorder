@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:tcg_manager/entity/game.dart';
 import 'package:tcg_manager/entity/share_user.dart';
 
 part 'firestore_share.freezed.dart';
@@ -8,6 +9,8 @@ part 'firestore_share.g.dart';
 class FirestoreShare with _$FirestoreShare {
   @JsonSerializable(explicitToJson: true)
   factory FirestoreShare({
+    required Game game,
+    required String ownerName,
     @Default([]) List<ShareUser> pendingUserList,
     @Default([]) List<ShareUser> shareUserList,
   }) = _FirestoreShare;

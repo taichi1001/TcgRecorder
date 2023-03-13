@@ -24,7 +24,6 @@ import 'package:tcg_manager/enum/first_second.dart';
 import 'package:tcg_manager/enum/win_loss.dart';
 import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/helper/premium_plan_dialog.dart';
-import 'package:tcg_manager/main.dart';
 import 'package:tcg_manager/provider/backup_provider.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/firebase_auth_provider.dart';
@@ -42,7 +41,6 @@ import 'package:tcg_manager/view/component/custom_scaffold.dart';
 import 'package:tcg_manager/view/component/custom_textfield.dart';
 import 'package:tcg_manager/view/component/cutom_date_time_picker.dart';
 import 'package:tcg_manager/view/select_domain_data_view.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 final _tagFocusNodesProvider = Provider.autoDispose<List<FocusNode>>((ref) {
   final tagTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.tagController));
@@ -189,7 +187,6 @@ class InputView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final date = ref.watch(inputViewNotifierProvider.select((value) => value.date));
     final winLoss = ref.watch(inputViewNotifierProvider.select((value) => value.winLoss));
     final firstMatchWinLoss = ref.watch(inputViewNotifierProvider.select((value) => value.firstMatchWinLoss));
     final secondMatchWinLoss = ref.watch(inputViewNotifierProvider.select((value) => value.secondMatchWinLoss));
@@ -207,7 +204,6 @@ class InputView extends HookConsumerWidget {
     final opponentDeckTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.opponentDeckController));
     final tagTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.tagController));
     final memoTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.memoController));
-    final dateTimeController = useState(CustomModalDateTimePickerController(initialDateTime: DateTime.now()));
     final isDraw = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.draw));
     final isBO3 = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.bo3));
 
@@ -248,24 +244,8 @@ class InputView extends HookConsumerWidget {
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ElevatedButton(
-                      onPressed: () async {
-                        ref.read(firestoreShareRepository).initGame(Game(name: 'テストゲーム'), ref.read(firebaseAuthNotifierProvider).user!.uid);
-                        final a = await ref.read(dynamicLinksRepository).createInviteDynamicLink('abcd', 'efgh', AccessRoll.writer);
-                        print(a);
-                      },
-                      child: const Text('テスト'),
-                    ),
                     const SizedBox(height: 8),
-                    SelectableDateTime(
-                      controller: dateTimeController.value,
-                      submiteAction: () => inputViewNotifier.selectDateTime(dateTimeController.value.selectedDateTime),
-                      nowAction: () {
-                        dateTimeController.value.setDateTimeNow();
-                        inputViewNotifier.selectDateTime(dateTimeController.value.selectedDateTime);
-                      },
-                      datetime: date,
-                    ),
+                    const _InputViewSelectableDateTime(),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -929,6 +909,26 @@ class _AddPhotoWidget extends HookConsumerWidget {
                 ),
               ),
       ),
+    );
+  }
+}
+
+class _InputViewSelectableDateTime extends HookConsumerWidget {
+  const _InputViewSelectableDateTime();
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final dateTimeController = useState(CustomModalDateTimePickerController(initialDateTime: DateTime.now()));
+    final date = ref.watch(inputViewNotifierProvider.select((value) => value.date));
+    final inputViewNotifier = ref.read(inputViewNotifierProvider.notifier);
+
+    return SelectableDateTime(
+      controller: dateTimeController.value,
+      submiteAction: () => inputViewNotifier.selectDateTime(dateTimeController.value.selectedDateTime),
+      nowAction: () {
+        dateTimeController.value.setDateTimeNow();
+        inputViewNotifier.selectDateTime(dateTimeController.value.selectedDateTime);
+      },
+      datetime: date,
     );
   }
 }

@@ -12,6 +12,9 @@ _$_FirestoreShare _$$_FirestoreShareFromJson(Map<String, dynamic> json) =>
       json,
       ($checkedConvert) {
         final val = _$_FirestoreShare(
+          game: $checkedConvert(
+              'game', (v) => Game.fromJson(v as Map<String, dynamic>)),
+          ownerName: $checkedConvert('owner_name', (v) => v as String),
           pendingUserList: $checkedConvert(
               'pending_user_list',
               (v) =>
@@ -32,6 +35,7 @@ _$_FirestoreShare _$$_FirestoreShareFromJson(Map<String, dynamic> json) =>
         return val;
       },
       fieldKeyMap: const {
+        'ownerName': 'owner_name',
         'pendingUserList': 'pending_user_list',
         'shareUserList': 'share_user_list'
       },
@@ -39,6 +43,8 @@ _$_FirestoreShare _$$_FirestoreShareFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$_FirestoreShareToJson(_$_FirestoreShare instance) =>
     <String, dynamic>{
+      'game': instance.game.toJson(),
+      'owner_name': instance.ownerName,
       'pending_user_list':
           instance.pendingUserList.map((e) => e.toJson()).toList(),
       'share_user_list': instance.shareUserList.map((e) => e.toJson()).toList(),
