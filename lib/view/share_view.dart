@@ -10,6 +10,7 @@ import 'package:tcg_manager/repository/dynamic_links_repository.dart';
 import 'package:tcg_manager/repository/firestore_share_repository.dart';
 import 'package:tcg_manager/view/component/list_tile_ontap.dart';
 import 'package:tcg_manager/view/component/sliver_header.dart';
+import 'package:tcg_manager/view/guest_share_game_view.dart';
 import 'package:tcg_manager/view/host_share_game_view.dart';
 
 class ShareView extends HookConsumerWidget {
@@ -102,7 +103,19 @@ class _GuestShareGameListView extends HookConsumerWidget {
           overrides: [
             currentShareProvider.overrideWithValue(data[index]),
           ],
-          child: const _ShareListTile(),
+          child: _ShareListTile(
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ProviderScope(
+                  overrides: [
+                    currentShareProvider.overrideWithValue(data[index]),
+                  ],
+                  child: const GuestShareGameView(),
+                ),
+              ),
+            ),
+          ),
         ),
         separatorBuilder: (context, index) => const Divider(indent: 16, thickness: 1, height: 0),
       ),

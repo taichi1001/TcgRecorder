@@ -24,13 +24,14 @@ class FirestoreShareRepository {
 
   // 新規のゲームをシェアするための関数
   Future initGame(Game game, String user) async {
-    await _firestore.collection('share_data').doc('$user-${game.name}').set(game.toJson());
-    await _firestore.collection('share_data').doc('$user-${game.name}').collection('decks').doc('deck0').set({'deck': []});
-    await _firestore.collection('share_data').doc('$user-${game.name}').collection('tags').doc('tag0').set({'tag': []});
-    await _firestore.collection('share_data').doc('$user-${game.name}').collection('records').doc('record0').set({'record': []});
+    final docName = '$user-${game.name}';
+    await _firestore.collection('share_data').doc(docName).set(game.toJson());
+    await _firestore.collection('share_data').doc(docName).collection('decks').doc('deck0').set({'deck': []});
+    await _firestore.collection('share_data').doc(docName).collection('tags').doc('tag0').set({'tag': []});
+    await _firestore.collection('share_data').doc(docName).collection('records').doc('record0').set({'record': []});
     final myself = ShareUser(id: user, roll: AccessRoll.owner);
-    final initShare = FirestoreShare(ownerName: user, game: game, shareUserList: [myself]);
-    await _firestore.collection('share').doc('$user-${game.name}').set(initShare.toJson());
+    final initShare = FirestoreShare(ownerName: user, game: game, shareUserList: [myself], docName: docName);
+    await _firestore.collection('share').doc(docName).set(initShare.toJson());
   }
 
   // ゲーム共有リクエスト
@@ -59,6 +60,15 @@ class FirestoreShareRepository {
     );
   }
 
+  // 共有解除
+  Future revokeUser(ShareUser user, String shareDocName) async {
+    await _firestore.collection('share').doc(shareDocName).update(
+      {
+        'share_user_list': FieldValue.arrayRemove([user.toJson()]),
+      },
+    );
+  }
+
   // シェアフォルダ内の自分がホストになっているゲームの情報を取得する
   Stream<List<FirestoreShare>> getHostShareData(String uid) {
     final userShareCollection = _firestore.collection('share');
@@ -74,14 +84,16 @@ class FirestoreShareRepository {
         );
   }
 
-  // シェアフォルダ内の自分が参加しているゲームの情報を取得する
+  // シェアフォルダ内の自分がゲストになっているゲームの情報を取得する
   Stream<List<FirestoreShare>> getGuestShareData(String uid) {
-    return _firestore.collection('share').where('share_user_list', arrayContains: uid).snapshots().map(
-          (snapshot) => snapshot.docs
-              .map(
-                (doc) => FirestoreShare.fromJson(doc.data()),
-              )
-              .toList(),
-        );
+    final userShareCollection =
+        _firestore.collection('share').where('share_user_list', arrayContains: {'id': uid, 'roll': 'writer'}).snapshots();
+    return userShareCollection.map(
+      (snapshot) => snapshot.docs
+          .map(
+            (doc) => FirestoreShare.fromJson(doc.data()),
+          )
+          .toList(),
+    );
   }
 }

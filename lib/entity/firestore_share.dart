@@ -11,6 +11,7 @@ class FirestoreShare with _$FirestoreShare {
   factory FirestoreShare({
     required Game game,
     required String ownerName,
+    required String docName,
     @Default([]) List<ShareUser> pendingUserList,
     @Default([]) List<ShareUser> shareUserList,
   }) = _FirestoreShare;

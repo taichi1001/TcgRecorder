@@ -16,7 +16,7 @@ class DynamicLinksRepository {
   final Ref ref;
   DynamicLinksRepository(this._dynamicLinks, this.ref);
 
-  Future<Uri?> createInviteDynamicLink(String user, String gameName, AccessRoll roll) async {
+  Future<Uri> createInviteDynamicLink(String user, String gameName, AccessRoll roll) async {
     final link = Uri.parse('https://tcgmanager.page.link/share_data?uid=$user-$gameName&roll=${roll.displayName}');
     final parameters = DynamicLinkParameters(
       uriPrefix: 'https://tcgmanager.page.link',
@@ -26,6 +26,7 @@ class DynamicLinksRepository {
       ),
       iosParameters: const IOSParameters(
         bundleId: 'com.taichi1001.tcg-manager',
+        appStoreId: '1609073371',
       ),
     );
     final dynamicUrl = await _dynamicLinks.buildShortLink(parameters);
