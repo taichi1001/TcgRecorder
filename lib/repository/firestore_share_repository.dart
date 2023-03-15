@@ -18,6 +18,10 @@ final guestShareDataProvider = StreamProvider.autoDispose<List<FirestoreShare>>(
   (ref) => ref.watch(firestoreShareRepository).getGuestShareData(ref.read(firebaseAuthNotifierProvider).user!.uid),
 );
 
+final guestPendingShareDataProvider = StreamProvider.autoDispose<List<FirestoreShare>>(
+  (ref) => ref.watch(firestoreShareRepository).getGuestPendingShareData(ref.read(firebaseAuthNotifierProvider).user!.uid),
+);
+
 class FirestoreShareRepository {
   final FirebaseFirestore _firestore;
   FirestoreShareRepository(this._firestore);
@@ -92,6 +96,19 @@ class FirestoreShareRepository {
   Stream<List<FirestoreShare>> getGuestShareData(String uid) {
     final userShareCollection =
         _firestore.collection('share').where('share_user_list', arrayContains: {'id': uid, 'roll': 'writer'}).snapshots();
+    return userShareCollection.map(
+      (snapshot) => snapshot.docs
+          .map(
+            (doc) => FirestoreShare.fromJson(doc.data()),
+          )
+          .toList(),
+    );
+  }
+
+  // シェアフォルダ内の自分が共有申請中になっているゲームの情報を取得する
+  Stream<List<FirestoreShare>> getGuestPendingShareData(String uid) {
+    final userShareCollection =
+        _firestore.collection('share').where('pending_user_list', arrayContains: {'id': uid, 'roll': 'writer'}).snapshots();
     return userShareCollection.map(
       (snapshot) => snapshot.docs
           .map(

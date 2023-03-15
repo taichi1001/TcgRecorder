@@ -26,6 +26,8 @@ class ShareView extends HookConsumerWidget {
           _HostShareGameListView(),
           SliverHeader(title: 'ゲスト'),
           _GuestShareGameListView(),
+          SliverHeader(title: '申請中'),
+          _GuestPendingShareGameListView(),
         ],
       ),
       floatingActionButton: const _AddShareGameButton(),
@@ -50,7 +52,7 @@ class _AddShareGameButton extends HookConsumerWidget {
           if (uid != null) {
             ref.read(firestoreShareRepository).initGame(Game(name: inputText.first), uid);
             final link = await ref.read(dynamicLinksRepository).createInviteDynamicLink(uid, inputText.first, AccessRoll.writer);
-            await Share.share(link.toString(), subject: '${inputText.first}共有用のリンク');
+            await Share.share(link.toString(), subject: '「${inputText.first}」共有用のリンク');
           }
         }
       },
@@ -102,6 +104,39 @@ class _GuestShareGameListView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final guestGameList = ref.watch(guestShareDataProvider);
+    return guestGameList.maybeWhen(
+      data: (data) => SliverListEx.separated(
+        itemCount: data.length,
+        itemBuilder: (context, index) => ProviderScope(
+          overrides: [
+            currentShareProvider.overrideWithValue(data[index]),
+          ],
+          child: _ShareListTile(
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ProviderScope(
+                  overrides: [
+                    currentShareProvider.overrideWithValue(data[index]),
+                  ],
+                  child: const GuestShareGameView(),
+                ),
+              ),
+            ),
+          ),
+        ),
+        separatorBuilder: (context, index) => const Divider(indent: 16, thickness: 1, height: 0),
+      ),
+      orElse: () => SliverToBoxAdapter(child: Container()),
+    );
+  }
+}
+
+class _GuestPendingShareGameListView extends HookConsumerWidget {
+  const _GuestPendingShareGameListView();
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final guestGameList = ref.watch(guestPendingShareDataProvider);
     return guestGameList.maybeWhen(
       data: (data) => SliverListEx.separated(
         itemCount: data.length,
