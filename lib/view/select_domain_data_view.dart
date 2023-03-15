@@ -79,7 +79,7 @@ class SelectDomainDataView extends HookConsumerWidget {
                 final selectDomainViewInfo = ref.watch(selectDomainViewInfoProvider(dataType));
                 final searchText = ref.watch(selectDomainDataViewNotifierProvider(dataType).select((value) => value.searchText));
                 final searchExactMatchDomainData = ref.watch(searchExactMatchDomainDataProvider(dataType));
-                final selectetDomainDataList = ref.watch(recordListViewNotifierProvider.select((value) => value.tagList));
+                final selectedDomainDataList = ref.watch(recordListViewNotifierProvider.select((value) => value.tagList));
 
                 return selectDomainViewInfo.when(
                   data: (selectDomainViewInfo) {
@@ -161,7 +161,7 @@ class SelectDomainDataView extends HookConsumerWidget {
                                     ),
                                     _DomainDataListView(
                                       domainDataList: selectDomainViewInfo.searchDomainDataList,
-                                      selectedDomainDataList: selectetDomainDataList,
+                                      selectedDomainDataList: selectedDomainDataList,
                                       rootContext: rootContext,
                                       selectDomainDataFunc: selectDomainDataFunc,
                                       enableVisibility: false,
@@ -204,7 +204,7 @@ class SelectDomainDataView extends HookConsumerWidget {
                                     ),
                                     _DomainDataListView(
                                       domainDataList: selectDomainViewInfo.searchDomainDataList,
-                                      selectedDomainDataList: selectetDomainDataList,
+                                      selectedDomainDataList: selectedDomainDataList,
                                       rootContext: rootContext,
                                       selectDomainDataFunc: selectDomainDataFunc,
                                       deselectionFunc: deselectionFunc,
@@ -221,6 +221,14 @@ class SelectDomainDataView extends HookConsumerWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
+                                    if (dataType == DomainDataType.game)
+                                      Padding(
+                                        padding: const EdgeInsets.all(16),
+                                        child: Text(
+                                          '共有中の${dataType.displayName}',
+                                          style: Theme.of(context).textTheme.bodySmall,
+                                        ),
+                                      ),
                                     if (dataType != DomainDataType.game)
                                       Padding(
                                         padding: const EdgeInsets.all(16),
@@ -229,10 +237,20 @@ class SelectDomainDataView extends HookConsumerWidget {
                                           style: Theme.of(context).textTheme.bodySmall,
                                         ),
                                       ),
+                                    if (dataType == DomainDataType.game)
+                                      _DomainDataListView(
+                                        domainDataList: selectDomainViewInfo.recentlyUseDomainDataList,
+                                        selectedDomainDataList: selectedDomainDataList,
+                                        rootContext: rootContext,
+                                        selectDomainDataFunc: selectDomainDataFunc,
+                                        enableVisibility: false,
+                                        tagCount: tagCount,
+                                        returnSelecting: returnSelecting,
+                                      ),
                                     if (dataType != DomainDataType.game)
                                       _DomainDataListView(
                                         domainDataList: selectDomainViewInfo.recentlyUseDomainDataList,
-                                        selectedDomainDataList: selectetDomainDataList,
+                                        selectedDomainDataList: selectedDomainDataList,
                                         rootContext: rootContext,
                                         selectDomainDataFunc: selectDomainDataFunc,
                                         deselectionFunc: deselectionFunc,
@@ -247,7 +265,7 @@ class SelectDomainDataView extends HookConsumerWidget {
                                     ),
                                     _DomainDataListView(
                                       domainDataList: selectDomainViewInfo.gameDomainDataList,
-                                      selectedDomainDataList: selectetDomainDataList,
+                                      selectedDomainDataList: selectedDomainDataList,
                                       rootContext: rootContext,
                                       selectDomainDataFunc: selectDomainDataFunc,
                                       deselectionFunc: deselectionFunc,

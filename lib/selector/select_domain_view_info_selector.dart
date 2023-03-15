@@ -1,6 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/domain_data.dart';
 import 'package:tcg_manager/enum/domain_data_type.dart';
+import 'package:tcg_manager/repository/firestore_share_repository.dart';
 import 'package:tcg_manager/selector/recently_use_deck_selector.dart';
 import 'package:tcg_manager/selector/recently_use_tag_selector.dart';
 import 'package:tcg_manager/selector/search_deck_list_selector.dart';
@@ -27,10 +28,13 @@ final selectDomainViewInfoProvider = FutureProvider.autoDispose.family<SelectDom
     case DomainDataType.game:
       final gameList = await ref.watch(sortedGameListProvider.future);
       final searchGameList = await ref.watch(searchGameListProvider.future);
+      final shareList = await ref.watch(hostShareProvider.future);
+      final shareGameList = shareList.map((e) => e.game).toList();
       return SelectDomainViewInfo(
         gameDomainDataList: gameList,
         searchDomainDataList: searchGameList,
-        recentlyUseDomainDataList: [],
+        // recentlyUseDomainDataList: [],
+        recentlyUseDomainDataList: shareGameList,
       );
     case DomainDataType.deck:
       final gameDeckList = await ref.watch(sortedDeckListProvider.future);

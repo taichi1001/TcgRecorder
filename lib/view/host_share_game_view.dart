@@ -45,7 +45,7 @@ class _SharedUserSliverList extends HookConsumerWidget {
   const _SharedUserSliverList();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final hostShareList = ref.watch(hostShareDataProvider);
+    final hostShareList = ref.watch(hostShareProvider);
     final currentShareDocName = ref.watch(currentShareDocNameProvider);
     return hostShareList.maybeWhen(
       data: (data) {
@@ -81,7 +81,7 @@ class _PendingUserSliverList extends HookConsumerWidget {
   const _PendingUserSliverList();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final hostShareList = ref.watch(hostShareDataProvider);
+    final hostShareList = ref.watch(hostShareProvider);
     final currentShareDocName = ref.watch(currentShareDocNameProvider);
 
     return hostShareList.maybeWhen(
@@ -126,7 +126,7 @@ class _CreateShareLinkButton extends HookConsumerWidget {
   const _CreateShareLinkButton();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final hostShareList = ref.watch(hostShareDataProvider);
+    final hostShareList = ref.watch(hostShareProvider);
     final currentShareDocName = ref.watch(currentShareDocNameProvider);
 
     return SliverToBoxAdapter(
@@ -157,7 +157,7 @@ class _DeleteShareGameButton extends HookConsumerWidget {
   const _DeleteShareGameButton();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final hostShareList = ref.watch(hostShareDataProvider);
+    final hostShareList = ref.watch(hostShareProvider);
     final currentShareDocName = ref.watch(currentShareDocNameProvider);
 
     return SliverToBoxAdapter(

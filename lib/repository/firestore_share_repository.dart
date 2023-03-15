@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/firestore_share.dart';
 import 'package:tcg_manager/entity/game.dart';
 import 'package:tcg_manager/entity/share_user.dart';
@@ -10,15 +11,15 @@ import 'package:tcg_manager/service/firestore.dart';
 final firestoreShareRepository =
     Provider.autoDispose<FirestoreShareRepository>((ref) => FirestoreShareRepository(ref.watch(firestoreServiceProvider)));
 
-final hostShareDataProvider = StreamProvider.autoDispose<List<FirestoreShare>>(
+final hostShareProvider = StreamProvider.autoDispose<List<FirestoreShare>>(
   (ref) => ref.watch(firestoreShareRepository).getHostShareData(ref.read(firebaseAuthNotifierProvider).user!.uid),
 );
 
-final guestShareDataProvider = StreamProvider.autoDispose<List<FirestoreShare>>(
+final guestShareProvider = StreamProvider.autoDispose<List<FirestoreShare>>(
   (ref) => ref.watch(firestoreShareRepository).getGuestShareData(ref.read(firebaseAuthNotifierProvider).user!.uid),
 );
 
-final guestPendingShareDataProvider = StreamProvider.autoDispose<List<FirestoreShare>>(
+final guestPendingShareProvider = StreamProvider.autoDispose<List<FirestoreShare>>(
   (ref) => ref.watch(firestoreShareRepository).getGuestPendingShareData(ref.read(firebaseAuthNotifierProvider).user!.uid),
 );
 
@@ -30,7 +31,9 @@ class FirestoreShareRepository {
   Future initGame(Game game, String user) async {
     final docName = '$user-${game.name}';
     await _firestore.collection('share_data').doc(docName).set(game.toJson());
-    await _firestore.collection('share_data').doc(docName).collection('decks').doc('deck0').set({'deck': []});
+    await _firestore.collection('share_data').doc(docName).collection('decks').doc('deck0').set({
+      'deck': [Deck(name: 'a').toJson()]
+    });
     await _firestore.collection('share_data').doc(docName).collection('tags').doc('tag0').set({'tag': []});
     await _firestore.collection('share_data').doc(docName).collection('records').doc('record0').set({'record': []});
     final myself = ShareUser(id: user, roll: AccessRoll.owner);

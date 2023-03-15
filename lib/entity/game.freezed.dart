@@ -26,6 +26,8 @@ mixin _$Game {
   String get name => throw _privateConstructorUsedError;
   @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
   bool get isVisibleToPicker => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
+  bool get isShare => throw _privateConstructorUsedError;
   int? get sortIndex => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -45,6 +47,8 @@ abstract class $GameCopyWith<$Res> {
           String name,
       @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
           bool isVisibleToPicker,
+      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
+          bool isShare,
       int? sortIndex});
 }
 
@@ -64,6 +68,7 @@ class _$GameCopyWithImpl<$Res, $Val extends Game>
     Object? id = freezed,
     Object? name = null,
     Object? isVisibleToPicker = null,
+    Object? isShare = null,
     Object? sortIndex = freezed,
   }) {
     return _then(_value.copyWith(
@@ -78,6 +83,10 @@ class _$GameCopyWithImpl<$Res, $Val extends Game>
       isVisibleToPicker: null == isVisibleToPicker
           ? _value.isVisibleToPicker
           : isVisibleToPicker // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isShare: null == isShare
+          ? _value.isShare
+          : isShare // ignore: cast_nullable_to_non_nullable
               as bool,
       sortIndex: freezed == sortIndex
           ? _value.sortIndex
@@ -100,6 +109,8 @@ abstract class _$$_GameCopyWith<$Res> implements $GameCopyWith<$Res> {
           String name,
       @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
           bool isVisibleToPicker,
+      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
+          bool isShare,
       int? sortIndex});
 }
 
@@ -115,6 +126,7 @@ class __$$_GameCopyWithImpl<$Res> extends _$GameCopyWithImpl<$Res, _$_Game>
     Object? id = freezed,
     Object? name = null,
     Object? isVisibleToPicker = null,
+    Object? isShare = null,
     Object? sortIndex = freezed,
   }) {
     return _then(_$_Game(
@@ -129,6 +141,10 @@ class __$$_GameCopyWithImpl<$Res> extends _$GameCopyWithImpl<$Res, _$_Game>
       isVisibleToPicker: null == isVisibleToPicker
           ? _value.isVisibleToPicker
           : isVisibleToPicker // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isShare: null == isShare
+          ? _value.isShare
+          : isShare // ignore: cast_nullable_to_non_nullable
               as bool,
       sortIndex: freezed == sortIndex
           ? _value.sortIndex
@@ -148,6 +164,8 @@ class _$_Game implements _Game {
           required this.name,
       @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
           this.isVisibleToPicker = true,
+      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
+          this.isShare = false,
       this.sortIndex});
 
   factory _$_Game.fromJson(Map<String, dynamic> json) => _$$_GameFromJson(json);
@@ -162,11 +180,14 @@ class _$_Game implements _Game {
   @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
   final bool isVisibleToPicker;
   @override
+  @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
+  final bool isShare;
+  @override
   final int? sortIndex;
 
   @override
   String toString() {
-    return 'Game(id: $id, name: $name, isVisibleToPicker: $isVisibleToPicker, sortIndex: $sortIndex)';
+    return 'Game(id: $id, name: $name, isVisibleToPicker: $isVisibleToPicker, isShare: $isShare, sortIndex: $sortIndex)';
   }
 
   @override
@@ -178,6 +199,7 @@ class _$_Game implements _Game {
             (identical(other.name, name) || other.name == name) &&
             (identical(other.isVisibleToPicker, isVisibleToPicker) ||
                 other.isVisibleToPicker == isVisibleToPicker) &&
+            (identical(other.isShare, isShare) || other.isShare == isShare) &&
             (identical(other.sortIndex, sortIndex) ||
                 other.sortIndex == sortIndex));
   }
@@ -185,7 +207,7 @@ class _$_Game implements _Game {
   @JsonKey(ignore: true)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, id, name, isVisibleToPicker, sortIndex);
+      Object.hash(runtimeType, id, name, isVisibleToPicker, isShare, sortIndex);
 
   @JsonKey(ignore: true)
   @override
@@ -209,6 +231,8 @@ abstract class _Game implements Game {
           required final String name,
       @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
           final bool isVisibleToPicker,
+      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
+          final bool isShare,
       final int? sortIndex}) = _$_Game;
 
   factory _Game.fromJson(Map<String, dynamic> json) = _$_Game.fromJson;
@@ -222,6 +246,9 @@ abstract class _Game implements Game {
   @override
   @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
   bool get isVisibleToPicker;
+  @override
+  @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
+  bool get isShare;
   @override
   int? get sortIndex;
   @override

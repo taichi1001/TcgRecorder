@@ -50,7 +50,7 @@ class _AddShareGameButton extends HookConsumerWidget {
         if (inputText != null && inputText.first != '') {
           final uid = ref.read(firebaseAuthNotifierProvider).user?.uid;
           if (uid != null) {
-            ref.read(firestoreShareRepository).initGame(Game(name: inputText.first), uid);
+            ref.read(firestoreShareRepository).initGame(Game(name: inputText.first, isShare: true), uid);
             final link = await ref.read(dynamicLinksRepository).createInviteDynamicLink(uid, inputText.first, AccessRoll.writer);
             await Share.share(link.toString(), subject: '「${inputText.first}」共有用のリンク');
           }
@@ -69,7 +69,7 @@ class _HostShareGameListView extends HookConsumerWidget {
   const _HostShareGameListView();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final hostGameList = ref.watch(hostShareDataProvider);
+    final hostGameList = ref.watch(hostShareProvider);
     return hostGameList.maybeWhen(
       data: (data) => SliverListEx.separated(
         itemCount: data.length,
@@ -103,7 +103,7 @@ class _GuestShareGameListView extends HookConsumerWidget {
   const _GuestShareGameListView();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final guestGameList = ref.watch(guestShareDataProvider);
+    final guestGameList = ref.watch(guestShareProvider);
     return guestGameList.maybeWhen(
       data: (data) => SliverListEx.separated(
         itemCount: data.length,
@@ -136,7 +136,7 @@ class _GuestPendingShareGameListView extends HookConsumerWidget {
   const _GuestPendingShareGameListView();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final guestGameList = ref.watch(guestPendingShareDataProvider);
+    final guestGameList = ref.watch(guestPendingShareProvider);
     return guestGameList.maybeWhen(
       data: (data) => SliverListEx.separated(
         itemCount: data.length,
