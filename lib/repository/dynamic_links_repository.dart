@@ -36,11 +36,11 @@ class DynamicLinksRepository {
   Future linkRecive(BuildContext context) async {
     final initialLink = await FirebaseDynamicLinks.instance.getInitialLink();
     if (initialLink != null && context.mounted) {
-      final result = await _showDialog(context);
+      final uid = initialLink.link.queryParameters['uid'];
+      final gameName = uid?.split('-');
+      final roll = AccessRoll.values.byName(initialLink.link.queryParameters['roll']!);
+      final result = await _showDialog(context, gameName?[0], gameName?[1]);
       if (result == OkCancelResult.ok) {
-        _parseReciveQuery(initialLink.link.queryParameters);
-        final uid = initialLink.link.queryParameters['uid'];
-        final roll = AccessRoll.values.byName(initialLink.link.queryParameters['roll']!);
         ref
             .read(firestoreShareRepository)
             .requestDataShare(uid!, ShareUser(id: ref.read(firebaseAuthNotifierProvider).user!.uid, roll: roll));
@@ -48,29 +48,25 @@ class DynamicLinksRepository {
     }
     FirebaseDynamicLinks.instance.onLink.listen((dynamicLinkData) async {
       if (context.mounted) {
-        final result = await _showDialog(context);
+        final uid = dynamicLinkData.link.queryParameters['uid'];
+        final roll = AccessRoll.values.byName(dynamicLinkData.link.queryParameters['roll']!);
+        final gameName = uid?.split('-');
+        final result = await _showDialog(context, gameName?[0], gameName?[1]);
         if (result == OkCancelResult.ok) {
-          final uid = dynamicLinkData.link.queryParameters['uid'];
-          final roll = AccessRoll.values.byName(dynamicLinkData.link.queryParameters['roll']!);
           ref
               .read(firestoreShareRepository)
               .requestDataShare(uid!, ShareUser(id: ref.read(firebaseAuthNotifierProvider).user!.uid, roll: roll));
         }
-        _parseReciveQuery(dynamicLinkData.link.queryParameters);
       }
     });
   }
 
-  Future<OkCancelResult> _showDialog(BuildContext context) async {
+  Future<OkCancelResult> _showDialog(BuildContext context, String? uid, String? gameName) async {
     return await showOkCancelAlertDialog(
       context: context,
-      message: '招待されたぜ',
+      title: 'データ共有申請',
+      message: '$uidがホストの$gameNameにゲストとして参加申請しますか？',
       isDestructiveAction: true,
     );
-  }
-
-  void _parseReciveQuery(Map<String, String> query) {
-    final uid = query['uid'];
-    final roll = query['roll'];
   }
 }

@@ -1,3 +1,5 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:share_plus/share_plus.dart';
@@ -29,6 +31,7 @@ class HostShareGameView extends HookConsumerWidget {
           _SharedUserSliverList(),
           SliverHeader(title: '共有申請ユーザー'),
           _PendingUserSliverList(),
+          _DeleteShareGameButton(),
         ],
       ),
     );
@@ -43,27 +46,32 @@ class _SharedUserSliverList extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final hostShareList = ref.watch(hostShareDataProvider);
-    final currentIndex = ref.watch(currentShareIndexProvider);
+    final currentShareDocName = ref.watch(currentShareDocNameProvider);
     return hostShareList.maybeWhen(
-      data: (data) => SliverListEx.separated(
-        itemCount: data[currentIndex].shareUserList.length,
-        itemBuilder: (context, index) => ListTileOnTap(
-          title: data[currentIndex].shareUserList[index].id,
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ProviderScope(
-                overrides: [
-                  currentShareUserProvider.overrideWithValue(data[currentIndex].shareUserList[index]),
-                  currentShare.overrideWithValue(data[currentIndex]),
-                ],
-                child: const SharedUserView(),
+      data: (data) {
+        final share = data.firstWhereOrNull((element) => element.docName == currentShareDocName);
+        if (share == null) return SliverToBoxAdapter(child: Container());
+
+        return SliverListEx.separated(
+          itemCount: share.shareUserList.length,
+          itemBuilder: (context, index) => ListTileOnTap(
+            title: share.shareUserList[index].id,
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ProviderScope(
+                  overrides: [
+                    currentShareUserProvider.overrideWithValue(share.shareUserList[index]),
+                    currentShare.overrideWithValue(share),
+                  ],
+                  child: const SharedUserView(),
+                ),
               ),
             ),
           ),
-        ),
-        separatorBuilder: (context, index) => const Divider(indent: 16, thickness: 1, height: 0),
-      ),
+          separatorBuilder: (context, index) => const Divider(indent: 16, thickness: 1, height: 0),
+        );
+      },
       orElse: () => SliverToBoxAdapter(child: Container()),
     );
   }
@@ -74,37 +82,41 @@ class _PendingUserSliverList extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final hostShareList = ref.watch(hostShareDataProvider);
-    final currentIndex = ref.watch(currentShareIndexProvider);
+    final currentShareDocName = ref.watch(currentShareDocNameProvider);
+
     return hostShareList.maybeWhen(
-      data: (data) => SliverListEx.separated(
-        itemCount: data[currentIndex].pendingUserList.length,
-        itemBuilder: (context, index) => ListTileOnTap(
-          title: data[currentIndex].pendingUserList[index].id,
-          trailing: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              InkWell(
-                onTap: () async => await ref.read(firestoreShareRepository).noallowSharing(
-                    data[currentIndex].pendingUserList[index], '${data[currentIndex].ownerName}-${data[currentIndex].game.name}'),
-                child: Icon(
-                  Icons.remove_circle,
-                  color: Theme.of(context).colorScheme.error,
+      data: (data) {
+        final share = data.firstWhereOrNull((element) => element.docName == currentShareDocName);
+        if (share == null) return SliverToBoxAdapter(child: Container());
+
+        return SliverListEx.separated(
+          itemCount: share.pendingUserList.length,
+          itemBuilder: (context, index) => ListTileOnTap(
+            title: share.pendingUserList[index].id,
+            trailing: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                InkWell(
+                  onTap: () async => await ref.read(firestoreShareRepository).noallowSharing(share.pendingUserList[index], share.docName),
+                  child: Icon(
+                    Icons.remove_circle,
+                    color: Theme.of(context).colorScheme.error,
+                  ),
                 ),
-              ),
-              const SizedBox(width: 8),
-              InkWell(
-                onTap: () async => await ref.read(firestoreShareRepository).allowSharing(
-                    data[currentIndex].pendingUserList[index], '${data[currentIndex].ownerName}-${data[currentIndex].game.name}'),
-                child: Icon(
-                  Icons.check_circle,
-                  color: Theme.of(context).colorScheme.tertiary,
+                const SizedBox(width: 8),
+                InkWell(
+                  onTap: () async => await ref.read(firestoreShareRepository).allowSharing(share.pendingUserList[index], share.docName),
+                  child: Icon(
+                    Icons.check_circle,
+                    color: Theme.of(context).colorScheme.tertiary,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        separatorBuilder: (context, index) => const Divider(indent: 16, thickness: 1, height: 0),
-      ),
+          separatorBuilder: (context, index) => const Divider(indent: 16, thickness: 1, height: 0),
+        );
+      },
       orElse: () => SliverToBoxAdapter(child: Container()),
     );
   }
@@ -115,21 +127,75 @@ class _CreateShareLinkButton extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final hostShareList = ref.watch(hostShareDataProvider);
-    final currentIndex = ref.watch(currentShareIndexProvider);
+    final currentShareDocName = ref.watch(currentShareDocNameProvider);
+
     return SliverToBoxAdapter(
       child: hostShareList.maybeWhen(
-        data: (data) => ListTileOnTap(
-          title: '共有用リンクを作成',
-          onTap: () async {
-            final link = await ref.read(dynamicLinksRepository).createInviteDynamicLink(
-                  data[currentIndex].ownerName,
-                  data[currentIndex].game.name,
-                  AccessRoll.writer,
-                );
-            await Share.share(link.toString());
-          },
-        ),
+        data: (data) {
+          final share = data.firstWhereOrNull((element) => element.docName == currentShareDocName);
+          if (share == null) return Container();
+
+          return ListTileOnTap(
+            title: '共有用リンクを作成',
+            onTap: () async {
+              final link = await ref.read(dynamicLinksRepository).createInviteDynamicLink(
+                    share.ownerName,
+                    share.game.name,
+                    AccessRoll.writer,
+                  );
+              await Share.share(link.toString());
+            },
+          );
+        },
         orElse: () => Container(),
+      ),
+    );
+  }
+}
+
+class _DeleteShareGameButton extends HookConsumerWidget {
+  const _DeleteShareGameButton();
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final hostShareList = ref.watch(hostShareDataProvider);
+    final currentShareDocName = ref.watch(currentShareDocNameProvider);
+
+    return SliverToBoxAdapter(
+      child: Material(
+        color: Theme.of(context).colorScheme.surface,
+        type: MaterialType.button,
+        child: hostShareList.maybeWhen(
+          data: (data) {
+            final share = data.firstWhereOrNull((element) => element.docName == currentShareDocName);
+            if (share == null) return Container();
+
+            return InkWell(
+              onTap: () async {
+                final result = await showOkCancelAlertDialog(
+                  context: context,
+                  title: 'データを削除します',
+                  message: 'このゲームを共有している全員のデータが削除されます。データの復元はできなくなりますがよろしいですか？',
+                );
+                if (result == OkCancelResult.ok) {
+                  await ref.read(firestoreShareRepository).deleteShare(share.docName);
+                  if (context.mounted) {
+                    Navigator.of(context).pop();
+                  }
+                }
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Center(
+                  child: Text(
+                    'データを削除する',
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Theme.of(context).colorScheme.error),
+                  ),
+                ),
+              ),
+            );
+          },
+          orElse: () => Container(),
+        ),
       ),
     );
   }

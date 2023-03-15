@@ -69,6 +69,10 @@ class FirestoreShareRepository {
     );
   }
 
+  Future deleteShare(String shareDocName) async {
+    await _firestore.collection('share').doc(shareDocName).delete();
+  }
+
   // シェアフォルダ内の自分がホストになっているゲームの情報を取得する
   Stream<List<FirestoreShare>> getHostShareData(String uid) {
     final userShareCollection = _firestore.collection('share');

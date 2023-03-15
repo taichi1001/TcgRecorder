@@ -1,11 +1,12 @@
 import 'dart:math' as math;
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:tcg_manager/entity/firestore_share.dart';
 import 'package:tcg_manager/entity/game.dart';
 import 'package:tcg_manager/enum/access_roll.dart';
 import 'package:tcg_manager/provider/firebase_auth_provider.dart';
-import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/repository/dynamic_links_repository.dart';
 import 'package:tcg_manager/repository/firestore_share_repository.dart';
 import 'package:tcg_manager/view/component/list_tile_ontap.dart';
@@ -25,8 +26,6 @@ class ShareView extends HookConsumerWidget {
           _HostShareGameListView(),
           SliverHeader(title: 'ゲスト'),
           _GuestShareGameListView(),
-          SliverHeader(title: '共有されていないゲーム'),
-          // _GameListView(),
         ],
       ),
       floatingActionButton: const _AddShareGameButton(),
@@ -40,12 +39,19 @@ class _AddShareGameButton extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return FloatingActionButton(
       onPressed: () async {
-        const gameName = 'テストゲーム';
-        final uid = ref.read(firebaseAuthNotifierProvider).user?.uid;
-        if (uid != null) {
-          ref.read(firestoreShareRepository).initGame(Game(name: gameName), uid);
-          final a = await ref.read(dynamicLinksRepository).createInviteDynamicLink(uid, gameName, AccessRoll.writer);
-          print(a);
+        final inputText = await showTextInputDialog(
+          context: context,
+          title: '共有ゲーム作成',
+          message: '共有用ゲーム名を入力してください。このゲームは個人保存ゲームとは別扱いとなります。',
+          textFields: [const DialogTextField()],
+        );
+        if (inputText != null && inputText.first != '') {
+          final uid = ref.read(firebaseAuthNotifierProvider).user?.uid;
+          if (uid != null) {
+            ref.read(firestoreShareRepository).initGame(Game(name: inputText.first), uid);
+            final link = await ref.read(dynamicLinksRepository).createInviteDynamicLink(uid, inputText.first, AccessRoll.writer);
+            await Share.share(link.toString(), subject: '${inputText.first}共有用のリンク');
+          }
         }
       },
       child: const Icon(Icons.add),
@@ -54,7 +60,7 @@ class _AddShareGameButton extends HookConsumerWidget {
 }
 
 final currentShareProvider = Provider<FirestoreShare>((ref) => throw UnimplementedError);
-final currentShareIndexProvider = Provider<int>((ref) => throw UnimplementedError);
+final currentShareDocNameProvider = Provider<String>((ref) => throw UnimplementedError);
 final currentGameProvider = Provider<Game>((ref) => throw UnimplementedError);
 
 class _HostShareGameListView extends HookConsumerWidget {
@@ -75,7 +81,7 @@ class _HostShareGameListView extends HookConsumerWidget {
               MaterialPageRoute(
                 builder: (context) => ProviderScope(
                   overrides: [
-                    currentShareIndexProvider.overrideWithValue(index),
+                    currentShareDocNameProvider.overrideWithValue(data[index].docName),
                     currentShareProvider.overrideWithValue(data[index]),
                   ],
                   child: const HostShareGameView(),
@@ -116,25 +122,6 @@ class _GuestShareGameListView extends HookConsumerWidget {
               ),
             ),
           ),
-        ),
-        separatorBuilder: (context, index) => const Divider(indent: 16, thickness: 1, height: 0),
-      ),
-      orElse: () => SliverToBoxAdapter(child: Container()),
-    );
-  }
-}
-
-class _GameListView extends HookConsumerWidget {
-  const _GameListView();
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final gameList = ref.watch(allGameListProvider);
-    return gameList.maybeWhen(
-      data: (data) => SliverListEx.separated(
-        itemCount: data.length,
-        itemBuilder: (context, index) => ProviderScope(
-          overrides: [currentGameProvider.overrideWithValue(data[index])],
-          child: const _ShareListTile(),
         ),
         separatorBuilder: (context, index) => const Divider(indent: 16, thickness: 1, height: 0),
       ),

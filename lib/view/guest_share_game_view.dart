@@ -136,6 +136,9 @@ class _RevokeShareTileHooksConsumerWidget extends HookConsumerWidget {
         if (okCancel == OkCancelResult.ok) {
           final shareUser = share.shareUserList.where((element) => element.id == myself?.uid).first;
           await ref.read(firestoreShareRepository).revokeUser(shareUser, share.docName);
+          if (context.mounted) {
+            Navigator.of(context).pop();
+          }
         }
       } else if (isPending) {
         final okCancel = await showOkCancelAlertDialog(
@@ -146,6 +149,9 @@ class _RevokeShareTileHooksConsumerWidget extends HookConsumerWidget {
         if (okCancel == OkCancelResult.ok) {
           final shareUser = share.pendingUserList.where((element) => element.id == myself?.uid).first;
           await ref.read(firestoreShareRepository).noallowSharing(shareUser, share.docName);
+          if (context.mounted) {
+            Navigator.of(context).pop();
+          }
         }
       }
     }
