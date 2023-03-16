@@ -66,10 +66,8 @@ final opponentDeckDataByGameProvider = Provider.autoDispose<AsyncValue<List<WinR
   (ref) {
     final isShare = ref.watch(selectGameNotifierProvider.select((value) => value.selectGame))?.isShare;
     if (isShare!) {
-      print('a');
       return ref.watch(opponentDeckDataByGameStreamProvider);
     } else {
-      print('b');
       return ref.watch(opponentDeckDataByGameFutureProvider);
     }
   },

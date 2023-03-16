@@ -7,17 +7,18 @@ import 'package:tcg_manager/selector/game_deck_list_selector.dart';
 
 final sortedDeckListProvider = FutureProvider.autoDispose<List<Deck>>((ref) async {
   final deckList = await ref.watch(gameDeckListProvider.future);
+  final deckListCopy = [...deckList];
   final sort = ref.watch(selectDomainDataViewNotifierProvider(DomainDataType.deck).select((value) => value.sortType));
   if (sort == Sort.oldest) {
-    deckList.sort((a, b) => a.id!.compareTo(b.id!));
+    deckListCopy.sort((a, b) => a.id!.compareTo(b.id!));
   } else if (sort == Sort.newest) {
-    deckList.sort((a, b) => -a.id!.compareTo(b.id!));
+    deckListCopy.sort((a, b) => -a.id!.compareTo(b.id!));
   } else if (sort == Sort.custom) {
-    deckList.sort((a, b) {
+    deckListCopy.sort((a, b) {
       if (a.sortIndex == null) return -1;
       if (b.sortIndex == null) return -1;
       return a.sortIndex!.compareTo(b.sortIndex!);
     });
   }
-  return deckList;
+  return deckListCopy;
 });

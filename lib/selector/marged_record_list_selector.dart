@@ -9,16 +9,19 @@ import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/selector/filter_record_list_selector.dart';
+import 'package:tcg_manager/selector/game_deck_list_selector.dart';
+import 'package:tcg_manager/selector/game_tag_list_selector.dart';
 
 final margedRecordListProvider = FutureProvider.autoDispose<List<MargedRecord>>((ref) async {
   final filterRecordList = await ref.watch(filterRecordListProvider.future);
   final allGameList = await ref.watch(allGameListProvider.future);
-  final allDeckList = await ref.watch(allDeckListProvider.future);
-  final allTagList = await ref.watch(allTagListProvider.future);
+  final allDeckList = await ref.watch(gameDeckListProvider.future);
+  final allTagList = await ref.watch(gameTagListProvider.future);
+  final filterRecordListCopy = [...filterRecordList];
 
   // DB操作のバグによってレコードと何かしらのデータの間に整合性が取れなくなっている場合に
   // removeWhere内でそのレコードを取り除く
-  filterRecordList.removeWhere((record) {
+  filterRecordListCopy.removeWhere((record) {
     final game = allGameList.singleWhere((value) => value.id == record.gameId, orElse: () => Game(name: ''));
     final useDeck = allDeckList.singleWhere((value) => value.id == record.useDeckId, orElse: () => Deck(name: ''));
     final opponentDeck = allDeckList.singleWhere((value) => value.id == record.opponentDeckId, orElse: () => Deck(name: ''));
@@ -26,7 +29,7 @@ final margedRecordListProvider = FutureProvider.autoDispose<List<MargedRecord>>(
     return false;
   });
 
-  final list = filterRecordList.map((Record record) {
+  final list = filterRecordListCopy.map((Record record) {
     final game = allGameList.singleWhere((value) => value.id == record.gameId);
     final useDeck = allDeckList.singleWhere((value) => value.id == record.useDeckId);
     final opponentDeck = allDeckList.singleWhere((value) => value.id == record.opponentDeckId);

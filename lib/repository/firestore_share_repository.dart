@@ -3,7 +3,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/firestore_share.dart';
 import 'package:tcg_manager/entity/game.dart';
+import 'package:tcg_manager/entity/record.dart';
 import 'package:tcg_manager/entity/share_user.dart';
+import 'package:tcg_manager/entity/tag.dart';
 import 'package:tcg_manager/enum/access_roll.dart';
 import 'package:tcg_manager/provider/firebase_auth_provider.dart';
 import 'package:tcg_manager/service/firestore.dart';
@@ -30,12 +32,18 @@ class FirestoreShareRepository {
   // 新規のゲームをシェアするための関数
   Future initGame(Game game, String user) async {
     final docName = '$user-${game.name}';
-    await _firestore.collection('share_data').doc(docName).set(game.toJson());
+    await _firestore.collection('share_data').doc(docName).set(game.copyWith(id: 1).toJson());
     await _firestore.collection('share_data').doc(docName).collection('decks').doc('deck0').set({
-      'deck': [Deck(name: 'a').toJson()]
+      'deck': [Deck(id: 1, name: 'a').toJson()]
     });
-    await _firestore.collection('share_data').doc(docName).collection('tags').doc('tag0').set({'tag': []});
-    await _firestore.collection('share_data').doc(docName).collection('records').doc('record0').set({'record': []});
+    await _firestore.collection('share_data').doc(docName).collection('tags').doc('tag0').set({
+      'tag': [Tag(id: 1, name: 'b').toJson()]
+    });
+    await _firestore.collection('share_data').doc(docName).collection('records').doc('record0').set({
+      'record': [
+        Record(recordId: 1, useDeckId: 1, gameId: 1, opponentDeckId: 1, tagId: [1]).toJson()
+      ]
+    });
     final myself = ShareUser(id: user, roll: AccessRoll.owner);
     final initShare = FirestoreShare(ownerName: user, game: game, shareUserList: [myself], docName: docName);
     await _firestore.collection('share').doc(docName).set(initShare.toJson());

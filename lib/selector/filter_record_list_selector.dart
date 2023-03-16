@@ -77,6 +77,5 @@ final filterRecordListProvider = FutureProvider.autoDispose<List<Record>>((ref) 
     }
     filterdList = newFilterdList;
   }
-
   return filterdList;
 });
