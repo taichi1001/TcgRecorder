@@ -539,7 +539,7 @@ class _DeckListView extends HookConsumerWidget {
                             message: '保存されている記録を統合しますか？',
                           );
                           if (result == OkCancelResult.ok) {
-                            final oldDeck = await ref.read(editRecordHelper).checkIfSelectedUseDeckIsNew(newName.first);
+                            final oldDeck = await ref.read(editRecordHelper).checkIfSelectedDeckIsNew(newName.first);
                             var allRecordList = await ref.read(recordRepository).getAll();
                             final targetUseDeckList = allRecordList.where((record) => record.useDeckId! == deckList[index].id).toList();
                             final List<Record> newUseDeckRecordList = [];

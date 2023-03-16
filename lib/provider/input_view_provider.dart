@@ -18,6 +18,7 @@ import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
 import 'package:tcg_manager/repository/tag_repository.dart';
+import 'package:tcg_manager/state/input_view_settings_state.dart';
 import 'package:tcg_manager/state/input_view_state.dart';
 
 class InputViewNotifier extends StateNotifier<InputViewState> {
@@ -31,60 +32,38 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     state = state.copyWith(date: date);
   }
 
-  void inputUseDeck(String name) {
-    if (name == '') {
-      state = state.copyWith(useDeck: null);
-    } else {
-      final deck = Deck(name: name);
-      state = state.copyWith(useDeck: deck);
-    }
+  void inputDeck(String name, bool isUseDeck) {
+    final deck = name == '' ? null : Deck(name: name);
+    state = isUseDeck ? state.copyWith(useDeck: deck) : state.copyWith(opponentDeck: deck);
   }
 
-  void inputOpponentDeck(String name) {
-    if (name == '') {
-      state = state.copyWith(opponentDeck: null);
-    } else {
-      final deck = Deck(name: name);
-      state = state.copyWith(opponentDeck: deck);
-    }
-  }
-
-  void selectUseDeck(DomainData deck, int empty) {
-    state = state.copyWith(useDeck: deck as Deck);
-    ref.read(textEditingControllerNotifierProvider.notifier).setUseDeckController(state.useDeck!.name);
-  }
-
-  void selectOpponentDeck(DomainData deck, int empty) {
-    state = state.copyWith(opponentDeck: deck as Deck);
-    ref.read(textEditingControllerNotifierProvider.notifier).setOpponentDeckController(state.opponentDeck!.name);
+  void selectDeck(DomainData deck, int empty, bool isUseDeck) {
+    state = isUseDeck ? state.copyWith(useDeck: deck as Deck) : state.copyWith(opponentDeck: deck as Deck);
+    ref.read(textEditingControllerNotifierProvider.notifier).setDeckController(deck.name, isUseDeck);
   }
 
   void inputTag(String name, int index) {
-    final tag = Tag(name: name);
+    _updateTags(Tag(name: name), index);
+  }
+
+  void selectTag(DomainData tag, int index) {
+    _updateTags(tag as Tag, index);
+    ref.read(textEditingControllerNotifierProvider.notifier).setTagController(tag.name, index);
+  }
+
+  void _updateTags(Tag tag, int index) {
     final newTags = [...state.tag];
-    if (newTags.length > index) {
+    final tagsLength = newTags.length;
+
+    if (tagsLength > index) {
       newTags[index] = tag;
-    } else if (newTags.length - index <= 0) {
-      for (var i = newTags.length - index; i < 0; i++) {
+    } else {
+      for (var i = tagsLength - index; i < 0; i++) {
         newTags.add(Tag(name: ''));
       }
       newTags.add(tag);
     }
     state = state.copyWith(tag: newTags);
-  }
-
-  void selectTag(DomainData tag, int index) {
-    final newTags = [...state.tag];
-    if (newTags.length > index) {
-      newTags[index] = tag as Tag;
-    } else if (newTags.length - index <= 0) {
-      for (var i = newTags.length - index; i < 0; i++) {
-        newTags.add(Tag(name: ''));
-      }
-      newTags.add(tag as Tag);
-    }
-    state = state.copyWith(tag: newTags);
-    ref.read(textEditingControllerNotifierProvider.notifier).setTagController(state.tag[index].name, index);
   }
 
   void selectWinLoss(WinLoss? winloss) {
@@ -93,16 +72,18 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     }
   }
 
-  void selectFirstMatchWinLoss(WinLoss? winloss) {
-    state = state.copyWith(firstMatchWinLoss: winloss);
-  }
-
-  void selectSecondMatchWinLoss(WinLoss? winloss) {
-    state = state.copyWith(secondMatchWinLoss: winloss);
-  }
-
-  void selectThirdMatchWinLoss(WinLoss? winloss) {
-    state = state.copyWith(thirdMatchWinLoss: winloss);
+  void selectMatchWinLoss(WinLoss? winloss, int matchIndex) {
+    switch (matchIndex) {
+      case 1:
+        state = state.copyWith(firstMatchWinLoss: winloss);
+        break;
+      case 2:
+        state = state.copyWith(secondMatchWinLoss: winloss);
+        break;
+      case 3:
+        state = state.copyWith(thirdMatchWinLoss: winloss);
+        break;
+    }
   }
 
   void selectFirstSecond(FirstSecond? firstSecond) {
@@ -111,16 +92,18 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     }
   }
 
-  void selectFirstMatchFirstSecond(FirstSecond? firstSecond) {
-    state = state.copyWith(firstMatchFirstSecond: firstSecond);
-  }
-
-  void selectSecondMatchFirstSecond(FirstSecond? firstSecond) {
-    state = state.copyWith(secondMatchFirstSecond: firstSecond);
-  }
-
-  void selectThirdMatchFirstSecond(FirstSecond? firstSecond) {
-    state = state.copyWith(thirdMatchFirstSecond: firstSecond);
+  void selectMatchFirstSecond(FirstSecond? firstSecond, int matchIndex) {
+    switch (matchIndex) {
+      case 1:
+        state = state.copyWith(firstMatchFirstSecond: firstSecond);
+        break;
+      case 2:
+        state = state.copyWith(secondMatchFirstSecond: firstSecond);
+        break;
+      case 3:
+        state = state.copyWith(thirdMatchFirstSecond: firstSecond);
+        break;
+    }
   }
 
   void inputMemo(String memo) {
@@ -138,41 +121,18 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     state = state.copyWith(images: newImages);
   }
 
-  Future _saveUseDeck(int? gameId) async {
-    final checkUseDeck = await ref.read(editRecordHelper).checkIfSelectedUseDeckIsNew(state.useDeck!.name);
-    if (checkUseDeck.isNew) {
-      state = state.copyWith(
-        useDeck: state.useDeck!.copyWith(
-          gameId: gameId,
-        ),
-      );
-      final useDeckId = await ref.read(deckRepository).insert(state.useDeck!);
-      state = state.copyWith(
-        useDeck: state.useDeck!.copyWith(
-          id: useDeckId,
-        ),
-      );
-    } else {
-      state = state.copyWith(useDeck: checkUseDeck.deck);
-    }
-  }
+  Future<void> _saveDeck(bool isUseDeck, int? gameId) async {
+    final deck = isUseDeck ? state.useDeck! : state.opponentDeck!;
+    final checkDeck = await ref.read(editRecordHelper).checkIfSelectedDeckIsNew(deck.name);
 
-  Future _saveOpoonentDeck(int? gameId) async {
-    final checkOpponentDeck = await ref.read(editRecordHelper).checkIfSelectedUseDeckIsNew(state.opponentDeck!.name);
-    if (checkOpponentDeck.isNew) {
-      state = state.copyWith(
-        opponentDeck: state.opponentDeck!.copyWith(
-          gameId: gameId,
-        ),
-      );
-      final opponentDeckId = await ref.read(deckRepository).insert(state.opponentDeck!);
-      state = state.copyWith(
-        opponentDeck: state.opponentDeck!.copyWith(
-          id: opponentDeckId,
-        ),
-      );
+    if (checkDeck.isNew) {
+      final newDeck = deck.copyWith(gameId: gameId);
+      final deckId = await ref.read(deckRepository).insert(newDeck);
+      final updatedDeck = newDeck.copyWith(id: deckId);
+
+      state = isUseDeck ? state.copyWith(useDeck: updatedDeck) : state.copyWith(opponentDeck: updatedDeck);
     } else {
-      state = state.copyWith(opponentDeck: checkOpponentDeck.deck);
+      state = isUseDeck ? state.copyWith(useDeck: checkDeck.deck) : state.copyWith(opponentDeck: checkDeck.deck);
     }
   }
 
@@ -191,6 +151,10 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
       }
     }
     state = state.copyWith(tag: newTags);
+  }
+
+  void _updateRecordState({Record? updatedRecord}) {
+    state = state.copyWith(record: updatedRecord ?? state.record);
   }
 
   void _saveDate() {
@@ -262,35 +226,39 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     final deckList = await ref.read(allDeckListProvider.future);
     final tagList = await ref.read(allTagListProvider.future);
     final inputViewSettings = ref.read(inputViewSettingsNotifierProvider);
-    final fixUseDeck = inputViewSettings.fixUseDeck;
-    final fixOpponentDeck = inputViewSettings.fixOpponentDeck;
-    final fixTag = inputViewSettings.fixTag;
+
     if (recordList.isNotEmpty) {
       final previousRecord = recordList.last;
       final previousUseDeck = deckList.firstWhere((deck) => deck.id == previousRecord.useDeckId);
       final previousOpponentDeck = deckList.firstWhere((deck) => deck.id == previousRecord.opponentDeckId);
+      final previousTagList = tagList.where((tag) => previousRecord.tagId.contains(tag.id)).toList();
 
-      final List<Tag> previousTagList = [];
-      for (final tagId in previousRecord.tagId) {
-        final previousTag = tagList.firstWhere((tag) => tag.id == tagId);
-        previousTagList.add(previousTag);
-      }
-      if (fixUseDeck) ref.read(textEditingControllerNotifierProvider.notifier).setUseDeckController(previousUseDeck.name);
-      if (fixOpponentDeck) ref.read(textEditingControllerNotifierProvider.notifier).setOpponentDeckController(previousOpponentDeck.name);
-      if (fixTag && previousTagList.isNotEmpty) {
-        previousTagList.asMap().forEach((index, tag) {
-          ref.read(textEditingControllerNotifierProvider.notifier).setTagController(tag.name, index);
-        });
-      }
-      state = state.copyWith(
-        useDeck: fixUseDeck ? previousUseDeck : null,
-        opponentDeck: fixOpponentDeck ? previousOpponentDeck : null,
-        tag: fixTag ? previousTagList : [],
-      );
+      setUpInitialState(inputViewSettings, previousUseDeck, previousOpponentDeck, previousTagList);
     } else {
       ref.read(textEditingControllerNotifierProvider.notifier).resetInputViewController();
       state = InputViewState(date: DateTime.now());
     }
+  }
+
+  void setUpInitialState(
+      InputViewSettingsState inputViewSettings, Deck previousUseDeck, Deck previousOpponentDeck, List<Tag> previousTagList) {
+    if (inputViewSettings.fixUseDeck) {
+      ref.read(textEditingControllerNotifierProvider.notifier).setDeckController(previousUseDeck.name, true);
+    }
+    if (inputViewSettings.fixOpponentDeck) {
+      ref.read(textEditingControllerNotifierProvider.notifier).setDeckController(previousOpponentDeck.name, false);
+    }
+    if (inputViewSettings.fixTag && previousTagList.isNotEmpty) {
+      previousTagList.asMap().forEach((index, tag) {
+        ref.read(textEditingControllerNotifierProvider.notifier).setTagController(tag.name, index);
+      });
+    }
+
+    state = state.copyWith(
+      useDeck: inputViewSettings.fixUseDeck ? previousUseDeck : null,
+      opponentDeck: inputViewSettings.fixOpponentDeck ? previousOpponentDeck : null,
+      tag: inputViewSettings.fixTag ? previousTagList : [],
+    );
   }
 
   void resetView() {
@@ -313,77 +281,53 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     ref.read(textEditingControllerNotifierProvider.notifier).resetAllInputViewController();
   }
 
-  Future<int> saveBO1() async {
+  Future<int> saveRecord(BO bo) async {
     if (state.useDeck == null || state.opponentDeck == null) return 0;
     final selectGameId = ref.read(selectGameNotifierProvider).selectGame!.id;
-    await _saveUseDeck(selectGameId);
-    if (state.useDeck!.name == state.opponentDeck!.name) {
-      state = state.copyWith(opponentDeck: state.useDeck);
+
+    await _saveDeck(true, selectGameId);
+    if (state.useDeck!.name != state.opponentDeck!.name) {
+      await _saveDeck(false, selectGameId);
     } else {
-      await _saveOpoonentDeck(selectGameId);
+      state = state.copyWith(opponentDeck: state.useDeck);
     }
+
     await _saveTag(selectGameId);
     final tagIdList = state.tag.map((tag) => tag.id!).toList();
 
-    // record登録
-    final newRecord = Record(gameId: selectGameId);
-    state = state.copyWith(record: newRecord);
-    _saveDate();
-    _saveFirstSecond();
-    _saveWinLoss();
-    await _saveImage();
-
-    // recordに各種データを設定
-    state = state.copyWith(
-      record: state.record!.copyWith(
-        useDeckId: state.useDeck!.id,
-        opponentDeckId: state.opponentDeck!.id,
-        tagId: tagIdList,
-        bo: BO.bo1,
-        memo: state.memo,
-      ),
-    );
-    final recordCount = await ref.read(recordRepository).insert(state.record!);
-    return recordCount;
-  }
-
-  Future saveBO3() async {
-    if (state.useDeck == null || state.opponentDeck == null) return 0;
-    final selectGameId = ref.read(selectGameNotifierProvider).selectGame!.id;
-    await _saveUseDeck(selectGameId);
-    if (state.useDeck!.name == state.opponentDeck!.name) {
-      state = state.copyWith(opponentDeck: state.useDeck);
-    } else {
-      await _saveOpoonentDeck(selectGameId);
+    if (bo == BO.bo3) {
+      _calcFirstSecondBO3();
+      _calcWinLossBO3();
     }
-    await _saveTag(selectGameId);
-    final tagIdList = state.tag.map((tag) => tag.id!).toList();
 
-    _calcFirstSecondBO3();
-    _calcWinLossBO3();
-    // record登録
     final newRecord = Record(gameId: selectGameId);
-    state = state.copyWith(record: newRecord);
+    _updateRecordState(updatedRecord: newRecord);
+
     _saveDate();
     _saveFirstSecond();
     _saveWinLoss();
-    _saveFirstMatchFirstSecond();
-    _saveSecondMatchFirstSecond();
-    _saveThirdMatchFirstSecond();
-    _saveFirstMatchWinLoss();
-    _saveSecondMatchWinLoss();
-    _saveThirdMatchWinLoss();
+
+    if (bo == BO.bo3) {
+      _saveFirstMatchFirstSecond();
+      _saveSecondMatchFirstSecond();
+      _saveThirdMatchFirstSecond();
+      _saveFirstMatchWinLoss();
+      _saveSecondMatchWinLoss();
+      _saveThirdMatchWinLoss();
+    }
+
     await _saveImage();
-    // recordに各種データを設定
-    state = state.copyWith(
-      record: state.record!.copyWith(
+
+    _updateRecordState(
+      updatedRecord: state.record!.copyWith(
         useDeckId: state.useDeck!.id,
         opponentDeckId: state.opponentDeck!.id,
         tagId: tagIdList,
-        bo: BO.bo3,
+        bo: bo,
         memo: state.memo,
       ),
     );
+
     final recordCount = await ref.read(recordRepository).insert(state.record!);
     return recordCount;
   }

@@ -17,6 +17,7 @@ import 'package:intl/intl.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:tcg_manager/entity/domain_data.dart';
+import 'package:tcg_manager/enum/bo.dart';
 import 'package:tcg_manager/enum/domain_data_type.dart';
 import 'package:tcg_manager/enum/first_second.dart';
 import 'package:tcg_manager/enum/win_loss.dart';
@@ -259,7 +260,7 @@ class InputView extends HookConsumerWidget {
                                     groupValue: isBO3 ? firstMatchFirstSecond : firstSecond,
                                     onChanged: (FirstSecond? value) {
                                       if (isBO3) {
-                                        inputViewNotifier.selectFirstMatchFirstSecond(value);
+                                        inputViewNotifier.selectMatchFirstSecond(value, 1);
                                       } else {
                                         inputViewNotifier.selectFirstSecond(value);
                                       }
@@ -274,7 +275,7 @@ class InputView extends HookConsumerWidget {
                                     groupValue: isBO3 ? firstMatchFirstSecond : firstSecond,
                                     onChanged: (FirstSecond? value) {
                                       if (isBO3) {
-                                        inputViewNotifier.selectFirstMatchFirstSecond(value);
+                                        inputViewNotifier.selectMatchFirstSecond(value, 1);
                                       } else {
                                         inputViewNotifier.selectFirstSecond(value);
                                       }
@@ -301,7 +302,7 @@ class InputView extends HookConsumerWidget {
                                     groupValue: isBO3 ? firstMatchWinLoss : winLoss,
                                     onChanged: (WinLoss? value) {
                                       if (isBO3) {
-                                        inputViewNotifier.selectFirstMatchWinLoss(value);
+                                        inputViewNotifier.selectMatchWinLoss(value, 1);
                                       } else {
                                         inputViewNotifier.selectWinLoss(value);
                                       }
@@ -316,7 +317,7 @@ class InputView extends HookConsumerWidget {
                                     groupValue: isBO3 ? firstMatchWinLoss : winLoss,
                                     onChanged: (WinLoss? value) {
                                       if (isBO3) {
-                                        inputViewNotifier.selectFirstMatchWinLoss(value);
+                                        inputViewNotifier.selectMatchWinLoss(value, 1);
                                       } else {
                                         inputViewNotifier.selectWinLoss(value);
                                       }
@@ -332,7 +333,7 @@ class InputView extends HookConsumerWidget {
                                       groupValue: isBO3 ? firstMatchWinLoss : winLoss,
                                       onChanged: (WinLoss? value) {
                                         if (isBO3) {
-                                          inputViewNotifier.selectFirstMatchWinLoss(value);
+                                          inputViewNotifier.selectMatchWinLoss(value, 1);
                                         } else {
                                           inputViewNotifier.selectWinLoss(value);
                                         }
@@ -365,7 +366,7 @@ class InputView extends HookConsumerWidget {
                                       toggleable: true,
                                       groupValue: secondMatchFirstSecond,
                                       onChanged: (FirstSecond? value) {
-                                        inputViewNotifier.selectSecondMatchFirstSecond(value);
+                                        inputViewNotifier.selectMatchFirstSecond(value, 2);
                                       },
                                       contentPadding: const EdgeInsets.symmetric(horizontal: 0),
                                       dense: true,
@@ -376,7 +377,7 @@ class InputView extends HookConsumerWidget {
                                       toggleable: true,
                                       groupValue: secondMatchFirstSecond,
                                       onChanged: (FirstSecond? value) {
-                                        inputViewNotifier.selectSecondMatchFirstSecond(value);
+                                        inputViewNotifier.selectMatchFirstSecond(value, 2);
                                       },
                                       contentPadding: const EdgeInsets.symmetric(horizontal: 0),
                                       dense: true,
@@ -399,7 +400,7 @@ class InputView extends HookConsumerWidget {
                                       toggleable: true,
                                       groupValue: secondMatchWinLoss,
                                       onChanged: (WinLoss? value) {
-                                        inputViewNotifier.selectSecondMatchWinLoss(value);
+                                        inputViewNotifier.selectMatchWinLoss(value, 2);
                                       },
                                       contentPadding: const EdgeInsets.symmetric(horizontal: 0),
                                       dense: true,
@@ -410,7 +411,7 @@ class InputView extends HookConsumerWidget {
                                       toggleable: true,
                                       groupValue: secondMatchWinLoss,
                                       onChanged: (WinLoss? value) {
-                                        inputViewNotifier.selectSecondMatchWinLoss(value);
+                                        inputViewNotifier.selectMatchWinLoss(value, 2);
                                       },
                                       contentPadding: const EdgeInsets.symmetric(horizontal: 0),
                                       dense: true,
@@ -422,7 +423,7 @@ class InputView extends HookConsumerWidget {
                                         toggleable: true,
                                         groupValue: secondMatchWinLoss,
                                         onChanged: (WinLoss? value) {
-                                          inputViewNotifier.selectSecondMatchWinLoss(value);
+                                          inputViewNotifier.selectMatchWinLoss(value, 2);
                                         },
                                         contentPadding: const EdgeInsets.symmetric(horizontal: 0),
                                         dense: true,
@@ -452,7 +453,7 @@ class InputView extends HookConsumerWidget {
                                       value: FirstSecond.first,
                                       groupValue: thirdMatchFirstSecond,
                                       onChanged: (FirstSecond? value) {
-                                        inputViewNotifier.selectThirdMatchFirstSecond(value);
+                                        inputViewNotifier.selectMatchFirstSecond(value, 3);
                                       },
                                       contentPadding: const EdgeInsets.symmetric(horizontal: 0),
                                       dense: true,
@@ -463,7 +464,7 @@ class InputView extends HookConsumerWidget {
                                       toggleable: true,
                                       groupValue: thirdMatchFirstSecond,
                                       onChanged: (FirstSecond? value) {
-                                        inputViewNotifier.selectThirdMatchFirstSecond(value);
+                                        inputViewNotifier.selectMatchFirstSecond(value, 3);
                                       },
                                       contentPadding: const EdgeInsets.symmetric(horizontal: 0),
                                       dense: true,
@@ -486,7 +487,7 @@ class InputView extends HookConsumerWidget {
                                       toggleable: true,
                                       groupValue: thirdMatchWinLoss,
                                       onChanged: (WinLoss? value) {
-                                        inputViewNotifier.selectThirdMatchWinLoss(value);
+                                        inputViewNotifier.selectMatchWinLoss(value, 3);
                                       },
                                       contentPadding: const EdgeInsets.symmetric(horizontal: 0),
                                       dense: true,
@@ -497,7 +498,7 @@ class InputView extends HookConsumerWidget {
                                       toggleable: true,
                                       groupValue: thirdMatchWinLoss,
                                       onChanged: (WinLoss? value) {
-                                        inputViewNotifier.selectThirdMatchWinLoss(value);
+                                        inputViewNotifier.selectMatchWinLoss(value, 3);
                                       },
                                       contentPadding: const EdgeInsets.symmetric(horizontal: 0),
                                       dense: true,
@@ -509,7 +510,7 @@ class InputView extends HookConsumerWidget {
                                         toggleable: true,
                                         groupValue: thirdMatchWinLoss,
                                         onChanged: (WinLoss? value) {
-                                          inputViewNotifier.selectThirdMatchWinLoss(value);
+                                          inputViewNotifier.selectMatchWinLoss(value, 3);
                                         },
                                         contentPadding: const EdgeInsets.symmetric(horizontal: 0),
                                         dense: true,
@@ -532,7 +533,7 @@ class InputView extends HookConsumerWidget {
                               children: [
                                 CustomTextField(
                                   labelText: S.of(context).useDeck,
-                                  onChanged: inputViewNotifier.inputUseDeck,
+                                  onChanged: (name) => inputViewNotifier.inputDeck(name, true),
                                   controller: useDeckTextController,
                                   focusNode: useDeckFocusnode,
                                 ),
@@ -545,7 +546,7 @@ class InputView extends HookConsumerWidget {
                                       backgroundColor: Colors.transparent,
                                       builder: (BuildContext context) => SelectDomainDataView(
                                         dataType: DomainDataType.deck,
-                                        selectDomainDataFunc: inputViewNotifier.selectUseDeck,
+                                        selectDomainDataFunc: (domainData, index) => inputViewNotifier.selectDeck(domainData, index, true),
                                         tagCount: 0,
                                         afterFunc: FocusScope.of(context).unfocus,
                                         enableVisiblity: true,
@@ -561,7 +562,7 @@ class InputView extends HookConsumerWidget {
                               children: [
                                 CustomTextField(
                                   labelText: S.of(context).opponentDeck,
-                                  onChanged: inputViewNotifier.inputOpponentDeck,
+                                  onChanged: (name) => inputViewNotifier.inputDeck(name, false),
                                   controller: opponentDeckTextController,
                                   focusNode: opponentDeckFocusnode,
                                 ),
@@ -574,7 +575,7 @@ class InputView extends HookConsumerWidget {
                                       backgroundColor: Colors.transparent,
                                       builder: (BuildContext context) => SelectDomainDataView(
                                         dataType: DomainDataType.deck,
-                                        selectDomainDataFunc: inputViewNotifier.selectOpponentDeck,
+                                        selectDomainDataFunc: (domainData, index) => inputViewNotifier.selectDeck(domainData, index, false),
                                         tagCount: 0,
                                         afterFunc: FocusScope.of(context).unfocus,
                                         enableVisiblity: true,
@@ -662,9 +663,9 @@ class InputView extends HookConsumerWidget {
                                         SmartDialog.showLoading();
                                         int recordCount;
                                         if (isBO3) {
-                                          recordCount = await inputViewNotifier.saveBO3();
+                                          recordCount = await inputViewNotifier.saveRecord(BO.bo3);
                                         } else {
-                                          recordCount = await inputViewNotifier.saveBO1();
+                                          recordCount = await inputViewNotifier.saveRecord(BO.bo1);
                                         }
                                         ref.invalidate(allDeckListProvider);
                                         ref.invalidate(allTagListProvider);

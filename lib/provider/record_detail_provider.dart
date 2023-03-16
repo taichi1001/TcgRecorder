@@ -277,7 +277,7 @@ class RecordEditViewNotifier extends StateNotifier<RecordEditViewState> {
 
   Future _saveEditUseDeck() async {
     // 入力された使用デッキが新規のものかどうかを判定
-    final checkUseDeck = await ref.read(editRecordHelper).checkIfSelectedUseDeckIsNew(state.margedRecord.useDeck);
+    final checkUseDeck = await ref.read(editRecordHelper).checkIfSelectedDeckIsNew(state.margedRecord.useDeck);
 
     // 新規だった場合
     if (checkUseDeck.isNew) {
@@ -299,7 +299,7 @@ class RecordEditViewNotifier extends StateNotifier<RecordEditViewState> {
 
   Future _saveEditOpponentDeck() async {
     // 入力された対戦デッキが新規のものかどうかを判定
-    final checkOpponentDeck = await ref.read(editRecordHelper).checkIfSelectedUseDeckIsNew(state.margedRecord.opponentDeck);
+    final checkOpponentDeck = await ref.read(editRecordHelper).checkIfSelectedDeckIsNew(state.margedRecord.opponentDeck);
 
     // 新規だった場合
     if (checkOpponentDeck.isNew) {

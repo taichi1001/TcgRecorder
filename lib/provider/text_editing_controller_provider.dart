@@ -15,12 +15,18 @@ class TextEditingControllerNotifier extends StateNotifier<TextEditingControllerS
 
   final Ref ref;
 
-  void setUseDeckController(String value) {
-    state = state.copyWith(useDeckController: TextEditingController(text: value));
-  }
+  // void setUseDeckController(String value) {
+  //   state = state.copyWith(useDeckController: TextEditingController(text: value));
+  // }
 
-  void setOpponentDeckController(String value) {
-    state = state.copyWith(opponentDeckController: TextEditingController(text: value));
+  // void setOpponentDeckController(String value) {
+  //   state = state.copyWith(opponentDeckController: TextEditingController(text: value));
+  // }
+
+  void setDeckController(String deckName, bool isUseDeck) {
+    state = isUseDeck
+        ? state.copyWith(useDeckController: TextEditingController(text: deckName))
+        : state.copyWith(opponentDeckController: TextEditingController(text: deckName));
   }
 
   void setTagController(String value, int index) {
