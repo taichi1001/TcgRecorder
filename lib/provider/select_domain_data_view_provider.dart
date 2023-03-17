@@ -15,8 +15,10 @@ import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/provider/firestore_controller.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
+import 'package:tcg_manager/repository/firestore_share_data_repository.dart';
 import 'package:tcg_manager/repository/game_repository.dart';
 import 'package:tcg_manager/repository/tag_repository.dart';
+import 'package:tcg_manager/selector/game_share_data_selector.dart';
 import 'package:tcg_manager/state/select_domain_data_view_state.dart';
 
 class SelectDomainDataViewNotifier extends StateNotifier<SelectDomainDataViewState> {
@@ -50,15 +52,25 @@ class SelectDomainDataViewNotifier extends StateNotifier<SelectDomainDataViewSta
         name: name,
         gameId: selectGame!.id,
       );
-      ref.read(deckRepository).insert(deck);
-      ref.refresh(allDeckListProvider);
+      if (ref.read(isShareGame)) {
+        final share = await ref.read(gameFirestoreShareStreamProvider.future);
+        ref.read(firestoreShareDataRepository).addDeck(deck, share!.docName);
+      } else {
+        ref.read(deckRepository).insert(deck);
+        ref.refresh(allDeckListProvider);
+      }
     } else if (dataType == DomainDataType.tag) {
       final tag = Tag(
         name: name,
         gameId: selectGame!.id,
       );
-      ref.read(tagRepository).insert(tag);
-      ref.refresh(allTagListProvider);
+      if (ref.read(isShareGame)) {
+        final share = await ref.read(gameFirestoreShareStreamProvider.future);
+        ref.read(firestoreShareDataRepository).addTag(tag, share!.docName);
+      } else {
+        ref.read(tagRepository).insert(tag);
+        ref.refresh(allTagListProvider);
+      }
     }
     if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).addAll();
   }

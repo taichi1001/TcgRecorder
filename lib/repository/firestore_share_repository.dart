@@ -1,11 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/firestore_share.dart';
 import 'package:tcg_manager/entity/game.dart';
-import 'package:tcg_manager/entity/record.dart';
 import 'package:tcg_manager/entity/share_user.dart';
-import 'package:tcg_manager/entity/tag.dart';
 import 'package:tcg_manager/enum/access_roll.dart';
 import 'package:tcg_manager/provider/firebase_auth_provider.dart';
 import 'package:tcg_manager/service/firestore.dart';
@@ -32,20 +29,14 @@ class FirestoreShareRepository {
   // 新規のゲームをシェアするための関数
   Future initGame(Game game, String user) async {
     final docName = '$user-${game.name}';
+    await _firestore.collection('counters').doc(docName).set({'deck_counter': 0, 'tag_counter': 0, 'record_counter': 0});
     await _firestore.collection('share_data').doc(docName).set(game.copyWith(id: 1).toJson());
-    await _firestore.collection('share_data').doc(docName).collection('decks').doc('deck0').set({
-      'deck': [Deck(id: 1, name: 'a').toJson()]
-    });
-    await _firestore.collection('share_data').doc(docName).collection('tags').doc('tag0').set({
-      'tag': [Tag(id: 1, name: 'b').toJson()]
-    });
-    await _firestore.collection('share_data').doc(docName).collection('records').doc('record0').set({
-      'record': [
-        Record(recordId: 1, useDeckId: 1, gameId: 1, opponentDeckId: 1, tagId: [1]).toJson()
-      ]
-    });
+    await _firestore.collection('share_data').doc(docName).collection('decks').doc('deck0').set({'deck': [], 'index': 0});
+    await _firestore.collection('share_data').doc(docName).collection('tags').doc('tag0').set({'tag': [], 'index': 0});
+    await _firestore.collection('share_data').doc(docName).collection('records').doc('record0').set({'record': [], 'index': 0});
     final myself = ShareUser(id: user, roll: AccessRoll.owner);
-    final initShare = FirestoreShare(ownerName: user, game: game, shareUserList: [myself], docName: docName);
+    // TODO gameにidを付与する必要あり
+    final initShare = FirestoreShare(ownerName: user, game: game.copyWith(id: 1), shareUserList: [myself], docName: docName);
     await _firestore.collection('share').doc(docName).set(initShare.toJson());
   }
 

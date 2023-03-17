@@ -51,10 +51,11 @@ class FirestoreShareDataRepository {
 
   Future initGame(Game game, String user) async {
     final docName = '$user-${game.name}';
+    await _firestore.collection('counters').doc(docName).set({'deck_counter': 0, 'tag_counter': 0, 'record_counter': 0});
     await _firestore.collection('share_data').doc(docName).set(game.toJson());
-    await _firestore.collection('share_data').doc(docName).collection('decks').doc('deck0').set({'deck': []});
-    await _firestore.collection('share_data').doc(docName).collection('tags').doc('tag0').set({'tag': []});
-    await _firestore.collection('share_data').doc(docName).collection('records').doc('record0').set({'record': []});
+    await _firestore.collection('share_data').doc(docName).collection('decks').doc('deck0').set({'deck': [], 'index': 0});
+    await _firestore.collection('share_data').doc(docName).collection('tags').doc('tag0').set({'tag': [], 'index': 0});
+    await _firestore.collection('share_data').doc(docName).collection('records').doc('record0').set({'record': [], 'index': 0});
   }
 
   Stream<Game> getShareGame(String docName) {
@@ -74,6 +75,67 @@ class FirestoreShareDataRepository {
         return deckList;
       },
     );
+  }
+
+  Future addDeck(Deck deck, String docName) async {
+    if (deck.id == null) {
+      final newId = await _getNextUniqueIdForShareData(docName, 'deck');
+      deck = deck.copyWith(id: newId);
+    }
+    await _addItem('decks', 'deck', deck.toJson(), docName);
+  }
+
+  Future addTag(Tag tag, String docName) async {
+    if (tag.id == null) {
+      final newId = await _getNextUniqueIdForShareData(docName, 'tag');
+      tag = tag.copyWith(id: newId);
+    }
+    await _addItem('tags', 'tag', tag.toJson(), docName);
+  }
+
+  Future addRecord(Record record, String docName) async {
+    if (record.recordId == null) {
+      final newId = await _getNextUniqueIdForShareData(docName, 'record');
+      record = record.copyWith(recordId: newId);
+    }
+    await _addItem('records', 'record', record.toJson(), docName);
+  }
+
+  Future _addItem(String collectionName, String itemName, Map<String, dynamic> itemData, String docName) async {
+    final path = 'share_data/$docName/$collectionName';
+    final snapshot = await _firestore.collection(path).orderBy('index', descending: true).limit(1).get();
+    if (snapshot.docs.isEmpty) {
+      await _firestore.collection(path).doc('${itemName}0').update({
+        itemName: FieldValue.arrayUnion([itemData]),
+      });
+    }
+    final lastDoc = snapshot.docs.first;
+    final itemList = List.from(lastDoc.data()[itemName]);
+    final lastDocIndex = lastDoc.data()['index'];
+
+    if (itemList.length < 500) {
+      await _firestore.collection(path).doc('$itemName$lastDocIndex').update({
+        itemName: FieldValue.arrayUnion([itemData]),
+      });
+    } else {
+      await _firestore.collection(path).doc('$itemName${lastDocIndex + 1}').set({
+        'index': lastDocIndex + 1,
+        itemName: [itemData],
+      });
+    }
+  }
+
+  Future<int> _getNextUniqueIdForShareData(String doccName, String itemName) async {
+    final counterRef = _firestore.collection('counters').doc(doccName);
+    final nextId = await _firestore.runTransaction((transaction) async {
+      final counterSnapshot = await transaction.get(counterRef);
+      final currentValue = counterSnapshot.data()?['deck_counter'] as int;
+      final nextId = currentValue + 1;
+      transaction.update(counterRef, {'${itemName}_counter': nextId});
+      return nextId;
+    });
+
+    return nextId;
   }
 
   Stream<List<Tag>> getShareTag(String docName) {

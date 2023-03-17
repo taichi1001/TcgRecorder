@@ -16,8 +16,10 @@ import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
+import 'package:tcg_manager/repository/firestore_share_data_repository.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
 import 'package:tcg_manager/repository/tag_repository.dart';
+import 'package:tcg_manager/selector/game_share_data_selector.dart';
 import 'package:tcg_manager/state/input_view_settings_state.dart';
 import 'package:tcg_manager/state/input_view_state.dart';
 
@@ -123,34 +125,57 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
 
   Future<void> _saveDeck(bool isUseDeck, int? gameId) async {
     final deck = isUseDeck ? state.useDeck! : state.opponentDeck!;
-    final checkDeck = await ref.read(editRecordHelper).checkIfSelectedDeckIsNew(deck.name);
+    final existingDeck = await ref.read(editRecordHelper).checkIfSelectedDeckIsNew(deck.name);
 
-    if (checkDeck.isNew) {
-      final newDeck = deck.copyWith(gameId: gameId);
-      final deckId = await ref.read(deckRepository).insert(newDeck);
-      final updatedDeck = newDeck.copyWith(id: deckId);
-
-      state = isUseDeck ? state.copyWith(useDeck: updatedDeck) : state.copyWith(opponentDeck: updatedDeck);
+    if (existingDeck.isNew) {
+      final newDeck = await _createNewDeck(deck, gameId);
+      state = isUseDeck ? state.copyWith(useDeck: newDeck) : state.copyWith(opponentDeck: newDeck);
     } else {
-      state = isUseDeck ? state.copyWith(useDeck: checkDeck.deck) : state.copyWith(opponentDeck: checkDeck.deck);
+      state = isUseDeck ? state.copyWith(useDeck: existingDeck.deck) : state.copyWith(opponentDeck: existingDeck.deck);
     }
   }
 
-  Future _saveTag(int? gameId) async {
+  Future<Deck> _createNewDeck(Deck deck, int? gameId) async {
+    final newDeck = deck.copyWith(gameId: gameId);
+    final isShare = ref.read(isShareGame);
+    int? deckId;
+    if (isShare) {
+      // TODO shareDataのdecksにnewDeckを保存し、そのデッキのIDを取得する関数を作成し、それをここで呼び出す。
+    } else {
+      deckId = await ref.read(deckRepository).insert(newDeck);
+    }
+    return newDeck.copyWith(id: deckId);
+  }
+
+  Future<void> _saveTag(int? gameId) async {
     if (state.tag.isEmpty) return;
+    final List<Tag> newTags = await _createNewTags(gameId);
+    state = state.copyWith(tag: newTags);
+  }
+
+  Future<List<Tag>> _createNewTags(int? gameId) async {
     final List<Tag> newTags = [];
     for (final tag in state.tag) {
       if (tag.name == '') continue;
-      final checkTag = await ref.read(editRecordHelper).checkIfSelectedTagIsNew(tag.name);
-      if (checkTag.isNew) {
-        final tagId = await ref.read(tagRepository).insert(tag.copyWith(gameId: gameId));
-        final newTag = tag.copyWith(gameId: gameId, id: tagId);
-        newTags.add(newTag);
+      final existingTag = await ref.read(editRecordHelper).checkIfSelectedTagIsNew(tag.name);
+      if (existingTag.isNew) {
+        newTags.add(await _createNewTag(tag, gameId));
       } else {
-        newTags.add(checkTag.tag!);
+        newTags.add(existingTag.tag!);
       }
     }
-    state = state.copyWith(tag: newTags);
+    return newTags;
+  }
+
+  Future<Tag> _createNewTag(Tag tag, int? gameId) async {
+    final isShare = ref.read(isShareGame);
+    int? tagId;
+    if (isShare) {
+      // TODO shareDataのtagsにnewTagを保存し、そのタグのIDを取得する関数を作成し、それをここで呼び出す。
+    } else {
+      tagId = await ref.read(tagRepository).insert(tag.copyWith(gameId: gameId));
+    }
+    return tag.copyWith(gameId: gameId, id: tagId);
   }
 
   void _updateRecordState({Record? updatedRecord}) {
@@ -281,8 +306,8 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     ref.read(textEditingControllerNotifierProvider.notifier).resetAllInputViewController();
   }
 
-  Future<int> saveRecord(BO bo) async {
-    if (state.useDeck == null || state.opponentDeck == null) return 0;
+  Future saveRecord(BO bo) async {
+    if (state.useDeck == null || state.opponentDeck == null) return;
     final selectGameId = ref.read(selectGameNotifierProvider).selectGame!.id;
 
     await _saveDeck(true, selectGameId);
@@ -328,8 +353,13 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
       ),
     );
 
-    final recordCount = await ref.read(recordRepository).insert(state.record!);
-    return recordCount;
+    final isShare = ref.read(isShareGame);
+    if (isShare) {
+      final share = await ref.read(gameFirestoreShareStreamProvider.future);
+      ref.read(firestoreShareDataRepository).addRecord(state.record!, share!.docName);
+    } else {
+      await ref.read(recordRepository).insert(state.record!);
+    }
   }
 }
 

@@ -12,7 +12,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:in_app_review/in_app_review.dart';
 import 'package:intl/intl.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -661,21 +660,21 @@ class InputView extends HookConsumerWidget {
                                       );
                                       if (okCancelResult == OkCancelResult.ok) {
                                         SmartDialog.showLoading();
-                                        int recordCount;
                                         if (isBO3) {
-                                          recordCount = await inputViewNotifier.saveRecord(BO.bo3);
+                                          await inputViewNotifier.saveRecord(BO.bo3);
                                         } else {
-                                          recordCount = await inputViewNotifier.saveRecord(BO.bo1);
+                                          await inputViewNotifier.saveRecord(BO.bo1);
                                         }
                                         ref.invalidate(allDeckListProvider);
                                         ref.invalidate(allTagListProvider);
                                         ref.invalidate(allRecordListProvider);
-                                        if (recordCount % 200 == 0) {
-                                          final inAppReview = InAppReview.instance;
-                                          if (await inAppReview.isAvailable()) {
-                                            inAppReview.requestReview();
-                                          }
-                                        }
+                                        // レビュー催促ダイアログ条件検討中
+                                        // if (recordCount % 200 == 0) {
+                                        //   final inAppReview = InAppReview.instance;
+                                        //   if (await inAppReview.isAvailable()) {
+                                        //     inAppReview.requestReview();
+                                        //   }
+                                        // }
                                         if (ref.read(backupNotifierProvider)) {
                                           ref.read(firestoreController).addRecord(ref.read(inputViewNotifierProvider).record!);
                                         }
