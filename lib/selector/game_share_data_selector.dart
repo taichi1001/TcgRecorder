@@ -20,7 +20,9 @@ final gameFirestoreShareStreamProvider = StreamProvider.autoDispose<FirestoreSha
   if (selectGame == null || !selectGame.isShare) {
     yield null;
   } else {
-    final shareGameList = await ref.watch(hostShareProvider.future);
+    final hostGameList = await ref.watch(hostShareProvider.future);
+    final guestGameList = await ref.watch(guestShareProvider.future);
+    final shareGameList = [...hostGameList, ...guestGameList];
     yield shareGameList.firstWhere((element) => element.game == selectGame);
   }
 });

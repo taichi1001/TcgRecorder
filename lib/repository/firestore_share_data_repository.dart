@@ -63,42 +63,31 @@ class FirestoreShareDataRepository {
     return userShareDataDoc.map((doc) => Game.fromJson(doc.data()!));
   }
 
-  Stream<List<Deck>> getShareDeck(String docName) {
-    final deckDataCollection = _firestore.collection('share_data').doc(docName).collection('decks').snapshots();
-    List<Deck> deckList = [];
-    return deckDataCollection.map(
-      (collection) {
-        for (final doc in collection.docs) {
-          final decks = doc.data()['deck'] as List<dynamic>;
-          deckList = [...deckList, ...decks.map((e) => Deck.fromJson(e)).toList()];
-        }
-        return deckList;
-      },
-    );
-  }
-
-  Future addDeck(Deck deck, String docName) async {
+  Future<int> addDeck(Deck deck, String docName) async {
     if (deck.id == null) {
       final newId = await _getNextUniqueIdForShareData(docName, 'deck');
       deck = deck.copyWith(id: newId);
     }
     await _addItem('decks', 'deck', deck.toJson(), docName);
+    return deck.id!;
   }
 
-  Future addTag(Tag tag, String docName) async {
+  Future<int> addTag(Tag tag, String docName) async {
     if (tag.id == null) {
       final newId = await _getNextUniqueIdForShareData(docName, 'tag');
       tag = tag.copyWith(id: newId);
     }
     await _addItem('tags', 'tag', tag.toJson(), docName);
+    return tag.id!;
   }
 
-  Future addRecord(Record record, String docName) async {
+  Future<int> addRecord(Record record, String docName) async {
     if (record.recordId == null) {
       final newId = await _getNextUniqueIdForShareData(docName, 'record');
       record = record.copyWith(recordId: newId);
     }
     await _addItem('records', 'record', record.toJson(), docName);
+    return record.recordId!;
   }
 
   Future _addItem(String collectionName, String itemName, Map<String, dynamic> itemData, String docName) async {
@@ -138,11 +127,25 @@ class FirestoreShareDataRepository {
     return nextId;
   }
 
+  Stream<List<Deck>> getShareDeck(String docName) {
+    final deckDataCollection = _firestore.collection('share_data').doc(docName).collection('decks').snapshots();
+    return deckDataCollection.map(
+      (collection) {
+        List<Deck> deckList = [];
+        for (final doc in collection.docs) {
+          final decks = doc.data()['deck'] as List<dynamic>;
+          deckList = [...deckList, ...decks.map((e) => Deck.fromJson(e)).toList()];
+        }
+        return deckList;
+      },
+    );
+  }
+
   Stream<List<Tag>> getShareTag(String docName) {
     final tagDataCollection = _firestore.collection('share_data').doc(docName).collection('tags').snapshots();
-    List<Tag> tagList = [];
     return tagDataCollection.map(
       (collection) {
+        List<Tag> tagList = [];
         for (final doc in collection.docs) {
           final tags = doc.data()['tag'] as List<dynamic>;
           tagList = [...tagList, ...tags.map((e) => Tag.fromJson(e)).toList()];
@@ -154,9 +157,9 @@ class FirestoreShareDataRepository {
 
   Stream<List<Record>> getShareRecord(String docName) {
     final recordDataCollection = _firestore.collection('share_data').doc(docName).collection('records').snapshots();
-    List<Record> recordList = [];
     return recordDataCollection.map(
       (collection) {
+        List<Record> recordList = [];
         for (final doc in collection.docs) {
           final records = doc.data()['record'] as List<dynamic>;
           recordList = [...recordList, ...records.map((e) => Record.fromJson(e)).toList()];

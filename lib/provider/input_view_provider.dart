@@ -140,7 +140,8 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     final isShare = ref.read(isShareGame);
     int? deckId;
     if (isShare) {
-      // TODO shareDataのdecksにnewDeckを保存し、そのデッキのIDを取得する関数を作成し、それをここで呼び出す。
+      final share = await ref.read(gameFirestoreShareStreamProvider.future);
+      deckId = await ref.read(firestoreShareDataRepository).addDeck(newDeck, share!.docName);
     } else {
       deckId = await ref.read(deckRepository).insert(newDeck);
     }
@@ -168,14 +169,17 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
   }
 
   Future<Tag> _createNewTag(Tag tag, int? gameId) async {
+    final newTag = tag.copyWith(gameId: gameId);
     final isShare = ref.read(isShareGame);
     int? tagId;
     if (isShare) {
-      // TODO shareDataのtagsにnewTagを保存し、そのタグのIDを取得する関数を作成し、それをここで呼び出す。
+      final share = await ref.read(gameFirestoreShareStreamProvider.future);
+      tagId = await ref.read(firestoreShareDataRepository).addTag(newTag, share!.docName);
     } else {
-      tagId = await ref.read(tagRepository).insert(tag.copyWith(gameId: gameId));
+      tagId = await ref.read(tagRepository).insert(newTag);
     }
-    return tag.copyWith(gameId: gameId, id: tagId);
+    tag = tag.copyWith(gameId: gameId, id: tagId);
+    return tag;
   }
 
   void _updateRecordState({Record? updatedRecord}) {
@@ -309,7 +313,6 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
   Future saveRecord(BO bo) async {
     if (state.useDeck == null || state.opponentDeck == null) return;
     final selectGameId = ref.read(selectGameNotifierProvider).selectGame!.id;
-
     await _saveDeck(true, selectGameId);
     if (state.useDeck!.name != state.opponentDeck!.name) {
       await _saveDeck(false, selectGameId);

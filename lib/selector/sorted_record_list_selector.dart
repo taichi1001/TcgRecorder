@@ -4,6 +4,7 @@ import 'package:tcg_manager/enum/sort.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/record_list_view_provider.dart';
 
+// TODO Stream仕様のsortedRecordListも作る
 final sortedRecordListProvider = FutureProvider.autoDispose<List<Record>>((ref) async {
   final recordList = await ref.watch(allRecordListProvider.future);
   final sort = ref.watch(recordListViewNotifierProvider.select((value) => value.sort));

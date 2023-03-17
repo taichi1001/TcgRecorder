@@ -225,7 +225,7 @@ class SelectDomainDataView extends HookConsumerWidget {
                                       Padding(
                                         padding: const EdgeInsets.all(16),
                                         child: Text(
-                                          '共有中の${dataType.displayName}',
+                                          'ホストで共有中の${dataType.displayName}',
                                           style: Theme.of(context).textTheme.bodySmall,
                                         ),
                                       ),
@@ -239,7 +239,25 @@ class SelectDomainDataView extends HookConsumerWidget {
                                       ),
                                     if (dataType == DomainDataType.game)
                                       _DomainDataListView(
-                                        domainDataList: selectDomainViewInfo.recentlyUseDomainDataList,
+                                        domainDataList: selectDomainViewInfo.hostGameList,
+                                        selectedDomainDataList: selectedDomainDataList,
+                                        rootContext: rootContext,
+                                        selectDomainDataFunc: selectDomainDataFunc,
+                                        enableVisibility: false,
+                                        tagCount: tagCount,
+                                        returnSelecting: returnSelecting,
+                                      ),
+                                    if (dataType == DomainDataType.game)
+                                      Padding(
+                                        padding: const EdgeInsets.all(16),
+                                        child: Text(
+                                          'ゲストで共有中の${dataType.displayName}',
+                                          style: Theme.of(context).textTheme.bodySmall,
+                                        ),
+                                      ),
+                                    if (dataType == DomainDataType.game)
+                                      _DomainDataListView(
+                                        domainDataList: selectDomainViewInfo.guestGameList,
                                         selectedDomainDataList: selectedDomainDataList,
                                         rootContext: rootContext,
                                         selectDomainDataFunc: selectDomainDataFunc,
