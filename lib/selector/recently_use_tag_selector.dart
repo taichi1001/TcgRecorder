@@ -1,11 +1,11 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/tag.dart';
-import 'package:tcg_manager/selector/game_record_list_selector.dart';
 import 'package:tcg_manager/selector/game_tag_list_selector.dart';
+import 'package:tcg_manager/selector/sorted_record_list_selector.dart';
 
 final recentlyUseTagProvider = FutureProvider.autoDispose<List<Tag>>((ref) async {
   ref.keepAlive();
-  final recordList = await ref.watch(gameRecordListProvider.future);
+  final recordList = await ref.watch(sortedRecordListProvider.future);
   final recordListCopy = [...recordList];
 
   // レコードを最新順に並び替え

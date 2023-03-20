@@ -18,8 +18,8 @@ import 'package:tcg_manager/provider/firestore_controller.dart';
 import 'package:tcg_manager/repository/firestore_share_data_repository.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
 import 'package:tcg_manager/repository/tag_repository.dart';
-import 'package:tcg_manager/selector/game_record_list_selector.dart';
 import 'package:tcg_manager/selector/game_share_data_selector.dart';
+import 'package:tcg_manager/selector/sorted_record_list_selector.dart';
 import 'package:tcg_manager/state/record_detail_state.dart';
 
 class RecordEditViewNotifier extends StateNotifier<RecordEditViewState> {
@@ -372,7 +372,7 @@ class RecordEditViewNotifier extends StateNotifier<RecordEditViewState> {
 
 final recordListProvider = Provider.autoDispose<List<Record>>((ref) {
   ref.keepAlive();
-  final recordList = ref.watch(gameRecordListProvider);
+  final recordList = ref.watch(sortedRecordListProvider);
   final state = recordList.when(
     data: (recordList) => recordList,
     error: (_, __) => [],

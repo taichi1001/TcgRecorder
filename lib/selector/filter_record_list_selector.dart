@@ -1,10 +1,10 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/record.dart';
 import 'package:tcg_manager/provider/record_list_view_provider.dart';
-import 'package:tcg_manager/selector/game_record_list_selector.dart';
+import 'package:tcg_manager/selector/sorted_record_list_selector.dart';
 
 final filterRecordListProvider = FutureProvider.autoDispose<List<Record>>((ref) async {
-  final recordList = await ref.watch(gameRecordListProvider.future);
+  final recordList = await ref.watch(sortedRecordListProvider.future);
   final filter = ref.watch(recordListViewNotifierProvider);
 
   var filterdList = recordList;
