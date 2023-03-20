@@ -23,6 +23,6 @@ final gameRecordListFutureProvider = FutureProvider.autoDispose<List<Record>>((r
 });
 
 final gameRecordListStreamProvider = StreamProvider.autoDispose<List<Record>>((ref) async* {
-  final shareData = await ref.watch(gameShareDataStreamProvider.future);
-  yield shareData == null ? [] : shareData.recordList;
+  final shareData = await ref.watch(gameShareDataRecordStreamProvider.future);
+  yield shareData ?? [];
 });

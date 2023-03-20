@@ -112,14 +112,14 @@ class RecordEditView extends HookConsumerWidget {
                 S.of(context).save,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
-              onPressed: () {
+              onPressed: () async {
                 if (isBO3) {
-                  recordDetailNotifier.saveEditBO3();
+                  await recordDetailNotifier.saveEditRecord(isBO3: isBO3);
                 } else {
-                  recordDetailNotifier.saveEdit();
+                  await recordDetailNotifier.saveEditRecord(isBO3: isBO3);
                 }
                 recordDetailNotifier.changeIsEdit();
-                Navigator.pop(context);
+                if (context.mounted) Navigator.pop(context);
               },
             ),
           ],
@@ -576,9 +576,13 @@ class _EditView extends HookConsumerWidget {
                           controllers: tagTextControllers,
                           focusNodes: tagFocusNodes,
                           inputTag: recordDetailNotifier.editTag,
-                          selectTagFunc: recordDetailNotifier.selectTag,
+                          selectTagFunc: (data, index) {
+                            recordDetailNotifier.selectTag(data, index);
+                            tagTextControllers[index] = TextEditingController(text: data.name);
+                          },
                           addFunc: () {
                             ref.read(_tagTextController.notifier).state = [...tagTextControllers, TextEditingController()];
+                            ref.read(originalTagLength.notifier).state = ref.read(_tagTextController).length;
                           },
                         ),
                         const SizedBox(height: 8),

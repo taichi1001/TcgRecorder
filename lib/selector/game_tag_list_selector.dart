@@ -24,8 +24,8 @@ final gameTagListFutureProvider = FutureProvider.autoDispose<List<Tag>>((ref) as
 });
 
 final gameTagListStreamProvider = StreamProvider.autoDispose<List<Tag>>((ref) async* {
-  final shareData = await ref.watch(gameShareDataStreamProvider.future);
-  yield shareData == null ? [] : shareData.tagList;
+  final shareData = await ref.watch(gameShareDataTagStreamProvider.future);
+  yield shareData ?? [];
 });
 
 final currentTagDeckListProvider = FutureProvider.family.autoDispose<List<Tag>, Game>((ref, selectTag) async {

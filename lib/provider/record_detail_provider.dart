@@ -13,11 +13,13 @@ import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/helper/edit_record_helper.dart';
 import 'package:tcg_manager/main.dart';
 import 'package:tcg_manager/provider/backup_provider.dart';
-import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
 import 'package:tcg_manager/provider/firestore_controller.dart';
+import 'package:tcg_manager/repository/firestore_share_data_repository.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
 import 'package:tcg_manager/repository/tag_repository.dart';
+import 'package:tcg_manager/selector/game_record_list_selector.dart';
+import 'package:tcg_manager/selector/game_share_data_selector.dart';
 import 'package:tcg_manager/state/record_detail_state.dart';
 
 class RecordEditViewNotifier extends StateNotifier<RecordEditViewState> {
@@ -158,59 +160,48 @@ class RecordEditViewNotifier extends StateNotifier<RecordEditViewState> {
     );
   }
 
-  Future saveEdit() async {
-    // 編集したrecord(EditMargedRecord)を表示用のrecord(MargedRecord)に設定
-    state = state.copyWith(margedRecord: state.editMargedRecord);
-    // 各種値の保存、ID取得、recordへのID設定
-    // ここの処理は各種値が編集済みが未編集かに関わらず実行される
-    // 編集済みのみ実行するようにすればパフォーマンスは上がるかも
-    await _saveEditUseDeck();
-    await _saveEditOpponentDeck();
-    await _saveEditTag();
-    await _saveImage();
-    state = state.copyWith(
+  RecordEditViewState _updateRecord(BO bo, {required bool isBO3}) {
+    return state.copyWith(
       record: state.record.copyWith(
-        bo: BO.bo1,
+        bo: bo,
         date: state.editMargedRecord.date,
-        winLoss: state.editMargedRecord.winLoss,
-        firstSecond: state.editMargedRecord.firstSecond,
+        winLoss: isBO3 ? state.margedRecord.winLoss : state.editMargedRecord.winLoss,
+        firstSecond: isBO3 ? state.margedRecord.firstSecond : state.editMargedRecord.firstSecond,
         memo: state.editMargedRecord.memo,
+        firstMatchFirstSecond: isBO3 ? state.margedRecord.firstMatchFirstSecond : null,
+        secondMatchFirstSecond: isBO3 ? state.margedRecord.secondMatchFirstSecond : null,
+        thirdMatchFirstSecond: isBO3 ? state.margedRecord.thirdMatchFirstSecond : null,
+        firstMatchWinLoss: isBO3 ? state.margedRecord.firstMatchWinLoss : null,
+        secondMatchWinLoss: isBO3 ? state.margedRecord.secondMatchWinLoss : null,
+        thirdMatchWinLoss: isBO3 ? state.margedRecord.thirdMatchWinLoss : null,
       ),
     );
-
-    // recordを上書き
-    await ref.read(recordRepository).update(state.record);
-    await ref.read(dbHelper).fetchAll();
-    if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).addAll();
   }
 
-  Future saveEditBO3() async {
+  Future saveEditRecord({required bool isBO3}) async {
     state = state.copyWith(margedRecord: state.editMargedRecord);
     await _saveEditUseDeck();
     await _saveEditOpponentDeck();
     await _saveEditTag();
-    _calcFirstSecondBO3();
-    _calcWinLossBO3();
     await _saveImage();
-    state = state.copyWith(
-      record: state.record.copyWith(
-        bo: BO.bo3,
-        date: state.editMargedRecord.date,
-        firstSecond: state.margedRecord.firstSecond,
-        firstMatchFirstSecond: state.margedRecord.firstMatchFirstSecond,
-        secondMatchFirstSecond: state.margedRecord.secondMatchFirstSecond,
-        thirdMatchFirstSecond: state.margedRecord.firstMatchFirstSecond,
-        winLoss: state.margedRecord.winLoss,
-        firstMatchWinLoss: state.margedRecord.firstMatchWinLoss,
-        secondMatchWinLoss: state.margedRecord.secondMatchWinLoss,
-        thirdMatchWinLoss: state.margedRecord.thirdMatchWinLoss,
-        memo: state.editMargedRecord.memo,
-      ),
-    );
-    // recordを上書き
-    await ref.read(recordRepository).update(state.record);
-    await ref.read(dbHelper).fetchAll();
-    if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).editRecord(state);
+
+    if (isBO3) {
+      _calcFirstSecondBO3();
+      _calcWinLossBO3();
+    }
+    state = _updateRecord(isBO3 ? BO.bo3 : BO.bo1, isBO3: isBO3);
+
+    final isShare = ref.read(isShareGame);
+    if (isShare) {
+      final share = await ref.read(gameFirestoreShareStreamProvider.future);
+      await ref.read(firestoreShareDataRepository).updateRecord(state.record, share!.docName);
+    } else {
+      await ref.read(recordRepository).update(state.record);
+      await ref.read(dbHelper).fetchAll();
+    }
+    if (ref.read(backupNotifierProvider)) {
+      await ref.read(firestoreController).editRecord(state);
+    }
   }
 
   void _calcWinLossBO3() {
@@ -275,69 +266,90 @@ class RecordEditViewNotifier extends StateNotifier<RecordEditViewState> {
     }
   }
 
-  Future _saveEditUseDeck() async {
-    // 入力された使用デッキが新規のものかどうかを判定
-    final checkUseDeck = await ref.read(editRecordHelper).checkIfSelectedDeckIsNew(state.margedRecord.useDeck);
-
-    // 新規だった場合
-    if (checkUseDeck.isNew) {
-      // 入力された使用デッキをDBに登録しデッキIDを取得
-      final newId = await ref.read(deckRepository).insert(
+  Future<int> _registerNewDeck(String deckName) async {
+    final isShare = ref.read(isShareGame);
+    if (isShare) {
+      final share = await ref.read(gameFirestoreShareStreamProvider.future);
+      return await ref.read(firestoreShareDataRepository).addDeck(
             Deck(
-              name: state.margedRecord.useDeck,
+              name: deckName,
+              gameId: state.record.gameId,
+            ),
+            share!.docName,
+          );
+    } else {
+      return await ref.read(deckRepository).insert(
+            Deck(
+              name: deckName,
               gameId: state.record.gameId,
             ),
           );
-
-      // recordに新しいデッキIDを登録
-      state = state.copyWith(record: state.record.copyWith(useDeckId: newId));
-    } else {
-      // 既に登録済みのデッキだった場合、そのデッキのIDをrecordに登録
-      state = state.copyWith(record: state.record.copyWith(useDeckId: checkUseDeck.deck!.id));
     }
   }
 
-  Future _saveEditOpponentDeck() async {
-    // 入力された対戦デッキが新規のものかどうかを判定
-    final checkOpponentDeck = await ref.read(editRecordHelper).checkIfSelectedDeckIsNew(state.margedRecord.opponentDeck);
-
-    // 新規だった場合
-    if (checkOpponentDeck.isNew) {
-      // 入力された対戦デッキをDBに登録しデッキIDを取得
-      final newId = await ref.read(deckRepository).insert(
-            Deck(
-              name: state.margedRecord.opponentDeck,
-              gameId: state.record.gameId,
-            ),
-          );
-
-      // recordに新しいデッキIDを登録
-      state = state.copyWith(record: state.record.copyWith(opponentDeckId: newId));
+  Future<int> _getDeckId(String deckName) async {
+    final checkDeck = await ref.read(editRecordHelper).checkIfSelectedDeckIsNew(deckName);
+    if (checkDeck.isNew) {
+      return await _registerNewDeck(deckName);
     } else {
-      // 既に登録済みのデッキだった場合、そのデッキのIDをrecordに登録
-      state = state.copyWith(record: state.record.copyWith(opponentDeckId: checkOpponentDeck.deck!.id));
+      return checkDeck.deck!.id!;
+    }
+  }
+
+  Future _saveEditDeck(String deckName, bool isUseDeck) async {
+    final newDeckId = await _getDeckId(deckName);
+
+    // recordに新しいデッキIDを登録
+    if (isUseDeck) {
+      state = state.copyWith(record: state.record.copyWith(useDeckId: newDeckId));
+    } else {
+      state = state.copyWith(record: state.record.copyWith(opponentDeckId: newDeckId));
+    }
+  }
+
+  Future _saveEditUseDeck() async {
+    await _saveEditDeck(state.margedRecord.useDeck, true);
+  }
+
+  Future _saveEditOpponentDeck() async {
+    await _saveEditDeck(state.margedRecord.opponentDeck, false);
+  }
+
+  Future<int> _registerNewTag(String tagName) async {
+    final isShare = ref.read(isShareGame);
+    if (isShare) {
+      final share = await ref.read(gameFirestoreShareStreamProvider.future);
+      final newId = await ref.read(firestoreShareDataRepository).addTag(
+            Tag(name: tagName, gameId: state.record.gameId),
+            share!.docName,
+          );
+      return newId;
+    } else {
+      return await ref.read(tagRepository).insert(
+            Tag(name: tagName, gameId: state.record.gameId),
+          );
+    }
+  }
+
+  Future<int> _getTagId(String tagName) async {
+    final checkTag = await ref.read(editRecordHelper).checkIfSelectedTagIsNew(tagName);
+    if (checkTag.isNew) {
+      return await _registerNewTag(tagName);
+    } else {
+      return checkTag.tag!.id!;
     }
   }
 
   Future _saveEditTag() async {
     if (state.margedRecord.tag.isEmpty) return;
-    final List<int> newTags = [];
+
+    final newTags = <int>[];
     for (final tag in state.margedRecord.tag) {
       if (tag == '') continue;
-      // 入力されたタグが新規のものかどうかを判定
-      final checkTag = await ref.read(editRecordHelper).checkIfSelectedTagIsNew(tag);
-      // 新規だった場合
-      if (checkTag.isNew) {
-        // 入力された対戦デッキをDBに登録しデッキIDを取得
-        final newId = await ref.read(tagRepository).insert(
-              Tag(name: tag, gameId: state.record.gameId),
-            );
-        newTags.add(newId);
-      } else {
-        // 既に登録済みのタグだった場合、そのタグのIDをrecordに登録
-        newTags.add(checkTag.tag!.id!);
-      }
+      final newTagId = await _getTagId(tag);
+      newTags.add(newTagId);
     }
+
     state = state.copyWith(record: state.record.copyWith(tagId: newTags));
   }
 
@@ -358,8 +370,9 @@ class RecordEditViewNotifier extends StateNotifier<RecordEditViewState> {
   }
 }
 
-final recordListProvider = Provider<List<Record>>((ref) {
-  final recordList = ref.watch(allRecordListProvider);
+final recordListProvider = Provider.autoDispose<List<Record>>((ref) {
+  ref.keepAlive();
+  final recordList = ref.watch(gameRecordListProvider);
   final state = recordList.when(
     data: (recordList) => recordList,
     error: (_, __) => [],

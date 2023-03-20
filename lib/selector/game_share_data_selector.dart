@@ -5,12 +5,46 @@ import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/repository/firestore_share_data_repository.dart';
 import 'package:tcg_manager/repository/firestore_share_repository.dart';
 
+// share_dataの中身を全て監視するStream
 final gameShareDataStreamProvider = StreamProvider.autoDispose<FirestoreShareData?>((ref) async* {
   final selectFirestoreShare = await ref.watch(gameFirestoreShareStreamProvider.future);
   if (selectFirestoreShare == null) {
     yield null;
   } else {
     final shareData = await ref.watch(firestoreShareDataProvider(selectFirestoreShare.docName).future);
+    yield shareData;
+  }
+});
+
+// share_dataのrecordを監視するStream
+final gameShareDataDeckStreamProvider = StreamProvider.autoDispose((ref) async* {
+  final selectFirestoreShare = await ref.watch(gameFirestoreShareStreamProvider.future);
+  if (selectFirestoreShare == null) {
+    yield null;
+  } else {
+    final shareData = await ref.watch(firestoreShareDataDeckProvider(selectFirestoreShare.docName).future);
+    yield shareData;
+  }
+});
+
+// share_dataのrecordを監視するStream
+final gameShareDataTagStreamProvider = StreamProvider.autoDispose((ref) async* {
+  final selectFirestoreShare = await ref.watch(gameFirestoreShareStreamProvider.future);
+  if (selectFirestoreShare == null) {
+    yield null;
+  } else {
+    final shareData = await ref.watch(firestoreShareDataTagProvider(selectFirestoreShare.docName).future);
+    yield shareData;
+  }
+});
+
+// share_dataのrecordを監視するStream
+final gameShareDataRecordStreamProvider = StreamProvider.autoDispose((ref) async* {
+  final selectFirestoreShare = await ref.watch(gameFirestoreShareStreamProvider.future);
+  if (selectFirestoreShare == null) {
+    yield null;
+  } else {
+    final shareData = await ref.watch(firestoreShareDataRecordProvider(selectFirestoreShare.docName).future);
     yield shareData;
   }
 });
