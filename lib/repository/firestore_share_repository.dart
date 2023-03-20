@@ -30,14 +30,31 @@ class FirestoreShareRepository {
   Future initGame(Game game, String user) async {
     final docName = '$user-${game.name}';
     await _firestore.collection('counters').doc(docName).set({'deck_counter': 0, 'tag_counter': 0, 'record_counter': 0});
-    await _firestore.collection('share_data').doc(docName).set(game.copyWith(id: 1).toJson());
+    final gameCounter = await getGameCounter(user);
+    await _firestore.collection('share_data').doc(docName).set(game.copyWith(id: gameCounter).toJson());
     await _firestore.collection('share_data').doc(docName).collection('decks').doc('decks0').set({'decks': [], 'index': 0});
     await _firestore.collection('share_data').doc(docName).collection('tags').doc('tags0').set({'tags': [], 'index': 0});
     await _firestore.collection('share_data').doc(docName).collection('records').doc('records0').set({'records': [], 'index': 0});
     final myself = ShareUser(id: user, roll: AccessRoll.owner);
-    // TODO gameにidを付与する必要あり
-    final initShare = FirestoreShare(ownerName: user, game: game.copyWith(id: 1), shareUserList: [myself], docName: docName);
+    final initShare = FirestoreShare(ownerName: user, game: game.copyWith(id: gameCounter), shareUserList: [myself], docName: docName);
     await _firestore.collection('share').doc(docName).set(initShare.toJson());
+  }
+
+  Future<int> getGameCounter(String user) async {
+    final counterRef = FirebaseFirestore.instance.collection('counters').doc(user);
+
+    return await FirebaseFirestore.instance.runTransaction((transaction) async {
+      final docSnapshot = await transaction.get(counterRef);
+
+      if (docSnapshot.exists) {
+        int currentValue = docSnapshot.data()!['game_counter'] ?? 0;
+        transaction.update(counterRef, {'game_counter': currentValue + 1});
+        return currentValue + 1;
+      } else {
+        transaction.set(counterRef, {'game_counter': 1});
+        return 1;
+      }
+    });
   }
 
   // ゲーム共有リクエスト
