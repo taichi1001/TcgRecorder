@@ -1,7 +1,9 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:settings_ui/settings_ui.dart';
+import 'package:tcg_manager/enum/access_roll.dart';
 import 'package:tcg_manager/repository/firestore_share_repository.dart';
 import 'package:tcg_manager/view/host_share_game_view.dart';
 
@@ -12,7 +14,7 @@ class SharedUserView extends HookConsumerWidget {
     final user = ref.watch(currentShareUserProvider);
     return Scaffold(
       appBar: AppBar(
-        title: Text(user.id),
+        title: Text(user!.id),
       ),
       body: SettingsList(
         lightTheme: SettingsThemeData(
@@ -53,14 +55,79 @@ class _PermissionSettingsTileHooksConsumerWidget extends HookConsumerWidget {
     final user = ref.watch(currentShareUserProvider);
     return SettingsTile(
       title: const Text('アクセス権限'),
-      value: Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).hoverColor,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
-          child: Text(user.roll.displayName),
+      value: GestureDetector(
+        onTap: () async {
+          {
+            showCupertinoModalBottomSheet(
+              expand: false,
+              context: context,
+              builder: (context) => Padding(
+                padding: const EdgeInsets.all(8),
+                child: SafeArea(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.folder_shared),
+                            const SizedBox(width: 16),
+                            Text(
+                              'アクセス権限設定',
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Divider(),
+                      ...AccessRoll.values
+                          .map(
+                            (roll) => GestureDetector(
+                              onTap: () async {
+                                final share = ref.read(currentShare);
+                                await ref.read(firestoreShareRepository).updateUserRoll(user!, roll, share.docName);
+                                ref.read(currentShareUserProvider.notifier).state = user.copyWith(roll: roll);
+                                if (context.mounted) Navigator.pop(context);
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  children: [
+                                    Opacity(
+                                      opacity: user!.roll == roll ? 1 : 0,
+                                      child: const Icon(Icons.check),
+                                    ),
+                                    const SizedBox(width: 32),
+                                    Text(
+                                      roll.displayName,
+                                      style: user.roll == roll
+                                          ? Theme.of(context).textTheme.bodyMedium?.copyWith(color: Theme.of(context).colorScheme.primary)
+                                          : Theme.of(context).textTheme.bodyMedium,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          )
+                          .toList(),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).hoverColor,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
+            child: Text(user!.roll.displayName),
+          ),
         ),
       ),
     );
@@ -89,7 +156,7 @@ class _RevokeShareTileHooksConsumerWidget extends HookConsumerWidget {
           message: '解除されたユーザーはデータが閲覧できなくなります。よろしいですか？',
         );
         if (okCancel == OkCancelResult.ok) {
-          await ref.read(firestoreShareRepository).revokeUser(user, share.docName);
+          await ref.read(firestoreShareRepository).revokeUser(user!, share.docName);
           if (context.mounted) Navigator.of(context).pop();
         }
       },

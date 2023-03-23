@@ -38,7 +38,8 @@ class HostShareGameView extends HookConsumerWidget {
   }
 }
 
-final currentShareUserProvider = Provider<ShareUser>((ref) => throw UnimplementedError);
+// final currentShareUserProvider = Provider<ShareUser>((ref) => throw UnimplementedError);
+final currentShareUserProvider = StateProvider<ShareUser?>((ref) => null);
 final currentShare = Provider<FirestoreShare>((ref) => throw UnimplementedError);
 
 class _SharedUserSliverList extends HookConsumerWidget {
@@ -54,22 +55,27 @@ class _SharedUserSliverList extends HookConsumerWidget {
 
         return SliverListEx.separated(
           itemCount: share.shareUserList.length,
+          separatorBuilder: (context, index) => const Divider(indent: 16, thickness: 1, height: 0),
           itemBuilder: (context, index) => ListTileOnTap(
             title: share.shareUserList[index].id,
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ProviderScope(
-                  overrides: [
-                    currentShareUserProvider.overrideWithValue(share.shareUserList[index]),
-                    currentShare.overrideWithValue(share),
-                  ],
-                  child: const SharedUserView(),
+            onTap: () {
+              ref.read(currentShareUserProvider.notifier).state = share.shareUserList[index];
+              return Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return ProviderScope(
+                      overrides: [
+                        // currentShareUserProvider.overrideWithValue(share.shareUserList[index]),
+                        currentShare.overrideWithValue(share),
+                      ],
+                      child: const SharedUserView(),
+                    );
+                  },
                 ),
-              ),
-            ),
+              );
+            },
           ),
-          separatorBuilder: (context, index) => const Divider(indent: 16, thickness: 1, height: 0),
         );
       },
       orElse: () => SliverToBoxAdapter(child: Container()),
