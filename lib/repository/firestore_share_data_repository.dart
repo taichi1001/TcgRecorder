@@ -90,8 +90,6 @@ class FirestoreShareDataRepository {
     return record.recordId!;
   }
 
-  Future updateTag() async {}
-
   Future updateRecord(Record updateRecord, String docName) async {
     final recordsCollection = FirebaseFirestore.instance.collection('share_data').doc(docName).collection('records');
 
@@ -111,6 +109,34 @@ class FirestoreShareDataRepository {
           // Recordの名前を更新
           records[targetIndex] = updateRecord.toJson();
 
+          // トランザクションでドキュメントを更新
+          transaction.update(snapshot.reference, {'records': records});
+
+          // 更新が完了したらループを抜ける
+          break;
+        }
+      }
+    });
+  }
+
+  Future removeRecord(Record removeRecord, String docName) async {
+    final recordsCollection = FirebaseFirestore.instance.collection('share_data').doc(docName).collection('records');
+
+    // トランザクションを開始
+    await FirebaseFirestore.instance.runTransaction((transaction) async {
+      // 各ドキュメントを順番に処理
+      final snapshotList = await recordsCollection.get();
+
+      for (final snapshot in snapshotList.docs) {
+        final List<dynamic> records = snapshot.data()['records'];
+
+        // 対象のRecordを検索
+        final targetIndex = records.indexWhere((record) => record['record_id'] == removeRecord.recordId);
+
+        // 対象のRecordが見つかった場合
+        if (targetIndex != -1) {
+          // Recordの名前を更新
+          records.removeAt(targetIndex);
           // トランザクションでドキュメントを更新
           transaction.update(snapshot.reference, {'records': records});
 

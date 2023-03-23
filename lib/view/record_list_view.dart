@@ -21,7 +21,10 @@ import 'package:tcg_manager/provider/backup_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/record_list_view_provider.dart';
 import 'package:tcg_manager/provider/firestore_controller.dart';
+import 'package:tcg_manager/repository/firestore_share_data_repository.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
+import 'package:tcg_manager/selector/game_record_list_selector.dart';
+import 'package:tcg_manager/selector/game_share_data_selector.dart';
 import 'package:tcg_manager/selector/marged_record_list_selector.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
 import 'package:tcg_manager/view/component/custom_scaffold.dart';
@@ -255,11 +258,18 @@ class _BrandListTile extends HookConsumerWidget {
         ),
       ),
       deleteFunc: () async {
-        final targetRecord = await ref.read(recordRepository).getRecordId(record.recordId);
-        ref.read(dbHelper).removeRecordImage(targetRecord!);
-        await ref.read(recordRepository).deleteById(record.recordId);
-        ref.invalidate(allRecordListProvider);
-        if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).deleteRecord(targetRecord);
+        if (ref.read(isShareGame)) {
+          final gameRecordList = await ref.watch(gameRecordListProvider.future);
+          final targetRecord = gameRecordList.firstWhere((gameRecord) => gameRecord.recordId == record.recordId);
+          final share = await ref.read(gameFirestoreShareStreamProvider.future);
+          ref.read(firestoreShareDataRepository).removeRecord(targetRecord, share!.docName);
+        } else {
+          final targetRecord = await ref.read(recordRepository).getRecordId(record.recordId);
+          ref.read(dbHelper).removeRecordImage(targetRecord!);
+          await ref.read(recordRepository).deleteById(record.recordId);
+          ref.invalidate(allRecordListProvider);
+          if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).deleteRecord(targetRecord);
+        }
       },
       editFunc: () async {
         await Navigator.push(
@@ -274,8 +284,7 @@ class _BrandListTile extends HookConsumerWidget {
             ),
           ),
         );
-        // ignore: use_build_context_synchronously
-        await Slidable.of(context)?.close();
+        if (context.mounted) await Slidable.of(context)?.close();
       },
       alertTitle: S.of(context).recordListDeleteDialogTitle,
       alertMessage: S.of(context).recordListDeleteDialogMessage,
@@ -630,11 +639,18 @@ class _EditDeleteButtonRow extends HookConsumerWidget {
                 backgroundColor: MaterialStateColor.resolveWith((states) => Theme.of(context).colorScheme.error),
               ),
               onPressed: () async {
-                final targetRecord = await ref.read(recordRepository).getRecordId(record.recordId);
-                ref.read(dbHelper).removeRecordImage(targetRecord!);
-                await ref.read(recordRepository).deleteById(record.recordId);
-                ref.invalidate(allRecordListProvider);
-                if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).deleteRecord(targetRecord);
+                if (ref.read(isShareGame)) {
+                  final gameRecordList = await ref.watch(gameRecordListProvider.future);
+                  final targetRecord = gameRecordList.firstWhere((gameRecord) => gameRecord.recordId == record.recordId);
+                  final share = await ref.read(gameFirestoreShareStreamProvider.future);
+                  ref.read(firestoreShareDataRepository).removeRecord(targetRecord, share!.docName);
+                } else {
+                  final targetRecord = await ref.read(recordRepository).getRecordId(record.recordId);
+                  ref.read(dbHelper).removeRecordImage(targetRecord!);
+                  await ref.read(recordRepository).deleteById(record.recordId);
+                  ref.invalidate(allRecordListProvider);
+                  if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).deleteRecord(targetRecord);
+                }
               },
               child: const Text('削除'),
             ),
