@@ -87,8 +87,8 @@ class _PermissionSettingsTileHooksConsumerWidget extends HookConsumerWidget {
                             (roll) => GestureDetector(
                               onTap: () async {
                                 final share = ref.read(currentShare);
-                                await ref.read(firestoreShareRepository).updateUserRoll(user!, roll, share.docName);
-                                ref.read(currentShareUserProvider.notifier).state = user.copyWith(roll: roll);
+                                final isSuccess = await ref.read(firestoreShareRepository).updateUserRoll(user!, roll, share.docName);
+                                if (isSuccess) ref.read(currentShareUserProvider.notifier).state = user.copyWith(roll: roll);
                                 if (context.mounted) Navigator.pop(context);
                               },
                               child: Padding(

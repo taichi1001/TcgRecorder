@@ -92,11 +92,11 @@ class FirestoreShareRepository {
     );
   }
 
-  Future updateUserRoll(ShareUser shareUser, AccessRoll newRoll, String shareDocName) async {
+  Future<bool> updateUserRoll(ShareUser shareUser, AccessRoll newRoll, String shareDocName) async {
     final docRef = FirebaseFirestore.instance.collection('share').doc(shareDocName);
 
     // トランザクションを使用して整合性を保ちます
-    await FirebaseFirestore.instance.runTransaction((transaction) async {
+    return await FirebaseFirestore.instance.runTransaction((transaction) async {
       DocumentSnapshot docSnapshot = await transaction.get(docRef);
 
       if (docSnapshot.exists) {
@@ -112,14 +112,21 @@ class FirestoreShareRepository {
           }
         }
 
+        // ownerがいなくなる場合にこうしんしないようにする処理
+        final ownerList = userList.map((e) => ShareUser.fromJson(e)).where((element) => element.roll == AccessRoll.owner).toList().toList();
+        if (ownerList.isEmpty) return false;
+
         // 更新された場合のみ、user_list を Firestore に書き込みます
         if (isUpdated) {
           transaction.update(docRef, {'share_user_list': userList});
+          return true;
         } else {
           print('User not found in user_list');
+          return false;
         }
       } else {
         print('Document does not exist');
+        return false;
       }
     });
   }
