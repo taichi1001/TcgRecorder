@@ -43,7 +43,7 @@ class UserInfoSettingsView extends HookConsumerWidget {
                         compressQuality: 100,
                       );
                       if (croppedFile != null) {
-                        ref.read(userInfoSettingsProvider.notifier).setImagePath(croppedFile.path);
+                        await ref.read(userInfoSettingsProvider.notifier).setImagePath(croppedFile.path);
                       }
                     }
                   },

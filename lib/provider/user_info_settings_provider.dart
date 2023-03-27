@@ -31,8 +31,8 @@ class UserInfoSettingsNotifier extends StateNotifier<UserInfoSettingsState> {
     await strageRef.putFile(File(path));
     final newURL = await strageRef.getDownloadURL();
     final newUserData = UserData(id: state.id, name: state.name, iconPath: newURL);
-    ref.read(firestoreUserSettingsRepository).setAll(newUserData);
-    ref.invalidateSelf();
+    await ref.read(firestoreUserSettingsRepository).setAll(newUserData);
+    state = state.copyWith(iconPath: newURL);
   }
 
   Future setUserName(String name) async {
