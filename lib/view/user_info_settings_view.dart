@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/provider/user_info_settings_provider.dart';
@@ -33,8 +35,17 @@ class UserInfoSettingsView extends HookConsumerWidget {
             child: Column(
               children: [
                 GestureDetector(
-                  onTap: () {
-                    // TODO iconデータをFirestoreに保存する処理記載
+                  onTap: () async {
+                    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+                    if (pickedFile != null) {
+                      final croppedFile = await ImageCropper().cropImage(
+                        sourcePath: pickedFile.path,
+                        compressQuality: 100,
+                      );
+                      if (croppedFile != null) {
+                        ref.read(userInfoSettingsProvider.notifier).setImagePath(croppedFile.path);
+                      }
+                    }
                   },
                   child: Stack(
                     alignment: AlignmentDirectional.bottomEnd,
@@ -51,15 +62,17 @@ class UserInfoSettingsView extends HookConsumerWidget {
                 ),
                 const SizedBox(height: 8),
                 GestureDetector(
-                  onTap: () {
-                    final newName = showTextInputDialog(
+                  onTap: () async {
+                    final newName = await showTextInputDialog(
                       context: context,
                       title: 'ユーザー名を編集',
                       textFields: [
                         DialogTextField(initialText: userInfoSettings.name),
                       ],
                     );
-                    // TODO newNameをfirestoreに保存する処理を記載
+                    if (newName != null && newName.isNotEmpty && newName.first != '') {
+                      ref.read(userInfoSettingsProvider.notifier).setUserName(newName.first);
+                    }
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,

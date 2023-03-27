@@ -124,6 +124,8 @@ dependencies:
 
   cached_network_image: ^3.2.3
 
+  image_cropper: ^3.0.2
+
 flutter_native_splash:
   image: "assets/images/icon.png"
   color: "FFFFFF"

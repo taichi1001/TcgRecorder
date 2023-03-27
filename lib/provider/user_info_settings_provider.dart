@@ -1,6 +1,11 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tcg_manager/entity/user_data.dart';
 import 'package:tcg_manager/provider/firebase_auth_provider.dart';
 import 'package:tcg_manager/provider/revenue_cat_provider.dart';
+import 'package:tcg_manager/repository/firestore_user_settings_repositroy.dart';
 import 'package:tcg_manager/state/user_info_settings_state.dart';
 
 class UserInfoSettingsNotifier extends StateNotifier<UserInfoSettingsState> {
@@ -13,8 +18,28 @@ class UserInfoSettingsNotifier extends StateNotifier<UserInfoSettingsState> {
 
   final Ref ref;
 
-  // TODO name,iconをfirestoreから取得する処理を記述
-  Future _init() async {}
+  Future _init() async {
+    final userData = await ref.read(firestoreUserSettingsRepository).getAll(state.id);
+    state = state.copyWith(
+      name: userData.name ?? '名前未設定',
+      iconPath: userData.iconPath,
+    );
+  }
+
+  Future setImagePath(String path) async {
+    final strageRef = FirebaseStorage.instance.ref().child('user_profile/${state.id}/icon');
+    await strageRef.putFile(File(path));
+    final newURL = await strageRef.getDownloadURL();
+    final newUserData = UserData(id: state.id, name: state.name, iconPath: newURL);
+    ref.read(firestoreUserSettingsRepository).setAll(newUserData);
+    ref.invalidateSelf();
+  }
+
+  Future setUserName(String name) async {
+    final newUserData = UserData(id: state.id, name: name, iconPath: state.iconPath);
+    await ref.read(firestoreUserSettingsRepository).setAll(newUserData);
+    state = state.copyWith(name: name);
+  }
 }
 
 final userInfoSettingsProvider = StateNotifierProvider<UserInfoSettingsNotifier, UserInfoSettingsState>((ref) {
@@ -23,13 +48,11 @@ final userInfoSettingsProvider = StateNotifierProvider<UserInfoSettingsNotifier,
   final uid = user?.uid;
   final isPhoneAuth = user?.phoneNumber != null;
   final isPremium = revenucat.isPremium;
-
   final state = UserInfoSettingsState(
     id: uid ?? '名前未設定',
     isPhoneAuth: isPhoneAuth,
     isPremium: isPremium,
   );
-
   final userInfoSettingsNotifier = UserInfoSettingsNotifier(ref: ref, state: state);
 
   return userInfoSettingsNotifier;
