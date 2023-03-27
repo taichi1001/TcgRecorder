@@ -325,12 +325,12 @@ class _UserInfoSettingsTileHooksConsumerWidget extends HookConsumerWidget {
           const SizedBox(height: 4),
           Row(
             children: [
-              if (userInfoSettings.isPremium)
+              if (userInfoSettings.isPhoneAuth)
                 Text(
                   '電話認証済',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.tertiary),
                 ),
-              if (!userInfoSettings.isPremium)
+              if (!userInfoSettings.isPhoneAuth)
                 Text(
                   '電話未認証',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.error),
