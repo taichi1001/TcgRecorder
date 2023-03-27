@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -31,6 +32,7 @@ import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/revenue_cat_provider.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/provider/theme_provider.dart';
+import 'package:tcg_manager/provider/user_info_settings_provider.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
 import 'package:tcg_manager/provider/firestore_controller.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
@@ -43,9 +45,7 @@ import 'package:tcg_manager/view/bottom_navigation_view.dart';
 import 'package:tcg_manager/view/component/custom_textfield.dart';
 import 'package:tcg_manager/view/component/slidable_tile.dart';
 import 'package:tcg_manager/view/component/web_view_screen.dart';
-import 'package:tcg_manager/view/phone_number_auth_view.dart';
-import 'package:tcg_manager/view/phone_number_deactivation_view.dart';
-import 'package:tcg_manager/view/premium_plan_purchase_view.dart';
+import 'package:tcg_manager/view/user_info_settings_view.dart';
 
 class OtherView extends HookConsumerWidget {
   const OtherView({Key? key}) : super(key: key);
@@ -75,44 +75,9 @@ class OtherView extends HookConsumerWidget {
         ),
         sections: [
           SettingsSection(
+            title: const Text(''),
             tiles: [
-              SettingsTile.navigation(
-                title: Text(S.of(context).premiumPlan),
-                leading: const Icon(
-                  Icons.auto_awesome,
-                  color: Colors.orange,
-                ),
-                value: Text(
-                  isPremium ? '登録済み' : '未登録',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                onPressed: (context) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      fullscreenDialog: true,
-                      builder: (context) => const PremiumPlanPurchaseView(),
-                    ),
-                  );
-                },
-              ),
-              SettingsTile.navigation(
-                title: Text(isAnonymous ? '電話番号認証' : '電話番号認証の解除'),
-                leading: const Icon(
-                  Icons.phone,
-                  color: Colors.green,
-                ),
-                onPressed: (context) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return isAnonymous ? const PhoneNumberAuthView() : const PhoneNumberDeactivationView();
-                      },
-                    ),
-                  );
-                },
-              ),
+              const _UserInfoSettingsTile(),
               SettingsTile.navigation(
                 title: const Text('バックアップ・復元'),
                 leading: const Icon(
@@ -293,9 +258,6 @@ class OtherView extends HookConsumerWidget {
             ],
           ),
           CustomSettingsSection(
-            child: Text(ref.read(firebaseAuthNotifierProvider).user!.uid),
-          ),
-          CustomSettingsSection(
             child: TextButton(
               onPressed: () async {
                 final okCancelResult = await showOkCancelAlertDialog(
@@ -332,6 +294,73 @@ class OtherView extends HookConsumerWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _UserInfoSettingsTile extends AbstractSettingsTile {
+  const _UserInfoSettingsTile();
+  @override
+  Widget build(BuildContext context) {
+    return const _UserInfoSettingsTileHooksConsumerWidget();
+  }
+}
+
+class _UserInfoSettingsTileHooksConsumerWidget extends HookConsumerWidget {
+  const _UserInfoSettingsTileHooksConsumerWidget();
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userInfoSettings = ref.watch(userInfoSettingsProvider);
+    return SettingsTile.navigation(
+      leading: CircleAvatar(
+        radius: 24,
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundImage: userInfoSettings.iconPath == null ? null : CachedNetworkImageProvider(userInfoSettings.iconPath!),
+        child: userInfoSettings.iconPath == null ? Text(userInfoSettings.name[0]) : null,
+      ),
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(userInfoSettings.name),
+          const SizedBox(height: 4),
+          Row(
+            children: [
+              if (userInfoSettings.isPhoneAuth)
+                Text(
+                  '電話認証済',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.tertiary),
+                ),
+              if (!userInfoSettings.isPhoneAuth)
+                Text(
+                  '電話未認証',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.error),
+                ),
+              Text(
+                '、',
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+              if (userInfoSettings.isPremium)
+                Text(
+                  'プレミアムプラン加入中',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.tertiary),
+                ),
+              if (!userInfoSettings.isPremium)
+                Text(
+                  'プレミアムプラン未加入',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.error),
+                ),
+            ],
+          ),
+        ],
+      ),
+      onPressed: (context) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const UserInfoSettingsView(),
+          ),
+        );
+      },
     );
   }
 }
