@@ -11,10 +11,10 @@ class SharedUserView extends HookConsumerWidget {
   const SharedUserView({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(currentShareUserProvider);
+    final user = ref.watch(currentSharedUser);
     return Scaffold(
       appBar: AppBar(
-        title: Text(user!.id),
+        title: Text(user.currentUserData!.name ?? user.currentUserData!.id),
       ),
       body: SettingsList(
         lightTheme: SettingsThemeData(
@@ -86,7 +86,7 @@ class _PermissionSettingsTileHooksConsumerWidget extends HookConsumerWidget {
                           .map(
                             (roll) => GestureDetector(
                               onTap: () async {
-                                final share = ref.read(currentShare);
+                                final share = ref.read(currentSharedUser).share;
                                 final isSuccess = await ref.read(firestoreShareRepository).updateUserRoll(user!, roll, share.docName);
                                 if (isSuccess) ref.read(currentShareUserProvider.notifier).state = user.copyWith(roll: roll);
                                 if (context.mounted) Navigator.pop(context);
@@ -147,7 +147,7 @@ class _RevokeShareTileHooksConsumerWidget extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(currentShareUserProvider);
-    final share = ref.watch(currentShare);
+    final share = ref.watch(currentSharedUser);
     return SettingsTile(
       onPressed: (context) async {
         final okCancel = await showOkCancelAlertDialog(
@@ -156,7 +156,7 @@ class _RevokeShareTileHooksConsumerWidget extends HookConsumerWidget {
           message: '解除されたユーザーはデータが閲覧できなくなります。よろしいですか？',
         );
         if (okCancel == OkCancelResult.ok) {
-          await ref.read(firestoreShareRepository).revokeUser(user!, share.docName);
+          await ref.read(firestoreShareRepository).revokeUser(user!, share.share.docName);
           if (context.mounted) Navigator.of(context).pop();
         }
       },

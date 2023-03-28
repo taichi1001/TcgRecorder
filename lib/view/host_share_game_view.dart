@@ -5,9 +5,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:tcg_manager/entity/firestore_share.dart';
 import 'package:tcg_manager/entity/share_user.dart';
+import 'package:tcg_manager/entity/user_data.dart';
 import 'package:tcg_manager/enum/access_roll.dart';
 import 'package:tcg_manager/repository/dynamic_links_repository.dart';
 import 'package:tcg_manager/repository/firestore_share_repository.dart';
+import 'package:tcg_manager/repository/firestore_user_settings_repositroy.dart';
 import 'package:tcg_manager/view/component/list_tile_ontap.dart';
 import 'package:tcg_manager/view/component/sliver_header.dart';
 import 'package:tcg_manager/view/share_view.dart';
@@ -38,36 +40,61 @@ class HostShareGameView extends HookConsumerWidget {
   }
 }
 
-// final currentShareUserProvider = Provider<ShareUser>((ref) => throw UnimplementedError);
 final currentShareUserProvider = StateProvider<ShareUser?>((ref) => null);
-final currentShare = Provider<FirestoreShare>((ref) => throw UnimplementedError);
+final currentSharedUser = Provider<SharedUser>((ref) => throw UnimplementedError);
+
+final _sharedUserListProvider = FutureProvider.autoDispose.family<SharedUser, String>((ref, String name) async {
+  final hostShareList = await ref.watch(hostShareProvider.future);
+  final share = hostShareList.firstWhere((element) => element.docName == name);
+  final userIdList = share.shareUserList.map((e) => e.id).toList();
+  final userDataList = await ref.watch(userDataListProvider(userIdList).future);
+  return SharedUser(userDataList: userDataList, share: share);
+});
+
+final _pendingUserListProvider = FutureProvider.autoDispose.family<SharedUser, String>((ref, String name) async {
+  final hostShareList = await ref.watch(hostShareProvider.future);
+  final share = hostShareList.firstWhere((element) => element.docName == name);
+  final userIdList = share.pendingUserList.map((e) => e.id).toList();
+  final userDataList = await ref.watch(userDataListProvider(userIdList).future);
+  return SharedUser(userDataList: userDataList, share: share);
+});
+
+/// ホスト共有ゲーム画面での、ユーサーリストを管理するためのクラス
+///
+/// currentUserDataはユーザーのページに遷移時設定して使用する
+class SharedUser {
+  SharedUser({
+    required this.userDataList,
+    required this.share,
+  });
+  List<UserData> userDataList;
+  UserData? currentUserData;
+  FirestoreShare share;
+}
 
 class _SharedUserSliverList extends HookConsumerWidget {
   const _SharedUserSliverList();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final hostShareList = ref.watch(hostShareProvider);
     final currentShareDocName = ref.watch(currentShareDocNameProvider);
-    return hostShareList.maybeWhen(
+    final userDataList = ref.watch(_sharedUserListProvider(currentShareDocName));
+    return userDataList.maybeWhen(
       data: (data) {
-        final share = data.firstWhereOrNull((element) => element.docName == currentShareDocName);
-        if (share == null) return SliverToBoxAdapter(child: Container());
-
         return SliverListEx.separated(
-          itemCount: share.shareUserList.length,
+          itemCount: data.userDataList.length,
           separatorBuilder: (context, index) => const Divider(indent: 16, thickness: 1, height: 0),
           itemBuilder: (context, index) => ListTileOnTap(
-            title: share.shareUserList[index].id,
+            title: data.userDataList[index].name ?? data.userDataList[index].id,
             onTap: () {
-              ref.read(currentShareUserProvider.notifier).state = share.shareUserList[index];
+              ref.read(currentShareUserProvider.notifier).state = data.share.shareUserList[index];
               return Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) {
+                    data.currentUserData = data.userDataList[index];
                     return ProviderScope(
                       overrides: [
-                        // currentShareUserProvider.overrideWithValue(share.shareUserList[index]),
-                        currentShare.overrideWithValue(share),
+                        currentSharedUser.overrideWithValue(data),
                       ],
                       child: const SharedUserView(),
                     );
@@ -87,23 +114,21 @@ class _PendingUserSliverList extends HookConsumerWidget {
   const _PendingUserSliverList();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final hostShareList = ref.watch(hostShareProvider);
     final currentShareDocName = ref.watch(currentShareDocNameProvider);
+    final userDataList = ref.watch(_pendingUserListProvider(currentShareDocName));
 
-    return hostShareList.maybeWhen(
+    return userDataList.maybeWhen(
       data: (data) {
-        final share = data.firstWhereOrNull((element) => element.docName == currentShareDocName);
-        if (share == null) return SliverToBoxAdapter(child: Container());
-
         return SliverListEx.separated(
-          itemCount: share.pendingUserList.length,
+          itemCount: data.userDataList.length,
           itemBuilder: (context, index) => ListTileOnTap(
-            title: share.pendingUserList[index].id,
+            title: data.userDataList[index].name ?? data.userDataList[index].id,
             trailing: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 InkWell(
-                  onTap: () async => await ref.read(firestoreShareRepository).noallowSharing(share.pendingUserList[index], share.docName),
+                  onTap: () async =>
+                      await ref.read(firestoreShareRepository).noallowSharing(data.share.pendingUserList[index], data.share.docName),
                   child: Icon(
                     Icons.remove_circle,
                     color: Theme.of(context).colorScheme.error,
@@ -111,7 +136,8 @@ class _PendingUserSliverList extends HookConsumerWidget {
                 ),
                 const SizedBox(width: 8),
                 InkWell(
-                  onTap: () async => await ref.read(firestoreShareRepository).allowSharing(share.pendingUserList[index], share.docName),
+                  onTap: () async =>
+                      await ref.read(firestoreShareRepository).allowSharing(data.share.pendingUserList[index], data.share.docName),
                   child: Icon(
                     Icons.check_circle,
                     color: Theme.of(context).colorScheme.tertiary,
