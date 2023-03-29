@@ -6,11 +6,13 @@ class ListTileOnTap extends HookConsumerWidget {
     required this.title,
     this.onTap,
     this.trailing,
+    this.leading,
     super.key,
   });
   final String title;
   final Function()? onTap;
   final Widget? trailing;
+  final Widget? leading;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Material(
@@ -22,6 +24,11 @@ class ListTileOnTap extends HookConsumerWidget {
           padding: const EdgeInsets.all(16),
           child: Row(
             children: [
+              if (leading != null)
+                Padding(
+                  padding: const EdgeInsets.only(right: 16),
+                  child: leading!,
+                ),
               Expanded(
                 child: Text(
                   title,

@@ -1,4 +1,5 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -22,19 +23,24 @@ class HostShareGameView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final gameName = ref.watch(currentShareProvider.select((value) => value.game.name));
+    final currentShareDocName = ref.watch(currentShareDocNameProvider);
+    final hostShareGameInfo = ref.watch(_sharedUserListProvider(currentShareDocName));
     return Scaffold(
       appBar: AppBar(
         title: Text(gameName),
       ),
-      body: const CustomScrollView(
-        slivers: [
-          _CreateShareLinkButton(),
-          SliverHeader(title: '共有中ユーザー'),
-          _SharedUserSliverList(),
-          SliverHeader(title: '共有申請ユーザー'),
-          _PendingUserSliverList(),
-          _DeleteShareGameButton(),
-        ],
+      body: hostShareGameInfo.maybeWhen(
+        data: (data) => const CustomScrollView(
+          slivers: [
+            _CreateShareLinkButton(),
+            SliverHeader(title: '共有中ユーザー'),
+            _SharedUserSliverList(),
+            SliverHeader(title: '共有申請ユーザー'),
+            _PendingUserSliverList(),
+            _DeleteShareGameButton(),
+          ],
+        ),
+        orElse: () => const Center(child: CircularProgressIndicator()),
       ),
     );
   }
@@ -85,6 +91,13 @@ class _SharedUserSliverList extends HookConsumerWidget {
           separatorBuilder: (context, index) => const Divider(indent: 16, thickness: 1, height: 0),
           itemBuilder: (context, index) => ListTileOnTap(
             title: data.userDataList[index].name ?? data.userDataList[index].id,
+            leading: CircleAvatar(
+              radius: 24,
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              backgroundImage:
+                  data.userDataList[index].iconPath == null ? null : CachedNetworkImageProvider(data.userDataList[index].iconPath!),
+              child: data.userDataList[index].iconPath == null ? Text(data.userDataList[index].name![0]) : null,
+            ),
             onTap: () {
               ref.read(currentShareUserProvider.notifier).state = data.share.shareUserList[index];
               return Navigator.push(
