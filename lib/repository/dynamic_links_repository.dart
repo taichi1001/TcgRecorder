@@ -4,9 +4,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/share_user.dart';
 import 'package:tcg_manager/enum/access_roll.dart';
 import 'package:tcg_manager/provider/firebase_auth_provider.dart';
+import 'package:tcg_manager/provider/user_info_settings_provider.dart';
 import 'package:tcg_manager/repository/firestore_share_repository.dart';
 import 'package:tcg_manager/service/firebase_dynamic_links.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+import 'package:tcg_manager/view/user_info_settings_view.dart';
 
 final dynamicLinksRepository =
     Provider.autoDispose<DynamicLinksRepository>((ref) => DynamicLinksRepository(ref.watch(firebaseDynamicLinksProvider), ref));
@@ -62,11 +64,35 @@ class DynamicLinksRepository {
   }
 
   Future<OkCancelResult> _showDialog(BuildContext context, String? uid, String? gameName) async {
-    return await showOkCancelAlertDialog(
-      context: context,
-      title: 'データ共有申請',
-      message: '$uidがホストの$gameNameにゲストとして参加申請しますか？',
-      isDestructiveAction: true,
-    );
+    final userInfo = ref.read(userInfoSettingsProvider);
+    var result = false;
+    if (userInfo.name == null) {
+      final okCancel = await showOkCancelAlertDialog(
+        context: context,
+        title: 'プロフィールを設定してください',
+        message: 'この機能の利用にはプロフィールの設定が必要です。',
+        isDestructiveAction: true,
+      );
+      if (okCancel == OkCancelResult.ok && context.mounted) {
+        await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const UserInfoSettingsView(),
+          ),
+        );
+        final newUserInfo = ref.read(userInfoSettingsProvider);
+        if (newUserInfo.name != null) {
+          result = true;
+        }
+      }
+      return result ? OkCancelResult.ok : OkCancelResult.cancel;
+    } else {
+      return await showOkCancelAlertDialog(
+        context: context,
+        title: 'データ共有申請',
+        message: '$uidがホストの$gameNameにゲストとして参加申請しますか？',
+        isDestructiveAction: true,
+      );
+    }
   }
 }
