@@ -54,7 +54,9 @@ class UserInfoSettingsView extends HookConsumerWidget {
                         radius: 36,
                         backgroundColor: Theme.of(context).colorScheme.primary,
                         backgroundImage: userInfoSettings.iconPath == null ? null : CachedNetworkImageProvider(userInfoSettings.iconPath!),
-                        child: userInfoSettings.iconPath == null ? Text(userInfoSettings.name[0]) : null,
+                        child: userInfoSettings.iconPath == null
+                            ? Text(userInfoSettings.name == null ? '名' : userInfoSettings.name![0])
+                            : null,
                       ),
                       const Icon(Icons.photo_camera),
                     ],
@@ -78,7 +80,7 @@ class UserInfoSettingsView extends HookConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        userInfoSettings.name,
+                        userInfoSettings.name ?? '名前未設定',
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
                       const SizedBox(width: 4),

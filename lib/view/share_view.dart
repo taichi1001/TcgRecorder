@@ -7,29 +7,51 @@ import 'package:tcg_manager/entity/firestore_share.dart';
 import 'package:tcg_manager/entity/game.dart';
 import 'package:tcg_manager/enum/access_roll.dart';
 import 'package:tcg_manager/provider/firebase_auth_provider.dart';
+import 'package:tcg_manager/provider/user_info_settings_provider.dart';
 import 'package:tcg_manager/repository/dynamic_links_repository.dart';
 import 'package:tcg_manager/repository/firestore_share_repository.dart';
 import 'package:tcg_manager/view/component/list_tile_ontap.dart';
 import 'package:tcg_manager/view/component/sliver_header.dart';
 import 'package:tcg_manager/view/guest_share_game_view.dart';
 import 'package:tcg_manager/view/host_share_game_view.dart';
+import 'package:tcg_manager/view/user_info_settings_view.dart';
 
 class ShareView extends HookConsumerWidget {
   const ShareView({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final userInfo = ref.watch(userInfoSettingsProvider);
     return Scaffold(
       appBar: AppBar(title: const Text('ゲーム共有')),
-      body: const CustomScrollView(
-        slivers: [
-          SliverHeader(title: 'ホスト'),
-          _HostShareGameListView(),
-          SliverHeader(title: 'ゲスト'),
-          _GuestShareGameListView(),
-          SliverHeader(title: '申請中'),
-          _GuestPendingShareGameListView(),
-        ],
-      ),
+      body: userInfo.name == null
+          ? Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Center(
+                  child: Text('ゲーム共有を利用するためにはプロフィールの設定が必要です。'),
+                ),
+                ElevatedButton(
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const UserInfoSettingsView(),
+                    ),
+                  ),
+                  child: const Text('プロフィールを設定する'),
+                ),
+              ],
+            )
+          : const CustomScrollView(
+              slivers: [
+                SliverHeader(title: 'ホスト'),
+                _HostShareGameListView(),
+                SliverHeader(title: 'ゲスト'),
+                _GuestShareGameListView(),
+                SliverHeader(title: '申請中'),
+                _GuestPendingShareGameListView(),
+              ],
+            ),
       floatingActionButton: const _AddShareGameButton(),
     );
   }

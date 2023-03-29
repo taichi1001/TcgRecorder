@@ -21,7 +21,7 @@ class UserInfoSettingsNotifier extends StateNotifier<UserInfoSettingsState> {
   Future _init() async {
     final userData = await ref.read(firestoreUserSettingsRepository).getAll(state.id);
     state = state.copyWith(
-      name: userData.name ?? '名前未設定',
+      name: userData.name,
       iconPath: userData.iconPath,
     );
   }

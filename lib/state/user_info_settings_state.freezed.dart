@@ -17,7 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$UserInfoSettingsState {
   String get id => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
+  String? get name => throw _privateConstructorUsedError;
   String? get iconPath => throw _privateConstructorUsedError;
   bool get isPhoneAuth => throw _privateConstructorUsedError;
   bool get isPremium => throw _privateConstructorUsedError;
@@ -35,7 +35,7 @@ abstract class $UserInfoSettingsStateCopyWith<$Res> {
   @useResult
   $Res call(
       {String id,
-      String name,
+      String? name,
       String? iconPath,
       bool isPhoneAuth,
       bool isPremium});
@@ -56,7 +56,7 @@ class _$UserInfoSettingsStateCopyWithImpl<$Res,
   @override
   $Res call({
     Object? id = null,
-    Object? name = null,
+    Object? name = freezed,
     Object? iconPath = freezed,
     Object? isPhoneAuth = null,
     Object? isPremium = null,
@@ -66,10 +66,10 @@ class _$UserInfoSettingsStateCopyWithImpl<$Res,
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      name: null == name
+      name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       iconPath: freezed == iconPath
           ? _value.iconPath
           : iconPath // ignore: cast_nullable_to_non_nullable
@@ -96,7 +96,7 @@ abstract class _$$_UserInfoSettingsStateCopyWith<$Res>
   @useResult
   $Res call(
       {String id,
-      String name,
+      String? name,
       String? iconPath,
       bool isPhoneAuth,
       bool isPremium});
@@ -114,7 +114,7 @@ class __$$_UserInfoSettingsStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? name = null,
+    Object? name = freezed,
     Object? iconPath = freezed,
     Object? isPhoneAuth = null,
     Object? isPremium = null,
@@ -124,10 +124,10 @@ class __$$_UserInfoSettingsStateCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      name: null == name
+      name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       iconPath: freezed == iconPath
           ? _value.iconPath
           : iconPath // ignore: cast_nullable_to_non_nullable
@@ -149,7 +149,7 @@ class __$$_UserInfoSettingsStateCopyWithImpl<$Res>
 class _$_UserInfoSettingsState implements _UserInfoSettingsState {
   _$_UserInfoSettingsState(
       {required this.id,
-      this.name = '名前未設定',
+      this.name,
       this.iconPath,
       this.isPhoneAuth = false,
       this.isPremium = false});
@@ -157,8 +157,7 @@ class _$_UserInfoSettingsState implements _UserInfoSettingsState {
   @override
   final String id;
   @override
-  @JsonKey()
-  final String name;
+  final String? name;
   @override
   final String? iconPath;
   @override
@@ -203,7 +202,7 @@ class _$_UserInfoSettingsState implements _UserInfoSettingsState {
 abstract class _UserInfoSettingsState implements UserInfoSettingsState {
   factory _UserInfoSettingsState(
       {required final String id,
-      final String name,
+      final String? name,
       final String? iconPath,
       final bool isPhoneAuth,
       final bool isPremium}) = _$_UserInfoSettingsState;
@@ -211,7 +210,7 @@ abstract class _UserInfoSettingsState implements UserInfoSettingsState {
   @override
   String get id;
   @override
-  String get name;
+  String? get name;
   @override
   String? get iconPath;
   @override
