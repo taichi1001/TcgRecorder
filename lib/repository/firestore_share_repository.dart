@@ -29,12 +29,7 @@ class FirestoreShareRepository {
   // 新規のゲームをシェアするための関数
   Future initGame(Game game, String user) async {
     final docName = '$user-${game.name}';
-    await _firestore.collection('counters').doc(docName).set({'deck_counter': 0, 'tag_counter': 0, 'record_counter': 0});
     final gameCounter = await getGameCounter(user);
-    await _firestore.collection('share_data').doc(docName).set(game.copyWith(id: gameCounter).toJson());
-    await _firestore.collection('share_data').doc(docName).collection('decks').doc('decks0').set({'decks': [], 'index': 0});
-    await _firestore.collection('share_data').doc(docName).collection('tags').doc('tags0').set({'tags': [], 'index': 0});
-    await _firestore.collection('share_data').doc(docName).collection('records').doc('records0').set({'records': [], 'index': 0});
     final myself = ShareUser(id: user, roll: AccessRoll.owner);
     final initShare = FirestoreShare(ownerName: user, game: game.copyWith(id: gameCounter), shareUserList: [myself], docName: docName);
     await _firestore.collection('share').doc(docName).set(initShare.toJson());

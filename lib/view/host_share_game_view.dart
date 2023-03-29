@@ -8,6 +8,7 @@ import 'package:tcg_manager/entity/firestore_share.dart';
 import 'package:tcg_manager/entity/share_user.dart';
 import 'package:tcg_manager/entity/user_data.dart';
 import 'package:tcg_manager/enum/access_roll.dart';
+import 'package:tcg_manager/provider/firestore_controller_provider.dart';
 import 'package:tcg_manager/repository/dynamic_links_repository.dart';
 import 'package:tcg_manager/repository/firestore_share_repository.dart';
 import 'package:tcg_manager/repository/firestore_user_settings_repositroy.dart';
@@ -49,17 +50,19 @@ class HostShareGameView extends HookConsumerWidget {
 final currentShareUserProvider = StateProvider<ShareUser?>((ref) => null);
 final currentSharedUser = Provider<SharedUser>((ref) => throw UnimplementedError);
 
-final _sharedUserListProvider = FutureProvider.autoDispose.family<SharedUser, String>((ref, String name) async {
+final _sharedUserListProvider = FutureProvider.autoDispose.family<SharedUser?, String>((ref, String name) async {
   final hostShareList = await ref.watch(hostShareProvider.future);
-  final share = hostShareList.firstWhere((element) => element.docName == name);
+  final share = hostShareList.firstWhereOrNull((element) => element.docName == name);
+  if (share == null) return null;
   final userIdList = share.shareUserList.map((e) => e.id).toList();
   final userDataList = await ref.watch(userDataListProvider(userIdList).future);
   return SharedUser(userDataList: userDataList, share: share);
 });
 
-final _pendingUserListProvider = FutureProvider.autoDispose.family<SharedUser, String>((ref, String name) async {
+final _pendingUserListProvider = FutureProvider.autoDispose.family<SharedUser?, String>((ref, String name) async {
   final hostShareList = await ref.watch(hostShareProvider.future);
-  final share = hostShareList.firstWhere((element) => element.docName == name);
+  final share = hostShareList.firstWhereOrNull((element) => element.docName == name);
+  if (share == null) return null;
   final userIdList = share.pendingUserList.map((e) => e.id).toList();
   final userDataList = await ref.watch(userDataListProvider(userIdList).future);
   return SharedUser(userDataList: userDataList, share: share);
@@ -86,6 +89,9 @@ class _SharedUserSliverList extends HookConsumerWidget {
     final userDataList = ref.watch(_sharedUserListProvider(currentShareDocName));
     return userDataList.maybeWhen(
       data: (data) {
+        if (data == null) {
+          return SliverToBoxAdapter(child: Container());
+        }
         return SliverListEx.separated(
           itemCount: data.userDataList.length,
           separatorBuilder: (context, index) => const Divider(indent: 16, thickness: 1, height: 0),
@@ -132,6 +138,9 @@ class _PendingUserSliverList extends HookConsumerWidget {
 
     return userDataList.maybeWhen(
       data: (data) {
+        if (data == null) {
+          return SliverToBoxAdapter(child: Container());
+        }
         return SliverListEx.separated(
           itemCount: data.userDataList.length,
           itemBuilder: (context, index) => ListTileOnTap(
@@ -222,7 +231,7 @@ class _DeleteShareGameButton extends HookConsumerWidget {
                   message: 'このゲームを共有している全員のデータが削除されます。データの復元はできなくなりますがよろしいですか？',
                 );
                 if (result == OkCancelResult.ok) {
-                  await ref.read(firestoreShareRepository).deleteShare(share.docName);
+                  await ref.read(firestoreControllerProvider).deleteShareGame(share.docName);
                   if (context.mounted) {
                     Navigator.of(context).pop();
                   }

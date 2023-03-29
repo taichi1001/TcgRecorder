@@ -51,11 +51,29 @@ class FirestoreShareDataRepository {
 
   Future initGame(Game game, String user) async {
     final docName = '$user-${game.name}';
+    final gameCounter = await getGameCounter(user);
     await _firestore.collection('counters').doc(docName).set({'deck_counter': 0, 'tag_counter': 0, 'record_counter': 0});
-    await _firestore.collection('share_data').doc(docName).set(game.toJson());
+    await _firestore.collection('share_data').doc(docName).set(game.copyWith(id: gameCounter).toJson());
     await _firestore.collection('share_data').doc(docName).collection('decks').doc('decks0').set({'decks': [], 'index': 0});
     await _firestore.collection('share_data').doc(docName).collection('tags').doc('tags0').set({'tags': [], 'index': 0});
     await _firestore.collection('share_data').doc(docName).collection('records').doc('records0').set({'records': [], 'index': 0});
+  }
+
+  Future<int> getGameCounter(String user) async {
+    final counterRef = FirebaseFirestore.instance.collection('counters').doc(user);
+
+    return await FirebaseFirestore.instance.runTransaction((transaction) async {
+      final docSnapshot = await transaction.get(counterRef);
+
+      if (docSnapshot.exists) {
+        int currentValue = docSnapshot.data()!['game_counter'] ?? 0;
+        transaction.update(counterRef, {'game_counter': currentValue + 1});
+        return currentValue + 1;
+      } else {
+        transaction.set(counterRef, {'game_counter': 1});
+        return 1;
+      }
+    });
   }
 
   Stream<Game> getShareGame(String docName) {
@@ -208,5 +226,20 @@ class FirestoreShareDataRepository {
 
   Stream<List<Record>> getShareRecord(String docName) {
     return getSharedItems<Record>(docName, 'records', (data) => Record.fromJson(data));
+  }
+
+  Future deleteShareData(String shareDocName) async {
+    await _deleteSubCollections(shareDocName, 'decks');
+    await _deleteSubCollections(shareDocName, 'tags');
+    await _deleteSubCollections(shareDocName, 'records');
+    await _firestore.collection('share_data').doc(shareDocName).delete();
+  }
+
+  Future _deleteSubCollections(String docName, String targetCollection) async {
+    await FirebaseFirestore.instance.collection('share_data/$docName/$targetCollection').get().then((querySnapshot) {
+      for (final doc in querySnapshot.docs) {
+        doc.reference.delete();
+      }
+    });
   }
 }

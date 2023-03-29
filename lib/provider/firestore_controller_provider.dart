@@ -1,4 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tcg_manager/entity/game.dart';
+import 'package:tcg_manager/repository/firestore_share_data_repository.dart';
+import 'package:tcg_manager/repository/firestore_share_repository.dart';
 
 final firestoreControllerProvider = Provider.autoDispose<FirestoreController>((ref) => FirestoreController(ref));
 
@@ -8,9 +11,17 @@ class FirestoreController {
 
   final Ref ref;
 
-  // TODO 共有データ初期化用関数作成
+  Future initShareGame(Game game, String user) async {
+    final shareRepository = ref.read(firestoreShareRepository);
+    final shareDataRepository = ref.read(firestoreShareDataRepository);
+    await shareRepository.initGame(game, user);
+    await shareDataRepository.initGame(game, user);
+  }
 
-  // TODO 共有データ全削除用関数作成
-
-  // TODO counter操作用関数委譲してくる
+  Future deleteShareGame(String shareDocName) async {
+    final shareRepository = ref.read(firestoreShareRepository);
+    final shareDataRepository = ref.read(firestoreShareDataRepository);
+    await shareRepository.deleteShare(shareDocName);
+    await shareDataRepository.deleteShareData(shareDocName);
+  }
 }

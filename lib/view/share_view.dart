@@ -7,6 +7,7 @@ import 'package:tcg_manager/entity/firestore_share.dart';
 import 'package:tcg_manager/entity/game.dart';
 import 'package:tcg_manager/enum/access_roll.dart';
 import 'package:tcg_manager/provider/firebase_auth_provider.dart';
+import 'package:tcg_manager/provider/firestore_controller_provider.dart';
 import 'package:tcg_manager/provider/user_info_settings_provider.dart';
 import 'package:tcg_manager/repository/dynamic_links_repository.dart';
 import 'package:tcg_manager/repository/firestore_share_repository.dart';
@@ -72,7 +73,7 @@ class _AddShareGameButton extends HookConsumerWidget {
         if (inputText != null && inputText.first != '') {
           final uid = ref.read(firebaseAuthNotifierProvider).user?.uid;
           if (uid != null) {
-            ref.read(firestoreShareRepository).initGame(Game(name: inputText.first, isShare: true), uid);
+            ref.read(firestoreControllerProvider).initShareGame(Game(name: inputText.first, isShare: true), uid);
             final link = await ref.read(dynamicLinksRepository).createInviteDynamicLink(uid, inputText.first, AccessRoll.writer);
             await Share.share(link.toString(), subject: '「${inputText.first}」共有用のリンク');
           }
