@@ -14,7 +14,7 @@ import 'package:tcg_manager/helper/edit_record_helper.dart';
 import 'package:tcg_manager/main.dart';
 import 'package:tcg_manager/provider/backup_provider.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
-import 'package:tcg_manager/provider/firestore_controller.dart';
+import 'package:tcg_manager/provider/firestore_backup_controller_provider.dart';
 import 'package:tcg_manager/repository/firestore_share_data_repository.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
 import 'package:tcg_manager/repository/tag_repository.dart';
@@ -200,7 +200,7 @@ class RecordEditViewNotifier extends StateNotifier<RecordEditViewState> {
       await ref.read(dbHelper).fetchAll();
     }
     if (ref.read(backupNotifierProvider)) {
-      await ref.read(firestoreController).editRecord(state);
+      await ref.read(firestoreBackupControllerProvider).editRecord(state);
     }
   }
 

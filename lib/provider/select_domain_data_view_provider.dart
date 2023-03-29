@@ -13,7 +13,7 @@ import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
-import 'package:tcg_manager/provider/firestore_controller.dart';
+import 'package:tcg_manager/provider/firestore_backup_controller_provider.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
 import 'package:tcg_manager/repository/firestore_share_data_repository.dart';
 import 'package:tcg_manager/repository/game_repository.dart';
@@ -72,7 +72,7 @@ class SelectDomainDataViewNotifier extends StateNotifier<SelectDomainDataViewSta
         ref.refresh(allTagListProvider);
       }
     }
-    if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).addAll();
+    if (ref.read(backupNotifierProvider)) await ref.read(firestoreBackupControllerProvider).addAll();
   }
 
   Future toggleIsVisibleToPicker(DomainData data) async {

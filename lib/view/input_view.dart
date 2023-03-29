@@ -30,7 +30,7 @@ import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/revenue_cat_provider.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
-import 'package:tcg_manager/provider/firestore_controller.dart';
+import 'package:tcg_manager/provider/firestore_backup_controller_provider.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
 import 'package:tcg_manager/view/component/custom_scaffold.dart';
 import 'package:tcg_manager/view/component/custom_textfield.dart';
@@ -676,7 +676,9 @@ class InputView extends HookConsumerWidget {
                                         //   }
                                         // }
                                         if (ref.read(backupNotifierProvider)) {
-                                          ref.read(firestoreController).addRecord(ref.read(inputViewNotifierProvider).record!);
+                                          ref
+                                              .read(firestoreBackupControllerProvider)
+                                              .addRecord(ref.read(inputViewNotifierProvider).record!);
                                         }
                                         inputViewNotifier.resetView();
                                         SmartDialog.dismiss();

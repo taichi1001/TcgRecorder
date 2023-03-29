@@ -18,12 +18,12 @@ import 'package:tcg_manager/repository/record_repository.dart';
 import 'package:tcg_manager/repository/tag_repository.dart';
 import 'package:tcg_manager/state/record_detail_state.dart';
 
-final firestoreController = Provider.autoDispose<FirestoreController>((ref) => FirestoreController(ref));
+final firestoreBackupControllerProvider = Provider.autoDispose<FirestoreBackupController>((ref) => FirestoreBackupController(ref));
 
-final lastBackup = StateProvider.autoDispose<DateTime?>(((ref) => ref.read(firestoreController).loadLastBackupDate()));
+final lastBackup = StateProvider.autoDispose<DateTime?>(((ref) => ref.read(firestoreBackupControllerProvider).loadLastBackupDate()));
 
-class FirestoreController {
-  FirestoreController(this.ref);
+class FirestoreBackupController {
+  FirestoreBackupController(this.ref);
 
   final Ref ref;
 

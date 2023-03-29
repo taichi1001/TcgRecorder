@@ -10,7 +10,7 @@ import 'package:tcg_manager/provider/execution_limit_cound_provider.dart';
 import 'package:tcg_manager/provider/input_view_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/revenue_cat_provider.dart';
-import 'package:tcg_manager/provider/firestore_controller.dart';
+import 'package:tcg_manager/provider/firestore_backup_controller_provider.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 
@@ -61,7 +61,7 @@ class BackupSettingsView extends HookConsumerWidget {
                     onPressed: (context) async {
                       if (ref.read(canExecuteProvider)) {
                         isLoading.value = true;
-                        await ref.read(firestoreController).addAll();
+                        await ref.read(firestoreBackupControllerProvider).addAll();
                         isLoading.value = false;
                         if (context.mounted) {
                           await showOkAlertDialog(
@@ -89,7 +89,7 @@ class BackupSettingsView extends HookConsumerWidget {
                     leading: const Icon(Icons.restore),
                     onPressed: (context) async {
                       isLoading.value = true;
-                      await ref.read(firestoreController).restoreAll();
+                      await ref.read(firestoreBackupControllerProvider).restoreAll();
                       final recordList = await ref.read(allRecordListProvider.future);
                       if (recordList.isNotEmpty) {
                         await ref.read(selectGameNotifierProvider.notifier).changeGameForId(recordList.last.gameId!);

@@ -20,7 +20,7 @@ import 'package:tcg_manager/main.dart';
 import 'package:tcg_manager/provider/backup_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/record_list_view_provider.dart';
-import 'package:tcg_manager/provider/firestore_controller.dart';
+import 'package:tcg_manager/provider/firestore_backup_controller_provider.dart';
 import 'package:tcg_manager/repository/firestore_share_data_repository.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
 import 'package:tcg_manager/selector/game_record_list_selector.dart';
@@ -268,7 +268,7 @@ class _BrandListTile extends HookConsumerWidget {
           ref.read(dbHelper).removeRecordImage(targetRecord!);
           await ref.read(recordRepository).deleteById(record.recordId);
           ref.invalidate(allRecordListProvider);
-          if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).deleteRecord(targetRecord);
+          if (ref.read(backupNotifierProvider)) await ref.read(firestoreBackupControllerProvider).deleteRecord(targetRecord);
         }
       },
       editFunc: () async {
@@ -649,7 +649,7 @@ class _EditDeleteButtonRow extends HookConsumerWidget {
                   ref.read(dbHelper).removeRecordImage(targetRecord!);
                   await ref.read(recordRepository).deleteById(record.recordId);
                   ref.invalidate(allRecordListProvider);
-                  if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).deleteRecord(targetRecord);
+                  if (ref.read(backupNotifierProvider)) await ref.read(firestoreBackupControllerProvider).deleteRecord(targetRecord);
                 }
               },
               child: const Text('削除'),

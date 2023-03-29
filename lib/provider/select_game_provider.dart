@@ -6,7 +6,7 @@ import 'package:tcg_manager/provider/backup_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/repository/game_repository.dart';
-import 'package:tcg_manager/provider/firestore_controller.dart';
+import 'package:tcg_manager/provider/firestore_backup_controller_provider.dart';
 import 'package:tcg_manager/state/select_game_state.dart';
 
 class SelectGameNotifier extends StateNotifier<SelectGameState> {
@@ -54,7 +54,7 @@ class SelectGameNotifier extends StateNotifier<SelectGameState> {
     if (await _checkIfSelectedGamekNew(name)) {
       await ref.read(gameRepository).insert(newGame);
       ref.refresh(allGameListProvider);
-      if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).addAll();
+      if (ref.read(backupNotifierProvider)) await ref.read(firestoreBackupControllerProvider).addAll();
       final allGameList = await ref.read(allGameListProvider.future);
       final game = allGameList.last;
       state = state.copyWith(selectGame: game);
