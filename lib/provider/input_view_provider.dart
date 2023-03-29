@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tcg_manager/entity/deck.dart';
@@ -150,12 +153,24 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
   }
 
   Future _saveImage() async {
-    final savePath = ref.read(imagePathProvider);
-    for (final image in state.images) {
-      await image.saveTo('$savePath/${image.name}');
+    if (ref.read(isShareGame)) {
+      final share = await ref.read(gameFirestoreShareStreamProvider.future);
+      List<String> imagePathList = [];
+      for (final image in state.images) {
+        final strageRef = FirebaseStorage.instance.ref().child('share_data/${share!.docName}/${image.name}');
+        await strageRef.putFile(File(image.path));
+        final url = await strageRef.getDownloadURL();
+        imagePathList.add(url);
+      }
+      state = state.copyWith(record: state.record!.copyWith(imagePath: imagePathList));
+    } else {
+      final savePath = ref.read(imagePathProvider);
+      for (final image in state.images) {
+        await image.saveTo('$savePath/${image.name}');
+      }
+      final imagePaths = state.images.map((image) => image.name).toList();
+      state = state.copyWith(record: state.record!.copyWith(imagePath: imagePaths));
     }
-    final imagePaths = state.images.map((image) => image.name).toList();
-    state = state.copyWith(record: state.record!.copyWith(imagePath: imagePaths));
   }
 
   Future init() async {

@@ -859,7 +859,7 @@ class _AddPhotoWidget extends HookConsumerWidget {
         child: file == null
             ? GestureDetector(
                 onTap: () async {
-                  if (isPremium) {
+                  if (!isPremium) {
                     selectImageFunc();
                   } else {
                     await premiumPlanDialog(context);

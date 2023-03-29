@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -170,6 +171,7 @@ class _BrandListTile extends HookConsumerWidget {
     final imagePath = ref.watch(imagePathProvider);
     final isMemo = record.memo != null && record.memo != '';
     final isImage = record.imagePaths != null && record.imagePaths != [];
+    final isShare = ref.watch(isShareGame);
 
     return SlidableExpansionTileCard(
       key: UniqueKey(),
@@ -360,9 +362,12 @@ class _BrandListTile extends HookConsumerWidget {
                               (image) => GestureDetector(
                                 onTap: () {
                                   final customImageProvider = CustomImageProvider(
-                                    imageUrls: [
-                                      ...record.imagePaths!.map((image) => '$imagePath/$image'),
-                                    ].toList(),
+                                    imageUrls: isShare
+                                        ? [...record.imagePaths!].toList()
+                                        : [
+                                            ...record.imagePaths!.map((image) => '$imagePath/$image'),
+                                          ].toList(),
+                                    ref: ref,
                                     initialIndex: image.key,
                                   );
                                   showImageViewerPager(
@@ -377,10 +382,12 @@ class _BrandListTile extends HookConsumerWidget {
                                   child: SizedBox(
                                     width: 80,
                                     height: 80,
-                                    child: Image.file(
-                                      File('$imagePath/${image.value}'),
-                                      fit: BoxFit.contain,
-                                    ),
+                                    child: isShare
+                                        ? CachedNetworkImage(imageUrl: image.value)
+                                        : Image.file(
+                                            File('$imagePath/${image.value}'),
+                                            fit: BoxFit.contain,
+                                          ),
                                   ),
                                 ),
                               ),
@@ -585,12 +592,17 @@ class CustomImageProvider extends EasyImageProvider {
   @override
   final int initialIndex;
   final List<String> imageUrls;
+  final WidgetRef ref;
 
-  CustomImageProvider({required this.imageUrls, this.initialIndex = 0}) : super();
+  CustomImageProvider({required this.imageUrls, required this.ref, this.initialIndex = 0}) : super();
 
   @override
   ImageProvider<Object> imageBuilder(BuildContext context, int index) {
-    return Image.file(File(imageUrls[index])).image;
+    if (ref.read(isShareGame)) {
+      return CachedNetworkImageProvider(imageUrls[index]);
+    } else {
+      return Image.file(File(imageUrls[index])).image;
+    }
   }
 
   @override
