@@ -67,7 +67,7 @@ class FirestoreBackupController {
       await _saveImage(imagePath.name);
     }
     for (final imagePath in recordDetailState.removeImages) {
-      await _deleteImage(imagePath.name);
+      await _deleteImage(imagePath);
     }
     await saveLastBackup();
   }

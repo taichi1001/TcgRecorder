@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tcg_manager/entity/deck.dart';
@@ -28,13 +29,20 @@ class RecordEditViewNotifier extends StateNotifier<RecordEditViewState> {
     required this.record,
     required this.margedRecord,
     required this.imagePath,
-  }) : super(
-          RecordEditViewState(
-              record: record,
-              margedRecord: margedRecord,
-              editMargedRecord: margedRecord,
-              images: margedRecord.imagePaths == null ? [] : margedRecord.imagePaths!.map((e) => XFile('$imagePath/$e')).toList()),
-        );
+  }) : super(RecordEditViewState(
+          record: record,
+          margedRecord: margedRecord,
+          editMargedRecord: margedRecord,
+          images: margedRecord.imagePaths == null
+              ? []
+              : margedRecord.imagePaths!.map((e) {
+                  if (e.startsWith('http')) {
+                    return e;
+                  } else {
+                    return '$imagePath/$e';
+                  }
+                }).toList(),
+        ));
 
   final Ref ref;
   final Record record;
@@ -141,9 +149,9 @@ class RecordEditViewNotifier extends StateNotifier<RecordEditViewState> {
     state = state.copyWith(editMargedRecord: state.editMargedRecord.copyWith(memo: memo));
   }
 
-  void inputImage(XFile image) {
-    final newImages = [...state.images, image];
-    final newAddImages = [...state.addImages, image];
+  void inputImage(XFile newImage) {
+    final newImages = [...state.images, newImage.path];
+    final newAddImages = [...state.addImages, newImage];
     state = state.copyWith(
       images: newImages,
       addImages: newAddImages,
@@ -154,9 +162,12 @@ class RecordEditViewNotifier extends StateNotifier<RecordEditViewState> {
     final newImages = [...state.images];
     final removeImage = newImages.removeAt(index);
     final newRemoveImages = [...state.removeImages, removeImage];
+    final newAddImage = [...state.addImages];
+    newAddImage.removeWhere((element) => element.path == removeImage);
     state = state.copyWith(
       images: newImages,
       removeImages: newRemoveImages,
+      addImages: newAddImage,
     );
   }
 
@@ -354,19 +365,43 @@ class RecordEditViewNotifier extends StateNotifier<RecordEditViewState> {
   }
 
   Future _saveImage() async {
-    final savePath = ref.read(imagePathProvider);
-
-    //　アプリ内で削除した画像を実際に削除する場所
-    final removeImagePaths = state.removeImages.map((image) => '$savePath/${image.name}').toList();
-    for (final path in removeImagePaths) {
-      final dir = Directory(path);
-      dir.deleteSync(recursive: true);
+    final isShare = ref.read(isShareGame);
+    if (isShare) {
+      final share = await ref.read(gameFirestoreShareStreamProvider.future);
+      for (final path in state.removeImages) {
+        if (path.startsWith('http')) {
+          final strageRef = FirebaseStorage.instance.refFromURL(path);
+          await strageRef.delete();
+        } else {
+          final dir = Directory(path);
+          dir.deleteSync(recursive: true);
+        }
+      }
+      final imagePathList = [...state.images];
+      for (final image in state.addImages) {
+        final strageRef = FirebaseStorage.instance.ref().child('share_data/${share!.docName}/${image.name}');
+        await strageRef.putFile(File(image.path));
+        final url = await strageRef.getDownloadURL();
+        imagePathList.remove(image.path);
+        imagePathList.add(url);
+      }
+      state = state.copyWith(record: state.record.copyWith(imagePath: imagePathList));
+    } else {
+      final savePath = ref.read(imagePathProvider);
+      //　アプリ内で削除した画像を実際に削除する場所
+      final removeImagePaths = state.removeImages.map((image) => '$savePath/$image').toList();
+      for (final path in removeImagePaths) {
+        final dir = Directory(path);
+        dir.deleteSync(recursive: true);
+      }
+      // 追加した画像を実際に追加する場所
+      for (final image in state.addImages) {
+        await image.saveTo('$savePath/${image.name}');
+        final newImages = state.images.map((e) => e == image.path ? image.name : e).toList();
+        state = state.copyWith(images: newImages);
+      }
+      state = state.copyWith(record: state.record.copyWith(imagePath: state.images));
     }
-    for (final image in state.images) {
-      await image.saveTo('$savePath/${image.name}');
-    }
-    final imagePaths = state.images.map((image) => image.name).toList();
-    state = state.copyWith(record: state.record.copyWith(imagePath: imagePaths));
   }
 }
 

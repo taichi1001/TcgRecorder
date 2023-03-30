@@ -10,6 +10,7 @@ import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/selector/filter_record_list_selector.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
+import 'package:tcg_manager/selector/game_share_data_selector.dart';
 import 'package:tcg_manager/selector/game_tag_list_selector.dart';
 
 final margedRecordListProvider = FutureProvider.autoDispose<List<MargedRecord>>((ref) async {
@@ -18,19 +19,26 @@ final margedRecordListProvider = FutureProvider.autoDispose<List<MargedRecord>>(
   final allDeckList = await ref.watch(gameDeckListProvider.future);
   final allTagList = await ref.watch(gameTagListProvider.future);
   final filterRecordListCopy = [...filterRecordList];
-
-  // DB操作のバグによってレコードと何かしらのデータの間に整合性が取れなくなっている場合に
-  // removeWhere内でそのレコードを取り除く
-  filterRecordListCopy.removeWhere((record) {
-    final game = allGameList.singleWhere((value) => value.id == record.gameId, orElse: () => Game(name: ''));
-    final useDeck = allDeckList.singleWhere((value) => value.id == record.useDeckId, orElse: () => Deck(name: ''));
-    final opponentDeck = allDeckList.singleWhere((value) => value.id == record.opponentDeckId, orElse: () => Deck(name: ''));
-    if (game.id == null || useDeck.id == null || opponentDeck.id == null) return true;
-    return false;
-  });
-
+  final isShare = ref.read(isShareGame);
+  final share = await ref.watch(gameFirestoreShareStreamProvider.future);
+  if (!isShare) {
+    // DB操作のバグによってレコードと何かしらのデータの間に整合性が取れなくなっている場合に
+    // removeWhere内でそのレコードを取り除く
+    filterRecordListCopy.removeWhere((record) {
+      final game = allGameList.singleWhere((value) => value.id == record.gameId, orElse: () => Game(name: ''));
+      final useDeck = allDeckList.singleWhere((value) => value.id == record.useDeckId, orElse: () => Deck(name: ''));
+      final opponentDeck = allDeckList.singleWhere((value) => value.id == record.opponentDeckId, orElse: () => Deck(name: ''));
+      if (game.id == null || useDeck.id == null || opponentDeck.id == null) return true;
+      return false;
+    });
+  }
   final list = filterRecordListCopy.map((Record record) {
-    final game = allGameList.singleWhere((value) => value.id == record.gameId);
+    Game game;
+    if (isShare) {
+      game = share!.game;
+    } else {
+      game = allGameList.singleWhere((value) => value.id == record.gameId);
+    }
     final useDeck = allDeckList.singleWhere((value) => value.id == record.useDeckId);
     final opponentDeck = allDeckList.singleWhere((value) => value.id == record.opponentDeckId);
     List<Tag> tagList = [];
@@ -58,7 +66,6 @@ final margedRecordListProvider = FutureProvider.autoDispose<List<MargedRecord>>(
       imagePaths: record.imagePath,
     );
   }).toList();
-  ref.keepAlive();
   return list;
 });
 

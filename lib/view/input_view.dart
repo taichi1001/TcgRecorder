@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:collection/collection.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
@@ -618,7 +619,7 @@ class InputView extends HookConsumerWidget {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: addPhotoWidgets(
-                                  images: images,
+                                  images: images.map((e) => e.path).toList(),
                                   selectImageFunc: () async {
                                     final picker = ImagePicker();
                                     final image = await picker.pickImage(source: ImageSource.gallery);
@@ -712,7 +713,7 @@ class InputView extends HookConsumerWidget {
 }
 
 List<Widget> addPhotoWidgets({
-  required List<XFile> images,
+  required List<String> images,
   required Function() selectImageFunc,
   required Function(int) deleteImageFunc,
 }) {
@@ -720,7 +721,7 @@ List<Widget> addPhotoWidgets({
   final List<Widget> result = images
       .mapIndexed(
         (index, image) => _AddPhotoWidget(
-          file: image,
+          filePath: image,
           index: index,
           selectImageFunc: selectImageFunc,
           deleteImageFunc: deleteImageFunc,
@@ -838,14 +839,14 @@ class _AddPhotoWidget extends HookConsumerWidget {
   const _AddPhotoWidget({
     required this.selectImageFunc,
     required this.deleteImageFunc,
-    this.file,
+    this.filePath,
     this.index,
     key,
   }) : super(key: key);
 
   final Function() selectImageFunc;
   final Function(int) deleteImageFunc;
-  final XFile? file;
+  final String? filePath;
   final int? index;
 
   @override
@@ -856,7 +857,7 @@ class _AddPhotoWidget extends HookConsumerWidget {
       padding: const EdgeInsets.only(right: 8),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(15),
-        child: file == null
+        child: filePath == null
             ? GestureDetector(
                 onTap: () async {
                   if (!isPremium) {
@@ -893,10 +894,15 @@ class _AddPhotoWidget extends HookConsumerWidget {
                     SizedBox(
                       width: 80,
                       height: 80,
-                      child: Image.file(
-                        File(file!.path),
-                        fit: BoxFit.contain,
-                      ),
+                      child: filePath!.startsWith('https')
+                          ? CachedNetworkImage(
+                              imageUrl: filePath!,
+                              fit: BoxFit.contain,
+                            )
+                          : Image.file(
+                              File(filePath!),
+                              fit: BoxFit.contain,
+                            ),
                     ),
                     const Padding(
                       padding: EdgeInsets.all(4),
