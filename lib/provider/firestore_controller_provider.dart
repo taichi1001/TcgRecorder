@@ -1,3 +1,4 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/game.dart';
 import 'package:tcg_manager/repository/firestore_share_data_repository.dart';
@@ -23,5 +24,14 @@ class FirestoreController {
     final shareDataRepository = ref.read(firestoreShareDataRepository);
     await shareRepository.deleteShare(shareDocName);
     await shareDataRepository.deleteShareData(shareDocName);
+    await _deleteAllImage(shareDocName);
+  }
+
+  Future _deleteAllImage(String docName) async {
+    final firebaseRef = FirebaseStorage.instance.ref().child('share_data/$docName');
+    final list = await firebaseRef.listAll();
+    for (final item in list.items) {
+      await item.delete();
+    }
   }
 }

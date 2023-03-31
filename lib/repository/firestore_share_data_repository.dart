@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:tcg_manager/entity/deck.dart';
@@ -163,6 +164,12 @@ class FirestoreShareDataRepository {
         }
       }
     });
+    if (removeRecord.imagePath != null) {
+      for (final imagePath in removeRecord.imagePath!) {
+        final strageRef = FirebaseStorage.instance.refFromURL(imagePath);
+        await strageRef.delete();
+      }
+    }
   }
 
   Future _addItem(String itemName, Map<String, dynamic> itemData, String docName) async {
