@@ -33,7 +33,7 @@ class RevenueCatNotifier extends StateNotifier<RevenueCatState> {
       await Purchases.purchasePackage(package);
       final purchaseseInfo = await Purchases.getCustomerInfo();
       final isPremium = purchaseseInfo.entitlements.all['premium']?.isActive;
-      state = state.copyWith(isPremium: isPremium ?? false, isLoading: false);
+      state = state.copyWith(isPremium: isPremium ?? false, isLoading: false, customerInfo: purchaseseInfo);
     } catch (e) {
       state = state.copyWith(isLoading: false);
       rethrow;

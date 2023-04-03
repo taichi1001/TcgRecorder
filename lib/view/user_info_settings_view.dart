@@ -7,6 +7,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:tcg_manager/generated/l10n.dart';
+import 'package:tcg_manager/provider/revenue_cat_provider.dart';
 import 'package:tcg_manager/provider/user_info_settings_provider.dart';
 import 'package:tcg_manager/view/phone_number_auth_view.dart';
 import 'package:tcg_manager/view/phone_number_deactivation_view.dart';
@@ -17,6 +18,7 @@ class UserInfoSettingsView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userInfoSettings = ref.watch(userInfoSettingsProvider);
+    final revenuecatInfo = ref.watch(revenueCatNotifierProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('ユーザー情報設定'),
@@ -128,6 +130,9 @@ class UserInfoSettingsView extends HookConsumerWidget {
                   userInfoSettings.isPremium ? '登録済み' : '未登録',
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
+                description: Text(revenuecatInfo.customerInfo?.latestExpirationDate == null
+                    ? ''
+                    : 'サブスク有効期限：${revenuecatInfo.customerInfo?.latestExpirationDate}'),
                 onPressed: (context) {
                   Navigator.push(
                     context,
