@@ -26,6 +26,7 @@ Map<String, dynamic> _$$_ShareUserToJson(_$_ShareUser instance) =>
     };
 
 const _$AccessRollEnumMap = {
+  AccessRoll.author: 'author',
   AccessRoll.owner: 'owner',
   AccessRoll.writer: 'writer',
   AccessRoll.reader: 'reader',

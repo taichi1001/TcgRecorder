@@ -30,8 +30,8 @@ class FirestoreShareRepository {
   Future initGame(Game game, String user) async {
     final docName = '$user-${game.name}';
     final gameCounter = await getGameCounter(user);
-    final myself = ShareUser(id: user, roll: AccessRoll.owner);
-    final initShare = FirestoreShare(ownerName: user, game: game.copyWith(id: gameCounter), shareUserList: [myself], docName: docName);
+    final myself = ShareUser(id: user, roll: AccessRoll.author);
+    final initShare = FirestoreShare(authorName: user, game: game.copyWith(id: gameCounter), shareUserList: [myself], docName: docName);
     await _firestore.collection('share').doc(docName).set(initShare.toJson());
   }
 
@@ -133,8 +133,10 @@ class FirestoreShareRepository {
 
   // シェアフォルダ内の自分がホストになっているゲームの情報を取得する
   Stream<List<FirestoreShare>> getHostShareData(String uid) {
-    final userShareCollection =
-        _firestore.collection('share').where('share_user_list', arrayContains: {'id': uid, 'roll': 'owner'}).snapshots();
+    final userShareCollection = _firestore.collection('share').where('share_user_list', arrayContainsAny: [
+      {'id': uid, 'roll': 'author'},
+      {'id': uid, 'roll': 'owner'}
+    ]).snapshots();
     return userShareCollection.map(
       (snapshot) => snapshot.docs
           .map(

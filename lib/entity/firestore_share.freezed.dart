@@ -21,7 +21,7 @@ FirestoreShare _$FirestoreShareFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$FirestoreShare {
   Game get game => throw _privateConstructorUsedError;
-  String get ownerName => throw _privateConstructorUsedError;
+  String get authorName => throw _privateConstructorUsedError;
   String get docName => throw _privateConstructorUsedError;
   List<ShareUser> get pendingUserList => throw _privateConstructorUsedError;
   List<ShareUser> get shareUserList => throw _privateConstructorUsedError;
@@ -40,7 +40,7 @@ abstract class $FirestoreShareCopyWith<$Res> {
   @useResult
   $Res call(
       {Game game,
-      String ownerName,
+      String authorName,
       String docName,
       List<ShareUser> pendingUserList,
       List<ShareUser> shareUserList});
@@ -62,7 +62,7 @@ class _$FirestoreShareCopyWithImpl<$Res, $Val extends FirestoreShare>
   @override
   $Res call({
     Object? game = null,
-    Object? ownerName = null,
+    Object? authorName = null,
     Object? docName = null,
     Object? pendingUserList = null,
     Object? shareUserList = null,
@@ -72,9 +72,9 @@ class _$FirestoreShareCopyWithImpl<$Res, $Val extends FirestoreShare>
           ? _value.game
           : game // ignore: cast_nullable_to_non_nullable
               as Game,
-      ownerName: null == ownerName
-          ? _value.ownerName
-          : ownerName // ignore: cast_nullable_to_non_nullable
+      authorName: null == authorName
+          ? _value.authorName
+          : authorName // ignore: cast_nullable_to_non_nullable
               as String,
       docName: null == docName
           ? _value.docName
@@ -110,7 +110,7 @@ abstract class _$$_FirestoreShareCopyWith<$Res>
   @useResult
   $Res call(
       {Game game,
-      String ownerName,
+      String authorName,
       String docName,
       List<ShareUser> pendingUserList,
       List<ShareUser> shareUserList});
@@ -131,7 +131,7 @@ class __$$_FirestoreShareCopyWithImpl<$Res>
   @override
   $Res call({
     Object? game = null,
-    Object? ownerName = null,
+    Object? authorName = null,
     Object? docName = null,
     Object? pendingUserList = null,
     Object? shareUserList = null,
@@ -141,9 +141,9 @@ class __$$_FirestoreShareCopyWithImpl<$Res>
           ? _value.game
           : game // ignore: cast_nullable_to_non_nullable
               as Game,
-      ownerName: null == ownerName
-          ? _value.ownerName
-          : ownerName // ignore: cast_nullable_to_non_nullable
+      authorName: null == authorName
+          ? _value.authorName
+          : authorName // ignore: cast_nullable_to_non_nullable
               as String,
       docName: null == docName
           ? _value.docName
@@ -167,7 +167,7 @@ class __$$_FirestoreShareCopyWithImpl<$Res>
 class _$_FirestoreShare implements _FirestoreShare {
   _$_FirestoreShare(
       {required this.game,
-      required this.ownerName,
+      required this.authorName,
       required this.docName,
       final List<ShareUser> pendingUserList = const [],
       final List<ShareUser> shareUserList = const []})
@@ -180,7 +180,7 @@ class _$_FirestoreShare implements _FirestoreShare {
   @override
   final Game game;
   @override
-  final String ownerName;
+  final String authorName;
   @override
   final String docName;
   final List<ShareUser> _pendingUserList;
@@ -203,7 +203,7 @@ class _$_FirestoreShare implements _FirestoreShare {
 
   @override
   String toString() {
-    return 'FirestoreShare(game: $game, ownerName: $ownerName, docName: $docName, pendingUserList: $pendingUserList, shareUserList: $shareUserList)';
+    return 'FirestoreShare(game: $game, authorName: $authorName, docName: $docName, pendingUserList: $pendingUserList, shareUserList: $shareUserList)';
   }
 
   @override
@@ -212,8 +212,8 @@ class _$_FirestoreShare implements _FirestoreShare {
         (other.runtimeType == runtimeType &&
             other is _$_FirestoreShare &&
             (identical(other.game, game) || other.game == game) &&
-            (identical(other.ownerName, ownerName) ||
-                other.ownerName == ownerName) &&
+            (identical(other.authorName, authorName) ||
+                other.authorName == authorName) &&
             (identical(other.docName, docName) || other.docName == docName) &&
             const DeepCollectionEquality()
                 .equals(other._pendingUserList, _pendingUserList) &&
@@ -226,7 +226,7 @@ class _$_FirestoreShare implements _FirestoreShare {
   int get hashCode => Object.hash(
       runtimeType,
       game,
-      ownerName,
+      authorName,
       docName,
       const DeepCollectionEquality().hash(_pendingUserList),
       const DeepCollectionEquality().hash(_shareUserList));
@@ -248,7 +248,7 @@ class _$_FirestoreShare implements _FirestoreShare {
 abstract class _FirestoreShare implements FirestoreShare {
   factory _FirestoreShare(
       {required final Game game,
-      required final String ownerName,
+      required final String authorName,
       required final String docName,
       final List<ShareUser> pendingUserList,
       final List<ShareUser> shareUserList}) = _$_FirestoreShare;
@@ -259,7 +259,7 @@ abstract class _FirestoreShare implements FirestoreShare {
   @override
   Game get game;
   @override
-  String get ownerName;
+  String get authorName;
   @override
   String get docName;
   @override

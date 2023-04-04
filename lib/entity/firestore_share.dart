@@ -10,7 +10,7 @@ class FirestoreShare with _$FirestoreShare {
   @JsonSerializable(explicitToJson: true)
   factory FirestoreShare({
     required Game game,
-    required String ownerName,
+    required String authorName,
     required String docName,
     @Default([]) List<ShareUser> pendingUserList,
     @Default([]) List<ShareUser> shareUserList,

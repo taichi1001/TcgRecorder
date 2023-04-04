@@ -193,9 +193,9 @@ class _CreateShareLinkButton extends HookConsumerWidget {
             title: '共有用リンクを作成',
             onTap: () async {
               final link = await ref.read(dynamicLinksRepository).createInviteDynamicLink(
-                    share.ownerName,
+                    share.authorName,
                     share.game.name,
-                    AccessRoll.writer,
+                    AccessRoll.reader,
                   );
               await Share.share(link.toString());
             },
