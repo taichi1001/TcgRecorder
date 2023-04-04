@@ -168,7 +168,7 @@ class OtherView extends HookConsumerWidget {
                   if (okCancelResult == OkCancelResult.ok) {
                     ref.read(selectIndexProvider.notifier).state = 0;
                     await ref.read(dbHelper).deleteAll();
-                    await ref.read(inputViewNotifierProvider.notifier).init();
+                    ref.read(inputViewNotifierProvider.notifier).init();
                   }
                 },
               ),

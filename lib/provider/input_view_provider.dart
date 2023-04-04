@@ -11,12 +11,10 @@ import 'package:tcg_manager/enum/bo.dart';
 import 'package:tcg_manager/enum/first_second.dart';
 import 'package:tcg_manager/enum/win_loss.dart';
 import 'package:tcg_manager/helper/edit_record_helper.dart';
+import 'package:tcg_manager/helper/initial_data_controller.dart';
 import 'package:tcg_manager/main.dart';
-import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/input_view_settings_provider.dart';
-import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
-import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
 import 'package:tcg_manager/repository/firestore_share_data_repository.dart';
@@ -173,22 +171,14 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     }
   }
 
-  Future init() async {
-    final recordList = await ref.read(allRecordListProvider.future);
-    final deckList = await ref.read(allDeckListProvider.future);
-    final tagList = await ref.read(allTagListProvider.future);
+  void init() {
     final inputViewSettings = ref.read(inputViewSettingsNotifierProvider);
+    final useDeck = ref.read(initialDataControllerProvider).loadUseDeck();
+    final opponentDeck = ref.read(initialDataControllerProvider).loadOpponentDeck();
+    final tags = ref.read(initialDataControllerProvider).loadTags();
 
-    if (recordList.isNotEmpty) {
-      final previousRecord = recordList.last;
-      final previousUseDeck = deckList.firstWhere((deck) => deck.id == previousRecord.useDeckId);
-      final previousOpponentDeck = deckList.firstWhere((deck) => deck.id == previousRecord.opponentDeckId);
-      final previousTagList = tagList.where((tag) => previousRecord.tagId.contains(tag.id)).toList();
-
-      setUpInitialState(inputViewSettings, previousUseDeck, previousOpponentDeck, previousTagList);
-    } else {
-      ref.read(textEditingControllerNotifierProvider.notifier).resetInputViewController();
-      state = InputViewState(date: DateTime.now());
+    if (useDeck != null && opponentDeck != null) {
+      setUpInitialState(inputViewSettings, useDeck, opponentDeck, tags);
     }
   }
 
@@ -295,6 +285,10 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     _updateRecord(bo, selectGameId);
     await _saveImage();
     await _saveRecordToRepository();
+    ref.read(initialDataControllerProvider).saveGame(ref.read(selectGameNotifierProvider).selectGame!);
+    ref.read(initialDataControllerProvider).saveUseDeck(state.useDeck!);
+    ref.read(initialDataControllerProvider).saveOpponentDeck(state.opponentDeck!);
+    ref.read(initialDataControllerProvider).saveTags(state.tag);
   }
 }
 

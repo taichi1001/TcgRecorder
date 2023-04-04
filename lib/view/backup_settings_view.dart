@@ -93,11 +93,11 @@ class BackupSettingsView extends HookConsumerWidget {
                       final recordList = await ref.read(allRecordListProvider.future);
                       if (recordList.isNotEmpty) {
                         await ref.read(selectGameNotifierProvider.notifier).changeGameForId(recordList.last.gameId!);
-                        await ref.read(inputViewNotifierProvider.notifier).init();
+                        ref.read(inputViewNotifierProvider.notifier).init();
                         ref.read(textEditingControllerNotifierProvider.notifier).resetInputViewController();
                       } else {
                         await ref.read(selectGameNotifierProvider.notifier).changeGameForLast();
-                        await ref.read(inputViewNotifierProvider.notifier).init();
+                        ref.read(inputViewNotifierProvider.notifier).init();
                         ref.read(textEditingControllerNotifierProvider.notifier).resetInputViewController();
                       }
                       isLoading.value = false;

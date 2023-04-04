@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/provider/input_view_provider.dart';
 import 'package:tcg_manager/provider/input_view_settings_provider.dart';
+import 'package:tcg_manager/state/input_view_state.dart';
 import 'package:tcg_manager/state/text_editing_controller_state.dart';
 
 class TextEditingControllerNotifier extends StateNotifier<TextEditingControllerState> {
