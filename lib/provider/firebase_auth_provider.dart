@@ -2,7 +2,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/provider/firestore_backup_controller_provider.dart';
-import 'package:tcg_manager/repository/firestore_user_repository.dart';
+import 'package:tcg_manager/repository/firestore_user_backup_repository.dart';
 import 'package:tcg_manager/state/firebase_auth_state.dart';
 
 class FirebaseAuthNotifier extends StateNotifier<FirebaseAuthState> {
@@ -58,7 +58,7 @@ class FirebaseAuthNotifier extends StateNotifier<FirebaseAuthState> {
 
   Future singOut() async {
     if (state.user?.phoneNumber == null) {
-      await ref.read(firestoreUserRepository).deleteAll(state.user!.uid);
+      await ref.read(firestoreUserBackupRepository).deleteAll(state.user!.uid);
       await ref.read(firestoreBackupControllerProvider).deleteAllImage();
       await state.user?.delete();
     }
@@ -71,7 +71,7 @@ class FirebaseAuthNotifier extends StateNotifier<FirebaseAuthState> {
     await state.user?.delete();
     await FirebaseAuth.instance.signOut();
     await ref.read(dbHelper).deleteAll();
-    await ref.read(firestoreUserRepository).deleteAll(state.user!.uid);
+    await ref.read(firestoreUserBackupRepository).deleteAll(state.user!.uid);
     await ref.read(firestoreBackupControllerProvider).deleteAllImage();
     state = state.copyWith(user: null);
   }
