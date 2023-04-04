@@ -58,7 +58,9 @@ class TextEditingControllerNotifier extends StateNotifier<TextEditingControllerS
     state = state.copyWith(
       useDeckController: fixUseDeck ? TextEditingController(text: inputViewState.useDeck?.name) : TextEditingController(),
       opponentDeckController: fixOpponentDeck ? TextEditingController(text: inputViewState.opponentDeck?.name) : TextEditingController(),
-      tagController: fixTag ? inputViewState.tag.map((e) => TextEditingController(text: e.name)).toList() : [TextEditingController()],
+      tagController: fixTag && inputViewState.tag.isNotEmpty
+          ? inputViewState.tag.map((e) => TextEditingController(text: e.name)).toList()
+          : [TextEditingController()],
       memoController: TextEditingController(),
     );
   }
