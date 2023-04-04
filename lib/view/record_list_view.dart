@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,6 +12,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:tcg_manager/entity/marged_record.dart';
+import 'package:tcg_manager/enum/access_roll.dart';
 import 'package:tcg_manager/enum/bo.dart';
 import 'package:tcg_manager/enum/first_second.dart';
 import 'package:tcg_manager/enum/win_loss.dart';
@@ -22,6 +24,7 @@ import 'package:tcg_manager/provider/backup_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/record_list_view_provider.dart';
 import 'package:tcg_manager/provider/firestore_backup_controller_provider.dart';
+import 'package:tcg_manager/provider/select_game_access_roll.dart';
 import 'package:tcg_manager/repository/firestore_share_data_repository.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
 import 'package:tcg_manager/selector/game_record_list_selector.dart';
@@ -625,18 +628,27 @@ class _EditDeleteButtonRow extends HookConsumerWidget {
                 minimumSize: MaterialStateProperty.all(const Size.fromHeight(32)),
               ),
               onPressed: () async {
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    fullscreenDialog: true,
-                    builder: (context) => ProviderScope(
-                      overrides: [currentMargedRecord.overrideWithValue(record)],
-                      child: RecordEditView(
-                        margedRecord: record,
+                final accessRoll = await ref.read(selectGameAccessRoll.future);
+                if (context.mounted && accessRoll == AccessRoll.reader) {
+                  await showOkAlertDialog(
+                    context: context,
+                    title: '権限がありません。',
+                    message: 'この操作をする権限がありません。ゲームの管理者にお問い合わせください。',
+                  );
+                } else if (context.mounted) {
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      fullscreenDialog: true,
+                      builder: (context) => ProviderScope(
+                        overrides: [currentMargedRecord.overrideWithValue(record)],
+                        child: RecordEditView(
+                          margedRecord: record,
+                        ),
                       ),
                     ),
-                  ),
-                );
+                  );
+                }
               },
               child: const Text('編集'),
             ),
@@ -651,17 +663,26 @@ class _EditDeleteButtonRow extends HookConsumerWidget {
                 backgroundColor: MaterialStateColor.resolveWith((states) => Theme.of(context).colorScheme.error),
               ),
               onPressed: () async {
-                if (ref.read(isShareGame)) {
-                  final gameRecordList = await ref.watch(gameRecordListProvider.future);
-                  final targetRecord = gameRecordList.firstWhere((gameRecord) => gameRecord.recordId == record.recordId);
-                  final share = await ref.read(gameFirestoreShareStreamProvider.future);
-                  ref.read(firestoreShareDataRepository).removeRecord(targetRecord, share!.docName);
-                } else {
-                  final targetRecord = await ref.read(recordRepository).getRecordId(record.recordId);
-                  ref.read(dbHelper).removeRecordImage(targetRecord!);
-                  await ref.read(recordRepository).deleteById(record.recordId);
-                  ref.invalidate(allRecordListProvider);
-                  if (ref.read(backupNotifierProvider)) await ref.read(firestoreBackupControllerProvider).deleteRecord(targetRecord);
+                final accessRoll = await ref.read(selectGameAccessRoll.future);
+                if (context.mounted && accessRoll == AccessRoll.reader) {
+                  await showOkAlertDialog(
+                    context: context,
+                    title: '権限がありません。',
+                    message: 'この操作をする権限がありません。ゲームの管理者にお問い合わせください。',
+                  );
+                } else if (context.mounted) {
+                  if (ref.read(isShareGame)) {
+                    final gameRecordList = await ref.watch(gameRecordListProvider.future);
+                    final targetRecord = gameRecordList.firstWhere((gameRecord) => gameRecord.recordId == record.recordId);
+                    final share = await ref.read(gameFirestoreShareStreamProvider.future);
+                    ref.read(firestoreShareDataRepository).removeRecord(targetRecord, share!.docName);
+                  } else {
+                    final targetRecord = await ref.read(recordRepository).getRecordId(record.recordId);
+                    ref.read(dbHelper).removeRecordImage(targetRecord!);
+                    await ref.read(recordRepository).deleteById(record.recordId);
+                    ref.invalidate(allRecordListProvider);
+                    if (ref.read(backupNotifierProvider)) await ref.read(firestoreBackupControllerProvider).deleteRecord(targetRecord);
+                  }
                 }
               },
               child: const Text('削除'),

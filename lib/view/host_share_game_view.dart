@@ -8,6 +8,7 @@ import 'package:tcg_manager/entity/firestore_share.dart';
 import 'package:tcg_manager/entity/share_user.dart';
 import 'package:tcg_manager/entity/user_data.dart';
 import 'package:tcg_manager/enum/access_roll.dart';
+import 'package:tcg_manager/provider/firebase_auth_provider.dart';
 import 'package:tcg_manager/provider/firestore_controller_provider.dart';
 import 'package:tcg_manager/repository/dynamic_links_repository.dart';
 import 'package:tcg_manager/repository/firestore_share_repository.dart';
@@ -213,6 +214,7 @@ class _DeleteShareGameButton extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final hostShareList = ref.watch(hostShareProvider);
     final currentShareDocName = ref.watch(currentShareDocNameProvider);
+    final myself = ref.watch(firebaseAuthNotifierProvider.select((value) => value.user));
 
     return SliverToBoxAdapter(
       child: Material(
@@ -225,16 +227,25 @@ class _DeleteShareGameButton extends HookConsumerWidget {
 
             return InkWell(
               onTap: () async {
-                final result = await showOkCancelAlertDialog(
-                  context: context,
-                  title: 'データを削除します',
-                  message: 'このゲームを共有している全員のデータが削除されます。データの復元はできなくなりますがよろしいですか？',
-                );
-                if (result == OkCancelResult.ok) {
-                  await ref.read(firestoreControllerProvider).deleteShareGame(share.docName);
-                  if (context.mounted) {
-                    Navigator.of(context).pop();
+                final isAuthor = data.firstWhereOrNull((element) => element.authorName == myself?.uid) != null;
+                if (isAuthor) {
+                  final result = await showOkCancelAlertDialog(
+                    context: context,
+                    title: 'データを削除します',
+                    message: 'このゲームを共有している全員のデータが削除されます。データの復元はできなくなりますがよろしいですか？',
+                  );
+                  if (result == OkCancelResult.ok) {
+                    await ref.read(firestoreControllerProvider).deleteShareGame(share.docName);
+                    if (context.mounted) {
+                      Navigator.of(context).pop();
+                    }
                   }
+                } else {
+                  await showOkAlertDialog(
+                    context: context,
+                    title: '権限がありません。',
+                    message: 'データの削除はこのゲームの作成者のみ許可されています。削除したい場合はゲームの作成者に問い合わせてください。',
+                  );
                 }
               },
               child: Padding(

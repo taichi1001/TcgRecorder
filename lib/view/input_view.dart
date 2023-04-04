@@ -17,6 +17,7 @@ import 'package:intl/intl.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:tcg_manager/entity/domain_data.dart';
+import 'package:tcg_manager/enum/access_roll.dart';
 import 'package:tcg_manager/enum/bo.dart';
 import 'package:tcg_manager/enum/domain_data_type.dart';
 import 'package:tcg_manager/enum/first_second.dart';
@@ -29,6 +30,7 @@ import 'package:tcg_manager/provider/input_view_provider.dart';
 import 'package:tcg_manager/provider/input_view_settings_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/revenue_cat_provider.dart';
+import 'package:tcg_manager/provider/select_game_access_roll.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 import 'package:tcg_manager/provider/firestore_backup_controller_provider.dart';
@@ -654,38 +656,48 @@ class InputView extends HookConsumerWidget {
                                       (isBO3 && thirdMatchFirstSecond == null && thirdMatchWinLoss != null)
                                   ? null
                                   : () async {
-                                      final okCancelResult = await showOkCancelAlertDialog(
-                                        context: context,
-                                        message: S.of(context).isSave,
-                                        isDestructiveAction: true,
-                                      );
-                                      if (okCancelResult == OkCancelResult.ok) {
-                                        SmartDialog.showLoading();
-                                        if (isBO3) {
-                                          await inputViewNotifier.saveRecord(BO.bo3);
-                                        } else {
-                                          await inputViewNotifier.saveRecord(BO.bo1);
+                                      final accessRoll = await ref.watch(selectGameAccessRoll.future);
+                                      if (accessRoll == AccessRoll.reader && context.mounted) {
+                                        await showOkAlertDialog(
+                                          context: context,
+                                          title: '権限がありません。',
+                                          message: 'この操作をする権限がありません。ゲームの管理者にお問い合わせください。',
+                                        );
+                                      } else if (context.mounted) {
+                                        final okCancelResult = await showOkCancelAlertDialog(
+                                          context: context,
+                                          message: S.of(context).isSave,
+                                          isDestructiveAction: true,
+                                        );
+
+                                        if (okCancelResult == OkCancelResult.ok) {
+                                          SmartDialog.showLoading();
+                                          if (isBO3) {
+                                            await inputViewNotifier.saveRecord(BO.bo3);
+                                          } else {
+                                            await inputViewNotifier.saveRecord(BO.bo1);
+                                          }
+                                          ref.invalidate(allDeckListProvider);
+                                          ref.invalidate(allTagListProvider);
+                                          ref.invalidate(allRecordListProvider);
+                                          // レビュー催促ダイアログ条件検討中
+                                          // if (recordCount % 200 == 0) {
+                                          //   final inAppReview = InAppReview.instance;
+                                          //   if (await inAppReview.isAvailable()) {
+                                          //     inAppReview.requestReview();
+                                          //   }
+                                          // }
+                                          if (ref.read(backupNotifierProvider)) {
+                                            ref
+                                                .read(firestoreBackupControllerProvider)
+                                                .addRecord(ref.read(inputViewNotifierProvider).record!);
+                                          }
+                                          inputViewNotifier.resetView();
+                                          SmartDialog.dismiss();
                                         }
-                                        ref.invalidate(allDeckListProvider);
-                                        ref.invalidate(allTagListProvider);
-                                        ref.invalidate(allRecordListProvider);
-                                        // レビュー催促ダイアログ条件検討中
-                                        // if (recordCount % 200 == 0) {
-                                        //   final inAppReview = InAppReview.instance;
-                                        //   if (await inAppReview.isAvailable()) {
-                                        //     inAppReview.requestReview();
-                                        //   }
-                                        // }
-                                        if (ref.read(backupNotifierProvider)) {
-                                          ref
-                                              .read(firestoreBackupControllerProvider)
-                                              .addRecord(ref.read(inputViewNotifierProvider).record!);
+                                        if (context.mounted) {
+                                          FocusScope.of(context).unfocus();
                                         }
-                                        inputViewNotifier.resetView();
-                                        SmartDialog.dismiss();
-                                      }
-                                      if (context.mounted) {
-                                        FocusScope.of(context).unfocus();
                                       }
                                     },
                               style: ElevatedButton.styleFrom(

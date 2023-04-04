@@ -58,65 +58,73 @@ class _PermissionSettingsTileHooksConsumerWidget extends HookConsumerWidget {
       value: GestureDetector(
         onTap: () async {
           final delAuthorAccessRollList = List.of(AccessRoll.values)..remove(AccessRoll.author);
-          showCupertinoModalBottomSheet(
-            expand: false,
-            context: context,
-            builder: (context) => Padding(
-              padding: const EdgeInsets.all(8),
-              child: SafeArea(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Row(
-                        children: [
-                          const Icon(Icons.folder_shared),
-                          const SizedBox(width: 16),
-                          Text(
-                            'アクセス権限設定',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                        ],
+          if (user?.roll == AccessRoll.author) {
+            await showOkAlertDialog(
+              context: context,
+              title: '許可されていない操作です',
+              message: 'ゲーム作成者のアクセス権限は変更できません。',
+            );
+          } else if (context.mounted) {
+            showCupertinoModalBottomSheet(
+              expand: false,
+              context: context,
+              builder: (context) => Padding(
+                padding: const EdgeInsets.all(8),
+                child: SafeArea(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.folder_shared),
+                            const SizedBox(width: 16),
+                            Text(
+                              'アクセス権限設定',
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    const Divider(),
-                    ...delAuthorAccessRollList
-                        .map(
-                          (roll) => GestureDetector(
-                            onTap: () async {
-                              final share = ref.read(currentSharedUser).share;
-                              final isSuccess = await ref.read(firestoreShareRepository).updateUserRoll(user!, roll, share.docName);
-                              if (isSuccess) ref.read(currentShareUserProvider.notifier).state = user.copyWith(roll: roll);
-                              if (context.mounted) Navigator.pop(context);
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                children: [
-                                  Opacity(
-                                    opacity: user!.roll == roll ? 1 : 0,
-                                    child: const Icon(Icons.check),
-                                  ),
-                                  const SizedBox(width: 32),
-                                  Text(
-                                    roll.displayName,
-                                    style: user.roll == roll
-                                        ? Theme.of(context).textTheme.bodyMedium?.copyWith(color: Theme.of(context).colorScheme.primary)
-                                        : Theme.of(context).textTheme.bodyMedium,
-                                  ),
-                                ],
+                      const Divider(),
+                      ...delAuthorAccessRollList
+                          .map(
+                            (roll) => GestureDetector(
+                              onTap: () async {
+                                final share = ref.read(currentSharedUser).share;
+                                final isSuccess = await ref.read(firestoreShareRepository).updateUserRoll(user!, roll, share.docName);
+                                if (isSuccess) ref.read(currentShareUserProvider.notifier).state = user.copyWith(roll: roll);
+                                if (context.mounted) Navigator.pop(context);
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  children: [
+                                    Opacity(
+                                      opacity: user!.roll == roll ? 1 : 0,
+                                      child: const Icon(Icons.check),
+                                    ),
+                                    const SizedBox(width: 32),
+                                    Text(
+                                      roll.displayName,
+                                      style: user.roll == roll
+                                          ? Theme.of(context).textTheme.bodyMedium?.copyWith(color: Theme.of(context).colorScheme.primary)
+                                          : Theme.of(context).textTheme.bodyMedium,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        )
-                        .toList(),
-                  ],
+                          )
+                          .toList(),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
+            );
+          }
         },
         child: Container(
           decoration: BoxDecoration(
