@@ -191,6 +191,7 @@ class _CreateShareLinkButton extends HookConsumerWidget {
           if (share == null) return Container();
 
           return ListTileOnTap(
+            leading: const Icon(Icons.link),
             title: '共有用リンクを作成',
             onTap: () async {
               final link = await ref.read(dynamicLinksRepository).createInviteDynamicLink(
@@ -217,49 +218,52 @@ class _DeleteShareGameButton extends HookConsumerWidget {
     final myself = ref.watch(firebaseAuthNotifierProvider.select((value) => value.user));
 
     return SliverToBoxAdapter(
-      child: Material(
-        color: Theme.of(context).colorScheme.surface,
-        type: MaterialType.button,
-        child: hostShareList.maybeWhen(
-          data: (data) {
-            final share = data.firstWhereOrNull((element) => element.docName == currentShareDocName);
-            if (share == null) return Container();
+      child: Padding(
+        padding: const EdgeInsets.only(top: 48),
+        child: Material(
+          color: Theme.of(context).colorScheme.surface,
+          type: MaterialType.button,
+          child: hostShareList.maybeWhen(
+            data: (data) {
+              final share = data.firstWhereOrNull((element) => element.docName == currentShareDocName);
+              if (share == null) return Container();
 
-            return InkWell(
-              onTap: () async {
-                final isAuthor = data.firstWhereOrNull((element) => element.authorName == myself?.uid) != null;
-                if (isAuthor) {
-                  final result = await showOkCancelAlertDialog(
-                    context: context,
-                    title: 'データを削除します',
-                    message: 'このゲームを共有している全員のデータが削除されます。データの復元はできなくなりますがよろしいですか？',
-                  );
-                  if (result == OkCancelResult.ok) {
-                    await ref.read(firestoreControllerProvider).deleteShareGame(share.docName);
-                    if (context.mounted) {
-                      Navigator.of(context).pop();
+              return InkWell(
+                onTap: () async {
+                  final isAuthor = data.firstWhereOrNull((element) => element.authorName == myself?.uid) != null;
+                  if (isAuthor) {
+                    final result = await showOkCancelAlertDialog(
+                      context: context,
+                      title: 'データを削除します',
+                      message: 'このゲームを共有している全員のデータが削除されます。データの復元はできなくなりますがよろしいですか？',
+                    );
+                    if (result == OkCancelResult.ok) {
+                      await ref.read(firestoreControllerProvider).deleteShareGame(share.docName);
+                      if (context.mounted) {
+                        Navigator.of(context).pop();
+                      }
                     }
+                  } else {
+                    await showOkAlertDialog(
+                      context: context,
+                      title: '権限がありません。',
+                      message: 'データの削除はこのゲームの作成者のみ許可されています。削除したい場合はゲームの作成者に問い合わせてください。',
+                    );
                   }
-                } else {
-                  await showOkAlertDialog(
-                    context: context,
-                    title: '権限がありません。',
-                    message: 'データの削除はこのゲームの作成者のみ許可されています。削除したい場合はゲームの作成者に問い合わせてください。',
-                  );
-                }
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Center(
-                  child: Text(
-                    'データを削除する',
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Theme.of(context).colorScheme.error),
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Center(
+                    child: Text(
+                      'データを削除する',
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Theme.of(context).colorScheme.error),
+                    ),
                   ),
                 ),
-              ),
-            );
-          },
-          orElse: () => Container(),
+              );
+            },
+            orElse: () => Container(),
+          ),
         ),
       ),
     );

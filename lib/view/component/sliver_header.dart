@@ -9,8 +9,20 @@ class SliverHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
-      child: Padding(
+      child: Container(
         padding: const EdgeInsets.only(left: 16, top: 8, bottom: 8),
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              color: Theme.of(context).dividerColor,
+              width: 0.5,
+            ),
+            top: BorderSide(
+              color: Theme.of(context).dividerColor,
+              width: 0.5,
+            ),
+          ),
+        ),
         child: Text(
           title,
           style: Theme.of(context).textTheme.bodySmall,
