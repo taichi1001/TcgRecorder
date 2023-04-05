@@ -15,14 +15,13 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tcg_manager/entity/game.dart';
 import 'package:tcg_manager/firebase_options.dart';
 import 'package:tcg_manager/helper/att.dart';
+import 'package:tcg_manager/helper/initial_data_controller.dart';
 import 'package:tcg_manager/helper/theme_data.dart';
 import 'package:tcg_manager/provider/adaptive_banner_ad_provider.dart';
 import 'package:tcg_manager/provider/firebase_auth_provider.dart';
 import 'package:tcg_manager/provider/firestor_config_provider.dart';
-import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/revenue_cat_provider.dart';
 import 'package:tcg_manager/provider/user_info_settings_provider.dart';
 import 'package:tcg_manager/state/revenue_cat_state.dart';
@@ -111,23 +110,19 @@ final imagePathProvider = Provider<String>((ref) => throw UnimplementedError);
 
 class MainInfo {
   const MainInfo({
-    required this.allGameList,
     required this.requiredVersion,
     required this.packageInfo,
   });
-  final List<Game> allGameList;
   final String requiredVersion;
   final PackageInfo packageInfo;
 }
 
-final mainInfoProvider = FutureProvider.autoDispose<MainInfo>((ref) async {
-  final allGameList = await ref.watch(allGameListProvider.future);
+final mainInfoProvider = FutureProvider.autoDispose.family<MainInfo, BuildContext>((ref, context) async {
+  await ref.read(adaptiveBannerAdNotifierProvider.notifier).getAd(context);
   final version = await ref.watch(requiredVersionProvider.future);
   final packgaeInfo = await PackageInfo.fromPlatform();
   ref.read(firebaseAuthNotifierProvider.notifier).login();
-
   return MainInfo(
-    allGameList: allGameList,
     requiredVersion: version,
     packageInfo: packgaeInfo,
   );
@@ -140,12 +135,9 @@ class MainApp extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     useEffect(() {
       ref.read(userInfoSettingsProvider);
-      Future.microtask(() {
-        ref.read(adaptiveBannerAdNotifierProvider.notifier).getAd(context);
-      });
       return;
     }, const []);
-    final mainInfo = ref.watch(mainInfoProvider);
+    final mainInfo = ref.watch(mainInfoProvider(context));
     final lightThemeData = ref.watch(lightThemeDataProvider(context));
     final darkThemeData = ref.watch(darkThemeDataProvider(context));
     final isLogin = ref.watch(firebaseAuthNotifierProvider.select((value) => value.user)) != null;
@@ -168,7 +160,7 @@ class MainApp extends HookConsumerWidget {
           themeMode: ThemeMode.system,
           home: versionIsOk
               ? isLogin
-                  ? mainInfo.allGameList.isEmpty
+                  ? ref.read(initialDataControllerProvider).loadGame() == null
                       ? const InitialGameRegistrationView()
                       : const BottomNavigationView()
                   : const LoginView()
