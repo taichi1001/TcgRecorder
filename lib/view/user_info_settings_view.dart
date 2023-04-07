@@ -57,7 +57,10 @@ class UserInfoSettingsView extends HookConsumerWidget {
                         backgroundColor: Theme.of(context).colorScheme.primary,
                         backgroundImage: userInfoSettings.iconPath == null ? null : CachedNetworkImageProvider(userInfoSettings.iconPath!),
                         child: userInfoSettings.iconPath == null
-                            ? Text(userInfoSettings.name == null ? '名' : userInfoSettings.name![0])
+                            ? Text(
+                                userInfoSettings.name == null ? '名' : userInfoSettings.name![0],
+                                style: Theme.of(context).primaryTextTheme.bodyMedium,
+                              )
                             : null,
                       ),
                       const Icon(Icons.photo_camera),

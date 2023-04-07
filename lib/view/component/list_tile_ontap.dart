@@ -7,12 +7,14 @@ class ListTileOnTap extends HookConsumerWidget {
     this.onTap,
     this.trailing,
     this.leading,
+    this.textStyle,
     super.key,
   });
   final String title;
   final Function()? onTap;
   final Widget? trailing;
   final Widget? leading;
+  final TextStyle? textStyle;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Material(
@@ -32,7 +34,7 @@ class ListTileOnTap extends HookConsumerWidget {
               Expanded(
                 child: Text(
                   title,
-                  style: Theme.of(context).textTheme.bodyMedium,
+                  style: textStyle ?? Theme.of(context).textTheme.bodyMedium,
                 ),
               ),
               if (trailing != null) trailing!,

@@ -316,7 +316,12 @@ class _UserInfoSettingsTileHooksConsumerWidget extends HookConsumerWidget {
         radius: 24,
         backgroundColor: Theme.of(context).colorScheme.primary,
         backgroundImage: userInfoSettings.iconPath == null ? null : CachedNetworkImageProvider(userInfoSettings.iconPath!),
-        child: userInfoSettings.iconPath == null ? Text(userInfoSettings.name == null ? '名前未設定' : userInfoSettings.name![0]) : null,
+        child: userInfoSettings.iconPath == null
+            ? Text(
+                userInfoSettings.name == null ? '名前未設定' : userInfoSettings.name![0],
+                style: Theme.of(context).primaryTextTheme.bodyMedium,
+              )
+            : null,
       ),
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

@@ -24,11 +24,13 @@ import 'package:tcg_manager/provider/firebase_auth_provider.dart';
 import 'package:tcg_manager/provider/firestor_config_provider.dart';
 import 'package:tcg_manager/provider/revenue_cat_provider.dart';
 import 'package:tcg_manager/provider/user_info_settings_provider.dart';
+import 'package:tcg_manager/repository/firestore_share_repository.dart';
 import 'package:tcg_manager/state/revenue_cat_state.dart';
 import 'package:tcg_manager/view/bottom_navigation_view.dart';
 import 'package:tcg_manager/view/initial_game_registration_view.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:tcg_manager/view/login_view.dart';
+import 'package:tcg_manager/view/shared_game_limit_adjustment_view.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:version/version.dart';
 
@@ -140,11 +142,9 @@ class MainApp extends HookConsumerWidget {
     final mainInfo = ref.watch(mainInfoProvider(context));
     final lightThemeData = ref.watch(lightThemeDataProvider(context));
     final darkThemeData = ref.watch(darkThemeDataProvider(context));
-    final isLogin = ref.watch(firebaseAuthNotifierProvider.select((value) => value.user)) != null;
 
     return mainInfo.when(
       data: (mainInfo) {
-        final versionIsOk = Version.parse(mainInfo.requiredVersion) < Version.parse(mainInfo.packageInfo.version);
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           localizationsDelegates: const [
@@ -158,13 +158,7 @@ class MainApp extends HookConsumerWidget {
           theme: lightThemeData,
           darkTheme: darkThemeData,
           themeMode: ThemeMode.system,
-          home: versionIsOk
-              ? isLogin
-                  ? ref.read(initialDataControllerProvider).loadGame() == null
-                      ? const InitialGameRegistrationView()
-                      : const BottomNavigationView()
-                  : const LoginView()
-              : const UpdaterView(),
+          home: MainAppHome(mainInfo: mainInfo),
           navigatorObservers: [FlutterSmartDialog.observer],
           builder: FlutterSmartDialog.init(),
         );
@@ -172,6 +166,54 @@ class MainApp extends HookConsumerWidget {
       error: (error, stack) => Text('$error'),
       loading: () => const Center(child: CircularProgressIndicator()),
     );
+  }
+}
+
+final combinedShareCountFutureProvider = FutureProvider.autoDispose<List<int>>((ref) async {
+  ref.keepAlive();
+  final hostCount = await ref.watch(hostShareCountProvider.future);
+  final guestCount = await ref.watch(guestShareCountProvider.future);
+  ref.read(combinedShareCountProvider.notifier).state = [hostCount, guestCount];
+
+  return [hostCount, guestCount];
+});
+
+final combinedShareCountProvider = StateProvider<List<int>>((ref) => [0, 0]);
+
+class MainAppHome extends HookConsumerWidget {
+  const MainAppHome({
+    required this.mainInfo,
+    super.key,
+  });
+
+  final MainInfo mainInfo;
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(firebaseAuthNotifierProvider.select((value) => value.user));
+    final versionIsOk = Version.parse(mainInfo.requiredVersion) < Version.parse(mainInfo.packageInfo.version);
+    final isInitialGame = ref.read(initialDataControllerProvider).loadGame() != null;
+    final isPremium = ref.watch(revenueCatNotifierProvider.select((value) => value.isPremium));
+    final shareCount = ref.watch(combinedShareCountFutureProvider);
+
+    if (!versionIsOk) return const UpdaterView();
+
+    if (user == null) return const LoginView();
+
+    if (!isInitialGame) return const InitialGameRegistrationView();
+
+    if (!isPremium) {
+      return shareCount.maybeWhen(
+        data: (data) {
+          final hostCount = data[0];
+          final guestCount = data[1];
+          if (hostCount > 1) return SelectSharedHostGameScreen(mainInfo: mainInfo);
+          if (guestCount > 2) return SelectSharedGuestGameScreen(mainInfo: mainInfo);
+          return const BottomNavigationView();
+        },
+        orElse: () => const Center(child: CircularProgressIndicator()),
+      );
+    }
+    return const BottomNavigationView();
   }
 }
 

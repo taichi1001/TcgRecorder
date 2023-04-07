@@ -6,8 +6,10 @@ import 'package:share_plus/share_plus.dart';
 import 'package:tcg_manager/entity/firestore_share.dart';
 import 'package:tcg_manager/entity/game.dart';
 import 'package:tcg_manager/enum/access_roll.dart';
+import 'package:tcg_manager/main.dart';
 import 'package:tcg_manager/provider/firebase_auth_provider.dart';
 import 'package:tcg_manager/provider/firestore_controller_provider.dart';
+import 'package:tcg_manager/provider/revenue_cat_provider.dart';
 import 'package:tcg_manager/provider/user_info_settings_provider.dart';
 import 'package:tcg_manager/repository/dynamic_links_repository.dart';
 import 'package:tcg_manager/repository/firestore_share_repository.dart';
@@ -15,6 +17,7 @@ import 'package:tcg_manager/view/component/list_tile_ontap.dart';
 import 'package:tcg_manager/view/component/sliver_header.dart';
 import 'package:tcg_manager/view/guest_share_game_view.dart';
 import 'package:tcg_manager/view/host_share_game_view.dart';
+import 'package:tcg_manager/view/premium_plan_purchase_view.dart';
 import 'package:tcg_manager/view/user_info_settings_view.dart';
 
 class ShareView extends HookConsumerWidget {
@@ -64,18 +67,41 @@ class _AddShareGameButton extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return FloatingActionButton(
       onPressed: () async {
-        final inputText = await showTextInputDialog(
-          context: context,
-          title: '共有ゲーム作成',
-          message: '共有用ゲーム名を入力してください。このゲームは個人保存ゲームとは別扱いとなります。',
-          textFields: [const DialogTextField()],
-        );
-        if (inputText != null && inputText.first != '') {
-          final uid = ref.read(firebaseAuthNotifierProvider).user?.uid;
-          if (uid != null) {
-            ref.read(firestoreControllerProvider).initShareGame(Game(name: inputText.first, isShare: true), uid);
-            final link = await ref.read(dynamicLinksRepository).createInviteDynamicLink(uid, inputText.first, AccessRoll.writer);
-            await Share.share(link.toString(), subject: '「${inputText.first}」共有用のリンク');
+        final shareCount = ref.read(combinedShareCountProvider);
+        final isPremium = ref.read(revenueCatNotifierProvider).isPremium;
+
+        if (shareCount[0] > 0 && !isPremium) {
+          final result = await showOkCancelAlertDialog(
+            context: context,
+            title: '共有個数制限に達しました。',
+            message: '作成できる共有ゲーム数は最大1つまでです。プレミアムプランに加入することでこの制限を解除することができます。',
+            okLabel: 'OK',
+            cancelLabel: 'プレミアムプラン詳細',
+            isDestructiveAction: true,
+          );
+          if (result == OkCancelResult.cancel && context.mounted) {
+            await Navigator.push(
+              context,
+              MaterialPageRoute(
+                fullscreenDialog: true,
+                builder: (context) => const PremiumPlanPurchaseView(),
+              ),
+            );
+          }
+        } else {
+          final inputText = await showTextInputDialog(
+            context: context,
+            title: '共有ゲーム作成',
+            message: '共有用ゲーム名を入力してください。このゲームは個人保存ゲームとは別扱いとなります。',
+            textFields: [const DialogTextField()],
+          );
+          if (inputText != null && inputText.first != '') {
+            final uid = ref.read(firebaseAuthNotifierProvider).user?.uid;
+            if (uid != null) {
+              ref.read(firestoreControllerProvider).initShareGame(Game(name: inputText.first, isShare: true), uid);
+              final link = await ref.read(dynamicLinksRepository).createInviteDynamicLink(uid, inputText.first, AccessRoll.writer);
+              await Share.share(link.toString(), subject: '「${inputText.first}」共有用のリンク');
+            }
           }
         }
       },

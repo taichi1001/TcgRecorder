@@ -23,6 +23,7 @@ mixin _$FirestoreShare {
   Game get game => throw _privateConstructorUsedError;
   String get authorName => throw _privateConstructorUsedError;
   String get docName => throw _privateConstructorUsedError;
+  bool get isShared => throw _privateConstructorUsedError;
   List<ShareUser> get pendingUserList => throw _privateConstructorUsedError;
   List<ShareUser> get shareUserList => throw _privateConstructorUsedError;
 
@@ -42,6 +43,7 @@ abstract class $FirestoreShareCopyWith<$Res> {
       {Game game,
       String authorName,
       String docName,
+      bool isShared,
       List<ShareUser> pendingUserList,
       List<ShareUser> shareUserList});
 
@@ -64,6 +66,7 @@ class _$FirestoreShareCopyWithImpl<$Res, $Val extends FirestoreShare>
     Object? game = null,
     Object? authorName = null,
     Object? docName = null,
+    Object? isShared = null,
     Object? pendingUserList = null,
     Object? shareUserList = null,
   }) {
@@ -80,6 +83,10 @@ class _$FirestoreShareCopyWithImpl<$Res, $Val extends FirestoreShare>
           ? _value.docName
           : docName // ignore: cast_nullable_to_non_nullable
               as String,
+      isShared: null == isShared
+          ? _value.isShared
+          : isShared // ignore: cast_nullable_to_non_nullable
+              as bool,
       pendingUserList: null == pendingUserList
           ? _value.pendingUserList
           : pendingUserList // ignore: cast_nullable_to_non_nullable
@@ -112,6 +119,7 @@ abstract class _$$_FirestoreShareCopyWith<$Res>
       {Game game,
       String authorName,
       String docName,
+      bool isShared,
       List<ShareUser> pendingUserList,
       List<ShareUser> shareUserList});
 
@@ -133,6 +141,7 @@ class __$$_FirestoreShareCopyWithImpl<$Res>
     Object? game = null,
     Object? authorName = null,
     Object? docName = null,
+    Object? isShared = null,
     Object? pendingUserList = null,
     Object? shareUserList = null,
   }) {
@@ -149,6 +158,10 @@ class __$$_FirestoreShareCopyWithImpl<$Res>
           ? _value.docName
           : docName // ignore: cast_nullable_to_non_nullable
               as String,
+      isShared: null == isShared
+          ? _value.isShared
+          : isShared // ignore: cast_nullable_to_non_nullable
+              as bool,
       pendingUserList: null == pendingUserList
           ? _value._pendingUserList
           : pendingUserList // ignore: cast_nullable_to_non_nullable
@@ -169,6 +182,7 @@ class _$_FirestoreShare implements _FirestoreShare {
       {required this.game,
       required this.authorName,
       required this.docName,
+      this.isShared = true,
       final List<ShareUser> pendingUserList = const [],
       final List<ShareUser> shareUserList = const []})
       : _pendingUserList = pendingUserList,
@@ -183,6 +197,9 @@ class _$_FirestoreShare implements _FirestoreShare {
   final String authorName;
   @override
   final String docName;
+  @override
+  @JsonKey()
+  final bool isShared;
   final List<ShareUser> _pendingUserList;
   @override
   @JsonKey()
@@ -203,7 +220,7 @@ class _$_FirestoreShare implements _FirestoreShare {
 
   @override
   String toString() {
-    return 'FirestoreShare(game: $game, authorName: $authorName, docName: $docName, pendingUserList: $pendingUserList, shareUserList: $shareUserList)';
+    return 'FirestoreShare(game: $game, authorName: $authorName, docName: $docName, isShared: $isShared, pendingUserList: $pendingUserList, shareUserList: $shareUserList)';
   }
 
   @override
@@ -215,6 +232,8 @@ class _$_FirestoreShare implements _FirestoreShare {
             (identical(other.authorName, authorName) ||
                 other.authorName == authorName) &&
             (identical(other.docName, docName) || other.docName == docName) &&
+            (identical(other.isShared, isShared) ||
+                other.isShared == isShared) &&
             const DeepCollectionEquality()
                 .equals(other._pendingUserList, _pendingUserList) &&
             const DeepCollectionEquality()
@@ -228,6 +247,7 @@ class _$_FirestoreShare implements _FirestoreShare {
       game,
       authorName,
       docName,
+      isShared,
       const DeepCollectionEquality().hash(_pendingUserList),
       const DeepCollectionEquality().hash(_shareUserList));
 
@@ -250,6 +270,7 @@ abstract class _FirestoreShare implements FirestoreShare {
       {required final Game game,
       required final String authorName,
       required final String docName,
+      final bool isShared,
       final List<ShareUser> pendingUserList,
       final List<ShareUser> shareUserList}) = _$_FirestoreShare;
 
@@ -262,6 +283,8 @@ abstract class _FirestoreShare implements FirestoreShare {
   String get authorName;
   @override
   String get docName;
+  @override
+  bool get isShared;
   @override
   List<ShareUser> get pendingUserList;
   @override

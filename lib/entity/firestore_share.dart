@@ -12,6 +12,7 @@ class FirestoreShare with _$FirestoreShare {
     required Game game,
     required String authorName,
     required String docName,
+    @Default(true) bool isShared,
     @Default([]) List<ShareUser> pendingUserList,
     @Default([]) List<ShareUser> shareUserList,
   }) = _FirestoreShare;
