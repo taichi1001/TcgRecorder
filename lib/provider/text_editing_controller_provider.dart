@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/provider/input_view_provider.dart';
 import 'package:tcg_manager/provider/input_view_settings_provider.dart';
-import 'package:tcg_manager/state/input_view_state.dart';
 import 'package:tcg_manager/state/text_editing_controller_state.dart';
 
 class TextEditingControllerNotifier extends StateNotifier<TextEditingControllerState> {
@@ -15,14 +14,6 @@ class TextEditingControllerNotifier extends StateNotifier<TextEditingControllerS
         ));
 
   final Ref ref;
-
-  // void setUseDeckController(String value) {
-  //   state = state.copyWith(useDeckController: TextEditingController(text: value));
-  // }
-
-  // void setOpponentDeckController(String value) {
-  //   state = state.copyWith(opponentDeckController: TextEditingController(text: value));
-  // }
 
   void setDeckController(String deckName, bool isUseDeck) {
     state = isUseDeck
