@@ -5,6 +5,7 @@ import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/selector/game_share_data_selector.dart';
 
 final gameRecordListProvider = Provider.autoDispose<AsyncValue<List<Record>>>((ref) {
+  ref.keepAlive();
   final selectGame = ref.watch(selectGameNotifierProvider).selectGame;
   if (selectGame == null) return const AsyncValue.data([]);
   if (selectGame.isShare) {
