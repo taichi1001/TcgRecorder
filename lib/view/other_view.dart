@@ -10,6 +10,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:settings_ui/settings_ui.dart';
@@ -97,7 +98,7 @@ class OtherView extends HookConsumerWidget {
             ],
           ),
           SettingsSection(
-            title: Text(S.of(context).editSection),
+            title: Text('${S.of(context).editSection}は調整中により使用不可能です。アップデートをお待ち下さい。'),
             tiles: [
               SettingsTile.navigation(
                 title: Text(
@@ -198,7 +199,7 @@ class OtherView extends HookConsumerWidget {
                     final margedRecordList = await ref.read(allMargedRecordListProvider.future);
                     final csv = ListToCSV.margeRecordListToCSV(margedRecordList);
                     final savePath = ref.read(imagePathProvider);
-                    final logPath = '$savePath/toremane_output.csv';
+                    final logPath = '$savePath/tcg_manager_output_${DateFormat('yyyy-MM-dd').format(DateTime.now())}.csv';
                     final textfilePath = File(logPath);
                     await textfilePath.writeAsString(csv);
                     Share.shareXFiles([XFile(logPath)]);

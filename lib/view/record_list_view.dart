@@ -244,7 +244,7 @@ class _BrandListTile extends HookConsumerWidget {
               width: 24,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: record.bo == BO.bo1 ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.secondary,
+                color: record.bo == BO.bo1 ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.tertiary,
               ),
               child: Center(
                 child: Text(
@@ -428,7 +428,7 @@ class _FirstSecondIcon extends StatelessWidget {
       height: height,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: firstSecond == FirstSecond.first ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.secondary,
+        color: firstSecond == FirstSecond.first ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.tertiary,
       ),
       child: Center(
         child: Text(
@@ -510,34 +510,37 @@ class _TagIcons extends StatelessWidget {
             ),
       );
     }
-    return Row(
-      children: margedRecord.tag.map((tag) {
-        return Padding(
-          padding: const EdgeInsets.only(right: 4),
-          child: Container(
-            padding: const EdgeInsets.all(2),
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(4)),
-              border: Border.all(
-                width: 2,
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: margedRecord.tag.map((tag) {
+          return Padding(
+            padding: const EdgeInsets.only(right: 4),
+            child: Container(
+              padding: const EdgeInsets.all(2),
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(Radius.circular(4)),
+                border: Border.all(
+                  width: 2,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
                 color: Theme.of(context).colorScheme.secondary,
               ),
-              color: Theme.of(context).colorScheme.secondary,
+              child: Text(
+                tag,
+                softWrap: false,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).primaryTextTheme.bodyMedium?.copyWith(
+                      leadingDistribution: TextLeadingDistribution.even,
+                      height: 1,
+                      fontSize: 11,
+                      color: Theme.of(context).colorScheme.onSecondary,
+                    ),
+              ),
             ),
-            child: Text(
-              tag,
-              softWrap: false,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).primaryTextTheme.bodyMedium?.copyWith(
-                    leadingDistribution: TextLeadingDistribution.even,
-                    height: 1,
-                    fontSize: 11,
-                    color: Theme.of(context).colorScheme.onSecondary,
-                  ),
-            ),
-          ),
-        );
-      }).toList(),
+          );
+        }).toList(),
+      ),
     );
   }
 }

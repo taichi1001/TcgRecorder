@@ -68,7 +68,7 @@ class FilterModalBottomSheet extends HookConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   CupertinoButton(
                     padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),

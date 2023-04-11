@@ -12,10 +12,10 @@ class ListToCSV {
     row.add('対戦相手デッキ');
     row.add('日付');
     row.add('先攻・後攻');
+    row.add('勝敗');
     row.add('1試合目 先攻・後攻');
     row.add('2試合目 先攻・後攻');
     row.add('3試合目 先攻・後攻');
-    row.add('勝敗');
     row.add('1試合目 勝敗');
     row.add('2試合目 勝敗');
     row.add('3試合目 勝敗');
@@ -30,10 +30,10 @@ class ListToCSV {
       row.add(margedRecord.opponentDeck);
       row.add(margedRecord.date);
       row.add(margedRecord.firstSecond.name);
+      row.add(margedRecord.winLoss.name);
       row.add(margedRecord.firstMatchFirstSecond?.name);
       row.add(margedRecord.secondMatchFirstSecond?.name);
       row.add(margedRecord.thirdMatchFirstSecond?.name);
-      row.add(margedRecord.winLoss.name);
       row.add(margedRecord.firstMatchWinLoss?.name);
       row.add(margedRecord.secondMatchWinLoss?.name);
       row.add(margedRecord.thirdMatchWinLoss?.name);
