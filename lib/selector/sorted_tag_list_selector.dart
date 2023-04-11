@@ -7,17 +7,18 @@ import 'package:tcg_manager/selector/game_tag_list_selector.dart';
 
 final sortedTagListProvider = FutureProvider.autoDispose<List<Tag>>((ref) async {
   final tagList = await ref.watch(gameTagListProvider.future);
+  final tagListCopy = [...tagList];
   final sort = ref.watch(selectDomainDataViewNotifierProvider(DomainDataType.tag).select((value) => value.sortType));
   if (sort == Sort.oldest) {
-    tagList.sort((a, b) => a.id!.compareTo(b.id!));
+    tagListCopy.sort((a, b) => a.id!.compareTo(b.id!));
   } else if (sort == Sort.newest) {
-    tagList.sort((a, b) => -a.id!.compareTo(b.id!));
+    tagListCopy.sort((a, b) => -a.id!.compareTo(b.id!));
   } else if (sort == Sort.custom) {
-    tagList.sort((a, b) {
+    tagListCopy.sort((a, b) {
       if (a.sortIndex == null) return -1;
       if (b.sortIndex == null) return -1;
       return a.sortIndex!.compareTo(b.sortIndex!);
     });
   }
-  return tagList;
+  return tagListCopy;
 });

@@ -102,6 +102,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "premiumPlanImageDescription": MessageLookupByLibrary.simpleMessage(
             "画像も一緒に記録できるようになります。\nデッキレシピを載せたりしてはどうでしょうか。"),
         "premiumPlanImageTitle": MessageLookupByLibrary.simpleMessage("画像を記録"),
+        "premiumPlanShareDescription":
+            MessageLookupByLibrary.simpleMessage("無制限にゲームを共有できます。"),
+        "premiumPlanShareTitle":
+            MessageLookupByLibrary.simpleMessage("ゲーム共有制限解除"),
         "premiumPlanTagDescription":
             MessageLookupByLibrary.simpleMessage("様々なタグを組み合わせて記録できます。"),
         "premiumPlanTagTitle": MessageLookupByLibrary.simpleMessage("複数タグを記録"),

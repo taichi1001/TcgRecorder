@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/firestore_backup.dart';
-import 'package:tcg_manager/repository/firestore_user_repository.dart';
+import 'package:tcg_manager/repository/firestore_user_backup_repository.dart';
 import 'package:tcg_manager/entity/record.dart';
 import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/main.dart';
@@ -18,18 +18,18 @@ import 'package:tcg_manager/repository/record_repository.dart';
 import 'package:tcg_manager/repository/tag_repository.dart';
 import 'package:tcg_manager/state/record_detail_state.dart';
 
-final firestoreController = Provider.autoDispose<FirestoreController>((ref) => FirestoreController(ref));
+final firestoreBackupControllerProvider = Provider.autoDispose<FirestoreBackupController>((ref) => FirestoreBackupController(ref));
 
-final lastBackup = StateProvider.autoDispose<DateTime?>(((ref) => ref.read(firestoreController).loadLastBackupDate()));
+final lastBackup = StateProvider.autoDispose<DateTime?>(((ref) => ref.read(firestoreBackupControllerProvider).loadLastBackupDate()));
 
-class FirestoreController {
-  FirestoreController(this.ref);
+class FirestoreBackupController {
+  FirestoreBackupController(this.ref);
 
   final Ref ref;
 
   late final isUser = ref.read(firebaseAuthNotifierProvider).user != null;
 
-  FirestoreUserRepository get firestoreRepo => ref.read(firestoreUserRepository);
+  FirestoreUserBackupRepository get firestoreRepo => ref.read(firestoreUserBackupRepository);
 
   Future addAll() async {
     if (!isUser) return;
@@ -67,7 +67,7 @@ class FirestoreController {
       await _saveImage(imagePath.name);
     }
     for (final imagePath in recordDetailState.removeImages) {
-      await _deleteImage(imagePath.name);
+      await _deleteImage(imagePath);
     }
     await saveLastBackup();
   }

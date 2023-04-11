@@ -7,15 +7,15 @@ import 'package:tcg_manager/entity/record.dart';
 import 'package:tcg_manager/entity/tag.dart';
 import 'package:tcg_manager/service/firestore.dart';
 
-final firestoreUserRepository =
-    Provider.autoDispose<FirestoreUserRepository>((ref) => FirestoreUserRepository(ref.watch(firestoreServiceProvider)));
+final firestoreUserBackupRepository =
+    Provider.autoDispose<FirestoreUserBackupRepository>((ref) => FirestoreUserBackupRepository(ref.watch(firestoreServiceProvider)));
 
-class FirestoreUserRepository {
+class FirestoreUserBackupRepository {
   final FirebaseFirestore _firestore;
-  FirestoreUserRepository(this._firestore);
+  FirestoreUserBackupRepository(this._firestore);
 
   Future<FirestoreBackup> getAll(String user) async {
-    final userDoc = await FirebaseFirestore.instance.collection('users').doc(user).get();
+    final userDoc = await FirebaseFirestore.instance.collection('user_backup').doc(user).get();
     final lastBackupDate = userDoc.exists ? userDoc.data()!['last_backup'] : '';
 
     final gamesSnapshot = await userDoc.reference.collection('games').get();
@@ -59,21 +59,21 @@ class FirestoreUserRepository {
     final separateTagList = _separateList(data.tagList, 500);
     final separateRecordList = _separateList(data.recordList, 500);
 
-    await _firestore.collection('users').doc(user).set({'last_backup': data.lastBackup});
+    await _firestore.collection('user_backup').doc(user).set({'last_backup': data.lastBackup});
 
-    final gameCollectionRef = _firestore.collection('users').doc(user).collection('games');
+    final gameCollectionRef = _firestore.collection('user_backup').doc(user).collection('games');
     await Future.wait(separateGameList.asMap().entries.map((data) async {
       await gameCollectionRef.doc('game${data.key}').set({'game': data.value.map((e) => e.toJson()).toList()});
     }));
-    final deckCollectionRef = _firestore.collection('users').doc(user).collection('decks');
+    final deckCollectionRef = _firestore.collection('user_backup').doc(user).collection('decks');
     await Future.wait(separateDeckList.asMap().entries.map((data) async {
       await deckCollectionRef.doc('deck${data.key}').set({'deck': data.value.map((e) => e.toJson()).toList()});
     }));
-    final tagCollectionRef = _firestore.collection('users').doc(user).collection('tags');
+    final tagCollectionRef = _firestore.collection('user_backup').doc(user).collection('tags');
     await Future.wait(separateTagList.asMap().entries.map((data) async {
       await tagCollectionRef.doc('tag${data.key}').set({'tag': data.value.map((e) => e.toJson()).toList()});
     }));
-    final recordCollectionRef = _firestore.collection('users').doc(user).collection('records');
+    final recordCollectionRef = _firestore.collection('user_backup').doc(user).collection('records');
     await Future.wait(separateRecordList.asMap().entries.map((data) async {
       await recordCollectionRef.doc('record${data.key}').set({'record': data.value.map((e) => e.toJson()).toList()});
     }));
@@ -86,12 +86,12 @@ class FirestoreUserRepository {
     await _deleteSubCollections(user, 'decks');
     await _deleteSubCollections(user, 'tags');
     await _deleteSubCollections(user, 'records');
-    await _firestore.collection('users').doc(user).delete();
+    await _firestore.collection('user_backup').doc(user).delete();
     return true;
   }
 
   Future _deleteSubCollections(String user, String targetCollection) async {
-    await FirebaseFirestore.instance.collection('users/$user/$targetCollection').get().then((querySnapshot) {
+    await FirebaseFirestore.instance.collection('user_backup/$user/$targetCollection').get().then((querySnapshot) {
       for (final doc in querySnapshot.docs) {
         doc.reference.delete();
       }

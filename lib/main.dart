@@ -3,32 +3,30 @@ import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tcg_manager/entity/game.dart';
 import 'package:tcg_manager/firebase_options.dart';
 import 'package:tcg_manager/helper/att.dart';
 import 'package:tcg_manager/helper/theme_data.dart';
 import 'package:tcg_manager/provider/adaptive_banner_ad_provider.dart';
 import 'package:tcg_manager/provider/firebase_auth_provider.dart';
 import 'package:tcg_manager/provider/firestor_config_provider.dart';
-import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/revenue_cat_provider.dart';
-import 'package:tcg_manager/state/revenue_cat_state.dart';
+import 'package:tcg_manager/provider/select_game_provider.dart';
+import 'package:tcg_manager/provider/user_info_settings_provider.dart';
+import 'package:tcg_manager/repository/firestore_share_repository.dart';
 import 'package:tcg_manager/view/bottom_navigation_view.dart';
 import 'package:tcg_manager/view/initial_game_registration_view.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:tcg_manager/view/login_view.dart';
+import 'package:tcg_manager/view/shared_game_limit_adjustment_view.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:version/version.dart';
 
@@ -37,12 +35,6 @@ import 'generated/l10n.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  const String iosAPIKey = 'appl_qGfPwLpLoCrmULsxbiCIsWgWDpx';
-  const String androidAPIKey = '';
-
-  final revenueCatAPIKey = Platform.isIOS ? iosAPIKey : androidAPIKey;
-
-  late final RevenueCatState revenueCat;
   late final SharedPreferences prefs;
   late final String imagePath;
 
@@ -55,25 +47,6 @@ void main() async {
         );
       },
     ),
-    // 課金関連初期化
-    Future(() async {
-      try {
-        await Purchases.setDebugLogsEnabled(kDebugMode);
-        await Purchases.configure(PurchasesConfiguration(revenueCatAPIKey));
-        final info = await Purchases.getCustomerInfo();
-        final offerings = await Purchases.getOfferings();
-        revenueCat = RevenueCatState(
-          customerInfo: info,
-          offerings: offerings,
-          isPremium: info.entitlements.all['premium']?.isActive ?? false,
-        );
-      } catch (e) {
-        revenueCat = RevenueCatState(
-          isPremium: false,
-          exception: e as Exception,
-        );
-      }
-    }),
     // SharedPreferences初期化
     Future(() async {
       prefs = await SharedPreferences.getInstance();
@@ -95,7 +68,6 @@ void main() async {
       designSize: const Size(428, 926),
       builder: (context, child) => ProviderScope(
         overrides: [
-          revenueCatProvider.overrideWithValue(revenueCat),
           sharedPreferencesProvider.overrideWithValue(prefs),
           imagePathProvider.overrideWithValue(imagePath),
         ],
@@ -110,23 +82,19 @@ final imagePathProvider = Provider<String>((ref) => throw UnimplementedError);
 
 class MainInfo {
   const MainInfo({
-    required this.allGameList,
     required this.requiredVersion,
     required this.packageInfo,
   });
-  final List<Game> allGameList;
   final String requiredVersion;
   final PackageInfo packageInfo;
 }
 
-final mainInfoProvider = FutureProvider.autoDispose<MainInfo>((ref) async {
-  final allGameList = await ref.watch(allGameListProvider.future);
+final mainInfoProvider = FutureProvider.autoDispose.family<MainInfo, BuildContext>((ref, context) async {
+  await ref.read(adaptiveBannerAdNotifierProvider.notifier).getAd(context);
   final version = await ref.watch(requiredVersionProvider.future);
   final packgaeInfo = await PackageInfo.fromPlatform();
   ref.read(firebaseAuthNotifierProvider.notifier).login();
-
   return MainInfo(
-    allGameList: allGameList,
     requiredVersion: version,
     packageInfo: packgaeInfo,
   );
@@ -137,20 +105,12 @@ class MainApp extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    useEffect(() {
-      Future.microtask(() {
-        ref.read(adaptiveBannerAdNotifierProvider.notifier).getAd(context);
-      });
-      return;
-    }, const []);
-    final mainInfo = ref.watch(mainInfoProvider);
+    final mainInfo = ref.watch(mainInfoProvider(context));
     final lightThemeData = ref.watch(lightThemeDataProvider(context));
     final darkThemeData = ref.watch(darkThemeDataProvider(context));
-    final isLogin = ref.watch(firebaseAuthNotifierProvider.select((value) => value.user)) != null;
 
     return mainInfo.when(
       data: (mainInfo) {
-        final versionIsOk = Version.parse(mainInfo.requiredVersion) < Version.parse(mainInfo.packageInfo.version);
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           localizationsDelegates: const [
@@ -164,19 +124,68 @@ class MainApp extends HookConsumerWidget {
           theme: lightThemeData,
           darkTheme: darkThemeData,
           themeMode: ThemeMode.system,
-          home: versionIsOk
-              ? isLogin
-                  ? mainInfo.allGameList.isEmpty
-                      ? const InitialGameRegistrationView()
-                      : const BottomNavigationView()
-                  : const LoginView()
-              : const UpdaterView(),
+          home: MainAppHome(mainInfo: mainInfo),
           navigatorObservers: [FlutterSmartDialog.observer],
           builder: FlutterSmartDialog.init(),
         );
       },
       error: (error, stack) => Text('$error'),
       loading: () => const Center(child: CircularProgressIndicator()),
+    );
+  }
+}
+
+final combinedShareCountFutureProvider = FutureProvider.autoDispose<List<int>>((ref) async {
+  ref.keepAlive();
+  final hostCount = await ref.watch(hostShareCountProvider.future);
+  final guestCount = await ref.watch(guestShareCountProvider.future);
+  ref.read(combinedShareCountProvider.notifier).state = [hostCount, guestCount];
+  ref.read(revenueCatNotifierProvider);
+  return [hostCount, guestCount];
+});
+
+final combinedShareCountProvider = StateProvider<List<int>>((ref) => [0, 0]);
+
+class MainAppHome extends HookConsumerWidget {
+  const MainAppHome({
+    required this.mainInfo,
+    super.key,
+  });
+
+  final MainInfo mainInfo;
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(firebaseAuthNotifierProvider.select((value) => value.user));
+    if (user != null) ref.read(userInfoSettingsProvider);
+
+    final versionIsOk = Version.parse(mainInfo.requiredVersion) < Version.parse(mainInfo.packageInfo.version);
+    if (!versionIsOk) return const UpdaterView();
+
+    if (user == null) return const LoginView();
+
+    final isInitialGame = ref.watch(selectGameNotifierProvider.select((value) => value.selectGame != null));
+    if (!isInitialGame) return const InitialGameRegistrationView();
+
+    final revenueCatProvider = ref.watch(revenueCatNotifierProvider);
+    final shareCount = ref.watch(combinedShareCountFutureProvider);
+    return revenueCatProvider.maybeWhen(
+      data: (revenuecat) {
+        final isPremium = revenuecat.isPremium;
+        if (!isPremium) {
+          return shareCount.maybeWhen(
+            data: (data) {
+              final hostCount = data[0];
+              final guestCount = data[1];
+              if (hostCount > 1) return SelectSharedHostGameScreen(mainInfo: mainInfo);
+              if (guestCount > 2) return SelectSharedGuestGameScreen(mainInfo: mainInfo);
+              return const BottomNavigationView();
+            },
+            orElse: () => const Center(child: CircularProgressIndicator()),
+          );
+        }
+        return const BottomNavigationView();
+      },
+      orElse: () => const Center(child: CircularProgressIndicator()),
     );
   }
 }

@@ -10,6 +10,7 @@ class Game with _$Game implements DomainData {
     @JsonKey(name: 'game_id') int? id,
     @JsonKey(name: 'game') required String name,
     @Default(true) @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson) bool isVisibleToPicker,
+    @Default(false) @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson) bool isShare,
     int? sortIndex,
   }) = _Game;
   factory Game.fromJson(Map<String, dynamic> json) => _$GameFromJson(json);

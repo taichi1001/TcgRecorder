@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:collection/collection.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,11 +13,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:in_app_review/in_app_review.dart';
 import 'package:intl/intl.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:tcg_manager/entity/domain_data.dart';
+import 'package:tcg_manager/enum/access_roll.dart';
+import 'package:tcg_manager/enum/bo.dart';
 import 'package:tcg_manager/enum/domain_data_type.dart';
 import 'package:tcg_manager/enum/first_second.dart';
 import 'package:tcg_manager/enum/win_loss.dart';
@@ -28,9 +30,10 @@ import 'package:tcg_manager/provider/input_view_provider.dart';
 import 'package:tcg_manager/provider/input_view_settings_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/revenue_cat_provider.dart';
+import 'package:tcg_manager/provider/select_game_access_roll.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
-import 'package:tcg_manager/provider/firestore_controller.dart';
+import 'package:tcg_manager/provider/firestore_backup_controller_provider.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
 import 'package:tcg_manager/view/component/custom_scaffold.dart';
 import 'package:tcg_manager/view/component/custom_textfield.dart';
@@ -120,7 +123,7 @@ class InputTagList extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isPremium = ref.watch(revenueCatNotifierProvider.select((value) => value.isPremium));
+    final isPremium = ref.watch(revenueCatProvider.select((value) => value?.isPremium));
     return Column(
       children: controllers
           .mapIndexed(
@@ -161,9 +164,9 @@ class InputTagList extends HookConsumerWidget {
                 ),
                 IconButton(
                   onPressed: () async {
-                    if (addFunc != null && isPremium) {
+                    if (addFunc != null && isPremium!) {
                       addFunc!();
-                    } else if (!isPremium) {
+                    } else if (!isPremium!) {
                       await premiumPlanDialog(context);
                     }
                   },
@@ -182,7 +185,6 @@ class InputView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final date = ref.watch(inputViewNotifierProvider.select((value) => value.date));
     final winLoss = ref.watch(inputViewNotifierProvider.select((value) => value.winLoss));
     final firstMatchWinLoss = ref.watch(inputViewNotifierProvider.select((value) => value.firstMatchWinLoss));
     final secondMatchWinLoss = ref.watch(inputViewNotifierProvider.select((value) => value.secondMatchWinLoss));
@@ -200,7 +202,6 @@ class InputView extends HookConsumerWidget {
     final opponentDeckTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.opponentDeckController));
     final tagTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.tagController));
     final memoTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.memoController));
-    final dateTimeController = useState(CustomModalDateTimePickerController(initialDateTime: DateTime.now()));
     final isDraw = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.draw));
     final isBO3 = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.bo3));
 
@@ -242,15 +243,7 @@ class InputView extends HookConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 8),
-                    SelectableDateTime(
-                      controller: dateTimeController.value,
-                      submiteAction: () => inputViewNotifier.selectDateTime(dateTimeController.value.selectedDateTime),
-                      nowAction: () {
-                        dateTimeController.value.setDateTimeNow();
-                        inputViewNotifier.selectDateTime(dateTimeController.value.selectedDateTime);
-                      },
-                      datetime: date,
-                    ),
+                    const _InputViewSelectableDateTime(),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -269,7 +262,7 @@ class InputView extends HookConsumerWidget {
                                     groupValue: isBO3 ? firstMatchFirstSecond : firstSecond,
                                     onChanged: (FirstSecond? value) {
                                       if (isBO3) {
-                                        inputViewNotifier.selectFirstMatchFirstSecond(value);
+                                        inputViewNotifier.selectMatchFirstSecond(value, 1);
                                       } else {
                                         inputViewNotifier.selectFirstSecond(value);
                                       }
@@ -284,7 +277,7 @@ class InputView extends HookConsumerWidget {
                                     groupValue: isBO3 ? firstMatchFirstSecond : firstSecond,
                                     onChanged: (FirstSecond? value) {
                                       if (isBO3) {
-                                        inputViewNotifier.selectFirstMatchFirstSecond(value);
+                                        inputViewNotifier.selectMatchFirstSecond(value, 1);
                                       } else {
                                         inputViewNotifier.selectFirstSecond(value);
                                       }
@@ -311,7 +304,7 @@ class InputView extends HookConsumerWidget {
                                     groupValue: isBO3 ? firstMatchWinLoss : winLoss,
                                     onChanged: (WinLoss? value) {
                                       if (isBO3) {
-                                        inputViewNotifier.selectFirstMatchWinLoss(value);
+                                        inputViewNotifier.selectMatchWinLoss(value, 1);
                                       } else {
                                         inputViewNotifier.selectWinLoss(value);
                                       }
@@ -326,7 +319,7 @@ class InputView extends HookConsumerWidget {
                                     groupValue: isBO3 ? firstMatchWinLoss : winLoss,
                                     onChanged: (WinLoss? value) {
                                       if (isBO3) {
-                                        inputViewNotifier.selectFirstMatchWinLoss(value);
+                                        inputViewNotifier.selectMatchWinLoss(value, 1);
                                       } else {
                                         inputViewNotifier.selectWinLoss(value);
                                       }
@@ -342,7 +335,7 @@ class InputView extends HookConsumerWidget {
                                       groupValue: isBO3 ? firstMatchWinLoss : winLoss,
                                       onChanged: (WinLoss? value) {
                                         if (isBO3) {
-                                          inputViewNotifier.selectFirstMatchWinLoss(value);
+                                          inputViewNotifier.selectMatchWinLoss(value, 1);
                                         } else {
                                           inputViewNotifier.selectWinLoss(value);
                                         }
@@ -375,7 +368,7 @@ class InputView extends HookConsumerWidget {
                                       toggleable: true,
                                       groupValue: secondMatchFirstSecond,
                                       onChanged: (FirstSecond? value) {
-                                        inputViewNotifier.selectSecondMatchFirstSecond(value);
+                                        inputViewNotifier.selectMatchFirstSecond(value, 2);
                                       },
                                       contentPadding: const EdgeInsets.symmetric(horizontal: 0),
                                       dense: true,
@@ -386,7 +379,7 @@ class InputView extends HookConsumerWidget {
                                       toggleable: true,
                                       groupValue: secondMatchFirstSecond,
                                       onChanged: (FirstSecond? value) {
-                                        inputViewNotifier.selectSecondMatchFirstSecond(value);
+                                        inputViewNotifier.selectMatchFirstSecond(value, 2);
                                       },
                                       contentPadding: const EdgeInsets.symmetric(horizontal: 0),
                                       dense: true,
@@ -409,7 +402,7 @@ class InputView extends HookConsumerWidget {
                                       toggleable: true,
                                       groupValue: secondMatchWinLoss,
                                       onChanged: (WinLoss? value) {
-                                        inputViewNotifier.selectSecondMatchWinLoss(value);
+                                        inputViewNotifier.selectMatchWinLoss(value, 2);
                                       },
                                       contentPadding: const EdgeInsets.symmetric(horizontal: 0),
                                       dense: true,
@@ -420,7 +413,7 @@ class InputView extends HookConsumerWidget {
                                       toggleable: true,
                                       groupValue: secondMatchWinLoss,
                                       onChanged: (WinLoss? value) {
-                                        inputViewNotifier.selectSecondMatchWinLoss(value);
+                                        inputViewNotifier.selectMatchWinLoss(value, 2);
                                       },
                                       contentPadding: const EdgeInsets.symmetric(horizontal: 0),
                                       dense: true,
@@ -432,7 +425,7 @@ class InputView extends HookConsumerWidget {
                                         toggleable: true,
                                         groupValue: secondMatchWinLoss,
                                         onChanged: (WinLoss? value) {
-                                          inputViewNotifier.selectSecondMatchWinLoss(value);
+                                          inputViewNotifier.selectMatchWinLoss(value, 2);
                                         },
                                         contentPadding: const EdgeInsets.symmetric(horizontal: 0),
                                         dense: true,
@@ -462,7 +455,7 @@ class InputView extends HookConsumerWidget {
                                       value: FirstSecond.first,
                                       groupValue: thirdMatchFirstSecond,
                                       onChanged: (FirstSecond? value) {
-                                        inputViewNotifier.selectThirdMatchFirstSecond(value);
+                                        inputViewNotifier.selectMatchFirstSecond(value, 3);
                                       },
                                       contentPadding: const EdgeInsets.symmetric(horizontal: 0),
                                       dense: true,
@@ -473,7 +466,7 @@ class InputView extends HookConsumerWidget {
                                       toggleable: true,
                                       groupValue: thirdMatchFirstSecond,
                                       onChanged: (FirstSecond? value) {
-                                        inputViewNotifier.selectThirdMatchFirstSecond(value);
+                                        inputViewNotifier.selectMatchFirstSecond(value, 3);
                                       },
                                       contentPadding: const EdgeInsets.symmetric(horizontal: 0),
                                       dense: true,
@@ -496,7 +489,7 @@ class InputView extends HookConsumerWidget {
                                       toggleable: true,
                                       groupValue: thirdMatchWinLoss,
                                       onChanged: (WinLoss? value) {
-                                        inputViewNotifier.selectThirdMatchWinLoss(value);
+                                        inputViewNotifier.selectMatchWinLoss(value, 3);
                                       },
                                       contentPadding: const EdgeInsets.symmetric(horizontal: 0),
                                       dense: true,
@@ -507,7 +500,7 @@ class InputView extends HookConsumerWidget {
                                       toggleable: true,
                                       groupValue: thirdMatchWinLoss,
                                       onChanged: (WinLoss? value) {
-                                        inputViewNotifier.selectThirdMatchWinLoss(value);
+                                        inputViewNotifier.selectMatchWinLoss(value, 3);
                                       },
                                       contentPadding: const EdgeInsets.symmetric(horizontal: 0),
                                       dense: true,
@@ -519,7 +512,7 @@ class InputView extends HookConsumerWidget {
                                         toggleable: true,
                                         groupValue: thirdMatchWinLoss,
                                         onChanged: (WinLoss? value) {
-                                          inputViewNotifier.selectThirdMatchWinLoss(value);
+                                          inputViewNotifier.selectMatchWinLoss(value, 3);
                                         },
                                         contentPadding: const EdgeInsets.symmetric(horizontal: 0),
                                         dense: true,
@@ -542,7 +535,7 @@ class InputView extends HookConsumerWidget {
                               children: [
                                 CustomTextField(
                                   labelText: S.of(context).useDeck,
-                                  onChanged: inputViewNotifier.inputUseDeck,
+                                  onChanged: (name) => inputViewNotifier.inputDeck(name, true),
                                   controller: useDeckTextController,
                                   focusNode: useDeckFocusnode,
                                 ),
@@ -555,7 +548,7 @@ class InputView extends HookConsumerWidget {
                                       backgroundColor: Colors.transparent,
                                       builder: (BuildContext context) => SelectDomainDataView(
                                         dataType: DomainDataType.deck,
-                                        selectDomainDataFunc: inputViewNotifier.selectUseDeck,
+                                        selectDomainDataFunc: (domainData, index) => inputViewNotifier.selectDeck(domainData, index, true),
                                         tagCount: 0,
                                         afterFunc: FocusScope.of(context).unfocus,
                                         enableVisiblity: true,
@@ -571,7 +564,7 @@ class InputView extends HookConsumerWidget {
                               children: [
                                 CustomTextField(
                                   labelText: S.of(context).opponentDeck,
-                                  onChanged: inputViewNotifier.inputOpponentDeck,
+                                  onChanged: (name) => inputViewNotifier.inputDeck(name, false),
                                   controller: opponentDeckTextController,
                                   focusNode: opponentDeckFocusnode,
                                 ),
@@ -584,7 +577,7 @@ class InputView extends HookConsumerWidget {
                                       backgroundColor: Colors.transparent,
                                       builder: (BuildContext context) => SelectDomainDataView(
                                         dataType: DomainDataType.deck,
-                                        selectDomainDataFunc: inputViewNotifier.selectOpponentDeck,
+                                        selectDomainDataFunc: (domainData, index) => inputViewNotifier.selectDeck(domainData, index, false),
                                         tagCount: 0,
                                         afterFunc: FocusScope.of(context).unfocus,
                                         enableVisiblity: true,
@@ -628,7 +621,7 @@ class InputView extends HookConsumerWidget {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: addPhotoWidgets(
-                                  images: images,
+                                  images: images.map((e) => e.path).toList(),
                                   selectImageFunc: () async {
                                     final picker = ImagePicker();
                                     final image = await picker.pickImage(source: ImageSource.gallery);
@@ -663,36 +656,48 @@ class InputView extends HookConsumerWidget {
                                       (isBO3 && thirdMatchFirstSecond == null && thirdMatchWinLoss != null)
                                   ? null
                                   : () async {
-                                      final okCancelResult = await showOkCancelAlertDialog(
-                                        context: context,
-                                        message: S.of(context).isSave,
-                                        isDestructiveAction: true,
-                                      );
-                                      if (okCancelResult == OkCancelResult.ok) {
-                                        SmartDialog.showLoading();
-                                        int recordCount;
-                                        if (isBO3) {
-                                          recordCount = await inputViewNotifier.saveBO3();
-                                        } else {
-                                          recordCount = await inputViewNotifier.saveBO1();
-                                        }
-                                        ref.invalidate(allDeckListProvider);
-                                        ref.invalidate(allTagListProvider);
-                                        ref.invalidate(allRecordListProvider);
-                                        if (recordCount % 200 == 0) {
-                                          final inAppReview = InAppReview.instance;
-                                          if (await inAppReview.isAvailable()) {
-                                            inAppReview.requestReview();
+                                      final accessRoll = await ref.watch(selectGameAccessRoll.future);
+                                      if (accessRoll == AccessRoll.reader && context.mounted) {
+                                        await showOkAlertDialog(
+                                          context: context,
+                                          title: '権限がありません。',
+                                          message: 'この操作をする権限がありません。ゲームの管理者にお問い合わせください。',
+                                        );
+                                      } else if (context.mounted) {
+                                        final okCancelResult = await showOkCancelAlertDialog(
+                                          context: context,
+                                          message: S.of(context).isSave,
+                                          isDestructiveAction: true,
+                                        );
+
+                                        if (okCancelResult == OkCancelResult.ok) {
+                                          SmartDialog.showLoading();
+                                          if (isBO3) {
+                                            await inputViewNotifier.saveRecord(BO.bo3);
+                                          } else {
+                                            await inputViewNotifier.saveRecord(BO.bo1);
                                           }
+                                          ref.invalidate(allDeckListProvider);
+                                          ref.invalidate(allTagListProvider);
+                                          ref.invalidate(allRecordListProvider);
+                                          // レビュー催促ダイアログ条件検討中
+                                          // if (recordCount % 200 == 0) {
+                                          //   final inAppReview = InAppReview.instance;
+                                          //   if (await inAppReview.isAvailable()) {
+                                          //     inAppReview.requestReview();
+                                          //   }
+                                          // }
+                                          if (ref.read(backupNotifierProvider)) {
+                                            ref
+                                                .read(firestoreBackupControllerProvider)
+                                                .addRecord(ref.read(inputViewNotifierProvider).record!);
+                                          }
+                                          inputViewNotifier.resetView();
+                                          SmartDialog.dismiss();
                                         }
-                                        if (ref.read(backupNotifierProvider)) {
-                                          ref.read(firestoreController).addRecord(ref.read(inputViewNotifierProvider).record!);
+                                        if (context.mounted) {
+                                          FocusScope.of(context).unfocus();
                                         }
-                                        inputViewNotifier.resetView();
-                                        SmartDialog.dismiss();
-                                      }
-                                      if (context.mounted) {
-                                        FocusScope.of(context).unfocus();
                                       }
                                     },
                               style: ElevatedButton.styleFrom(
@@ -720,7 +725,7 @@ class InputView extends HookConsumerWidget {
 }
 
 List<Widget> addPhotoWidgets({
-  required List<XFile> images,
+  required List<String> images,
   required Function() selectImageFunc,
   required Function(int) deleteImageFunc,
 }) {
@@ -728,7 +733,7 @@ List<Widget> addPhotoWidgets({
   final List<Widget> result = images
       .mapIndexed(
         (index, image) => _AddPhotoWidget(
-          file: image,
+          filePath: image,
           index: index,
           selectImageFunc: selectImageFunc,
           deleteImageFunc: deleteImageFunc,
@@ -752,7 +757,7 @@ class _SettingModalBottomSheet extends HookConsumerWidget {
     final draw = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.draw));
     final bo3 = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.bo3));
     final inputiViewSettingsController = ref.watch(inputViewSettingsNotifierProvider.notifier);
-    final isPremium = ref.watch(revenueCatNotifierProvider.select((value) => value.isPremium));
+    final isPremium = ref.watch(revenueCatProvider.select((value) => value?.isPremium));
 
     return Material(
       child: SafeArea(
@@ -812,7 +817,7 @@ class _SettingModalBottomSheet extends HookConsumerWidget {
                 ),
                 value: draw,
                 onChanged: (value) async {
-                  if (isPremium) {
+                  if (isPremium!) {
                     inputiViewSettingsController.changeDraw(value);
                   } else {
                     await premiumPlanDialog(context);
@@ -827,7 +832,7 @@ class _SettingModalBottomSheet extends HookConsumerWidget {
                 ),
                 value: bo3,
                 onChanged: (value) async {
-                  if (isPremium) {
+                  if (isPremium!) {
                     inputiViewSettingsController.changeBO3(value);
                   } else {
                     await premiumPlanDialog(context);
@@ -846,28 +851,28 @@ class _AddPhotoWidget extends HookConsumerWidget {
   const _AddPhotoWidget({
     required this.selectImageFunc,
     required this.deleteImageFunc,
-    this.file,
+    this.filePath,
     this.index,
     key,
   }) : super(key: key);
 
   final Function() selectImageFunc;
   final Function(int) deleteImageFunc;
-  final XFile? file;
+  final String? filePath;
   final int? index;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isPremium = ref.watch(revenueCatNotifierProvider.select((value) => value.isPremium));
+    final isPremium = ref.watch(revenueCatProvider.select((value) => value?.isPremium));
 
     return Padding(
       padding: const EdgeInsets.only(right: 8),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(15),
-        child: file == null
+        child: filePath == null
             ? GestureDetector(
                 onTap: () async {
-                  if (isPremium) {
+                  if (!isPremium!) {
                     selectImageFunc();
                   } else {
                     await premiumPlanDialog(context);
@@ -901,10 +906,15 @@ class _AddPhotoWidget extends HookConsumerWidget {
                     SizedBox(
                       width: 80,
                       height: 80,
-                      child: Image.file(
-                        File(file!.path),
-                        fit: BoxFit.contain,
-                      ),
+                      child: filePath!.startsWith('https')
+                          ? CachedNetworkImage(
+                              imageUrl: filePath!,
+                              fit: BoxFit.contain,
+                            )
+                          : Image.file(
+                              File(filePath!),
+                              fit: BoxFit.contain,
+                            ),
                     ),
                     const Padding(
                       padding: EdgeInsets.all(4),
@@ -914,6 +924,26 @@ class _AddPhotoWidget extends HookConsumerWidget {
                 ),
               ),
       ),
+    );
+  }
+}
+
+class _InputViewSelectableDateTime extends HookConsumerWidget {
+  const _InputViewSelectableDateTime();
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final dateTimeController = useState(CustomModalDateTimePickerController(initialDateTime: DateTime.now()));
+    final date = ref.watch(inputViewNotifierProvider.select((value) => value.date));
+    final inputViewNotifier = ref.read(inputViewNotifierProvider.notifier);
+
+    return SelectableDateTime(
+      controller: dateTimeController.value,
+      submiteAction: () => inputViewNotifier.selectDateTime(dateTimeController.value.selectedDateTime),
+      nowAction: () {
+        dateTimeController.value.setDateTimeNow();
+        inputViewNotifier.selectDateTime(dateTimeController.value.selectedDateTime);
+      },
+      datetime: date,
     );
   }
 }

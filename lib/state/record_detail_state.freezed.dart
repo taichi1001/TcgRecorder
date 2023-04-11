@@ -20,9 +20,9 @@ mixin _$RecordEditViewState {
   Record get record => throw _privateConstructorUsedError;
   MargedRecord get margedRecord => throw _privateConstructorUsedError;
   MargedRecord get editMargedRecord => throw _privateConstructorUsedError;
-  List<XFile> get images => throw _privateConstructorUsedError;
+  List<String> get images => throw _privateConstructorUsedError;
   List<XFile> get addImages => throw _privateConstructorUsedError;
-  List<XFile> get removeImages => throw _privateConstructorUsedError;
+  List<String> get removeImages => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $RecordEditViewStateCopyWith<RecordEditViewState> get copyWith =>
@@ -40,9 +40,9 @@ abstract class $RecordEditViewStateCopyWith<$Res> {
       Record record,
       MargedRecord margedRecord,
       MargedRecord editMargedRecord,
-      List<XFile> images,
+      List<String> images,
       List<XFile> addImages,
-      List<XFile> removeImages});
+      List<String> removeImages});
 
   $RecordCopyWith<$Res> get record;
   $MargedRecordCopyWith<$Res> get margedRecord;
@@ -90,7 +90,7 @@ class _$RecordEditViewStateCopyWithImpl<$Res, $Val extends RecordEditViewState>
       images: null == images
           ? _value.images
           : images // ignore: cast_nullable_to_non_nullable
-              as List<XFile>,
+              as List<String>,
       addImages: null == addImages
           ? _value.addImages
           : addImages // ignore: cast_nullable_to_non_nullable
@@ -98,7 +98,7 @@ class _$RecordEditViewStateCopyWithImpl<$Res, $Val extends RecordEditViewState>
       removeImages: null == removeImages
           ? _value.removeImages
           : removeImages // ignore: cast_nullable_to_non_nullable
-              as List<XFile>,
+              as List<String>,
     ) as $Val);
   }
 
@@ -140,9 +140,9 @@ abstract class _$$_RecordEditViewStateCopyWith<$Res>
       Record record,
       MargedRecord margedRecord,
       MargedRecord editMargedRecord,
-      List<XFile> images,
+      List<String> images,
       List<XFile> addImages,
-      List<XFile> removeImages});
+      List<String> removeImages});
 
   @override
   $RecordCopyWith<$Res> get record;
@@ -191,7 +191,7 @@ class __$$_RecordEditViewStateCopyWithImpl<$Res>
       images: null == images
           ? _value._images
           : images // ignore: cast_nullable_to_non_nullable
-              as List<XFile>,
+              as List<String>,
       addImages: null == addImages
           ? _value._addImages
           : addImages // ignore: cast_nullable_to_non_nullable
@@ -199,7 +199,7 @@ class __$$_RecordEditViewStateCopyWithImpl<$Res>
       removeImages: null == removeImages
           ? _value._removeImages
           : removeImages // ignore: cast_nullable_to_non_nullable
-              as List<XFile>,
+              as List<String>,
     ));
   }
 }
@@ -212,9 +212,9 @@ class _$_RecordEditViewState implements _RecordEditViewState {
       required this.record,
       required this.margedRecord,
       required this.editMargedRecord,
-      final List<XFile> images = const [],
+      final List<String> images = const [],
       final List<XFile> addImages = const [],
-      final List<XFile> removeImages = const []})
+      final List<String> removeImages = const []})
       : _images = images,
         _addImages = addImages,
         _removeImages = removeImages;
@@ -228,10 +228,10 @@ class _$_RecordEditViewState implements _RecordEditViewState {
   final MargedRecord margedRecord;
   @override
   final MargedRecord editMargedRecord;
-  final List<XFile> _images;
+  final List<String> _images;
   @override
   @JsonKey()
-  List<XFile> get images {
+  List<String> get images {
     if (_images is EqualUnmodifiableListView) return _images;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_images);
@@ -246,10 +246,10 @@ class _$_RecordEditViewState implements _RecordEditViewState {
     return EqualUnmodifiableListView(_addImages);
   }
 
-  final List<XFile> _removeImages;
+  final List<String> _removeImages;
   @override
   @JsonKey()
-  List<XFile> get removeImages {
+  List<String> get removeImages {
     if (_removeImages is EqualUnmodifiableListView) return _removeImages;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_removeImages);
@@ -303,9 +303,9 @@ abstract class _RecordEditViewState implements RecordEditViewState {
       required final Record record,
       required final MargedRecord margedRecord,
       required final MargedRecord editMargedRecord,
-      final List<XFile> images,
+      final List<String> images,
       final List<XFile> addImages,
-      final List<XFile> removeImages}) = _$_RecordEditViewState;
+      final List<String> removeImages}) = _$_RecordEditViewState;
 
   @override
   bool get isEdit;
@@ -316,11 +316,11 @@ abstract class _RecordEditViewState implements RecordEditViewState {
   @override
   MargedRecord get editMargedRecord;
   @override
-  List<XFile> get images;
+  List<String> get images;
   @override
   List<XFile> get addImages;
   @override
-  List<XFile> get removeImages;
+  List<String> get removeImages;
   @override
   @JsonKey(ignore: true)
   _$$_RecordEditViewStateCopyWith<_$_RecordEditViewState> get copyWith =>

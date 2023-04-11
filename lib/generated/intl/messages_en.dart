@@ -110,6 +110,10 @@ class MessageLookup extends MessageLookupByLibrary {
             "Images can be recorded with them. \nHow about putting up a Јn deck recipe or something?"),
         "premiumPlanImageTitle":
             MessageLookupByLibrary.simpleMessage("Record Images\'"),
+        "premiumPlanShareDescription":
+            MessageLookupByLibrary.simpleMessage("Unlimited game sharing."),
+        "premiumPlanShareTitle": MessageLookupByLibrary.simpleMessage(
+            "Game Sharing Restrictions Lifted"),
         "premiumPlanTagDescription": MessageLookupByLibrary.simpleMessage(
             "Various tag combinations can be recorded."),
         "premiumPlanTagTitle":

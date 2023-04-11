@@ -2,11 +2,11 @@
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/game.dart';
+import 'package:tcg_manager/helper/initial_data_controller.dart';
 import 'package:tcg_manager/provider/backup_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
-import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/repository/game_repository.dart';
-import 'package:tcg_manager/provider/firestore_controller.dart';
+import 'package:tcg_manager/provider/firestore_backup_controller_provider.dart';
 import 'package:tcg_manager/state/select_game_state.dart';
 
 class SelectGameNotifier extends StateNotifier<SelectGameState> {
@@ -16,7 +16,7 @@ class SelectGameNotifier extends StateNotifier<SelectGameState> {
 
   final Ref ref;
 
-  void changeGame(Game game) {
+  void changeGame(Game? game) {
     state = state.copyWith(selectGame: game);
   }
 
@@ -54,7 +54,7 @@ class SelectGameNotifier extends StateNotifier<SelectGameState> {
     if (await _checkIfSelectedGamekNew(name)) {
       await ref.read(gameRepository).insert(newGame);
       ref.refresh(allGameListProvider);
-      if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).addAll();
+      if (ref.read(backupNotifierProvider)) await ref.read(firestoreBackupControllerProvider).addAll();
       final allGameList = await ref.read(allGameListProvider.future);
       final game = allGameList.last;
       state = state.copyWith(selectGame: game);
@@ -63,17 +63,12 @@ class SelectGameNotifier extends StateNotifier<SelectGameState> {
     return false;
   }
 
-  Future startupGame() async {
-    final records = await ref.read(allRecordListProvider.future);
-    final games = await ref.read(allGameListProvider.future);
-    if (records.isNotEmpty) {
-      // レコードが存在する場合、最後に登録したレコードのゲームを選択ゲームとする
-      final record = records.last;
-      final game = games.where((game) => game.id == record.gameId).last;
-      state = state.copyWith(selectGame: game, cacheSelectGame: game);
+  void startupGame() {
+    final game = ref.read(initialDataControllerProvider).loadGame();
+    if (game == null) {
+      state = state.copyWith(selectGame: null);
     } else {
-      // レコードが存在しない場合、最後に登録したゲームを選択ゲームとする
-      state = state.copyWith(selectGame: games.last, cacheSelectGame: games.last);
+      state = state.copyWith(selectGame: game);
     }
   }
 

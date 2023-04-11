@@ -24,7 +24,7 @@ dependencies:
 
   state_notifier: ^0.7.2+1
 
-  freezed_annotation: ^2.0.3
+  freezed_annotation: ^2.2.0
   json_annotation: ^4.5.0
   json_serializable: ^6.2.0
 
@@ -36,6 +36,7 @@ dependencies:
   firebase_auth: ^4.2.5
   firebase_messaging: ^14.2.2
   firebase_storage: ^11.0.14
+  firebase_dynamic_links: ^5.0.16
   cloud_firestore: ^4.3.2
   google_sign_in: ^5.4.4
 
@@ -118,6 +119,12 @@ dependencies:
   package_info_plus: ^3.0.3
 
   version: ^3.0.2
+
+  rxdart: ^0.27.7
+
+  cached_network_image: ^3.2.3
+
+  image_cropper: ^3.0.2
 
 flutter_native_splash:
   image: "assets/images/icon.png"

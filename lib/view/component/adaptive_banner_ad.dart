@@ -10,7 +10,7 @@ class AdaptiveBannerAd extends HookConsumerWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isPremium = ref.watch(revenueCatNotifierProvider.select((value) => value.isPremium));
+    final isPremium = ref.watch(revenueCatProvider.select((value) => value?.isPremium)) ?? false;
     final adSize = ref.read(adaptiveBannerAdNotifierProvider).adSize;
     final ad = BannerAd(
       size: adSize!,

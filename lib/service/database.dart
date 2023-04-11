@@ -7,7 +7,7 @@ import 'package:tcg_manager/entity/record.dart';
 import 'package:tcg_manager/entity/record_old.dart';
 
 class DatabaseService {
-  static const _databaseVersion = 5;
+  static const _databaseVersion = 6;
   static const _databaseName = 'record.db';
 
   //tableName
@@ -108,6 +108,9 @@ class DatabaseService {
       if (oldVersion < 5) {
         database.execute('ALTER TABLE $gameTableName ADD sort_index INTEGER');
       }
+      if (oldVersion < 6) {
+        database.execute('ALTER TABLE $gameTableName ADD is_share INTEGER');
+      }
     }
   }
 
@@ -138,6 +141,7 @@ class DatabaseService {
         game_id INTEGER PRIMARY KEY AUTOINCREMENT,
         game TEXT NOT NULL,
         is_visible_to_picker INTEGER NOT NULL,
+        is_share INTEGER NOT NULL,
         sort_index INTEGER,
         unique(game)
       )

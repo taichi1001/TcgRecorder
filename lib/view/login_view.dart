@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/provider/firebase_auth_provider.dart';
-import 'package:tcg_manager/provider/firestore_controller.dart';
+import 'package:tcg_manager/provider/firestore_backup_controller_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/view/phone_number_auth_view.dart';
 
@@ -46,7 +46,7 @@ class LoginView extends HookConsumerWidget {
                   );
                   final gameList = await ref.read(allGameListProvider.future);
                   if (context.mounted && ref.read(firebaseAuthNotifierProvider).user != null && gameList.isEmpty) {
-                    await ref.read(firestoreController).restoreAll();
+                    await ref.read(firestoreBackupControllerProvider).restoreAll();
                   }
                 },
                 child: Text(

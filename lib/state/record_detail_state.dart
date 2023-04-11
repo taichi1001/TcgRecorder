@@ -12,8 +12,8 @@ abstract class RecordEditViewState with _$RecordEditViewState {
     required Record record,
     required MargedRecord margedRecord,
     required MargedRecord editMargedRecord,
-    @Default([]) List<XFile> images,
+    @Default([]) List<String> images,
     @Default([]) List<XFile> addImages,
-    @Default([]) List<XFile> removeImages,
+    @Default([]) List<String> removeImages,
   }) = _RecordEditViewState;
 }

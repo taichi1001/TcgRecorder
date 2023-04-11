@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +12,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:tcg_manager/entity/marged_record.dart';
+import 'package:tcg_manager/enum/access_roll.dart';
 import 'package:tcg_manager/enum/bo.dart';
 import 'package:tcg_manager/enum/first_second.dart';
 import 'package:tcg_manager/enum/win_loss.dart';
@@ -20,8 +23,12 @@ import 'package:tcg_manager/main.dart';
 import 'package:tcg_manager/provider/backup_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/record_list_view_provider.dart';
-import 'package:tcg_manager/provider/firestore_controller.dart';
+import 'package:tcg_manager/provider/firestore_backup_controller_provider.dart';
+import 'package:tcg_manager/provider/select_game_access_roll.dart';
+import 'package:tcg_manager/repository/firestore_share_data_repository.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
+import 'package:tcg_manager/selector/game_record_list_selector.dart';
+import 'package:tcg_manager/selector/game_share_data_selector.dart';
 import 'package:tcg_manager/selector/marged_record_list_selector.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
 import 'package:tcg_manager/view/component/custom_scaffold.dart';
@@ -167,6 +174,7 @@ class _BrandListTile extends HookConsumerWidget {
     final imagePath = ref.watch(imagePathProvider);
     final isMemo = record.memo != null && record.memo != '';
     final isImage = record.imagePaths != null && record.imagePaths != [];
+    final isShare = ref.watch(isShareGame);
 
     return SlidableExpansionTileCard(
       key: UniqueKey(),
@@ -255,11 +263,18 @@ class _BrandListTile extends HookConsumerWidget {
         ),
       ),
       deleteFunc: () async {
-        final targetRecord = await ref.read(recordRepository).getRecordId(record.recordId);
-        ref.read(dbHelper).removeRecordImage(targetRecord!);
-        await ref.read(recordRepository).deleteById(record.recordId);
-        ref.invalidate(allRecordListProvider);
-        if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).deleteRecord(targetRecord);
+        if (ref.read(isShareGame)) {
+          final gameRecordList = await ref.watch(gameRecordListProvider.future);
+          final targetRecord = gameRecordList.firstWhere((gameRecord) => gameRecord.recordId == record.recordId);
+          final share = await ref.read(gameFirestoreShareStreamProvider.future);
+          ref.read(firestoreShareDataRepository).removeRecord(targetRecord, share!.docName);
+        } else {
+          final targetRecord = await ref.read(recordRepository).getRecordId(record.recordId);
+          ref.read(dbHelper).removeRecordImage(targetRecord!);
+          await ref.read(recordRepository).deleteById(record.recordId);
+          ref.invalidate(allRecordListProvider);
+          if (ref.read(backupNotifierProvider)) await ref.read(firestoreBackupControllerProvider).deleteRecord(targetRecord);
+        }
       },
       editFunc: () async {
         await Navigator.push(
@@ -274,8 +289,7 @@ class _BrandListTile extends HookConsumerWidget {
             ),
           ),
         );
-        // ignore: use_build_context_synchronously
-        await Slidable.of(context)?.close();
+        if (context.mounted) await Slidable.of(context)?.close();
       },
       alertTitle: S.of(context).recordListDeleteDialogTitle,
       alertMessage: S.of(context).recordListDeleteDialogMessage,
@@ -351,9 +365,12 @@ class _BrandListTile extends HookConsumerWidget {
                               (image) => GestureDetector(
                                 onTap: () {
                                   final customImageProvider = CustomImageProvider(
-                                    imageUrls: [
-                                      ...record.imagePaths!.map((image) => '$imagePath/$image'),
-                                    ].toList(),
+                                    imageUrls: isShare
+                                        ? [...record.imagePaths!].toList()
+                                        : [
+                                            ...record.imagePaths!.map((image) => '$imagePath/$image'),
+                                          ].toList(),
+                                    ref: ref,
                                     initialIndex: image.key,
                                   );
                                   showImageViewerPager(
@@ -368,10 +385,12 @@ class _BrandListTile extends HookConsumerWidget {
                                   child: SizedBox(
                                     width: 80,
                                     height: 80,
-                                    child: Image.file(
-                                      File('$imagePath/${image.value}'),
-                                      fit: BoxFit.contain,
-                                    ),
+                                    child: isShare
+                                        ? CachedNetworkImage(imageUrl: image.value)
+                                        : Image.file(
+                                            File('$imagePath/${image.value}'),
+                                            fit: BoxFit.contain,
+                                          ),
                                   ),
                                 ),
                               ),
@@ -576,12 +595,17 @@ class CustomImageProvider extends EasyImageProvider {
   @override
   final int initialIndex;
   final List<String> imageUrls;
+  final WidgetRef ref;
 
-  CustomImageProvider({required this.imageUrls, this.initialIndex = 0}) : super();
+  CustomImageProvider({required this.imageUrls, required this.ref, this.initialIndex = 0}) : super();
 
   @override
   ImageProvider<Object> imageBuilder(BuildContext context, int index) {
-    return Image.file(File(imageUrls[index])).image;
+    if (ref.read(isShareGame)) {
+      return CachedNetworkImageProvider(imageUrls[index]);
+    } else {
+      return Image.file(File(imageUrls[index])).image;
+    }
   }
 
   @override
@@ -604,18 +628,27 @@ class _EditDeleteButtonRow extends HookConsumerWidget {
                 minimumSize: MaterialStateProperty.all(const Size.fromHeight(32)),
               ),
               onPressed: () async {
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    fullscreenDialog: true,
-                    builder: (context) => ProviderScope(
-                      overrides: [currentMargedRecord.overrideWithValue(record)],
-                      child: RecordEditView(
-                        margedRecord: record,
+                final accessRoll = await ref.read(selectGameAccessRoll.future);
+                if (context.mounted && accessRoll == AccessRoll.reader) {
+                  await showOkAlertDialog(
+                    context: context,
+                    title: '権限がありません。',
+                    message: 'この操作をする権限がありません。ゲームの管理者にお問い合わせください。',
+                  );
+                } else if (context.mounted) {
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      fullscreenDialog: true,
+                      builder: (context) => ProviderScope(
+                        overrides: [currentMargedRecord.overrideWithValue(record)],
+                        child: RecordEditView(
+                          margedRecord: record,
+                        ),
                       ),
                     ),
-                  ),
-                );
+                  );
+                }
               },
               child: const Text('編集'),
             ),
@@ -630,11 +663,27 @@ class _EditDeleteButtonRow extends HookConsumerWidget {
                 backgroundColor: MaterialStateColor.resolveWith((states) => Theme.of(context).colorScheme.error),
               ),
               onPressed: () async {
-                final targetRecord = await ref.read(recordRepository).getRecordId(record.recordId);
-                ref.read(dbHelper).removeRecordImage(targetRecord!);
-                await ref.read(recordRepository).deleteById(record.recordId);
-                ref.invalidate(allRecordListProvider);
-                if (ref.read(backupNotifierProvider)) await ref.read(firestoreController).deleteRecord(targetRecord);
+                final accessRoll = await ref.read(selectGameAccessRoll.future);
+                if (context.mounted && accessRoll == AccessRoll.reader) {
+                  await showOkAlertDialog(
+                    context: context,
+                    title: '権限がありません。',
+                    message: 'この操作をする権限がありません。ゲームの管理者にお問い合わせください。',
+                  );
+                } else if (context.mounted) {
+                  if (ref.read(isShareGame)) {
+                    final gameRecordList = await ref.watch(gameRecordListProvider.future);
+                    final targetRecord = gameRecordList.firstWhere((gameRecord) => gameRecord.recordId == record.recordId);
+                    final share = await ref.read(gameFirestoreShareStreamProvider.future);
+                    ref.read(firestoreShareDataRepository).removeRecord(targetRecord, share!.docName);
+                  } else {
+                    final targetRecord = await ref.read(recordRepository).getRecordId(record.recordId);
+                    ref.read(dbHelper).removeRecordImage(targetRecord!);
+                    await ref.read(recordRepository).deleteById(record.recordId);
+                    ref.invalidate(allRecordListProvider);
+                    if (ref.read(backupNotifierProvider)) await ref.read(firestoreBackupControllerProvider).deleteRecord(targetRecord);
+                  }
+                }
               },
               child: const Text('削除'),
             ),

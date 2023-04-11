@@ -10,7 +10,7 @@ import 'package:tcg_manager/provider/execution_limit_cound_provider.dart';
 import 'package:tcg_manager/provider/input_view_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/revenue_cat_provider.dart';
-import 'package:tcg_manager/provider/firestore_controller.dart';
+import 'package:tcg_manager/provider/firestore_backup_controller_provider.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 
@@ -19,7 +19,7 @@ class BackupSettingsView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final autoBackup = ref.watch(backupNotifierProvider);
-    final isPremium = ref.watch(revenueCatNotifierProvider.select((value) => value.isPremium));
+    final isPremium = ref.watch(revenueCatProvider.select((value) => value?.isPremium));
     final lastBackupDate = ref.watch(lastBackup);
     final outputFormat = DateFormat('yyyy-MM-dd HH:mm');
     final executionCount = ref.watch(executionCountProvider);
@@ -45,7 +45,7 @@ class BackupSettingsView extends HookConsumerWidget {
                   SettingsTile.switchTile(
                     initialValue: autoBackup,
                     onToggle: (value) async {
-                      if (isPremium) {
+                      if (isPremium!) {
                         ref.read(backupNotifierProvider.notifier).changeSetting(value);
                       } else {
                         await premiumPlanDialog(context);
@@ -61,7 +61,7 @@ class BackupSettingsView extends HookConsumerWidget {
                     onPressed: (context) async {
                       if (ref.read(canExecuteProvider)) {
                         isLoading.value = true;
-                        await ref.read(firestoreController).addAll();
+                        await ref.read(firestoreBackupControllerProvider).addAll();
                         isLoading.value = false;
                         if (context.mounted) {
                           await showOkAlertDialog(
@@ -89,15 +89,15 @@ class BackupSettingsView extends HookConsumerWidget {
                     leading: const Icon(Icons.restore),
                     onPressed: (context) async {
                       isLoading.value = true;
-                      await ref.read(firestoreController).restoreAll();
+                      await ref.read(firestoreBackupControllerProvider).restoreAll();
                       final recordList = await ref.read(allRecordListProvider.future);
                       if (recordList.isNotEmpty) {
                         await ref.read(selectGameNotifierProvider.notifier).changeGameForId(recordList.last.gameId!);
-                        await ref.read(inputViewNotifierProvider.notifier).init();
+                        ref.read(inputViewNotifierProvider.notifier).init();
                         ref.read(textEditingControllerNotifierProvider.notifier).resetInputViewController();
                       } else {
                         await ref.read(selectGameNotifierProvider.notifier).changeGameForLast();
-                        await ref.read(inputViewNotifierProvider.notifier).init();
+                        ref.read(inputViewNotifierProvider.notifier).init();
                         ref.read(textEditingControllerNotifierProvider.notifier).resetInputViewController();
                       }
                       isLoading.value = false;
