@@ -109,7 +109,7 @@ class UserInfoSettingsView extends HookConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        userInfoSettings.id,
+                        userInfoSettings.id ?? '',
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                       const SizedBox(width: 4),

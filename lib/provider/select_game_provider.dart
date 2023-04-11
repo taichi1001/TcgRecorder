@@ -16,7 +16,7 @@ class SelectGameNotifier extends StateNotifier<SelectGameState> {
 
   final Ref ref;
 
-  void changeGame(Game game) {
+  void changeGame(Game? game) {
     state = state.copyWith(selectGame: game);
   }
 
@@ -66,7 +66,7 @@ class SelectGameNotifier extends StateNotifier<SelectGameState> {
   void startupGame() {
     final game = ref.read(initialDataControllerProvider).loadGame();
     if (game == null) {
-      state = state.copyWith(selectGame: Game(name: 'ゲームを作成してください'));
+      state = state.copyWith(selectGame: null);
     } else {
       state = state.copyWith(selectGame: game);
     }

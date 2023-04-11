@@ -23,6 +23,7 @@ import 'package:tcg_manager/provider/adaptive_banner_ad_provider.dart';
 import 'package:tcg_manager/provider/firebase_auth_provider.dart';
 import 'package:tcg_manager/provider/firestor_config_provider.dart';
 import 'package:tcg_manager/provider/revenue_cat_provider.dart';
+import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/provider/user_info_settings_provider.dart';
 import 'package:tcg_manager/repository/firestore_share_repository.dart';
 import 'package:tcg_manager/state/revenue_cat_state.dart';
@@ -136,7 +137,7 @@ class MainApp extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     useEffect(() {
-      ref.read(userInfoSettingsProvider);
+      // ref.read(userInfoSettingsProvider);
       return;
     }, const []);
     final mainInfo = ref.watch(mainInfoProvider(context));
@@ -190,17 +191,18 @@ class MainAppHome extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(firebaseAuthNotifierProvider.select((value) => value.user));
-    final versionIsOk = Version.parse(mainInfo.requiredVersion) < Version.parse(mainInfo.packageInfo.version);
-    final isInitialGame = ref.read(initialDataControllerProvider).loadGame() != null;
-    final isPremium = ref.watch(revenueCatNotifierProvider.select((value) => value.isPremium));
-    final shareCount = ref.watch(combinedShareCountFutureProvider);
+    if (user != null) ref.read(userInfoSettingsProvider);
 
+    final versionIsOk = Version.parse(mainInfo.requiredVersion) < Version.parse(mainInfo.packageInfo.version);
     if (!versionIsOk) return const UpdaterView();
 
     if (user == null) return const LoginView();
 
+    final isInitialGame = ref.watch(selectGameNotifierProvider.select((value) => value.selectGame != null));
     if (!isInitialGame) return const InitialGameRegistrationView();
 
+    final isPremium = ref.watch(revenueCatNotifierProvider.select((value) => value.isPremium));
+    final shareCount = ref.watch(combinedShareCountFutureProvider);
     if (!isPremium) {
       return shareCount.maybeWhen(
         data: (data) {

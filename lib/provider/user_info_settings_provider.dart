@@ -19,7 +19,8 @@ class UserInfoSettingsNotifier extends StateNotifier<UserInfoSettingsState> {
   final Ref ref;
 
   Future _init() async {
-    final userData = await ref.read(firestoreUserSettingsRepository).getAll(state.id);
+    if (state.id == null) return;
+    final userData = await ref.read(firestoreUserSettingsRepository).getAll(state.id!);
     state = state.copyWith(
       name: userData.name,
       iconPath: userData.iconPath,
@@ -27,16 +28,18 @@ class UserInfoSettingsNotifier extends StateNotifier<UserInfoSettingsState> {
   }
 
   Future setImagePath(String path) async {
+    if (state.id == null) return;
     final strageRef = FirebaseStorage.instance.ref().child('user_profile/${state.id}/icon');
     await strageRef.putFile(File(path));
     final newURL = await strageRef.getDownloadURL();
-    final newUserData = UserData(id: state.id, name: state.name, iconPath: newURL);
+    final newUserData = UserData(id: state.id!, name: state.name, iconPath: newURL);
     await ref.read(firestoreUserSettingsRepository).setAll(newUserData);
     state = state.copyWith(iconPath: newURL);
   }
 
   Future setUserName(String name) async {
-    final newUserData = UserData(id: state.id, name: name, iconPath: state.iconPath);
+    if (state.id == null) return;
+    final newUserData = UserData(id: state.id!, name: name, iconPath: state.iconPath);
     await ref.read(firestoreUserSettingsRepository).setAll(newUserData);
     state = state.copyWith(name: name);
   }
@@ -49,7 +52,7 @@ final userInfoSettingsProvider = StateNotifierProvider<UserInfoSettingsNotifier,
   final isPhoneAuth = user?.phoneNumber != null;
   final isPremium = revenucat.isPremium;
   final state = UserInfoSettingsState(
-    id: uid ?? '名前未設定',
+    id: uid,
     isPhoneAuth: isPhoneAuth,
     isPremium: isPremium,
   );

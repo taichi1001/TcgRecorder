@@ -30,6 +30,7 @@ import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/input_view_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/revenue_cat_provider.dart';
+import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/provider/theme_provider.dart';
 import 'package:tcg_manager/provider/user_info_settings_provider.dart';
@@ -286,7 +287,8 @@ class OtherView extends HookConsumerWidget {
                   isDestructiveAction: true,
                 );
                 if (okCancelResult == OkCancelResult.ok) {
-                  ref.read(firebaseAuthNotifierProvider.notifier).quiteUser();
+                  await ref.read(firebaseAuthNotifierProvider.notifier).quiteUser();
+                  ref.read(selectGameNotifierProvider.notifier).changeGame(null);
                 }
               },
               child: const Text('退会する'),
@@ -318,7 +320,7 @@ class _UserInfoSettingsTileHooksConsumerWidget extends HookConsumerWidget {
         backgroundImage: userInfoSettings.iconPath == null ? null : CachedNetworkImageProvider(userInfoSettings.iconPath!),
         child: userInfoSettings.iconPath == null
             ? Text(
-                userInfoSettings.name == null ? '名前未設定' : userInfoSettings.name![0],
+                userInfoSettings.name == null ? '名' : userInfoSettings.name![0],
                 style: Theme.of(context).primaryTextTheme.bodyMedium,
               )
             : null,

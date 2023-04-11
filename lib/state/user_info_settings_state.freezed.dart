@@ -16,7 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$UserInfoSettingsState {
-  String get id => throw _privateConstructorUsedError;
+  String? get id => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
   String? get iconPath => throw _privateConstructorUsedError;
   bool get isPhoneAuth => throw _privateConstructorUsedError;
@@ -34,7 +34,7 @@ abstract class $UserInfoSettingsStateCopyWith<$Res> {
       _$UserInfoSettingsStateCopyWithImpl<$Res, UserInfoSettingsState>;
   @useResult
   $Res call(
-      {String id,
+      {String? id,
       String? name,
       String? iconPath,
       bool isPhoneAuth,
@@ -55,17 +55,17 @@ class _$UserInfoSettingsStateCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
+    Object? id = freezed,
     Object? name = freezed,
     Object? iconPath = freezed,
     Object? isPhoneAuth = null,
     Object? isPremium = null,
   }) {
     return _then(_value.copyWith(
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -95,7 +95,7 @@ abstract class _$$_UserInfoSettingsStateCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String id,
+      {String? id,
       String? name,
       String? iconPath,
       bool isPhoneAuth,
@@ -113,17 +113,17 @@ class __$$_UserInfoSettingsStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
+    Object? id = freezed,
     Object? name = freezed,
     Object? iconPath = freezed,
     Object? isPhoneAuth = null,
     Object? isPremium = null,
   }) {
     return _then(_$_UserInfoSettingsState(
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -148,14 +148,14 @@ class __$$_UserInfoSettingsStateCopyWithImpl<$Res>
 
 class _$_UserInfoSettingsState implements _UserInfoSettingsState {
   _$_UserInfoSettingsState(
-      {required this.id,
+      {this.id,
       this.name,
       this.iconPath,
       this.isPhoneAuth = false,
       this.isPremium = false});
 
   @override
-  final String id;
+  final String? id;
   @override
   final String? name;
   @override
@@ -201,14 +201,14 @@ class _$_UserInfoSettingsState implements _UserInfoSettingsState {
 
 abstract class _UserInfoSettingsState implements UserInfoSettingsState {
   factory _UserInfoSettingsState(
-      {required final String id,
+      {final String? id,
       final String? name,
       final String? iconPath,
       final bool isPhoneAuth,
       final bool isPremium}) = _$_UserInfoSettingsState;
 
   @override
-  String get id;
+  String? get id;
   @override
   String? get name;
   @override
