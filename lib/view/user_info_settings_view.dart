@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/provider/revenue_cat_provider.dart';
@@ -19,6 +20,7 @@ class UserInfoSettingsView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final userInfoSettings = ref.watch(userInfoSettingsProvider);
     final revenuecatInfo = ref.watch(revenueCatProvider);
+    final dateFormat = DateFormat("yyyy-MM-dd");
     return Scaffold(
       appBar: AppBar(
         title: const Text('ユーザー情報設定'),
@@ -135,7 +137,7 @@ class UserInfoSettingsView extends HookConsumerWidget {
                 ),
                 description: Text(revenuecatInfo?.customerInfo?.latestExpirationDate == null
                     ? ''
-                    : 'サブスク有効期限：${revenuecatInfo?.customerInfo?.latestExpirationDate}'),
+                    : 'サブスク有効期限：${dateFormat.format(DateTime.parse(revenuecatInfo!.customerInfo!.latestExpirationDate!))}'),
                 onPressed: (context) {
                   Navigator.push(
                     context,
