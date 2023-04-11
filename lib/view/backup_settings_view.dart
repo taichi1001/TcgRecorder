@@ -19,7 +19,7 @@ class BackupSettingsView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final autoBackup = ref.watch(backupNotifierProvider);
-    final isPremium = ref.watch(revenueCatNotifierProvider.select((value) => value.isPremium));
+    final isPremium = ref.watch(revenueCatProvider.select((value) => value?.isPremium));
     final lastBackupDate = ref.watch(lastBackup);
     final outputFormat = DateFormat('yyyy-MM-dd HH:mm');
     final executionCount = ref.watch(executionCountProvider);
@@ -45,7 +45,7 @@ class BackupSettingsView extends HookConsumerWidget {
                   SettingsTile.switchTile(
                     initialValue: autoBackup,
                     onToggle: (value) async {
-                      if (isPremium) {
+                      if (isPremium!) {
                         ref.read(backupNotifierProvider.notifier).changeSetting(value);
                       } else {
                         await premiumPlanDialog(context);

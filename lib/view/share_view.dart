@@ -68,9 +68,9 @@ class _AddShareGameButton extends HookConsumerWidget {
     return FloatingActionButton(
       onPressed: () async {
         final shareCount = ref.read(combinedShareCountProvider);
-        final isPremium = ref.read(revenueCatNotifierProvider).isPremium;
+        final isPremium = ref.read(revenueCatProvider)?.isPremium;
 
-        if (shareCount[0] > 0 && !isPremium) {
+        if (shareCount[0] > 0 && !isPremium!) {
           final result = await showOkCancelAlertDialog(
             context: context,
             title: '共有個数制限に達しました。',

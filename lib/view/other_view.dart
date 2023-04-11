@@ -53,7 +53,7 @@ class OtherView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isPremium = ref.watch(revenueCatNotifierProvider.select((value) => value.isPremium));
+    final isPremium = ref.watch(revenueCatProvider.select((value) => value?.isPremium));
     final user = ref.watch(firebaseAuthNotifierProvider.select((value) => value.user));
     final isAnonymous = user?.phoneNumber == null;
 
@@ -194,7 +194,7 @@ class OtherView extends HookConsumerWidget {
                 title: const Text('CSV出力'),
                 leading: const Icon(FontAwesomeIcons.fileCsv),
                 onPressed: (context) async {
-                  if (isPremium) {
+                  if (isPremium!) {
                     final margedRecordList = await ref.read(allMargedRecordListProvider.future);
                     final csv = ListToCSV.margeRecordListToCSV(margedRecordList);
                     final savePath = ref.read(imagePathProvider);

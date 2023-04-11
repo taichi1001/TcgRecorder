@@ -649,7 +649,7 @@ class _SettingModalBottomSheet extends HookConsumerWidget {
     final draw = ref.watch(recordEditViewSettingsNotifierProvider(record).select((value) => value.draw));
     final bo3 = ref.watch(recordEditViewSettingsNotifierProvider(record).select((value) => value.bo3));
     final inputiViewSettingsController = ref.watch(recordEditViewSettingsNotifierProvider(record).notifier);
-    final isPremium = ref.watch(revenueCatNotifierProvider.select((value) => value.isPremium));
+    final isPremium = ref.watch(revenueCatProvider.select((value) => value?.isPremium));
 
     return Material(
       child: SafeArea(
@@ -675,7 +675,7 @@ class _SettingModalBottomSheet extends HookConsumerWidget {
                 ),
                 value: draw,
                 onChanged: (value) async {
-                  if (isPremium) {
+                  if (isPremium!) {
                     inputiViewSettingsController.changeDraw(value);
                   } else {
                     await premiumPlanDialog(context);
@@ -690,7 +690,7 @@ class _SettingModalBottomSheet extends HookConsumerWidget {
                 ),
                 value: bo3,
                 onChanged: (value) async {
-                  if (isPremium) {
+                  if (isPremium!) {
                     inputiViewSettingsController.changeBO3(value);
                   } else {
                     await premiumPlanDialog(context);

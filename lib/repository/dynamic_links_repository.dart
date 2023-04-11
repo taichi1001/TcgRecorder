@@ -68,7 +68,7 @@ class DynamicLinksRepository {
   Future<OkCancelResult> _showDialog(BuildContext context, String? uid, String? gameName) async {
     final userInfo = ref.read(userInfoSettingsProvider);
     final shareCount = await ref.read(guestShareCountProvider.future);
-    final isPremium = ref.read(revenueCatNotifierProvider).isPremium;
+    final isPremium = ref.read(revenueCatProvider)?.isPremium;
     var result = false;
     if (userInfo.name == null && context.mounted) {
       final okCancel = await showOkCancelAlertDialog(
@@ -91,7 +91,7 @@ class DynamicLinksRepository {
       }
       return result ? OkCancelResult.ok : OkCancelResult.cancel;
     }
-    if (shareCount > 1 && context.mounted && !isPremium) {
+    if (shareCount > 1 && context.mounted && !isPremium!) {
       final result = await showOkCancelAlertDialog(
         context: context,
         title: '共有個数制限に達しました。',

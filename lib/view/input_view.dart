@@ -123,7 +123,7 @@ class InputTagList extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isPremium = ref.watch(revenueCatNotifierProvider.select((value) => value.isPremium));
+    final isPremium = ref.watch(revenueCatProvider.select((value) => value?.isPremium));
     return Column(
       children: controllers
           .mapIndexed(
@@ -164,9 +164,9 @@ class InputTagList extends HookConsumerWidget {
                 ),
                 IconButton(
                   onPressed: () async {
-                    if (addFunc != null && isPremium) {
+                    if (addFunc != null && isPremium!) {
                       addFunc!();
-                    } else if (!isPremium) {
+                    } else if (!isPremium!) {
                       await premiumPlanDialog(context);
                     }
                   },
@@ -757,7 +757,7 @@ class _SettingModalBottomSheet extends HookConsumerWidget {
     final draw = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.draw));
     final bo3 = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.bo3));
     final inputiViewSettingsController = ref.watch(inputViewSettingsNotifierProvider.notifier);
-    final isPremium = ref.watch(revenueCatNotifierProvider.select((value) => value.isPremium));
+    final isPremium = ref.watch(revenueCatProvider.select((value) => value?.isPremium));
 
     return Material(
       child: SafeArea(
@@ -817,7 +817,7 @@ class _SettingModalBottomSheet extends HookConsumerWidget {
                 ),
                 value: draw,
                 onChanged: (value) async {
-                  if (isPremium) {
+                  if (isPremium!) {
                     inputiViewSettingsController.changeDraw(value);
                   } else {
                     await premiumPlanDialog(context);
@@ -832,7 +832,7 @@ class _SettingModalBottomSheet extends HookConsumerWidget {
                 ),
                 value: bo3,
                 onChanged: (value) async {
-                  if (isPremium) {
+                  if (isPremium!) {
                     inputiViewSettingsController.changeBO3(value);
                   } else {
                     await premiumPlanDialog(context);
@@ -863,7 +863,7 @@ class _AddPhotoWidget extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isPremium = ref.watch(revenueCatNotifierProvider.select((value) => value.isPremium));
+    final isPremium = ref.watch(revenueCatProvider.select((value) => value?.isPremium));
 
     return Padding(
       padding: const EdgeInsets.only(right: 8),
@@ -872,7 +872,7 @@ class _AddPhotoWidget extends HookConsumerWidget {
         child: filePath == null
             ? GestureDetector(
                 onTap: () async {
-                  if (!isPremium) {
+                  if (!isPremium!) {
                     selectImageFunc();
                   } else {
                     await premiumPlanDialog(context);

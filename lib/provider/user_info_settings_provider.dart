@@ -47,10 +47,10 @@ class UserInfoSettingsNotifier extends StateNotifier<UserInfoSettingsState> {
 
 final userInfoSettingsProvider = StateNotifierProvider<UserInfoSettingsNotifier, UserInfoSettingsState>((ref) {
   final user = ref.watch(firebaseAuthNotifierProvider).user;
-  final revenucat = ref.watch(revenueCatNotifierProvider);
+  final revenucat = ref.watch(revenueCatProvider);
   final uid = user?.uid;
   final isPhoneAuth = user?.phoneNumber != null;
-  final isPremium = revenucat.isPremium;
+  final isPremium = revenucat?.isPremium ?? false;
   final state = UserInfoSettingsState(
     id: uid,
     isPhoneAuth: isPhoneAuth,

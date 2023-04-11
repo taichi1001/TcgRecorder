@@ -18,7 +18,7 @@ class UserInfoSettingsView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userInfoSettings = ref.watch(userInfoSettingsProvider);
-    final revenuecatInfo = ref.watch(revenueCatNotifierProvider);
+    final revenuecatInfo = ref.watch(revenueCatProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('ユーザー情報設定'),
@@ -133,9 +133,9 @@ class UserInfoSettingsView extends HookConsumerWidget {
                   userInfoSettings.isPremium ? '登録済み' : '未登録',
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
-                description: Text(revenuecatInfo.customerInfo?.latestExpirationDate == null
+                description: Text(revenuecatInfo?.customerInfo?.latestExpirationDate == null
                     ? ''
-                    : 'サブスク有効期限：${revenuecatInfo.customerInfo?.latestExpirationDate}'),
+                    : 'サブスク有効期限：${revenuecatInfo?.customerInfo?.latestExpirationDate}'),
                 onPressed: (context) {
                   Navigator.push(
                     context,
