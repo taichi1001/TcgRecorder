@@ -910,6 +910,26 @@ class S {
     );
   }
 
+  /// `Game Sharing Restrictions Lifted`
+  String get premiumPlanShareTitle {
+    return Intl.message(
+      'Game Sharing Restrictions Lifted',
+      name: 'premiumPlanShareTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unlimited game sharing.`
+  String get premiumPlanShareDescription {
+    return Intl.message(
+      'Unlimited game sharing.',
+      name: 'premiumPlanShareDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `year`
   String get year {
     return Intl.message(

@@ -58,6 +58,12 @@ class PremiumPlanPurchaseView extends HookConsumerWidget {
                         iconColor: Colors.orange,
                       ),
                       _ContentsCard(
+                        title: S.of(context).premiumPlanShareTitle,
+                        description: S.of(context).premiumPlanShareDescription,
+                        icon: FontAwesomeIcons.shareNodes,
+                        iconColor: Colors.cyan,
+                      ),
+                      _ContentsCard(
                         title: S.of(context).premiumPlanImageTitle,
                         description: S.of(context).premiumPlanImageDescription,
                         icon: Icons.image,
