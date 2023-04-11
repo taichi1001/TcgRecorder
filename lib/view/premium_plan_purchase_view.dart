@@ -16,11 +16,11 @@ class PremiumPlanPurchaseView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final revenuecat = ref.watch(revenueCatNotifierProvider);
+    final revenuecat = ref.watch(revenueCatProvider);
     final revenuecatController = ref.watch(revenueCatNotifierProvider.notifier);
 
-    final monthlyPriceString = revenuecat.offerings?.current?.monthly?.storeProduct.priceString;
-    final yearPlanPrice = revenuecat.offerings?.current?.annual?.storeProduct.priceString;
+    final monthlyPriceString = revenuecat?.offerings?.current?.monthly?.storeProduct.priceString;
+    final yearPlanPrice = revenuecat?.offerings?.current?.annual?.storeProduct.priceString;
     final selectPlan = useState(Plan.yearly);
 
     return Stack(
@@ -58,6 +58,12 @@ class PremiumPlanPurchaseView extends HookConsumerWidget {
                         iconColor: Colors.orange,
                       ),
                       _ContentsCard(
+                        title: S.of(context).premiumPlanShareTitle,
+                        description: S.of(context).premiumPlanShareDescription,
+                        icon: FontAwesomeIcons.shareNodes,
+                        iconColor: Colors.cyan,
+                      ),
+                      _ContentsCard(
                         title: S.of(context).premiumPlanImageTitle,
                         description: S.of(context).premiumPlanImageDescription,
                         icon: Icons.image,
@@ -74,6 +80,12 @@ class PremiumPlanPurchaseView extends HookConsumerWidget {
                         description: S.of(context).premiumPlanADBlockDescription,
                         icon: Icons.block,
                         iconColor: Colors.red,
+                      ),
+                      _ContentsCard(
+                        title: S.of(context).premiumPlanBackupTitle,
+                        description: S.of(context).premiumPlanBackupDescription,
+                        icon: Icons.backup,
+                        iconColor: Colors.pink,
                       ),
                       const Divider(height: 24),
                       Row(
@@ -181,7 +193,7 @@ class PremiumPlanPurchaseView extends HookConsumerWidget {
             ),
           ),
         ),
-        if (revenuecat.isLoading)
+        if (revenuecat!.isLoading)
           const Opacity(
             opacity: 0.7,
             child: ModalBarrier(

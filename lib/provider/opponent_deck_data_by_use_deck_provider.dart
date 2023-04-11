@@ -9,12 +9,12 @@ final opponentDeckDataByUseDeckProvider = FutureProvider.family.autoDispose<List
   (ref, useDeckName) async {
     final filterRecordList = await ref.watch(filterRecordListProvider.future);
     final gameDeckList = await ref.watch(gameDeckListProvider.future);
-    final useDeck = gameDeckList.firstWhere((deck) => deck.deck == useDeckName);
-    final useDeckRecord = filterRecordList.where((record) => record.useDeckId == useDeck.deckId).toList();
+    final useDeck = gameDeckList.firstWhere((deck) => deck.name == useDeckName);
+    final useDeckRecord = filterRecordList.where((record) => record.useDeckId == useDeck.id).toList();
     final List<Deck> opponentDeckList = [];
     for (final deck in gameDeckList) {
       for (final record in useDeckRecord) {
-        if (record.opponentDeckId == deck.deckId) {
+        if (record.opponentDeckId == deck.id) {
           opponentDeckList.add(deck);
           break;
         }
@@ -24,7 +24,7 @@ final opponentDeckDataByUseDeckProvider = FutureProvider.family.autoDispose<List
     final calc = RecordCalculator(targetRecordList: filterRecordList);
     final opponentDeckData = opponentDeckList.map((opponentDeck) {
       return WinRateData(
-        deck: opponentDeck.deck,
+        deck: opponentDeck.name,
         matches: calc.countOpponentDeckMatches(useDeck, opponentDeck),
         firstMatches: calc.countOpponentDeckFirstMatches(useDeck, opponentDeck),
         secondMatches: calc.countOpponentDeckSecondMatches(useDeck, opponentDeck),

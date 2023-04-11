@@ -890,6 +890,46 @@ class S {
     );
   }
 
+  /// `Automatic backup`
+  String get premiumPlanBackupTitle {
+    return Intl.message(
+      'Automatic backup',
+      name: 'premiumPlanBackupTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You can always backup the latest data.`
+  String get premiumPlanBackupDescription {
+    return Intl.message(
+      'You can always backup the latest data.',
+      name: 'premiumPlanBackupDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Game Sharing Restrictions Lifted`
+  String get premiumPlanShareTitle {
+    return Intl.message(
+      'Game Sharing Restrictions Lifted',
+      name: 'premiumPlanShareTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unlimited game sharing.`
+  String get premiumPlanShareDescription {
+    return Intl.message(
+      'Unlimited game sharing.',
+      name: 'premiumPlanShareDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `year`
   String get year {
     return Intl.message(

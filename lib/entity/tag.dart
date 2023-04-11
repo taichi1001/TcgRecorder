@@ -1,16 +1,17 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:tcg_manager/entity/domain_data.dart';
 
 part 'tag.freezed.dart';
 part 'tag.g.dart';
 
 @freezed
-class Tag with _$Tag {
+class Tag with _$Tag implements DomainData {
   factory Tag({
-    @JsonKey(name: 'tag_id') int? tagId,
-    required String tag,
-    @JsonKey(name: 'game_id') int? gameId,
-    @Default(true) @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker') bool isVisibleToPicker,
-    @JsonKey(name: 'sort_index') int? sortIndex,
+    @JsonKey(name: 'tag_id') int? id,
+    @JsonKey(name: 'tag') required String name,
+    int? gameId,
+    @Default(true) @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson) bool isVisibleToPicker,
+    int? sortIndex,
   }) = _Tag;
   factory Tag.fromJson(Map<String, dynamic> json) => _$TagFromJson(json);
 }

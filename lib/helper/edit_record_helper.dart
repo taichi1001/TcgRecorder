@@ -33,7 +33,7 @@ class EditRecordHelper {
   /// 存在する場合にFalse, しない場合にTrueを返す
   Future<CheckGameResult> checkIfSelectedGameIsNew(String gameName) async {
     final gameList = await ref.read(allGameListProvider.future);
-    final matchList = gameList.where((game) => game.game == gameName);
+    final matchList = gameList.where((game) => game.name == gameName);
     if (matchList.isEmpty) {
       return CheckGameResult(isNew: true);
     }
@@ -43,9 +43,9 @@ class EditRecordHelper {
   /// 入力されたデッキ名がDBに存在するかをチェックする
   ///
   /// 存在する場合にFalse, しない場合にTrueを返す
-  Future<CheckDeckResult> checkIfSelectedUseDeckIsNew(String deckName) async {
+  Future<CheckDeckResult> checkIfSelectedDeckIsNew(String deckName) async {
     final gameDeckList = await ref.read(gameDeckListProvider.future);
-    final matchList = gameDeckList.where((Deck deck) => deck.deck == deckName);
+    final matchList = gameDeckList.where((Deck deck) => deck.name == deckName);
     if (matchList.isEmpty) {
       return CheckDeckResult(isNew: true);
     }
@@ -57,7 +57,7 @@ class EditRecordHelper {
   /// 存在する場合にFalse, しない場合にTrueを返す
   Future<CheckTagResult> checkIfSelectedTagIsNew(String tagName) async {
     final gameTagList = await ref.read(gameTagListProvider.future);
-    final matchList = gameTagList.where((Tag tag) => tag.tag == tagName);
+    final matchList = gameTagList.where((Tag tag) => tag.name == tagName);
     if (matchList.isEmpty) {
       return CheckTagResult(isNew: true);
     }

@@ -10,28 +10,23 @@ part 'record_old.g.dart';
 @freezed
 class RecordOld with _$RecordOld {
   factory RecordOld({
-    @JsonKey(name: 'record_id') int? recordId,
-    @JsonKey(name: 'game_id') int? gameId,
-    @JsonKey(name: 'tag_id') int? tagId,
-    @JsonKey(name: 'use_deck_id') int? useDeckId,
-    @JsonKey(name: 'opponent_deck_id') int? opponentDeckId,
+    int? recordId,
+    int? gameId,
+    int? tagId,
+    int? useDeckId,
+    int? opponentDeckId,
     @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson) DateTime? date,
     @Default(BO.bo1) @JsonKey(fromJson: _boFromJson, toJson: _boToJson) BO bo,
-    @Default(FirstSecond.first)
-    @JsonKey(fromJson: _firstSecondFromJson, toJson: _firstSecondToJson, name: 'first_second')
-        FirstSecond firstSecond,
-    @JsonKey(fromJson: _nullableFirstSecondFromJson, toJson: _nullableFirstSecondToJson, name: 'first_match_first_second')
-        FirstSecond? firstMatchFirstSecond,
-    @JsonKey(fromJson: _nullableFirstSecondFromJson, toJson: _nullableFirstSecondToJson, name: 'second_match_first_second')
-        FirstSecond? secondMatchFirstSecond,
-    @JsonKey(fromJson: _nullableFirstSecondFromJson, toJson: _nullableFirstSecondToJson, name: 'third_match_first_second')
-        FirstSecond? thiredMatchFirstSecond,
-    @Default(WinLoss.win) @JsonKey(fromJson: _winLossFromJson, toJson: _winLossToJson, name: 'win_loss') WinLoss winLoss,
-    @JsonKey(fromJson: _nullableWinLossFromJson, toJson: _nullableWinLossToJson, name: 'first_match_win_loss') WinLoss? firstMatchWinLoss,
-    @JsonKey(fromJson: _nullableWinLossFromJson, toJson: _nullableWinLossToJson, name: 'second_match_win_loss') WinLoss? secondMatchWinLoss,
-    @JsonKey(fromJson: _nullableWinLossFromJson, toJson: _nullableWinLossToJson, name: 'third_match_win_loss') WinLoss? thirdMatchWinLoss,
+    @Default(FirstSecond.first) @JsonKey(fromJson: _firstSecondFromJson, toJson: _firstSecondToJson) FirstSecond firstSecond,
+    @JsonKey(fromJson: _nullableFirstSecondFromJson, toJson: _nullableFirstSecondToJson) FirstSecond? firstMatchFirstSecond,
+    @JsonKey(fromJson: _nullableFirstSecondFromJson, toJson: _nullableFirstSecondToJson) FirstSecond? secondMatchFirstSecond,
+    @JsonKey(fromJson: _nullableFirstSecondFromJson, toJson: _nullableFirstSecondToJson) FirstSecond? thiredMatchFirstSecond,
+    @Default(WinLoss.win) @JsonKey(fromJson: _winLossFromJson, toJson: _winLossToJson) WinLoss winLoss,
+    @JsonKey(fromJson: _nullableWinLossFromJson, toJson: _nullableWinLossToJson) WinLoss? firstMatchWinLoss,
+    @JsonKey(fromJson: _nullableWinLossFromJson, toJson: _nullableWinLossToJson) WinLoss? secondMatchWinLoss,
+    @JsonKey(fromJson: _nullableWinLossFromJson, toJson: _nullableWinLossToJson) WinLoss? thirdMatchWinLoss,
     String? memo,
-    @JsonKey(fromJson: _stringListFromJson, toJson: _stringListToJson, name: 'image_path') List<String>? imagePath,
+    @JsonKey(fromJson: _stringListFromJson, toJson: _stringListToJson) List<String>? imagePath,
   }) = _RecordOld;
   factory RecordOld.fromJson(Map<String, dynamic> json) => _$RecordOldFromJson(json);
 }

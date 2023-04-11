@@ -92,6 +92,10 @@ class MessageLookup extends MessageLookupByLibrary {
             "All advertisements in the application will be hidden."),
         "premiumPlanADBlockTitle":
             MessageLookupByLibrary.simpleMessage("No ads displayed"),
+        "premiumPlanBackupDescription": MessageLookupByLibrary.simpleMessage(
+            "You can always backup the latest data."),
+        "premiumPlanBackupTitle":
+            MessageLookupByLibrary.simpleMessage("Automatic backup"),
         "premiumPlanCatchCopy": MessageLookupByLibrary.simpleMessage(
             "Win the game with more detailed recording and analysis!"),
         "premiumPlanDrawDescription": MessageLookupByLibrary.simpleMessage(
@@ -106,6 +110,10 @@ class MessageLookup extends MessageLookupByLibrary {
             "Images can be recorded with them. \nHow about putting up a Јn deck recipe or something?"),
         "premiumPlanImageTitle":
             MessageLookupByLibrary.simpleMessage("Record Images\'"),
+        "premiumPlanShareDescription":
+            MessageLookupByLibrary.simpleMessage("Unlimited game sharing."),
+        "premiumPlanShareTitle": MessageLookupByLibrary.simpleMessage(
+            "Game Sharing Restrictions Lifted"),
         "premiumPlanTagDescription": MessageLookupByLibrary.simpleMessage(
             "Various tag combinations can be recorded."),
         "premiumPlanTagTitle":

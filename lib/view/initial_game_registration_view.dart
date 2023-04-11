@@ -1,10 +1,7 @@
-// ignore_for_file: unused_result
-
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/generated/l10n.dart';
-import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/initital_game_registration_provider.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
@@ -45,14 +42,8 @@ class InitialGameRegistrationView extends HookConsumerWidget {
                         onPressed: initialGameState.initialGame == null
                             ? null
                             : () async {
-                                if (initialGameState.initialGame == null) {
-                                  null;
-                                } else {
-                                  initialGameRegistrationNotifier.save();
-                                  initialGameRegistrationNotifier.reset();
-                                  ref.refresh(allGameListProvider);
-                                  ref.read(selectGameNotifierProvider.notifier).startupGame();
-                                }
+                                await initialGameRegistrationNotifier.save();
+                                ref.read(selectGameNotifierProvider.notifier).startupGame();
                               },
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(

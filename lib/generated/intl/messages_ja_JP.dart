@@ -85,6 +85,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("アプリ内の広告が全て非表示になります。"),
         "premiumPlanADBlockTitle":
             MessageLookupByLibrary.simpleMessage("広告表示なし"),
+        "premiumPlanBackupDescription":
+            MessageLookupByLibrary.simpleMessage("常に最新のデータをバックアップすることができます。"),
+        "premiumPlanBackupTitle":
+            MessageLookupByLibrary.simpleMessage("自動バックアップ"),
         "premiumPlanCatchCopy":
             MessageLookupByLibrary.simpleMessage("より詳細に記録・分析して試合に勝ちましょう"),
         "premiumPlanDrawDescription":
@@ -98,6 +102,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "premiumPlanImageDescription": MessageLookupByLibrary.simpleMessage(
             "画像も一緒に記録できるようになります。\nデッキレシピを載せたりしてはどうでしょうか。"),
         "premiumPlanImageTitle": MessageLookupByLibrary.simpleMessage("画像を記録"),
+        "premiumPlanShareDescription":
+            MessageLookupByLibrary.simpleMessage("無制限にゲームを共有できます。"),
+        "premiumPlanShareTitle":
+            MessageLookupByLibrary.simpleMessage("ゲーム共有制限解除"),
         "premiumPlanTagDescription":
             MessageLookupByLibrary.simpleMessage("様々なタグを組み合わせて記録できます。"),
         "premiumPlanTagTitle": MessageLookupByLibrary.simpleMessage("複数タグを記録"),

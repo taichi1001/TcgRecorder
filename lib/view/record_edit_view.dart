@@ -10,6 +10,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/marged_record.dart';
 import 'package:tcg_manager/entity/tag.dart';
+import 'package:tcg_manager/enum/domain_data_type.dart';
 import 'package:tcg_manager/enum/first_second.dart';
 import 'package:tcg_manager/enum/win_loss.dart';
 import 'package:tcg_manager/generated/l10n.dart';
@@ -22,7 +23,7 @@ import 'package:tcg_manager/selector/game_tag_list_selector.dart';
 import 'package:tcg_manager/view/component/custom_textfield.dart';
 import 'package:tcg_manager/view/component/cutom_date_time_picker.dart';
 import 'package:tcg_manager/view/input_view.dart';
-import 'package:tcg_manager/view/select_deck_view.dart';
+import 'package:tcg_manager/view/select_domain_data_view.dart';
 
 class RecordEditViewInfo {
   const RecordEditViewInfo({
@@ -78,7 +79,7 @@ class RecordEditView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final recordDetailNotifier = ref.watch(recordDetailNotifierProvider(margedRecord).notifier);
+    final recordDetailNotifier = ref.watch(recordEditViewNotifierProvider(margedRecord).notifier);
     final isBO3 = ref.watch(recordEditViewSettingsNotifierProvider(margedRecord).select((value) => value.bo3));
     return WillPopScope(
       onWillPop: (() async {
@@ -111,14 +112,14 @@ class RecordEditView extends HookConsumerWidget {
                 S.of(context).save,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
-              onPressed: () {
+              onPressed: () async {
                 if (isBO3) {
-                  recordDetailNotifier.saveEditBO3();
+                  await recordDetailNotifier.saveEditRecord(isBO3: isBO3);
                 } else {
-                  recordDetailNotifier.saveEdit();
+                  await recordDetailNotifier.saveEditRecord(isBO3: isBO3);
                 }
                 recordDetailNotifier.changeIsEdit();
-                Navigator.pop(context);
+                if (context.mounted) Navigator.pop(context);
               },
             ),
           ],
@@ -149,10 +150,10 @@ class _EditView extends HookConsumerWidget {
     }, const []);
     final recordEditViewInfo = ref.watch(recordEditViewInfoProvider);
 
-    final editMargedRecord = ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.editMargedRecord));
-    final images = ref.watch(recordDetailNotifierProvider(margedRecord).select((value) => value.images));
-    final recordDetailNotifier = ref.watch(recordDetailNotifierProvider(margedRecord).notifier);
-    final recordDetailState = ref.watch(recordDetailNotifierProvider(margedRecord));
+    final editMargedRecord = ref.watch(recordEditViewNotifierProvider(margedRecord).select((value) => value.editMargedRecord));
+    final images = ref.watch(recordEditViewNotifierProvider(margedRecord).select((value) => value.images));
+    final recordDetailNotifier = ref.watch(recordEditViewNotifierProvider(margedRecord).notifier);
+    final recordDetailState = ref.watch(recordEditViewNotifierProvider(margedRecord));
     final firstSecond = recordDetailState.editMargedRecord.firstSecond;
     final firstMatchFirstSecond = recordDetailState.editMargedRecord.firstMatchFirstSecond;
     final secondMatchFirstSecond = recordDetailState.editMargedRecord.secondMatchFirstSecond;
@@ -524,8 +525,12 @@ class _EditView extends HookConsumerWidget {
                                   context: context,
                                   backgroundColor: Colors.transparent,
                                   builder: (BuildContext context) {
-                                    return SelectDeckView(
-                                      selectDeckFunc: recordDetailNotifier.selectUseDeck,
+                                    return SelectDomainDataView(
+                                      dataType: DomainDataType.deck,
+                                      selectDomainDataFunc: recordDetailNotifier.selectUseDeck,
+                                      tagCount: 0,
+                                      afterFunc: FocusScope.of(context).unfocus,
+                                      enableVisiblity: true,
                                     );
                                   },
                                 );
@@ -552,8 +557,12 @@ class _EditView extends HookConsumerWidget {
                                   context: context,
                                   backgroundColor: Colors.transparent,
                                   builder: (BuildContext context) {
-                                    return SelectDeckView(
-                                      selectDeckFunc: recordDetailNotifier.selectOpponentDeck,
+                                    return SelectDomainDataView(
+                                      dataType: DomainDataType.deck,
+                                      selectDomainDataFunc: recordDetailNotifier.selectOpponentDeck,
+                                      tagCount: 0,
+                                      afterFunc: FocusScope.of(context).unfocus,
+                                      enableVisiblity: true,
                                     );
                                   },
                                 );
@@ -567,10 +576,13 @@ class _EditView extends HookConsumerWidget {
                           controllers: tagTextControllers,
                           focusNodes: tagFocusNodes,
                           inputTag: recordDetailNotifier.editTag,
-                          isDropDown: false,
-                          selectTagFunc: recordDetailNotifier.selectTag,
+                          selectTagFunc: (data, index) {
+                            recordDetailNotifier.selectTag(data, index);
+                            tagTextControllers[index] = TextEditingController(text: data.name);
+                          },
                           addFunc: () {
                             ref.read(_tagTextController.notifier).state = [...tagTextControllers, TextEditingController()];
+                            ref.read(originalTagLength.notifier).state = ref.read(_tagTextController).length;
                           },
                         ),
                         const SizedBox(height: 8),
@@ -600,9 +612,9 @@ class _EditView extends HookConsumerWidget {
                               images: images,
                               selectImageFunc: () async {
                                 final picker = ImagePicker();
-                                final images = await picker.pickMultiImage();
-                                if (images.isEmpty) return;
-                                recordDetailNotifier.inputImage(images);
+                                final image = await picker.pickImage(source: ImageSource.gallery);
+                                if (image == null) return;
+                                recordDetailNotifier.inputImage(image);
                               },
                               deleteImageFunc: (value) {
                                 recordDetailNotifier.removeImage(value);
@@ -637,7 +649,7 @@ class _SettingModalBottomSheet extends HookConsumerWidget {
     final draw = ref.watch(recordEditViewSettingsNotifierProvider(record).select((value) => value.draw));
     final bo3 = ref.watch(recordEditViewSettingsNotifierProvider(record).select((value) => value.bo3));
     final inputiViewSettingsController = ref.watch(recordEditViewSettingsNotifierProvider(record).notifier);
-    final isPremium = ref.watch(revenueCatNotifierProvider.select((value) => value.isPremium));
+    final isPremium = ref.watch(revenueCatProvider.select((value) => value?.isPremium));
 
     return Material(
       child: SafeArea(
@@ -663,7 +675,7 @@ class _SettingModalBottomSheet extends HookConsumerWidget {
                 ),
                 value: draw,
                 onChanged: (value) async {
-                  if (isPremium) {
+                  if (isPremium!) {
                     inputiViewSettingsController.changeDraw(value);
                   } else {
                     await premiumPlanDialog(context);
@@ -678,7 +690,7 @@ class _SettingModalBottomSheet extends HookConsumerWidget {
                 ),
                 value: bo3,
                 onChanged: (value) async {
-                  if (isPremium) {
+                  if (isPremium!) {
                     inputiViewSettingsController.changeBO3(value);
                   } else {
                     await premiumPlanDialog(context);

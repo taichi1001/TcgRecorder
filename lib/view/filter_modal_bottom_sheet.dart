@@ -6,13 +6,13 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 import 'package:tcg_manager/entity/tag.dart';
+import 'package:tcg_manager/enum/domain_data_type.dart';
 import 'package:tcg_manager/enum/sort.dart';
 import 'package:tcg_manager/helper/convert_sort_string.dart';
 import 'package:tcg_manager/provider/record_list_view_provider.dart';
 import 'package:tcg_manager/view/component/custom_modal_list_picker.dart';
 import 'package:tcg_manager/view/component/cutom_date_time_range_picker.dart';
-import 'package:tcg_manager/view/select_deck_view.dart';
-import 'package:tcg_manager/view/select_tag_view.dart';
+import 'package:tcg_manager/view/select_domain_data_view.dart';
 
 class FilterModalBottomSheet extends HookConsumerWidget {
   const FilterModalBottomSheet({
@@ -35,9 +35,9 @@ class FilterModalBottomSheet extends HookConsumerWidget {
     var count = 0;
     for (final tag in tagList) {
       if (count == 0) {
-        result = tag.tag;
+        result = tag.name;
       } else {
-        result = '$result,${tag.tag}';
+        result = '$result,${tag.name}';
       }
       count++;
     }
@@ -241,8 +241,12 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                       expand: true,
                       context: context,
                       backgroundColor: Colors.transparent,
-                      builder: (BuildContext context) => SelectDeckView(
-                        selectDeckFunc: recordListViewNotifier.selectUseDeck,
+                      builder: (BuildContext context) => SelectDomainDataView(
+                        dataType: DomainDataType.deck,
+                        selectDomainDataFunc: recordListViewNotifier.selectUseDeck,
+                        tagCount: 0,
+                        afterFunc: FocusScope.of(context).unfocus,
+                        enableVisiblity: true,
                       ),
                     );
                   },
@@ -251,7 +255,7 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        recordListViewState.useDeck == null ? const Text('全て') : Text(recordListViewState.useDeck!.deck),
+                        recordListViewState.useDeck == null ? const Text('全て') : Text(recordListViewState.useDeck!.name),
                         const Icon(Icons.arrow_drop_down),
                       ],
                     ),
@@ -277,8 +281,12 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                       expand: true,
                       context: context,
                       backgroundColor: Colors.transparent,
-                      builder: (BuildContext context) => SelectDeckView(
-                        selectDeckFunc: recordListViewNotifier.selectOpponentDeck,
+                      builder: (BuildContext context) => SelectDomainDataView(
+                        dataType: DomainDataType.deck,
+                        selectDomainDataFunc: recordListViewNotifier.selectOpponentDeck,
+                        tagCount: 0,
+                        afterFunc: FocusScope.of(context).unfocus,
+                        enableVisiblity: true,
                       ),
                     );
                   },
@@ -287,7 +295,7 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        recordListViewState.opponentDeck == null ? const Text('全て') : Text(recordListViewState.opponentDeck!.deck),
+                        recordListViewState.opponentDeck == null ? const Text('全て') : Text(recordListViewState.opponentDeck!.name),
                         const Icon(Icons.arrow_drop_down),
                       ],
                     ),
@@ -313,9 +321,10 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                       expand: true,
                       context: context,
                       backgroundColor: Colors.transparent,
-                      builder: (BuildContext context) => SelectTagView(
+                      builder: (BuildContext context) => SelectDomainDataView(
                         tagCount: 0,
-                        selectTagFunc: recordListViewNotifier.selectTag,
+                        dataType: DomainDataType.tag,
+                        selectDomainDataFunc: recordListViewNotifier.selectTag,
                         deselectionFunc: recordListViewNotifier.deselectionTag,
                         returnSelecting: false,
                       ),
