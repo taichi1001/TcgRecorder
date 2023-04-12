@@ -7,12 +7,14 @@ import 'package:tcg_manager/entity/firestore_share.dart';
 import 'package:tcg_manager/entity/game.dart';
 import 'package:tcg_manager/enum/access_roll.dart';
 import 'package:tcg_manager/main.dart';
+import 'package:tcg_manager/provider/adaptive_banner_ad_provider.dart';
 import 'package:tcg_manager/provider/firebase_auth_provider.dart';
 import 'package:tcg_manager/provider/firestore_controller_provider.dart';
 import 'package:tcg_manager/provider/revenue_cat_provider.dart';
 import 'package:tcg_manager/provider/user_info_settings_provider.dart';
 import 'package:tcg_manager/repository/dynamic_links_repository.dart';
 import 'package:tcg_manager/repository/firestore_share_repository.dart';
+import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
 import 'package:tcg_manager/view/component/list_tile_ontap.dart';
 import 'package:tcg_manager/view/component/sliver_header.dart';
 import 'package:tcg_manager/view/guest_share_game_view.dart';
@@ -25,38 +27,96 @@ class ShareView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userInfo = ref.watch(userInfoSettingsProvider);
+    final adHeight = ref.watch(adaptiveBannerAdNotifierProvider).adSize?.height;
+    final isPremium = ref.watch(revenueCatProvider.select((value) => value?.isPremium));
     return Scaffold(
       appBar: AppBar(title: const Text('ゲーム共有')),
       body: userInfo.name == null
           ? Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Center(
-                  child: Text('ゲーム共有を利用するためにはプロフィールの設定が必要です。'),
-                ),
-                ElevatedButton(
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const UserInfoSettingsView(),
-                    ),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Center(
+                        child: Text('ゲーム共有を利用するためにはプロフィールの設定が必要です。'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const UserInfoSettingsView(),
+                          ),
+                        ),
+                        child: const Text('プロフィールを設定する'),
+                      ),
+                    ],
                   ),
-                  child: const Text('プロフィールを設定する'),
                 ),
+                const AdaptiveBannerAd(),
               ],
             )
-          : const CustomScrollView(
-              slivers: [
-                SliverHeader(title: 'ホスト'),
-                _HostShareGameListView(),
-                SliverHeader(title: 'ゲスト'),
-                _GuestShareGameListView(),
-                SliverHeader(title: '申請中'),
-                _GuestPendingShareGameListView(),
+          : Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                CustomScrollView(
+                  slivers: [
+                    if (!isPremium!) const SliverToBoxAdapter(child: LimitedAccessBanner()),
+                    const SliverHeader(title: 'ホスト'),
+                    const _HostShareGameListView(),
+                    const SliverHeader(title: 'ゲスト'),
+                    const _GuestShareGameListView(),
+                    const SliverHeader(title: '申請中'),
+                    const _GuestPendingShareGameListView(),
+                    SliverToBoxAdapter(child: Container(height: adHeight?.toDouble())),
+                  ],
+                ),
+                const AdaptiveBannerAd(),
               ],
             ),
-      floatingActionButton: const _AddShareGameButton(),
+      floatingActionButton: userInfo.name == null
+          ? null
+          : Padding(
+              padding: EdgeInsets.only(bottom: adHeight!.toDouble()),
+              child: const _AddShareGameButton(),
+            ),
+    );
+  }
+}
+
+class LimitedAccessBanner extends StatelessWidget {
+  const LimitedAccessBanner({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final textStyle = Theme.of(context).textTheme.bodySmall;
+    return Card(
+      margin: const EdgeInsets.all(8),
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              fullscreenDialog: true,
+              builder: (context) => const PremiumPlanPurchaseView(),
+            ),
+          );
+        },
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('プレミアムプランに未加入の方には以下の制限があります。', style: textStyle),
+              Text('プレミアムプランにアップグレードすることで制限が解除されます。', style: textStyle),
+              const SizedBox(height: 4),
+              Text('・作成できるゲーム: 1つまで', style: textStyle),
+              Text('・参加できるゲーム: 2つまで', style: textStyle),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
