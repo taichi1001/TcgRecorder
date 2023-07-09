@@ -859,12 +859,12 @@ class _InputViewMock extends HookConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 8),
-              Card(
+              const Card(
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: EdgeInsets.all(16.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
+                    children: [
                       Text('2022年 01月 01日'),
                       Icon(Icons.calendar_today_rounded),
                     ],

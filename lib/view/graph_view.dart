@@ -73,8 +73,8 @@ class GraphView extends HookConsumerWidget {
                 Center(
                   child: recordList.isEmpty
                       ? Text(S.of(context).noDataMessage)
-                      : Column(
-                          children: const [
+                      : const Column(
+                          children: [
                             Expanded(child: GameDataGrid()),
                             AdaptiveBannerAd(),
                           ],

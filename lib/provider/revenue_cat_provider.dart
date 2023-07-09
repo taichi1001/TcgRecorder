@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:tcg_manager/provider/firebase_auth_provider.dart';
@@ -19,7 +18,7 @@ class RevenueCatNotifier extends StateNotifier<AsyncValue<RevenueCatState>> {
   Future init() async {
     try {
       final user = ref.read(firebaseAuthNotifierProvider).user;
-      await Purchases.setDebugLogsEnabled(kDebugMode);
+      await Purchases.setLogLevel(LogLevel.debug);
       await Purchases.configure(PurchasesConfiguration(revenueCatAPIKey)..appUserID = user!.uid);
       final info = await Purchases.getCustomerInfo();
       final offerings = await Purchases.getOfferings();

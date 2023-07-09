@@ -98,7 +98,7 @@ class UserInfoSettingsView extends HookConsumerWidget {
                 const SizedBox(height: 8),
                 GestureDetector(
                   onTap: () async {
-                    await Clipboard.setData(ClipboardData(text: userInfoSettings.id));
+                    await Clipboard.setData(ClipboardData(text: userInfoSettings.id!));
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
