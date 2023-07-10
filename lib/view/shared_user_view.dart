@@ -58,7 +58,7 @@ class _PermissionSettingsTileHooksConsumerWidget extends HookConsumerWidget {
       value: GestureDetector(
         onTap: () async {
           final delAuthorAccessRollList = List.of(AccessRoll.values)..remove(AccessRoll.author);
-          if (user?.roll == AccessRoll.author) {
+          if (user.roll == AccessRoll.author) {
             await showOkAlertDialog(
               context: context,
               title: '許可されていない操作です',
@@ -94,7 +94,7 @@ class _PermissionSettingsTileHooksConsumerWidget extends HookConsumerWidget {
                             (roll) => GestureDetector(
                               onTap: () async {
                                 final share = ref.read(currentSharedUser).share;
-                                final isSuccess = await ref.read(firestoreShareRepository).updateUserRoll(user!, roll, share.docName);
+                                final isSuccess = await ref.read(firestoreShareRepository).updateUserRoll(user, roll, share.docName);
                                 if (isSuccess) ref.read(currentShareUserProvider.notifier).state = user.copyWith(roll: roll);
                                 if (context.mounted) Navigator.pop(context);
                               },
@@ -103,7 +103,7 @@ class _PermissionSettingsTileHooksConsumerWidget extends HookConsumerWidget {
                                 child: Row(
                                   children: [
                                     Opacity(
-                                      opacity: user!.roll == roll ? 1 : 0,
+                                      opacity: user.roll == roll ? 1 : 0,
                                       child: const Icon(Icons.check),
                                     ),
                                     const SizedBox(width: 32),

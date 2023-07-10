@@ -4,18 +4,6 @@
     // 詳細情報は次を確認してください: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-    
-        {
-            "name": "tcg_manager",
-            "request": "launch",
-            "type": "dart"
-        },
-        {
-            "name": "tcg_manager (profile mode)",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "profile"
-        },
         {
             "name": "Run dev",
             "request": "launch",
