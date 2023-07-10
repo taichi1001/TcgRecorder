@@ -20,38 +20,43 @@ class GameDataGrid extends HookConsumerWidget {
     return gameWinRateDataList.when(
       data: (gameWinRateDataList) {
         final source = GameWinRateDataSource(winRateDataList: gameWinRateDataList, context: context);
-        return SfDataGrid(
-          source: source,
-          frozenColumnsCount: 1,
-          footerFrozenRowsCount: 1,
-          allowSorting: true,
-          allowMultiColumnSorting: true,
-          allowTriStateSorting: true,
-          verticalScrollPhysics: const ClampingScrollPhysics(),
-          horizontalScrollPhysics: const ClampingScrollPhysics(),
-          isScrollbarAlwaysShown: true,
-          onCellTap: (details) {
-            final dataIndex = details.rowColumnIndex.rowIndex;
-            if (dataIndex == 0) return; // カラム名が書いてある列がタップされた場合
-            if (dataIndex == source.dataGridRows.length) return; // 合計カラムがタップされた場合
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => SafeArea(
-                  top: false,
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: DeckDataGrid(deck: source.effectiveRows[details.rowColumnIndex.rowIndex - 1].getCells().first.value),
-                      ),
-                      const AdaptiveBannerAd(),
-                    ],
+        return SfDataGridTheme(
+          data: SfDataGridThemeData(
+            sortIcon: SortIcon(source: source),
+          ),
+          child: SfDataGrid(
+            source: source,
+            frozenColumnsCount: 1,
+            footerFrozenRowsCount: 1,
+            allowSorting: true,
+            allowMultiColumnSorting: true,
+            allowTriStateSorting: true,
+            verticalScrollPhysics: const ClampingScrollPhysics(),
+            horizontalScrollPhysics: const ClampingScrollPhysics(),
+            isScrollbarAlwaysShown: true,
+            onCellTap: (details) {
+              final dataIndex = details.rowColumnIndex.rowIndex;
+              if (dataIndex == 0) return; // カラム名が書いてある列がタップされた場合
+              if (dataIndex == source.dataGridRows.length) return; // 合計カラムがタップされた場合
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SafeArea(
+                    top: false,
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: DeckDataGrid(deck: source.effectiveRows[details.rowColumnIndex.rowIndex - 1].getCells().first.value),
+                        ),
+                        const AdaptiveBannerAd(),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            );
-          },
-          columns: _getGridColumns(context, graphViewSettings),
+              );
+            },
+            columns: _getGridColumns(context, graphViewSettings),
+          ),
         );
       },
       error: (error, stack) => Text('$error'),
@@ -86,6 +91,7 @@ class DeckDataGrid extends HookConsumerWidget {
             data: SfDataGridThemeData(
               frozenPaneElevation: 0,
               frozenPaneLineWidth: 1.5,
+              sortIcon: SortIcon(source: source),
             ),
             child: SfDataGrid(
               source: source,
@@ -105,6 +111,39 @@ class DeckDataGrid extends HookConsumerWidget {
         loading: () => const Center(child: CircularProgressIndicator()),
       ),
     );
+  }
+}
+
+class SortIcon extends StatelessWidget {
+  const SortIcon({
+    super.key,
+    required this.source,
+  });
+
+  final GameWinRateDataSource source;
+
+  @override
+  Widget build(BuildContext context) {
+    Widget? icon;
+    String columnName = '';
+    context.visitAncestorElements((element) {
+      if (element is GridHeaderCellElement) {
+        columnName = element.column.columnName;
+      }
+
+      return true;
+    });
+
+    var column = source.sortedColumns.where((element) => element.name == columnName).firstOrNull;
+
+    if (column != null) {
+      if (column.sortDirection == DataGridSortDirection.ascending) {
+        icon = const Padding(padding: EdgeInsets.symmetric(horizontal: 4), child: Icon(Icons.arrow_circle_up_rounded, size: 16));
+      } else if (column.sortDirection == DataGridSortDirection.descending) {
+        icon = const Padding(padding: EdgeInsets.symmetric(horizontal: 4), child: Icon(Icons.arrow_circle_down_rounded, size: 16));
+      }
+    }
+    return icon ?? const SizedBox();
   }
 }
 
