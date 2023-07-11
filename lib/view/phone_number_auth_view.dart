@@ -22,7 +22,7 @@ class PhoneNumberAuthView extends HookConsumerWidget {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            const Text('認証しておくと、誤ってアプリを削除したときや、機種変更時などにデータを復旧できます。'),
+            const Text('認証を行うと、アプリを誤って削除した場合や機種変更時などに、データを復旧できます。'),
             Padding(
               padding: const EdgeInsets.only(left: 32, right: 32, top: 32),
               child: IntlPhoneField(

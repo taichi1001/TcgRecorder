@@ -49,7 +49,8 @@ final userInfoSettingsProvider = StateNotifierProvider<UserInfoSettingsNotifier,
   final user = ref.watch(firebaseAuthNotifierProvider).user;
   final revenucat = ref.watch(revenueCatProvider);
   final uid = user?.uid;
-  final isPhoneAuth = user?.phoneNumber != null;
+
+  final isPhoneAuth = user?.phoneNumber != null && user?.phoneNumber != '';
   final isPremium = revenucat?.isPremium ?? false;
   final state = UserInfoSettingsState(
     id: uid,

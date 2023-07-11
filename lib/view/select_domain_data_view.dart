@@ -221,14 +221,15 @@ class SelectDomainDataView extends HookConsumerWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    if (dataType == DomainDataType.game)
-                                      Padding(
-                                        padding: const EdgeInsets.all(16),
-                                        child: Text(
-                                          'ホストで共有中の${dataType.displayName}',
-                                          style: Theme.of(context).textTheme.bodySmall,
-                                        ),
-                                      ),
+                                    // TODO 共有機能解放時にコメントアウト
+                                    // if (dataType == DomainDataType.game)
+                                    //   Padding(
+                                    //     padding: const EdgeInsets.all(16),
+                                    //     child: Text(
+                                    //       'ホストで共有中の${dataType.displayName}',
+                                    //       style: Theme.of(context).textTheme.bodySmall,
+                                    //     ),
+                                    //   ),
                                     if (dataType != DomainDataType.game)
                                       Padding(
                                         padding: const EdgeInsets.all(16),
@@ -237,46 +238,47 @@ class SelectDomainDataView extends HookConsumerWidget {
                                           style: Theme.of(context).textTheme.bodySmall,
                                         ),
                                       ),
-                                    if (dataType == DomainDataType.game)
-                                      _DomainDataListView(
-                                        domainDataList: selectDomainViewInfo.hostGameList,
-                                        selectedDomainDataList: selectedDomainDataList,
-                                        rootContext: rootContext,
-                                        selectDomainDataFunc: selectDomainDataFunc,
-                                        enableVisibility: false,
-                                        tagCount: tagCount,
-                                        returnSelecting: returnSelecting,
-                                      ),
-                                    if (dataType == DomainDataType.game)
-                                      Padding(
-                                        padding: const EdgeInsets.all(16),
-                                        child: Text(
-                                          'ゲストで共有中の${dataType.displayName}',
-                                          style: Theme.of(context).textTheme.bodySmall,
-                                        ),
-                                      ),
-                                    if (dataType == DomainDataType.game)
-                                      _DomainDataListView(
-                                        domainDataList: selectDomainViewInfo.guestGameList,
-                                        selectedDomainDataList: selectedDomainDataList,
-                                        rootContext: rootContext,
-                                        selectDomainDataFunc: selectDomainDataFunc,
-                                        enableVisibility: false,
-                                        tagCount: tagCount,
-                                        returnSelecting: returnSelecting,
-                                      ),
-                                    if (dataType != DomainDataType.game)
-                                      _DomainDataListView(
-                                        domainDataList: selectDomainViewInfo.recentlyUseDomainDataList,
-                                        selectedDomainDataList: selectedDomainDataList,
-                                        rootContext: rootContext,
-                                        selectDomainDataFunc: selectDomainDataFunc,
-                                        deselectionFunc: deselectionFunc,
-                                        enableVisibility: false,
-                                        afterFunc: afterFunc,
-                                        tagCount: tagCount,
-                                        returnSelecting: returnSelecting,
-                                      ),
+                                    // TODO 共有機能解放時にコメントアウト
+                                    // if (dataType == DomainDataType.game)
+                                    //   _DomainDataListView(
+                                    //     domainDataList: selectDomainViewInfo.hostGameList,
+                                    //     selectedDomainDataList: selectedDomainDataList,
+                                    //     rootContext: rootContext,
+                                    //     selectDomainDataFunc: selectDomainDataFunc,
+                                    //     enableVisibility: false,
+                                    //     tagCount: tagCount,
+                                    //     returnSelecting: returnSelecting,
+                                    //   ),
+                                    // if (dataType == DomainDataType.game)
+                                    //   Padding(
+                                    //     padding: const EdgeInsets.all(16),
+                                    //     child: Text(
+                                    //       'ゲストで共有中の${dataType.displayName}',
+                                    //       style: Theme.of(context).textTheme.bodySmall,
+                                    //     ),
+                                    //   ),
+                                    // if (dataType == DomainDataType.game)
+                                    //   _DomainDataListView(
+                                    //     domainDataList: selectDomainViewInfo.guestGameList,
+                                    //     selectedDomainDataList: selectedDomainDataList,
+                                    //     rootContext: rootContext,
+                                    //     selectDomainDataFunc: selectDomainDataFunc,
+                                    //     enableVisibility: false,
+                                    //     tagCount: tagCount,
+                                    //     returnSelecting: returnSelecting,
+                                    //   ),
+                                    // if (dataType != DomainDataType.game)
+                                    //   _DomainDataListView(
+                                    //     domainDataList: selectDomainViewInfo.recentlyUseDomainDataList,
+                                    //     selectedDomainDataList: selectedDomainDataList,
+                                    //     rootContext: rootContext,
+                                    //     selectDomainDataFunc: selectDomainDataFunc,
+                                    //     deselectionFunc: deselectionFunc,
+                                    //     enableVisibility: false,
+                                    //     afterFunc: afterFunc,
+                                    //     tagCount: tagCount,
+                                    //     returnSelecting: returnSelecting,
+                                    //   ),
                                     _AllListViewTitle(
                                       enableVisiblity: enableVisiblity,
                                       dataType: dataType,

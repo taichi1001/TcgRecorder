@@ -27,6 +27,7 @@ import 'package:tcg_manager/main.dart';
 import 'package:tcg_manager/provider/backup_provider.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/firebase_auth_provider.dart';
+import 'package:tcg_manager/provider/firestore_backup_controller_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/input_view_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
@@ -36,7 +37,6 @@ import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/provider/theme_provider.dart';
 import 'package:tcg_manager/provider/user_info_settings_provider.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
-import 'package:tcg_manager/provider/firestore_backup_controller_provider.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
 import 'package:tcg_manager/repository/tag_repository.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
@@ -101,6 +101,7 @@ class OtherView extends HookConsumerWidget {
             title: Text('${S.of(context).editSection}は調整中により使用不可能です。アップデートをお待ち下さい。'),
             tiles: [
               SettingsTile.navigation(
+                enabled: false,
                 title: Text(
                   S.of(context).gameEdit,
                   style: TextStyle(color: Theme.of(context).disabledColor),
@@ -116,6 +117,7 @@ class OtherView extends HookConsumerWidget {
                 },
               ),
               SettingsTile.navigation(
+                enabled: false,
                 title: Text(
                   S.of(context).deckEdit,
                   style: TextStyle(color: Theme.of(context).disabledColor),
@@ -133,6 +135,7 @@ class OtherView extends HookConsumerWidget {
                 },
               ),
               SettingsTile.navigation(
+                enabled: false,
                 title: Text(
                   S.of(context).tagEdit,
                   style: TextStyle(color: Theme.of(context).disabledColor),

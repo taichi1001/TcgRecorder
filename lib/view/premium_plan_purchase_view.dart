@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/provider/revenue_cat_provider.dart';
 import 'package:tcg_manager/view/component/web_view_screen.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 enum Plan {
   yearly,
@@ -57,12 +57,13 @@ class PremiumPlanPurchaseView extends HookConsumerWidget {
                         icon: Icons.edit_note,
                         iconColor: Colors.orange,
                       ),
-                      _ContentsCard(
-                        title: S.of(context).premiumPlanShareTitle,
-                        description: S.of(context).premiumPlanShareDescription,
-                        icon: FontAwesomeIcons.shareNodes,
-                        iconColor: Colors.cyan,
-                      ),
+                      // TODO 共有機能解放時にコメントアウト
+                      // _ContentsCard(
+                      //   title: S.of(context).premiumPlanShareTitle,
+                      //   description: S.of(context).premiumPlanShareDescription,
+                      //   icon: FontAwesomeIcons.shareNodes,
+                      //   iconColor: Colors.cyan,
+                      // ),
                       _ContentsCard(
                         title: S.of(context).premiumPlanImageTitle,
                         description: S.of(context).premiumPlanImageDescription,

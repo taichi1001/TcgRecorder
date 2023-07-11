@@ -10,17 +10,22 @@ class PhoneNumberDeactivationView extends HookConsumerWidget {
       appBar: AppBar(
         title: const Text('電話番号認証の解除'),
       ),
-      body: Column(
-        children: [
-          const Text('電話番号認証をやり直したい場合や、他のアカウントで認証したい場合に解除してください'),
-          ElevatedButton(
-            onPressed: () async {
-              await ref.read(firebaseAuthNotifierProvider.notifier).unlinkPhoneNumber();
-              if (context.mounted) Navigator.pop(context);
-            },
-            child: const Text('認証を解除'),
-          ),
-        ],
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            const Text('電話番号の認証を再度行いたい場合、または現在認証中の電話番号を別のアカウントで認証したい場合は、一度解除してください。'),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () async {
+                await ref.read(firebaseAuthNotifierProvider.notifier).unlinkPhoneNumber();
+                if (context.mounted) Navigator.pop(context);
+              },
+              child: const Text('認証を解除'),
+            ),
+          ],
+        ),
       ),
     );
   }
