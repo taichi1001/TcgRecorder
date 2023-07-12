@@ -11,7 +11,7 @@ class RevenueCatNotifier extends StateNotifier<AsyncValue<RevenueCatState>> {
   }
 
   static const String iosAPIKey = 'appl_qGfPwLpLoCrmULsxbiCIsWgWDpx';
-  static const String androidAPIKey = '';
+  static const String androidAPIKey = 'goog_EntwIwTLCjSQZSHJLqDefQxbvmF';
   static final revenueCatAPIKey = Platform.isIOS ? iosAPIKey : androidAPIKey;
   Ref ref;
 

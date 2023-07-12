@@ -56,7 +56,7 @@ class GraphView extends HookConsumerWidget {
           preferredSize: const Size.fromHeight(30),
           child: TabBar(
             indicator: MaterialIndicator(
-              horizontalPadding: 16,
+              horizontalPadding: 0,
               height: 3,
               color: Theme.of(context).colorScheme.onBackground,
             ),
@@ -201,7 +201,7 @@ class _UseRateChart extends StatelessWidget {
             ),
           ),
         ),
-        // 使用率詳細ページ開放するときにコメントアウト
+        // TODO 使用率詳細ページ開放するときにコメントアウト
         // IconButton(
         //   icon: const Icon(Icons.launch),
         //   onPressed: () => Navigator.push(
