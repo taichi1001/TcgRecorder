@@ -970,6 +970,26 @@ class S {
     );
   }
 
+  /// `Cancel Anytime`
+  String get cancelAnytime {
+    return Intl.message(
+      'Cancel Anytime',
+      name: 'cancelAnytime',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `\ First Week Free /`
+  String get freePeriod {
+    return Intl.message(
+      '\\ First Week Free /',
+      name: 'freePeriod',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Free Trial`
   String get freePlanButton {
     return Intl.message(

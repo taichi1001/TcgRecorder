@@ -32,6 +32,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "bottomList": MessageLookupByLibrary.simpleMessage("一覧"),
         "bottomOther": MessageLookupByLibrary.simpleMessage("その他"),
         "cancel": MessageLookupByLibrary.simpleMessage("キャンセル"),
+        "cancelAnytime": MessageLookupByLibrary.simpleMessage("いつでもキャンセルOK"),
         "contactForm": MessageLookupByLibrary.simpleMessage("お問い合わせ"),
         "date": MessageLookupByLibrary.simpleMessage("日付"),
         "dateFormat": MessageLookupByLibrary.simpleMessage("yyyy年 MM月 dd日"),
@@ -44,6 +45,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "editButton": MessageLookupByLibrary.simpleMessage("編集"),
         "editSection": MessageLookupByLibrary.simpleMessage("編集"),
         "first": MessageLookupByLibrary.simpleMessage("先攻"),
+        "freePeriod": MessageLookupByLibrary.simpleMessage("\\ 最初の1週間無料 /"),
         "freePlanButton": MessageLookupByLibrary.simpleMessage("無料でおためし"),
         "freePlanDescription": MessageLookupByLibrary.simpleMessage(
             "●無料おためしについて\n無料お試しは初めてプレミアムプランに登録する方が対象です。\nお試し期間が終了する24時間前までにキャンセルしない場合、自動的に継続購入となり料金が請求されます。"),

@@ -34,6 +34,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "bottomList": MessageLookupByLibrary.simpleMessage("List"),
         "bottomOther": MessageLookupByLibrary.simpleMessage("Other"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
+        "cancelAnytime": MessageLookupByLibrary.simpleMessage("Cancel Anytime"),
         "contactForm": MessageLookupByLibrary.simpleMessage("Contact"),
         "date": MessageLookupByLibrary.simpleMessage("Date"),
         "dateFormat": MessageLookupByLibrary.simpleMessage("dd/MM/yyyy"),
@@ -47,6 +48,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "editButton": MessageLookupByLibrary.simpleMessage("Edit"),
         "editSection": MessageLookupByLibrary.simpleMessage("Edit"),
         "first": MessageLookupByLibrary.simpleMessage("First"),
+        "freePeriod":
+            MessageLookupByLibrary.simpleMessage("\\ First Week Free /"),
         "freePlanButton": MessageLookupByLibrary.simpleMessage("Free Trial"),
         "freePlanDescription": MessageLookupByLibrary.simpleMessage(
             "● The Free Trial is only available to first time Premium Plan subscribers. \nIf you do not cancel at least 24 hours before the end of the trial period, you will automatically be charged for the continued purchase."),

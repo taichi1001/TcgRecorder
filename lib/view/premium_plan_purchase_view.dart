@@ -89,6 +89,15 @@ class PremiumPlanPurchaseView extends HookConsumerWidget {
                         iconColor: Colors.pink,
                       ),
                       const Divider(height: 24),
+                      Text(
+                        S.of(context).cancelAnytime,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                      Text(
+                        S.of(context).freePeriod,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                      const SizedBox(height: 16),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -286,10 +295,10 @@ class _YearlyPlanContainer extends StatelessWidget {
         ),
         Container(
           height: 20,
-          width: 75,
+          width: 90,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(30),
-            color: Theme.of(context).primaryColor,
+            color: isSelect ? Theme.of(context).primaryColor : Theme.of(context).disabledColor,
           ),
           child: Center(
             child: Text(
