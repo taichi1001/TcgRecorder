@@ -591,10 +591,10 @@ packages:
     dependency: transitive
     description:
       name: flutter_riverpod
-      sha256: "8d6b4e2b224901b90ff053ecd224474d53d2575f38e3b9431b4488b976d83630"
+      sha256: b83ac5827baadefd331ea1d85110f34645827ea234ccabf53a655f41901a9bf4
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.0-dev.9"
+    version: "2.3.6"
   flutter_screenutil:
     dependency: "direct main"
     description:
@@ -761,10 +761,10 @@ packages:
     dependency: "direct main"
     description:
       name: hooks_riverpod
-      sha256: af4f474c5cba30898f6a0b062cefed7f7e2107d6412c34c723714e1dd058cd3e
+      sha256: be68cf7653fcab798500f9047ac58c3f109287a1595012412f4a0d654a9bb9c5
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.0-dev.9"
+    version: "2.3.6"
   html:
     dependency: transitive
     description:
@@ -1242,10 +1242,10 @@ packages:
     dependency: transitive
     description:
       name: riverpod
-      sha256: ccf595808054c1db8b9e087f0653e169758de196b49c5a9251c2c08d4c81ab2c
+      sha256: "80e48bebc83010d5e67a11c9514af6b44bbac1ec77b4333c8ea65dbc79e2d8ef"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.0-dev.9"
+    version: "2.3.6"
   rxdart:
     dependency: "direct main"
     description:
