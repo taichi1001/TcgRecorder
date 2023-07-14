@@ -1,50 +1,69 @@
+// ignore_for_file: unused_result
+
+import 'dart:io';
+
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:settings_ui/settings_ui.dart';
-import 'package:tcg_manager/entity/deck.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:tcg_manager/entity/game.dart';
 import 'package:tcg_manager/entity/record.dart';
-import 'package:tcg_manager/entity/tag.dart';
 import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/helper/edit_record_helper.dart';
+import 'package:tcg_manager/helper/list_to_csv.dart';
+import 'package:tcg_manager/helper/premium_plan_dialog.dart';
 import 'package:tcg_manager/helper/theme_data.dart';
-import 'package:tcg_manager/provider/bottom_navigation_bar_provider.dart';
+import 'package:tcg_manager/main.dart';
+import 'package:tcg_manager/provider/backup_provider.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
+import 'package:tcg_manager/provider/firebase_auth_provider.dart';
+import 'package:tcg_manager/provider/firestore_backup_controller_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
-import 'package:tcg_manager/provider/input_view_settings_provider.dart';
+import 'package:tcg_manager/provider/input_view_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
+import 'package:tcg_manager/provider/revenue_cat_provider.dart';
+import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
-import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 import 'package:tcg_manager/provider/theme_provider.dart';
+import 'package:tcg_manager/provider/user_info_settings_provider.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
-import 'package:tcg_manager/repository/game_repository.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
 import 'package:tcg_manager/repository/tag_repository.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
 import 'package:tcg_manager/selector/game_tag_list_selector.dart';
+import 'package:tcg_manager/selector/marged_record_list_selector.dart';
+import 'package:tcg_manager/view/backup_settings_view.dart';
+import 'package:tcg_manager/view/bottom_navigation_view.dart';
 import 'package:tcg_manager/view/component/custom_textfield.dart';
 import 'package:tcg_manager/view/component/slidable_tile.dart';
 import 'package:tcg_manager/view/component/web_view_screen.dart';
+import 'package:tcg_manager/view/user_info_settings_view.dart';
 
 class OtherView extends HookConsumerWidget {
   const OtherView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isPremium = ref.watch(revenueCatProvider.select((value) => value?.isPremium));
+    final user = ref.watch(firebaseAuthNotifierProvider.select((value) => value.user));
+    final isAnonymous = user?.phoneNumber == null;
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         elevation: 0.0,
         title: Text(
           S.of(context).otherTitle,
-          style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
         ),
       ),
       body: SettingsList(
@@ -57,41 +76,36 @@ class OtherView extends HookConsumerWidget {
           settingsListBackground: Theme.of(context).scaffoldBackgroundColor,
         ),
         sections: [
-          // SettingsSection(
-          //   title: Text(S.of(context).settingSection),
-          //   tiles: [
-          //     // テーマ設定画面を開放するときにコメントアウト
-          //     // SettingsTile.navigation(
-          //     //   title: Text(S.of(context).themeChange),
-          //     //   leading: const Icon(Icons.palette),
-          //     //   onPressed: (context) {
-          //     //     Navigator.push(
-          //     //       context,
-          //     //       MaterialPageRoute(
-          //     //         builder: (context) => const _ThemeChangeView(),
-          //     //       ),
-          //     //     );
-          //     //   },
-          //     // ),
-          //     SettingsTile.navigation(
-          //       title: Text(S.of(context).inputViewSettings),
-          //       leading: const Icon(Icons.settings_applications),
-          //       onPressed: (context) {
-          //         Navigator.push(
-          //           context,
-          //           MaterialPageRoute(
-          //             builder: (context) => const _InputViewSettingsView(),
-          //           ),
-          //         );
-          //       },
-          //     ),
-          //   ],
-          // ),
           SettingsSection(
-            title: Text(S.of(context).editSection),
+            title: const Text(''),
+            tiles: [
+              const _UserInfoSettingsTile(),
+              SettingsTile.navigation(
+                title: const Text('バックアップ・復元'),
+                leading: const Icon(
+                  Icons.backup_outlined,
+                  color: Colors.lightBlue,
+                ),
+                onPressed: (context) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const BackupSettingsView(),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+          SettingsSection(
+            title: Text('${S.of(context).editSection}は調整中により使用不可能です。アップデートをお待ち下さい。'),
             tiles: [
               SettingsTile.navigation(
-                title: Text(S.of(context).gameEdit),
+                enabled: false,
+                title: Text(
+                  S.of(context).gameEdit,
+                  style: TextStyle(color: Theme.of(context).disabledColor),
+                ),
                 leading: const Icon(Icons.edit),
                 onPressed: (context) {
                   Navigator.push(
@@ -103,7 +117,11 @@ class OtherView extends HookConsumerWidget {
                 },
               ),
               SettingsTile.navigation(
-                title: Text(S.of(context).deckEdit),
+                enabled: false,
+                title: Text(
+                  S.of(context).deckEdit,
+                  style: TextStyle(color: Theme.of(context).disabledColor),
+                ),
                 leading: const Icon(Icons.edit),
                 onPressed: (context) {
                   Navigator.push(
@@ -117,7 +135,11 @@ class OtherView extends HookConsumerWidget {
                 },
               ),
               SettingsTile.navigation(
-                title: Text(S.of(context).tagEdit),
+                enabled: false,
+                title: Text(
+                  S.of(context).tagEdit,
+                  style: TextStyle(color: Theme.of(context).disabledColor),
+                ),
                 leading: const Icon(Icons.edit),
                 onPressed: (context) {
                   Navigator.push(
@@ -134,12 +156,12 @@ class OtherView extends HookConsumerWidget {
                 title: Text(
                   S.of(context).allDelete,
                   style: TextStyle(
-                    color: Theme.of(context).errorColor,
+                    color: Theme.of(context).colorScheme.error,
                   ),
                 ),
                 leading: Icon(
                   Icons.delete_forever,
-                  color: Theme.of(context).errorColor,
+                  color: Theme.of(context).colorScheme.error,
                 ),
                 onPressed: (context) async {
                   final okCancelResult = await showOkCancelAlertDialog(
@@ -149,9 +171,9 @@ class OtherView extends HookConsumerWidget {
                     isDestructiveAction: true,
                   );
                   if (okCancelResult == OkCancelResult.ok) {
-                    ref.read(bottomNavigationBarNotifierProvider.notifier).select(0);
-                    ref.read(textEditingControllerNotifierProvider.notifier).resetInputViewController();
+                    ref.read(selectIndexProvider.notifier).state = 0;
                     await ref.read(dbHelper).deleteAll();
+                    ref.read(inputViewNotifierProvider.notifier).init();
                   }
                 },
               ),
@@ -160,6 +182,35 @@ class OtherView extends HookConsumerWidget {
           SettingsSection(
             title: Text(S.of(context).otherSection),
             tiles: [
+              SettingsTile.navigation(
+                title: Text(S.of(context).themeChange),
+                leading: const Icon(Icons.palette),
+                onPressed: (context) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const _ThemeChangeView(),
+                    ),
+                  );
+                },
+              ),
+              SettingsTile.navigation(
+                title: const Text('CSV出力'),
+                leading: const Icon(FontAwesomeIcons.fileCsv),
+                onPressed: (context) async {
+                  if (isPremium!) {
+                    final margedRecordList = await ref.read(allMargedRecordListProvider.future);
+                    final csv = ListToCSV.margeRecordListToCSV(margedRecordList);
+                    final savePath = ref.read(imagePathProvider);
+                    final logPath = '$savePath/tcg_manager_output_${DateFormat('yyyy-MM-dd').format(DateTime.now())}.csv';
+                    final textfilePath = File(logPath);
+                    await textfilePath.writeAsString(csv);
+                    Share.shareXFiles([XFile(logPath)]);
+                  } else {
+                    await premiumPlanDialog(context);
+                  }
+                },
+              ),
               SettingsTile.navigation(
                 title: Text(S.of(context).review),
                 leading: const Icon(Icons.reviews),
@@ -182,6 +233,20 @@ class OtherView extends HookConsumerWidget {
                 },
               ),
               SettingsTile.navigation(
+                title: const Text('利用規約'),
+                leading: const Icon(Icons.assignment_turned_in),
+                onPressed: (context) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const WebViewScreen(
+                        url: 'https://phrygian-jellyfish-595.notion.site/067af33073004575b08a958497083e30',
+                      ),
+                    ),
+                  );
+                },
+              ),
+              SettingsTile.navigation(
                 title: Text(S.of(context).privacyPolicy),
                 leading: const Icon(Icons.privacy_tip),
                 onPressed: (context) {
@@ -197,84 +262,116 @@ class OtherView extends HookConsumerWidget {
               ),
             ],
           ),
+          CustomSettingsSection(
+            child: TextButton(
+              onPressed: () async {
+                final okCancelResult = await showOkCancelAlertDialog(
+                  context: context,
+                  title: 'ログアウト',
+                  message: isAnonymous
+                      ? 'ログアウトするとこれまで記録したデータにアクセスできなくなります。ログアウトしてもよろしいですか？\n(電話番号認証を有効にしデータをバックアップすると、ログアウト後にもバックアップから復帰できるようになります。)'
+                      : 'ログアウトしてもよろしいですか？',
+                  isDestructiveAction: true,
+                );
+                if (okCancelResult == OkCancelResult.ok) {
+                  await ref.read(firebaseAuthNotifierProvider.notifier).singOut();
+                  ref.read(selectIndexProvider.notifier).state = 0;
+                }
+              },
+              child: const Text('ログアウト'),
+            ),
+          ),
+          CustomSettingsSection(
+            child: TextButton(
+              onPressed: () async {
+                final okCancelResult = await showOkCancelAlertDialog(
+                  context: context,
+                  title: '退会する',
+                  message: '退会すると全てのデータが削除され復元不可能になります。退会してもよろしいですか？',
+                  isDestructiveAction: true,
+                );
+                if (okCancelResult == OkCancelResult.ok) {
+                  await ref.read(firebaseAuthNotifierProvider.notifier).quiteUser();
+                  ref.read(selectGameNotifierProvider.notifier).changeGame(null);
+                }
+              },
+              child: const Text('退会する'),
+            ),
+          ),
         ],
       ),
     );
   }
 }
 
-class _InputViewSettingsView extends HookConsumerWidget {
-  const _InputViewSettingsView({key}) : super(key: key);
+class _UserInfoSettingsTile extends AbstractSettingsTile {
+  const _UserInfoSettingsTile();
+  @override
+  Widget build(BuildContext context) {
+    return const _UserInfoSettingsTileHooksConsumerWidget();
+  }
+}
 
+class _UserInfoSettingsTileHooksConsumerWidget extends HookConsumerWidget {
+  const _UserInfoSettingsTileHooksConsumerWidget();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final fixUseDeck = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.fixUseDeck));
-    final fixOpponentDeck = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.fixOpponentDeck));
-    final fixTag = ref.watch(inputViewSettingsNotifierProvider.select((value) => value.fixTag));
-    final inputiViewSettingsController = ref.watch(inputViewSettingsNotifierProvider.notifier);
-
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        elevation: 0.0,
-        title: Text(
-          '入力画面設定',
-          style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-        ),
+    final userInfoSettings = ref.watch(userInfoSettingsProvider);
+    return SettingsTile.navigation(
+      leading: CircleAvatar(
+        radius: 24,
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundImage: userInfoSettings.iconPath == null ? null : CachedNetworkImageProvider(userInfoSettings.iconPath!),
+        child: userInfoSettings.iconPath == null
+            ? Text(
+                userInfoSettings.name == null ? '名' : userInfoSettings.name![0],
+                style: Theme.of(context).primaryTextTheme.bodyMedium,
+              )
+            : null,
       ),
-      body: SettingsList(
-        lightTheme: SettingsThemeData(
-          settingsSectionBackground: Theme.of(context).canvasColor,
-          settingsListBackground: Theme.of(context).scaffoldBackgroundColor,
-        ),
-        darkTheme: SettingsThemeData(
-          settingsSectionBackground: Theme.of(context).canvasColor,
-          settingsListBackground: Theme.of(context).scaffoldBackgroundColor,
-        ),
-        sections: [
-          SettingsSection(
-            title: const Text('入力固定オプション'),
-            tiles: [
-              SettingsTile.switchTile(
-                initialValue: fixUseDeck,
-                onToggle: (settings) => inputiViewSettingsController.changeFixUseDeck(settings),
-                title: const Text('使用デッキ'),
-                leading: const Icon(Icons.settings_applications),
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(userInfoSettings.name ?? '名前未設定'),
+          const SizedBox(height: 4),
+          Row(
+            children: [
+              if (userInfoSettings.isPhoneAuth)
+                Text(
+                  '電話認証済',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.tertiary),
+                ),
+              if (!userInfoSettings.isPhoneAuth)
+                Text(
+                  '電話未認証',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.error),
+                ),
+              Text(
+                '、',
+                style: Theme.of(context).textTheme.bodySmall,
               ),
-              SettingsTile.switchTile(
-                initialValue: fixOpponentDeck,
-                onToggle: (settings) => inputiViewSettingsController.changeFixOpponentDeck(settings),
-                title: const Text('対戦相手デッキ'),
-                leading: const Icon(Icons.settings_applications),
-              ),
-              SettingsTile.switchTile(
-                initialValue: fixTag,
-                onToggle: (settings) => inputiViewSettingsController.changeFixTag(settings),
-                title: const Text('タグ'),
-                leading: const Icon(Icons.settings_applications),
-              ),
+              if (userInfoSettings.isPremium)
+                Text(
+                  'プレミアムプラン加入中',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.tertiary),
+                ),
+              if (!userInfoSettings.isPremium)
+                Text(
+                  'プレミアムプラン未加入',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.error),
+                ),
             ],
-          ),
-          CustomSettingsSection(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 24, right: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '設定ON:  記録保存時に入力欄の設定ONの項目が保持されます。',
-                    style: Theme.of(context).textTheme.caption?.copyWith(fontSize: 10),
-                  ),
-                  Text(
-                    '設定OFF: 記録保存時に入力欄の設定OFFの項目がリセットされます。',
-                    style: Theme.of(context).textTheme.caption?.copyWith(fontSize: 10),
-                  ),
-                ],
-              ),
-            ),
           ),
         ],
       ),
+      onPressed: (context) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const UserInfoSettingsView(),
+          ),
+        );
+      },
     );
   }
 }
@@ -289,10 +386,7 @@ class _GameListView extends HookConsumerWidget {
       appBar: AppBar(
         centerTitle: true,
         elevation: 0.0,
-        title: Text(
-          S.of(context).gameEdit,
-          style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-        ),
+        title: Text(S.of(context).gameEdit),
       ),
       body: gameList.when(
         data: (gameList) {
@@ -302,24 +396,26 @@ class _GameListView extends HookConsumerWidget {
             itemBuilder: (context, index) {
               return SlidableTile(
                 key: ObjectKey(gameList[index]),
-                title: Text(gameList[index].game),
+                title: Text(gameList[index].name),
                 alertMessage: '削除したゲームのデータが全て削除されます。(デッキ名やタグ名も削除されます。)',
                 deleteFunc: () async => await ref.read(dbHelper).deleteGame(gameList[index]),
                 editFunc: () async {
                   final newName = await showTextInputDialog(
                     context: context,
                     title: '名前変更',
-                    textFields: [DialogTextField(initialText: gameList[index].game)],
+                    textFields: [DialogTextField(initialText: gameList[index].name)],
                   );
                   if (newName != null && newName.first != '') {
                     try {
                       await ref.read(dbHelper).updateGameName(gameList[index], newName.first);
                     } catch (e) {
                       if (e.toString().contains('2067')) {
-                        await showOkAlertDialog(
-                          context: context,
-                          title: '既に登録されているゲームです',
-                        );
+                        if (context.mounted) {
+                          await showOkAlertDialog(
+                            context: context,
+                            title: '既に登録されているゲームです',
+                          );
+                        }
                         // if (result == OkCancelResult.ok) {
                         //   // ゲームを統合したことで、ゲームID違いで同じ名前だったデッキやタグが
                         //   // ゲームIDも同じになってしまうことで重複エラーが出るようになっているため修正必要
@@ -357,10 +453,12 @@ class _GameListView extends HookConsumerWidget {
                         //   ref.refresh(allRecordListProvider);
                         // }
                       } else {
-                        await showOkAlertDialog(
-                          context: context,
-                          title: '予期せぬエラー',
-                        );
+                        if (context.mounted) {
+                          await showOkAlertDialog(
+                            context: context,
+                            title: '予期せぬエラー',
+                          );
+                        }
                       }
                     }
                   }
@@ -397,17 +495,14 @@ class _GameSelectView extends HookConsumerWidget {
           appBar: AppBar(
             centerTitle: true,
             elevation: 0.0,
-            title: Text(
-              'ゲーム選択',
-              style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-            ),
+            title: const Text('ゲーム選択'),
           ),
           body: ListView.separated(
             itemBuilder: (context, index) {
               return Container(
                 color: Theme.of(context).colorScheme.surface,
                 child: ListTile(
-                  title: Text(gameList[index].game),
+                  title: Text(gameList[index].name),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -444,10 +539,7 @@ class _DeckListView extends HookConsumerWidget {
       appBar: AppBar(
         centerTitle: true,
         elevation: 0.0,
-        title: Text(
-          S.of(context).deckEdit,
-          style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-        ),
+        title: Text(S.of(context).deckEdit),
       ),
       body: deckList.when(
         data: (deckList) {
@@ -461,7 +553,7 @@ class _DeckListView extends HookConsumerWidget {
                 child: SlidableTile(
                   key: ObjectKey(deckList[index]),
                   title: Text(
-                    deckList[index].deck,
+                    deckList[index].name,
                     style: deckList[index].isVisibleToPicker
                         ? Theme.of(context).textTheme.bodyMedium
                         : Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -474,42 +566,44 @@ class _DeckListView extends HookConsumerWidget {
                     final newName = await showTextInputDialog(
                       context: context,
                       title: '名前変更',
-                      textFields: [DialogTextField(initialText: deckList[index].deck)],
+                      textFields: [DialogTextField(initialText: deckList[index].name)],
                     );
                     if (newName != null && newName.first != '') {
                       try {
                         await ref.read(dbHelper).updateDeckName(deckList[index], newName.first);
                       } catch (e) {
-                        if (e.toString().contains('2067')) {
+                        if (e.toString().contains('2067') && context.mounted) {
                           final result = await showOkCancelAlertDialog(
                             context: context,
                             title: '既に登録されているデッキです',
                             message: '保存されている記録を統合しますか？',
                           );
                           if (result == OkCancelResult.ok) {
-                            final oldDeck = await ref.read(editRecordHelper).checkIfSelectedUseDeckIsNew(newName.first);
+                            final oldDeck = await ref.read(editRecordHelper).checkIfSelectedDeckIsNew(newName.first);
                             var allRecordList = await ref.read(recordRepository).getAll();
-                            final targetUseDeckList = allRecordList.where((record) => record.useDeckId! == deckList[index].deckId).toList();
+                            final targetUseDeckList = allRecordList.where((record) => record.useDeckId! == deckList[index].id).toList();
                             final List<Record> newUseDeckRecordList = [];
                             for (var deck in targetUseDeckList) {
-                              deck = deck.copyWith(useDeckId: oldDeck.deck!.deckId);
+                              deck = deck.copyWith(useDeckId: oldDeck.deck!.id);
                               newUseDeckRecordList.add(deck);
                             }
                             await ref.read(recordRepository).updateRecordList(newUseDeckRecordList);
 
                             allRecordList = await ref.read(recordRepository).getAll();
                             final targetOpponentDeckList =
-                                allRecordList.where((record) => record.opponentDeckId! == deckList[index].deckId).toList();
+                                allRecordList.where((record) => record.opponentDeckId! == deckList[index].id).toList();
                             final List<Record> newOpponentDeckRecordList = [];
                             for (var deck in targetOpponentDeckList) {
-                              deck = deck.copyWith(opponentDeckId: oldDeck.deck!.deckId);
+                              deck = deck.copyWith(opponentDeckId: oldDeck.deck!.id);
                               newOpponentDeckRecordList.add(deck);
                             }
                             await ref.read(recordRepository).updateRecordList(newOpponentDeckRecordList);
 
-                            await ref.read(deckRepository).deleteById(deckList[index].deckId!);
+                            await ref.read(deckRepository).deleteById(deckList[index].id!);
+
                             ref.refresh(allDeckListProvider);
                             ref.refresh(allRecordListProvider);
+                            if (ref.read(backupNotifierProvider)) await ref.read(firestoreBackupControllerProvider).addAll();
                           }
                         } else {
                           await showOkAlertDialog(
@@ -543,10 +637,7 @@ class _TagListView extends HookConsumerWidget {
       appBar: AppBar(
         centerTitle: true,
         elevation: 0.0,
-        title: Text(
-          S.of(context).tagEdit,
-          style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-        ),
+        title: Text(S.of(context).tagEdit),
       ),
       body: tagList.when(
         data: (tagList) {
@@ -560,7 +651,7 @@ class _TagListView extends HookConsumerWidget {
                 child: SlidableTile(
                   key: ObjectKey(tagList[index]),
                   title: Text(
-                    tagList[index].tag,
+                    tagList[index].name,
                     style: tagList[index].isVisibleToPicker
                         ? Theme.of(context).textTheme.bodyMedium
                         : Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -573,13 +664,13 @@ class _TagListView extends HookConsumerWidget {
                     final newName = await showTextInputDialog(
                       context: context,
                       title: '名前変更',
-                      textFields: [DialogTextField(initialText: tagList[index].tag)],
+                      textFields: [DialogTextField(initialText: tagList[index].name)],
                     );
                     if (newName != null && newName.first != '') {
                       try {
                         await ref.read(dbHelper).updateTagName(tagList[index], newName.first);
                       } catch (e) {
-                        if (e.toString().contains('2067')) {
+                        if (e.toString().contains('2067') && context.mounted) {
                           final result = await showOkCancelAlertDialog(
                             context: context,
                             title: '既に登録されているタグです。',
@@ -588,17 +679,28 @@ class _TagListView extends HookConsumerWidget {
                           if (result == OkCancelResult.ok) {
                             final oldTag = await ref.read(editRecordHelper).checkIfSelectedTagIsNew(newName.first);
                             final allRecordList = await ref.read(recordRepository).getAll();
-                            final isTagList = allRecordList.where((record) => record.tagId != null);
-                            final targetTagList = isTagList.where((record) => record.tagId! == tagList[index].tagId).toList();
+                            final isTagRecordList = allRecordList.where((record) => record.tagId.isNotEmpty);
+                            final targetRecordList = isTagRecordList.where((record) => record.tagId.contains(tagList[index].id)).toList();
+
                             final List<Record> newTagRecordList = [];
-                            for (var tag in targetTagList) {
-                              tag = tag.copyWith(tagId: oldTag.tag!.tagId);
-                              newTagRecordList.add(tag);
+                            for (var record in targetRecordList) {
+                              List<int> newTagIdList = [];
+                              for (final tagId in record.tagId) {
+                                if (tagId == tagList[index].id) {
+                                  newTagIdList.add(oldTag.tag!.id!);
+                                } else {
+                                  newTagIdList.add(tagId);
+                                }
+                              }
+                              record = record.copyWith(tagId: newTagIdList.toSet().toList());
+                              newTagRecordList.add(record);
                             }
                             await ref.read(recordRepository).updateRecordList(newTagRecordList);
-                            await ref.read(deckRepository).deleteById(tagList[index].tagId!);
+                            await ref.read(tagRepository).deleteById(tagList[index].id!);
+
                             ref.refresh(allTagListProvider);
                             ref.refresh(allRecordListProvider);
+                            if (ref.read(backupNotifierProvider)) await ref.read(firestoreBackupControllerProvider).addAll();
                           }
                         } else {
                           await showOkAlertDialog(
@@ -630,8 +732,8 @@ class _ThemeChangeView extends HookConsumerWidget {
     final themeNotifier = ref.watch(themeNotifierProvider.notifier);
     final currentScheme = ref.watch(themeNotifierProvider.select((value) => value.scheme));
     final previewScheme = ref.watch(themeNotifierProvider.select((value) => value.previewScheme));
-    final previewThemeDataList = ref.watch(previewThemeDataListProvider);
     final isDarkMode = MediaQuery.of(context).platformBrightness == Brightness.dark;
+    final previewThemeDataList = ref.watch(previewThemeDataListProvider(isDarkMode));
     final itemScrollController = ItemScrollController();
 
     useEffect(() {
@@ -654,7 +756,7 @@ class _ThemeChangeView extends HookConsumerWidget {
             },
             child: Text(
               S.of(context).cancel,
-              style: Theme.of(context).primaryTextTheme.bodyText1,
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
           ),
           actions: [
@@ -665,7 +767,7 @@ class _ThemeChangeView extends HookConsumerWidget {
               },
               child: Text(
                 S.of(context).submit,
-                style: Theme.of(context).primaryTextTheme.bodyText1,
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
             ),
           ],
@@ -703,35 +805,32 @@ class _ThemeChangeView extends HookConsumerWidget {
               child: Container(
                 height: 100,
                 color: Theme.of(context).dividerColor,
-                child: Scrollbar(
-                  controller: ScrollController(),
-                  child: ScrollablePositionedList.builder(
-                    itemScrollController: itemScrollController,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: FlexScheme.values.length - 1, // 最後の要素はカスタムカラーのため取り除く
-                    itemBuilder: ((context, index) => Padding(
-                          padding: const EdgeInsets.only(left: 8, right: 8),
-                          child: SizedBox(
-                            width: 55,
-                            height: 55,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                primary: previewThemeDataList[index].primaryColor,
-                                shape: CircleBorder(
-                                  side: previewScheme == FlexScheme.values[index]
-                                      ? BorderSide(
-                                          color: isDarkMode ? Colors.white : Colors.black,
-                                          width: 2,
-                                        )
-                                      : BorderSide.none,
-                                ),
+                child: ScrollablePositionedList.builder(
+                  itemScrollController: itemScrollController,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: FlexScheme.values.length - 1, // 最後の要素はカスタムカラーのため取り除く
+                  itemBuilder: ((context, index) => Padding(
+                        padding: const EdgeInsets.only(left: 8, right: 8),
+                        child: SizedBox(
+                          width: 55,
+                          height: 55,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: previewThemeDataList[index].primaryColor,
+                              shape: CircleBorder(
+                                side: previewScheme == FlexScheme.values[index]
+                                    ? BorderSide(
+                                        color: isDarkMode ? Colors.white : Colors.black,
+                                        width: 2,
+                                      )
+                                    : BorderSide.none,
                               ),
-                              onPressed: () => themeNotifier.changePreview(FlexScheme.values[index]),
-                              child: const Text(''),
                             ),
+                            onPressed: () => themeNotifier.changePreview(FlexScheme.values[index]),
+                            child: const Text(''),
                           ),
-                        )),
-                  ),
+                        ),
+                      )),
                 ),
               ),
             ),
@@ -763,12 +862,12 @@ class _InputViewMock extends HookConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 8),
-              Card(
+              const Card(
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: EdgeInsets.all(16.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
+                    children: [
                       Text('2022年 01月 01日'),
                       Icon(Icons.calendar_today_rounded),
                     ],

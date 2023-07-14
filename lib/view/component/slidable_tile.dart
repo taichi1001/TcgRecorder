@@ -11,7 +11,6 @@ class SlidableTile extends StatelessWidget {
     required this.alertMessage,
     this.deleteFunc,
     this.editFunc,
-    this.visibleFunc,
     this.onTap,
     this.isVisible,
     key,
@@ -24,7 +23,6 @@ class SlidableTile extends StatelessWidget {
   final Widget? subtitle;
   final Future Function()? deleteFunc;
   final Future Function()? editFunc;
-  final Future Function()? visibleFunc;
   final Future Function()? onTap;
   final bool? isVisible;
   @override
@@ -38,7 +36,7 @@ class SlidableTile extends StatelessWidget {
           if (deleteFunc != null)
             SlidableAction(
               icon: Icons.delete,
-              backgroundColor: Theme.of(context).errorColor,
+              backgroundColor: Theme.of(context).colorScheme.error,
               autoClose: false,
               label: '削除',
               onPressed: (context) async {
@@ -66,13 +64,6 @@ class SlidableTile extends StatelessWidget {
               backgroundColor: Theme.of(context).hintColor,
               onPressed: (context) async => await editFunc!(),
               label: '名前変更',
-            ),
-          if (visibleFunc != null)
-            SlidableAction(
-              autoClose: false,
-              icon: isVisible! ? Icons.visibility : Icons.visibility_off,
-              backgroundColor: Theme.of(context).toggleableActiveColor,
-              onPressed: (context) async => await visibleFunc!(),
             ),
         ],
       ),
@@ -106,7 +97,6 @@ class SlidableExpansionTileCard extends StatelessWidget {
     this.children = const [],
     this.deleteFunc,
     this.editFunc,
-    this.onTap,
     this.onExpansionChanged,
     key,
   }) : super(key: key);
@@ -121,7 +111,6 @@ class SlidableExpansionTileCard extends StatelessWidget {
   final bool isExpansion;
   final Future Function()? deleteFunc;
   final Future Function()? editFunc;
-  final Future Function()? onTap;
   final void Function(bool)? onExpansionChanged;
   @override
   Widget build(BuildContext context) {
@@ -135,7 +124,7 @@ class SlidableExpansionTileCard extends StatelessWidget {
             SlidableAction(
               label: '削除',
               icon: Icons.delete,
-              backgroundColor: Theme.of(context).errorColor,
+              backgroundColor: Theme.of(context).colorScheme.error,
               autoClose: false,
               onPressed: (context) async {
                 final okCancelResult = await showOkCancelAlertDialog(
@@ -160,7 +149,7 @@ class SlidableExpansionTileCard extends StatelessWidget {
               label: '編集',
               autoClose: false,
               icon: Icons.edit,
-              backgroundColor: Theme.of(context).toggleableActiveColor,
+              backgroundColor: Theme.of(context).colorScheme.tertiary,
               onPressed: (context) async => await editFunc!(),
             ),
         ],

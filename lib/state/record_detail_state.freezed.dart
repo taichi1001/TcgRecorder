@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'record_detail_state.dart';
 
@@ -15,171 +15,134 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-mixin _$RecordDetailState {
+mixin _$RecordEditViewState {
   bool get isEdit => throw _privateConstructorUsedError;
   Record get record => throw _privateConstructorUsedError;
   MargedRecord get margedRecord => throw _privateConstructorUsedError;
   MargedRecord get editMargedRecord => throw _privateConstructorUsedError;
-  Deck? get cacheUseDeck => throw _privateConstructorUsedError;
-  Deck? get cacheOpponentDeck => throw _privateConstructorUsedError;
-  Tag? get cacheTag => throw _privateConstructorUsedError;
-  DateTime? get cacheDate => throw _privateConstructorUsedError;
+  List<String> get images => throw _privateConstructorUsedError;
+  List<XFile> get addImages => throw _privateConstructorUsedError;
+  List<String> get removeImages => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $RecordDetailStateCopyWith<RecordDetailState> get copyWith =>
+  $RecordEditViewStateCopyWith<RecordEditViewState> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $RecordDetailStateCopyWith<$Res> {
-  factory $RecordDetailStateCopyWith(
-          RecordDetailState value, $Res Function(RecordDetailState) then) =
-      _$RecordDetailStateCopyWithImpl<$Res>;
+abstract class $RecordEditViewStateCopyWith<$Res> {
+  factory $RecordEditViewStateCopyWith(
+          RecordEditViewState value, $Res Function(RecordEditViewState) then) =
+      _$RecordEditViewStateCopyWithImpl<$Res, RecordEditViewState>;
+  @useResult
   $Res call(
       {bool isEdit,
       Record record,
       MargedRecord margedRecord,
       MargedRecord editMargedRecord,
-      Deck? cacheUseDeck,
-      Deck? cacheOpponentDeck,
-      Tag? cacheTag,
-      DateTime? cacheDate});
+      List<String> images,
+      List<XFile> addImages,
+      List<String> removeImages});
 
   $RecordCopyWith<$Res> get record;
   $MargedRecordCopyWith<$Res> get margedRecord;
   $MargedRecordCopyWith<$Res> get editMargedRecord;
-  $DeckCopyWith<$Res>? get cacheUseDeck;
-  $DeckCopyWith<$Res>? get cacheOpponentDeck;
-  $TagCopyWith<$Res>? get cacheTag;
 }
 
 /// @nodoc
-class _$RecordDetailStateCopyWithImpl<$Res>
-    implements $RecordDetailStateCopyWith<$Res> {
-  _$RecordDetailStateCopyWithImpl(this._value, this._then);
+class _$RecordEditViewStateCopyWithImpl<$Res, $Val extends RecordEditViewState>
+    implements $RecordEditViewStateCopyWith<$Res> {
+  _$RecordEditViewStateCopyWithImpl(this._value, this._then);
 
-  final RecordDetailState _value;
   // ignore: unused_field
-  final $Res Function(RecordDetailState) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? isEdit = freezed,
-    Object? record = freezed,
-    Object? margedRecord = freezed,
-    Object? editMargedRecord = freezed,
-    Object? cacheUseDeck = freezed,
-    Object? cacheOpponentDeck = freezed,
-    Object? cacheTag = freezed,
-    Object? cacheDate = freezed,
+    Object? isEdit = null,
+    Object? record = null,
+    Object? margedRecord = null,
+    Object? editMargedRecord = null,
+    Object? images = null,
+    Object? addImages = null,
+    Object? removeImages = null,
   }) {
     return _then(_value.copyWith(
-      isEdit: isEdit == freezed
+      isEdit: null == isEdit
           ? _value.isEdit
           : isEdit // ignore: cast_nullable_to_non_nullable
               as bool,
-      record: record == freezed
+      record: null == record
           ? _value.record
           : record // ignore: cast_nullable_to_non_nullable
               as Record,
-      margedRecord: margedRecord == freezed
+      margedRecord: null == margedRecord
           ? _value.margedRecord
           : margedRecord // ignore: cast_nullable_to_non_nullable
               as MargedRecord,
-      editMargedRecord: editMargedRecord == freezed
+      editMargedRecord: null == editMargedRecord
           ? _value.editMargedRecord
           : editMargedRecord // ignore: cast_nullable_to_non_nullable
               as MargedRecord,
-      cacheUseDeck: cacheUseDeck == freezed
-          ? _value.cacheUseDeck
-          : cacheUseDeck // ignore: cast_nullable_to_non_nullable
-              as Deck?,
-      cacheOpponentDeck: cacheOpponentDeck == freezed
-          ? _value.cacheOpponentDeck
-          : cacheOpponentDeck // ignore: cast_nullable_to_non_nullable
-              as Deck?,
-      cacheTag: cacheTag == freezed
-          ? _value.cacheTag
-          : cacheTag // ignore: cast_nullable_to_non_nullable
-              as Tag?,
-      cacheDate: cacheDate == freezed
-          ? _value.cacheDate
-          : cacheDate // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-    ));
+      images: null == images
+          ? _value.images
+          : images // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      addImages: null == addImages
+          ? _value.addImages
+          : addImages // ignore: cast_nullable_to_non_nullable
+              as List<XFile>,
+      removeImages: null == removeImages
+          ? _value.removeImages
+          : removeImages // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+    ) as $Val);
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $RecordCopyWith<$Res> get record {
     return $RecordCopyWith<$Res>(_value.record, (value) {
-      return _then(_value.copyWith(record: value));
+      return _then(_value.copyWith(record: value) as $Val);
     });
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $MargedRecordCopyWith<$Res> get margedRecord {
     return $MargedRecordCopyWith<$Res>(_value.margedRecord, (value) {
-      return _then(_value.copyWith(margedRecord: value));
+      return _then(_value.copyWith(margedRecord: value) as $Val);
     });
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $MargedRecordCopyWith<$Res> get editMargedRecord {
     return $MargedRecordCopyWith<$Res>(_value.editMargedRecord, (value) {
-      return _then(_value.copyWith(editMargedRecord: value));
-    });
-  }
-
-  @override
-  $DeckCopyWith<$Res>? get cacheUseDeck {
-    if (_value.cacheUseDeck == null) {
-      return null;
-    }
-
-    return $DeckCopyWith<$Res>(_value.cacheUseDeck!, (value) {
-      return _then(_value.copyWith(cacheUseDeck: value));
-    });
-  }
-
-  @override
-  $DeckCopyWith<$Res>? get cacheOpponentDeck {
-    if (_value.cacheOpponentDeck == null) {
-      return null;
-    }
-
-    return $DeckCopyWith<$Res>(_value.cacheOpponentDeck!, (value) {
-      return _then(_value.copyWith(cacheOpponentDeck: value));
-    });
-  }
-
-  @override
-  $TagCopyWith<$Res>? get cacheTag {
-    if (_value.cacheTag == null) {
-      return null;
-    }
-
-    return $TagCopyWith<$Res>(_value.cacheTag!, (value) {
-      return _then(_value.copyWith(cacheTag: value));
+      return _then(_value.copyWith(editMargedRecord: value) as $Val);
     });
   }
 }
 
 /// @nodoc
-abstract class _$$_RecordDetailStateCopyWith<$Res>
-    implements $RecordDetailStateCopyWith<$Res> {
-  factory _$$_RecordDetailStateCopyWith(_$_RecordDetailState value,
-          $Res Function(_$_RecordDetailState) then) =
-      __$$_RecordDetailStateCopyWithImpl<$Res>;
+abstract class _$$_RecordEditViewStateCopyWith<$Res>
+    implements $RecordEditViewStateCopyWith<$Res> {
+  factory _$$_RecordEditViewStateCopyWith(_$_RecordEditViewState value,
+          $Res Function(_$_RecordEditViewState) then) =
+      __$$_RecordEditViewStateCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {bool isEdit,
       Record record,
       MargedRecord margedRecord,
       MargedRecord editMargedRecord,
-      Deck? cacheUseDeck,
-      Deck? cacheOpponentDeck,
-      Tag? cacheTag,
-      DateTime? cacheDate});
+      List<String> images,
+      List<XFile> addImages,
+      List<String> removeImages});
 
   @override
   $RecordCopyWith<$Res> get record;
@@ -187,85 +150,74 @@ abstract class _$$_RecordDetailStateCopyWith<$Res>
   $MargedRecordCopyWith<$Res> get margedRecord;
   @override
   $MargedRecordCopyWith<$Res> get editMargedRecord;
-  @override
-  $DeckCopyWith<$Res>? get cacheUseDeck;
-  @override
-  $DeckCopyWith<$Res>? get cacheOpponentDeck;
-  @override
-  $TagCopyWith<$Res>? get cacheTag;
 }
 
 /// @nodoc
-class __$$_RecordDetailStateCopyWithImpl<$Res>
-    extends _$RecordDetailStateCopyWithImpl<$Res>
-    implements _$$_RecordDetailStateCopyWith<$Res> {
-  __$$_RecordDetailStateCopyWithImpl(
-      _$_RecordDetailState _value, $Res Function(_$_RecordDetailState) _then)
-      : super(_value, (v) => _then(v as _$_RecordDetailState));
+class __$$_RecordEditViewStateCopyWithImpl<$Res>
+    extends _$RecordEditViewStateCopyWithImpl<$Res, _$_RecordEditViewState>
+    implements _$$_RecordEditViewStateCopyWith<$Res> {
+  __$$_RecordEditViewStateCopyWithImpl(_$_RecordEditViewState _value,
+      $Res Function(_$_RecordEditViewState) _then)
+      : super(_value, _then);
 
-  @override
-  _$_RecordDetailState get _value => super._value as _$_RecordDetailState;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? isEdit = freezed,
-    Object? record = freezed,
-    Object? margedRecord = freezed,
-    Object? editMargedRecord = freezed,
-    Object? cacheUseDeck = freezed,
-    Object? cacheOpponentDeck = freezed,
-    Object? cacheTag = freezed,
-    Object? cacheDate = freezed,
+    Object? isEdit = null,
+    Object? record = null,
+    Object? margedRecord = null,
+    Object? editMargedRecord = null,
+    Object? images = null,
+    Object? addImages = null,
+    Object? removeImages = null,
   }) {
-    return _then(_$_RecordDetailState(
-      isEdit: isEdit == freezed
+    return _then(_$_RecordEditViewState(
+      isEdit: null == isEdit
           ? _value.isEdit
           : isEdit // ignore: cast_nullable_to_non_nullable
               as bool,
-      record: record == freezed
+      record: null == record
           ? _value.record
           : record // ignore: cast_nullable_to_non_nullable
               as Record,
-      margedRecord: margedRecord == freezed
+      margedRecord: null == margedRecord
           ? _value.margedRecord
           : margedRecord // ignore: cast_nullable_to_non_nullable
               as MargedRecord,
-      editMargedRecord: editMargedRecord == freezed
+      editMargedRecord: null == editMargedRecord
           ? _value.editMargedRecord
           : editMargedRecord // ignore: cast_nullable_to_non_nullable
               as MargedRecord,
-      cacheUseDeck: cacheUseDeck == freezed
-          ? _value.cacheUseDeck
-          : cacheUseDeck // ignore: cast_nullable_to_non_nullable
-              as Deck?,
-      cacheOpponentDeck: cacheOpponentDeck == freezed
-          ? _value.cacheOpponentDeck
-          : cacheOpponentDeck // ignore: cast_nullable_to_non_nullable
-              as Deck?,
-      cacheTag: cacheTag == freezed
-          ? _value.cacheTag
-          : cacheTag // ignore: cast_nullable_to_non_nullable
-              as Tag?,
-      cacheDate: cacheDate == freezed
-          ? _value.cacheDate
-          : cacheDate // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+      images: null == images
+          ? _value._images
+          : images // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      addImages: null == addImages
+          ? _value._addImages
+          : addImages // ignore: cast_nullable_to_non_nullable
+              as List<XFile>,
+      removeImages: null == removeImages
+          ? _value._removeImages
+          : removeImages // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ));
   }
 }
 
 /// @nodoc
 
-class _$_RecordDetailState implements _RecordDetailState {
-  _$_RecordDetailState(
+class _$_RecordEditViewState implements _RecordEditViewState {
+  _$_RecordEditViewState(
       {this.isEdit = false,
       required this.record,
       required this.margedRecord,
       required this.editMargedRecord,
-      this.cacheUseDeck,
-      this.cacheOpponentDeck,
-      this.cacheTag,
-      this.cacheDate});
+      final List<String> images = const [],
+      final List<XFile> addImages = const [],
+      final List<String> removeImages = const []})
+      : _images = images,
+        _addImages = addImages,
+        _removeImages = removeImages;
 
   @override
   @JsonKey()
@@ -276,87 +228,101 @@ class _$_RecordDetailState implements _RecordDetailState {
   final MargedRecord margedRecord;
   @override
   final MargedRecord editMargedRecord;
+  final List<String> _images;
   @override
-  final Deck? cacheUseDeck;
+  @JsonKey()
+  List<String> get images {
+    if (_images is EqualUnmodifiableListView) return _images;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_images);
+  }
+
+  final List<XFile> _addImages;
   @override
-  final Deck? cacheOpponentDeck;
+  @JsonKey()
+  List<XFile> get addImages {
+    if (_addImages is EqualUnmodifiableListView) return _addImages;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_addImages);
+  }
+
+  final List<String> _removeImages;
   @override
-  final Tag? cacheTag;
-  @override
-  final DateTime? cacheDate;
+  @JsonKey()
+  List<String> get removeImages {
+    if (_removeImages is EqualUnmodifiableListView) return _removeImages;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_removeImages);
+  }
 
   @override
   String toString() {
-    return 'RecordDetailState(isEdit: $isEdit, record: $record, margedRecord: $margedRecord, editMargedRecord: $editMargedRecord, cacheUseDeck: $cacheUseDeck, cacheOpponentDeck: $cacheOpponentDeck, cacheTag: $cacheTag, cacheDate: $cacheDate)';
+    return 'RecordEditViewState(isEdit: $isEdit, record: $record, margedRecord: $margedRecord, editMargedRecord: $editMargedRecord, images: $images, addImages: $addImages, removeImages: $removeImages)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_RecordDetailState &&
-            const DeepCollectionEquality().equals(other.isEdit, isEdit) &&
-            const DeepCollectionEquality().equals(other.record, record) &&
+            other is _$_RecordEditViewState &&
+            (identical(other.isEdit, isEdit) || other.isEdit == isEdit) &&
+            (identical(other.record, record) || other.record == record) &&
+            (identical(other.margedRecord, margedRecord) ||
+                other.margedRecord == margedRecord) &&
+            (identical(other.editMargedRecord, editMargedRecord) ||
+                other.editMargedRecord == editMargedRecord) &&
+            const DeepCollectionEquality().equals(other._images, _images) &&
             const DeepCollectionEquality()
-                .equals(other.margedRecord, margedRecord) &&
+                .equals(other._addImages, _addImages) &&
             const DeepCollectionEquality()
-                .equals(other.editMargedRecord, editMargedRecord) &&
-            const DeepCollectionEquality()
-                .equals(other.cacheUseDeck, cacheUseDeck) &&
-            const DeepCollectionEquality()
-                .equals(other.cacheOpponentDeck, cacheOpponentDeck) &&
-            const DeepCollectionEquality().equals(other.cacheTag, cacheTag) &&
-            const DeepCollectionEquality().equals(other.cacheDate, cacheDate));
+                .equals(other._removeImages, _removeImages));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(isEdit),
-      const DeepCollectionEquality().hash(record),
-      const DeepCollectionEquality().hash(margedRecord),
-      const DeepCollectionEquality().hash(editMargedRecord),
-      const DeepCollectionEquality().hash(cacheUseDeck),
-      const DeepCollectionEquality().hash(cacheOpponentDeck),
-      const DeepCollectionEquality().hash(cacheTag),
-      const DeepCollectionEquality().hash(cacheDate));
+      isEdit,
+      record,
+      margedRecord,
+      editMargedRecord,
+      const DeepCollectionEquality().hash(_images),
+      const DeepCollectionEquality().hash(_addImages),
+      const DeepCollectionEquality().hash(_removeImages));
 
   @JsonKey(ignore: true)
   @override
-  _$$_RecordDetailStateCopyWith<_$_RecordDetailState> get copyWith =>
-      __$$_RecordDetailStateCopyWithImpl<_$_RecordDetailState>(
+  @pragma('vm:prefer-inline')
+  _$$_RecordEditViewStateCopyWith<_$_RecordEditViewState> get copyWith =>
+      __$$_RecordEditViewStateCopyWithImpl<_$_RecordEditViewState>(
           this, _$identity);
 }
 
-abstract class _RecordDetailState implements RecordDetailState {
-  factory _RecordDetailState(
+abstract class _RecordEditViewState implements RecordEditViewState {
+  factory _RecordEditViewState(
       {final bool isEdit,
       required final Record record,
       required final MargedRecord margedRecord,
       required final MargedRecord editMargedRecord,
-      final Deck? cacheUseDeck,
-      final Deck? cacheOpponentDeck,
-      final Tag? cacheTag,
-      final DateTime? cacheDate}) = _$_RecordDetailState;
+      final List<String> images,
+      final List<XFile> addImages,
+      final List<String> removeImages}) = _$_RecordEditViewState;
 
   @override
-  bool get isEdit => throw _privateConstructorUsedError;
+  bool get isEdit;
   @override
-  Record get record => throw _privateConstructorUsedError;
+  Record get record;
   @override
-  MargedRecord get margedRecord => throw _privateConstructorUsedError;
+  MargedRecord get margedRecord;
   @override
-  MargedRecord get editMargedRecord => throw _privateConstructorUsedError;
+  MargedRecord get editMargedRecord;
   @override
-  Deck? get cacheUseDeck => throw _privateConstructorUsedError;
+  List<String> get images;
   @override
-  Deck? get cacheOpponentDeck => throw _privateConstructorUsedError;
+  List<XFile> get addImages;
   @override
-  Tag? get cacheTag => throw _privateConstructorUsedError;
-  @override
-  DateTime? get cacheDate => throw _privateConstructorUsedError;
+  List<String> get removeImages;
   @override
   @JsonKey(ignore: true)
-  _$$_RecordDetailStateCopyWith<_$_RecordDetailState> get copyWith =>
+  _$$_RecordEditViewStateCopyWith<_$_RecordEditViewState> get copyWith =>
       throw _privateConstructorUsedError;
 }

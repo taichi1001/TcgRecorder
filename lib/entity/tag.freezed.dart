@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'tag.dart';
 
@@ -21,16 +21,12 @@ Tag _$TagFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Tag {
   @JsonKey(name: 'tag_id')
-  int? get tagId => throw _privateConstructorUsedError;
-  String get tag => throw _privateConstructorUsedError;
-  @JsonKey(name: 'game_id')
+  int? get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'tag')
+  String get name => throw _privateConstructorUsedError;
   int? get gameId => throw _privateConstructorUsedError;
-  @JsonKey(
-      fromJson: _boolFromJson,
-      toJson: _boolToJson,
-      name: 'is_visible_to_picker')
+  @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
   bool get isVisibleToPicker => throw _privateConstructorUsedError;
-  @JsonKey(name: 'sort_index')
   int? get sortIndex => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -41,57 +37,59 @@ mixin _$Tag {
 /// @nodoc
 abstract class $TagCopyWith<$Res> {
   factory $TagCopyWith(Tag value, $Res Function(Tag) then) =
-      _$TagCopyWithImpl<$Res>;
+      _$TagCopyWithImpl<$Res, Tag>;
+  @useResult
   $Res call(
       {@JsonKey(name: 'tag_id')
-          int? tagId,
-      String tag,
-      @JsonKey(name: 'game_id')
-          int? gameId,
-      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker')
+          int? id,
+      @JsonKey(name: 'tag')
+          String name,
+      int? gameId,
+      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
           bool isVisibleToPicker,
-      @JsonKey(name: 'sort_index')
-          int? sortIndex});
+      int? sortIndex});
 }
 
 /// @nodoc
-class _$TagCopyWithImpl<$Res> implements $TagCopyWith<$Res> {
+class _$TagCopyWithImpl<$Res, $Val extends Tag> implements $TagCopyWith<$Res> {
   _$TagCopyWithImpl(this._value, this._then);
 
-  final Tag _value;
   // ignore: unused_field
-  final $Res Function(Tag) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? tagId = freezed,
-    Object? tag = freezed,
+    Object? id = freezed,
+    Object? name = null,
     Object? gameId = freezed,
-    Object? isVisibleToPicker = freezed,
+    Object? isVisibleToPicker = null,
     Object? sortIndex = freezed,
   }) {
     return _then(_value.copyWith(
-      tagId: tagId == freezed
-          ? _value.tagId
-          : tagId // ignore: cast_nullable_to_non_nullable
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as int?,
-      tag: tag == freezed
-          ? _value.tag
-          : tag // ignore: cast_nullable_to_non_nullable
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
               as String,
-      gameId: gameId == freezed
+      gameId: freezed == gameId
           ? _value.gameId
           : gameId // ignore: cast_nullable_to_non_nullable
               as int?,
-      isVisibleToPicker: isVisibleToPicker == freezed
+      isVisibleToPicker: null == isVisibleToPicker
           ? _value.isVisibleToPicker
           : isVisibleToPicker // ignore: cast_nullable_to_non_nullable
               as bool,
-      sortIndex: sortIndex == freezed
+      sortIndex: freezed == sortIndex
           ? _value.sortIndex
           : sortIndex // ignore: cast_nullable_to_non_nullable
               as int?,
-    ));
+    ) as $Val);
   }
 }
 
@@ -100,53 +98,51 @@ abstract class _$$_TagCopyWith<$Res> implements $TagCopyWith<$Res> {
   factory _$$_TagCopyWith(_$_Tag value, $Res Function(_$_Tag) then) =
       __$$_TagCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {@JsonKey(name: 'tag_id')
-          int? tagId,
-      String tag,
-      @JsonKey(name: 'game_id')
-          int? gameId,
-      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker')
+          int? id,
+      @JsonKey(name: 'tag')
+          String name,
+      int? gameId,
+      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
           bool isVisibleToPicker,
-      @JsonKey(name: 'sort_index')
-          int? sortIndex});
+      int? sortIndex});
 }
 
 /// @nodoc
-class __$$_TagCopyWithImpl<$Res> extends _$TagCopyWithImpl<$Res>
+class __$$_TagCopyWithImpl<$Res> extends _$TagCopyWithImpl<$Res, _$_Tag>
     implements _$$_TagCopyWith<$Res> {
   __$$_TagCopyWithImpl(_$_Tag _value, $Res Function(_$_Tag) _then)
-      : super(_value, (v) => _then(v as _$_Tag));
+      : super(_value, _then);
 
-  @override
-  _$_Tag get _value => super._value as _$_Tag;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? tagId = freezed,
-    Object? tag = freezed,
+    Object? id = freezed,
+    Object? name = null,
     Object? gameId = freezed,
-    Object? isVisibleToPicker = freezed,
+    Object? isVisibleToPicker = null,
     Object? sortIndex = freezed,
   }) {
     return _then(_$_Tag(
-      tagId: tagId == freezed
-          ? _value.tagId
-          : tagId // ignore: cast_nullable_to_non_nullable
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as int?,
-      tag: tag == freezed
-          ? _value.tag
-          : tag // ignore: cast_nullable_to_non_nullable
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
               as String,
-      gameId: gameId == freezed
+      gameId: freezed == gameId
           ? _value.gameId
           : gameId // ignore: cast_nullable_to_non_nullable
               as int?,
-      isVisibleToPicker: isVisibleToPicker == freezed
+      isVisibleToPicker: null == isVisibleToPicker
           ? _value.isVisibleToPicker
           : isVisibleToPicker // ignore: cast_nullable_to_non_nullable
               as bool,
-      sortIndex: sortIndex == freezed
+      sortIndex: freezed == sortIndex
           ? _value.sortIndex
           : sortIndex // ignore: cast_nullable_to_non_nullable
               as int?,
@@ -159,38 +155,33 @@ class __$$_TagCopyWithImpl<$Res> extends _$TagCopyWithImpl<$Res>
 class _$_Tag implements _Tag {
   _$_Tag(
       {@JsonKey(name: 'tag_id')
-          this.tagId,
-      required this.tag,
-      @JsonKey(name: 'game_id')
-          this.gameId,
-      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker')
+          this.id,
+      @JsonKey(name: 'tag')
+          required this.name,
+      this.gameId,
+      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
           this.isVisibleToPicker = true,
-      @JsonKey(name: 'sort_index')
-          this.sortIndex});
+      this.sortIndex});
 
   factory _$_Tag.fromJson(Map<String, dynamic> json) => _$$_TagFromJson(json);
 
   @override
   @JsonKey(name: 'tag_id')
-  final int? tagId;
+  final int? id;
   @override
-  final String tag;
+  @JsonKey(name: 'tag')
+  final String name;
   @override
-  @JsonKey(name: 'game_id')
   final int? gameId;
   @override
-  @JsonKey(
-      fromJson: _boolFromJson,
-      toJson: _boolToJson,
-      name: 'is_visible_to_picker')
+  @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
   final bool isVisibleToPicker;
   @override
-  @JsonKey(name: 'sort_index')
   final int? sortIndex;
 
   @override
   String toString() {
-    return 'Tag(tagId: $tagId, tag: $tag, gameId: $gameId, isVisibleToPicker: $isVisibleToPicker, sortIndex: $sortIndex)';
+    return 'Tag(id: $id, name: $name, gameId: $gameId, isVisibleToPicker: $isVisibleToPicker, sortIndex: $sortIndex)';
   }
 
   @override
@@ -198,66 +189,60 @@ class _$_Tag implements _Tag {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Tag &&
-            const DeepCollectionEquality().equals(other.tagId, tagId) &&
-            const DeepCollectionEquality().equals(other.tag, tag) &&
-            const DeepCollectionEquality().equals(other.gameId, gameId) &&
-            const DeepCollectionEquality()
-                .equals(other.isVisibleToPicker, isVisibleToPicker) &&
-            const DeepCollectionEquality().equals(other.sortIndex, sortIndex));
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.gameId, gameId) || other.gameId == gameId) &&
+            (identical(other.isVisibleToPicker, isVisibleToPicker) ||
+                other.isVisibleToPicker == isVisibleToPicker) &&
+            (identical(other.sortIndex, sortIndex) ||
+                other.sortIndex == sortIndex));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(tagId),
-      const DeepCollectionEquality().hash(tag),
-      const DeepCollectionEquality().hash(gameId),
-      const DeepCollectionEquality().hash(isVisibleToPicker),
-      const DeepCollectionEquality().hash(sortIndex));
+  int get hashCode =>
+      Object.hash(runtimeType, id, name, gameId, isVisibleToPicker, sortIndex);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_TagCopyWith<_$_Tag> get copyWith =>
       __$$_TagCopyWithImpl<_$_Tag>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_TagToJson(this);
+    return _$$_TagToJson(
+      this,
+    );
   }
 }
 
 abstract class _Tag implements Tag {
   factory _Tag(
       {@JsonKey(name: 'tag_id')
-          final int? tagId,
-      required final String tag,
-      @JsonKey(name: 'game_id')
-          final int? gameId,
-      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker')
+          final int? id,
+      @JsonKey(name: 'tag')
+          required final String name,
+      final int? gameId,
+      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
           final bool isVisibleToPicker,
-      @JsonKey(name: 'sort_index')
-          final int? sortIndex}) = _$_Tag;
+      final int? sortIndex}) = _$_Tag;
 
   factory _Tag.fromJson(Map<String, dynamic> json) = _$_Tag.fromJson;
 
   @override
   @JsonKey(name: 'tag_id')
-  int? get tagId => throw _privateConstructorUsedError;
+  int? get id;
   @override
-  String get tag => throw _privateConstructorUsedError;
+  @JsonKey(name: 'tag')
+  String get name;
   @override
-  @JsonKey(name: 'game_id')
-  int? get gameId => throw _privateConstructorUsedError;
+  int? get gameId;
   @override
-  @JsonKey(
-      fromJson: _boolFromJson,
-      toJson: _boolToJson,
-      name: 'is_visible_to_picker')
-  bool get isVisibleToPicker => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
+  bool get isVisibleToPicker;
   @override
-  @JsonKey(name: 'sort_index')
-  int? get sortIndex => throw _privateConstructorUsedError;
+  int? get sortIndex;
   @override
   @JsonKey(ignore: true)
   _$$_TagCopyWith<_$_Tag> get copyWith => throw _privateConstructorUsedError;

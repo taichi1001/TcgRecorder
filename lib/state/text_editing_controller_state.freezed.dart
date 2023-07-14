@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'text_editing_controller_state.dart';
 
@@ -20,7 +20,8 @@ mixin _$TextEditingControllerState {
       throw _privateConstructorUsedError;
   TextEditingController get opponentDeckController =>
       throw _privateConstructorUsedError;
-  TextEditingController get tagController => throw _privateConstructorUsedError;
+  List<TextEditingController> get tagController =>
+      throw _privateConstructorUsedError;
   TextEditingController get memoController =>
       throw _privateConstructorUsedError;
 
@@ -33,48 +34,53 @@ mixin _$TextEditingControllerState {
 abstract class $TextEditingControllerStateCopyWith<$Res> {
   factory $TextEditingControllerStateCopyWith(TextEditingControllerState value,
           $Res Function(TextEditingControllerState) then) =
-      _$TextEditingControllerStateCopyWithImpl<$Res>;
+      _$TextEditingControllerStateCopyWithImpl<$Res,
+          TextEditingControllerState>;
+  @useResult
   $Res call(
       {TextEditingController useDeckController,
       TextEditingController opponentDeckController,
-      TextEditingController tagController,
+      List<TextEditingController> tagController,
       TextEditingController memoController});
 }
 
 /// @nodoc
-class _$TextEditingControllerStateCopyWithImpl<$Res>
+class _$TextEditingControllerStateCopyWithImpl<$Res,
+        $Val extends TextEditingControllerState>
     implements $TextEditingControllerStateCopyWith<$Res> {
   _$TextEditingControllerStateCopyWithImpl(this._value, this._then);
 
-  final TextEditingControllerState _value;
   // ignore: unused_field
-  final $Res Function(TextEditingControllerState) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? useDeckController = freezed,
-    Object? opponentDeckController = freezed,
-    Object? tagController = freezed,
-    Object? memoController = freezed,
+    Object? useDeckController = null,
+    Object? opponentDeckController = null,
+    Object? tagController = null,
+    Object? memoController = null,
   }) {
     return _then(_value.copyWith(
-      useDeckController: useDeckController == freezed
+      useDeckController: null == useDeckController
           ? _value.useDeckController
           : useDeckController // ignore: cast_nullable_to_non_nullable
               as TextEditingController,
-      opponentDeckController: opponentDeckController == freezed
+      opponentDeckController: null == opponentDeckController
           ? _value.opponentDeckController
           : opponentDeckController // ignore: cast_nullable_to_non_nullable
               as TextEditingController,
-      tagController: tagController == freezed
+      tagController: null == tagController
           ? _value.tagController
           : tagController // ignore: cast_nullable_to_non_nullable
-              as TextEditingController,
-      memoController: memoController == freezed
+              as List<TextEditingController>,
+      memoController: null == memoController
           ? _value.memoController
           : memoController // ignore: cast_nullable_to_non_nullable
               as TextEditingController,
-    ));
+    ) as $Val);
   }
 }
 
@@ -86,47 +92,46 @@ abstract class _$$_TextEditingControllerStateCopyWith<$Res>
           $Res Function(_$_TextEditingControllerState) then) =
       __$$_TextEditingControllerStateCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {TextEditingController useDeckController,
       TextEditingController opponentDeckController,
-      TextEditingController tagController,
+      List<TextEditingController> tagController,
       TextEditingController memoController});
 }
 
 /// @nodoc
 class __$$_TextEditingControllerStateCopyWithImpl<$Res>
-    extends _$TextEditingControllerStateCopyWithImpl<$Res>
+    extends _$TextEditingControllerStateCopyWithImpl<$Res,
+        _$_TextEditingControllerState>
     implements _$$_TextEditingControllerStateCopyWith<$Res> {
   __$$_TextEditingControllerStateCopyWithImpl(
       _$_TextEditingControllerState _value,
       $Res Function(_$_TextEditingControllerState) _then)
-      : super(_value, (v) => _then(v as _$_TextEditingControllerState));
+      : super(_value, _then);
 
-  @override
-  _$_TextEditingControllerState get _value =>
-      super._value as _$_TextEditingControllerState;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? useDeckController = freezed,
-    Object? opponentDeckController = freezed,
-    Object? tagController = freezed,
-    Object? memoController = freezed,
+    Object? useDeckController = null,
+    Object? opponentDeckController = null,
+    Object? tagController = null,
+    Object? memoController = null,
   }) {
     return _then(_$_TextEditingControllerState(
-      useDeckController: useDeckController == freezed
+      useDeckController: null == useDeckController
           ? _value.useDeckController
           : useDeckController // ignore: cast_nullable_to_non_nullable
               as TextEditingController,
-      opponentDeckController: opponentDeckController == freezed
+      opponentDeckController: null == opponentDeckController
           ? _value.opponentDeckController
           : opponentDeckController // ignore: cast_nullable_to_non_nullable
               as TextEditingController,
-      tagController: tagController == freezed
-          ? _value.tagController
+      tagController: null == tagController
+          ? _value._tagController
           : tagController // ignore: cast_nullable_to_non_nullable
-              as TextEditingController,
-      memoController: memoController == freezed
+              as List<TextEditingController>,
+      memoController: null == memoController
           ? _value.memoController
           : memoController // ignore: cast_nullable_to_non_nullable
               as TextEditingController,
@@ -140,15 +145,22 @@ class _$_TextEditingControllerState implements _TextEditingControllerState {
   _$_TextEditingControllerState(
       {required this.useDeckController,
       required this.opponentDeckController,
-      required this.tagController,
-      required this.memoController});
+      required final List<TextEditingController> tagController,
+      required this.memoController})
+      : _tagController = tagController;
 
   @override
   final TextEditingController useDeckController;
   @override
   final TextEditingController opponentDeckController;
+  final List<TextEditingController> _tagController;
   @override
-  final TextEditingController tagController;
+  List<TextEditingController> get tagController {
+    if (_tagController is EqualUnmodifiableListView) return _tagController;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_tagController);
+  }
+
   @override
   final TextEditingController memoController;
 
@@ -162,26 +174,27 @@ class _$_TextEditingControllerState implements _TextEditingControllerState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_TextEditingControllerState &&
+            (identical(other.useDeckController, useDeckController) ||
+                other.useDeckController == useDeckController) &&
+            (identical(other.opponentDeckController, opponentDeckController) ||
+                other.opponentDeckController == opponentDeckController) &&
             const DeepCollectionEquality()
-                .equals(other.useDeckController, useDeckController) &&
-            const DeepCollectionEquality()
-                .equals(other.opponentDeckController, opponentDeckController) &&
-            const DeepCollectionEquality()
-                .equals(other.tagController, tagController) &&
-            const DeepCollectionEquality()
-                .equals(other.memoController, memoController));
+                .equals(other._tagController, _tagController) &&
+            (identical(other.memoController, memoController) ||
+                other.memoController == memoController));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(useDeckController),
-      const DeepCollectionEquality().hash(opponentDeckController),
-      const DeepCollectionEquality().hash(tagController),
-      const DeepCollectionEquality().hash(memoController));
+      useDeckController,
+      opponentDeckController,
+      const DeepCollectionEquality().hash(_tagController),
+      memoController);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_TextEditingControllerStateCopyWith<_$_TextEditingControllerState>
       get copyWith => __$$_TextEditingControllerStateCopyWithImpl<
           _$_TextEditingControllerState>(this, _$identity);
@@ -192,21 +205,18 @@ abstract class _TextEditingControllerState
   factory _TextEditingControllerState(
           {required final TextEditingController useDeckController,
           required final TextEditingController opponentDeckController,
-          required final TextEditingController tagController,
+          required final List<TextEditingController> tagController,
           required final TextEditingController memoController}) =
       _$_TextEditingControllerState;
 
   @override
-  TextEditingController get useDeckController =>
-      throw _privateConstructorUsedError;
+  TextEditingController get useDeckController;
   @override
-  TextEditingController get opponentDeckController =>
-      throw _privateConstructorUsedError;
+  TextEditingController get opponentDeckController;
   @override
-  TextEditingController get tagController => throw _privateConstructorUsedError;
+  List<TextEditingController> get tagController;
   @override
-  TextEditingController get memoController =>
-      throw _privateConstructorUsedError;
+  TextEditingController get memoController;
   @override
   @JsonKey(ignore: true)
   _$$_TextEditingControllerStateCopyWith<_$_TextEditingControllerState>

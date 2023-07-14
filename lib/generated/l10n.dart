@@ -370,6 +370,16 @@ class S {
     );
   }
 
+  /// `Draw`
+  String get draw {
+    return Intl.message(
+      'Draw',
+      name: 'draw',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Use Deck: `
   String get listUseDeck {
     return Intl.message(
@@ -660,6 +670,16 @@ class S {
     );
   }
 
+  /// `yyyy/MM/dd日 HH:mm`
+  String get dateFormatIncludeTime {
+    return Intl.message(
+      'yyyy/MM/dd日 HH:mm',
+      name: 'dateFormatIncludeTime',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `1`
   String get recordListFirst {
     return Intl.message(
@@ -745,6 +765,296 @@ class S {
     return Intl.message(
       'Cancel',
       name: 'cancel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Premium Plan`
+  String get premiumPlan {
+    return Intl.message(
+      'Premium Plan',
+      name: 'premiumPlan',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Win the game with more detailed recording and analysis!`
+  String get premiumPlanCatchCopy {
+    return Intl.message(
+      'Win the game with more detailed recording and analysis!',
+      name: 'premiumPlanCatchCopy',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Record multiple tags`
+  String get premiumPlanTagTitle {
+    return Intl.message(
+      'Record multiple tags',
+      name: 'premiumPlanTagTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Various tag combinations can be recorded.`
+  String get premiumPlanTagDescription {
+    return Intl.message(
+      'Various tag combinations can be recorded.',
+      name: 'premiumPlanTagDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Recorded BO3 and draw`
+  String get premiumPlanDrawTitle {
+    return Intl.message(
+      'Recorded BO3 and draw',
+      name: 'premiumPlanDrawTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `It can be used to record a variety of match formats.`
+  String get premiumPlanDrawDescription {
+    return Intl.message(
+      'It can be used to record a variety of match formats.',
+      name: 'premiumPlanDrawDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Record Images'`
+  String get premiumPlanImageTitle {
+    return Intl.message(
+      'Record Images\'',
+      name: 'premiumPlanImageTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Images can be recorded with them. \nHow about putting up a Јn deck recipe or something?`
+  String get premiumPlanImageDescription {
+    return Intl.message(
+      'Images can be recorded with them. \nHow about putting up a Јn deck recipe or something?',
+      name: 'premiumPlanImageDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Export`
+  String get premiumPlanExportTitle {
+    return Intl.message(
+      'Export',
+      name: 'premiumPlanExportTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Export in CSV format. \nYou can analyze freely according to your ideas.`
+  String get premiumPlanExportDescription {
+    return Intl.message(
+      'Export in CSV format. \nYou can analyze freely according to your ideas.',
+      name: 'premiumPlanExportDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No ads displayed`
+  String get premiumPlanADBlockTitle {
+    return Intl.message(
+      'No ads displayed',
+      name: 'premiumPlanADBlockTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All advertisements in the application will be hidden.`
+  String get premiumPlanADBlockDescription {
+    return Intl.message(
+      'All advertisements in the application will be hidden.',
+      name: 'premiumPlanADBlockDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Automatic backup`
+  String get premiumPlanBackupTitle {
+    return Intl.message(
+      'Automatic backup',
+      name: 'premiumPlanBackupTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You can always backup the latest data.`
+  String get premiumPlanBackupDescription {
+    return Intl.message(
+      'You can always backup the latest data.',
+      name: 'premiumPlanBackupDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Game Sharing Restrictions Lifted`
+  String get premiumPlanShareTitle {
+    return Intl.message(
+      'Game Sharing Restrictions Lifted',
+      name: 'premiumPlanShareTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unlimited game sharing.`
+  String get premiumPlanShareDescription {
+    return Intl.message(
+      'Unlimited game sharing.',
+      name: 'premiumPlanShareDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `year`
+  String get year {
+    return Intl.message(
+      'year',
+      name: 'year',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `month`
+  String get month {
+    return Intl.message(
+      'month',
+      name: 'month',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Annual Plan`
+  String get yearPlan {
+    return Intl.message(
+      'Annual Plan',
+      name: 'yearPlan',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Monthly Plan`
+  String get monthPlan {
+    return Intl.message(
+      'Monthly Plan',
+      name: 'monthPlan',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel Anytime`
+  String get cancelAnytime {
+    return Intl.message(
+      'Cancel Anytime',
+      name: 'cancelAnytime',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `\ First Week Free /`
+  String get freePeriod {
+    return Intl.message(
+      '\\ First Week Free /',
+      name: 'freePeriod',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Free Trial`
+  String get freePlanButton {
+    return Intl.message(
+      'Free Trial',
+      name: 'freePlanButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `From the end of the free period`
+  String get afterFree {
+    return Intl.message(
+      'From the end of the free period',
+      name: 'afterFree',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Restore Subscriptions`
+  String get restoreButton {
+    return Intl.message(
+      'Restore Subscriptions',
+      name: 'restoreButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Terms of Use`
+  String get termsOfUse {
+    return Intl.message(
+      'Terms of Use',
+      name: 'termsOfUse',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `● The Free Trial is only available to first time Premium Plan subscribers. \nIf you do not cancel at least 24 hours before the end of the trial period, you will automatically be charged for the continued purchase.`
+  String get freePlanDescription {
+    return Intl.message(
+      '● The Free Trial is only available to first time Premium Plan subscribers. \nIf you do not cancel at least 24 hours before the end of the trial period, you will automatically be charged for the continued purchase.',
+      name: 'freePlanDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `● If you wish to terminate your subscription, please cancel at least 24 hours prior to the end of your subscription period.`
+  String get planUpdateDescription {
+    return Intl.message(
+      '● If you wish to terminate your subscription, please cancel at least 24 hours prior to the end of your subscription period.',
+      name: 'planUpdateDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save 2 months`
+  String get value2Mont {
+    return Intl.message(
+      'Save 2 months',
+      name: 'value2Mont',
       desc: '',
       args: [],
     );

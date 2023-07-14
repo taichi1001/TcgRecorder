@@ -1,39 +1,57 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tcg_manager/dao/geme_dao.dart';
 import 'package:tcg_manager/entity/game.dart';
+import 'package:tcg_manager/service/database.dart';
 
-final gameRepository = Provider.autoDispose<GameRepository>((ref) => GameRepositoryImpl(ref.read));
+final gameRepository = Provider.autoDispose<GameRepository>((ref) => GameRepository(ref));
 
-abstract class GameRepository {
-  Future<List<Game>> getAll();
+class GameRepository {
+  GameRepository(this.ref);
 
-  Future<int> insert(Game game);
+  final Ref ref;
+  final dbProvider = DatabaseService.dbProvider;
+  final tableName = DatabaseService.gameTableName;
 
-  Future<int> update(Game game);
+  Future<List<Game>> getAll() async {
+    final db = await dbProvider.database;
+    final result = await db.query(tableName);
+    return result.isNotEmpty ? result.map((item) => Game.fromJson(item)).toList() : [];
+  }
 
-  Future<int> deleteById(int id);
+  Future<int> insert(Game game) async {
+    final db = await dbProvider.database;
+    return db.insert(tableName, game.toJson());
+  }
 
-  Future deleteAll();
-}
+  Future<int> update(Game game) async {
+    final db = await dbProvider.database;
+    return await db.update(tableName, game.toJson(), where: 'game_id = ?', whereArgs: [game.id]);
+  }
 
-class GameRepositoryImpl implements GameRepository {
-  GameRepositoryImpl(this.read);
+  Future<int> deleteById(int id) async {
+    final db = await dbProvider.database;
+    return await db.delete(tableName, where: 'game_id = ?', whereArgs: [id]);
+  }
 
-  final Reader read;
-  final gameDao = GameDao();
+  Future<List<Object?>> insertList(List<Game> games) async {
+    final db = await dbProvider.database;
+    final batch = db.batch();
+    for (final game in games) {
+      batch.insert(tableName, game.toJson());
+    }
+    return await batch.commit();
+  }
 
-  @override
-  Future<List<Game>> getAll() => gameDao.getAll();
+  Future<List<Object?>> updateGameList(List<Game> gameList) async {
+    final db = await dbProvider.database;
+    final batch = db.batch();
+    for (final game in gameList) {
+      batch.update(tableName, game.toJson(), where: 'game_id = ?', whereArgs: [game.id]);
+    }
+    return await batch.commit();
+  }
 
-  @override
-  Future<int> insert(Game game) => gameDao.create(game);
-
-  @override
-  Future<int> update(Game game) => gameDao.update(game);
-
-  @override
-  Future<int> deleteById(int id) => gameDao.delete(id);
-
-  @override
-  Future deleteAll() => gameDao.deleteAll();
+  Future<int> deleteAll() async {
+    final db = await dbProvider.database;
+    return await db.delete(tableName);
+  }
 }

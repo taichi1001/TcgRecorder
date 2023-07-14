@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/record.dart';
 import 'package:tcg_manager/entity/tag.dart';
@@ -14,9 +15,16 @@ abstract class InputViewState with _$InputViewState {
     required DateTime date,
     Deck? useDeck,
     Deck? opponentDeck,
-    Tag? tag,
+    @Default([]) List<Tag> tag,
     String? memo,
     @Default(WinLoss.win) WinLoss winLoss,
+    WinLoss? firstMatchWinLoss,
+    WinLoss? secondMatchWinLoss,
+    WinLoss? thirdMatchWinLoss,
     @Default(FirstSecond.first) FirstSecond firstSecond,
+    FirstSecond? firstMatchFirstSecond,
+    FirstSecond? secondMatchFirstSecond,
+    FirstSecond? thirdMatchFirstSecond,
+    @Default([]) List<XFile> images,
   }) = _InputViewState;
 }

@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'initial_game_registration_state.dart';
 
@@ -28,41 +28,47 @@ abstract class $InitialGameRegistrationStateCopyWith<$Res> {
   factory $InitialGameRegistrationStateCopyWith(
           InitialGameRegistrationState value,
           $Res Function(InitialGameRegistrationState) then) =
-      _$InitialGameRegistrationStateCopyWithImpl<$Res>;
+      _$InitialGameRegistrationStateCopyWithImpl<$Res,
+          InitialGameRegistrationState>;
+  @useResult
   $Res call({Game? initialGame});
 
   $GameCopyWith<$Res>? get initialGame;
 }
 
 /// @nodoc
-class _$InitialGameRegistrationStateCopyWithImpl<$Res>
+class _$InitialGameRegistrationStateCopyWithImpl<$Res,
+        $Val extends InitialGameRegistrationState>
     implements $InitialGameRegistrationStateCopyWith<$Res> {
   _$InitialGameRegistrationStateCopyWithImpl(this._value, this._then);
 
-  final InitialGameRegistrationState _value;
   // ignore: unused_field
-  final $Res Function(InitialGameRegistrationState) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? initialGame = freezed,
   }) {
     return _then(_value.copyWith(
-      initialGame: initialGame == freezed
+      initialGame: freezed == initialGame
           ? _value.initialGame
           : initialGame // ignore: cast_nullable_to_non_nullable
               as Game?,
-    ));
+    ) as $Val);
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $GameCopyWith<$Res>? get initialGame {
     if (_value.initialGame == null) {
       return null;
     }
 
     return $GameCopyWith<$Res>(_value.initialGame!, (value) {
-      return _then(_value.copyWith(initialGame: value));
+      return _then(_value.copyWith(initialGame: value) as $Val);
     });
   }
 }
@@ -75,6 +81,7 @@ abstract class _$$_InitialGameRegistrationStateCopyWith<$Res>
           $Res Function(_$_InitialGameRegistrationState) then) =
       __$$_InitialGameRegistrationStateCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call({Game? initialGame});
 
   @override
@@ -83,23 +90,21 @@ abstract class _$$_InitialGameRegistrationStateCopyWith<$Res>
 
 /// @nodoc
 class __$$_InitialGameRegistrationStateCopyWithImpl<$Res>
-    extends _$InitialGameRegistrationStateCopyWithImpl<$Res>
+    extends _$InitialGameRegistrationStateCopyWithImpl<$Res,
+        _$_InitialGameRegistrationState>
     implements _$$_InitialGameRegistrationStateCopyWith<$Res> {
   __$$_InitialGameRegistrationStateCopyWithImpl(
       _$_InitialGameRegistrationState _value,
       $Res Function(_$_InitialGameRegistrationState) _then)
-      : super(_value, (v) => _then(v as _$_InitialGameRegistrationState));
+      : super(_value, _then);
 
-  @override
-  _$_InitialGameRegistrationState get _value =>
-      super._value as _$_InitialGameRegistrationState;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? initialGame = freezed,
   }) {
     return _then(_$_InitialGameRegistrationState(
-      initialGame: initialGame == freezed
+      initialGame: freezed == initialGame
           ? _value.initialGame
           : initialGame // ignore: cast_nullable_to_non_nullable
               as Game?,
@@ -125,16 +130,16 @@ class _$_InitialGameRegistrationState implements _InitialGameRegistrationState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_InitialGameRegistrationState &&
-            const DeepCollectionEquality()
-                .equals(other.initialGame, initialGame));
+            (identical(other.initialGame, initialGame) ||
+                other.initialGame == initialGame));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(initialGame));
+  int get hashCode => Object.hash(runtimeType, initialGame);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_InitialGameRegistrationStateCopyWith<_$_InitialGameRegistrationState>
       get copyWith => __$$_InitialGameRegistrationStateCopyWithImpl<
           _$_InitialGameRegistrationState>(this, _$identity);
@@ -146,7 +151,7 @@ abstract class _InitialGameRegistrationState
       _$_InitialGameRegistrationState;
 
   @override
-  Game? get initialGame => throw _privateConstructorUsedError;
+  Game? get initialGame;
   @override
   @JsonKey(ignore: true)
   _$$_InitialGameRegistrationStateCopyWith<_$_InitialGameRegistrationState>

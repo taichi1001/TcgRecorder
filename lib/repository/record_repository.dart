@@ -1,54 +1,75 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tcg_manager/dao/record_dao.dart';
 import 'package:tcg_manager/entity/record.dart';
+import 'package:tcg_manager/service/database.dart';
 
-final recordRepository = Provider.autoDispose<RecordRepository>((ref) => RecordRepositoryImpl(ref.read));
+final recordRepository = Provider.autoDispose<RecordRepository>((ref) => RecordRepository(ref));
 
-abstract class RecordRepository {
-  Future<List<Record>> getAll();
+class RecordRepository {
+  RecordRepository(this.ref);
 
-  Future<List<Record>> getGameRecord(int id);
+  final Ref ref;
+  final dbProvider = DatabaseService.dbProvider;
+  final tableName = DatabaseService.recordTableName;
 
-  Future<List<Record>> getTagRecord(int id);
+  Future<List<Record>> getAll() async {
+    final db = await dbProvider.database;
+    final result = await db.query(tableName);
+    return result.isNotEmpty ? result.map((item) => Record.fromJson(item)).toList() : [];
+  }
 
-  Future<int> insert(Record record);
+  Future<Record?> getRecordId(int id) async {
+    final db = await dbProvider.database;
+    final result = await db.query(tableName, where: 'record_id = ?', whereArgs: [id]);
+    return result.isNotEmpty ? result.map((item) => Record.fromJson(item)).toList().first : null;
+  }
 
-  Future<int> update(Record record);
+  Future<List<Record>> getGameRecord(int id) async {
+    final db = await dbProvider.database;
+    final result = await db.query(tableName, where: 'game_id = ?', whereArgs: [id]);
+    return result.isNotEmpty ? result.map((item) => Record.fromJson(item)).toList() : [];
+  }
 
-  Future<List<Object?>> updateRecordList(List<Record> recordList);
+  Future<List<Record>> getTagRecord(int id) async {
+    final db = await dbProvider.database;
+    final result = await db.query(tableName, where: 'tag_id = ?', whereArgs: [id]);
+    return result.isNotEmpty ? result.map((item) => Record.fromJson(item)).toList() : [];
+  }
 
-  Future<int> deleteById(int id);
+  Future<int> insert(Record record) async {
+    final db = await dbProvider.database;
+    return db.insert(tableName, record.toJson());
+  }
 
-  Future deleteAll();
-}
+  Future<int> update(Record record) async {
+    final db = await dbProvider.database;
+    return await db.update(tableName, record.toJson(), where: 'record_id = ?', whereArgs: [record.recordId]);
+  }
 
-class RecordRepositoryImpl implements RecordRepository {
-  RecordRepositoryImpl(this.read);
+  Future<List<Object?>> insertList(List<Record> records) async {
+    final db = await dbProvider.database;
+    final batch = db.batch();
+    for (final record in records) {
+      batch.insert(tableName, record.toJson());
+    }
+    return await batch.commit();
+  }
 
-  final Reader read;
-  final recordDao = RecordDao();
+  Future<List<Object?>> updateRecordList(List<Record> recordList) async {
+    final db = await dbProvider.database;
+    final batch = db.batch();
+    for (final record in recordList) {
+      batch.update(tableName, record.toJson(), where: 'record_id = ?', whereArgs: [record.recordId]);
+    }
+    return await batch.commit();
+  }
 
-  @override
-  Future<List<Record>> getAll() => recordDao.getAll();
+  Future<int> deleteById(int id) async {
+    final db = await dbProvider.database;
+    return await db.delete(tableName, where: 'record_id = ?', whereArgs: [id]);
+  }
 
-  @override
-  Future<List<Record>> getGameRecord(int id) => recordDao.getGameRecord(id);
-
-  @override
-  Future<List<Record>> getTagRecord(int id) => recordDao.getTagRecord(id);
-
-  @override
-  Future<int> insert(Record record) => recordDao.create(record);
-
-  @override
-  Future<int> update(Record record) => recordDao.update(record);
-
-  @override
-  Future<List<Object?>> updateRecordList(List<Record> recordList) => recordDao.updateRecordList(recordList);
-
-  @override
-  Future<int> deleteById(int id) => recordDao.delete(id);
-
-  @override
-  Future deleteAll() => recordDao.deleteAll();
+  Future<int> deleteAll() async {
+    final db = await dbProvider.database;
+    return await db.delete(tableName);
+  }
 }

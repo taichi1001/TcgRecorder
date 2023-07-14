@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "105648170735-5f8kdmqjlv77ke2n1ihp99vaghfc4oln.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.taichi1001.tcg_manager",
+            "certificate_hash": "dce51aad7ceb553c4eb4fd88a7a66120eae0ce1d"
+          }
+        },
+        {
           "client_id": "105648170735-jm8ljir4adcp4e6m1sj8qfmr493i28oa.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -31,10 +39,10 @@
               "client_type": 3
             },
             {
-              "client_id": "105648170735-i6eeemv57tkkbql8lnof3amov3it504g.apps.googleusercontent.com",
+              "client_id": "105648170735-bb96jr9d9hakon1gkt18rbst1mtphrfu.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.taichi1001.tcg-manager"
+                "bundle_id": "exit"
               }
             }
           ]
@@ -50,6 +58,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "105648170735-gf3ktua92p2dpt93idtlrmmeijt8p9b1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.taichi1001.tcg_manager.dev",
+            "certificate_hash": "dce51aad7ceb553c4eb4fd88a7a66120eae0ce1d"
+          }
+        },
+        {
           "client_id": "105648170735-jm8ljir4adcp4e6m1sj8qfmr493i28oa.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -67,10 +83,10 @@
               "client_type": 3
             },
             {
-              "client_id": "105648170735-i6eeemv57tkkbql8lnof3amov3it504g.apps.googleusercontent.com",
+              "client_id": "105648170735-bb96jr9d9hakon1gkt18rbst1mtphrfu.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.taichi1001.tcg-manager"
+                "bundle_id": "exit"
               }
             }
           ]
@@ -86,6 +102,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "105648170735-9ab6mu7u3csbvljrqtaqerci5qetjjjg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.taichi1001.tcg_manager.stg",
+            "certificate_hash": "dce51aad7ceb553c4eb4fd88a7a66120eae0ce1d"
+          }
+        },
+        {
           "client_id": "105648170735-jm8ljir4adcp4e6m1sj8qfmr493i28oa.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -103,10 +127,10 @@
               "client_type": 3
             },
             {
-              "client_id": "105648170735-i6eeemv57tkkbql8lnof3amov3it504g.apps.googleusercontent.com",
+              "client_id": "105648170735-bb96jr9d9hakon1gkt18rbst1mtphrfu.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.taichi1001.tcg-manager"
+                "bundle_id": "exit"
               }
             }
           ]

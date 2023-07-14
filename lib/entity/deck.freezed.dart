@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'deck.dart';
 
@@ -21,16 +21,12 @@ Deck _$DeckFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Deck {
   @JsonKey(name: 'deck_id')
-  int? get deckId => throw _privateConstructorUsedError;
-  String get deck => throw _privateConstructorUsedError;
-  @JsonKey(name: 'game_id')
+  int? get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'deck')
+  String get name => throw _privateConstructorUsedError;
   int? get gameId => throw _privateConstructorUsedError;
-  @JsonKey(
-      fromJson: _boolFromJson,
-      toJson: _boolToJson,
-      name: 'is_visible_to_picker')
+  @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
   bool get isVisibleToPicker => throw _privateConstructorUsedError;
-  @JsonKey(name: 'sort_index')
   int? get sortIndex => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -41,57 +37,60 @@ mixin _$Deck {
 /// @nodoc
 abstract class $DeckCopyWith<$Res> {
   factory $DeckCopyWith(Deck value, $Res Function(Deck) then) =
-      _$DeckCopyWithImpl<$Res>;
+      _$DeckCopyWithImpl<$Res, Deck>;
+  @useResult
   $Res call(
       {@JsonKey(name: 'deck_id')
-          int? deckId,
-      String deck,
-      @JsonKey(name: 'game_id')
-          int? gameId,
-      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker')
+          int? id,
+      @JsonKey(name: 'deck')
+          String name,
+      int? gameId,
+      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
           bool isVisibleToPicker,
-      @JsonKey(name: 'sort_index')
-          int? sortIndex});
+      int? sortIndex});
 }
 
 /// @nodoc
-class _$DeckCopyWithImpl<$Res> implements $DeckCopyWith<$Res> {
+class _$DeckCopyWithImpl<$Res, $Val extends Deck>
+    implements $DeckCopyWith<$Res> {
   _$DeckCopyWithImpl(this._value, this._then);
 
-  final Deck _value;
   // ignore: unused_field
-  final $Res Function(Deck) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? deckId = freezed,
-    Object? deck = freezed,
+    Object? id = freezed,
+    Object? name = null,
     Object? gameId = freezed,
-    Object? isVisibleToPicker = freezed,
+    Object? isVisibleToPicker = null,
     Object? sortIndex = freezed,
   }) {
     return _then(_value.copyWith(
-      deckId: deckId == freezed
-          ? _value.deckId
-          : deckId // ignore: cast_nullable_to_non_nullable
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as int?,
-      deck: deck == freezed
-          ? _value.deck
-          : deck // ignore: cast_nullable_to_non_nullable
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
               as String,
-      gameId: gameId == freezed
+      gameId: freezed == gameId
           ? _value.gameId
           : gameId // ignore: cast_nullable_to_non_nullable
               as int?,
-      isVisibleToPicker: isVisibleToPicker == freezed
+      isVisibleToPicker: null == isVisibleToPicker
           ? _value.isVisibleToPicker
           : isVisibleToPicker // ignore: cast_nullable_to_non_nullable
               as bool,
-      sortIndex: sortIndex == freezed
+      sortIndex: freezed == sortIndex
           ? _value.sortIndex
           : sortIndex // ignore: cast_nullable_to_non_nullable
               as int?,
-    ));
+    ) as $Val);
   }
 }
 
@@ -100,53 +99,51 @@ abstract class _$$_DeckCopyWith<$Res> implements $DeckCopyWith<$Res> {
   factory _$$_DeckCopyWith(_$_Deck value, $Res Function(_$_Deck) then) =
       __$$_DeckCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {@JsonKey(name: 'deck_id')
-          int? deckId,
-      String deck,
-      @JsonKey(name: 'game_id')
-          int? gameId,
-      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker')
+          int? id,
+      @JsonKey(name: 'deck')
+          String name,
+      int? gameId,
+      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
           bool isVisibleToPicker,
-      @JsonKey(name: 'sort_index')
-          int? sortIndex});
+      int? sortIndex});
 }
 
 /// @nodoc
-class __$$_DeckCopyWithImpl<$Res> extends _$DeckCopyWithImpl<$Res>
+class __$$_DeckCopyWithImpl<$Res> extends _$DeckCopyWithImpl<$Res, _$_Deck>
     implements _$$_DeckCopyWith<$Res> {
   __$$_DeckCopyWithImpl(_$_Deck _value, $Res Function(_$_Deck) _then)
-      : super(_value, (v) => _then(v as _$_Deck));
+      : super(_value, _then);
 
-  @override
-  _$_Deck get _value => super._value as _$_Deck;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? deckId = freezed,
-    Object? deck = freezed,
+    Object? id = freezed,
+    Object? name = null,
     Object? gameId = freezed,
-    Object? isVisibleToPicker = freezed,
+    Object? isVisibleToPicker = null,
     Object? sortIndex = freezed,
   }) {
     return _then(_$_Deck(
-      deckId: deckId == freezed
-          ? _value.deckId
-          : deckId // ignore: cast_nullable_to_non_nullable
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as int?,
-      deck: deck == freezed
-          ? _value.deck
-          : deck // ignore: cast_nullable_to_non_nullable
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
               as String,
-      gameId: gameId == freezed
+      gameId: freezed == gameId
           ? _value.gameId
           : gameId // ignore: cast_nullable_to_non_nullable
               as int?,
-      isVisibleToPicker: isVisibleToPicker == freezed
+      isVisibleToPicker: null == isVisibleToPicker
           ? _value.isVisibleToPicker
           : isVisibleToPicker // ignore: cast_nullable_to_non_nullable
               as bool,
-      sortIndex: sortIndex == freezed
+      sortIndex: freezed == sortIndex
           ? _value.sortIndex
           : sortIndex // ignore: cast_nullable_to_non_nullable
               as int?,
@@ -159,38 +156,33 @@ class __$$_DeckCopyWithImpl<$Res> extends _$DeckCopyWithImpl<$Res>
 class _$_Deck implements _Deck {
   _$_Deck(
       {@JsonKey(name: 'deck_id')
-          this.deckId,
-      required this.deck,
-      @JsonKey(name: 'game_id')
-          this.gameId,
-      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker')
+          this.id,
+      @JsonKey(name: 'deck')
+          required this.name,
+      this.gameId,
+      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
           this.isVisibleToPicker = true,
-      @JsonKey(name: 'sort_index')
-          this.sortIndex});
+      this.sortIndex});
 
   factory _$_Deck.fromJson(Map<String, dynamic> json) => _$$_DeckFromJson(json);
 
   @override
   @JsonKey(name: 'deck_id')
-  final int? deckId;
+  final int? id;
   @override
-  final String deck;
+  @JsonKey(name: 'deck')
+  final String name;
   @override
-  @JsonKey(name: 'game_id')
   final int? gameId;
   @override
-  @JsonKey(
-      fromJson: _boolFromJson,
-      toJson: _boolToJson,
-      name: 'is_visible_to_picker')
+  @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
   final bool isVisibleToPicker;
   @override
-  @JsonKey(name: 'sort_index')
   final int? sortIndex;
 
   @override
   String toString() {
-    return 'Deck(deckId: $deckId, deck: $deck, gameId: $gameId, isVisibleToPicker: $isVisibleToPicker, sortIndex: $sortIndex)';
+    return 'Deck(id: $id, name: $name, gameId: $gameId, isVisibleToPicker: $isVisibleToPicker, sortIndex: $sortIndex)';
   }
 
   @override
@@ -198,66 +190,60 @@ class _$_Deck implements _Deck {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Deck &&
-            const DeepCollectionEquality().equals(other.deckId, deckId) &&
-            const DeepCollectionEquality().equals(other.deck, deck) &&
-            const DeepCollectionEquality().equals(other.gameId, gameId) &&
-            const DeepCollectionEquality()
-                .equals(other.isVisibleToPicker, isVisibleToPicker) &&
-            const DeepCollectionEquality().equals(other.sortIndex, sortIndex));
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.gameId, gameId) || other.gameId == gameId) &&
+            (identical(other.isVisibleToPicker, isVisibleToPicker) ||
+                other.isVisibleToPicker == isVisibleToPicker) &&
+            (identical(other.sortIndex, sortIndex) ||
+                other.sortIndex == sortIndex));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(deckId),
-      const DeepCollectionEquality().hash(deck),
-      const DeepCollectionEquality().hash(gameId),
-      const DeepCollectionEquality().hash(isVisibleToPicker),
-      const DeepCollectionEquality().hash(sortIndex));
+  int get hashCode =>
+      Object.hash(runtimeType, id, name, gameId, isVisibleToPicker, sortIndex);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_DeckCopyWith<_$_Deck> get copyWith =>
       __$$_DeckCopyWithImpl<_$_Deck>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_DeckToJson(this);
+    return _$$_DeckToJson(
+      this,
+    );
   }
 }
 
 abstract class _Deck implements Deck {
   factory _Deck(
       {@JsonKey(name: 'deck_id')
-          final int? deckId,
-      required final String deck,
-      @JsonKey(name: 'game_id')
-          final int? gameId,
-      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson, name: 'is_visible_to_picker')
+          final int? id,
+      @JsonKey(name: 'deck')
+          required final String name,
+      final int? gameId,
+      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
           final bool isVisibleToPicker,
-      @JsonKey(name: 'sort_index')
-          final int? sortIndex}) = _$_Deck;
+      final int? sortIndex}) = _$_Deck;
 
   factory _Deck.fromJson(Map<String, dynamic> json) = _$_Deck.fromJson;
 
   @override
   @JsonKey(name: 'deck_id')
-  int? get deckId => throw _privateConstructorUsedError;
+  int? get id;
   @override
-  String get deck => throw _privateConstructorUsedError;
+  @JsonKey(name: 'deck')
+  String get name;
   @override
-  @JsonKey(name: 'game_id')
-  int? get gameId => throw _privateConstructorUsedError;
+  int? get gameId;
   @override
-  @JsonKey(
-      fromJson: _boolFromJson,
-      toJson: _boolToJson,
-      name: 'is_visible_to_picker')
-  bool get isVisibleToPicker => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
+  bool get isVisibleToPicker;
   @override
-  @JsonKey(name: 'sort_index')
-  int? get sortIndex => throw _privateConstructorUsedError;
+  int? get sortIndex;
   @override
   @JsonKey(ignore: true)
   _$$_DeckCopyWith<_$_Deck> get copyWith => throw _privateConstructorUsedError;

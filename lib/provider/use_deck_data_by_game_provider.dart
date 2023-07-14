@@ -14,7 +14,7 @@ final useDeckDataByGameProvider = FutureProvider.autoDispose<List<WinRateData>>(
     final List<Deck> gameUseDeckList = [];
     for (final deck in gameDeckList) {
       for (final record in filterRecordList) {
-        if (record.useDeckId == deck.deckId) {
+        if (record.useDeckId == deck.id) {
           gameUseDeckList.add(deck);
           break;
         }
@@ -24,16 +24,19 @@ final useDeckDataByGameProvider = FutureProvider.autoDispose<List<WinRateData>>(
     return gameUseDeckList
         .map(
           (useDeck) => WinRateData(
-            deck: useDeck.deck,
+            deck: useDeck.name,
             matches: calc.countUseDeckMatches(useDeck),
             firstMatches: calc.countUseDeckFirstMatches(useDeck),
             secondMatches: calc.countUseDeckSecondMatches(useDeck),
             win: calc.countUseDeckWins(useDeck),
             firstMatchesWin: calc.countUseDeckFirstMatchesWins(useDeck),
-            secondMatchesWin: calc.countUseDeckFirstMatchesLoss(useDeck),
+            secondMatchesWin: calc.countUseDeckSecondMatchesWins(useDeck),
             loss: calc.countUseDeckLoss(useDeck),
             firstMatchesLoss: calc.countUseDeckFirstMatchesLoss(useDeck),
             secondMatchesLoss: calc.countUseDeckSecondMatchesLoss(useDeck),
+            draw: calc.countUseDeckDraw(useDeck),
+            firstMatchesDraw: calc.countUseDeckFirstMatchesDraw(useDeck),
+            secondMatchesDraw: calc.countUseDeckSecondMatchesDraw(useDeck),
             useRate: calc.calcUseDeckUseRate(useDeck),
             winRate: calc.calcUseDeckWinRate(useDeck),
             winRateOfFirst: calc.calcUseDeckWinRateOfFirst(useDeck),
@@ -62,6 +65,9 @@ final totalAddedToUseDeckDataByGameProvider = FutureProvider.autoDispose<List<Wi
         loss: calc.countLoss(),
         firstMatchesLoss: calc.countFirstMatchesLoss(),
         secondMatchesLoss: calc.countSecondMatchesLoss(),
+        draw: calc.countDraw(),
+        firstMatchesDraw: calc.countFirstMatchesDraw(),
+        secondMatchesDraw: calc.countSecondMatchesDraw(),
         winRate: calc.calcWinRate(),
         winRateOfFirst: calc.calcWinRateOfFirst(),
         winRateOfSecond: calc.calcWinRateOfSecond(),

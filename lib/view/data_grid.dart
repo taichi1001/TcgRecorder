@@ -20,38 +20,43 @@ class GameDataGrid extends HookConsumerWidget {
     return gameWinRateDataList.when(
       data: (gameWinRateDataList) {
         final source = GameWinRateDataSource(winRateDataList: gameWinRateDataList, context: context);
-        return SfDataGrid(
-          source: source,
-          frozenColumnsCount: 1,
-          footerFrozenRowsCount: 1,
-          allowSorting: true,
-          allowMultiColumnSorting: true,
-          allowTriStateSorting: true,
-          verticalScrollPhysics: const ClampingScrollPhysics(),
-          horizontalScrollPhysics: const ClampingScrollPhysics(),
-          isScrollbarAlwaysShown: true,
-          onCellTap: (details) {
-            final dataIndex = details.rowColumnIndex.rowIndex;
-            if (dataIndex == 0) return; // カラム名が書いてある列がタップされた場合
-            if (dataIndex == source.dataGridRows.length) return; // 合計カラムがタップされた場合
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => SafeArea(
-                  top: false,
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: DeckDataGrid(deck: source.effectiveRows[details.rowColumnIndex.rowIndex - 1].getCells().first.value),
-                      ),
-                      const AdaptiveBannerAd(),
-                    ],
+        return SfDataGridTheme(
+          data: SfDataGridThemeData(
+            sortIcon: SortIcon(source: source),
+          ),
+          child: SfDataGrid(
+            source: source,
+            frozenColumnsCount: 1,
+            footerFrozenRowsCount: 1,
+            allowSorting: true,
+            allowMultiColumnSorting: true,
+            allowTriStateSorting: true,
+            verticalScrollPhysics: const ClampingScrollPhysics(),
+            horizontalScrollPhysics: const ClampingScrollPhysics(),
+            isScrollbarAlwaysShown: true,
+            onCellTap: (details) {
+              final dataIndex = details.rowColumnIndex.rowIndex;
+              if (dataIndex == 0) return; // カラム名が書いてある列がタップされた場合
+              if (dataIndex == source.dataGridRows.length) return; // 合計カラムがタップされた場合
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SafeArea(
+                    top: false,
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: DeckDataGrid(deck: source.effectiveRows[details.rowColumnIndex.rowIndex - 1].getCells().first.value),
+                        ),
+                        const AdaptiveBannerAd(),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            );
-          },
-          columns: _getGridColumns(context, graphViewSettings),
+              );
+            },
+            columns: _getGridColumns(context, graphViewSettings),
+          ),
         );
       },
       error: (error, stack) => Text('$error'),
@@ -76,10 +81,7 @@ class DeckDataGrid extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(
-          deck,
-          style: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-        ),
+        title: Text(deck),
         elevation: 0.0,
       ),
       body: gameWinRateDataList.when(
@@ -89,6 +91,7 @@ class DeckDataGrid extends HookConsumerWidget {
             data: SfDataGridThemeData(
               frozenPaneElevation: 0,
               frozenPaneLineWidth: 1.5,
+              sortIcon: SortIcon(source: source),
             ),
             child: SfDataGrid(
               source: source,
@@ -108,6 +111,39 @@ class DeckDataGrid extends HookConsumerWidget {
         loading: () => const Center(child: CircularProgressIndicator()),
       ),
     );
+  }
+}
+
+class SortIcon extends StatelessWidget {
+  const SortIcon({
+    super.key,
+    required this.source,
+  });
+
+  final GameWinRateDataSource source;
+
+  @override
+  Widget build(BuildContext context) {
+    Widget? icon;
+    String columnName = '';
+    context.visitAncestorElements((element) {
+      if (element is GridHeaderCellElement) {
+        columnName = element.column.columnName;
+      }
+
+      return true;
+    });
+
+    var column = source.sortedColumns.where((element) => element.name == columnName).firstOrNull;
+
+    if (column != null) {
+      if (column.sortDirection == DataGridSortDirection.ascending) {
+        icon = const Padding(padding: EdgeInsets.symmetric(horizontal: 4), child: Icon(Icons.arrow_circle_up_rounded, size: 16));
+      } else if (column.sortDirection == DataGridSortDirection.descending) {
+        icon = const Padding(padding: EdgeInsets.symmetric(horizontal: 4), child: Icon(Icons.arrow_circle_down_rounded, size: 16));
+      }
+    }
+    return icon ?? const SizedBox();
   }
 }
 
@@ -179,6 +215,17 @@ List<GridColumn> _getGridColumns(BuildContext context, GraphViewSettingsState se
       width: 60,
     ),
     GridColumn(
+      visible: settings.draw,
+      columnName: '引き分け',
+      label: const Center(
+        child: Text(
+          '引き分け',
+          style: TextStyle(),
+        ),
+      ),
+      width: 60,
+    ),
+    GridColumn(
       visible: settings.firstMatchesWin,
       columnName: '先攻勝',
       label: const Center(
@@ -201,6 +248,17 @@ List<GridColumn> _getGridColumns(BuildContext context, GraphViewSettingsState se
       width: 60,
     ),
     GridColumn(
+      visible: settings.firstMatchesDraw,
+      columnName: '先攻引き分け',
+      label: const Center(
+        child: Text(
+          '先攻引き分け',
+          style: TextStyle(),
+        ),
+      ),
+      width: 60,
+    ),
+    GridColumn(
       visible: settings.secondMatchesWin,
       columnName: '後攻勝',
       label: const Center(
@@ -217,6 +275,17 @@ List<GridColumn> _getGridColumns(BuildContext context, GraphViewSettingsState se
       label: const Center(
         child: Text(
           '後攻負',
+          style: TextStyle(),
+        ),
+      ),
+      width: 60,
+    ),
+    GridColumn(
+      visible: settings.secondMatchesDraw,
+      columnName: '後攻引き分け',
+      label: const Center(
+        child: Text(
+          '後攻引き分け',
           style: TextStyle(),
         ),
       ),
@@ -273,10 +342,13 @@ class GameWinRateDataSource extends DataGridSource {
               DataGridCell(columnName: '後攻試合数', value: winRateData.secondMatches),
               DataGridCell(columnName: '勝', value: winRateData.win),
               DataGridCell(columnName: '負', value: winRateData.loss),
+              DataGridCell(columnName: '引き分け', value: winRateData.draw),
               DataGridCell(columnName: '先攻勝', value: winRateData.firstMatchesWin),
               DataGridCell(columnName: '先攻負', value: winRateData.firstMatchesLoss),
+              DataGridCell(columnName: '先攻引き分け', value: winRateData.firstMatchesDraw),
               DataGridCell(columnName: '後攻勝', value: winRateData.secondMatchesWin),
               DataGridCell(columnName: '後攻負', value: winRateData.secondMatchesLoss),
+              DataGridCell(columnName: '後攻引き分け', value: winRateData.secondMatchesDraw),
               DataGridCell(columnName: '勝率', value: winRateData.winRate),
               DataGridCell(columnName: '先攻勝率', value: winRateData.winRateOfFirst),
               DataGridCell(columnName: '後攻勝率', value: winRateData.winRateOfSecond),
@@ -315,7 +387,7 @@ class GameWinRateDataSource extends DataGridSource {
         return Text(
           cell.value.toString(),
           maxLines: 2,
-          style: Theme.of(context).textTheme.overline?.copyWith(
+          style: Theme.of(context).textTheme.labelSmall?.copyWith(
                 overflow: TextOverflow.ellipsis,
                 leadingDistribution: TextLeadingDistribution.even,
                 height: 1,
@@ -338,16 +410,25 @@ class GameWinRateDataSource extends DataGridSource {
     if (cell.columnName == '負') {
       return Text(cell.value.toString());
     }
+    if (cell.columnName == '引き分け') {
+      return Text(cell.value.toString());
+    }
     if (cell.columnName == '先攻勝') {
       return Text(cell.value.toString());
     }
     if (cell.columnName == '先攻負') {
       return Text(cell.value.toString());
     }
+    if (cell.columnName == '先攻引き分け') {
+      return Text(cell.value.toString());
+    }
     if (cell.columnName == '後攻勝') {
       return Text(cell.value.toString());
     }
     if (cell.columnName == '後攻負') {
+      return Text(cell.value.toString());
+    }
+    if (cell.columnName == '後攻引き分け') {
       return Text(cell.value.toString());
     }
     if (cell.columnName == '勝率') {

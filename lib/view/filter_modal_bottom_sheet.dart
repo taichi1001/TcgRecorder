@@ -4,13 +4,15 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import 'package:syncfusion_flutter_sliders/sliders.dart';
+import 'package:tcg_manager/entity/tag.dart';
+import 'package:tcg_manager/enum/domain_data_type.dart';
 import 'package:tcg_manager/enum/sort.dart';
 import 'package:tcg_manager/helper/convert_sort_string.dart';
 import 'package:tcg_manager/provider/record_list_view_provider.dart';
 import 'package:tcg_manager/view/component/custom_modal_list_picker.dart';
-import 'package:tcg_manager/view/component/custom_modal_picker.dart';
-import 'package:tcg_manager/view/select_deck_view.dart';
-import 'package:tcg_manager/view/select_tag_view.dart';
+import 'package:tcg_manager/view/component/cutom_date_time_range_picker.dart';
+import 'package:tcg_manager/view/select_domain_data_view.dart';
 
 class FilterModalBottomSheet extends HookConsumerWidget {
   const FilterModalBottomSheet({
@@ -27,11 +29,34 @@ class FilterModalBottomSheet extends HookConsumerWidget {
   final bool showOpponentDeck;
   final bool showTag;
 
+  String _makeTagString(List<Tag> tagList) {
+    if (tagList.isEmpty) return '';
+    var result = '';
+    var count = 0;
+    for (final tag in tagList) {
+      if (count == 0) {
+        result = tag.name;
+      } else {
+        result = '$result,${tag.name}';
+      }
+      count++;
+    }
+    return result;
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final recordListViewState = ref.watch(recordListViewNotifierProvider);
     final recordListViewNotifier = ref.watch(recordListViewNotifierProvider.notifier);
-    final outputFormat = DateFormat('yyyy/MM/dd');
+    final controller = CustomModalDateTimeRangePickerController(
+      initialDateRange: PickerDateRange(recordListViewState.startDate, recordListViewState.endDate),
+      initialTimeRange: SfRangeValues(
+        recordListViewState.startTime ?? DateTime(1994, 10, 1, 0, 0),
+        recordListViewState.endTime ?? DateTime(1994, 10, 1, 23, 59),
+      ),
+    );
+    final outputDateFormat = DateFormat('yyyy/MM/dd');
+    final outputTimeFormat = DateFormat('HH:mm');
 
     return Material(
       child: SafeArea(
@@ -43,7 +68,7 @@ class FilterModalBottomSheet extends HookConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   CupertinoButton(
                     padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
@@ -84,7 +109,7 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                             ConvertSortString.convert(context, sort),
                             softWrap: false,
                             overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.headline6?.copyWith(height: 1),
+                            style: Theme.of(context).textTheme.titleLarge?.copyWith(height: 1),
                           ),
                         ),
                       )
@@ -119,48 +144,81 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                     showCupertinoModalPopup(
                       context: context,
                       builder: (BuildContext context) {
-                        return SizedBox(
-                          height: 350,
-                          child: CustomModalPicker(
-                            shoModalButton: false,
-                            child: SfDateRangePicker(
-                              selectionMode: DateRangePickerSelectionMode.range,
-                              view: DateRangePickerView.month,
-                              showActionButtons: true,
-                              minDate: DateTime(2000, 01, 01),
-                              maxDate: DateTime.now(),
-                              initialSelectedRange: PickerDateRange(recordListViewState.startDate, recordListViewState.endDate),
-                              onSubmit: (value) {
-                                if (value is PickerDateRange) {
-                                  recordListViewNotifier.setStartDate(value.startDate!);
-                                  recordListViewNotifier.setEndDate(value.endDate);
-                                  Navigator.pop(context);
-                                }
-                              },
-                              onCancel: () => Navigator.pop(context),
-                            ),
-                          ),
+                        return CustomModalDateTimeRangePicker(
+                          controller: controller,
+                          submitedAction: () {
+                            recordListViewNotifier.setStartDate(controller.selectedDateRange.startDate);
+                            recordListViewNotifier.setEndDate(controller.selectedDateRange.endDate);
+                            recordListViewNotifier.setStartTime(controller.selectedTimeRange.start);
+                            recordListViewNotifier.setEndTime(controller.selectedTimeRange.end);
+                            Navigator.pop(context);
+                          },
                         );
                       },
                     );
                   },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        recordListViewState.startDate == null && recordListViewState.endDate == null
-                            ? const Text('全て')
-                            : Row(
-                                children: [
-                                  Text(outputFormat.format(recordListViewState.startDate!)),
-                                  const Text(' - '),
-                                  Text(outputFormat.format(recordListViewState.endDate!)),
-                                ],
-                              ),
-                        const Icon(Icons.arrow_drop_down),
-                      ],
-                    ),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    recordListViewState.startDate == null && recordListViewState.endDate == null
+                                        ? Row(
+                                            children: [
+                                              Text('日時:    ',
+                                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold)),
+                                              const Text('全て'),
+                                            ],
+                                          )
+                                        : Row(
+                                            children: [
+                                              Text('日時:    ',
+                                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold)),
+                                              Text(outputDateFormat.format(recordListViewState.startDate!)),
+                                              const Text(' - '),
+                                              Text(outputDateFormat.format(recordListViewState.endDate!)),
+                                            ],
+                                          ),
+                                  ],
+                                ),
+                                const SizedBox(height: 8),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    recordListViewState.startTime == null && recordListViewState.endTime == null
+                                        ? Row(
+                                            children: [
+                                              Text('時間帯:    ',
+                                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold)),
+                                              const Text('全て'),
+                                            ],
+                                          )
+                                        : Row(
+                                            children: [
+                                              Text('時間帯:    ',
+                                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold)),
+                                              Text(outputTimeFormat.format(recordListViewState.startTime!)),
+                                              const Text(' - '),
+                                              Text(outputTimeFormat.format(recordListViewState.endTime!)),
+                                            ],
+                                          ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            const Icon(Icons.arrow_drop_down),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               if (showUseDeck)
@@ -183,8 +241,12 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                       expand: true,
                       context: context,
                       backgroundColor: Colors.transparent,
-                      builder: (BuildContext context) => SelectDeckView(
-                        selectDeckFunc: recordListViewNotifier.selectUseDeck,
+                      builder: (BuildContext context) => SelectDomainDataView(
+                        dataType: DomainDataType.deck,
+                        selectDomainDataFunc: recordListViewNotifier.selectUseDeck,
+                        tagCount: 0,
+                        afterFunc: FocusScope.of(context).unfocus,
+                        enableVisiblity: true,
                       ),
                     );
                   },
@@ -193,7 +255,7 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        recordListViewState.useDeck == null ? const Text('全て') : Text(recordListViewState.useDeck!.deck),
+                        recordListViewState.useDeck == null ? const Text('全て') : Text(recordListViewState.useDeck!.name),
                         const Icon(Icons.arrow_drop_down),
                       ],
                     ),
@@ -219,8 +281,12 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                       expand: true,
                       context: context,
                       backgroundColor: Colors.transparent,
-                      builder: (BuildContext context) => SelectDeckView(
-                        selectDeckFunc: recordListViewNotifier.selectOpponentDeck,
+                      builder: (BuildContext context) => SelectDomainDataView(
+                        dataType: DomainDataType.deck,
+                        selectDomainDataFunc: recordListViewNotifier.selectOpponentDeck,
+                        tagCount: 0,
+                        afterFunc: FocusScope.of(context).unfocus,
+                        enableVisiblity: true,
                       ),
                     );
                   },
@@ -229,7 +295,7 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        recordListViewState.opponentDeck == null ? const Text('全て') : Text(recordListViewState.opponentDeck!.deck),
+                        recordListViewState.opponentDeck == null ? const Text('全て') : Text(recordListViewState.opponentDeck!.name),
                         const Icon(Icons.arrow_drop_down),
                       ],
                     ),
@@ -255,8 +321,12 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                       expand: true,
                       context: context,
                       backgroundColor: Colors.transparent,
-                      builder: (BuildContext context) => SelectTagView(
-                        selectTagFunc: recordListViewNotifier.selectTag,
+                      builder: (BuildContext context) => SelectDomainDataView(
+                        tagCount: 0,
+                        dataType: DomainDataType.tag,
+                        selectDomainDataFunc: recordListViewNotifier.selectTag,
+                        deselectionFunc: recordListViewNotifier.deselectionTag,
+                        returnSelecting: false,
                       ),
                     );
                   },
@@ -265,7 +335,7 @@ class FilterModalBottomSheet extends HookConsumerWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        recordListViewState.tag == null ? const Text('全て') : Text(recordListViewState.tag!.tag),
+                        recordListViewState.tagList.isEmpty ? const Text('全て') : Text(_makeTagString(recordListViewState.tagList)),
                         const Icon(Icons.arrow_drop_down),
                       ],
                     ),
@@ -305,7 +375,7 @@ class _SelectableRow extends StatelessWidget {
             '全て',
             softWrap: false,
             overflow: TextOverflow.ellipsis,
-            style: Theme.of(context).textTheme.headline6?.copyWith(height: 1),
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(height: 1),
           ),
         ),
       );

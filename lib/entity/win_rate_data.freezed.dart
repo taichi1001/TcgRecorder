@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'win_rate_data.dart';
 
@@ -26,6 +26,9 @@ mixin _$WinRateData {
   int get loss => throw _privateConstructorUsedError;
   int get firstMatchesLoss => throw _privateConstructorUsedError;
   int get secondMatchesLoss => throw _privateConstructorUsedError;
+  int get draw => throw _privateConstructorUsedError;
+  int get firstMatchesDraw => throw _privateConstructorUsedError;
+  int get secondMatchesDraw => throw _privateConstructorUsedError;
   double get useRate => throw _privateConstructorUsedError;
   double get winRate => throw _privateConstructorUsedError;
   double get winRateOfFirst => throw _privateConstructorUsedError;
@@ -40,7 +43,8 @@ mixin _$WinRateData {
 abstract class $WinRateDataCopyWith<$Res> {
   factory $WinRateDataCopyWith(
           WinRateData value, $Res Function(WinRateData) then) =
-      _$WinRateDataCopyWithImpl<$Res>;
+      _$WinRateDataCopyWithImpl<$Res, WinRateData>;
+  @useResult
   $Res call(
       {String deck,
       int matches,
@@ -52,6 +56,9 @@ abstract class $WinRateDataCopyWith<$Res> {
       int loss,
       int firstMatchesLoss,
       int secondMatchesLoss,
+      int draw,
+      int firstMatchesDraw,
+      int secondMatchesDraw,
       double useRate,
       double winRate,
       double winRateOfFirst,
@@ -59,88 +66,106 @@ abstract class $WinRateDataCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$WinRateDataCopyWithImpl<$Res> implements $WinRateDataCopyWith<$Res> {
+class _$WinRateDataCopyWithImpl<$Res, $Val extends WinRateData>
+    implements $WinRateDataCopyWith<$Res> {
   _$WinRateDataCopyWithImpl(this._value, this._then);
 
-  final WinRateData _value;
   // ignore: unused_field
-  final $Res Function(WinRateData) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? deck = freezed,
-    Object? matches = freezed,
-    Object? firstMatches = freezed,
-    Object? secondMatches = freezed,
-    Object? win = freezed,
-    Object? firstMatchesWin = freezed,
-    Object? secondMatchesWin = freezed,
-    Object? loss = freezed,
-    Object? firstMatchesLoss = freezed,
-    Object? secondMatchesLoss = freezed,
-    Object? useRate = freezed,
-    Object? winRate = freezed,
-    Object? winRateOfFirst = freezed,
-    Object? winRateOfSecond = freezed,
+    Object? deck = null,
+    Object? matches = null,
+    Object? firstMatches = null,
+    Object? secondMatches = null,
+    Object? win = null,
+    Object? firstMatchesWin = null,
+    Object? secondMatchesWin = null,
+    Object? loss = null,
+    Object? firstMatchesLoss = null,
+    Object? secondMatchesLoss = null,
+    Object? draw = null,
+    Object? firstMatchesDraw = null,
+    Object? secondMatchesDraw = null,
+    Object? useRate = null,
+    Object? winRate = null,
+    Object? winRateOfFirst = null,
+    Object? winRateOfSecond = null,
   }) {
     return _then(_value.copyWith(
-      deck: deck == freezed
+      deck: null == deck
           ? _value.deck
           : deck // ignore: cast_nullable_to_non_nullable
               as String,
-      matches: matches == freezed
+      matches: null == matches
           ? _value.matches
           : matches // ignore: cast_nullable_to_non_nullable
               as int,
-      firstMatches: firstMatches == freezed
+      firstMatches: null == firstMatches
           ? _value.firstMatches
           : firstMatches // ignore: cast_nullable_to_non_nullable
               as int,
-      secondMatches: secondMatches == freezed
+      secondMatches: null == secondMatches
           ? _value.secondMatches
           : secondMatches // ignore: cast_nullable_to_non_nullable
               as int,
-      win: win == freezed
+      win: null == win
           ? _value.win
           : win // ignore: cast_nullable_to_non_nullable
               as int,
-      firstMatchesWin: firstMatchesWin == freezed
+      firstMatchesWin: null == firstMatchesWin
           ? _value.firstMatchesWin
           : firstMatchesWin // ignore: cast_nullable_to_non_nullable
               as int,
-      secondMatchesWin: secondMatchesWin == freezed
+      secondMatchesWin: null == secondMatchesWin
           ? _value.secondMatchesWin
           : secondMatchesWin // ignore: cast_nullable_to_non_nullable
               as int,
-      loss: loss == freezed
+      loss: null == loss
           ? _value.loss
           : loss // ignore: cast_nullable_to_non_nullable
               as int,
-      firstMatchesLoss: firstMatchesLoss == freezed
+      firstMatchesLoss: null == firstMatchesLoss
           ? _value.firstMatchesLoss
           : firstMatchesLoss // ignore: cast_nullable_to_non_nullable
               as int,
-      secondMatchesLoss: secondMatchesLoss == freezed
+      secondMatchesLoss: null == secondMatchesLoss
           ? _value.secondMatchesLoss
           : secondMatchesLoss // ignore: cast_nullable_to_non_nullable
               as int,
-      useRate: useRate == freezed
+      draw: null == draw
+          ? _value.draw
+          : draw // ignore: cast_nullable_to_non_nullable
+              as int,
+      firstMatchesDraw: null == firstMatchesDraw
+          ? _value.firstMatchesDraw
+          : firstMatchesDraw // ignore: cast_nullable_to_non_nullable
+              as int,
+      secondMatchesDraw: null == secondMatchesDraw
+          ? _value.secondMatchesDraw
+          : secondMatchesDraw // ignore: cast_nullable_to_non_nullable
+              as int,
+      useRate: null == useRate
           ? _value.useRate
           : useRate // ignore: cast_nullable_to_non_nullable
               as double,
-      winRate: winRate == freezed
+      winRate: null == winRate
           ? _value.winRate
           : winRate // ignore: cast_nullable_to_non_nullable
               as double,
-      winRateOfFirst: winRateOfFirst == freezed
+      winRateOfFirst: null == winRateOfFirst
           ? _value.winRateOfFirst
           : winRateOfFirst // ignore: cast_nullable_to_non_nullable
               as double,
-      winRateOfSecond: winRateOfSecond == freezed
+      winRateOfSecond: null == winRateOfSecond
           ? _value.winRateOfSecond
           : winRateOfSecond // ignore: cast_nullable_to_non_nullable
               as double,
-    ));
+    ) as $Val);
   }
 }
 
@@ -151,6 +176,7 @@ abstract class _$$_WinRateDataCopyWith<$Res>
           _$_WinRateData value, $Res Function(_$_WinRateData) then) =
       __$$_WinRateDataCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {String deck,
       int matches,
@@ -162,6 +188,9 @@ abstract class _$$_WinRateDataCopyWith<$Res>
       int loss,
       int firstMatchesLoss,
       int secondMatchesLoss,
+      int draw,
+      int firstMatchesDraw,
+      int secondMatchesDraw,
       double useRate,
       double winRate,
       double winRateOfFirst,
@@ -169,86 +198,100 @@ abstract class _$$_WinRateDataCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_WinRateDataCopyWithImpl<$Res> extends _$WinRateDataCopyWithImpl<$Res>
+class __$$_WinRateDataCopyWithImpl<$Res>
+    extends _$WinRateDataCopyWithImpl<$Res, _$_WinRateData>
     implements _$$_WinRateDataCopyWith<$Res> {
   __$$_WinRateDataCopyWithImpl(
       _$_WinRateData _value, $Res Function(_$_WinRateData) _then)
-      : super(_value, (v) => _then(v as _$_WinRateData));
+      : super(_value, _then);
 
-  @override
-  _$_WinRateData get _value => super._value as _$_WinRateData;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? deck = freezed,
-    Object? matches = freezed,
-    Object? firstMatches = freezed,
-    Object? secondMatches = freezed,
-    Object? win = freezed,
-    Object? firstMatchesWin = freezed,
-    Object? secondMatchesWin = freezed,
-    Object? loss = freezed,
-    Object? firstMatchesLoss = freezed,
-    Object? secondMatchesLoss = freezed,
-    Object? useRate = freezed,
-    Object? winRate = freezed,
-    Object? winRateOfFirst = freezed,
-    Object? winRateOfSecond = freezed,
+    Object? deck = null,
+    Object? matches = null,
+    Object? firstMatches = null,
+    Object? secondMatches = null,
+    Object? win = null,
+    Object? firstMatchesWin = null,
+    Object? secondMatchesWin = null,
+    Object? loss = null,
+    Object? firstMatchesLoss = null,
+    Object? secondMatchesLoss = null,
+    Object? draw = null,
+    Object? firstMatchesDraw = null,
+    Object? secondMatchesDraw = null,
+    Object? useRate = null,
+    Object? winRate = null,
+    Object? winRateOfFirst = null,
+    Object? winRateOfSecond = null,
   }) {
     return _then(_$_WinRateData(
-      deck: deck == freezed
+      deck: null == deck
           ? _value.deck
           : deck // ignore: cast_nullable_to_non_nullable
               as String,
-      matches: matches == freezed
+      matches: null == matches
           ? _value.matches
           : matches // ignore: cast_nullable_to_non_nullable
               as int,
-      firstMatches: firstMatches == freezed
+      firstMatches: null == firstMatches
           ? _value.firstMatches
           : firstMatches // ignore: cast_nullable_to_non_nullable
               as int,
-      secondMatches: secondMatches == freezed
+      secondMatches: null == secondMatches
           ? _value.secondMatches
           : secondMatches // ignore: cast_nullable_to_non_nullable
               as int,
-      win: win == freezed
+      win: null == win
           ? _value.win
           : win // ignore: cast_nullable_to_non_nullable
               as int,
-      firstMatchesWin: firstMatchesWin == freezed
+      firstMatchesWin: null == firstMatchesWin
           ? _value.firstMatchesWin
           : firstMatchesWin // ignore: cast_nullable_to_non_nullable
               as int,
-      secondMatchesWin: secondMatchesWin == freezed
+      secondMatchesWin: null == secondMatchesWin
           ? _value.secondMatchesWin
           : secondMatchesWin // ignore: cast_nullable_to_non_nullable
               as int,
-      loss: loss == freezed
+      loss: null == loss
           ? _value.loss
           : loss // ignore: cast_nullable_to_non_nullable
               as int,
-      firstMatchesLoss: firstMatchesLoss == freezed
+      firstMatchesLoss: null == firstMatchesLoss
           ? _value.firstMatchesLoss
           : firstMatchesLoss // ignore: cast_nullable_to_non_nullable
               as int,
-      secondMatchesLoss: secondMatchesLoss == freezed
+      secondMatchesLoss: null == secondMatchesLoss
           ? _value.secondMatchesLoss
           : secondMatchesLoss // ignore: cast_nullable_to_non_nullable
               as int,
-      useRate: useRate == freezed
+      draw: null == draw
+          ? _value.draw
+          : draw // ignore: cast_nullable_to_non_nullable
+              as int,
+      firstMatchesDraw: null == firstMatchesDraw
+          ? _value.firstMatchesDraw
+          : firstMatchesDraw // ignore: cast_nullable_to_non_nullable
+              as int,
+      secondMatchesDraw: null == secondMatchesDraw
+          ? _value.secondMatchesDraw
+          : secondMatchesDraw // ignore: cast_nullable_to_non_nullable
+              as int,
+      useRate: null == useRate
           ? _value.useRate
           : useRate // ignore: cast_nullable_to_non_nullable
               as double,
-      winRate: winRate == freezed
+      winRate: null == winRate
           ? _value.winRate
           : winRate // ignore: cast_nullable_to_non_nullable
               as double,
-      winRateOfFirst: winRateOfFirst == freezed
+      winRateOfFirst: null == winRateOfFirst
           ? _value.winRateOfFirst
           : winRateOfFirst // ignore: cast_nullable_to_non_nullable
               as double,
-      winRateOfSecond: winRateOfSecond == freezed
+      winRateOfSecond: null == winRateOfSecond
           ? _value.winRateOfSecond
           : winRateOfSecond // ignore: cast_nullable_to_non_nullable
               as double,
@@ -270,6 +313,9 @@ class _$_WinRateData implements _WinRateData {
       this.loss = 0,
       this.firstMatchesLoss = 0,
       this.secondMatchesLoss = 0,
+      this.draw = 0,
+      this.firstMatchesDraw = 0,
+      this.secondMatchesDraw = 0,
       this.useRate = 0,
       this.winRate = 0,
       this.winRateOfFirst = 0,
@@ -307,6 +353,15 @@ class _$_WinRateData implements _WinRateData {
   final int secondMatchesLoss;
   @override
   @JsonKey()
+  final int draw;
+  @override
+  @JsonKey()
+  final int firstMatchesDraw;
+  @override
+  @JsonKey()
+  final int secondMatchesDraw;
+  @override
+  @JsonKey()
   final double useRate;
   @override
   @JsonKey()
@@ -320,7 +375,7 @@ class _$_WinRateData implements _WinRateData {
 
   @override
   String toString() {
-    return 'WinRateData(deck: $deck, matches: $matches, firstMatches: $firstMatches, secondMatches: $secondMatches, win: $win, firstMatchesWin: $firstMatchesWin, secondMatchesWin: $secondMatchesWin, loss: $loss, firstMatchesLoss: $firstMatchesLoss, secondMatchesLoss: $secondMatchesLoss, useRate: $useRate, winRate: $winRate, winRateOfFirst: $winRateOfFirst, winRateOfSecond: $winRateOfSecond)';
+    return 'WinRateData(deck: $deck, matches: $matches, firstMatches: $firstMatches, secondMatches: $secondMatches, win: $win, firstMatchesWin: $firstMatchesWin, secondMatchesWin: $secondMatchesWin, loss: $loss, firstMatchesLoss: $firstMatchesLoss, secondMatchesLoss: $secondMatchesLoss, draw: $draw, firstMatchesDraw: $firstMatchesDraw, secondMatchesDraw: $secondMatchesDraw, useRate: $useRate, winRate: $winRate, winRateOfFirst: $winRateOfFirst, winRateOfSecond: $winRateOfSecond)';
   }
 
   @override
@@ -328,50 +383,59 @@ class _$_WinRateData implements _WinRateData {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_WinRateData &&
-            const DeepCollectionEquality().equals(other.deck, deck) &&
-            const DeepCollectionEquality().equals(other.matches, matches) &&
-            const DeepCollectionEquality()
-                .equals(other.firstMatches, firstMatches) &&
-            const DeepCollectionEquality()
-                .equals(other.secondMatches, secondMatches) &&
-            const DeepCollectionEquality().equals(other.win, win) &&
-            const DeepCollectionEquality()
-                .equals(other.firstMatchesWin, firstMatchesWin) &&
-            const DeepCollectionEquality()
-                .equals(other.secondMatchesWin, secondMatchesWin) &&
-            const DeepCollectionEquality().equals(other.loss, loss) &&
-            const DeepCollectionEquality()
-                .equals(other.firstMatchesLoss, firstMatchesLoss) &&
-            const DeepCollectionEquality()
-                .equals(other.secondMatchesLoss, secondMatchesLoss) &&
-            const DeepCollectionEquality().equals(other.useRate, useRate) &&
-            const DeepCollectionEquality().equals(other.winRate, winRate) &&
-            const DeepCollectionEquality()
-                .equals(other.winRateOfFirst, winRateOfFirst) &&
-            const DeepCollectionEquality()
-                .equals(other.winRateOfSecond, winRateOfSecond));
+            (identical(other.deck, deck) || other.deck == deck) &&
+            (identical(other.matches, matches) || other.matches == matches) &&
+            (identical(other.firstMatches, firstMatches) ||
+                other.firstMatches == firstMatches) &&
+            (identical(other.secondMatches, secondMatches) ||
+                other.secondMatches == secondMatches) &&
+            (identical(other.win, win) || other.win == win) &&
+            (identical(other.firstMatchesWin, firstMatchesWin) ||
+                other.firstMatchesWin == firstMatchesWin) &&
+            (identical(other.secondMatchesWin, secondMatchesWin) ||
+                other.secondMatchesWin == secondMatchesWin) &&
+            (identical(other.loss, loss) || other.loss == loss) &&
+            (identical(other.firstMatchesLoss, firstMatchesLoss) ||
+                other.firstMatchesLoss == firstMatchesLoss) &&
+            (identical(other.secondMatchesLoss, secondMatchesLoss) ||
+                other.secondMatchesLoss == secondMatchesLoss) &&
+            (identical(other.draw, draw) || other.draw == draw) &&
+            (identical(other.firstMatchesDraw, firstMatchesDraw) ||
+                other.firstMatchesDraw == firstMatchesDraw) &&
+            (identical(other.secondMatchesDraw, secondMatchesDraw) ||
+                other.secondMatchesDraw == secondMatchesDraw) &&
+            (identical(other.useRate, useRate) || other.useRate == useRate) &&
+            (identical(other.winRate, winRate) || other.winRate == winRate) &&
+            (identical(other.winRateOfFirst, winRateOfFirst) ||
+                other.winRateOfFirst == winRateOfFirst) &&
+            (identical(other.winRateOfSecond, winRateOfSecond) ||
+                other.winRateOfSecond == winRateOfSecond));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(deck),
-      const DeepCollectionEquality().hash(matches),
-      const DeepCollectionEquality().hash(firstMatches),
-      const DeepCollectionEquality().hash(secondMatches),
-      const DeepCollectionEquality().hash(win),
-      const DeepCollectionEquality().hash(firstMatchesWin),
-      const DeepCollectionEquality().hash(secondMatchesWin),
-      const DeepCollectionEquality().hash(loss),
-      const DeepCollectionEquality().hash(firstMatchesLoss),
-      const DeepCollectionEquality().hash(secondMatchesLoss),
-      const DeepCollectionEquality().hash(useRate),
-      const DeepCollectionEquality().hash(winRate),
-      const DeepCollectionEquality().hash(winRateOfFirst),
-      const DeepCollectionEquality().hash(winRateOfSecond));
+      deck,
+      matches,
+      firstMatches,
+      secondMatches,
+      win,
+      firstMatchesWin,
+      secondMatchesWin,
+      loss,
+      firstMatchesLoss,
+      secondMatchesLoss,
+      draw,
+      firstMatchesDraw,
+      secondMatchesDraw,
+      useRate,
+      winRate,
+      winRateOfFirst,
+      winRateOfSecond);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_WinRateDataCopyWith<_$_WinRateData> get copyWith =>
       __$$_WinRateDataCopyWithImpl<_$_WinRateData>(this, _$identity);
 }
@@ -388,39 +452,48 @@ abstract class _WinRateData implements WinRateData {
       final int loss,
       final int firstMatchesLoss,
       final int secondMatchesLoss,
+      final int draw,
+      final int firstMatchesDraw,
+      final int secondMatchesDraw,
       final double useRate,
       final double winRate,
       final double winRateOfFirst,
       final double winRateOfSecond}) = _$_WinRateData;
 
   @override
-  String get deck => throw _privateConstructorUsedError;
+  String get deck;
   @override
-  int get matches => throw _privateConstructorUsedError;
+  int get matches;
   @override
-  int get firstMatches => throw _privateConstructorUsedError;
+  int get firstMatches;
   @override
-  int get secondMatches => throw _privateConstructorUsedError;
+  int get secondMatches;
   @override
-  int get win => throw _privateConstructorUsedError;
+  int get win;
   @override
-  int get firstMatchesWin => throw _privateConstructorUsedError;
+  int get firstMatchesWin;
   @override
-  int get secondMatchesWin => throw _privateConstructorUsedError;
+  int get secondMatchesWin;
   @override
-  int get loss => throw _privateConstructorUsedError;
+  int get loss;
   @override
-  int get firstMatchesLoss => throw _privateConstructorUsedError;
+  int get firstMatchesLoss;
   @override
-  int get secondMatchesLoss => throw _privateConstructorUsedError;
+  int get secondMatchesLoss;
   @override
-  double get useRate => throw _privateConstructorUsedError;
+  int get draw;
   @override
-  double get winRate => throw _privateConstructorUsedError;
+  int get firstMatchesDraw;
   @override
-  double get winRateOfFirst => throw _privateConstructorUsedError;
+  int get secondMatchesDraw;
   @override
-  double get winRateOfSecond => throw _privateConstructorUsedError;
+  double get useRate;
+  @override
+  double get winRate;
+  @override
+  double get winRateOfFirst;
+  @override
+  double get winRateOfSecond;
   @override
   @JsonKey(ignore: true)
   _$$_WinRateDataCopyWith<_$_WinRateData> get copyWith =>
