@@ -3,7 +3,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:tcg_manager/entity/game.dart';
 import 'package:tcg_manager/enum/domain_data_type.dart';
-import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/input_view_provider.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/view/select_domain_data_view.dart';
@@ -25,8 +24,6 @@ class CustomScaffold extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectGame = ref.watch(selectGameNotifierProvider);
-    final games = ref.watch(allGameListProvider);
-    final selectGameNotifier = ref.read(selectGameNotifierProvider.notifier);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -35,30 +32,7 @@ class CustomScaffold extends HookConsumerWidget {
         ),
         leading: leading,
         actions: [
-          _GameListPickerButton(
-            submited: () {
-              selectGameNotifier.setSelectGame();
-              ref.read(inputViewNotifierProvider.notifier).resetView();
-            },
-            onSelectedItemChanged: selectGameNotifier.scrollSelectGame,
-            children: games.when(
-              data: (games) {
-                return games
-                    .map((game) => Padding(
-                          padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                          child: Text(
-                            game.name,
-                            // softWrap: false,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.titleLarge?.copyWith(height: 1),
-                          ),
-                        ))
-                    .toList();
-              },
-              error: (error, stack) => [Text('$error')],
-              loading: () => [const CircularProgressIndicator()],
-            ),
-          ),
+          const _GameListPickerButton(),
           if (rightButton != null) rightButton!,
         ],
         bottom: appBarBottom != null ? appBarBottom! : null,
@@ -73,14 +47,8 @@ class CustomScaffold extends HookConsumerWidget {
 
 class _GameListPickerButton extends HookConsumerWidget {
   const _GameListPickerButton({
-    required this.submited,
-    required this.onSelectedItemChanged,
-    required this.children,
     key,
   }) : super(key: key);
-  final void Function() submited;
-  final Function(int) onSelectedItemChanged;
-  final List<Widget> children;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
