@@ -61,6 +61,13 @@ class LoginView extends HookConsumerWidget {
               },
               child: const Text('ログインせずに始める'),
             ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                '新たにVer2.0.0でログイン機能を追加いたしました。\n既にアプリをご利用中の皆様も、電話番号でログインするか、ログインせずに始めるか選択いただけます。\nどちらの方法を選択されても、これまでご利用いただいたデータはß保持されておりますのでご安心ください。',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.error),
+              ),
+            ),
           ],
         ),
       ),
