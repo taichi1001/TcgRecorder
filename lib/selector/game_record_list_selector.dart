@@ -7,7 +7,7 @@ import 'package:tcg_manager/selector/game_share_data_selector.dart';
 final gameRecordListProvider = StreamProvider.autoDispose<List<Record>>((ref) async* {
   ref.keepAlive();
   final selectGame = ref.watch(selectGameNotifierProvider).selectGame;
-  if (selectGame == null) yield [];
+  if (selectGame == null) yield const [];
   if (selectGame!.isShare) {
     yield await ref.watch(gameRecordListStreamProvider.future);
   } else {
