@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "105648170735-8if8joblm2cne8oonrn691pr90o6f4jt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.taichi1001.tcg_manager",
+            "certificate_hash": "ce5cbaab6c4a73ea9fcb46c1209730f1c0f5a11a"
+          }
+        },
+        {
           "client_id": "105648170735-jm8ljir4adcp4e6m1sj8qfmr493i28oa.apps.googleusercontent.com",
           "client_type": 3
         }

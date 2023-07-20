@@ -14,72 +14,84 @@ class PhoneNumberAuthView extends HookConsumerWidget {
     final textController = useTextEditingController();
     final countryDialCode = useState('81');
     final errorText = useState('');
+    final hiddenErrorText = useState('開発用隠しエラーコード'); // ストア公開後でもエラーが見えるようにするため暫定的に追加
+    final hiddenCount = useState(0);
+    print(hiddenCount.value);
     return Scaffold(
       appBar: AppBar(
         title: const Text('電話番号認証'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            const Text('認証を行うと、アプリを誤って削除した場合や機種変更時などに、データを復旧できます。'),
-            Padding(
-              padding: const EdgeInsets.only(left: 32, right: 32, top: 32),
-              child: IntlPhoneField(
-                initialCountryCode: 'JP',
-                disableLengthCheck: true,
-                controller: textController,
-                onCountryChanged: (country) {
-                  countryDialCode.value = country.dialCode;
-                },
-              ),
-            ),
-            if (errorText.value != '') const SizedBox(height: 16),
-            if (errorText.value != '')
-              Text(
-                errorText.value,
-                style: TextStyle(color: Theme.of(context).colorScheme.error),
-              ),
-            const SizedBox(height: 32),
-            SizedBox(
-              width: 300.w,
-              child: ElevatedButton(
-                onPressed: () async {
-                  await FirebaseAuth.instance.verifyPhoneNumber(
-                    phoneNumber: '+${countryDialCode.value}${textController.text}',
-                    verificationCompleted: (PhoneAuthCredential credential) {},
-                    verificationFailed: (FirebaseAuthException e) {
-                      switch (e.code) {
-                        case 'invalid-phone-number':
-                          errorText.value = '電話番号が正しくありません。';
-                          break;
-                        case 'too-many-requests':
-                          errorText.value = 'リクエストの上限に達しました。時間を開けて再度お試しください。';
-                          break;
-                        default:
-                          errorText.value = '予期せぬエラーが発生しました。';
-                          break;
-                      }
-                    },
-                    codeSent: (String verificationId, int? resendToken) async {
-                      errorText.value = '';
-                      await showDialog(
-                        context: context,
-                        barrierDismissible: false,
-                        builder: (_) => AuthAlertDialog(verificationId: verificationId),
-                      );
-                    },
-                    // タイムアウト時の挙動を指定しない場合は空欄でも問題なし
-                    codeAutoRetrievalTimeout: (String verificationId) {},
-                  );
-                },
-                child: Text(
-                  '送信',
-                  style: Theme.of(context).primaryTextTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
+      body: GestureDetector(
+        onTap: () => hiddenCount.value = hiddenCount.value + 1,
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              const Text('認証を行うと、アプリを誤って削除した場合や機種変更時などに、データを復旧できます。'),
+              Padding(
+                padding: const EdgeInsets.only(left: 32, right: 32, top: 32),
+                child: IntlPhoneField(
+                  initialCountryCode: 'JP',
+                  disableLengthCheck: true,
+                  controller: textController,
+                  onCountryChanged: (country) {
+                    countryDialCode.value = country.dialCode;
+                  },
                 ),
               ),
-            ),
-          ],
+              if (errorText.value != '') const SizedBox(height: 16),
+              if (errorText.value != '')
+                Text(
+                  errorText.value,
+                  style: TextStyle(color: Theme.of(context).colorScheme.error),
+                ),
+              if (hiddenErrorText.value != '' && hiddenCount.value > 10)
+                Text(
+                  hiddenErrorText.value,
+                  style: TextStyle(color: Theme.of(context).colorScheme.error),
+                ),
+              const SizedBox(height: 32),
+              SizedBox(
+                width: 300.w,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    await FirebaseAuth.instance.verifyPhoneNumber(
+                      phoneNumber: '+${countryDialCode.value}${textController.text}',
+                      verificationCompleted: (PhoneAuthCredential credential) {},
+                      verificationFailed: (FirebaseAuthException e) {
+                        hiddenErrorText.value = e.toString();
+                        switch (e.code) {
+                          case 'invalid-phone-number':
+                            errorText.value = '電話番号が正しくありません。';
+                            break;
+                          case 'too-many-requests':
+                            errorText.value = 'リクエストの上限に達しました。時間を開けて再度お試しください。';
+                            break;
+                          default:
+                            errorText.value = '予期せぬエラーが発生しました。';
+                            break;
+                        }
+                      },
+                      codeSent: (String verificationId, int? resendToken) async {
+                        errorText.value = '';
+                        await showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (_) => AuthAlertDialog(verificationId: verificationId),
+                        );
+                      },
+                      // タイムアウト時の挙動を指定しない場合は空欄でも問題なし
+                      codeAutoRetrievalTimeout: (String verificationId) {},
+                    );
+                  },
+                  child: Text(
+                    '送信',
+                    style: Theme.of(context).primaryTextTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
