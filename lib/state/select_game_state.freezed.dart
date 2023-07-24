@@ -17,7 +17,6 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$SelectGameState {
   Game? get selectGame => throw _privateConstructorUsedError;
-  Game? get cacheSelectGame => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $SelectGameStateCopyWith<SelectGameState> get copyWith =>
@@ -30,10 +29,9 @@ abstract class $SelectGameStateCopyWith<$Res> {
           SelectGameState value, $Res Function(SelectGameState) then) =
       _$SelectGameStateCopyWithImpl<$Res, SelectGameState>;
   @useResult
-  $Res call({Game? selectGame, Game? cacheSelectGame});
+  $Res call({Game? selectGame});
 
   $GameCopyWith<$Res>? get selectGame;
-  $GameCopyWith<$Res>? get cacheSelectGame;
 }
 
 /// @nodoc
@@ -50,16 +48,11 @@ class _$SelectGameStateCopyWithImpl<$Res, $Val extends SelectGameState>
   @override
   $Res call({
     Object? selectGame = freezed,
-    Object? cacheSelectGame = freezed,
   }) {
     return _then(_value.copyWith(
       selectGame: freezed == selectGame
           ? _value.selectGame
           : selectGame // ignore: cast_nullable_to_non_nullable
-              as Game?,
-      cacheSelectGame: freezed == cacheSelectGame
-          ? _value.cacheSelectGame
-          : cacheSelectGame // ignore: cast_nullable_to_non_nullable
               as Game?,
     ) as $Val);
   }
@@ -75,18 +68,6 @@ class _$SelectGameStateCopyWithImpl<$Res, $Val extends SelectGameState>
       return _then(_value.copyWith(selectGame: value) as $Val);
     });
   }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $GameCopyWith<$Res>? get cacheSelectGame {
-    if (_value.cacheSelectGame == null) {
-      return null;
-    }
-
-    return $GameCopyWith<$Res>(_value.cacheSelectGame!, (value) {
-      return _then(_value.copyWith(cacheSelectGame: value) as $Val);
-    });
-  }
 }
 
 /// @nodoc
@@ -97,12 +78,10 @@ abstract class _$$_SelectGameStateCopyWith<$Res>
       __$$_SelectGameStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Game? selectGame, Game? cacheSelectGame});
+  $Res call({Game? selectGame});
 
   @override
   $GameCopyWith<$Res>? get selectGame;
-  @override
-  $GameCopyWith<$Res>? get cacheSelectGame;
 }
 
 /// @nodoc
@@ -117,16 +96,11 @@ class __$$_SelectGameStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? selectGame = freezed,
-    Object? cacheSelectGame = freezed,
   }) {
     return _then(_$_SelectGameState(
       selectGame: freezed == selectGame
           ? _value.selectGame
           : selectGame // ignore: cast_nullable_to_non_nullable
-              as Game?,
-      cacheSelectGame: freezed == cacheSelectGame
-          ? _value.cacheSelectGame
-          : cacheSelectGame // ignore: cast_nullable_to_non_nullable
               as Game?,
     ));
   }
@@ -135,16 +109,14 @@ class __$$_SelectGameStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_SelectGameState implements _SelectGameState {
-  _$_SelectGameState({this.selectGame, this.cacheSelectGame});
+  _$_SelectGameState({this.selectGame});
 
   @override
   final Game? selectGame;
-  @override
-  final Game? cacheSelectGame;
 
   @override
   String toString() {
-    return 'SelectGameState(selectGame: $selectGame, cacheSelectGame: $cacheSelectGame)';
+    return 'SelectGameState(selectGame: $selectGame)';
   }
 
   @override
@@ -153,13 +125,11 @@ class _$_SelectGameState implements _SelectGameState {
         (other.runtimeType == runtimeType &&
             other is _$_SelectGameState &&
             (identical(other.selectGame, selectGame) ||
-                other.selectGame == selectGame) &&
-            (identical(other.cacheSelectGame, cacheSelectGame) ||
-                other.cacheSelectGame == cacheSelectGame));
+                other.selectGame == selectGame));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, selectGame, cacheSelectGame);
+  int get hashCode => Object.hash(runtimeType, selectGame);
 
   @JsonKey(ignore: true)
   @override
@@ -169,14 +139,10 @@ class _$_SelectGameState implements _SelectGameState {
 }
 
 abstract class _SelectGameState implements SelectGameState {
-  factory _SelectGameState(
-      {final Game? selectGame,
-      final Game? cacheSelectGame}) = _$_SelectGameState;
+  factory _SelectGameState({final Game? selectGame}) = _$_SelectGameState;
 
   @override
   Game? get selectGame;
-  @override
-  Game? get cacheSelectGame;
   @override
   @JsonKey(ignore: true)
   _$$_SelectGameStateCopyWith<_$_SelectGameState> get copyWith =>

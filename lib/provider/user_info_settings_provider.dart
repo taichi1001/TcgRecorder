@@ -50,7 +50,15 @@ final userInfoSettingsProvider = StateNotifierProvider<UserInfoSettingsNotifier,
   final revenucat = ref.watch(revenueCatProvider);
   final uid = user?.uid;
 
-  final isPhoneAuth = user?.phoneNumber != null && user?.phoneNumber != '';
+  bool isPhoneAuth = false;
+  if (user != null) {
+    for (final userInfo in user.providerData) {
+      if (userInfo.providerId == 'phone') {
+        isPhoneAuth = true;
+      }
+    }
+  }
+
   final isPremium = revenucat?.isPremium ?? false;
   final state = UserInfoSettingsState(
     id: uid,
