@@ -39,15 +39,7 @@ class SelectGameNotifier extends StateNotifier<SelectGameState> {
     state = state.copyWith(selectGame: gameList.last);
   }
 
-  void scrollSelectGame(int index) async {
-    final gameList = await ref.read(allGameListProvider.future);
-    final newDeck = gameList[index];
-    state = state.copyWith(cacheSelectGame: newDeck);
-  }
-
-  void setSelectGame() {
-    state = state.copyWith(selectGame: state.cacheSelectGame);
-  }
+  void setSelectGame(Game game) => state = state.copyWith(selectGame: game);
 
   Future<bool> saveGame(String name) async {
     final newGame = Game(name: name);

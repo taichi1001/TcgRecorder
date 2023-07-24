@@ -12,12 +12,15 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tcg_manager/entity/game.dart';
 import 'package:tcg_manager/firebase_options.dart';
 import 'package:tcg_manager/helper/att.dart';
 import 'package:tcg_manager/helper/theme_data.dart';
 import 'package:tcg_manager/provider/adaptive_banner_ad_provider.dart';
 import 'package:tcg_manager/provider/firebase_auth_provider.dart';
 import 'package:tcg_manager/provider/firestor_config_provider.dart';
+import 'package:tcg_manager/provider/game_list_provider.dart';
+import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/revenue_cat_provider.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/provider/user_info_settings_provider.dart';
@@ -84,19 +87,32 @@ class MainInfo {
   const MainInfo({
     required this.requiredVersion,
     required this.packageInfo,
+    this.lastGame,
   });
   final String requiredVersion;
   final PackageInfo packageInfo;
+  final Game? lastGame;
 }
 
 final mainInfoProvider = FutureProvider.autoDispose.family<MainInfo, BuildContext>((ref, context) async {
   await ref.read(adaptiveBannerAdNotifierProvider.notifier).getAd(context);
   final version = await ref.watch(requiredVersionProvider.future);
   final packgaeInfo = await PackageInfo.fromPlatform();
+  final allGameList = await ref.read(allGameListProvider.future);
+  final allRecordList = await ref.read(allRecordListProvider.future);
+  Game? lastGame;
+  for (final record in allRecordList) {
+    for (final game in allGameList) {
+      if (record.gameId == game.id) {
+        lastGame = game;
+      }
+    }
+  }
   ref.read(firebaseAuthNotifierProvider.notifier).login();
   return MainInfo(
     requiredVersion: version,
     packageInfo: packgaeInfo,
+    lastGame: lastGame,
   );
 });
 
@@ -164,7 +180,16 @@ class MainAppHome extends HookConsumerWidget {
     if (user == null) return const LoginView();
 
     final isInitialGame = ref.watch(selectGameNotifierProvider.select((value) => value.selectGame != null));
-    if (!isInitialGame) return const InitialGameRegistrationView();
+    if (!isInitialGame) {
+      if (mainInfo.lastGame != null) {
+        // ビルドメソッド終了後に呼ばれる
+        Future.delayed(Duration.zero, () {
+          ref.read(selectGameNotifierProvider.notifier).setSelectGame(mainInfo.lastGame!);
+        });
+      } else {
+        return const InitialGameRegistrationView();
+      }
+    }
 
     final revenueCatProvider = ref.watch(revenueCatNotifierProvider);
     final shareCount = ref.watch(combinedShareCountFutureProvider);
