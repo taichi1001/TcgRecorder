@@ -5,14 +5,14 @@ import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/selector/game_share_data_selector.dart';
 
-final gameTagListProvider = Provider.autoDispose<AsyncValue<List<Tag>>>((ref) {
+final gameTagListProvider = StreamProvider.autoDispose<List<Tag>>((ref) async* {
   ref.keepAlive();
   final selectGame = ref.watch(selectGameNotifierProvider).selectGame;
-  if (selectGame == null) return const AsyncValue.data([]);
-  if (selectGame.isShare) {
-    return ref.watch(gameTagListStreamProvider);
+  if (selectGame == null) yield const [];
+  if (selectGame!.isShare) {
+    yield await ref.watch(gameTagListStreamProvider.future);
   } else {
-    return ref.watch(gameTagListFutureProvider);
+    yield await ref.watch(gameTagListFutureProvider.future);
   }
 });
 

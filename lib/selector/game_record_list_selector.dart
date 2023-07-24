@@ -4,14 +4,14 @@ import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/selector/game_share_data_selector.dart';
 
-final gameRecordListProvider = Provider.autoDispose<AsyncValue<List<Record>>>((ref) {
+final gameRecordListProvider = StreamProvider.autoDispose<List<Record>>((ref) async* {
   ref.keepAlive();
   final selectGame = ref.watch(selectGameNotifierProvider).selectGame;
-  if (selectGame == null) return const AsyncValue.data([]);
-  if (selectGame.isShare) {
-    return ref.watch(gameRecordListStreamProvider);
+  if (selectGame == null) yield const [];
+  if (selectGame!.isShare) {
+    yield await ref.watch(gameRecordListStreamProvider.future);
   } else {
-    return ref.watch(gameRecordListFutureProvider);
+    yield await ref.watch(gameRecordListFutureProvider.future);
   }
 });
 

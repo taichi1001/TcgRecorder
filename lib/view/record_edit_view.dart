@@ -22,7 +22,9 @@ import 'package:tcg_manager/selector/game_deck_list_selector.dart';
 import 'package:tcg_manager/selector/game_tag_list_selector.dart';
 import 'package:tcg_manager/view/component/custom_textfield.dart';
 import 'package:tcg_manager/view/component/cutom_date_time_picker.dart';
-import 'package:tcg_manager/view/input_view.dart';
+import 'package:tcg_manager/view/input_view/add_photo_widget.dart';
+import 'package:tcg_manager/view/input_view/input_tag_list.dart';
+import 'package:tcg_manager/view/input_view/selectable_datetime.dart';
 import 'package:tcg_manager/view/select_domain_data_view.dart';
 
 class RecordEditViewInfo {
@@ -604,23 +606,17 @@ class _EditView extends HookConsumerWidget {
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
                       child: Center(
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: addPhotoWidgets(
-                              images: images,
-                              selectImageFunc: () async {
-                                final picker = ImagePicker();
-                                final image = await picker.pickImage(source: ImageSource.gallery);
-                                if (image == null) return;
-                                recordDetailNotifier.inputImage(image);
-                              },
-                              deleteImageFunc: (value) {
-                                recordDetailNotifier.removeImage(value);
-                              },
-                            ),
-                          ),
+                        child: AddPhotoWidgets(
+                          images: images,
+                          selectImageFunc: () async {
+                            final picker = ImagePicker();
+                            final image = await picker.pickImage(source: ImageSource.gallery);
+                            if (image == null) return;
+                            recordDetailNotifier.inputImage(image);
+                          },
+                          deleteImageFunc: (value) {
+                            recordDetailNotifier.removeImage(value);
+                          },
                         ),
                       ),
                     ),
