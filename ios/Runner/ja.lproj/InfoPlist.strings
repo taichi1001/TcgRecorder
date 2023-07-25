@@ -7,3 +7,5 @@
 */
 CFBundleDisplayName = "トレマネ";
 NSUserTrackingUsageDescription = "お客様の興味関心に合わせた広告を表示するために利用します。";
+NSCameraUsageDescription = "アプリに表示・使用するための写真や動画を撮影する目的でリクエストします。";
+NSPhotoLibraryUsageDescription = "アプリに表示・使用するための写真や動画をライブラリから選択する目的でリクエストします。";
