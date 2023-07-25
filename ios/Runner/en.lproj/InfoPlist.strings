@@ -7,3 +7,5 @@
 */
 CFBundleDisplayName = "TCG Manager";
 NSUserTrackingUsageDescription = "We use this information to display advertisements tailored to your interests.";
+NSCameraUsageDescription = "Request for the purpose of taking photos and videos for display and use in the app.";
+NSPhotoLibraryUsageDescription = "Request for the purpose of select photos and videos from your library for display and use in your app.";
