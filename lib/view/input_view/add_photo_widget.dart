@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/helper/premium_plan_dialog.dart';
 import 'package:tcg_manager/provider/revenue_cat_provider.dart';
+import 'package:tcg_manager/view/component/premium_lock_icon.dart';
 
 class AddPhotoWidgets extends StatelessWidget {
   final List<String> images;
@@ -66,62 +67,64 @@ class _AddPhotoWidget extends HookConsumerWidget {
 
     return Padding(
       padding: const EdgeInsets.only(right: 8),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(15),
-        child: filePath == null
-            ? GestureDetector(
-                onTap: () async {
-                  if (isPremium!) {
-                    selectImageFunc();
-                  } else {
-                    await premiumPlanDialog(context);
-                  }
-                },
-                child: Stack(
-                  alignment: AlignmentDirectional.bottomEnd,
-                  children: [
-                    DottedBorder(
-                      color: Theme.of(context).dividerColor,
-                      dashPattern: const [10, 2],
-                      child: const SizedBox(
+      child: PremiumLockIcon(
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(15),
+          child: filePath == null
+              ? GestureDetector(
+                  onTap: () async {
+                    if (isPremium!) {
+                      selectImageFunc();
+                    } else {
+                      await premiumPlanDialog(context);
+                    }
+                  },
+                  child: Stack(
+                    alignment: AlignmentDirectional.bottomEnd,
+                    children: [
+                      DottedBorder(
+                        color: Theme.of(context).dividerColor,
+                        dashPattern: const [10, 2],
+                        child: const SizedBox(
+                          width: 80,
+                          height: 80,
+                        ),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.all(4),
+                        child: Icon(Icons.add_a_photo_outlined),
+                      ),
+                    ],
+                  ),
+                )
+              : GestureDetector(
+                  onTap: () {
+                    deleteImageFunc(index!);
+                  },
+                  child: Stack(
+                    alignment: AlignmentDirectional.topEnd,
+                    children: [
+                      SizedBox(
                         width: 80,
                         height: 80,
+                        child: filePath!.startsWith('https')
+                            ? CachedNetworkImage(
+                                imageUrl: filePath!,
+                                fit: BoxFit.contain,
+                              )
+                            : Image.file(
+                                File(filePath!),
+                                fit: BoxFit.contain,
+                              ),
                       ),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.all(4),
-                      child: Icon(Icons.add_a_photo_outlined),
-                    ),
-                  ],
+                      const Padding(
+                        padding: EdgeInsets.all(4),
+                        child: Icon(Icons.cancel),
+                      ),
+                    ],
+                  ),
                 ),
-              )
-            : GestureDetector(
-                onTap: () {
-                  deleteImageFunc(index!);
-                },
-                child: Stack(
-                  alignment: AlignmentDirectional.topEnd,
-                  children: [
-                    SizedBox(
-                      width: 80,
-                      height: 80,
-                      child: filePath!.startsWith('https')
-                          ? CachedNetworkImage(
-                              imageUrl: filePath!,
-                              fit: BoxFit.contain,
-                            )
-                          : Image.file(
-                              File(filePath!),
-                              fit: BoxFit.contain,
-                            ),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.all(4),
-                      child: Icon(Icons.cancel),
-                    ),
-                  ],
-                ),
-              ),
+        ),
       ),
     );
   }

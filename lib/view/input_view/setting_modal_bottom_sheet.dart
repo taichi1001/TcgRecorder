@@ -69,35 +69,51 @@ class SettingModalBottomSheet extends HookConsumerWidget {
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
                 ),
               ),
-              SwitchListTile.adaptive(
+              ListTile(
                 contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                leading: isPremium!
+                    ? null
+                    : const Icon(
+                        Icons.lock,
+                        size: 16,
+                      ),
                 title: Text(
                   '引き分け',
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
-                value: draw,
-                onChanged: (value) async {
-                  if (isPremium!) {
-                    inputiViewSettingsController.changeDraw(value);
-                  } else {
-                    await premiumPlanDialog(context);
-                  }
-                },
+                trailing: Switch.adaptive(
+                  value: draw,
+                  onChanged: (value) async {
+                    if (isPremium) {
+                      inputiViewSettingsController.changeDraw(value);
+                    } else {
+                      await premiumPlanDialog(context);
+                    }
+                  },
+                ),
               ),
-              SwitchListTile.adaptive(
+              ListTile(
                 contentPadding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                leading: isPremium
+                    ? null
+                    : const Icon(
+                        Icons.lock,
+                        size: 16,
+                      ),
                 title: Text(
                   'BO3',
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
-                value: bo3,
-                onChanged: (value) async {
-                  if (isPremium!) {
-                    inputiViewSettingsController.changeBO3(value);
-                  } else {
-                    await premiumPlanDialog(context);
-                  }
-                },
+                trailing: Switch.adaptive(
+                  value: bo3,
+                  onChanged: (value) async {
+                    if (isPremium) {
+                      inputiViewSettingsController.changeBO3(value);
+                    } else {
+                      await premiumPlanDialog(context);
+                    }
+                  },
+                ),
               ),
             ],
           ),
