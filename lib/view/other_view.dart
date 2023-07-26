@@ -195,10 +195,16 @@ class OtherView extends HookConsumerWidget {
                 },
               ),
               SettingsTile.navigation(
-                title: const Text('CSV出力'),
+                title: Row(
+                  children: [
+                    const Text('CSV出力'),
+                    if (!isPremium!) const SizedBox(width: 8),
+                    if (!isPremium) const Icon(Icons.lock, size: 14),
+                  ],
+                ),
                 leading: const Icon(FontAwesomeIcons.fileCsv),
                 onPressed: (context) async {
-                  if (isPremium!) {
+                  if (isPremium) {
                     final margedRecordList = await ref.read(allMargedRecordListProvider.future);
                     final csv = ListToCSV.margeRecordListToCSV(margedRecordList);
                     final savePath = ref.read(imagePathProvider);
