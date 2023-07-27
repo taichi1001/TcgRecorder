@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:tcg_manager/entity/domain_data.dart';
 
 class DomainDataList extends StatelessWidget {
@@ -47,9 +49,25 @@ class DomainDataList extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.all(16),
             color: isSelected ? Theme.of(context).hoverColor : Theme.of(context).colorScheme.surface,
-            child: Text(
-              domainDataList[index].name,
-              style: Theme.of(context).textTheme.bodyMedium,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  domainDataList[index].name,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                IconButton(
+                  onPressed: () {
+                    showCupertinoModalBottomSheet(
+                      context: context,
+                      builder: (context) => DomainDataOption(
+                        domainData: domainDataList[index],
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.more_vert),
+                )
+              ],
             ),
           ),
         );
@@ -63,6 +81,63 @@ class DomainDataList extends StatelessWidget {
         );
       }),
       itemCount: domainDataList.length,
+    );
+  }
+}
+
+class DomainDataOption extends HookConsumerWidget {
+  const DomainDataOption({
+    required this.domainData,
+    key,
+  }) : super(key: key);
+
+  final DomainData domainData;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Material(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _SelectableRow(text: domainData.name, icon: Icons.gamepad, width: 16),
+          const Divider(),
+          _SelectableRow(text: '共有', icon: Icons.person_add, onTap: () {}),
+          const _SelectableRow(text: '名前を変更', icon: Icons.edit),
+          const _SelectableRow(text: '削除', icon: Icons.delete),
+        ],
+      ),
+    );
+  }
+}
+
+class _SelectableRow extends StatelessWidget {
+  const _SelectableRow({
+    required this.text,
+    required this.icon,
+    this.width = 32,
+    this.onTap,
+    key,
+  }) : super(key: key);
+  final String text;
+  final IconData icon;
+  final Function()? onTap;
+  final double width;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: [
+            Icon(icon),
+            SizedBox(width: width),
+            Text(text),
+          ],
+        ),
+      ),
     );
   }
 }
