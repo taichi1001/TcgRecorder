@@ -45,20 +45,11 @@ class DomainDataList extends StatelessWidget {
             }
           },
           child: Container(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+            padding: const EdgeInsets.all(16),
             color: isSelected ? Theme.of(context).hoverColor : Theme.of(context).colorScheme.surface,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  domainDataList[index].name,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.more_vert),
-                )
-              ],
+            child: Text(
+              domainDataList[index].name,
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
           ),
         );
