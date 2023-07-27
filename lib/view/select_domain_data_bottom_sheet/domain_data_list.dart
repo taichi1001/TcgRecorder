@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/domain_data.dart';
+import 'package:tcg_manager/entity/game.dart';
+import 'package:tcg_manager/entity/tag.dart';
+import 'package:tcg_manager/helper/db_helper.dart';
 
 class DomainDataList extends StatelessWidget {
   const DomainDataList({
@@ -103,8 +107,26 @@ class DomainDataOption extends HookConsumerWidget {
           _SelectableRow(text: domainData.name, icon: Icons.gamepad, width: 16),
           const Divider(),
           _SelectableRow(text: '共有', icon: Icons.person_add, onTap: () {}),
-          const _SelectableRow(text: '名前を変更', icon: Icons.edit),
-          const _SelectableRow(text: '削除', icon: Icons.delete),
+          _SelectableRow(
+            text: '名前を変更',
+            icon: Icons.edit,
+            onTap: () {},
+          ),
+          _SelectableRow(
+            text: '削除',
+            icon: Icons.delete,
+            onTap: () async {
+              switch (domainData) {
+                case Game():
+                  await ref.read(dbHelper).deleteGame(domainData as Game);
+                case Deck():
+                  await ref.read(dbHelper).deleteDeck(domainData as Deck);
+                case Tag():
+                  await ref.read(dbHelper).deleteTag(domainData as Tag);
+              }
+              if (context.mounted) Navigator.pop(context);
+            },
+          ),
         ],
       ),
     );
