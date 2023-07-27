@@ -9,7 +9,7 @@ import 'package:tcg_manager/helper/premium_plan_dialog.dart';
 import 'package:tcg_manager/provider/revenue_cat_provider.dart';
 import 'package:tcg_manager/view/component/custom_textfield.dart';
 import 'package:tcg_manager/view/component/premium_lock_icon.dart';
-import 'package:tcg_manager/view/select_domain_data_view.dart';
+import 'package:tcg_manager/view/select_domain_data_bottom_sheet/select_domain_data_view.dart';
 
 class InputTagList extends HookConsumerWidget {
   const InputTagList({
