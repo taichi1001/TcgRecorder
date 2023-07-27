@@ -12,7 +12,7 @@ import 'package:tcg_manager/helper/convert_sort_string.dart';
 import 'package:tcg_manager/provider/record_list_view_provider.dart';
 import 'package:tcg_manager/view/component/custom_modal_list_picker.dart';
 import 'package:tcg_manager/view/component/cutom_date_time_range_picker.dart';
-import 'package:tcg_manager/view/select_domain_data_view.dart';
+import 'package:tcg_manager/view/select_domain_data_bottom_sheet/select_domain_data_view.dart';
 
 class FilterModalBottomSheet extends HookConsumerWidget {
   const FilterModalBottomSheet({

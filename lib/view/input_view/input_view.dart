@@ -19,7 +19,7 @@ import 'package:tcg_manager/view/input_view/save_button.dart';
 import 'package:tcg_manager/view/input_view/selectable_datetime.dart';
 import 'package:tcg_manager/view/input_view/setting_modal_bottom_sheet.dart';
 import 'package:tcg_manager/view/input_view/win_loss_first_second.dart';
-import 'package:tcg_manager/view/select_domain_data_view.dart';
+import 'package:tcg_manager/view/select_domain_data_bottom_sheet/select_domain_data_view.dart';
 
 final _focusNodesProvider = Provider.autoDispose<List<FocusNode>>((ref) {
   final tagTextController = ref.watch(textEditingControllerNotifierProvider.select((value) => value.tagController));

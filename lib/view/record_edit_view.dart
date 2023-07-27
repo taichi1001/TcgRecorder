@@ -25,7 +25,7 @@ import 'package:tcg_manager/view/component/cutom_date_time_picker.dart';
 import 'package:tcg_manager/view/input_view/add_photo_widget.dart';
 import 'package:tcg_manager/view/input_view/input_tag_list.dart';
 import 'package:tcg_manager/view/input_view/selectable_datetime.dart';
-import 'package:tcg_manager/view/select_domain_data_view.dart';
+import 'package:tcg_manager/view/select_domain_data_bottom_sheet/select_domain_data_view.dart';
 
 class RecordEditViewInfo {
   const RecordEditViewInfo({

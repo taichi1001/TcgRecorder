@@ -5,7 +5,7 @@ import 'package:tcg_manager/entity/game.dart';
 import 'package:tcg_manager/enum/domain_data_type.dart';
 import 'package:tcg_manager/provider/input_view_provider.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
-import 'package:tcg_manager/view/select_domain_data_view.dart';
+import 'package:tcg_manager/view/select_domain_data_bottom_sheet/select_domain_data_view.dart';
 
 class CustomScaffold extends HookConsumerWidget {
   const CustomScaffold({

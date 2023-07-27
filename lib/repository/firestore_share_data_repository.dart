@@ -5,8 +5,8 @@ import 'package:rxdart/rxdart.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/firestore_share_data.dart';
 import 'package:tcg_manager/entity/game.dart';
-import 'package:tcg_manager/entity/tag.dart';
 import 'package:tcg_manager/entity/record.dart';
+import 'package:tcg_manager/entity/tag.dart';
 import 'package:tcg_manager/service/firestore.dart';
 
 final firestoreShareDataRepository =
