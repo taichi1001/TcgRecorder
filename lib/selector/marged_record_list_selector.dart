@@ -114,6 +114,5 @@ final allMargedRecordListProvider = FutureProvider.autoDispose<List<MargedRecord
       imagePaths: record.imagePath,
     );
   }).toList();
-  ref.keepAlive();
   return list;
 });

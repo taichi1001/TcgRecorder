@@ -1,6 +1,8 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/domain_data.dart';
 import 'package:tcg_manager/entity/game.dart';
@@ -110,19 +112,53 @@ class DomainDataOption extends HookConsumerWidget {
           _SelectableRow(
             text: '名前を変更',
             icon: Icons.edit,
-            onTap: () {},
+            onTap: () async {
+              final newName = await showTextInputDialog(
+                context: context,
+                title: '名前を変更',
+                textFields: [DialogTextField(initialText: domainData.name)],
+              );
+              if (newName != null) {
+                try {
+                  switch (domainData) {
+                    case Game():
+                      await ref.read(dbHelper).updateGameName(domainData as Game, newName.first);
+                    case Deck():
+                      await ref.read(dbHelper).updateDeckName(domainData as Deck, newName.first);
+                    case Tag():
+                      await ref.read(dbHelper).updateTagName(domainData as Tag, newName.first);
+                  }
+                } on DatabaseException catch (e) {
+                  if (e.isUniqueConstraintError() && context.mounted) {
+                    await showOkAlertDialog(
+                      context: context,
+                      title: '既に登録されている名前です',
+                      message: '「${newName.first}」は既に登録されているため名前を変更することはできませんでした。',
+                    );
+                  }
+                }
+              }
+              if (context.mounted) Navigator.pop(context);
+            },
           ),
           _SelectableRow(
             text: '削除',
             icon: Icons.delete,
             onTap: () async {
-              switch (domainData) {
-                case Game():
-                  await ref.read(dbHelper).deleteGame(domainData as Game);
-                case Deck():
-                  await ref.read(dbHelper).deleteDeck(domainData as Deck);
-                case Tag():
-                  await ref.read(dbHelper).deleteTag(domainData as Tag);
+              final result = await showOkCancelAlertDialog(
+                context: context,
+                title: '${domainData.name}を削除しますか？',
+                message: '削除するとこれまで保存していたデータも削除されます。',
+              );
+              if (result == OkCancelResult.ok) {
+                switch (domainData) {
+                  case Game():
+                    await ref.read(dbHelper).deleteGame(domainData as Game);
+                  case Deck():
+                    await ref.read(dbHelper).deleteDeck(domainData as Deck);
+                  case Tag():
+                    await ref.read(dbHelper).deleteTag(domainData as Tag);
+                }
               }
               if (context.mounted) Navigator.pop(context);
             },

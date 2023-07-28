@@ -16,7 +16,6 @@ class PhoneNumberAuthView extends HookConsumerWidget {
     final errorText = useState('');
     final hiddenErrorText = useState('開発用隠しエラーコード'); // ストア公開後でもエラーが見えるようにするため暫定的に追加
     final hiddenCount = useState(0);
-    print(hiddenCount.value);
     return Scaffold(
       appBar: AppBar(
         title: const Text('電話番号認証'),

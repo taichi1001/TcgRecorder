@@ -4,7 +4,6 @@ import 'package:tcg_manager/selector/game_tag_list_selector.dart';
 import 'package:tcg_manager/selector/sorted_record_list_selector.dart';
 
 final recentlyUseTagProvider = FutureProvider.autoDispose<List<Tag>>((ref) async {
-  ref.keepAlive();
   final recordList = await ref.watch(sortedRecordListProvider.future);
   final recordListCopy = [...recordList];
 
