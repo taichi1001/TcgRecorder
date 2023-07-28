@@ -148,7 +148,14 @@ class DomainDataOption extends HookConsumerWidget {
               final result = await showOkCancelAlertDialog(
                 context: context,
                 title: '${domainData.name}を削除しますか？',
-                message: '削除するとこれまで保存していたデータも削除されます。',
+                message: () {
+                  switch (domainData) {
+                    case Tag():
+                      return '削除するとこれまでに保存した記録からも削除されます。';
+                    default:
+                      return '削除するとこれまでに保存していた記録も削除されます。';
+                  }
+                }(),
               );
               if (result == OkCancelResult.ok) {
                 switch (domainData) {
