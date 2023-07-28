@@ -39,6 +39,9 @@ class DbHelper {
     await ref.read(gameRepository).deleteById(game.id!);
     await fetchAll();
     if (ref.read(backupNotifierProvider)) await ref.read(firestoreBackupControllerProvider).addAll();
+    if (game.id == ref.read(selectGameNotifierProvider).selectGame?.id) {
+      await ref.read(selectGameNotifierProvider.notifier).changeGameForLastRecord();
+    }
   }
 
   Future deleteDeck(Deck deck) async {
