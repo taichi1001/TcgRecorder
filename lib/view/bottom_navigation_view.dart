@@ -7,13 +7,13 @@ import 'package:tcg_manager/view/graph_view.dart';
 import 'package:tcg_manager/view/input_view/input_view.dart';
 import 'package:tcg_manager/view/other_view.dart';
 import 'package:tcg_manager/view/record_list_view.dart';
+import 'package:tcg_manager/view/share_view.dart';
 
 final bottomNavItems = [
   const InputView(),
   const GraphView(),
   const RecordListView(),
-  // TODO 共有機能解放時にコメントアウト
-  // const ShareView(),
+  const ShareView(),
   const OtherView(),
 ];
 
@@ -52,11 +52,10 @@ class BottomNavigationView extends HookConsumerWidget {
             icon: const Icon(Icons.import_contacts),
             label: S.of(context).bottomList,
           ),
-          // TODO 共有機能解放時にコメントアウト
-          // const BottomNavigationBarItem(
-          //   icon: Icon(Icons.share),
-          //   label: 'シェア',
-          // ),
+          const BottomNavigationBarItem(
+            icon: Icon(Icons.share),
+            label: 'シェア',
+          ),
           BottomNavigationBarItem(
             icon: const Icon(Icons.settings),
             label: S.of(context).bottomOther,

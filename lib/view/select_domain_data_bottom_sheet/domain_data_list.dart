@@ -8,6 +8,9 @@ import 'package:tcg_manager/entity/domain_data.dart';
 import 'package:tcg_manager/entity/game.dart';
 import 'package:tcg_manager/entity/tag.dart';
 import 'package:tcg_manager/helper/db_helper.dart';
+import 'package:tcg_manager/provider/firebase_auth_provider.dart';
+import 'package:tcg_manager/provider/firestore_controller_provider.dart';
+import 'package:tcg_manager/view/other_view.dart';
 
 class DomainDataList extends StatelessWidget {
   const DomainDataList({
@@ -40,14 +43,15 @@ class DomainDataList extends StatelessWidget {
       padding: EdgeInsets.zero,
       shrinkWrap: true,
       itemBuilder: ((context, index) {
-        if (enableVisibility && !domainDataList[index].isVisibleToPicker) return Container();
-        final isSelected = selectedDomainDataList.contains(domainDataList[index]);
+        final domainData = domainDataList[index];
+        if (enableVisibility && !domainData.isVisibleToPicker) return Container();
+        final isSelected = selectedDomainDataList.contains(domainData);
         return GestureDetector(
           onTap: () {
             if (isSelected) {
-              if (deselectionFunc != null) deselectionFunc!(domainDataList[index]);
+              if (deselectionFunc != null) deselectionFunc!(domainData);
             } else {
-              selectDomainDataFunc(domainDataList[index], tagCount);
+              selectDomainDataFunc(domainData, tagCount);
               if (returnSelecting) Navigator.pop(rootContext);
               if (afterFunc != null) afterFunc!();
             }
@@ -58,9 +62,15 @@ class DomainDataList extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  domainDataList[index].name,
-                  style: Theme.of(context).textTheme.bodyMedium,
+                Row(
+                  children: [
+                    if (domainData is Game && domainData.isShare) const Icon(Icons.share),
+                    if (domainData is Game && domainData.isShare) const SizedBox(width: 8),
+                    Text(
+                      domainData.name,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ],
                 ),
                 IconButton(
                   onPressed: () {
@@ -108,7 +118,37 @@ class DomainDataOption extends HookConsumerWidget {
         children: [
           _SelectableRow(text: domainData.name, icon: Icons.gamepad, width: 16),
           const Divider(),
-          if (domainData is Game) _SelectableRow(text: '共有', icon: Icons.person_add_alt, onTap: () {}),
+          if (domainData is Game)
+            _SelectableRow(
+              text: '共有',
+              icon: Icons.person_add_alt,
+              onTap: () async {
+                final data = domainData as Game;
+                if (data.isShare) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const OtherView(),
+                    ),
+                  );
+                } else {
+                  final result = await showOkCancelAlertDialog(
+                    context: context,
+                    title: '${domainData.name}を共有しますか？',
+                    message: '他のユーザーとこのゲームの記録を共有することができます。',
+                  );
+                  if (result == OkCancelResult.ok) {
+                    final uid = ref.read(firebaseAuthNotifierProvider).user?.uid;
+                    if (uid != null) {
+                      var gameData = domainData as Game;
+                      gameData = gameData.copyWith(isShare: true);
+                      ref.read(firestoreControllerProvider).initShareGame(gameData, uid);
+                      print('ok');
+                    }
+                  }
+                }
+              },
+            ),
           _SelectableRow(
             text: '名前を変更',
             icon: Icons.edit,
