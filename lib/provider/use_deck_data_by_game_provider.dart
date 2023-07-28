@@ -73,7 +73,6 @@ final totalAddedToUseDeckDataByGameProvider = FutureProvider.autoDispose<List<Wi
         winRateOfSecond: calc.calcWinRateOfSecond(),
       ),
     );
-    ref.keepAlive();
     return useDeckDataByGame;
   },
 );
