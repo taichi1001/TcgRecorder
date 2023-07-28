@@ -108,7 +108,7 @@ class DomainDataOption extends HookConsumerWidget {
         children: [
           _SelectableRow(text: domainData.name, icon: Icons.gamepad, width: 16),
           const Divider(),
-          _SelectableRow(text: '共有', icon: Icons.person_add, onTap: () {}),
+          if (domainData is Game) _SelectableRow(text: '共有', icon: Icons.person_add_alt, onTap: () {}),
           _SelectableRow(
             text: '名前を変更',
             icon: Icons.edit,
