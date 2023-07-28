@@ -1,12 +1,14 @@
 // ignore_for_file: unused_result
 
+import 'package:collection/collection.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/game.dart';
 import 'package:tcg_manager/helper/initial_data_controller.dart';
 import 'package:tcg_manager/provider/backup_provider.dart';
-import 'package:tcg_manager/provider/game_list_provider.dart';
-import 'package:tcg_manager/repository/game_repository.dart';
 import 'package:tcg_manager/provider/firestore_backup_controller_provider.dart';
+import 'package:tcg_manager/provider/game_list_provider.dart';
+import 'package:tcg_manager/provider/record_list_provider.dart';
+import 'package:tcg_manager/repository/game_repository.dart';
 import 'package:tcg_manager/state/select_game_state.dart';
 
 class SelectGameNotifier extends StateNotifier<SelectGameState> {
@@ -26,6 +28,23 @@ class SelectGameNotifier extends StateNotifier<SelectGameState> {
 
   void changeGameForString(String name) {
     state = state.copyWith(selectGame: Game(name: name));
+  }
+
+  Future changeGameForLastRecord() async {
+    final allRecordList = await ref.read(allRecordListProvider.future);
+    final List<Game?> allGameList = await ref.read(allGameListProvider.future);
+
+    Game? selectedGame;
+
+    if (allGameList.isNotEmpty) {
+      if (allRecordList.isNotEmpty) {
+        selectedGame = allGameList.firstWhereOrNull((element) => element?.id == allRecordList.last.gameId);
+      } else {
+        selectedGame = allGameList.last;
+      }
+    }
+
+    state = state.copyWith(selectGame: selectedGame);
   }
 
   Future changeGameForId(int id) async {
