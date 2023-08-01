@@ -55,14 +55,19 @@ class FirestoreController {
       futures.add(shareDataRepository.addTag(tag, docName));
     }
     for (final record in gameRecordList) {
-      futures.add(shareDataRepository.addRecord(record, docName));
       if (record.imagePath != null && record.imagePath!.isNotEmpty) {
+        List<String> imagePathList = [];
         for (final imagePath in record.imagePath!) {
           final strageRef = FirebaseStorage.instance.ref().child('share_data/$docName/$imagePath');
           final savePath = ref.read(imagePathProvider);
           final file = File('$savePath/$imagePath');
           await strageRef.putFile(file);
+          final url = await strageRef.getDownloadURL();
+          imagePathList.add(url);
         }
+        futures.add(shareDataRepository.addRecord(record.copyWith(imagePath: imagePathList), docName));
+      } else {
+        futures.add(shareDataRepository.addRecord(record, docName));
       }
     }
 
