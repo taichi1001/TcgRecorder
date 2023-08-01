@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/game.dart';
+import 'package:tcg_manager/main.dart';
 import 'package:tcg_manager/repository/firestore_share_data_repository.dart';
 import 'package:tcg_manager/repository/firestore_share_repository.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
@@ -53,6 +56,14 @@ class FirestoreController {
     }
     for (final record in gameRecordList) {
       futures.add(shareDataRepository.addRecord(record, docName));
+      if (record.imagePath != null && record.imagePath!.isNotEmpty) {
+        for (final imagePath in record.imagePath!) {
+          final strageRef = FirebaseStorage.instance.ref().child('share_data/$docName/$imagePath');
+          final savePath = ref.read(imagePathProvider);
+          final file = File('$savePath/$imagePath');
+          await strageRef.putFile(file);
+        }
+      }
     }
 
     await Future.wait(futures);
