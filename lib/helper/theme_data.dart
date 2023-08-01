@@ -29,7 +29,7 @@ final lightThemeDataProvider = Provider.family<ThemeData, BuildContext>(
       swapLegacyOnMaterial3: true,
       // To use the playground font, add GoogleFonts package and uncomment
       // fontFamily: GoogleFonts.notoSans().fontFamily,
-      // fontFamily: 'NotoSansJP',
+      fontFamily: 'NotoSansJP',
     ).copyWith(
       appBarTheme: Theme.of(context).appBarTheme.copyWith(
             titleTextStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -67,6 +67,7 @@ final darkThemeDataProvider = Provider.family<ThemeData, BuildContext>(
       swapLegacyOnMaterial3: true,
       // To use the Playground font, add GoogleFonts package and uncomment
       // fontFamily: GoogleFonts.notoSans().fontFamily,
+      fontFamily: 'NotoSansJP',
     ).copyWith(
       appBarTheme: Theme.of(context).appBarTheme.copyWith(
             titleTextStyle: Theme.of(context).primaryTextTheme.titleMedium?.copyWith(

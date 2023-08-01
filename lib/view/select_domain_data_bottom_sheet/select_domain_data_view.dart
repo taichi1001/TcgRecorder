@@ -199,14 +199,6 @@ class _Body extends HookConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    if (dataType == DomainDataType.game)
-                      Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Text(
-                          'ホストで共有中の${dataType.displayName}',
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                      ),
                     if (dataType != DomainDataType.game)
                       Padding(
                         padding: const EdgeInsets.all(16),
@@ -216,20 +208,10 @@ class _Body extends HookConsumerWidget {
                         ),
                       ),
                     if (dataType == DomainDataType.game)
-                      DomainDataList(
-                        domainDataList: selectDomainViewInfo.hostGameList,
-                        selectedDomainDataList: selectedDomainDataList,
-                        rootContext: rootContext,
-                        selectDomainDataFunc: selectDomainDataFunc,
-                        enableVisibility: false,
-                        tagCount: tagCount,
-                        returnSelecting: returnSelecting,
-                      ),
-                    if (dataType == DomainDataType.game)
                       Padding(
                         padding: const EdgeInsets.all(16),
                         child: Text(
-                          'ゲストで共有中の${dataType.displayName}',
+                          '共有されている${dataType.displayName}',
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ),
@@ -269,6 +251,7 @@ class _Body extends HookConsumerWidget {
                       afterFunc: afterFunc,
                       tagCount: tagCount,
                       returnSelecting: returnSelecting,
+                      isShareHost: true,
                     ),
                   ],
                 );

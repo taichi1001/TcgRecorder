@@ -35,9 +35,14 @@ class FirestoreShareRepository {
   FirestoreShareRepository(this._firestore);
 
   // 新規のゲームをシェアするための関数
-  Future initGame(Game game, String user) async {
+  Future initGame(Game game, String user, int? counter) async {
     final docName = '$user-${game.name}';
-    final gameCounter = await getGameCounter(user);
+    int gameCounter;
+    if (counter == null) {
+      gameCounter = await getGameCounter(user);
+    } else {
+      gameCounter = counter;
+    }
     final myself = ShareUser(id: user, roll: AccessRoll.author);
     final initShare = FirestoreShare(authorName: user, game: game.copyWith(id: gameCounter), shareUserList: [myself], docName: docName);
     await _firestore.collection('share').doc(docName).set(initShare.toJson());

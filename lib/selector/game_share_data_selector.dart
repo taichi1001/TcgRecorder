@@ -1,20 +1,8 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/firestore_share.dart';
-import 'package:tcg_manager/entity/firestore_share_data.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/repository/firestore_share_data_repository.dart';
 import 'package:tcg_manager/repository/firestore_share_repository.dart';
-
-// share_dataの中身を全て監視するStream
-final gameShareDataStreamProvider = StreamProvider.autoDispose<FirestoreShareData?>((ref) async* {
-  final selectFirestoreShare = await ref.watch(gameFirestoreShareStreamProvider.future);
-  if (selectFirestoreShare == null) {
-    yield null;
-  } else {
-    final shareData = await ref.watch(firestoreShareDataProvider(selectFirestoreShare.docName).future);
-    yield shareData;
-  }
-});
 
 // share_dataのrecordを監視するStream
 final gameShareDataDeckStreamProvider = StreamProvider.autoDispose((ref) async* {

@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:tcg_manager/entity/deck.dart';
-import 'package:tcg_manager/entity/firestore_share_data.dart';
 import 'package:tcg_manager/entity/game.dart';
 import 'package:tcg_manager/entity/record.dart';
 import 'package:tcg_manager/entity/tag.dart';
@@ -24,36 +22,17 @@ final firestoreShareDataTagProvider =
 final firestoreShareDataRecordProvider = StreamProvider.autoDispose
     .family<List<Record>, String>((ref, docName) => ref.watch(firestoreShareDataRepository).getShareRecord(docName));
 
-final firestoreShareDataProvider = StreamProvider.autoDispose.family<FirestoreShareData, String>(
-  (ref, docName) {
-    final gameStream = ref.watch(firestoreShareDataGameProvider(docName).stream);
-    final deckStream = ref.watch(firestoreShareDataDeckProvider(docName).stream);
-    final tagStream = ref.watch(firestoreShareDataTagProvider(docName).stream);
-    final recordStream = ref.watch(firestoreShareDataRecordProvider(docName).stream);
-
-    return Rx.combineLatest4<Game, List<Deck>, List<Tag>, List<Record>, FirestoreShareData>(
-      gameStream,
-      deckStream,
-      tagStream,
-      recordStream,
-      (game, deckList, tagList, recordList) => FirestoreShareData(
-        game: game,
-        deckList: deckList,
-        tagList: tagList,
-        recordList: recordList,
-      ),
-    );
-  },
-);
-
 class FirestoreShareDataRepository {
   final FirebaseFirestore _firestore;
   FirestoreShareDataRepository(this._firestore);
 
-  Future initGame(Game game, String user) async {
+  Future initGame(Game game, String user, {int deckCounter = 0, int tagCounter = 0, int recordCounter = 0}) async {
     final docName = '$user-${game.name}';
     final gameCounter = await getGameCounter(user);
-    await _firestore.collection('counters').doc(docName).set({'deck_counter': 0, 'tag_counter': 0, 'record_counter': 0});
+    await _firestore
+        .collection('counters')
+        .doc(docName)
+        .set({'deck_counter': deckCounter, 'tag_counter': tagCounter, 'record_counter': recordCounter});
     await _firestore.collection('share_data').doc(docName).set(game.copyWith(id: gameCounter).toJson());
     await _firestore.collection('share_data').doc(docName).collection('decks').doc('decks0').set({'decks': [], 'index': 0});
     await _firestore.collection('share_data').doc(docName).collection('tags').doc('tags0').set({'tags': [], 'index': 0});
