@@ -26,23 +26,26 @@ class AddPhotoWidgets extends StatelessWidget {
       return _AddPhotoWidget(selectImageFunc: selectImageFunc, deleteImageFunc: deleteImageFunc);
     }
 
-    return ListView.builder(
-      scrollDirection: Axis.horizontal,
-      itemCount: images.length + 1, // Add one for the extra add button
-      itemBuilder: (context, index) {
-        if (index == images.length) {
-          // The last item is the add button
-          return _AddPhotoWidget(selectImageFunc: selectImageFunc, deleteImageFunc: deleteImageFunc);
-        } else {
-          // Display the image
-          return _AddPhotoWidget(
-            filePath: images[index],
-            index: index,
-            selectImageFunc: selectImageFunc,
-            deleteImageFunc: deleteImageFunc,
-          );
-        }
-      },
+    return SizedBox(
+      height: 80,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: images.length + 1, // Add one for the extra add button
+        itemBuilder: (context, index) {
+          if (index == images.length) {
+            // The last item is the add button
+            return _AddPhotoWidget(selectImageFunc: selectImageFunc, deleteImageFunc: deleteImageFunc);
+          } else {
+            // Display the image
+            return _AddPhotoWidget(
+              filePath: images[index],
+              index: index,
+              selectImageFunc: selectImageFunc,
+              deleteImageFunc: deleteImageFunc,
+            );
+          }
+        },
+      ),
     );
   }
 }
@@ -64,14 +67,13 @@ class _AddPhotoWidget extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isPremium = ref.watch(revenueCatProvider.select((value) => value?.isPremium));
-
     return Padding(
       padding: const EdgeInsets.only(right: 8),
-      child: PremiumLockIcon(
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(15),
-          child: filePath == null
-              ? GestureDetector(
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(15),
+        child: filePath == null
+            ? PremiumLockIcon(
+                child: GestureDetector(
                   onTap: () async {
                     if (isPremium!) {
                       selectImageFunc();
@@ -96,35 +98,35 @@ class _AddPhotoWidget extends HookConsumerWidget {
                       ),
                     ],
                   ),
-                )
-              : GestureDetector(
-                  onTap: () {
-                    deleteImageFunc(index!);
-                  },
-                  child: Stack(
-                    alignment: AlignmentDirectional.topEnd,
-                    children: [
-                      SizedBox(
-                        width: 80,
-                        height: 80,
-                        child: filePath!.startsWith('https')
-                            ? CachedNetworkImage(
-                                imageUrl: filePath!,
-                                fit: BoxFit.contain,
-                              )
-                            : Image.file(
-                                File(filePath!),
-                                fit: BoxFit.contain,
-                              ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.all(4),
-                        child: Icon(Icons.cancel),
-                      ),
-                    ],
-                  ),
                 ),
-        ),
+              )
+            : GestureDetector(
+                onTap: () {
+                  deleteImageFunc(index!);
+                },
+                child: Stack(
+                  alignment: AlignmentDirectional.topEnd,
+                  children: [
+                    SizedBox(
+                      width: 80,
+                      height: 80,
+                      child: filePath!.startsWith('https')
+                          ? CachedNetworkImage(
+                              imageUrl: filePath!,
+                              fit: BoxFit.contain,
+                            )
+                          : Image.file(
+                              File(filePath!),
+                              fit: BoxFit.contain,
+                            ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(4),
+                      child: Icon(Icons.cancel),
+                    ),
+                  ],
+                ),
+              ),
       ),
     );
   }
