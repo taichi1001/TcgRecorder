@@ -229,7 +229,7 @@ class _Body extends HookConsumerWidget {
                       DomainDataList(
                         domainDataList: selectDomainViewInfo.recentlyUseDomainDataList,
                         selectedDomainDataList: selectedDomainDataList,
-                        rootContext: context,
+                        rootContext: rootContext,
                         selectDomainDataFunc: selectDomainDataFunc,
                         deselectionFunc: deselectionFunc,
                         enableVisibility: false,

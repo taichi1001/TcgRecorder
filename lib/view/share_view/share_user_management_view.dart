@@ -43,6 +43,7 @@ class ShareUserManagementView extends HookConsumerWidget {
                     ],
                   ),
                   body: CustomScrollView(
+                    physics: const ClampingScrollPhysics(),
                     slivers: [
                       SliverToBoxAdapter(
                         child: ListTileOnTap(
@@ -78,7 +79,7 @@ class ShareUserManagementView extends HookConsumerWidget {
                         ),
                       if (isOwner)
                         SliverList.builder(
-                          itemCount: shareUserDataWithOwnerRemoved.length,
+                          itemCount: pendingUserDataList.length,
                           itemBuilder: ((context, index) {
                             return ListTileOnTap(
                               title: pendingUserDataList[index].name ?? pendingUserDataList[index].id,
