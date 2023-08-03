@@ -7,14 +7,12 @@ import 'package:tcg_manager/entity/domain_data.dart';
 import 'package:tcg_manager/entity/firestore_share.dart';
 import 'package:tcg_manager/entity/game.dart';
 import 'package:tcg_manager/entity/tag.dart';
-import 'package:tcg_manager/entity/user_data.dart';
 import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/provider/firebase_auth_provider.dart';
 import 'package:tcg_manager/provider/firestore_controller_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/repository/firestore_share_repository.dart';
-import 'package:tcg_manager/repository/firestore_user_settings_repositroy.dart';
 import 'package:tcg_manager/repository/game_repository.dart';
 import 'package:tcg_manager/view/share_view/share_user_management_view.dart';
 
@@ -30,17 +28,6 @@ final currentShareProvider = StreamProvider.autoDispose<FirestoreShare>((ref) as
     final guestShare = await ref.watch(guestShareProvider.future);
     yield guestShare.firstWhere((element) => element.game == game);
   }
-});
-final currentShareUserListProvider = StreamProvider.autoDispose<List<UserData>>((ref) async* {
-  final currentShare = await ref.watch(currentShareProvider.future);
-  final currentShareUserList = await ref.watch(userDataListProvider(currentShare.shareUserList.map((e) => e.id).toList()).future);
-  yield currentShareUserList;
-});
-
-final currentPendingUserListProvider = StreamProvider.autoDispose<List<UserData>>((ref) async* {
-  final currentShare = await ref.watch(currentShareProvider.future);
-  final currentPendingUserList = await ref.watch(userDataListProvider(currentShare.pendingUserList.map((e) => e.id).toList()).future);
-  yield currentPendingUserList;
 });
 
 class DomainDataOptions extends HookConsumerWidget {
