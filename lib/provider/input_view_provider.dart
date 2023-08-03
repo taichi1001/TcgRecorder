@@ -13,6 +13,7 @@ import 'package:tcg_manager/enum/win_loss.dart';
 import 'package:tcg_manager/helper/edit_record_helper.dart';
 import 'package:tcg_manager/helper/initial_data_controller.dart';
 import 'package:tcg_manager/main.dart';
+import 'package:tcg_manager/provider/firebase_auth_provider.dart';
 import 'package:tcg_manager/provider/input_view_settings_provider.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
@@ -243,6 +244,7 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
         tagId: state.tag.map((tag) => tag.id!).toList(),
         bo: bo,
         memo: state.memo,
+        author: ref.read(firebaseAuthNotifierProvider).user?.uid,
         gameId: selectGameId,
         date: state.date,
         firstSecond: state.firstSecond,

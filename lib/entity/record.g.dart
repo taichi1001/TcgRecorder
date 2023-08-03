@@ -40,6 +40,7 @@ _$_Record _$$_RecordFromJson(Map<String, dynamic> json) => $checkedCreate(
           thirdMatchWinLoss: $checkedConvert('third_match_win_loss',
               (v) => _nullableWinLossFromJson(v as int?)),
           memo: $checkedConvert('memo', (v) => v as String?),
+          author: $checkedConvert('author', (v) => v as String?),
           imagePath: $checkedConvert(
               'image_path', (v) => _stringListFromJson(v as String?)),
         );
@@ -86,5 +87,6 @@ Map<String, dynamic> _$$_RecordToJson(_$_Record instance) => <String, dynamic>{
       'third_match_win_loss':
           _nullableWinLossToJson(instance.thirdMatchWinLoss),
       'memo': instance.memo,
+      'author': instance.author,
       'image_path': _stringListToJson(instance.imagePath),
     };

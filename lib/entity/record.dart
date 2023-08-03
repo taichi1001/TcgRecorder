@@ -25,6 +25,7 @@ class Record with _$Record {
     @JsonKey(fromJson: _nullableWinLossFromJson, toJson: _nullableWinLossToJson) WinLoss? secondMatchWinLoss,
     @JsonKey(fromJson: _nullableWinLossFromJson, toJson: _nullableWinLossToJson) WinLoss? thirdMatchWinLoss,
     String? memo,
+    String? author,
     @JsonKey(fromJson: _stringListFromJson, toJson: _stringListToJson) List<String>? imagePath,
   }) = _Record;
   factory Record.fromJson(Map<String, dynamic> json) => _$RecordFromJson(json);

@@ -53,6 +53,7 @@ mixin _$Record {
   @JsonKey(fromJson: _nullableWinLossFromJson, toJson: _nullableWinLossToJson)
   WinLoss? get thirdMatchWinLoss => throw _privateConstructorUsedError;
   String? get memo => throw _privateConstructorUsedError;
+  String? get author => throw _privateConstructorUsedError;
   @JsonKey(fromJson: _stringListFromJson, toJson: _stringListToJson)
   List<String>? get imagePath => throw _privateConstructorUsedError;
 
@@ -94,6 +95,7 @@ abstract class $RecordCopyWith<$Res> {
       @JsonKey(fromJson: _nullableWinLossFromJson, toJson: _nullableWinLossToJson)
           WinLoss? thirdMatchWinLoss,
       String? memo,
+      String? author,
       @JsonKey(fromJson: _stringListFromJson, toJson: _stringListToJson)
           List<String>? imagePath});
 }
@@ -127,6 +129,7 @@ class _$RecordCopyWithImpl<$Res, $Val extends Record>
     Object? secondMatchWinLoss = freezed,
     Object? thirdMatchWinLoss = freezed,
     Object? memo = freezed,
+    Object? author = freezed,
     Object? imagePath = freezed,
   }) {
     return _then(_value.copyWith(
@@ -194,6 +197,10 @@ class _$RecordCopyWithImpl<$Res, $Val extends Record>
           ? _value.memo
           : memo // ignore: cast_nullable_to_non_nullable
               as String?,
+      author: freezed == author
+          ? _value.author
+          : author // ignore: cast_nullable_to_non_nullable
+              as String?,
       imagePath: freezed == imagePath
           ? _value.imagePath
           : imagePath // ignore: cast_nullable_to_non_nullable
@@ -236,6 +243,7 @@ abstract class _$$_RecordCopyWith<$Res> implements $RecordCopyWith<$Res> {
       @JsonKey(fromJson: _nullableWinLossFromJson, toJson: _nullableWinLossToJson)
           WinLoss? thirdMatchWinLoss,
       String? memo,
+      String? author,
       @JsonKey(fromJson: _stringListFromJson, toJson: _stringListToJson)
           List<String>? imagePath});
 }
@@ -266,6 +274,7 @@ class __$$_RecordCopyWithImpl<$Res>
     Object? secondMatchWinLoss = freezed,
     Object? thirdMatchWinLoss = freezed,
     Object? memo = freezed,
+    Object? author = freezed,
     Object? imagePath = freezed,
   }) {
     return _then(_$_Record(
@@ -333,6 +342,10 @@ class __$$_RecordCopyWithImpl<$Res>
           ? _value.memo
           : memo // ignore: cast_nullable_to_non_nullable
               as String?,
+      author: freezed == author
+          ? _value.author
+          : author // ignore: cast_nullable_to_non_nullable
+              as String?,
       imagePath: freezed == imagePath
           ? _value._imagePath
           : imagePath // ignore: cast_nullable_to_non_nullable
@@ -372,6 +385,7 @@ class _$_Record implements _Record {
       @JsonKey(fromJson: _nullableWinLossFromJson, toJson: _nullableWinLossToJson)
           this.thirdMatchWinLoss,
       this.memo,
+      this.author,
       @JsonKey(fromJson: _stringListFromJson, toJson: _stringListToJson)
           final List<String>? imagePath})
       : _tagId = tagId,
@@ -435,6 +449,8 @@ class _$_Record implements _Record {
   final WinLoss? thirdMatchWinLoss;
   @override
   final String? memo;
+  @override
+  final String? author;
   final List<String>? _imagePath;
   @override
   @JsonKey(fromJson: _stringListFromJson, toJson: _stringListToJson)
@@ -448,7 +464,7 @@ class _$_Record implements _Record {
 
   @override
   String toString() {
-    return 'Record(recordId: $recordId, gameId: $gameId, tagId: $tagId, useDeckId: $useDeckId, opponentDeckId: $opponentDeckId, date: $date, bo: $bo, firstSecond: $firstSecond, firstMatchFirstSecond: $firstMatchFirstSecond, secondMatchFirstSecond: $secondMatchFirstSecond, thirdMatchFirstSecond: $thirdMatchFirstSecond, winLoss: $winLoss, firstMatchWinLoss: $firstMatchWinLoss, secondMatchWinLoss: $secondMatchWinLoss, thirdMatchWinLoss: $thirdMatchWinLoss, memo: $memo, imagePath: $imagePath)';
+    return 'Record(recordId: $recordId, gameId: $gameId, tagId: $tagId, useDeckId: $useDeckId, opponentDeckId: $opponentDeckId, date: $date, bo: $bo, firstSecond: $firstSecond, firstMatchFirstSecond: $firstMatchFirstSecond, secondMatchFirstSecond: $secondMatchFirstSecond, thirdMatchFirstSecond: $thirdMatchFirstSecond, winLoss: $winLoss, firstMatchWinLoss: $firstMatchWinLoss, secondMatchWinLoss: $secondMatchWinLoss, thirdMatchWinLoss: $thirdMatchWinLoss, memo: $memo, author: $author, imagePath: $imagePath)';
   }
 
   @override
@@ -482,6 +498,7 @@ class _$_Record implements _Record {
             (identical(other.thirdMatchWinLoss, thirdMatchWinLoss) ||
                 other.thirdMatchWinLoss == thirdMatchWinLoss) &&
             (identical(other.memo, memo) || other.memo == memo) &&
+            (identical(other.author, author) || other.author == author) &&
             const DeepCollectionEquality()
                 .equals(other._imagePath, _imagePath));
   }
@@ -506,6 +523,7 @@ class _$_Record implements _Record {
       secondMatchWinLoss,
       thirdMatchWinLoss,
       memo,
+      author,
       const DeepCollectionEquality().hash(_imagePath));
 
   @JsonKey(ignore: true)
@@ -551,6 +569,7 @@ abstract class _Record implements Record {
       @JsonKey(fromJson: _nullableWinLossFromJson, toJson: _nullableWinLossToJson)
           final WinLoss? thirdMatchWinLoss,
       final String? memo,
+      final String? author,
       @JsonKey(fromJson: _stringListFromJson, toJson: _stringListToJson)
           final List<String>? imagePath}) = _$_Record;
 
@@ -605,6 +624,8 @@ abstract class _Record implements Record {
   WinLoss? get thirdMatchWinLoss;
   @override
   String? get memo;
+  @override
+  String? get author;
   @override
   @JsonKey(fromJson: _stringListFromJson, toJson: _stringListToJson)
   List<String>? get imagePath;
