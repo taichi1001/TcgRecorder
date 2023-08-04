@@ -13,6 +13,7 @@ import 'package:tcg_manager/provider/firestore_controller_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/repository/firestore_share_repository.dart';
+import 'package:tcg_manager/repository/firestore_user_settings_repositroy.dart';
 import 'package:tcg_manager/repository/game_repository.dart';
 import 'package:tcg_manager/view/share_view/share_user_management_view.dart';
 
@@ -142,25 +143,34 @@ class _ShareSelectableRow extends HookConsumerWidget {
           );
           if (result == OkCancelResult.ok) {
             final uid = ref.read(firebaseAuthNotifierProvider).user?.uid;
-            if (uid != null) {
-              final gameData = domainData.copyWith(isShare: true);
-              await ref.read(gameRepository).update(gameData);
-              ref.read(currentDomainDataProvider.notifier).state = gameData;
-              ref.invalidate(allGameListProvider);
+            final myUserData = await ref.read(myUserDataProvider.future);
+            if (myUserData == null && context.mounted) {
+              await showOkAlertDialog(
+                context: context,
+                title: 'ユーザー名を設定してください。',
+                message: 'この機能を使用するためにはプロフィール設定画面からユーザー名を設定する必要があります。',
+              );
+            } else {
+              if (uid != null) {
+                final gameData = domainData.copyWith(isShare: true);
+                await ref.read(gameRepository).update(gameData);
+                ref.read(currentDomainDataProvider.notifier).state = gameData;
+                ref.invalidate(allGameListProvider);
 
-              await ref.read(firestoreControllerProvider).initShareGame(gameData, uid);
-              final selectGame = ref.read(selectGameNotifierProvider).selectGame;
-              if (selectGame?.name == gameData.name) {
-                ref.read(selectGameNotifierProvider.notifier).setSelectGame(gameData);
-              }
-              if (context.mounted) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    fullscreenDialog: true,
-                    builder: (context) => const ShareUserManagementView(),
-                  ),
-                );
+                await ref.read(firestoreControllerProvider).initShareGame(gameData, uid);
+                final selectGame = ref.read(selectGameNotifierProvider).selectGame;
+                if (selectGame?.name == gameData.name) {
+                  ref.read(selectGameNotifierProvider.notifier).setSelectGame(gameData);
+                }
+                if (context.mounted) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      fullscreenDialog: true,
+                      builder: (context) => const ShareUserManagementView(),
+                    ),
+                  );
+                }
               }
             }
           }
