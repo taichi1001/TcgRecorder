@@ -3,9 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:settings_ui/settings_ui.dart';
+import 'package:tcg_manager/entity/firestore_share.dart';
+import 'package:tcg_manager/entity/game.dart';
+import 'package:tcg_manager/entity/share_user.dart';
+import 'package:tcg_manager/entity/user_data.dart';
 import 'package:tcg_manager/enum/access_roll.dart';
 import 'package:tcg_manager/repository/firestore_share_repository.dart';
 import 'package:tcg_manager/view/host_share_game_view.dart';
+
+final currentSharedUserViewDataProvider = StateProvider.autoDispose<(UserData, ShareUser, FirestoreShare)>(
+  (ref) => (
+    UserData(id: ''),
+    ShareUser(id: '', roll: AccessRoll.reader),
+    FirestoreShare(game: Game(name: ''), authorName: '', docName: ''),
+  ),
+);
 
 class SharedUserView extends HookConsumerWidget {
   const SharedUserView({super.key});

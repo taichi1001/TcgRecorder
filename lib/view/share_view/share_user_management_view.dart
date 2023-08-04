@@ -7,6 +7,7 @@ import 'package:tcg_manager/repository/firestore_share_repository.dart';
 import 'package:tcg_manager/repository/firestore_user_settings_repositroy.dart';
 import 'package:tcg_manager/view/component/list_tile_ontap.dart';
 import 'package:tcg_manager/view/select_domain_data_bottom_sheet/domain_data_options.dart';
+import 'package:tcg_manager/view/shared_user_view.dart';
 
 final currentShareUserListProvider = StreamProvider.autoDispose<List<UserData>>((ref) async* {
   final currentShare = await ref.watch(currentShareProvider.future);
@@ -130,7 +131,19 @@ class ShareUserManagementView extends HookConsumerWidget {
               ),
               _UserDataSliverList(
                 userDataList: shareUserDataWithOwnerRemoved,
-                onTap: () {},
+                onTap: (index) {
+                  ref.read(currentSharedUserViewDataProvider.notifier).state = (
+                    shareUserDataWithOwnerRemoved[index],
+                    currentShare.shareUserList[index],
+                    currentShare,
+                  );
+                  return Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SharedUserView(),
+                    ),
+                  );
+                },
               ),
             ],
           ),
@@ -148,7 +161,7 @@ class _UserDataSliverList extends StatelessWidget {
     key,
   }) : super(key: key);
   final List<UserData> userDataList;
-  final Function()? onTap;
+  final Function(int index)? onTap;
   final Widget? Function(int index)? trailing;
   @override
   Widget build(BuildContext context) {
@@ -164,7 +177,7 @@ class _UserDataSliverList extends StatelessWidget {
             child: userDataList[index].iconPath == null ? Text(userDataList[index].name![0]) : null,
           ),
           trailing: trailing != null ? trailing!(index) : null,
-          onTap: onTap,
+          onTap: onTap != null ? onTap!(index) : null,
         );
       },
     );
