@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/user_data.dart';
 import 'package:tcg_manager/provider/firebase_auth_provider.dart';
+import 'package:tcg_manager/repository/firestore_share_repository.dart';
 import 'package:tcg_manager/repository/firestore_user_settings_repositroy.dart';
 import 'package:tcg_manager/view/component/list_tile_ontap.dart';
 import 'package:tcg_manager/view/select_domain_data_bottom_sheet/domain_data_options.dart';
@@ -96,7 +97,30 @@ class ShareUserManagementView extends HookConsumerWidget {
               if (isOwner)
                 _UserDataSliverList(
                   userDataList: currentPendingUserDataList,
-                  onTap: () {},
+                  trailing: (index) => Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      InkWell(
+                        onTap: () async => await ref
+                            .read(firestoreShareRepository)
+                            .noallowSharing(currentShare.pendingUserList[index], currentShare.docName),
+                        child: Icon(
+                          Icons.remove_circle,
+                          color: Theme.of(context).colorScheme.error,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      InkWell(
+                        onTap: () async => await ref
+                            .read(firestoreShareRepository)
+                            .allowSharing(currentShare.pendingUserList[index], currentShare.docName),
+                        child: Icon(
+                          Icons.check_circle,
+                          color: Theme.of(context).colorScheme.tertiary,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               SliverToBoxAdapter(
                 child: Padding(
@@ -125,7 +149,7 @@ class _UserDataSliverList extends StatelessWidget {
   }) : super(key: key);
   final List<UserData> userDataList;
   final Function()? onTap;
-  final Widget? trailing;
+  final Widget? Function(int index)? trailing;
   @override
   Widget build(BuildContext context) {
     return SliverList.builder(
@@ -139,7 +163,7 @@ class _UserDataSliverList extends StatelessWidget {
             backgroundImage: userDataList[index].iconPath == null ? null : CachedNetworkImageProvider(userDataList[index].iconPath!),
             child: userDataList[index].iconPath == null ? Text(userDataList[index].name![0]) : null,
           ),
-          trailing: trailing,
+          trailing: trailing != null ? trailing!(index) : null,
           onTap: onTap,
         );
       },
