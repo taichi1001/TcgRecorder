@@ -11,7 +11,7 @@ import 'package:tcg_manager/enum/access_roll.dart';
 import 'package:tcg_manager/repository/firestore_share_repository.dart';
 import 'package:tcg_manager/view/host_share_game_view.dart';
 
-final currentSharedUserViewDataProvider = StateProvider.autoDispose<(UserData, ShareUser, FirestoreShare)>(
+final currentSharedUserViewDataProvider = StateProvider<(UserData, ShareUser, FirestoreShare)>(
   (ref) => (
     UserData(id: ''),
     ShareUser(id: '', roll: AccessRoll.reader),
@@ -23,10 +23,10 @@ class SharedUserView extends HookConsumerWidget {
   const SharedUserView({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(currentSharedUser);
+    final user = ref.watch(currentSharedUserViewDataProvider).$1;
     return Scaffold(
       appBar: AppBar(
-        title: Text(user.currentUserData!.name ?? user.currentUserData!.id),
+        title: Text(user.name ?? user.id),
       ),
       body: SettingsList(
         lightTheme: SettingsThemeData(
@@ -64,7 +64,8 @@ class _PermissionSettingsTileHooksConsumerWidget extends HookConsumerWidget {
   const _PermissionSettingsTileHooksConsumerWidget();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(currentShareUserProvider);
+    final user = ref.watch(currentSharedUserViewDataProvider).$2;
+    final share = ref.watch(currentSharedUserViewDataProvider).$3;
     return SettingsTile(
       title: const Text('アクセス権限'),
       value: GestureDetector(
@@ -105,7 +106,6 @@ class _PermissionSettingsTileHooksConsumerWidget extends HookConsumerWidget {
                           .map(
                             (roll) => GestureDetector(
                               onTap: () async {
-                                final share = ref.read(currentSharedUser).share;
                                 final isSuccess = await ref.read(firestoreShareRepository).updateUserRoll(user, roll, share.docName);
                                 if (isSuccess) ref.read(currentShareUserProvider.notifier).state = user.copyWith(roll: roll);
                                 if (context.mounted) Navigator.pop(context);
@@ -145,7 +145,7 @@ class _PermissionSettingsTileHooksConsumerWidget extends HookConsumerWidget {
           ),
           child: Padding(
             padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
-            child: Text(user!.roll.displayName),
+            child: Text(user.roll.displayName),
           ),
         ),
       ),
@@ -165,8 +165,8 @@ class _RevokeShareTileHooksConsumerWidget extends HookConsumerWidget {
   const _RevokeShareTileHooksConsumerWidget();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(currentShareUserProvider);
-    final share = ref.watch(currentSharedUser);
+    final user = ref.watch(currentSharedUserViewDataProvider).$2;
+    final share = ref.watch(currentSharedUserViewDataProvider).$3;
     return SettingsTile(
       onPressed: (context) async {
         final okCancel = await showOkCancelAlertDialog(
@@ -175,7 +175,7 @@ class _RevokeShareTileHooksConsumerWidget extends HookConsumerWidget {
           message: '解除されたユーザーはデータが閲覧できなくなります。よろしいですか？',
         );
         if (okCancel == OkCancelResult.ok) {
-          await ref.read(firestoreShareRepository).revokeUser(user!, share.share.docName);
+          await ref.read(firestoreShareRepository).revokeUser(user, share.docName);
           if (context.mounted) Navigator.of(context).pop();
         }
       },

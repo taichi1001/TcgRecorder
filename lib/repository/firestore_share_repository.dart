@@ -123,7 +123,6 @@ class FirestoreShareRepository {
       if (docSnapshot.exists) {
         List<dynamic> userList = docSnapshot['share_user_list'];
         bool isUpdated = false;
-
         // 対象の user_id を持つオブジェクトを探して roll を更新します
         for (int i = 0; i < userList.length; i++) {
           if (userList[i]['id'] == shareUser.id) {
@@ -134,7 +133,8 @@ class FirestoreShareRepository {
         }
 
         // ownerがいなくなる場合にこうしんしないようにする処理
-        final ownerList = userList.map((e) => ShareUser.fromJson(e)).where((element) => element.roll == AccessRoll.owner).toList().toList();
+        final ownerList =
+            userList.map((e) => ShareUser.fromJson(e)).where((element) => element.roll == AccessRoll.author).toList().toList();
         if (ownerList.isEmpty) return false;
 
         // 更新された場合のみ、user_list を Firestore に書き込みます

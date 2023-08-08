@@ -132,9 +132,11 @@ class ShareUserManagementView extends HookConsumerWidget {
               _UserDataSliverList(
                 userDataList: shareUserDataWithOwnerRemoved,
                 onTap: (index) {
+                  final tmp = [...currentShare.shareUserList];
+                  tmp.removeAt(0); // ownerを削除
                   ref.read(currentSharedUserViewDataProvider.notifier).state = (
                     shareUserDataWithOwnerRemoved[index],
-                    currentShare.shareUserList[index],
+                    tmp[index],
                     currentShare,
                   );
                   return Navigator.push(
@@ -177,7 +179,11 @@ class _UserDataSliverList extends StatelessWidget {
             child: userDataList[index].iconPath == null ? Text(userDataList[index].name![0]) : null,
           ),
           trailing: trailing != null ? trailing!(index) : null,
-          onTap: onTap != null ? onTap!(index) : null,
+          onTap: onTap != null
+              ? () {
+                  onTap!(index);
+                }
+              : null,
         );
       },
     );
