@@ -13,10 +13,12 @@ import 'package:tcg_manager/enum/win_loss.dart';
 import 'package:tcg_manager/helper/edit_record_helper.dart';
 import 'package:tcg_manager/helper/initial_data_controller.dart';
 import 'package:tcg_manager/main.dart';
+import 'package:tcg_manager/provider/firebase_auth_provider.dart';
 import 'package:tcg_manager/provider/input_view_settings_provider.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
+import 'package:tcg_manager/repository/firestore_public_user_data_repository.dart';
 import 'package:tcg_manager/repository/firestore_share_data_repository.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
 import 'package:tcg_manager/repository/tag_repository.dart';
@@ -273,6 +275,7 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
       ref.read(firestoreShareDataRepository).addRecord(state.record!, share!.docName);
     } else {
       await ref.read(recordRepository).insert(state.record!);
+      ref.read(firestorePublicUserDataRepository).addRecord(state.record!, ref.read(firebaseAuthNotifierProvider).user!.uid);
     }
   }
 
@@ -309,7 +312,9 @@ class DeckHandler {
     final existingDeck = await ref.read(editRecordHelper).checkIfSelectedDeckIsNew(deck.name);
 
     if (existingDeck.isNew) {
-      return await createNewDeck(deck, gameId);
+      final newDeck = await createNewDeck(deck, gameId);
+      ref.read(firestorePublicUserDataRepository).addDeck(newDeck, ref.read(firebaseAuthNotifierProvider).user!.uid);
+      return newDeck;
     } else {
       return existingDeck.deck!;
     }
@@ -345,7 +350,9 @@ class TagHandler {
       if (tag.name == '') continue;
       final existingTag = await ref.read(editRecordHelper).checkIfSelectedTagIsNew(tag.name);
       if (existingTag.isNew) {
-        newTags.add(await createNewTag(tag, gameId));
+        final newTag = await createNewTag(tag, gameId);
+        ref.read(firestorePublicUserDataRepository).addTag(newTag, ref.read(firebaseAuthNotifierProvider).user!.uid);
+        newTags.add(newTag);
       } else {
         newTags.add(existingTag.tag!);
       }
