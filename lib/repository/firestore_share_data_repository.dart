@@ -89,70 +89,29 @@ class FirestoreShareDataRepository {
   }
 
   Future updateDeck(Deck updateDeck, String docName) async {
-    return _updateItem('decks', docName, 'decks', 'deck_id', updateDeck.toJson());
+    await _updateItem('decks', docName, 'decks', 'deck_id', updateDeck.toJson());
   }
 
   Future updateTag(Tag updateTag, String docName) async {
-    return _updateItem('tags', docName, 'tags', 'tag_id', updateTag.toJson());
+    await _updateItem('tags', docName, 'tags', 'tag_id', updateTag.toJson());
   }
 
   Future updateRecord(Record updateRecord, String docName) async {
-    return _updateItem('records', docName, 'records', 'record_id', updateRecord.toJson());
+    await _updateItem('records', docName, 'records', 'record_id', updateRecord.toJson());
   }
 
-  Future _updateItem(String collectionName, String docName, String fieldName, String idField, Map<String, dynamic> updateData) async {
-    final collection = FirebaseFirestore.instance.collection('share_data').doc(docName).collection(collectionName);
+  Future removeDeck(Deck removeDeck, String docName) async {
+    await _removeDeckRecord(removeDeck, docName);
+    await _removeItem('decks', docName, 'decks', 'deck_id', removeDeck.id);
+  }
 
-    await FirebaseFirestore.instance.runTransaction((transaction) async {
-      final snapshotList = await collection.get();
-
-      for (final snapshot in snapshotList.docs) {
-        final List<dynamic> items = snapshot.data()[fieldName];
-        print(items);
-        final targetIndex = items.indexWhere((item) => item[idField] == updateData[idField]);
-        print(targetIndex);
-        if (targetIndex != -1) {
-          items[targetIndex] = updateData;
-
-          transaction.update(snapshot.reference, {fieldName: items});
-          break;
-        }
-      }
-    });
+  Future removeTag(Tag removeTag, String docName) async {
+    await _removeItem('tags', docName, 'tags', 'tag_id', removeTag.id);
   }
 
   Future removeRecord(Record removeRecord, String docName) async {
-    final recordsCollection = FirebaseFirestore.instance.collection('share_data').doc(docName).collection('records');
-
-    // トランザクションを開始
-    await FirebaseFirestore.instance.runTransaction((transaction) async {
-      // 各ドキュメントを順番に処理
-      final snapshotList = await recordsCollection.get();
-
-      for (final snapshot in snapshotList.docs) {
-        final List<dynamic> records = snapshot.data()['records'];
-
-        // 対象のRecordを検索
-        final targetIndex = records.indexWhere((record) => record['record_id'] == removeRecord.id);
-
-        // 対象のRecordが見つかった場合
-        if (targetIndex != -1) {
-          // Recordの名前を更新
-          records.removeAt(targetIndex);
-          // トランザクションでドキュメントを更新
-          transaction.update(snapshot.reference, {'records': records});
-
-          // 更新が完了したらループを抜ける
-          break;
-        }
-      }
-    });
-    if (removeRecord.imagePath != null) {
-      for (final imagePath in removeRecord.imagePath!) {
-        final strageRef = FirebaseStorage.instance.refFromURL(imagePath);
-        await strageRef.delete();
-      }
-    }
+    await _removeItem('records', docName, 'records', 'record_id', removeRecord.id);
+    await _removeImages(removeRecord.imagePath);
   }
 
   Future _addItem(String itemName, Map<String, dynamic> itemData, String docName) async {
@@ -176,6 +135,71 @@ class FirestoreShareDataRepository {
         'index': lastDocIndex + 1,
         itemName: [itemData],
       });
+    }
+  }
+
+  Future _updateItem(String collectionName, String docName, String fieldName, String idField, Map<String, dynamic> updateData) async {
+    final collection = FirebaseFirestore.instance.collection('share_data').doc(docName).collection(collectionName);
+
+    await FirebaseFirestore.instance.runTransaction((transaction) async {
+      final snapshotList = await collection.get();
+
+      for (final snapshot in snapshotList.docs) {
+        final List<dynamic> items = snapshot.data()[fieldName];
+        final targetIndex = items.indexWhere((item) => item[idField] == updateData[idField]);
+        if (targetIndex != -1) {
+          items[targetIndex] = updateData;
+          transaction.update(snapshot.reference, {fieldName: items});
+          break;
+        }
+      }
+    });
+  }
+
+  Future _removeItem(String collectionName, String docName, String fieldName, String idField, int? idToRemove) async {
+    final collection = FirebaseFirestore.instance.collection('share_data').doc(docName).collection(collectionName);
+
+    await FirebaseFirestore.instance.runTransaction((transaction) async {
+      final snapshotList = await collection.get();
+
+      for (final snapshot in snapshotList.docs) {
+        final List<dynamic> items = snapshot.data()[fieldName];
+        final targetIndex = items.indexWhere((item) => item[idField] == idToRemove);
+        if (targetIndex != -1) {
+          items.removeAt(targetIndex);
+          transaction.update(snapshot.reference, {fieldName: items});
+          break;
+        }
+      }
+    });
+  }
+
+  Future _removeDeckRecord(Deck deck, String docName) async {
+    final collection = FirebaseFirestore.instance.collection('share_data').doc(docName).collection('records');
+    await FirebaseFirestore.instance.runTransaction((transaction) async {
+      final snapshotList = await collection.get();
+      for (final snapshot in snapshotList.docs) {
+        final List<dynamic> items = snapshot.data()['records'];
+        final itemsTmp = [...items];
+        var index = 0;
+        for (final item in items) {
+          if (item['use_deck_id'] == deck.id || item['opponent_deck_id'] == deck.id) {
+            itemsTmp.removeAt(index);
+            index--;
+          }
+          index++;
+        }
+        transaction.update(snapshot.reference, {'records': itemsTmp});
+      }
+    });
+  }
+
+  Future _removeImages(List<String>? imagePaths) async {
+    if (imagePaths != null) {
+      for (final imagePath in imagePaths) {
+        final storageRef = FirebaseStorage.instance.refFromURL(imagePath);
+        await storageRef.delete();
+      }
     }
   }
 

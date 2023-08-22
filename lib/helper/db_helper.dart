@@ -91,6 +91,7 @@ class DbHelper {
     }
   }
 
+  // TODO 複数タグがあった場合の処理が必要
   Future _removeTagFromRecord(Tag tag) async {
     final allRecord = await ref.read(allRecordListProvider.future);
     final tagRecord = allRecord.where((record) => record.tagId == tag.id).toList();
