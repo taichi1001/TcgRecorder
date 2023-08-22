@@ -274,8 +274,10 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
       final share = await ref.read(gameFirestoreShareStreamProvider.future);
       ref.read(firestoreShareDataRepository).addRecord(state.record!, share!.docName);
     } else {
-      await ref.read(recordRepository).insert(state.record!);
-      ref.read(firestorePublicUserDataRepository).addRecord(state.record!, ref.read(firebaseAuthNotifierProvider).user!.uid);
+      final newId = await ref.read(recordRepository).insert(state.record!);
+      ref
+          .read(firestorePublicUserDataRepository)
+          .addRecord(state.record!.copyWith(recordId: newId), ref.read(firebaseAuthNotifierProvider).user!.uid);
     }
   }
 

@@ -14,7 +14,7 @@ class FirestorePublicUserDataRepository {
   final FirebaseFirestore _firestore;
   FirestorePublicUserDataRepository(this._firestore);
 
-  Future init(Game game, String user, {int deckCounter = 0, int tagCounter = 0, int recordCounter = 0}) async {
+  Future init(String user, {int deckCounter = 0, int tagCounter = 0, int recordCounter = 0}) async {
     final docName = user;
     await _firestore.collection('public_user_data').doc(docName).collection('games').doc('games0').set({'games': [], 'index': 0});
     await _firestore.collection('public_user_data').doc(docName).collection('decks').doc('decks0').set({'decks': [], 'index': 0});
@@ -109,6 +109,10 @@ class FirestorePublicUserDataRepository {
     final path = 'public_user_data/$uid/$itemName';
     final snapshot = await _firestore.collection(path).orderBy('index', descending: true).limit(1).get();
     if (snapshot.docs.isEmpty) {
+      DocumentSnapshot docSnap = await _firestore.collection(path).doc('${itemName}0').get();
+      if (!docSnap.exists) {
+        await init(uid);
+      }
       await _firestore.collection(path).doc('${itemName}0').update({
         itemName: FieldValue.arrayUnion([itemData]),
       });
