@@ -27,8 +27,14 @@ class CustomScaffold extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(
-          selectGame.selectGame != null ? selectGame.selectGame!.name : '',
+        title: Wrap(
+          spacing: 8,
+          children: [
+            if (selectGame.selectGame!.isShare) const Icon(Icons.share),
+            Text(
+              selectGame.selectGame != null ? selectGame.selectGame!.name : '',
+            ),
+          ],
         ),
         leading: leading,
         actions: [
