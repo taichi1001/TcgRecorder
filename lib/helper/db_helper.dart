@@ -62,7 +62,7 @@ class DbHelper {
     final allRecord = await ref.read(allRecordListProvider.future);
     final gameRecord = allRecord.where((record) => record.gameId == game.id).toList();
     for (final record in gameRecord) {
-      await ref.read(recordRepository).deleteById(record.recordId!);
+      await ref.read(recordRepository).deleteById(record.id!);
     }
   }
 
@@ -86,7 +86,7 @@ class DbHelper {
     final allRecord = await ref.read(allRecordListProvider.future);
     final deckRecord = allRecord.where((record) => record.useDeckId == deck.id || record.opponentDeckId == deck.id).toList();
     for (final record in deckRecord) {
-      await ref.read(recordRepository).deleteById(record.recordId!);
+      await ref.read(recordRepository).deleteById(record.id!);
       removeRecordImage(record);
     }
   }

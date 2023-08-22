@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
@@ -14,8 +15,8 @@ import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/helper/edit_record_helper.dart';
 import 'package:tcg_manager/main.dart';
 import 'package:tcg_manager/provider/backup_provider.dart';
-import 'package:tcg_manager/repository/deck_repository.dart';
 import 'package:tcg_manager/provider/firestore_backup_controller_provider.dart';
+import 'package:tcg_manager/repository/deck_repository.dart';
 import 'package:tcg_manager/repository/firestore_share_data_repository.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
 import 'package:tcg_manager/repository/tag_repository.dart';
@@ -419,7 +420,7 @@ final recordListProvider = Provider.autoDispose<List<Record>>((ref) {
 final recordEditViewNotifierProvider =
     StateNotifierProvider.family.autoDispose<RecordEditViewNotifier, RecordEditViewState, MargedRecord>((ref, margedRecord) {
   final recordList = ref.watch(recordListProvider);
-  final record = recordList.firstWhere((record) => record.recordId == margedRecord.recordId);
+  final record = recordList.firstWhere((record) => record.id == margedRecord.recordId);
   final imagePath = ref.read(imagePathProvider);
   return RecordEditViewNotifier(ref: ref, record: record, margedRecord: margedRecord, imagePath: imagePath);
 });

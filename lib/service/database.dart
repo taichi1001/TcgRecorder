@@ -7,7 +7,7 @@ import 'package:tcg_manager/entity/record.dart';
 import 'package:tcg_manager/entity/record_old.dart';
 
 class DatabaseService {
-  static const _databaseVersion = 6;
+  static const _databaseVersion = 7;
   static const _databaseName = 'record.db';
 
   //tableName
@@ -78,7 +78,7 @@ class DatabaseService {
         final List<RecordOld> recordOldList = oldData.isNotEmpty ? oldData.map((item) => RecordOld.fromJson(item)).toList() : [];
         final newRecordList = recordOldList
             .map((recordOld) => Record(
-                  recordId: recordOld.recordId,
+                  id: recordOld.recordId,
                   gameId: recordOld.gameId,
                   tagId: recordOld.tagId != null ? [recordOld.tagId!] : [],
                   useDeckId: recordOld.useDeckId,

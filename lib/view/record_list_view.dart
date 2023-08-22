@@ -21,9 +21,9 @@ import 'package:tcg_manager/helper/convert_sort_string.dart';
 import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/main.dart';
 import 'package:tcg_manager/provider/backup_provider.dart';
+import 'package:tcg_manager/provider/firestore_backup_controller_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/record_list_view_provider.dart';
-import 'package:tcg_manager/provider/firestore_backup_controller_provider.dart';
 import 'package:tcg_manager/provider/select_game_access_roll.dart';
 import 'package:tcg_manager/repository/firestore_share_data_repository.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
@@ -265,7 +265,7 @@ class _BrandListTile extends HookConsumerWidget {
       deleteFunc: () async {
         if (ref.read(isShareGame)) {
           final gameRecordList = await ref.watch(gameRecordListProvider.future);
-          final targetRecord = gameRecordList.firstWhere((gameRecord) => gameRecord.recordId == record.recordId);
+          final targetRecord = gameRecordList.firstWhere((gameRecord) => gameRecord.id == record.recordId);
           final share = await ref.read(gameFirestoreShareStreamProvider.future);
           ref.read(firestoreShareDataRepository).removeRecord(targetRecord, share!.docName);
         } else {
@@ -676,7 +676,7 @@ class _EditDeleteButtonRow extends HookConsumerWidget {
                 } else if (context.mounted) {
                   if (ref.read(isShareGame)) {
                     final gameRecordList = await ref.watch(gameRecordListProvider.future);
-                    final targetRecord = gameRecordList.firstWhere((gameRecord) => gameRecord.recordId == record.recordId);
+                    final targetRecord = gameRecordList.firstWhere((gameRecord) => gameRecord.id == record.recordId);
                     final share = await ref.read(gameFirestoreShareStreamProvider.future);
                     ref.read(firestoreShareDataRepository).removeRecord(targetRecord, share!.docName);
                   } else {

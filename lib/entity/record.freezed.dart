@@ -20,7 +20,8 @@ Record _$RecordFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Record {
-  int? get recordId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'record_id')
+  int? get id => throw _privateConstructorUsedError;
   int? get gameId => throw _privateConstructorUsedError;
   @JsonKey(fromJson: _intListFromJson, toJson: _intListToJson)
   List<int> get tagId => throw _privateConstructorUsedError;
@@ -68,7 +69,8 @@ abstract class $RecordCopyWith<$Res> {
       _$RecordCopyWithImpl<$Res, Record>;
   @useResult
   $Res call(
-      {int? recordId,
+      {@JsonKey(name: 'record_id')
+          int? id,
       int? gameId,
       @JsonKey(fromJson: _intListFromJson, toJson: _intListToJson)
           List<int> tagId,
@@ -113,7 +115,7 @@ class _$RecordCopyWithImpl<$Res, $Val extends Record>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? recordId = freezed,
+    Object? id = freezed,
     Object? gameId = freezed,
     Object? tagId = null,
     Object? useDeckId = freezed,
@@ -133,9 +135,9 @@ class _$RecordCopyWithImpl<$Res, $Val extends Record>
     Object? imagePath = freezed,
   }) {
     return _then(_value.copyWith(
-      recordId: freezed == recordId
-          ? _value.recordId
-          : recordId // ignore: cast_nullable_to_non_nullable
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as int?,
       gameId: freezed == gameId
           ? _value.gameId
@@ -216,7 +218,8 @@ abstract class _$$_RecordCopyWith<$Res> implements $RecordCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {int? recordId,
+      {@JsonKey(name: 'record_id')
+          int? id,
       int? gameId,
       @JsonKey(fromJson: _intListFromJson, toJson: _intListToJson)
           List<int> tagId,
@@ -258,7 +261,7 @@ class __$$_RecordCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? recordId = freezed,
+    Object? id = freezed,
     Object? gameId = freezed,
     Object? tagId = null,
     Object? useDeckId = freezed,
@@ -278,9 +281,9 @@ class __$$_RecordCopyWithImpl<$Res>
     Object? imagePath = freezed,
   }) {
     return _then(_$_Record(
-      recordId: freezed == recordId
-          ? _value.recordId
-          : recordId // ignore: cast_nullable_to_non_nullable
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as int?,
       gameId: freezed == gameId
           ? _value.gameId
@@ -358,7 +361,8 @@ class __$$_RecordCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_Record implements _Record {
   _$_Record(
-      {this.recordId,
+      {@JsonKey(name: 'record_id')
+          this.id,
       this.gameId,
       @JsonKey(fromJson: _intListFromJson, toJson: _intListToJson)
           final List<int> tagId = const [],
@@ -395,7 +399,8 @@ class _$_Record implements _Record {
       _$$_RecordFromJson(json);
 
   @override
-  final int? recordId;
+  @JsonKey(name: 'record_id')
+  final int? id;
   @override
   final int? gameId;
   final List<int> _tagId;
@@ -464,7 +469,7 @@ class _$_Record implements _Record {
 
   @override
   String toString() {
-    return 'Record(recordId: $recordId, gameId: $gameId, tagId: $tagId, useDeckId: $useDeckId, opponentDeckId: $opponentDeckId, date: $date, bo: $bo, firstSecond: $firstSecond, firstMatchFirstSecond: $firstMatchFirstSecond, secondMatchFirstSecond: $secondMatchFirstSecond, thirdMatchFirstSecond: $thirdMatchFirstSecond, winLoss: $winLoss, firstMatchWinLoss: $firstMatchWinLoss, secondMatchWinLoss: $secondMatchWinLoss, thirdMatchWinLoss: $thirdMatchWinLoss, memo: $memo, author: $author, imagePath: $imagePath)';
+    return 'Record(id: $id, gameId: $gameId, tagId: $tagId, useDeckId: $useDeckId, opponentDeckId: $opponentDeckId, date: $date, bo: $bo, firstSecond: $firstSecond, firstMatchFirstSecond: $firstMatchFirstSecond, secondMatchFirstSecond: $secondMatchFirstSecond, thirdMatchFirstSecond: $thirdMatchFirstSecond, winLoss: $winLoss, firstMatchWinLoss: $firstMatchWinLoss, secondMatchWinLoss: $secondMatchWinLoss, thirdMatchWinLoss: $thirdMatchWinLoss, memo: $memo, author: $author, imagePath: $imagePath)';
   }
 
   @override
@@ -472,8 +477,7 @@ class _$_Record implements _Record {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Record &&
-            (identical(other.recordId, recordId) ||
-                other.recordId == recordId) &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.gameId, gameId) || other.gameId == gameId) &&
             const DeepCollectionEquality().equals(other._tagId, _tagId) &&
             (identical(other.useDeckId, useDeckId) ||
@@ -507,7 +511,7 @@ class _$_Record implements _Record {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      recordId,
+      id,
       gameId,
       const DeepCollectionEquality().hash(_tagId),
       useDeckId,
@@ -542,7 +546,8 @@ class _$_Record implements _Record {
 
 abstract class _Record implements Record {
   factory _Record(
-      {final int? recordId,
+      {@JsonKey(name: 'record_id')
+          final int? id,
       final int? gameId,
       @JsonKey(fromJson: _intListFromJson, toJson: _intListToJson)
           final List<int> tagId,
@@ -576,7 +581,8 @@ abstract class _Record implements Record {
   factory _Record.fromJson(Map<String, dynamic> json) = _$_Record.fromJson;
 
   @override
-  int? get recordId;
+  @JsonKey(name: 'record_id')
+  int? get id;
   @override
   int? get gameId;
   @override

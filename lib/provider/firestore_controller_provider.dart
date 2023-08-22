@@ -37,7 +37,7 @@ class FirestoreController {
     var maxIdRecord = 0;
     final gameRecordList = await ref.read(currentGameRecordListProvider(game).future);
     if (gameRecordList.isNotEmpty) {
-      maxIdRecord = gameRecordList.reduce((value, element) => element.recordId! > value.recordId! ? element : value).recordId!;
+      maxIdRecord = gameRecordList.reduce((value, element) => element.id! > value.id! ? element : value).id!;
     }
     await shareDataRepository.initGame(
       game,

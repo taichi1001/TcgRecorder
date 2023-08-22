@@ -11,7 +11,7 @@ final recentlyUseDeckProvider = FutureProvider.autoDispose<List<Deck>>((ref) asy
   recordListCopy.sort((a, b) {
     int result = -a.date!.compareTo(b.date!);
     if (result == 0) {
-      result = -a.recordId!.compareTo(b.recordId!);
+      result = -a.id!.compareTo(b.id!);
     }
     return result;
   });

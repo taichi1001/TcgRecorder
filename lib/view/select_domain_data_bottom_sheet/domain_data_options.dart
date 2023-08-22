@@ -12,9 +12,11 @@ import 'package:tcg_manager/provider/firebase_auth_provider.dart';
 import 'package:tcg_manager/provider/firestore_controller_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
+import 'package:tcg_manager/repository/firestore_share_data_repository.dart';
 import 'package:tcg_manager/repository/firestore_share_repository.dart';
 import 'package:tcg_manager/repository/firestore_user_settings_repositroy.dart';
 import 'package:tcg_manager/repository/game_repository.dart';
+import 'package:tcg_manager/selector/game_share_data_selector.dart';
 import 'package:tcg_manager/view/share_view/share_user_management_view.dart';
 
 final currentDomainDataProvider = StateProvider<DomainData>((ref) => Game(name: 'name'));
@@ -62,7 +64,12 @@ class DomainDataOptions extends HookConsumerWidget {
                     case Game():
                       await ref.read(dbHelper).updateGameName(domainData, newName.first);
                     case Deck():
-                      await ref.read(dbHelper).updateDeckName(domainData, newName.first);
+                      if (ref.read(isShareGame)) {
+                        final share = await ref.read(gameFirestoreShareStreamProvider.future);
+                        await ref.read(firestoreShareDataRepository).updateDeck(domainData, share!.docName);
+                      } else {
+                        await ref.read(dbHelper).updateDeckName(domainData, newName.first);
+                      }
                     case Tag():
                       await ref.read(dbHelper).updateTagName(domainData, newName.first);
                   }
