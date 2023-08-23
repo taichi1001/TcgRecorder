@@ -1,4 +1,4 @@
-// ignore_for_file: unused_result
+import 'dart:async';
 
 import 'package:collection/collection.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -8,8 +8,73 @@ import 'package:tcg_manager/provider/backup_provider.dart';
 import 'package:tcg_manager/provider/firestore_backup_controller_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
+import 'package:tcg_manager/repository/firestore_share_repository.dart';
 import 'package:tcg_manager/repository/game_repository.dart';
 import 'package:tcg_manager/state/select_game_state.dart';
+
+class SelectGameAsyncNotifier extends AsyncNotifier<Game?> {
+  @override
+  FutureOr<Game?> build() async {
+    return await _init();
+  }
+
+  Future _init() async {
+    final game = ref.read(initialDataControllerProvider).loadGame();
+    final allGameList = await ref.read(allGameListProvider.future);
+    final isMatchGame = allGameList.firstWhereOrNull((element) => element.id == game?.id);
+    if (isMatchGame != null) return isMatchGame;
+    if (isMatchGame == null && game != null && !game.isShare && allGameList.isNotEmpty) return allGameList.last;
+    if (isMatchGame == null && game != null && game.isShare) {
+      final guestShareList = await ref.read(guestShareProvider.future);
+      final isMatchGuestGame = guestShareList.map((e) => e.game).firstWhereOrNull((e) => e.id == game.id);
+      if (isMatchGuestGame != null) return isMatchGuestGame;
+    }
+    if (game == null && allGameList.isNotEmpty) return allGameList.last;
+    return null;
+  }
+
+  void changeGame(Game? game) {
+    state = AsyncValue.data(game);
+  }
+
+  void selectGame(Game game, int empty) {
+    state = AsyncValue.data(game);
+  }
+
+  void changeGameForString(String name) {
+    state = AsyncValue.data(state.value?.copyWith(name: name));
+  }
+
+  Future changeGameForLastRecord() async {
+    final allRecordList = await ref.read(allRecordListProvider.future);
+    final List<Game?> allGameList = await ref.read(allGameListProvider.future);
+
+    Game? selectedGame;
+
+    if (allGameList.isNotEmpty) {
+      if (allRecordList.isNotEmpty) {
+        selectedGame = allGameList.firstWhereOrNull((element) => element?.id == allRecordList.last.gameId);
+      } else {
+        selectedGame = allGameList.last;
+      }
+    }
+
+    state = AsyncValue.data(selectedGame);
+  }
+
+  Future changeGameForId(int id) async {
+    final gameList = await ref.read(allGameListProvider.future);
+    final targetGame = gameList.firstWhere((element) => element.id == id, orElse: () => gameList.last);
+    state = AsyncValue.data(targetGame);
+  }
+
+  Future changeGameForLast() async {
+    final gameList = await ref.read(allGameListProvider.future);
+    state = AsyncValue.data(gameList.last);
+  }
+
+  void setSelectGame(Game game) => state = AsyncData(game);
+}
 
 class SelectGameNotifier extends StateNotifier<SelectGameState> {
   SelectGameNotifier(this.ref) : super(SelectGameState()) {
@@ -64,7 +129,7 @@ class SelectGameNotifier extends StateNotifier<SelectGameState> {
     final newGame = Game(name: name);
     if (await _checkIfSelectedGamekNew(name)) {
       await ref.read(gameRepository).insert(newGame);
-      ref.refresh(allGameListProvider);
+      ref.invalidate(allGameListProvider);
       if (ref.read(backupNotifierProvider)) await ref.read(firestoreBackupControllerProvider).addAll();
       final allGameList = await ref.read(allGameListProvider.future);
       final game = allGameList.last;
@@ -74,10 +139,6 @@ class SelectGameNotifier extends StateNotifier<SelectGameState> {
     return false;
   }
 
-  // TODO 初期選択ゲームのアルゴリズム再検討必要
-  // 現状：直近保存した記録をsharedPreferenceにも保存して、その記録からゲームを特定し、選択ゲームとしている
-  // 問題：直近保存した記録のゲームが編集・削除されていた場合にバグが発生する。非同期処理ができなくなっているため、データベースを操作できない
-  // 改善：AsyncNotifierに変更 -> 非同期処理が可能に。allGameListと照らし合わせたりする。
   void startupGame() {
     final game = ref.read(initialDataControllerProvider).loadGame();
     if (game == null) {
@@ -101,3 +162,5 @@ class SelectGameNotifier extends StateNotifier<SelectGameState> {
 final selectGameNotifierProvider = StateNotifierProvider<SelectGameNotifier, SelectGameState>(
   (ref) => SelectGameNotifier(ref),
 );
+
+final selectGameAsyncNotifierProvider = AsyncNotifierProvider<SelectGameAsyncNotifier, Game?>(() => SelectGameAsyncNotifier());
