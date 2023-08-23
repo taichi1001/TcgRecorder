@@ -147,6 +147,7 @@ class ShareUserManagementView extends HookConsumerWidget {
                   );
                 },
               ),
+              // TODO 共有を解除するボタン設置
             ],
           ),
         );

@@ -74,6 +74,10 @@ class SelectGameNotifier extends StateNotifier<SelectGameState> {
     return false;
   }
 
+  // TODO 初期選択ゲームのアルゴリズム再検討必要
+  // 現状：直近保存した記録をsharedPreferenceにも保存して、その記録からゲームを特定し、選択ゲームとしている
+  // 問題：直近保存した記録のゲームが編集・削除されていた場合にバグが発生する。非同期処理ができなくなっているため、データベースを操作できない
+  // 改善：AsyncNotifierに変更 -> 非同期処理が可能に。allGameListと照らし合わせたりする。
   void startupGame() {
     final game = ref.read(initialDataControllerProvider).loadGame();
     if (game == null) {
