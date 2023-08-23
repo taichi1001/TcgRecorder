@@ -36,7 +36,7 @@ class FirestoreShareRepository {
 
   // 新規のゲームをシェアするための関数
   Future initGame(Game game, String user, int? counter) async {
-    final docName = '$user-${game.name}';
+    final docName = '$user-${game.id}';
     int gameCounter;
     if (counter == null) {
       gameCounter = await getGameCounter(user);

@@ -27,7 +27,7 @@ class FirestoreShareDataRepository {
   FirestoreShareDataRepository(this._firestore);
 
   Future initGame(Game game, String user, {int deckCounter = 0, int tagCounter = 0, int recordCounter = 0}) async {
-    final docName = '$user-${game.name}';
+    final docName = '$user-${game.id}';
     final gameCounter = await getGameCounter(user);
     await _firestore
         .collection('counters')

@@ -46,7 +46,7 @@ class FirestoreController {
       tagCounter: maxIdTag,
       recordCounter: maxIdRecord,
     );
-    final docName = '$user-${game.name}';
+    final docName = '$user-${game.id}';
     final futures = <Future>[];
     for (final deck in gameDeckList) {
       futures.add(shareDataRepository.addDeck(deck, docName));

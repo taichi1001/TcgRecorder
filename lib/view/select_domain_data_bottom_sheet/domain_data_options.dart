@@ -62,7 +62,15 @@ class DomainDataOptions extends HookConsumerWidget {
                 try {
                   switch (domainData) {
                     case Game():
-                      await ref.read(dbHelper).updateGameName(domainData, newName.first);
+                      if (ref.read(isShareGame)) {
+                        final share = await ref.read(currentShareProvider.future);
+                        await ref.read(dbHelper).updateGameName(domainData, newName.first);
+                        await ref
+                            .read(firestoreShareRepository)
+                            .updateShare(share.copyWith(game: domainData.copyWith(name: newName.first)));
+                      } else {
+                        await ref.read(dbHelper).updateGameName(domainData, newName.first);
+                      }
                     case Deck():
                       if (ref.read(isShareGame)) {
                         final share = await ref.read(gameFirestoreShareStreamProvider.future);
@@ -110,7 +118,13 @@ class DomainDataOptions extends HookConsumerWidget {
               if (result == OkCancelResult.ok) {
                 switch (domainData) {
                   case Game():
-                    await ref.read(dbHelper).deleteGame(domainData);
+                    if (ref.read(isShareGame)) {
+                      final share = await ref.read(currentShareProvider.future);
+                      await ref.read(firestoreShareRepository).deleteShare(share.docName);
+                      await ref.read(gameRepository).deleteById(domainData.id!);
+                    } else {
+                      await ref.read(dbHelper).deleteGame(domainData);
+                    }
                   case Deck():
                     if (ref.read(isShareGame)) {
                       final share = await ref.read(gameFirestoreShareStreamProvider.future);
