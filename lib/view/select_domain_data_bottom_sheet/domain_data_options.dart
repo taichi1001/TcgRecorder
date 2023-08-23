@@ -121,7 +121,6 @@ class DomainDataOptions extends HookConsumerWidget {
                   case Tag():
                     if (ref.read(isShareGame)) {
                       final share = await ref.read(gameFirestoreShareStreamProvider.future);
-                      // TODO 削除タグを含むレコードからタグを削除する処理を追加
                       await ref.read(firestoreShareDataRepository).removeTag(domainData, share!.docName);
                     } else {
                       await ref.read(dbHelper).deleteTag(domainData);

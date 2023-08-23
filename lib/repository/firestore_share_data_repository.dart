@@ -106,6 +106,7 @@ class FirestoreShareDataRepository {
   }
 
   Future removeTag(Tag removeTag, String docName) async {
+    await _removeTagFromRecord(removeTag, docName);
     await _removeItem('tags', docName, 'tags', 'tag_id', removeTag.id);
   }
 
@@ -190,6 +191,29 @@ class FirestoreShareDataRepository {
           index++;
         }
         transaction.update(snapshot.reference, {'records': itemsTmp});
+      }
+    });
+  }
+
+  Future _removeTagFromRecord(Tag tag, String docName) async {
+    final collection = FirebaseFirestore.instance.collection('share_data').doc(docName).collection('records');
+
+    // トランザクション開始
+    await FirebaseFirestore.instance.runTransaction((transaction) async {
+      final snapshotList = await collection.get();
+
+      for (final snapshot in snapshotList.docs) {
+        final List<dynamic> items = snapshot.data()['records'];
+        final newRecords = items.map((item) {
+          final record = Record.fromJson(item);
+          // tagIdがimmutableな場合、新しいtagIdのリストを作成し、copyWithを使用して新しいレコードインスタンスを作成します。
+          final newTagId = List.of(record.tagId)..removeWhere((element) => element == tag.id);
+          final newRecord = record.copyWith(tagId: newTagId);
+          return newRecord.toJson();
+        }).toList();
+
+        // 更新
+        transaction.update(snapshot.reference, {'records': newRecords});
       }
     });
   }
