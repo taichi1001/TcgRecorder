@@ -100,6 +100,8 @@ final mainInfoProvider = FutureProvider.autoDispose.family<MainInfo, BuildContex
   final packgaeInfo = await PackageInfo.fromPlatform();
   final allGameList = await ref.read(allGameListProvider.future);
   final allRecordList = await ref.read(allRecordListProvider.future);
+  final initialGame = await ref.read(initialSelectGameAsyncNotifierProvider.future);
+
   Game? lastGame;
   for (final record in allRecordList) {
     for (final game in allGameList) {

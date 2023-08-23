@@ -12,18 +12,21 @@ import 'package:tcg_manager/repository/firestore_share_repository.dart';
 import 'package:tcg_manager/repository/game_repository.dart';
 import 'package:tcg_manager/state/select_game_state.dart';
 
-class SelectGameAsyncNotifier extends AsyncNotifier<Game?> {
+class InitialSelectGameAsyncNotifier extends AsyncNotifier<Game?> {
   @override
   FutureOr<Game?> build() async {
-    return await _init();
+    final selectGame = await _init();
+    ref.read(selectGameNotifierProvider.notifier).changeGame(selectGame);
+    return selectGame;
   }
 
-  Future _init() async {
+  Future<Game?> _init() async {
     final game = ref.read(initialDataControllerProvider).loadGame();
     final allGameList = await ref.read(allGameListProvider.future);
     final isMatchGame = allGameList.firstWhereOrNull((element) => element.id == game?.id);
     if (isMatchGame != null) return isMatchGame;
     if (isMatchGame == null && game != null && !game.isShare && allGameList.isNotEmpty) return allGameList.last;
+    // TODO この条件だとhostShareだった可能性が抜けてる
     if (isMatchGame == null && game != null && game.isShare) {
       final guestShareList = await ref.read(guestShareProvider.future);
       final isMatchGuestGame = guestShareList.map((e) => e.game).firstWhereOrNull((e) => e.id == game.id);
@@ -32,54 +35,10 @@ class SelectGameAsyncNotifier extends AsyncNotifier<Game?> {
     if (game == null && allGameList.isNotEmpty) return allGameList.last;
     return null;
   }
-
-  void changeGame(Game? game) {
-    state = AsyncValue.data(game);
-  }
-
-  void selectGame(Game game, int empty) {
-    state = AsyncValue.data(game);
-  }
-
-  void changeGameForString(String name) {
-    state = AsyncValue.data(state.value?.copyWith(name: name));
-  }
-
-  Future changeGameForLastRecord() async {
-    final allRecordList = await ref.read(allRecordListProvider.future);
-    final List<Game?> allGameList = await ref.read(allGameListProvider.future);
-
-    Game? selectedGame;
-
-    if (allGameList.isNotEmpty) {
-      if (allRecordList.isNotEmpty) {
-        selectedGame = allGameList.firstWhereOrNull((element) => element?.id == allRecordList.last.gameId);
-      } else {
-        selectedGame = allGameList.last;
-      }
-    }
-
-    state = AsyncValue.data(selectedGame);
-  }
-
-  Future changeGameForId(int id) async {
-    final gameList = await ref.read(allGameListProvider.future);
-    final targetGame = gameList.firstWhere((element) => element.id == id, orElse: () => gameList.last);
-    state = AsyncValue.data(targetGame);
-  }
-
-  Future changeGameForLast() async {
-    final gameList = await ref.read(allGameListProvider.future);
-    state = AsyncValue.data(gameList.last);
-  }
-
-  void setSelectGame(Game game) => state = AsyncData(game);
 }
 
 class SelectGameNotifier extends StateNotifier<SelectGameState> {
-  SelectGameNotifier(this.ref) : super(SelectGameState()) {
-    startupGame();
-  }
+  SelectGameNotifier(this.ref) : super(SelectGameState());
 
   final Ref ref;
 
@@ -163,4 +122,5 @@ final selectGameNotifierProvider = StateNotifierProvider<SelectGameNotifier, Sel
   (ref) => SelectGameNotifier(ref),
 );
 
-final selectGameAsyncNotifierProvider = AsyncNotifierProvider<SelectGameAsyncNotifier, Game?>(() => SelectGameAsyncNotifier());
+final initialSelectGameAsyncNotifierProvider =
+    AsyncNotifierProvider<InitialSelectGameAsyncNotifier, Game?>(() => InitialSelectGameAsyncNotifier());

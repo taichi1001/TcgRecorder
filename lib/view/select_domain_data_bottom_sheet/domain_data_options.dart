@@ -122,6 +122,8 @@ class DomainDataOptions extends HookConsumerWidget {
                       final share = await ref.read(currentShareProvider.future);
                       await ref.read(firestoreShareRepository).deleteShare(share.docName);
                       await ref.read(gameRepository).deleteById(domainData.id!);
+                      ref.invalidate(allGameListProvider);
+                      // TODO 選択ゲームが削除された場合が必要
                     } else {
                       await ref.read(dbHelper).deleteGame(domainData);
                     }
