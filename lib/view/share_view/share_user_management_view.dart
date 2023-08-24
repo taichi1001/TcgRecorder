@@ -12,6 +12,7 @@ import 'package:tcg_manager/main.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/firebase_auth_provider.dart';
 import 'package:tcg_manager/provider/firestore_controller_provider.dart';
+import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
@@ -25,16 +26,24 @@ import 'package:tcg_manager/view/component/list_tile_ontap.dart';
 import 'package:tcg_manager/view/select_domain_data_bottom_sheet/domain_data_options.dart';
 import 'package:tcg_manager/view/shared_user_view.dart';
 
-final currentShareUserListProvider = StreamProvider.autoDispose<List<UserData>>((ref) async* {
+final currentShareUserListProvider = StreamProvider.autoDispose<List<UserData>?>((ref) async* {
   final currentShare = await ref.watch(currentShareProvider.future);
-  final currentShareUserList = await ref.watch(userDataListProvider(currentShare.shareUserList.map((e) => e.id).toList()).future);
-  yield currentShareUserList;
+  if (currentShare == null) {
+    yield null;
+  } else {
+    final currentShareUserList = await ref.watch(userDataListProvider(currentShare.shareUserList.map((e) => e.id).toList()).future);
+    yield currentShareUserList;
+  }
 });
 
-final currentPendingUserListProvider = StreamProvider.autoDispose<List<UserData>>((ref) async* {
+final currentPendingUserListProvider = StreamProvider.autoDispose<List<UserData>?>((ref) async* {
   final currentShare = await ref.watch(currentShareProvider.future);
-  final currentPendingUserList = await ref.watch(userDataListProvider(currentShare.pendingUserList.map((e) => e.id).toList()).future);
-  yield currentPendingUserList;
+  if (currentShare == null) {
+    yield null;
+  } else {
+    final currentPendingUserList = await ref.watch(userDataListProvider(currentShare.pendingUserList.map((e) => e.id).toList()).future);
+    yield currentPendingUserList;
+  }
 });
 
 final currentDataProvider = StreamProvider.autoDispose((ref) async* {
@@ -62,7 +71,8 @@ class ShareUserManagementView extends HookConsumerWidget {
       loading: () => const Center(child: CircularProgressIndicator()),
       data: (currentData) {
         final (:currentPendingUserDataList, :currentShare, :currentShareUserDataList) = currentData;
-        final ownerUserData = currentShareUserDataList.firstWhere((element) => element.id == currentShare.authorName);
+        if (currentShare == null) return Container();
+        final ownerUserData = currentShareUserDataList!.firstWhere((element) => element.id == currentShare.authorName);
         final shareUserDataWithOwnerRemoved = currentShareUserDataList.where((element) => element != ownerUserData).toList();
         final isOwner = currentShare.authorName == myId;
         return Scaffold(
@@ -113,7 +123,7 @@ class ShareUserManagementView extends HookConsumerWidget {
                 ),
               if (isOwner)
                 _UserDataSliverList(
-                  userDataList: currentPendingUserDataList,
+                  userDataList: currentPendingUserDataList!,
                   trailing: (index) => Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -220,18 +230,18 @@ class _RevokeShareGameButton extends HookConsumerWidget {
           data: (data) {
             return InkWell(
               onTap: () async {
-                if (data.currentShare.authorName == myself?.uid) {
+                if (data.currentShare!.authorName == myself?.uid) {
                   final result = await showOkCancelAlertDialog(
                     context: context,
                     title: '共有を解除します',
                     message: '共有が解除されると他のユーザーはデータが閲覧できなくなります。あなたは引き続き全てのデータを閲覧可能です。',
                   );
                   if (result == OkCancelResult.ok) {
-                    final deckList = await ref.read(firestoreShareDataDeckProvider(data.currentShare.docName).future);
-                    final tagList = await ref.read(firestoreShareDataTagProvider(data.currentShare.docName).future);
-                    final recordList = await ref.read(firestoreShareDataRecordProvider(data.currentShare.docName).future);
-                    await ref.read(dbHelper).deleteGame(data.currentShare.game);
-                    await ref.read(gameRepository).insert(data.currentShare.game.copyWith(isShare: false));
+                    final deckList = await ref.read(firestoreShareDataDeckProvider(data.currentShare!.docName).future);
+                    final tagList = await ref.read(firestoreShareDataTagProvider(data.currentShare!.docName).future);
+                    final recordList = await ref.read(firestoreShareDataRecordProvider(data.currentShare!.docName).future);
+                    await ref.read(dbHelper).deleteGame(data.currentShare!.game);
+                    await ref.read(gameRepository).insert(data.currentShare!.game.copyWith(isShare: false));
 
                     final Map<int, int> deckIdMap = {};
                     for (final deck in deckList) {
@@ -251,7 +261,7 @@ class _RevokeShareGameButton extends HookConsumerWidget {
                       final newOpponentDeckId = deckIdMap[record.opponentDeckId];
                       final newTagIdList = record.tagId.map((e) => tagIdMap[e]!).toList();
                       record = record.copyWith(useDeckId: newUseDeckId, opponentDeckId: newOpponentDeckId, tagId: newTagIdList);
-                      if (record.imagePath != null || record.imagePath!.isNotEmpty) {
+                      if (record.imagePath != null && record.imagePath!.isNotEmpty) {
                         final List<String> newImagePath = [];
                         for (final imagePath in record.imagePath!) {
                           final response = await http.get(Uri.parse(imagePath));
@@ -270,10 +280,11 @@ class _RevokeShareGameButton extends HookConsumerWidget {
                     ref.invalidate(allRecordListProvider);
                     ref.invalidate(allDeckListProvider);
                     ref.invalidate(allTagListProvider);
-                    await ref.read(firestoreControllerProvider).deleteShareGame(data.currentShare.docName);
+                    ref.invalidate(allGameListProvider);
                     if (context.mounted) {
                       Navigator.of(context).pop();
                     }
+                    await ref.read(firestoreControllerProvider).deleteShareGame(data.currentShare!.docName);
                   }
                 } else {
                   await showOkAlertDialog(

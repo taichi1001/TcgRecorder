@@ -1,4 +1,5 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sqflite/sqflite.dart';
@@ -21,12 +22,12 @@ import 'package:tcg_manager/view/share_view/share_user_management_view.dart';
 
 final currentDomainDataProvider = StateProvider<DomainData>((ref) => Game(name: 'name'));
 final currentDomainDataIsShareHostProvider = StateProvider<bool>((ref) => false);
-final currentShareProvider = StreamProvider.autoDispose<FirestoreShare>((ref) async* {
+final currentShareProvider = StreamProvider.autoDispose<FirestoreShare?>((ref) async* {
   final isShareHost = ref.watch(currentDomainDataIsShareHostProvider);
   final game = ref.watch(currentDomainDataProvider);
   if (isShareHost) {
     final hostShare = await ref.watch(hostShareProvider.future);
-    yield hostShare.firstWhere((element) => element.game == game);
+    yield hostShare.firstWhereOrNull((element) => element.game == game);
   } else {
     final guestShare = await ref.watch(guestShareProvider.future);
     yield guestShare.firstWhere((element) => element.game == game);
@@ -64,10 +65,12 @@ class DomainDataOptions extends HookConsumerWidget {
                     case Game():
                       if (ref.read(isShareGame)) {
                         final share = await ref.read(currentShareProvider.future);
-                        await ref.read(dbHelper).updateGameName(domainData, newName.first);
-                        await ref
-                            .read(firestoreShareRepository)
-                            .updateShare(share.copyWith(game: domainData.copyWith(name: newName.first)));
+                        if (share != null) {
+                          await ref.read(dbHelper).updateGameName(domainData, newName.first);
+                          await ref
+                              .read(firestoreShareRepository)
+                              .updateShare(share.copyWith(game: domainData.copyWith(name: newName.first)));
+                        }
                       } else {
                         await ref.read(dbHelper).updateGameName(domainData, newName.first);
                       }
@@ -120,11 +123,13 @@ class DomainDataOptions extends HookConsumerWidget {
                   case Game():
                     if (ref.read(isShareGame)) {
                       final share = await ref.read(currentShareProvider.future);
-                      await ref.read(firestoreShareRepository).deleteShare(share.docName);
-                      await ref.read(gameRepository).deleteById(domainData.id!);
-                      ref.invalidate(allGameListProvider);
-                      if (domainData.id == ref.read(selectGameNotifierProvider).selectGame?.id) {
-                        await ref.read(selectGameNotifierProvider.notifier).changeGameForLastRecord();
+                      if (share != null) {
+                        await ref.read(firestoreShareRepository).deleteShare(share.docName);
+                        await ref.read(gameRepository).deleteById(domainData.id!);
+                        ref.invalidate(allGameListProvider);
+                        if (domainData.id == ref.read(selectGameNotifierProvider).selectGame?.id) {
+                          await ref.read(selectGameNotifierProvider.notifier).changeGameForLastRecord();
+                        }
                       }
                     } else {
                       await ref.read(dbHelper).deleteGame(domainData);
