@@ -32,14 +32,14 @@ class DbHelper {
     await fetchAll();
   }
 
-  Future deleteGame(Game game) async {
+  Future deleteGame(Game game, {bool isRevokeShare = false}) async {
     await _deleteGameRecord(game);
     await _deleteGameDeck(game);
     await _deleteGameTag(game);
     await ref.read(gameRepository).deleteById(game.id!);
     await fetchAll();
     if (ref.read(backupNotifierProvider)) await ref.read(firestoreBackupControllerProvider).addAll();
-    if (game.id == ref.read(selectGameNotifierProvider).selectGame?.id) {
+    if (game.id == ref.read(selectGameNotifierProvider).selectGame?.id && !isRevokeShare) {
       await ref.read(selectGameNotifierProvider.notifier).changeGameForLastRecord();
     }
   }

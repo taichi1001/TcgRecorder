@@ -14,6 +14,7 @@ import 'package:tcg_manager/provider/firebase_auth_provider.dart';
 import 'package:tcg_manager/provider/firestore_controller_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
+import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
 import 'package:tcg_manager/repository/firestore_share_data_repository.dart';
@@ -240,7 +241,10 @@ class _RevokeShareGameButton extends HookConsumerWidget {
                     final deckList = await ref.read(firestoreShareDataDeckProvider(data.currentShare!.docName).future);
                     final tagList = await ref.read(firestoreShareDataTagProvider(data.currentShare!.docName).future);
                     final recordList = await ref.read(firestoreShareDataRecordProvider(data.currentShare!.docName).future);
-                    await ref.read(dbHelper).deleteGame(data.currentShare!.game);
+                    if (data.currentShare!.game.id == ref.read(selectGameNotifierProvider).selectGame?.id) {
+                      ref.read(selectGameNotifierProvider.notifier).changeGame(data.currentShare!.game.copyWith(isShare: false));
+                    }
+                    await ref.read(dbHelper).deleteGame(data.currentShare!.game, isRevokeShare: true);
                     await ref.read(gameRepository).insert(data.currentShare!.game.copyWith(isShare: false));
 
                     final Map<int, int> deckIdMap = {};
@@ -270,7 +274,7 @@ class _RevokeShareGameButton extends HookConsumerWidget {
                           final filePath = '$saveDir/$imageName';
                           final file = File(filePath);
                           await file.writeAsBytes(response.bodyBytes);
-                          newImagePath.add(filePath);
+                          newImagePath.add(imageName);
                         }
                         record = record.copyWith(imagePath: newImagePath);
                       }
@@ -281,6 +285,7 @@ class _RevokeShareGameButton extends HookConsumerWidget {
                     ref.invalidate(allDeckListProvider);
                     ref.invalidate(allTagListProvider);
                     ref.invalidate(allGameListProvider);
+
                     if (context.mounted) {
                       Navigator.of(context).pop();
                     }
