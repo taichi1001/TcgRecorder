@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/firestore_share.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
@@ -45,7 +46,7 @@ final gameFirestoreShareStreamProvider = StreamProvider.autoDispose<FirestoreSha
     final hostGameList = await ref.watch(hostShareProvider.future);
     final guestGameList = await ref.watch(guestShareProvider.future);
     final shareGameList = [...hostGameList, ...guestGameList];
-    yield shareGameList.firstWhere((element) => element.game == selectGame);
+    yield shareGameList.firstWhereOrNull((element) => element.game == selectGame);
   }
 });
 

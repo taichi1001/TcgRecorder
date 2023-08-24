@@ -26,11 +26,11 @@ class InitialSelectGameAsyncNotifier extends AsyncNotifier<Game?> {
     final isMatchGame = allGameList.firstWhereOrNull((element) => element.id == game?.id);
     if (isMatchGame != null) return isMatchGame;
     if (isMatchGame == null && game != null && !game.isShare && allGameList.isNotEmpty) return allGameList.last;
-    // TODO この条件だとhostShareだった可能性が抜けてる
     if (isMatchGame == null && game != null && game.isShare) {
       final guestShareList = await ref.read(guestShareProvider.future);
       final isMatchGuestGame = guestShareList.map((e) => e.game).firstWhereOrNull((e) => e.id == game.id);
       if (isMatchGuestGame != null) return isMatchGuestGame;
+      if (allGameList.isNotEmpty) return allGameList.last;
     }
     if (game == null && allGameList.isNotEmpty) return allGameList.last;
     return null;

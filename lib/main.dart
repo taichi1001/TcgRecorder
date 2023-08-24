@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -27,7 +29,6 @@ import 'package:tcg_manager/provider/user_info_settings_provider.dart';
 import 'package:tcg_manager/repository/firestore_share_repository.dart';
 import 'package:tcg_manager/view/bottom_navigation_view.dart';
 import 'package:tcg_manager/view/initial_game_registration_view.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:tcg_manager/view/login_view.dart';
 import 'package:tcg_manager/view/shared_game_limit_adjustment_view.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -100,7 +101,6 @@ final mainInfoProvider = FutureProvider.autoDispose.family<MainInfo, BuildContex
   final packgaeInfo = await PackageInfo.fromPlatform();
   final allGameList = await ref.read(allGameListProvider.future);
   final allRecordList = await ref.read(allRecordListProvider.future);
-  final initialGame = await ref.read(initialSelectGameAsyncNotifierProvider.future);
 
   Game? lastGame;
   for (final record in allRecordList) {
@@ -111,6 +111,7 @@ final mainInfoProvider = FutureProvider.autoDispose.family<MainInfo, BuildContex
     }
   }
   ref.read(firebaseAuthNotifierProvider.notifier).login();
+  await ref.read(initialSelectGameAsyncNotifierProvider.future);
   return MainInfo(
     requiredVersion: version,
     packageInfo: packgaeInfo,
