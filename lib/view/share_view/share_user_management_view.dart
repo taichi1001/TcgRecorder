@@ -58,6 +58,8 @@ final currentDataProvider = StreamProvider.autoDispose((ref) async* {
   );
 });
 
+final _isRevokingProvider = StateProvider.autoDispose((ref) => false);
+
 class ShareUserManagementView extends HookConsumerWidget {
   const ShareUserManagementView({
     key,
@@ -67,6 +69,7 @@ class ShareUserManagementView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final myId = ref.watch(firebaseAuthNotifierProvider).user?.uid;
     final currentDataAsyncValue = ref.watch(currentDataProvider);
+    final isRevoking = ref.watch(_isRevokingProvider);
     return currentDataAsyncValue.when(
       error: (error, stack) => Text('$error'),
       loading: () => const Center(child: CircularProgressIndicator()),
@@ -87,94 +90,107 @@ class ShareUserManagementView extends HookConsumerWidget {
               ),
             ],
           ),
-          body: CustomScrollView(
-            physics: const ClampingScrollPhysics(),
-            slivers: [
-              SliverToBoxAdapter(
-                child: ListTileOnTap(
-                  leading: const Icon(Icons.link),
-                  title: '共有用リンクを作成',
-                  onTap: () => ScaffoldMessenger.of(context).showSnackBar(_originalSnackBar(context)),
-                ),
-              ),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                  child: Text('オーナー', style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold)),
-                ),
-              ),
-              SliverToBoxAdapter(
-                child: ListTileOnTap(
-                  title: ownerUserData.name ?? ownerUserData.id,
-                  leading: CircleAvatar(
-                    radius: 20,
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    backgroundImage: ownerUserData.iconPath == null ? null : CachedNetworkImageProvider(ownerUserData.iconPath!),
-                    child: ownerUserData.iconPath == null ? Text(ownerUserData.name![0]) : null,
-                  ),
-                  onTap: () {},
-                ),
-              ),
-              if (isOwner)
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                    child: Text('共有申請中', style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold)),
-                  ),
-                ),
-              if (isOwner)
-                _UserDataSliverList(
-                  userDataList: currentPendingUserDataList!,
-                  trailing: (index) => Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      InkWell(
-                        onTap: () async => await ref
-                            .read(firestoreShareRepository)
-                            .noallowSharing(currentShare.pendingUserList[index], currentShare.docName),
-                        child: Icon(
-                          Icons.remove_circle,
-                          color: Theme.of(context).colorScheme.error,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      InkWell(
-                        onTap: () async => await ref
-                            .read(firestoreShareRepository)
-                            .allowSharing(currentShare.pendingUserList[index], currentShare.docName),
-                        child: Icon(
-                          Icons.check_circle,
-                          color: Theme.of(context).colorScheme.tertiary,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                  child: Text('アクセス管理', style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold)),
-                ),
-              ),
-              _UserDataSliverList(
-                userDataList: shareUserDataWithOwnerRemoved,
-                onTap: (index) {
-                  final tmp = [...currentShare.shareUserList];
-                  tmp.removeAt(0); // ownerを削除
-                  ref.read(currentSharedUserViewDataProvider.notifier).state = (
-                    shareUserDataWithOwnerRemoved[index],
-                    tmp[index],
-                    currentShare,
-                  );
-                  return Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const SharedUserView(),
+          body: Stack(
+            children: [
+              CustomScrollView(
+                physics: const ClampingScrollPhysics(),
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: ListTileOnTap(
+                      leading: const Icon(Icons.link),
+                      title: '共有用リンクを作成',
+                      onTap: () => ScaffoldMessenger.of(context).showSnackBar(_originalSnackBar(context)),
                     ),
-                  );
-                },
+                  ),
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                      child: Text('オーナー', style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold)),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: ListTileOnTap(
+                      title: ownerUserData.name ?? ownerUserData.id,
+                      leading: CircleAvatar(
+                        radius: 20,
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        backgroundImage: ownerUserData.iconPath == null ? null : CachedNetworkImageProvider(ownerUserData.iconPath!),
+                        child: ownerUserData.iconPath == null ? Text(ownerUserData.name![0]) : null,
+                      ),
+                      onTap: () {},
+                    ),
+                  ),
+                  if (isOwner)
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                        child: Text('共有申請中', style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold)),
+                      ),
+                    ),
+                  if (isOwner)
+                    _UserDataSliverList(
+                      userDataList: currentPendingUserDataList!,
+                      trailing: (index) => Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          InkWell(
+                            onTap: () async => await ref
+                                .read(firestoreShareRepository)
+                                .noallowSharing(currentShare.pendingUserList[index], currentShare.docName),
+                            child: Icon(
+                              Icons.remove_circle,
+                              color: Theme.of(context).colorScheme.error,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          InkWell(
+                            onTap: () async => await ref
+                                .read(firestoreShareRepository)
+                                .allowSharing(currentShare.pendingUserList[index], currentShare.docName),
+                            child: Icon(
+                              Icons.check_circle,
+                              color: Theme.of(context).colorScheme.tertiary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                      child: Text('アクセス管理', style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold)),
+                    ),
+                  ),
+                  _UserDataSliverList(
+                    userDataList: shareUserDataWithOwnerRemoved,
+                    onTap: (index) {
+                      final tmp = [...currentShare.shareUserList];
+                      tmp.removeAt(0); // ownerを削除
+                      ref.read(currentSharedUserViewDataProvider.notifier).state = (
+                        shareUserDataWithOwnerRemoved[index],
+                        tmp[index],
+                        currentShare,
+                      );
+                      return Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SharedUserView(),
+                        ),
+                      );
+                    },
+                  ),
+                  const _RevokeShareGameButton(),
+                ],
               ),
-              const _RevokeShareGameButton(),
+              if (isRevoking)
+                Positioned.fill(
+                  child: Container(
+                    color: Colors.black.withOpacity(0.5),
+                    child: const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+                ),
             ],
           ),
         );
@@ -238,6 +254,7 @@ class _RevokeShareGameButton extends HookConsumerWidget {
                     message: '共有が解除されると他のユーザーはデータが閲覧できなくなります。あなたは引き続き全てのデータを閲覧可能です。',
                   );
                   if (result == OkCancelResult.ok) {
+                    ref.read(_isRevokingProvider.notifier).state = true;
                     final deckList = await ref.read(firestoreShareDataDeckProvider(data.currentShare!.docName).future);
                     final tagList = await ref.read(firestoreShareDataTagProvider(data.currentShare!.docName).future);
                     final recordList = await ref.read(firestoreShareDataRecordProvider(data.currentShare!.docName).future);
@@ -286,6 +303,7 @@ class _RevokeShareGameButton extends HookConsumerWidget {
                     ref.invalidate(allTagListProvider);
                     ref.invalidate(allGameListProvider);
 
+                    ref.read(_isRevokingProvider.notifier).state = true;
                     if (context.mounted) {
                       Navigator.of(context).pop();
                     }
