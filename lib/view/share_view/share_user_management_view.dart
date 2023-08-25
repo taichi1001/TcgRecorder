@@ -5,8 +5,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:http/http.dart' as http;
+import 'package:share_plus/share_plus.dart';
 import 'package:tcg_manager/entity/record.dart';
 import 'package:tcg_manager/entity/user_data.dart';
+import 'package:tcg_manager/enum/access_roll.dart';
 import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/main.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
@@ -17,6 +19,7 @@ import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
+import 'package:tcg_manager/repository/dynamic_links_repository.dart';
 import 'package:tcg_manager/repository/firestore_share_data_repository.dart';
 import 'package:tcg_manager/repository/firestore_share_repository.dart';
 import 'package:tcg_manager/repository/firestore_user_settings_repositroy.dart';
@@ -99,7 +102,14 @@ class ShareUserManagementView extends HookConsumerWidget {
                     child: ListTileOnTap(
                       leading: const Icon(Icons.link),
                       title: '共有用リンクを作成',
-                      onTap: () => ScaffoldMessenger.of(context).showSnackBar(_originalSnackBar(context)),
+                      onTap: () async {
+                        final link = await ref.read(dynamicLinksRepository).createInviteDynamicLink(
+                              currentShare.authorName,
+                              currentShare.game.name,
+                              AccessRoll.reader,
+                            );
+                        await Share.share(link.toString());
+                      },
                     ),
                   ),
                   SliverToBoxAdapter(
@@ -333,37 +343,4 @@ class _RevokeShareGameButton extends HookConsumerWidget {
       ),
     );
   }
-}
-
-SnackBar _originalSnackBar(BuildContext context) {
-  return SnackBar(
-    padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
-    margin: const EdgeInsetsDirectional.all(16),
-    content: Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: [
-          Icon(
-            Icons.check,
-            color: Theme.of(context).colorScheme.onTertiary,
-          ),
-          Text(
-            'リンクをコピーしました。',
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.onTertiary,
-            ),
-          ),
-        ],
-      ),
-    ),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(10),
-    ),
-    behavior: SnackBarBehavior.floating,
-    elevation: 4.0,
-    backgroundColor: Theme.of(context).colorScheme.tertiary,
-    showCloseIcon: true,
-    clipBehavior: Clip.hardEdge,
-    dismissDirection: DismissDirection.horizontal,
-  );
 }
