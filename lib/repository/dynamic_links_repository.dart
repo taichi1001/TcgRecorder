@@ -20,8 +20,8 @@ class DynamicLinksRepository {
   final Ref ref;
   DynamicLinksRepository(this._dynamicLinks, this.ref);
 
-  Future<Uri> createInviteDynamicLink(String user, String gameName, AccessRoll roll) async {
-    final link = Uri.parse('https://tcgmanager.page.link/share_data?uid=$user-$gameName&roll=${roll.displayName}');
+  Future<Uri> createInviteDynamicLink(String user, String gameId, AccessRoll roll) async {
+    final link = Uri.parse('https://tcgmanager.page.link/share_data?uid=$user-$gameId&roll=${roll.displayName}');
     final parameters = DynamicLinkParameters(
       uriPrefix: 'https://tcgmanager.page.link',
       link: link,

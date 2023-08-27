@@ -105,7 +105,7 @@ class ShareUserManagementView extends HookConsumerWidget {
                       onTap: () async {
                         final link = await ref.read(dynamicLinksRepository).createInviteDynamicLink(
                               currentShare.authorName,
-                              currentShare.game.name,
+                              currentShare.game.id.toString(),
                               AccessRoll.reader,
                             );
                         await Share.share(link.toString());
