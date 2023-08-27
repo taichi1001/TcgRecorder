@@ -147,6 +147,7 @@ class _EditView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     useEffect(() {
       ref.read(originalTagLength.notifier).state = margedRecord.tag.isEmpty ? 1 : margedRecord.tag.length;
+      // TODO 編集画面遷移時にエラー出る
       ref.read(originalTag.notifier).state = margedRecord.tag;
       return;
     }, const []);
