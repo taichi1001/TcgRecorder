@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
@@ -11,12 +10,11 @@ import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
 import 'package:tcg_manager/view/component/custom_scaffold.dart';
 import 'package:tcg_manager/view/component/custom_textfield.dart';
-import 'package:tcg_manager/view/component/cutom_date_time_picker.dart';
 import 'package:tcg_manager/view/component/deck_input_row.dart';
 import 'package:tcg_manager/view/input_view/add_photo_widget.dart';
 import 'package:tcg_manager/view/input_view/input_tag_list.dart';
+import 'package:tcg_manager/view/input_view/input_view_selectable_datetime.dart';
 import 'package:tcg_manager/view/input_view/save_button.dart';
-import 'package:tcg_manager/view/input_view/selectable_datetime.dart';
 import 'package:tcg_manager/view/input_view/setting_modal_bottom_sheet.dart';
 import 'package:tcg_manager/view/input_view/win_loss_first_second.dart';
 import 'package:tcg_manager/view/select_domain_data_bottom_sheet/select_domain_data_view.dart';
@@ -43,7 +41,7 @@ class InputView extends StatelessWidget {
         Expanded(
           child: CustomScaffold(
             padding: EdgeInsets.only(right: 8, left: 8),
-            leading: SettingIconButton(),
+            leading: _SettingIconButton(),
             body: InputViewBody(),
           ),
         ),
@@ -53,11 +51,11 @@ class InputView extends StatelessWidget {
   }
 }
 
-class SettingIconButton extends HookConsumerWidget {
-  const SettingIconButton({Key? key}) : super(key: key);
+class _SettingIconButton extends StatelessWidget {
+  const _SettingIconButton({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return IconButton(
       icon: const Icon(Icons.tune),
       onPressed: () async {
@@ -89,7 +87,7 @@ class InputViewBody extends HookConsumerWidget {
       child: ListView(
         children: const [
           SizedBox(height: 8),
-          _InputViewSelectableDateTime(),
+          InputViewSelectableDateTime(),
           WinLossFirstSecond(),
           InputViewDeckAndTag(),
           InputViewAddPhoto(),
@@ -205,26 +203,6 @@ class InputViewAddPhoto extends HookConsumerWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class _InputViewSelectableDateTime extends HookConsumerWidget {
-  const _InputViewSelectableDateTime();
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final dateTimeController = useState(CustomModalDateTimePickerController(initialDateTime: DateTime.now()));
-    final date = ref.watch(inputViewNotifierProvider.select((value) => value.date));
-    final inputViewNotifier = ref.read(inputViewNotifierProvider.notifier);
-
-    return SelectableDateTime(
-      controller: dateTimeController.value,
-      submiteAction: () => inputViewNotifier.selectDateTime(dateTimeController.value.selectedDateTime),
-      nowAction: () {
-        dateTimeController.value.setDateTimeNow();
-        inputViewNotifier.selectDateTime(dateTimeController.value.selectedDateTime);
-      },
-      datetime: date,
     );
   }
 }

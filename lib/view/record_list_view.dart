@@ -277,6 +277,9 @@ class _BrandListTile extends HookConsumerWidget {
         }
       },
       editFunc: () async {
+        // recordによってtagの個数が違うため、画面遷移前のここで設定する
+        ref.read(originalTagLength.notifier).state = record.tag.isEmpty ? 1 : record.tag.length;
+        ref.read(originalTag.notifier).state = record.tag;
         await Navigator.push(
           context,
           MaterialPageRoute(
@@ -639,7 +642,10 @@ class _EditDeleteButtonRow extends HookConsumerWidget {
                     message: 'この操作をする権限がありません。ゲームの管理者にお問い合わせください。',
                   );
                 } else if (context.mounted) {
-                  await Navigator.push(
+                  // recordによってtagの個数が違うため、画面遷移前のここで設定する
+                  ref.read(originalTagLength.notifier).state = record.tag.isEmpty ? 1 : record.tag.length;
+                  ref.read(originalTag.notifier).state = record.tag;
+                  Navigator.push(
                     context,
                     MaterialPageRoute(
                       fullscreenDialog: true,

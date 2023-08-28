@@ -46,8 +46,8 @@ final recordEditViewInfoProvider = FutureProvider.autoDispose<RecordEditViewInfo
   );
 });
 
-final originalTagLength = StateProvider.autoDispose<int>((ref) => 1);
-final originalTag = StateProvider.autoDispose<List<String>>((ref) => []);
+final originalTagLength = StateProvider<int>((ref) => 1);
+final originalTag = StateProvider<List<String>>((ref) => []);
 
 final _tagFocusNodesProvider = Provider.autoDispose<List<FocusNode>>((ref) {
   final tagTextControllerLength = ref.watch(originalTagLength);
@@ -81,10 +81,8 @@ class RecordEditView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final recordDetailNotifier = ref.watch(recordEditViewNotifierProvider(margedRecord).notifier);
-    final isBO3 = ref.watch(recordEditViewSettingsNotifierProvider(margedRecord).select((value) => value.bo3));
     return WillPopScope(
-      onWillPop: (() async {
+      onWillPop: () async {
         final okCancelResult = await showOkCancelAlertDialog(
           context: context,
           message: S.of(context).recordEditDialogMessage,
@@ -92,7 +90,7 @@ class RecordEditView extends HookConsumerWidget {
         );
         if (okCancelResult == OkCancelResult.ok) return true;
         return false;
-      }),
+      },
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -115,12 +113,8 @@ class RecordEditView extends HookConsumerWidget {
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
               onPressed: () async {
-                if (isBO3) {
-                  await recordDetailNotifier.saveEditRecord(isBO3: isBO3);
-                } else {
-                  await recordDetailNotifier.saveEditRecord(isBO3: isBO3);
-                }
-                recordDetailNotifier.changeIsEdit();
+                final isBO3 = ref.read(recordEditViewSettingsNotifierProvider(margedRecord).select((value) => value.bo3));
+                await ref.read(recordEditViewNotifierProvider(margedRecord).notifier).saveEditRecord(isBO3: isBO3);
                 if (context.mounted) Navigator.pop(context);
               },
             ),
@@ -145,12 +139,6 @@ class _EditView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    useEffect(() {
-      ref.read(originalTagLength.notifier).state = margedRecord.tag.isEmpty ? 1 : margedRecord.tag.length;
-      // TODO 編集画面遷移時にエラー出る
-      ref.read(originalTag.notifier).state = margedRecord.tag;
-      return;
-    }, const []);
     final recordEditViewInfo = ref.watch(recordEditViewInfoProvider);
 
     final editMargedRecord = ref.watch(recordEditViewNotifierProvider(margedRecord).select((value) => value.editMargedRecord));
