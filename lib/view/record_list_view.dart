@@ -33,8 +33,8 @@ import 'package:tcg_manager/selector/marged_record_list_selector.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
 import 'package:tcg_manager/view/component/custom_scaffold.dart';
 import 'package:tcg_manager/view/component/slidable_tile.dart';
+import 'package:tcg_manager/view/edit_view/record_edit_view.dart';
 import 'package:tcg_manager/view/filter_modal_bottom_sheet.dart';
-import 'package:tcg_manager/view/record_edit_view.dart';
 
 class RecordListView extends HookConsumerWidget {
   const RecordListView({Key? key}) : super(key: key);
