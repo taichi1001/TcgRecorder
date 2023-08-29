@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 publish_to: 'none'
 
-version: 2.0.7+15
+version: 2.0.8+16
 
 environment:
   sdk: '>=3.0.5 <4.0.0'
@@ -124,10 +124,10 @@ dependencies:
 
 # ビルドエラー回避のために追加
 dependency_overrides:
-  macos_ui:
-    git:
-      url: https://github.com/Mayb3Nots/macos_ui.git
-      ref: dev
+  # macos_ui:
+  #   git:
+  #     url: https://github.com/Mayb3Nots/macos_ui.git
+  #     ref: dev
 
 flutter_native_splash:
   image: "assets/images/icon.png"
