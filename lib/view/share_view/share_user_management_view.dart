@@ -27,6 +27,7 @@ import 'package:tcg_manager/repository/game_repository.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
 import 'package:tcg_manager/repository/tag_repository.dart';
 import 'package:tcg_manager/view/component/list_tile_ontap.dart';
+import 'package:tcg_manager/view/component/loading_overlay.dart';
 import 'package:tcg_manager/view/select_domain_data_bottom_sheet/domain_data_options.dart';
 import 'package:tcg_manager/view/shared_user_view.dart';
 
@@ -61,8 +62,6 @@ final currentDataProvider = StreamProvider.autoDispose((ref) async* {
   );
 });
 
-final _isRevokingProvider = StateProvider.autoDispose((ref) => false);
-
 class ShareUserManagementView extends HookConsumerWidget {
   const ShareUserManagementView({
     key,
@@ -72,7 +71,6 @@ class ShareUserManagementView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final myId = ref.watch(firebaseAuthNotifierProvider).user?.uid;
     final currentDataAsyncValue = ref.watch(currentDataProvider);
-    final isRevoking = ref.watch(_isRevokingProvider);
     return currentDataAsyncValue.when(
       error: (error, stack) => Text('$error'),
       loading: () => const Center(child: CircularProgressIndicator()),
@@ -192,15 +190,7 @@ class ShareUserManagementView extends HookConsumerWidget {
                   const _RevokeShareGameButton(),
                 ],
               ),
-              if (isRevoking)
-                Positioned.fill(
-                  child: Container(
-                    color: Colors.black.withOpacity(0.5),
-                    child: const Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  ),
-                ),
+              const LoadingOverlay(),
             ],
           ),
         );
@@ -264,7 +254,7 @@ class _RevokeShareGameButton extends HookConsumerWidget {
                     message: '共有が解除されると他のユーザーはデータが閲覧できなくなります。あなたは引き続き全てのデータを閲覧可能です。',
                   );
                   if (result == OkCancelResult.ok) {
-                    ref.read(_isRevokingProvider.notifier).state = true;
+                    ref.read(loadingProvider.notifier).state = true;
                     final deckList = await ref.read(firestoreShareDataDeckProvider(data.currentShare!.docName).future);
                     final tagList = await ref.read(firestoreShareDataTagProvider(data.currentShare!.docName).future);
                     final recordList = await ref.read(firestoreShareDataRecordProvider(data.currentShare!.docName).future);
@@ -313,7 +303,8 @@ class _RevokeShareGameButton extends HookConsumerWidget {
                     ref.invalidate(allTagListProvider);
                     ref.invalidate(allGameListProvider);
 
-                    ref.read(_isRevokingProvider.notifier).state = true;
+                    ref.read(loadingProvider.notifier).state = false;
+
                     if (context.mounted) {
                       Navigator.of(context).pop();
                     }

@@ -72,7 +72,7 @@ class DomainDataList extends HookConsumerWidget {
                     ref.read(currentDomainDataIsShareHostProvider.notifier).state = isShareHost;
                     showCupertinoModalBottomSheet(
                       context: context,
-                      builder: (context) => const DomainDataOptions(),
+                      builder: (context) => DomainDataOptions(isShareHost: isShareHost),
                     );
                   },
                   icon: const Icon(Icons.more_vert),

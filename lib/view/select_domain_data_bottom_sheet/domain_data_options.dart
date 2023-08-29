@@ -18,6 +18,7 @@ import 'package:tcg_manager/repository/firestore_share_repository.dart';
 import 'package:tcg_manager/repository/firestore_user_settings_repositroy.dart';
 import 'package:tcg_manager/repository/game_repository.dart';
 import 'package:tcg_manager/selector/game_share_data_selector.dart';
+import 'package:tcg_manager/view/component/loading_overlay.dart';
 import 'package:tcg_manager/view/share_view/share_user_management_view.dart';
 
 final currentDomainDataProvider = StateProvider<DomainData>((ref) => Game(name: 'name'));
@@ -36,135 +37,26 @@ final currentShareProvider = StreamProvider.autoDispose<FirestoreShare?>((ref) a
 
 class DomainDataOptions extends HookConsumerWidget {
   const DomainDataOptions({
+    required this.isShareHost,
     key,
   }) : super(key: key);
+
+  final bool isShareHost;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final domainData = ref.watch(currentDomainDataProvider);
-    final currentShare = ref.watch(currentShareProvider);
-    final uid = ref.watch(firebaseAuthNotifierProvider.select((value) => value.user))?.uid;
-    return currentShare.maybeWhen(
-      orElse: () => Container(),
-      data: (share) => Material(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _SelectableRow(text: domainData.name, icon: Icons.gamepad, width: 16),
-            const Divider(),
-            if (domainData is Game) const _ShareSelectableRow(),
-            if (!(domainData is Game && domainData.isShare && share?.authorName != uid))
-              _SelectableRow(
-                text: '名前を変更',
-                icon: Icons.edit,
-                onTap: () async {
-                  final newName = await showTextInputDialog(
-                    context: context,
-                    title: '名前を変更',
-                    textFields: [DialogTextField(initialText: domainData.name)],
-                  );
-                  if (newName != null) {
-                    try {
-                      switch (domainData) {
-                        case Game():
-                          if (domainData.isShare) {
-                            final share = await ref.read(currentShareProvider.future);
-                            if (share != null) {
-                              await ref.read(dbHelper).updateGameName(domainData, newName.first);
-                              await ref
-                                  .read(firestoreShareRepository)
-                                  .updateShare(share.copyWith(game: domainData.copyWith(name: newName.first)));
-                            }
-                          } else {
-                            await ref.read(dbHelper).updateGameName(domainData, newName.first);
-                          }
-                        case Deck():
-                          if (ref.read(isShareGame)) {
-                            final share = await ref.read(gameFirestoreShareStreamProvider.future);
-                            await ref
-                                .read(firestoreShareDataRepository)
-                                .updateDeck(domainData.copyWith(name: newName.first), share!.docName);
-                          } else {
-                            await ref.read(dbHelper).updateDeckName(domainData, newName.first);
-                          }
-                        case Tag():
-                          if (ref.read(isShareGame)) {
-                            final share = await ref.read(gameFirestoreShareStreamProvider.future);
-                            await ref
-                                .read(firestoreShareDataRepository)
-                                .updateTag(domainData.copyWith(name: newName.first), share!.docName);
-                          } else {
-                            await ref.read(dbHelper).updateTagName(domainData, newName.first);
-                          }
-                      }
-                    } on DatabaseException catch (e) {
-                      if (e.isUniqueConstraintError() && context.mounted) {
-                        await showOkAlertDialog(
-                          context: context,
-                          title: '既に登録されている名前です',
-                          message: '「${newName.first}」は既に登録されているため名前を変更することはできませんでした。',
-                        );
-                      }
-                    }
-                  }
-                  if (context.mounted) Navigator.pop(context);
-                },
-              ),
-            if (!(domainData is Game && domainData.isShare && share?.authorName != uid))
-              _SelectableRow(
-                text: '削除',
-                icon: Icons.delete,
-                onTap: () async {
-                  final result = await showOkCancelAlertDialog(
-                    context: context,
-                    title: '${domainData.name}を削除しますか？',
-                    message: () {
-                      switch (domainData) {
-                        case Tag():
-                          return '削除するとこれまでに保存した記録からも削除されます。';
-                        default:
-                          return '削除するとこれまでに保存していた記録も削除されます。';
-                      }
-                    }(),
-                  );
-                  if (result == OkCancelResult.ok) {
-                    switch (domainData) {
-                      case Game():
-                        if (ref.read(isShareGame)) {
-                          final share = await ref.read(currentShareProvider.future);
-                          if (share != null) {
-                            await ref.read(firestoreShareRepository).deleteShare(share.docName);
-                            await ref.read(gameRepository).deleteById(domainData.id!);
-                            ref.invalidate(allGameListProvider);
-                            if (domainData.id == ref.read(selectGameNotifierProvider).selectGame?.id) {
-                              await ref.read(selectGameNotifierProvider.notifier).changeGameForLastRecord();
-                            }
-                          }
-                        } else {
-                          await ref.read(dbHelper).deleteGame(domainData);
-                        }
-                      case Deck():
-                        if (ref.read(isShareGame)) {
-                          final share = await ref.read(gameFirestoreShareStreamProvider.future);
-                          await ref.read(firestoreShareDataRepository).removeDeck(domainData, share!.docName);
-                        } else {
-                          await ref.read(dbHelper).deleteDeck(domainData);
-                        }
-                      case Tag():
-                        if (ref.read(isShareGame)) {
-                          final share = await ref.read(gameFirestoreShareStreamProvider.future);
-                          await ref.read(firestoreShareDataRepository).removeTag(domainData, share!.docName);
-                        } else {
-                          await ref.read(dbHelper).deleteTag(domainData);
-                        }
-                    }
-                  }
-                  if (context.mounted) Navigator.pop(context);
-                },
-              ),
-          ],
-        ),
+    return Material(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _SelectableRow(text: domainData.name, icon: Icons.gamepad, width: 16),
+          const Divider(),
+          if (domainData is Game) const _ShareSelectableRow(),
+          if (!(domainData is Game && domainData.isShare && !isShareHost)) const _RenameSelectableRow(),
+          if (!(domainData is Game && domainData.isShare && !isShareHost)) const _DeleteSelectableRow(),
+        ],
       ),
     );
   }
@@ -207,17 +99,18 @@ class _ShareSelectableRow extends HookConsumerWidget {
                 message: 'この機能を使用するためにはプロフィール設定画面からユーザー名を設定する必要があります。',
               );
             } else {
-              if (uid != null) {
+              ref.read(loadingProvider.notifier).state = true;
+              if (uid != null && context.mounted) {
                 final gameData = domainData.copyWith(isShare: true);
                 await ref.read(gameRepository).update(gameData);
                 ref.read(currentDomainDataProvider.notifier).state = gameData;
                 ref.invalidate(allGameListProvider);
-
-                await ref.read(firestoreControllerProvider).initShareGame(gameData, uid);
                 final selectGame = ref.read(selectGameNotifierProvider).selectGame;
                 if (selectGame?.name == gameData.name) {
                   ref.read(selectGameNotifierProvider.notifier).setSelectGame(gameData);
                 }
+                await ref.read(firestoreControllerProvider).initShareGame(gameData, uid);
+                ref.read(loadingProvider.notifier).state = false;
                 if (context.mounted) {
                   Navigator.push(
                     context,
@@ -231,6 +124,130 @@ class _ShareSelectableRow extends HookConsumerWidget {
             }
           }
         }
+      },
+    );
+  }
+}
+
+class _RenameSelectableRow extends HookConsumerWidget {
+  const _RenameSelectableRow({
+    key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final domainData = ref.watch(currentDomainDataProvider);
+    return _SelectableRow(
+      text: '名前を変更',
+      icon: Icons.edit,
+      onTap: () async {
+        final newName = await showTextInputDialog(
+          context: context,
+          title: '名前を変更',
+          textFields: [DialogTextField(initialText: domainData.name)],
+        );
+        if (newName != null) {
+          try {
+            switch (domainData) {
+              case Game():
+                if (domainData.isShare) {
+                  final share = await ref.read(currentShareProvider.future);
+                  if (share != null) {
+                    await ref.read(dbHelper).updateGameName(domainData, newName.first);
+                    await ref.read(firestoreShareRepository).updateShare(share.copyWith(game: domainData.copyWith(name: newName.first)));
+                  }
+                } else {
+                  await ref.read(dbHelper).updateGameName(domainData, newName.first);
+                }
+              case Deck():
+                if (ref.read(isShareGame)) {
+                  final share = await ref.read(gameFirestoreShareStreamProvider.future);
+                  await ref.read(firestoreShareDataRepository).updateDeck(domainData.copyWith(name: newName.first), share!.docName);
+                } else {
+                  await ref.read(dbHelper).updateDeckName(domainData, newName.first);
+                }
+              case Tag():
+                if (ref.read(isShareGame)) {
+                  final share = await ref.read(gameFirestoreShareStreamProvider.future);
+                  await ref.read(firestoreShareDataRepository).updateTag(domainData.copyWith(name: newName.first), share!.docName);
+                } else {
+                  await ref.read(dbHelper).updateTagName(domainData, newName.first);
+                }
+            }
+          } on DatabaseException catch (e) {
+            if (e.isUniqueConstraintError() && context.mounted) {
+              await showOkAlertDialog(
+                context: context,
+                title: '既に登録されている名前です',
+                message: '「${newName.first}」は既に登録されているため名前を変更することはできませんでした。',
+              );
+            }
+          }
+        }
+        if (context.mounted) Navigator.pop(context);
+      },
+    );
+  }
+}
+
+class _DeleteSelectableRow extends HookConsumerWidget {
+  const _DeleteSelectableRow({
+    key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final domainData = ref.watch(currentDomainDataProvider);
+
+    return _SelectableRow(
+      text: '削除',
+      icon: Icons.delete,
+      onTap: () async {
+        final result = await showOkCancelAlertDialog(
+          context: context,
+          title: '${domainData.name}を削除しますか？',
+          message: () {
+            switch (domainData) {
+              case Tag():
+                return '削除するとこれまでに保存した記録からも削除されます。';
+              default:
+                return '削除するとこれまでに保存していた記録も削除されます。';
+            }
+          }(),
+        );
+        if (result == OkCancelResult.ok) {
+          switch (domainData) {
+            case Game():
+              if (ref.read(isShareGame)) {
+                final share = await ref.read(currentShareProvider.future);
+                if (share != null) {
+                  await ref.read(firestoreShareRepository).deleteShare(share.docName);
+                  await ref.read(gameRepository).deleteById(domainData.id!);
+                  ref.invalidate(allGameListProvider);
+                  if (domainData.id == ref.read(selectGameNotifierProvider).selectGame?.id) {
+                    await ref.read(selectGameNotifierProvider.notifier).changeGameForLastRecord();
+                  }
+                }
+              } else {
+                await ref.read(dbHelper).deleteGame(domainData);
+              }
+            case Deck():
+              if (ref.read(isShareGame)) {
+                final share = await ref.read(gameFirestoreShareStreamProvider.future);
+                await ref.read(firestoreShareDataRepository).removeDeck(domainData, share!.docName);
+              } else {
+                await ref.read(dbHelper).deleteDeck(domainData);
+              }
+            case Tag():
+              if (ref.read(isShareGame)) {
+                final share = await ref.read(gameFirestoreShareStreamProvider.future);
+                await ref.read(firestoreShareDataRepository).removeTag(domainData, share!.docName);
+              } else {
+                await ref.read(dbHelper).deleteTag(domainData);
+              }
+          }
+        }
+        if (context.mounted) Navigator.pop(context);
       },
     );
   }

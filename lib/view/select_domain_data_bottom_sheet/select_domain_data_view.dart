@@ -8,6 +8,7 @@ import 'package:tcg_manager/provider/record_list_view_provider.dart';
 import 'package:tcg_manager/provider/select_domain_data_view_provider.dart';
 import 'package:tcg_manager/selector/search_exact_match_domain_data_selector.dart';
 import 'package:tcg_manager/selector/select_domain_view_info_selector.dart';
+import 'package:tcg_manager/view/component/loading_overlay.dart';
 import 'package:tcg_manager/view/select_domain_data_bottom_sheet/all_list_section_bar.dart';
 import 'package:tcg_manager/view/select_domain_data_bottom_sheet/domain_data_list.dart';
 import 'package:tcg_manager/view/select_domain_data_bottom_sheet/search_app_bar.dart';
@@ -41,15 +42,20 @@ class SelectDomainDataView extends HookConsumerWidget {
           onGenerateRoute: (_) => MaterialPageRoute(
             builder: (context) => Scaffold(
               appBar: SearchAppBar(dataType: dataType),
-              body: _Body(
-                selectDomainDataFunc: selectDomainDataFunc,
-                tagCount: tagCount,
-                dataType: dataType,
-                afterFunc: afterFunc,
-                enableVisiblity: enableVisiblity,
-                returnSelecting: returnSelecting,
-                deselectionFunc: deselectionFunc,
-                rootContext: rootContext,
+              body: Stack(
+                children: [
+                  _Body(
+                    selectDomainDataFunc: selectDomainDataFunc,
+                    tagCount: tagCount,
+                    dataType: dataType,
+                    afterFunc: afterFunc,
+                    enableVisiblity: enableVisiblity,
+                    returnSelecting: returnSelecting,
+                    deselectionFunc: deselectionFunc,
+                    rootContext: rootContext,
+                  ),
+                  const LoadingOverlay(),
+                ],
               ),
             ),
           ),
