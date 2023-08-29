@@ -1,6 +1,5 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/enum/access_roll.dart';
 import 'package:tcg_manager/enum/bo.dart';
@@ -13,6 +12,7 @@ import 'package:tcg_manager/provider/input_view_settings_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/select_game_access_roll.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
+import 'package:tcg_manager/view/component/loading_overlay.dart';
 
 class SaveButton extends HookConsumerWidget {
   const SaveButton({
@@ -67,7 +67,7 @@ class SaveButton extends HookConsumerWidget {
                         );
 
                         if (okCancelResult == OkCancelResult.ok) {
-                          SmartDialog.showLoading();
+                          ref.read(loadingProvider.notifier).state = true;
                           if (isBO3) {
                             await inputViewNotifier.saveRecord(BO.bo3);
                           } else {
@@ -87,7 +87,7 @@ class SaveButton extends HookConsumerWidget {
                             ref.read(firestoreBackupControllerProvider).addRecord(ref.read(inputViewNotifierProvider).record!);
                           }
                           inputViewNotifier.resetView();
-                          SmartDialog.dismiss();
+                          ref.read(loadingProvider.notifier).state = false;
                         }
                         if (context.mounted) {
                           FocusScope.of(context).unfocus();

@@ -100,8 +100,6 @@ dependencies:
 
   dotted_border: ^2.0.0+3
 
-  flutter_smart_dialog: ^4.9.3+1
-
   easy_image_viewer: ^1.2.1
 
   share_plus: ^7.0.2

@@ -611,14 +611,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.0"
-  flutter_smart_dialog:
-    dependency: "direct main"
-    description:
-      name: flutter_smart_dialog
-      sha256: "49003799720002f9ec5f7d04f7d95cd9e0d447988261b4c4bc5cdf914961d4c0"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.9.3+1"
   flutter_sticky_header:
     dependency: "direct main"
     description:

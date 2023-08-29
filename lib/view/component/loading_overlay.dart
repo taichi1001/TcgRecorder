@@ -13,16 +13,16 @@ class LoadingOverlay extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isLoading = ref.watch(loadingProvider);
     return isLoading
-        ? const Stack(
+        ? Stack(
             children: [
               Opacity(
-                opacity: 0.3,
+                opacity: 0.6,
                 child: ModalBarrier(
                   dismissible: false,
-                  color: Colors.grey,
+                  color: Theme.of(context).colorScheme.surfaceVariant,
                 ),
               ),
-              Center(
+              const Center(
                 child: CircularProgressIndicator(),
               ),
             ],

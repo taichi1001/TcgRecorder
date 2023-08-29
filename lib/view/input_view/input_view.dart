@@ -5,6 +5,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
 import 'package:tcg_manager/view/component/custom_scaffold.dart';
+import 'package:tcg_manager/view/component/loading_overlay.dart';
 import 'package:tcg_manager/view/input_view/input_view_add_photo.dart';
 import 'package:tcg_manager/view/input_view/input_view_deck_and_tag.dart';
 import 'package:tcg_manager/view/input_view/input_view_selectable_datetime.dart';
@@ -29,16 +30,21 @@ class InputView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return const Stack(
       children: [
-        Expanded(
-          child: CustomScaffold(
-            padding: EdgeInsets.only(right: 8, left: 8),
-            leading: _SettingIconButton(),
-            body: InputViewBody(),
-          ),
+        Column(
+          children: [
+            Expanded(
+              child: CustomScaffold(
+                padding: EdgeInsets.only(right: 8, left: 8),
+                leading: _SettingIconButton(),
+                body: InputViewBody(),
+              ),
+            ),
+            AdaptiveBannerAd(),
+          ],
         ),
-        AdaptiveBannerAd(),
+        LoadingOverlay(),
       ],
     );
   }
