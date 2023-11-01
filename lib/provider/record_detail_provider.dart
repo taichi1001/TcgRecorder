@@ -17,11 +17,11 @@ import 'package:tcg_manager/helper/edit_record_helper.dart';
 import 'package:tcg_manager/main.dart';
 import 'package:tcg_manager/provider/backup_provider.dart';
 import 'package:tcg_manager/provider/firestore_backup_controller_provider.dart';
-import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
 import 'package:tcg_manager/repository/firestore_share_data_repository.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
 import 'package:tcg_manager/repository/tag_repository.dart';
+import 'package:tcg_manager/selector/filter_record_list_selector.dart';
 import 'package:tcg_manager/selector/game_share_data_selector.dart';
 import 'package:tcg_manager/state/record_detail_state.dart';
 
@@ -409,7 +409,8 @@ class RecordEditViewNotifier extends StateNotifier<RecordEditViewState> {
 
 final recordEditViewNotifierProvider =
     StateNotifierProvider.family.autoDispose<RecordEditViewNotifier, RecordEditViewState, MargedRecord>((ref, margedRecord) {
-  final recordList = ref.watch(allRecordListProvider).asData?.value;
+  // TODO 共有ゲームのときも考慮したrecordListにする。
+  final recordList = ref.watch(filterRecordListProvider).asData?.value;
   final record = recordList!.firstWhere((record) => record.id == margedRecord.recordId);
   final imagePath = ref.read(imagePathProvider);
   return RecordEditViewNotifier(ref: ref, record: record, margedRecord: margedRecord, imagePath: imagePath);
