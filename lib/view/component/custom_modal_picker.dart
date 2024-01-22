@@ -26,7 +26,7 @@ class CustomModalPicker extends StatelessWidget {
         children: [
           if (shoModalButton)
             ModalButton(
-              submitedAction: submitedAction != null ? submitedAction! : null,
+              submitedAction: submitedAction,
               actionButton: actionButton,
             ),
           Expanded(
@@ -70,7 +70,7 @@ class ModalButton extends StatelessWidget {
         children: <Widget>[
           if (actionButton != null) actionButton!,
           CupertinoButton(
-            onPressed: submitedAction != null ? submitedAction! : null,
+            onPressed: submitedAction,
             padding: const EdgeInsets.symmetric(
               horizontal: 16,
               vertical: 5,
