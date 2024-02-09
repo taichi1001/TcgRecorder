@@ -402,7 +402,8 @@ class RecordEditViewNotifier extends StateNotifier<RecordEditViewState> {
         final newImages = state.images.map((e) => e == image.path ? image.name : e).toList();
         state = state.copyWith(images: newImages);
       }
-      state = state.copyWith(record: state.record.copyWith(imagePath: state.images));
+      // imagesは先頭にsavePathが含まれているパスの文字列のため、savePathの部分を取り除き、画像の名前のみをimagePathに保存するようにする
+      state = state.copyWith(record: state.record.copyWith(imagePath: state.images.map((e) => e.replaceFirst(savePath, '')).toList()));
     }
   }
 }
