@@ -144,7 +144,12 @@ class _AddShareGameButton extends HookConsumerWidget {
             } else {
               final uid = ref.read(firebaseAuthNotifierProvider).user?.uid;
               if (uid != null) {
-                ref.read(firestoreShareRepository).requestDataShare(shareDocName, ShareUser(id: uid));
+                try {
+                  await ref.read(firestoreShareRepository).requestDataShare(shareDocName, ShareUser(id: uid));
+                } catch (e) {
+                  // TODO 既に共有済みである旨をエラー分から表示する
+                  print(e);
+                }
               }
             }
           }

@@ -72,9 +72,19 @@ class FirestoreShareRepository {
 
   // ゲーム共有リクエスト
   Future requestDataShare(String shareDirName, ShareUser user) async {
-    await _firestore.collection('share').doc(shareDirName).update({
-      'pending_user_list': FieldValue.arrayUnion([user.toJson()]),
-    });
+    // ユーザーが既に共有中のユーザーかどうかを確認
+    final documentSnapshot = await _firestore.collection('share').doc(shareDirName).get();
+    final data = documentSnapshot.data() as Map<String, dynamic>;
+    final share = FirestoreShare.fromJson(data);
+    final userExists = share.shareUserList.where((element) => element.id == user.id).toList().isNotEmpty;
+
+    if (userExists) {
+      throw Exception("ユーザーは既に共有リストに含まれています。");
+    } else {
+      await _firestore.collection('share').doc(shareDirName).update({
+        'pending_user_list': FieldValue.arrayUnion([user.toJson()]),
+      });
+    }
   }
 
   // ゲーム共有リクエストを許可する
