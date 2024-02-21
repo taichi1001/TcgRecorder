@@ -12,7 +12,7 @@ part of 'record_edit_view_settings_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$RecordEditViewSettingsState {
@@ -66,25 +66,25 @@ class _$RecordEditViewSettingsStateCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_RecordEditViewSettingsStateCopyWith<$Res>
+abstract class _$$RecordEditViewSettingsStateImplCopyWith<$Res>
     implements $RecordEditViewSettingsStateCopyWith<$Res> {
-  factory _$$_RecordEditViewSettingsStateCopyWith(
-          _$_RecordEditViewSettingsState value,
-          $Res Function(_$_RecordEditViewSettingsState) then) =
-      __$$_RecordEditViewSettingsStateCopyWithImpl<$Res>;
+  factory _$$RecordEditViewSettingsStateImplCopyWith(
+          _$RecordEditViewSettingsStateImpl value,
+          $Res Function(_$RecordEditViewSettingsStateImpl) then) =
+      __$$RecordEditViewSettingsStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({bool draw, bool bo3});
 }
 
 /// @nodoc
-class __$$_RecordEditViewSettingsStateCopyWithImpl<$Res>
+class __$$RecordEditViewSettingsStateImplCopyWithImpl<$Res>
     extends _$RecordEditViewSettingsStateCopyWithImpl<$Res,
-        _$_RecordEditViewSettingsState>
-    implements _$$_RecordEditViewSettingsStateCopyWith<$Res> {
-  __$$_RecordEditViewSettingsStateCopyWithImpl(
-      _$_RecordEditViewSettingsState _value,
-      $Res Function(_$_RecordEditViewSettingsState) _then)
+        _$RecordEditViewSettingsStateImpl>
+    implements _$$RecordEditViewSettingsStateImplCopyWith<$Res> {
+  __$$RecordEditViewSettingsStateImplCopyWithImpl(
+      _$RecordEditViewSettingsStateImpl _value,
+      $Res Function(_$RecordEditViewSettingsStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -93,7 +93,7 @@ class __$$_RecordEditViewSettingsStateCopyWithImpl<$Res>
     Object? draw = null,
     Object? bo3 = null,
   }) {
-    return _then(_$_RecordEditViewSettingsState(
+    return _then(_$RecordEditViewSettingsStateImpl(
       draw: null == draw
           ? _value.draw
           : draw // ignore: cast_nullable_to_non_nullable
@@ -108,8 +108,9 @@ class __$$_RecordEditViewSettingsStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_RecordEditViewSettingsState implements _RecordEditViewSettingsState {
-  _$_RecordEditViewSettingsState({this.draw = false, this.bo3 = false});
+class _$RecordEditViewSettingsStateImpl
+    implements _RecordEditViewSettingsState {
+  _$RecordEditViewSettingsStateImpl({this.draw = false, this.bo3 = false});
 
   @override
   @JsonKey()
@@ -124,10 +125,10 @@ class _$_RecordEditViewSettingsState implements _RecordEditViewSettingsState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_RecordEditViewSettingsState &&
+            other is _$RecordEditViewSettingsStateImpl &&
             (identical(other.draw, draw) || other.draw == draw) &&
             (identical(other.bo3, bo3) || other.bo3 == bo3));
   }
@@ -138,15 +139,15 @@ class _$_RecordEditViewSettingsState implements _RecordEditViewSettingsState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_RecordEditViewSettingsStateCopyWith<_$_RecordEditViewSettingsState>
-      get copyWith => __$$_RecordEditViewSettingsStateCopyWithImpl<
-          _$_RecordEditViewSettingsState>(this, _$identity);
+  _$$RecordEditViewSettingsStateImplCopyWith<_$RecordEditViewSettingsStateImpl>
+      get copyWith => __$$RecordEditViewSettingsStateImplCopyWithImpl<
+          _$RecordEditViewSettingsStateImpl>(this, _$identity);
 }
 
 abstract class _RecordEditViewSettingsState
     implements RecordEditViewSettingsState {
   factory _RecordEditViewSettingsState({final bool draw, final bool bo3}) =
-      _$_RecordEditViewSettingsState;
+      _$RecordEditViewSettingsStateImpl;
 
   @override
   bool get draw;
@@ -154,6 +155,6 @@ abstract class _RecordEditViewSettingsState
   bool get bo3;
   @override
   @JsonKey(ignore: true)
-  _$$_RecordEditViewSettingsStateCopyWith<_$_RecordEditViewSettingsState>
+  _$$RecordEditViewSettingsStateImplCopyWith<_$RecordEditViewSettingsStateImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

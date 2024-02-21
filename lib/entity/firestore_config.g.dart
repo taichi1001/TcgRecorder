@@ -6,12 +6,13 @@ part of 'firestore_config.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_FirestoreConfig _$$_FirestoreConfigFromJson(Map<String, dynamic> json) =>
+_$FirestoreConfigImpl _$$FirestoreConfigImplFromJson(
+        Map<String, dynamic> json) =>
     $checkedCreate(
-      r'_$_FirestoreConfig',
+      r'_$FirestoreConfigImpl',
       json,
       ($checkedConvert) {
-        final val = _$_FirestoreConfig(
+        final val = _$FirestoreConfigImpl(
           android: $checkedConvert('android', (v) => v as String),
           ios: $checkedConvert('ios', (v) => v as String),
         );
@@ -19,7 +20,8 @@ _$_FirestoreConfig _$$_FirestoreConfigFromJson(Map<String, dynamic> json) =>
       },
     );
 
-Map<String, dynamic> _$$_FirestoreConfigToJson(_$_FirestoreConfig instance) =>
+Map<String, dynamic> _$$FirestoreConfigImplToJson(
+        _$FirestoreConfigImpl instance) =>
     <String, dynamic>{
       'android': instance.android,
       'ios': instance.ios,

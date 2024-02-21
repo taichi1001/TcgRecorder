@@ -12,7 +12,7 @@ part of 'firebase_auth_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$FirebaseAuthState {
@@ -57,22 +57,22 @@ class _$FirebaseAuthStateCopyWithImpl<$Res, $Val extends FirebaseAuthState>
 }
 
 /// @nodoc
-abstract class _$$_FirebaseAuthStateCopyWith<$Res>
+abstract class _$$FirebaseAuthStateImplCopyWith<$Res>
     implements $FirebaseAuthStateCopyWith<$Res> {
-  factory _$$_FirebaseAuthStateCopyWith(_$_FirebaseAuthState value,
-          $Res Function(_$_FirebaseAuthState) then) =
-      __$$_FirebaseAuthStateCopyWithImpl<$Res>;
+  factory _$$FirebaseAuthStateImplCopyWith(_$FirebaseAuthStateImpl value,
+          $Res Function(_$FirebaseAuthStateImpl) then) =
+      __$$FirebaseAuthStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({User? user});
 }
 
 /// @nodoc
-class __$$_FirebaseAuthStateCopyWithImpl<$Res>
-    extends _$FirebaseAuthStateCopyWithImpl<$Res, _$_FirebaseAuthState>
-    implements _$$_FirebaseAuthStateCopyWith<$Res> {
-  __$$_FirebaseAuthStateCopyWithImpl(
-      _$_FirebaseAuthState _value, $Res Function(_$_FirebaseAuthState) _then)
+class __$$FirebaseAuthStateImplCopyWithImpl<$Res>
+    extends _$FirebaseAuthStateCopyWithImpl<$Res, _$FirebaseAuthStateImpl>
+    implements _$$FirebaseAuthStateImplCopyWith<$Res> {
+  __$$FirebaseAuthStateImplCopyWithImpl(_$FirebaseAuthStateImpl _value,
+      $Res Function(_$FirebaseAuthStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -80,7 +80,7 @@ class __$$_FirebaseAuthStateCopyWithImpl<$Res>
   $Res call({
     Object? user = freezed,
   }) {
-    return _then(_$_FirebaseAuthState(
+    return _then(_$FirebaseAuthStateImpl(
       user: freezed == user
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
@@ -91,8 +91,8 @@ class __$$_FirebaseAuthStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_FirebaseAuthState implements _FirebaseAuthState {
-  _$_FirebaseAuthState({this.user});
+class _$FirebaseAuthStateImpl implements _FirebaseAuthState {
+  _$FirebaseAuthStateImpl({this.user});
 
   @override
   final User? user;
@@ -103,10 +103,10 @@ class _$_FirebaseAuthState implements _FirebaseAuthState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_FirebaseAuthState &&
+            other is _$FirebaseAuthStateImpl &&
             (identical(other.user, user) || other.user == user));
   }
 
@@ -116,18 +116,18 @@ class _$_FirebaseAuthState implements _FirebaseAuthState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_FirebaseAuthStateCopyWith<_$_FirebaseAuthState> get copyWith =>
-      __$$_FirebaseAuthStateCopyWithImpl<_$_FirebaseAuthState>(
+  _$$FirebaseAuthStateImplCopyWith<_$FirebaseAuthStateImpl> get copyWith =>
+      __$$FirebaseAuthStateImplCopyWithImpl<_$FirebaseAuthStateImpl>(
           this, _$identity);
 }
 
 abstract class _FirebaseAuthState implements FirebaseAuthState {
-  factory _FirebaseAuthState({final User? user}) = _$_FirebaseAuthState;
+  factory _FirebaseAuthState({final User? user}) = _$FirebaseAuthStateImpl;
 
   @override
   User? get user;
   @override
   @JsonKey(ignore: true)
-  _$$_FirebaseAuthStateCopyWith<_$_FirebaseAuthState> get copyWith =>
+  _$$FirebaseAuthStateImplCopyWith<_$FirebaseAuthStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

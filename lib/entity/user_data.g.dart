@@ -6,11 +6,12 @@ part of 'user_data.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_UserData _$$_UserDataFromJson(Map<String, dynamic> json) => $checkedCreate(
-      r'_$_UserData',
+_$UserDataImpl _$$UserDataImplFromJson(Map<String, dynamic> json) =>
+    $checkedCreate(
+      r'_$UserDataImpl',
       json,
       ($checkedConvert) {
-        final val = _$_UserData(
+        final val = _$UserDataImpl(
           id: $checkedConvert('id', (v) => v as String),
           name: $checkedConvert('name', (v) => v as String?),
           iconPath: $checkedConvert('icon_path', (v) => v as String?),
@@ -20,7 +21,7 @@ _$_UserData _$$_UserDataFromJson(Map<String, dynamic> json) => $checkedCreate(
       fieldKeyMap: const {'iconPath': 'icon_path'},
     );
 
-Map<String, dynamic> _$$_UserDataToJson(_$_UserData instance) =>
+Map<String, dynamic> _$$UserDataImplToJson(_$UserDataImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,

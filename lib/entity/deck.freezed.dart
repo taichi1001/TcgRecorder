@@ -12,7 +12,7 @@ part of 'deck.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 Deck _$DeckFromJson(Map<String, dynamic> json) {
   return _Deck.fromJson(json);
@@ -40,13 +40,11 @@ abstract class $DeckCopyWith<$Res> {
       _$DeckCopyWithImpl<$Res, Deck>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'deck_id')
-          int? id,
-      @JsonKey(name: 'deck')
-          String name,
+      {@JsonKey(name: 'deck_id') int? id,
+      @JsonKey(name: 'deck') String name,
       int? gameId,
       @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
-          bool isVisibleToPicker,
+      bool isVisibleToPicker,
       int? sortIndex});
 }
 
@@ -95,26 +93,26 @@ class _$DeckCopyWithImpl<$Res, $Val extends Deck>
 }
 
 /// @nodoc
-abstract class _$$_DeckCopyWith<$Res> implements $DeckCopyWith<$Res> {
-  factory _$$_DeckCopyWith(_$_Deck value, $Res Function(_$_Deck) then) =
-      __$$_DeckCopyWithImpl<$Res>;
+abstract class _$$DeckImplCopyWith<$Res> implements $DeckCopyWith<$Res> {
+  factory _$$DeckImplCopyWith(
+          _$DeckImpl value, $Res Function(_$DeckImpl) then) =
+      __$$DeckImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'deck_id')
-          int? id,
-      @JsonKey(name: 'deck')
-          String name,
+      {@JsonKey(name: 'deck_id') int? id,
+      @JsonKey(name: 'deck') String name,
       int? gameId,
       @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
-          bool isVisibleToPicker,
+      bool isVisibleToPicker,
       int? sortIndex});
 }
 
 /// @nodoc
-class __$$_DeckCopyWithImpl<$Res> extends _$DeckCopyWithImpl<$Res, _$_Deck>
-    implements _$$_DeckCopyWith<$Res> {
-  __$$_DeckCopyWithImpl(_$_Deck _value, $Res Function(_$_Deck) _then)
+class __$$DeckImplCopyWithImpl<$Res>
+    extends _$DeckCopyWithImpl<$Res, _$DeckImpl>
+    implements _$$DeckImplCopyWith<$Res> {
+  __$$DeckImplCopyWithImpl(_$DeckImpl _value, $Res Function(_$DeckImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -126,7 +124,7 @@ class __$$_DeckCopyWithImpl<$Res> extends _$DeckCopyWithImpl<$Res, _$_Deck>
     Object? isVisibleToPicker = null,
     Object? sortIndex = freezed,
   }) {
-    return _then(_$_Deck(
+    return _then(_$DeckImpl(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -153,18 +151,17 @@ class __$$_DeckCopyWithImpl<$Res> extends _$DeckCopyWithImpl<$Res, _$_Deck>
 
 /// @nodoc
 @JsonSerializable()
-class _$_Deck implements _Deck {
-  _$_Deck(
-      {@JsonKey(name: 'deck_id')
-          this.id,
-      @JsonKey(name: 'deck')
-          required this.name,
+class _$DeckImpl implements _Deck {
+  _$DeckImpl(
+      {@JsonKey(name: 'deck_id') this.id,
+      @JsonKey(name: 'deck') required this.name,
       this.gameId,
       @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
-          this.isVisibleToPicker = true,
+      this.isVisibleToPicker = true,
       this.sortIndex});
 
-  factory _$_Deck.fromJson(Map<String, dynamic> json) => _$$_DeckFromJson(json);
+  factory _$DeckImpl.fromJson(Map<String, dynamic> json) =>
+      _$$DeckImplFromJson(json);
 
   @override
   @JsonKey(name: 'deck_id')
@@ -186,10 +183,10 @@ class _$_Deck implements _Deck {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Deck &&
+            other is _$DeckImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.gameId, gameId) || other.gameId == gameId) &&
@@ -207,12 +204,12 @@ class _$_Deck implements _Deck {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_DeckCopyWith<_$_Deck> get copyWith =>
-      __$$_DeckCopyWithImpl<_$_Deck>(this, _$identity);
+  _$$DeckImplCopyWith<_$DeckImpl> get copyWith =>
+      __$$DeckImplCopyWithImpl<_$DeckImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_DeckToJson(
+    return _$$DeckImplToJson(
       this,
     );
   }
@@ -220,16 +217,14 @@ class _$_Deck implements _Deck {
 
 abstract class _Deck implements Deck {
   factory _Deck(
-      {@JsonKey(name: 'deck_id')
-          final int? id,
-      @JsonKey(name: 'deck')
-          required final String name,
+      {@JsonKey(name: 'deck_id') final int? id,
+      @JsonKey(name: 'deck') required final String name,
       final int? gameId,
       @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
-          final bool isVisibleToPicker,
-      final int? sortIndex}) = _$_Deck;
+      final bool isVisibleToPicker,
+      final int? sortIndex}) = _$DeckImpl;
 
-  factory _Deck.fromJson(Map<String, dynamic> json) = _$_Deck.fromJson;
+  factory _Deck.fromJson(Map<String, dynamic> json) = _$DeckImpl.fromJson;
 
   @override
   @JsonKey(name: 'deck_id')
@@ -246,5 +241,6 @@ abstract class _Deck implements Deck {
   int? get sortIndex;
   @override
   @JsonKey(ignore: true)
-  _$$_DeckCopyWith<_$_Deck> get copyWith => throw _privateConstructorUsedError;
+  _$$DeckImplCopyWith<_$DeckImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }

@@ -12,7 +12,7 @@ part of 'firestore_share.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 FirestoreShare _$FirestoreShareFromJson(Map<String, dynamic> json) {
   return _FirestoreShare.fromJson(json);
@@ -108,11 +108,11 @@ class _$FirestoreShareCopyWithImpl<$Res, $Val extends FirestoreShare>
 }
 
 /// @nodoc
-abstract class _$$_FirestoreShareCopyWith<$Res>
+abstract class _$$FirestoreShareImplCopyWith<$Res>
     implements $FirestoreShareCopyWith<$Res> {
-  factory _$$_FirestoreShareCopyWith(
-          _$_FirestoreShare value, $Res Function(_$_FirestoreShare) then) =
-      __$$_FirestoreShareCopyWithImpl<$Res>;
+  factory _$$FirestoreShareImplCopyWith(_$FirestoreShareImpl value,
+          $Res Function(_$FirestoreShareImpl) then) =
+      __$$FirestoreShareImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -128,11 +128,11 @@ abstract class _$$_FirestoreShareCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_FirestoreShareCopyWithImpl<$Res>
-    extends _$FirestoreShareCopyWithImpl<$Res, _$_FirestoreShare>
-    implements _$$_FirestoreShareCopyWith<$Res> {
-  __$$_FirestoreShareCopyWithImpl(
-      _$_FirestoreShare _value, $Res Function(_$_FirestoreShare) _then)
+class __$$FirestoreShareImplCopyWithImpl<$Res>
+    extends _$FirestoreShareCopyWithImpl<$Res, _$FirestoreShareImpl>
+    implements _$$FirestoreShareImplCopyWith<$Res> {
+  __$$FirestoreShareImplCopyWithImpl(
+      _$FirestoreShareImpl _value, $Res Function(_$FirestoreShareImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -145,7 +145,7 @@ class __$$_FirestoreShareCopyWithImpl<$Res>
     Object? pendingUserList = null,
     Object? shareUserList = null,
   }) {
-    return _then(_$_FirestoreShare(
+    return _then(_$FirestoreShareImpl(
       game: null == game
           ? _value.game
           : game // ignore: cast_nullable_to_non_nullable
@@ -177,8 +177,8 @@ class __$$_FirestoreShareCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(explicitToJson: true)
-class _$_FirestoreShare implements _FirestoreShare {
-  _$_FirestoreShare(
+class _$FirestoreShareImpl implements _FirestoreShare {
+  _$FirestoreShareImpl(
       {required this.game,
       required this.authorName,
       required this.docName,
@@ -188,8 +188,8 @@ class _$_FirestoreShare implements _FirestoreShare {
       : _pendingUserList = pendingUserList,
         _shareUserList = shareUserList;
 
-  factory _$_FirestoreShare.fromJson(Map<String, dynamic> json) =>
-      _$$_FirestoreShareFromJson(json);
+  factory _$FirestoreShareImpl.fromJson(Map<String, dynamic> json) =>
+      _$$FirestoreShareImplFromJson(json);
 
   @override
   final Game game;
@@ -224,10 +224,10 @@ class _$_FirestoreShare implements _FirestoreShare {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_FirestoreShare &&
+            other is _$FirestoreShareImpl &&
             (identical(other.game, game) || other.game == game) &&
             (identical(other.authorName, authorName) ||
                 other.authorName == authorName) &&
@@ -254,12 +254,13 @@ class _$_FirestoreShare implements _FirestoreShare {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_FirestoreShareCopyWith<_$_FirestoreShare> get copyWith =>
-      __$$_FirestoreShareCopyWithImpl<_$_FirestoreShare>(this, _$identity);
+  _$$FirestoreShareImplCopyWith<_$FirestoreShareImpl> get copyWith =>
+      __$$FirestoreShareImplCopyWithImpl<_$FirestoreShareImpl>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_FirestoreShareToJson(
+    return _$$FirestoreShareImplToJson(
       this,
     );
   }
@@ -272,10 +273,10 @@ abstract class _FirestoreShare implements FirestoreShare {
       required final String docName,
       final bool isShared,
       final List<ShareUser> pendingUserList,
-      final List<ShareUser> shareUserList}) = _$_FirestoreShare;
+      final List<ShareUser> shareUserList}) = _$FirestoreShareImpl;
 
   factory _FirestoreShare.fromJson(Map<String, dynamic> json) =
-      _$_FirestoreShare.fromJson;
+      _$FirestoreShareImpl.fromJson;
 
   @override
   Game get game;
@@ -291,6 +292,6 @@ abstract class _FirestoreShare implements FirestoreShare {
   List<ShareUser> get shareUserList;
   @override
   @JsonKey(ignore: true)
-  _$$_FirestoreShareCopyWith<_$_FirestoreShare> get copyWith =>
+  _$$FirestoreShareImplCopyWith<_$FirestoreShareImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

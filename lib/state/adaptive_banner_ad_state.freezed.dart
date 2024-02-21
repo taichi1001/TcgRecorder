@@ -12,7 +12,7 @@ part of 'adaptive_banner_ad_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$AdaptiveBannerAdState {
@@ -58,22 +58,24 @@ class _$AdaptiveBannerAdStateCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_AdaptiveBannerAdStateCopyWith<$Res>
+abstract class _$$AdaptiveBannerAdStateImplCopyWith<$Res>
     implements $AdaptiveBannerAdStateCopyWith<$Res> {
-  factory _$$_AdaptiveBannerAdStateCopyWith(_$_AdaptiveBannerAdState value,
-          $Res Function(_$_AdaptiveBannerAdState) then) =
-      __$$_AdaptiveBannerAdStateCopyWithImpl<$Res>;
+  factory _$$AdaptiveBannerAdStateImplCopyWith(
+          _$AdaptiveBannerAdStateImpl value,
+          $Res Function(_$AdaptiveBannerAdStateImpl) then) =
+      __$$AdaptiveBannerAdStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({AdSize? adSize});
 }
 
 /// @nodoc
-class __$$_AdaptiveBannerAdStateCopyWithImpl<$Res>
-    extends _$AdaptiveBannerAdStateCopyWithImpl<$Res, _$_AdaptiveBannerAdState>
-    implements _$$_AdaptiveBannerAdStateCopyWith<$Res> {
-  __$$_AdaptiveBannerAdStateCopyWithImpl(_$_AdaptiveBannerAdState _value,
-      $Res Function(_$_AdaptiveBannerAdState) _then)
+class __$$AdaptiveBannerAdStateImplCopyWithImpl<$Res>
+    extends _$AdaptiveBannerAdStateCopyWithImpl<$Res,
+        _$AdaptiveBannerAdStateImpl>
+    implements _$$AdaptiveBannerAdStateImplCopyWith<$Res> {
+  __$$AdaptiveBannerAdStateImplCopyWithImpl(_$AdaptiveBannerAdStateImpl _value,
+      $Res Function(_$AdaptiveBannerAdStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -81,7 +83,7 @@ class __$$_AdaptiveBannerAdStateCopyWithImpl<$Res>
   $Res call({
     Object? adSize = freezed,
   }) {
-    return _then(_$_AdaptiveBannerAdState(
+    return _then(_$AdaptiveBannerAdStateImpl(
       adSize: freezed == adSize
           ? _value.adSize
           : adSize // ignore: cast_nullable_to_non_nullable
@@ -92,8 +94,8 @@ class __$$_AdaptiveBannerAdStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_AdaptiveBannerAdState implements _AdaptiveBannerAdState {
-  _$_AdaptiveBannerAdState({this.adSize});
+class _$AdaptiveBannerAdStateImpl implements _AdaptiveBannerAdState {
+  _$AdaptiveBannerAdStateImpl({this.adSize});
 
   @override
   final AdSize? adSize;
@@ -104,10 +106,10 @@ class _$_AdaptiveBannerAdState implements _AdaptiveBannerAdState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_AdaptiveBannerAdState &&
+            other is _$AdaptiveBannerAdStateImpl &&
             (identical(other.adSize, adSize) || other.adSize == adSize));
   }
 
@@ -117,19 +119,19 @@ class _$_AdaptiveBannerAdState implements _AdaptiveBannerAdState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_AdaptiveBannerAdStateCopyWith<_$_AdaptiveBannerAdState> get copyWith =>
-      __$$_AdaptiveBannerAdStateCopyWithImpl<_$_AdaptiveBannerAdState>(
-          this, _$identity);
+  _$$AdaptiveBannerAdStateImplCopyWith<_$AdaptiveBannerAdStateImpl>
+      get copyWith => __$$AdaptiveBannerAdStateImplCopyWithImpl<
+          _$AdaptiveBannerAdStateImpl>(this, _$identity);
 }
 
 abstract class _AdaptiveBannerAdState implements AdaptiveBannerAdState {
   factory _AdaptiveBannerAdState({final AdSize? adSize}) =
-      _$_AdaptiveBannerAdState;
+      _$AdaptiveBannerAdStateImpl;
 
   @override
   AdSize? get adSize;
   @override
   @JsonKey(ignore: true)
-  _$$_AdaptiveBannerAdStateCopyWith<_$_AdaptiveBannerAdState> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$AdaptiveBannerAdStateImplCopyWith<_$AdaptiveBannerAdStateImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

@@ -6,11 +6,12 @@ part of 'share_user.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_ShareUser _$$_ShareUserFromJson(Map<String, dynamic> json) => $checkedCreate(
-      r'_$_ShareUser',
+_$ShareUserImpl _$$ShareUserImplFromJson(Map<String, dynamic> json) =>
+    $checkedCreate(
+      r'_$ShareUserImpl',
       json,
       ($checkedConvert) {
-        final val = _$_ShareUser(
+        final val = _$ShareUserImpl(
           id: $checkedConvert('id', (v) => v as String),
           roll: $checkedConvert(
               'roll', (v) => $enumDecode(_$AccessRollEnumMap, v)),
@@ -19,7 +20,7 @@ _$_ShareUser _$$_ShareUserFromJson(Map<String, dynamic> json) => $checkedCreate(
       },
     );
 
-Map<String, dynamic> _$$_ShareUserToJson(_$_ShareUser instance) =>
+Map<String, dynamic> _$$ShareUserImplToJson(_$ShareUserImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'roll': _$AccessRollEnumMap[instance.roll]!,

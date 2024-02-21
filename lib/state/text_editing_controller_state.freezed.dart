@@ -12,7 +12,7 @@ part of 'text_editing_controller_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$TextEditingControllerState {
@@ -85,12 +85,12 @@ class _$TextEditingControllerStateCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_TextEditingControllerStateCopyWith<$Res>
+abstract class _$$TextEditingControllerStateImplCopyWith<$Res>
     implements $TextEditingControllerStateCopyWith<$Res> {
-  factory _$$_TextEditingControllerStateCopyWith(
-          _$_TextEditingControllerState value,
-          $Res Function(_$_TextEditingControllerState) then) =
-      __$$_TextEditingControllerStateCopyWithImpl<$Res>;
+  factory _$$TextEditingControllerStateImplCopyWith(
+          _$TextEditingControllerStateImpl value,
+          $Res Function(_$TextEditingControllerStateImpl) then) =
+      __$$TextEditingControllerStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -101,13 +101,13 @@ abstract class _$$_TextEditingControllerStateCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_TextEditingControllerStateCopyWithImpl<$Res>
+class __$$TextEditingControllerStateImplCopyWithImpl<$Res>
     extends _$TextEditingControllerStateCopyWithImpl<$Res,
-        _$_TextEditingControllerState>
-    implements _$$_TextEditingControllerStateCopyWith<$Res> {
-  __$$_TextEditingControllerStateCopyWithImpl(
-      _$_TextEditingControllerState _value,
-      $Res Function(_$_TextEditingControllerState) _then)
+        _$TextEditingControllerStateImpl>
+    implements _$$TextEditingControllerStateImplCopyWith<$Res> {
+  __$$TextEditingControllerStateImplCopyWithImpl(
+      _$TextEditingControllerStateImpl _value,
+      $Res Function(_$TextEditingControllerStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -118,7 +118,7 @@ class __$$_TextEditingControllerStateCopyWithImpl<$Res>
     Object? tagController = null,
     Object? memoController = null,
   }) {
-    return _then(_$_TextEditingControllerState(
+    return _then(_$TextEditingControllerStateImpl(
       useDeckController: null == useDeckController
           ? _value.useDeckController
           : useDeckController // ignore: cast_nullable_to_non_nullable
@@ -141,8 +141,8 @@ class __$$_TextEditingControllerStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_TextEditingControllerState implements _TextEditingControllerState {
-  _$_TextEditingControllerState(
+class _$TextEditingControllerStateImpl implements _TextEditingControllerState {
+  _$TextEditingControllerStateImpl(
       {required this.useDeckController,
       required this.opponentDeckController,
       required final List<TextEditingController> tagController,
@@ -170,10 +170,10 @@ class _$_TextEditingControllerState implements _TextEditingControllerState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_TextEditingControllerState &&
+            other is _$TextEditingControllerStateImpl &&
             (identical(other.useDeckController, useDeckController) ||
                 other.useDeckController == useDeckController) &&
             (identical(other.opponentDeckController, opponentDeckController) ||
@@ -195,9 +195,9 @@ class _$_TextEditingControllerState implements _TextEditingControllerState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_TextEditingControllerStateCopyWith<_$_TextEditingControllerState>
-      get copyWith => __$$_TextEditingControllerStateCopyWithImpl<
-          _$_TextEditingControllerState>(this, _$identity);
+  _$$TextEditingControllerStateImplCopyWith<_$TextEditingControllerStateImpl>
+      get copyWith => __$$TextEditingControllerStateImplCopyWithImpl<
+          _$TextEditingControllerStateImpl>(this, _$identity);
 }
 
 abstract class _TextEditingControllerState
@@ -207,7 +207,7 @@ abstract class _TextEditingControllerState
           required final TextEditingController opponentDeckController,
           required final List<TextEditingController> tagController,
           required final TextEditingController memoController}) =
-      _$_TextEditingControllerState;
+      _$TextEditingControllerStateImpl;
 
   @override
   TextEditingController get useDeckController;
@@ -219,6 +219,6 @@ abstract class _TextEditingControllerState
   TextEditingController get memoController;
   @override
   @JsonKey(ignore: true)
-  _$$_TextEditingControllerStateCopyWith<_$_TextEditingControllerState>
+  _$$TextEditingControllerStateImplCopyWith<_$TextEditingControllerStateImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
