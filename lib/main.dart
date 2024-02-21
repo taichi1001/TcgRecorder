@@ -41,29 +41,18 @@ void main() async {
   late final SharedPreferences prefs;
   late final String imagePath;
 
-  await Future.wait([
-    // Firebase初期化
-    Future(
-      () async {
-        await Firebase.initializeApp(
-          options: DefaultFirebaseOptions.currentPlatform,
-        );
-      },
-    ),
-    // SharedPreferences初期化
-    Future(() async {
-      prefs = await SharedPreferences.getInstance();
-    }),
-    Future(() async {
-      final saveDir = await getApplicationDocumentsDirectory();
-      imagePath = saveDir.path;
-    }),
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]),
-    ATT.instance.requestPermission().then((result) {
-      MobileAds.instance.initialize();
-    }),
-    MobileAds.instance.initialize(),
-  ]);
+  // Firebase初期化
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  // SharedPreferences初期化
+  prefs = await SharedPreferences.getInstance();
+
+  final saveDir = await getApplicationDocumentsDirectory();
+  imagePath = saveDir.path;
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  await ATT.instance.requestPermission().then((result) {
+    MobileAds.instance.initialize();
+  });
+  await MobileAds.instance.initialize();
   await generateNoticeSetting();
 
   runApp(

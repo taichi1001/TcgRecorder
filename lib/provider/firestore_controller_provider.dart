@@ -22,7 +22,7 @@ class FirestoreController {
     final shareRepository = ref.read(firestoreShareRepository);
     final shareDataRepository = ref.read(firestoreShareDataRepository);
 
-    await shareRepository.initGame(game, user, game.id);
+    final shareDocName = await shareRepository.initGame(game, user, game.id);
 
     final gameDeckList = await ref.read(currentGameDeckListProvider(game).future);
     var maxIdDeck = 0;
@@ -40,34 +40,34 @@ class FirestoreController {
       maxIdRecord = gameRecordList.reduce((value, element) => element.id! > value.id! ? element : value).id!;
     }
     await shareDataRepository.initGame(
+      shareDocName,
       game,
       user,
       deckCounter: maxIdDeck,
       tagCounter: maxIdTag,
       recordCounter: maxIdRecord,
     );
-    final docName = '$user-${game.id}';
     final futures = <Future>[];
     for (final deck in gameDeckList) {
-      futures.add(shareDataRepository.addDeck(deck, docName));
+      futures.add(shareDataRepository.addDeck(deck, shareDocName));
     }
     for (final tag in gameTagList) {
-      futures.add(shareDataRepository.addTag(tag, docName));
+      futures.add(shareDataRepository.addTag(tag, shareDocName));
     }
     for (final record in gameRecordList) {
       if (record.imagePath != null && record.imagePath!.isNotEmpty) {
         List<String> imagePathList = [];
         for (final imagePath in record.imagePath!) {
-          final strageRef = FirebaseStorage.instance.ref().child('share_data/$docName/$imagePath');
+          final strageRef = FirebaseStorage.instance.ref().child('share_data/$shareDocName/$imagePath');
           final savePath = ref.read(imagePathProvider);
           final file = File('$savePath/$imagePath');
           await strageRef.putFile(file);
           final url = await strageRef.getDownloadURL();
           imagePathList.add(url);
         }
-        futures.add(shareDataRepository.addRecord(record.copyWith(imagePath: imagePathList), docName));
+        futures.add(shareDataRepository.addRecord(record.copyWith(imagePath: imagePathList), shareDocName));
       } else {
-        futures.add(shareDataRepository.addRecord(record, docName));
+        futures.add(shareDataRepository.addRecord(record, shareDocName));
       }
     }
 
