@@ -8,7 +8,7 @@ part 'share_user.g.dart';
 class ShareUser with _$ShareUser {
   factory ShareUser({
     required String id,
-    required AccessRoll roll,
+    @Default(AccessRoll.reader) AccessRoll roll,
   }) = _ShareUser;
   factory ShareUser.fromJson(Map<String, dynamic> json) => _$ShareUserFromJson(json);
 }

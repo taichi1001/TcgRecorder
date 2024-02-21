@@ -2,17 +2,14 @@ import 'dart:math' as math;
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:tcg_manager/entity/firestore_share.dart';
 import 'package:tcg_manager/entity/game.dart';
-import 'package:tcg_manager/enum/access_roll.dart';
+import 'package:tcg_manager/entity/share_user.dart';
 import 'package:tcg_manager/main.dart';
-import 'package:tcg_manager/provider/adaptive_banner_ad_provider.dart';
 import 'package:tcg_manager/provider/firebase_auth_provider.dart';
-import 'package:tcg_manager/provider/firestore_controller_provider.dart';
 import 'package:tcg_manager/provider/revenue_cat_provider.dart';
 import 'package:tcg_manager/provider/user_info_settings_provider.dart';
-import 'package:tcg_manager/repository/dynamic_links_repository.dart';
+import 'package:tcg_manager/repository/firestore_invite_code_repository.dart';
 import 'package:tcg_manager/repository/firestore_share_repository.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
 import 'package:tcg_manager/view/component/list_tile_ontap.dart';
@@ -27,60 +24,45 @@ class ShareView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userInfo = ref.watch(userInfoSettingsProvider);
-    final adHeight = ref.watch(adaptiveBannerAdNotifierProvider).adSize?.height;
     final isPremium = ref.watch(revenueCatProvider.select((value) => value?.isPremium));
     return Scaffold(
       appBar: AppBar(title: const Text('ゲーム共有')),
+      bottomNavigationBar: const AdaptiveBannerAd(),
       body: userInfo.name == null
           ? Column(
               children: [
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const Center(
-                        child: Text('ゲーム共有を利用するためにはプロフィールの設定が必要です。'),
-                      ),
-                      ElevatedButton(
-                        onPressed: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const UserInfoSettingsView(),
-                          ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Center(
+                      child: Text('ゲーム共有を利用するためにはプロフィールの設定が必要です。'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const UserInfoSettingsView(),
                         ),
-                        child: const Text('プロフィールを設定する'),
                       ),
-                    ],
-                  ),
-                ),
-                const AdaptiveBannerAd(),
-              ],
-            )
-          : Stack(
-              alignment: Alignment.bottomCenter,
-              children: [
-                CustomScrollView(
-                  slivers: [
-                    if (!isPremium!) const SliverToBoxAdapter(child: LimitedAccessBanner()),
-                    const SliverHeader(title: 'ホスト'),
-                    const _HostShareGameListView(),
-                    const SliverHeader(title: 'ゲスト'),
-                    const _GuestShareGameListView(),
-                    const SliverHeader(title: '申請中'),
-                    const _GuestPendingShareGameListView(),
-                    SliverToBoxAdapter(child: Container(height: adHeight?.toDouble())),
+                      child: const Text('プロフィールを設定する'),
+                    ),
                   ],
                 ),
-                const AdaptiveBannerAd(),
+              ],
+            )
+          : CustomScrollView(
+              slivers: [
+                if (!isPremium!) const SliverToBoxAdapter(child: LimitedAccessBanner()),
+                const SliverHeader(title: 'ホスト'),
+                const _HostShareGameListView(),
+                const SliverHeader(title: 'ゲスト'),
+                const _GuestShareGameListView(),
+                const SliverHeader(title: '申請中'),
+                const _GuestPendingShareGameListView(),
               ],
             ),
-      floatingActionButton: userInfo.name == null
-          ? null
-          : Padding(
-              padding: EdgeInsets.only(bottom: adHeight!.toDouble()),
-              child: const _AddShareGameButton(),
-            ),
+      floatingActionButton: userInfo.name == null ? null : const _AddShareGameButton(),
     );
   }
 }
@@ -130,7 +112,7 @@ class _AddShareGameButton extends HookConsumerWidget {
         final shareCount = ref.read(combinedShareCountProvider);
         final isPremium = ref.read(revenueCatProvider)?.isPremium;
 
-        if (shareCount[0] > 0 && !isPremium!) {
+        if (shareCount[0] > 1 && !isPremium!) {
           final result = await showOkCancelAlertDialog(
             context: context,
             title: '共有個数制限に達しました。',
@@ -151,16 +133,19 @@ class _AddShareGameButton extends HookConsumerWidget {
         } else {
           final inputText = await showTextInputDialog(
             context: context,
-            title: '共有ゲーム作成',
-            message: '共有用ゲーム名を入力してください。このゲームは個人保存ゲームとは別扱いとなります。',
+            title: '招待コード入力',
+            message: '招待コードを入力してください。',
             textFields: [const DialogTextField()],
           );
-          if (inputText != null && inputText.first != '') {
-            final uid = ref.read(firebaseAuthNotifierProvider).user?.uid;
-            if (uid != null) {
-              ref.read(firestoreControllerProvider).initShareGame(Game(name: inputText.first, isShare: true), uid);
-              final link = await ref.read(dynamicLinksRepository).createInviteDynamicLink(uid, inputText.first, AccessRoll.writer);
-              await Share.share(link.toString(), subject: '「${inputText.first}」共有用のリンク');
+          if (inputText != null) {
+            final shareDocName = await ref.read(firestoreInviteCodeRepository).validateInviteCode(inputText.first);
+            if (shareDocName == null) {
+              // TODO 無効な招待コードであることを通知する
+            } else {
+              final uid = ref.read(firebaseAuthNotifierProvider).user?.uid;
+              if (uid != null) {
+                ref.read(firestoreShareRepository).requestDataShare(shareDocName, ShareUser(id: uid));
+              }
             }
           }
         }

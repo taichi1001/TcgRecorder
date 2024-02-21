@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/generated/l10n.dart';
-import 'package:tcg_manager/repository/dynamic_links_repository.dart';
 import 'package:tcg_manager/view/graph_view.dart';
 import 'package:tcg_manager/view/input_view/input_view.dart';
 import 'package:tcg_manager/view/other_view.dart';
@@ -30,11 +28,6 @@ class BottomNavigationView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    useEffect(() {
-      ref.read(dynamicLinksRepository).linkRecive(context);
-      return;
-    }, const []);
-
     return Scaffold(
       body: ref.watch(bottomNavItemProvider),
       bottomNavigationBar: BottomNavigationBar(

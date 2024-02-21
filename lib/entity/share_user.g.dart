@@ -14,7 +14,10 @@ _$ShareUserImpl _$$ShareUserImplFromJson(Map<String, dynamic> json) =>
         final val = _$ShareUserImpl(
           id: $checkedConvert('id', (v) => v as String),
           roll: $checkedConvert(
-              'roll', (v) => $enumDecode(_$AccessRollEnumMap, v)),
+              'roll',
+              (v) =>
+                  $enumDecodeNullable(_$AccessRollEnumMap, v) ??
+                  AccessRoll.reader),
         );
         return val;
       },

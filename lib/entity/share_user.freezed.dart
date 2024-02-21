@@ -107,7 +107,7 @@ class __$$ShareUserImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$ShareUserImpl implements _ShareUser {
-  _$ShareUserImpl({required this.id, required this.roll});
+  _$ShareUserImpl({required this.id, this.roll = AccessRoll.reader});
 
   factory _$ShareUserImpl.fromJson(Map<String, dynamic> json) =>
       _$$ShareUserImplFromJson(json);
@@ -115,6 +115,7 @@ class _$ShareUserImpl implements _ShareUser {
   @override
   final String id;
   @override
+  @JsonKey()
   final AccessRoll roll;
 
   @override
@@ -150,9 +151,8 @@ class _$ShareUserImpl implements _ShareUser {
 }
 
 abstract class _ShareUser implements ShareUser {
-  factory _ShareUser(
-      {required final String id,
-      required final AccessRoll roll}) = _$ShareUserImpl;
+  factory _ShareUser({required final String id, final AccessRoll roll}) =
+      _$ShareUserImpl;
 
   factory _ShareUser.fromJson(Map<String, dynamic> json) =
       _$ShareUserImpl.fromJson;

@@ -7,10 +7,9 @@ import 'package:share_plus/share_plus.dart';
 import 'package:tcg_manager/entity/firestore_share.dart';
 import 'package:tcg_manager/entity/share_user.dart';
 import 'package:tcg_manager/entity/user_data.dart';
-import 'package:tcg_manager/enum/access_roll.dart';
 import 'package:tcg_manager/provider/firebase_auth_provider.dart';
 import 'package:tcg_manager/provider/firestore_controller_provider.dart';
-import 'package:tcg_manager/repository/dynamic_links_repository.dart';
+import 'package:tcg_manager/repository/firestore_invite_code_repository.dart';
 import 'package:tcg_manager/repository/firestore_share_repository.dart';
 import 'package:tcg_manager/repository/firestore_user_settings_repositroy.dart';
 import 'package:tcg_manager/view/component/list_tile_ontap.dart';
@@ -192,14 +191,10 @@ class _CreateShareLinkButton extends HookConsumerWidget {
 
           return ListTileOnTap(
             leading: const Icon(Icons.link),
-            title: '共有用リンクを作成',
+            title: '招待コードをを作成',
             onTap: () async {
-              final link = await ref.read(dynamicLinksRepository).createInviteDynamicLink(
-                    share.authorName,
-                    share.game.id.toString(),
-                    AccessRoll.reader,
-                  );
-              await Share.share(link.toString());
+              final code = await ref.read(firestoreInviteCodeRepository).createInviteCode(share.docName);
+              await Share.share(code, subject: '招待コード');
             },
           );
         },
