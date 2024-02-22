@@ -28,7 +28,81 @@ class ShareView extends HookConsumerWidget {
     final userInfo = ref.watch(userInfoSettingsProvider);
     final isPremium = ref.watch(revenueCatProvider.select((value) => value?.isPremium));
     return Scaffold(
-      appBar: AppBar(title: const Text('ゲーム共有')),
+      appBar: AppBar(
+        title: const Text('ゲーム共有'),
+        actions: [
+          MenuAnchor(
+            menuChildren: [
+              MenuItemButton(
+                child: const Text('ゲームを共有する'),
+                onPressed: () {},
+              ),
+              MenuItemButton(
+                child: const Text('招待コード入力'),
+                onPressed: () async {
+                  final shareCount = ref.read(combinedShareCountProvider);
+                  final isPremium = ref.read(revenueCatProvider)?.isPremium;
+
+                  if (shareCount[0] > 1 && !isPremium!) {
+                    final result = await showOkCancelAlertDialog(
+                      context: context,
+                      title: '共有個数制限に達しました。',
+                      message: '作成できる共有ゲーム数は最大1つまでです。プレミアムプランに加入することでこの制限を解除することができます。',
+                      okLabel: 'OK',
+                      cancelLabel: 'プレミアムプラン詳細',
+                      isDestructiveAction: true,
+                    );
+                    if (result == OkCancelResult.cancel && context.mounted) {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          fullscreenDialog: true,
+                          builder: (context) => const PremiumPlanPurchaseView(),
+                        ),
+                      );
+                    }
+                  } else {
+                    final inputText = await showTextInputDialog(
+                      context: context,
+                      title: '招待コード入力',
+                      message: '招待コードを入力してください。',
+                      textFields: [const DialogTextField()],
+                    );
+                    if (inputText != null) {
+                      final shareDocName = await ref.read(firestoreInviteCodeRepository).validateInviteCode(inputText.first);
+                      if (shareDocName == null) {
+                        // TODO 無効な招待コードであることを通知する
+                      } else {
+                        final uid = ref.read(firebaseAuthNotifierProvider).user?.uid;
+                        if (uid != null) {
+                          try {
+                            await ref.read(firestoreShareRepository).requestDataShare(shareDocName, ShareUser(id: uid));
+                          } catch (e) {
+                            // TODO 既に共有済みである旨をエラー分から表示する
+                            print(e);
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+              ),
+            ],
+            builder: (context, controller, child) {
+              return IconButton(
+                onPressed: () {
+                  if (controller.isOpen) {
+                    controller.close();
+                  } else {
+                    controller.open();
+                  }
+                },
+                icon: const Icon(Icons.add),
+              );
+            },
+          ),
+        ],
+      ),
       bottomNavigationBar: const AdaptiveBannerAd(),
       body: userInfo.name == null
           ? Column(
@@ -64,7 +138,6 @@ class ShareView extends HookConsumerWidget {
                 const _GuestPendingShareGameListView(),
               ],
             ),
-      floatingActionButton: userInfo.name == null ? null : const _AddShareGameButton(),
     );
   }
 }
@@ -101,63 +174,6 @@ class LimitedAccessBanner extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class _AddShareGameButton extends HookConsumerWidget {
-  const _AddShareGameButton();
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return FloatingActionButton(
-      onPressed: () async {
-        final shareCount = ref.read(combinedShareCountProvider);
-        final isPremium = ref.read(revenueCatProvider)?.isPremium;
-
-        if (shareCount[0] > 1 && !isPremium!) {
-          final result = await showOkCancelAlertDialog(
-            context: context,
-            title: '共有個数制限に達しました。',
-            message: '作成できる共有ゲーム数は最大1つまでです。プレミアムプランに加入することでこの制限を解除することができます。',
-            okLabel: 'OK',
-            cancelLabel: 'プレミアムプラン詳細',
-            isDestructiveAction: true,
-          );
-          if (result == OkCancelResult.cancel && context.mounted) {
-            await Navigator.push(
-              context,
-              MaterialPageRoute(
-                fullscreenDialog: true,
-                builder: (context) => const PremiumPlanPurchaseView(),
-              ),
-            );
-          }
-        } else {
-          final inputText = await showTextInputDialog(
-            context: context,
-            title: '招待コード入力',
-            message: '招待コードを入力してください。',
-            textFields: [const DialogTextField()],
-          );
-          if (inputText != null) {
-            final shareDocName = await ref.read(firestoreInviteCodeRepository).validateInviteCode(inputText.first);
-            if (shareDocName == null) {
-              // TODO 無効な招待コードであることを通知する
-            } else {
-              final uid = ref.read(firebaseAuthNotifierProvider).user?.uid;
-              if (uid != null) {
-                try {
-                  await ref.read(firestoreShareRepository).requestDataShare(shareDocName, ShareUser(id: uid));
-                } catch (e) {
-                  // TODO 既に共有済みである旨をエラー分から表示する
-                  print(e);
-                }
-              }
-            }
-          }
-        }
-      },
-      child: const Icon(Icons.add),
     );
   }
 }
