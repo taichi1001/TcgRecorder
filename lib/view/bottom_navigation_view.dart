@@ -5,7 +5,7 @@ import 'package:tcg_manager/view/graph_view.dart';
 import 'package:tcg_manager/view/input_view/input_view.dart';
 import 'package:tcg_manager/view/other_view.dart';
 import 'package:tcg_manager/view/record_list_view.dart';
-import 'package:tcg_manager/view/share_view.dart';
+import 'package:tcg_manager/view/share_view/share_view.dart';
 
 final bottomNavItems = [
   const InputView(),

@@ -1,5 +1,6 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:settings_ui/settings_ui.dart';
@@ -9,7 +10,6 @@ import 'package:tcg_manager/entity/share_user.dart';
 import 'package:tcg_manager/entity/user_data.dart';
 import 'package:tcg_manager/enum/access_roll.dart';
 import 'package:tcg_manager/repository/firestore_share_repository.dart';
-import 'package:tcg_manager/view/host_share_game_view.dart';
 
 final currentSharedUserViewDataProvider = StateProvider<(UserData, ShareUser, FirestoreShare)>(
   (ref) => (
@@ -24,6 +24,7 @@ class SharedUserView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(currentSharedUserViewDataProvider).$1;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(user.name ?? user.id),
@@ -64,24 +65,23 @@ class _PermissionSettingsTileHooksConsumerWidget extends HookConsumerWidget {
   const _PermissionSettingsTileHooksConsumerWidget();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(currentSharedUserViewDataProvider).$2;
+    final user = useState(ref.watch(currentSharedUserViewDataProvider).$2);
     final share = ref.watch(currentSharedUserViewDataProvider).$3;
-    return SettingsTile(
-      title: const Text('アクセス権限'),
-      value: GestureDetector(
-        onTap: () async {
-          final delAuthorAccessRollList = List.of(AccessRoll.values)..remove(AccessRoll.author);
-          if (user.roll == AccessRoll.author) {
-            await showOkAlertDialog(
-              context: context,
-              title: '許可されていない操作です',
-              message: 'ゲーム作成者のアクセス権限は変更できません。',
-            );
-          } else if (context.mounted) {
-            showCupertinoModalBottomSheet(
-              expand: false,
-              context: context,
-              builder: (context) => Padding(
+    return InkWell(
+      onTap: () async {
+        final delAuthorAccessRollList = List.of(AccessRoll.values)..remove(AccessRoll.author);
+        if (user.value.roll == AccessRoll.author) {
+          await showOkAlertDialog(
+            context: context,
+            title: '許可されていない操作です',
+            message: 'ゲーム作成者のアクセス権限は変更できません。',
+          );
+        } else if (context.mounted) {
+          showCupertinoModalBottomSheet(
+            expand: false,
+            context: context,
+            builder: (context) => Material(
+              child: Padding(
                 padding: const EdgeInsets.all(8),
                 child: SafeArea(
                   child: Column(
@@ -104,10 +104,10 @@ class _PermissionSettingsTileHooksConsumerWidget extends HookConsumerWidget {
                       const Divider(),
                       ...delAuthorAccessRollList
                           .map(
-                            (roll) => GestureDetector(
+                            (roll) => InkWell(
                               onTap: () async {
-                                final isSuccess = await ref.read(firestoreShareRepository).updateUserRoll(user, roll, share.docName);
-                                if (isSuccess) ref.read(currentShareUserProvider.notifier).state = user.copyWith(roll: roll);
+                                final isSuccess = await ref.read(firestoreShareRepository).updateUserRoll(user.value, roll, share.docName);
+                                if (isSuccess) user.value = user.value.copyWith(roll: roll);
                                 if (context.mounted) Navigator.pop(context);
                               },
                               child: Padding(
@@ -115,13 +115,13 @@ class _PermissionSettingsTileHooksConsumerWidget extends HookConsumerWidget {
                                 child: Row(
                                   children: [
                                     Opacity(
-                                      opacity: user.roll == roll ? 1 : 0,
+                                      opacity: user.value.roll == roll ? 1 : 0,
                                       child: const Icon(Icons.check),
                                     ),
                                     const SizedBox(width: 32),
                                     Text(
                                       roll.displayName,
-                                      style: user.roll == roll
+                                      style: user.value.roll == roll
                                           ? Theme.of(context).textTheme.bodyMedium?.copyWith(color: Theme.of(context).colorScheme.primary)
                                           : Theme.of(context).textTheme.bodyMedium,
                                     ),
@@ -135,17 +135,22 @@ class _PermissionSettingsTileHooksConsumerWidget extends HookConsumerWidget {
                   ),
                 ),
               ),
-            );
-          }
-        },
-        child: Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).hoverColor,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
-            child: Text(user.roll.displayName),
+            ),
+          );
+        }
+      },
+      child: SettingsTile(
+        title: const Text('アクセス権限'),
+        value: InkWell(
+          child: Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).hoverColor,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
+              child: Text(user.value.roll.displayName),
+            ),
           ),
         ),
       ),

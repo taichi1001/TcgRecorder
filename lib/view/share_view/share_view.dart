@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -14,9 +15,10 @@ import 'package:tcg_manager/repository/firestore_share_repository.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
 import 'package:tcg_manager/view/component/list_tile_ontap.dart';
 import 'package:tcg_manager/view/component/sliver_header.dart';
-import 'package:tcg_manager/view/guest_share_game_view.dart';
-import 'package:tcg_manager/view/host_share_game_view.dart';
 import 'package:tcg_manager/view/premium_plan_purchase_view.dart';
+import 'package:tcg_manager/view/select_domain_data_bottom_sheet/domain_data_options.dart';
+import 'package:tcg_manager/view/share_view/guest_share_game_view.dart';
+import 'package:tcg_manager/view/share_view/share_user_management_view.dart';
 import 'package:tcg_manager/view/user_info_settings_view.dart';
 
 class ShareView extends HookConsumerWidget {
@@ -177,18 +179,16 @@ class _HostShareGameListView extends HookConsumerWidget {
             currentShareProvider.overrideWithValue(data[index]),
           ],
           child: _ShareListTile(
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ProviderScope(
-                  overrides: [
-                    currentShareDocNameProvider.overrideWithValue(data[index].docName),
-                    currentShareProvider.overrideWithValue(data[index]),
-                  ],
-                  child: const HostShareGameView(),
+            onTap: () {
+              ref.read(currentDomainDataIsShareHostProvider.notifier).state = true;
+              ref.read(currentDomainDataProvider.notifier).state = data[index].game;
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ShareUserManagementView(),
                 ),
-              ),
-            ),
+              );
+            },
           ),
         ),
         separatorBuilder: (context, index) => const Divider(indent: 16, thickness: 1, height: 0),
@@ -211,17 +211,16 @@ class _GuestShareGameListView extends HookConsumerWidget {
             currentShareProvider.overrideWithValue(data[index]),
           ],
           child: _ShareListTile(
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ProviderScope(
-                  overrides: [
-                    currentShareProvider.overrideWithValue(data[index]),
-                  ],
-                  child: const GuestShareGameView(),
+            onTap: () {
+              ref.read(currentDomainDataIsShareHostProvider.notifier).state = false;
+              ref.read(currentDomainDataProvider.notifier).state = data[index].game;
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ShareUserManagementView(),
                 ),
-              ),
-            ),
+              );
+            },
           ),
         ),
         separatorBuilder: (context, index) => const Divider(indent: 16, thickness: 1, height: 0),

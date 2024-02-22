@@ -28,7 +28,7 @@ import 'package:tcg_manager/repository/tag_repository.dart';
 import 'package:tcg_manager/view/component/list_tile_ontap.dart';
 import 'package:tcg_manager/view/component/loading_overlay.dart';
 import 'package:tcg_manager/view/select_domain_data_bottom_sheet/domain_data_options.dart';
-import 'package:tcg_manager/view/shared_user_view.dart';
+import 'package:tcg_manager/view/share_view/shared_user_view.dart';
 
 final currentShareUserListProvider = StreamProvider.autoDispose<List<UserData>?>((ref) async* {
   final currentShare = await ref.watch(currentShareProvider.future);
@@ -72,7 +72,7 @@ class ShareUserManagementView extends HookConsumerWidget {
     final currentDataAsyncValue = ref.watch(currentDataProvider);
     return currentDataAsyncValue.when(
       error: (error, stack) => Text('$error'),
-      loading: () => const Center(child: CircularProgressIndicator()),
+      loading: () => const Scaffold(body: Center(child: CircularProgressIndicator())),
       data: (currentData) {
         final (:currentPendingUserDataList, :currentShare, :currentShareUserDataList) = currentData;
         if (currentShare == null) return Container();
