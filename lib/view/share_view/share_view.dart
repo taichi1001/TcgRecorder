@@ -241,6 +241,7 @@ class _HostShareGameListView extends HookConsumerWidget {
             currentShareProvider.overrideWithValue(data[index]),
           ],
           child: _ShareListTile(
+            isHost: true,
             onTap: () {
               ref.read(currentDomainDataIsShareHostProvider.notifier).state = true;
               ref.read(currentDomainDataProvider.notifier).state = data[index].game;
@@ -328,13 +329,17 @@ class _GuestPendingShareGameListView extends HookConsumerWidget {
 class _ShareListTile extends HookConsumerWidget {
   const _ShareListTile({
     this.onTap,
+    this.isHost = false,
   });
   final Function()? onTap;
+  final bool isHost;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final share = ref.watch(currentShareProvider);
     return ListTileOnTap(
-      title: ref.watch(currentShareProvider.select((value) => value.game.name)),
+      title: share.game.name,
       onTap: onTap,
+      trailing: share.pendingUserList.isNotEmpty && isHost ? CircleNumberWidget(number: share.pendingUserList.length) : null,
     );
   }
 }
@@ -352,6 +357,42 @@ extension SliverListEx on SliverList {
           return index.isEven ? itemBuilder(context, itemIndex) : separatorBuilder(context, itemIndex);
         },
         childCount: math.max(0, itemCount * 2 - 1),
+      ),
+    );
+  }
+}
+
+class CircleNumberWidget extends StatelessWidget {
+  const CircleNumberWidget({
+    Key? key,
+    required this.number,
+    this.size = 24.0, // デフォルトサイズ
+    this.backgroundColor = Colors.blue, // デフォルト背景色
+    this.textColor = Colors.white, // デフォルトテキスト色
+  }) : super(key: key);
+
+  final int number;
+  final double size;
+  final Color backgroundColor;
+  final Color textColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        shape: BoxShape.circle,
+      ),
+      child: Center(
+        child: Text(
+          '$number',
+          style: TextStyle(
+            color: textColor,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
   }
