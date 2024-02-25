@@ -367,32 +367,30 @@ class CircleNumberWidget extends StatelessWidget {
     Key? key,
     required this.number,
     this.size = 24.0, // デフォルトサイズ
-    this.backgroundColor = Colors.blue, // デフォルト背景色
-    this.textColor = Colors.white, // デフォルトテキスト色
+    this.backgroundColor, // デフォルト背景色
+    this.textStyle, // デフォルトテキスト色
   }) : super(key: key);
 
   final int number;
   final double size;
-  final Color backgroundColor;
-  final Color textColor;
+  final Color? backgroundColor;
+  final TextStyle? textStyle;
 
   @override
   Widget build(BuildContext context) {
+    // ignore: no_leading_underscores_for_local_identifiers
+    final _backgroundColor = backgroundColor ?? Theme.of(context).colorScheme.primary;
+    // ignore: no_leading_underscores_for_local_identifiers
+    final _textStyle = textStyle ?? Theme.of(context).primaryTextTheme.bodyMedium;
     return Container(
       width: size,
       height: size,
       decoration: BoxDecoration(
-        color: backgroundColor,
+        color: _backgroundColor,
         shape: BoxShape.circle,
       ),
       child: Center(
-        child: Text(
-          '$number',
-          style: TextStyle(
-            color: textColor,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        child: Text('$number', style: _textStyle),
       ),
     );
   }
