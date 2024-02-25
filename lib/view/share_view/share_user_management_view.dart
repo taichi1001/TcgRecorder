@@ -5,7 +5,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:http/http.dart' as http;
-import 'package:share_plus/share_plus.dart';
 import 'package:tcg_manager/entity/record.dart';
 import 'package:tcg_manager/entity/user_data.dart';
 import 'package:tcg_manager/helper/db_helper.dart';
@@ -28,6 +27,7 @@ import 'package:tcg_manager/repository/tag_repository.dart';
 import 'package:tcg_manager/view/component/list_tile_ontap.dart';
 import 'package:tcg_manager/view/component/loading_overlay.dart';
 import 'package:tcg_manager/view/select_domain_data_bottom_sheet/domain_data_options.dart';
+import 'package:tcg_manager/view/share_view/invite_code_modal.dart';
 import 'package:tcg_manager/view/share_view/shared_user_view.dart';
 
 final currentShareUserListProvider = StreamProvider.autoDispose<List<UserData>?>((ref) async* {
@@ -98,10 +98,12 @@ class ShareUserManagementView extends HookConsumerWidget {
                   SliverToBoxAdapter(
                     child: ListTileOnTap(
                       leading: const Icon(Icons.link),
-                      title: '招待コードを作成',
+                      title: '招待コードを表示',
                       onTap: () async {
-                        final code = await ref.read(firestoreInviteCodeRepository).createInviteCode(currentShare.docName);
-                        await Share.share(code, subject: '招待コード');
+                        final inviteCode = await ref.read(firestoreInviteCodeRepository).createInviteCode(currentShare.docName);
+                        if (context.mounted) {
+                          await inviteCodeDialog(context, inviteCode);
+                        }
                       },
                     ),
                   ),

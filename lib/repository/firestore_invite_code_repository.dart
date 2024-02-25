@@ -7,6 +7,17 @@ import 'package:tcg_manager/service/firestore.dart';
 final firestoreInviteCodeRepository =
     Provider.autoDispose<FirestoreInviteCodeRepository>((ref) => FirestoreInviteCodeRepository(ref.watch(firestoreServiceProvider), ref));
 
+class InviteCode {
+  InviteCode({
+    required this.code,
+    required this.expiresAt,
+    required this.targetShareId,
+  });
+  final String code;
+  final DateTime expiresAt;
+  final String targetShareId;
+}
+
 class FirestoreInviteCodeRepository {
   final Ref ref;
   final FirebaseFirestore _firestore;
@@ -19,7 +30,7 @@ class FirestoreInviteCodeRepository {
     return String.fromCharCodes(Iterable.generate(length, (_) => chars.codeUnitAt(rnd.nextInt(chars.length))));
   }
 
-  Future<String> createInviteCode(String targetShareId, {int validHours = 24}) async {
+  Future<InviteCode> createInviteCode(String targetShareId, {int validHours = 24}) async {
     // 現在の時刻を取得
     final now = DateTime.now().toUtc();
 
@@ -34,7 +45,7 @@ class FirestoreInviteCodeRepository {
         await doc.reference.delete();
       } else {
         // 有効期限内であれば、そのドキュメントのcodeを返す
-        return data['code'] as String;
+        return InviteCode(code: data['code'], expiresAt: expiresAt, targetShareId: targetShareId);
       }
     }
 
@@ -57,7 +68,7 @@ class FirestoreInviteCodeRepository {
       }
     } while (!isUnique);
 
-    return code;
+    return InviteCode(code: code, expiresAt: expiresAt, targetShareId: targetShareId);
   }
 
   Future<String?> validateInviteCode(String code) async {

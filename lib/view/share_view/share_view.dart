@@ -80,7 +80,7 @@ class ShareView extends HookConsumerWidget {
               MenuItemButton(
                 child: const Row(
                   children: [
-                    Icon(Icons.code),
+                    Icon(Icons.link),
                     SizedBox(width: 8),
                     Text('招待コード入力'),
                   ],
