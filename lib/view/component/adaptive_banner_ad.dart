@@ -21,7 +21,7 @@ class AdaptiveBannerAd extends HookConsumerWidget {
     ad.load();
 
     return isPremium
-        ? Container()
+        ? const SizedBox.shrink()
         : Container(
             alignment: Alignment.center,
             height: adSize.height.toDouble(),

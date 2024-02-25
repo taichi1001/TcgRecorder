@@ -6,17 +6,23 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/firestore_share.dart';
 import 'package:tcg_manager/entity/game.dart';
 import 'package:tcg_manager/entity/share_user.dart';
+import 'package:tcg_manager/enum/domain_data_type.dart';
 import 'package:tcg_manager/main.dart';
 import 'package:tcg_manager/provider/firebase_auth_provider.dart';
+import 'package:tcg_manager/provider/firestore_controller_provider.dart';
+import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/revenue_cat_provider.dart';
 import 'package:tcg_manager/provider/user_info_settings_provider.dart';
 import 'package:tcg_manager/repository/firestore_invite_code_repository.dart';
 import 'package:tcg_manager/repository/firestore_share_repository.dart';
+import 'package:tcg_manager/repository/game_repository.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
 import 'package:tcg_manager/view/component/list_tile_ontap.dart';
+import 'package:tcg_manager/view/component/loading_overlay.dart';
 import 'package:tcg_manager/view/component/sliver_header.dart';
 import 'package:tcg_manager/view/premium_plan_purchase_view.dart';
 import 'package:tcg_manager/view/select_domain_data_bottom_sheet/domain_data_options.dart';
+import 'package:tcg_manager/view/select_domain_data_bottom_sheet/select_domain_data_view.dart';
 import 'package:tcg_manager/view/share_view/guest_share_game_view.dart';
 import 'package:tcg_manager/view/share_view/share_user_management_view.dart';
 import 'package:tcg_manager/view/user_info_settings_view.dart';
@@ -34,11 +40,51 @@ class ShareView extends HookConsumerWidget {
           MenuAnchor(
             menuChildren: [
               MenuItemButton(
-                child: const Text('ゲームを共有する'),
-                onPressed: () {},
+                child: const Row(
+                  children: [
+                    Icon(Icons.share),
+                    SizedBox(width: 8),
+                    Text('ゲームを共有する'),
+                  ],
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: ((context) {
+                        return SelectDomainDataView(
+                          dataType: DomainDataType.game,
+                          selectDomainDataFunc: (data, count) async {
+                            data as Game;
+                            if (data.isShare) return;
+                            final uid = ref.read(firebaseAuthNotifierProvider).user?.uid;
+                            ref.read(loadingProvider.notifier).state = true;
+                            if (uid != null && context.mounted) {
+                              final gameData = data.copyWith(isShare: true);
+                              await ref.read(gameRepository).update(gameData);
+                              ref.invalidate(allGameListProvider);
+                              await ref.read(firestoreControllerProvider).initShareGame(gameData, uid);
+                              ref.read(loadingProvider.notifier).state = false;
+                            }
+                          },
+                          tagCount: 0,
+                          enableVisiblity: true,
+                          isShowMenu: false,
+                          isShowGuestData: false,
+                        );
+                      }),
+                    ),
+                  );
+                },
               ),
               MenuItemButton(
-                child: const Text('招待コード入力'),
+                child: const Row(
+                  children: [
+                    Icon(Icons.code),
+                    SizedBox(width: 8),
+                    Text('招待コード入力'),
+                  ],
+                ),
                 onPressed: () async {
                   final shareCount = ref.read(combinedShareCountProvider);
                   final isPremium = ref.read(revenueCatProvider)?.isPremium;

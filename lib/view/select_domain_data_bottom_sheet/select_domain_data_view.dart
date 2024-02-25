@@ -22,6 +22,8 @@ class SelectDomainDataView extends HookConsumerWidget {
     this.afterFunc,
     this.enableVisiblity = false,
     this.returnSelecting = true,
+    this.isShowMenu = true,
+    this.isShowGuestData = true,
     key,
   }) : super(key: key);
 
@@ -32,6 +34,8 @@ class SelectDomainDataView extends HookConsumerWidget {
   final bool enableVisiblity;
   final int tagCount;
   final bool returnSelecting;
+  final bool isShowMenu;
+  final bool isShowGuestData;
 
   @override
   // ignore: avoid_renaming_method_parameters
@@ -53,6 +57,8 @@ class SelectDomainDataView extends HookConsumerWidget {
                     returnSelecting: returnSelecting,
                     deselectionFunc: deselectionFunc,
                     rootContext: rootContext,
+                    isShowMenu: isShowMenu,
+                    isShowGuestData: isShowGuestData,
                   ),
                   const LoadingOverlay(),
                 ],
@@ -75,6 +81,8 @@ class _Body extends HookConsumerWidget {
     this.afterFunc,
     this.enableVisiblity = false,
     this.returnSelecting = true,
+    this.isShowMenu = true,
+    this.isShowGuestData = true,
     key,
   }) : super(key: key);
 
@@ -86,6 +94,8 @@ class _Body extends HookConsumerWidget {
   final int tagCount;
   final bool returnSelecting;
   final BuildContext rootContext;
+  final bool isShowMenu;
+  final bool isShowGuestData;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -153,6 +163,7 @@ class _Body extends HookConsumerWidget {
                       deselectionFunc: deselectionFunc,
                       tagCount: tagCount,
                       returnSelecting: returnSelecting,
+                      isShowMenu: isShowMenu,
                     ),
                   ],
                 );
@@ -196,6 +207,7 @@ class _Body extends HookConsumerWidget {
                       afterFunc: afterFunc,
                       tagCount: tagCount,
                       returnSelecting: returnSelecting,
+                      isShowMenu: isShowMenu,
                     ),
                   ],
                 );
@@ -213,7 +225,7 @@ class _Body extends HookConsumerWidget {
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ),
-                    if (dataType == DomainDataType.game)
+                    if (dataType == DomainDataType.game && isShowGuestData)
                       Padding(
                         padding: const EdgeInsets.all(16),
                         child: Text(
@@ -221,7 +233,7 @@ class _Body extends HookConsumerWidget {
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ),
-                    if (dataType == DomainDataType.game)
+                    if (dataType == DomainDataType.game && isShowGuestData)
                       DomainDataList(
                         domainDataList: selectDomainViewInfo.guestGameList,
                         selectedDomainDataList: selectedDomainDataList,
@@ -230,6 +242,7 @@ class _Body extends HookConsumerWidget {
                         enableVisibility: false,
                         tagCount: tagCount,
                         returnSelecting: returnSelecting,
+                        isShowMenu: isShowMenu,
                       ),
                     if (dataType != DomainDataType.game)
                       DomainDataList(
@@ -242,6 +255,7 @@ class _Body extends HookConsumerWidget {
                         afterFunc: afterFunc,
                         tagCount: tagCount,
                         returnSelecting: returnSelecting,
+                        isShowMenu: isShowMenu,
                       ),
                     AllListSectionBar(
                       enableVisiblity: enableVisiblity,
@@ -258,6 +272,7 @@ class _Body extends HookConsumerWidget {
                       tagCount: tagCount,
                       returnSelecting: returnSelecting,
                       isShareHost: true,
+                      isShowMenu: isShowMenu,
                     ),
                   ],
                 );

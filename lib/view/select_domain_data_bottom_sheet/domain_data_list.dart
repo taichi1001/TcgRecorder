@@ -15,6 +15,7 @@ class DomainDataList extends HookConsumerWidget {
     required this.tagCount,
     required this.returnSelecting,
     this.isShareHost = false,
+    this.isShowMenu = true,
     this.deselectionFunc,
     this.afterFunc,
     key,
@@ -28,6 +29,7 @@ class DomainDataList extends HookConsumerWidget {
   final Function? afterFunc;
   final int tagCount;
   final bool isShareHost;
+  final bool isShowMenu;
   final bool enableVisibility;
   final bool returnSelecting;
 
@@ -41,11 +43,11 @@ class DomainDataList extends HookConsumerWidget {
         if (enableVisibility && !domainData.isVisibleToPicker) return Container();
         final isSelected = selectedDomainDataList.contains(domainData);
         return GestureDetector(
-          onTap: () {
+          onTap: () async {
             if (isSelected) {
               if (deselectionFunc != null) deselectionFunc!(domainData);
             } else {
-              selectDomainDataFunc(domainData, tagCount);
+              await selectDomainDataFunc(domainData, tagCount);
               if (returnSelecting) Navigator.pop(rootContext);
               if (afterFunc != null) afterFunc!();
             }
@@ -66,17 +68,19 @@ class DomainDataList extends HookConsumerWidget {
                     ),
                   ],
                 ),
-                IconButton(
-                  onPressed: () {
-                    ref.read(currentDomainDataProvider.notifier).state = domainDataList[index];
-                    ref.read(currentDomainDataIsShareHostProvider.notifier).state = isShareHost;
-                    showCupertinoModalBottomSheet(
-                      context: context,
-                      builder: (context) => DomainDataOptions(isShareHost: isShareHost),
-                    );
-                  },
-                  icon: const Icon(Icons.more_vert),
-                )
+                if (isShowMenu)
+                  IconButton(
+                    onPressed: () {
+                      ref.read(currentDomainDataProvider.notifier).state = domainDataList[index];
+                      ref.read(currentDomainDataIsShareHostProvider.notifier).state = isShareHost;
+                      showCupertinoModalBottomSheet(
+                        context: context,
+                        builder: (context) => DomainDataOptions(isShareHost: isShareHost),
+                      );
+                    },
+                    icon: const Icon(Icons.more_vert),
+                  ),
+                if (!isShowMenu) const SizedBox(width: 48, height: 48) // iconbutonと同じ大きさのウィジェットを設定
               ],
             ),
           ),
