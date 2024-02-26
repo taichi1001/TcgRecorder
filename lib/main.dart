@@ -6,6 +6,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -24,6 +25,7 @@ import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/revenue_cat_provider.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
+import 'package:tcg_manager/provider/user_activity_provider.dart';
 import 'package:tcg_manager/provider/user_info_settings_provider.dart';
 import 'package:tcg_manager/repository/firestore_share_repository.dart';
 import 'package:tcg_manager/view/bottom_navigation_view.dart';
@@ -115,6 +117,11 @@ class MainApp extends HookConsumerWidget {
     final mainInfo = ref.watch(mainInfoProvider(context));
     final lightThemeData = ref.watch(lightThemeDataProvider(context));
     final darkThemeData = ref.watch(darkThemeDataProvider(context));
+
+    useEffect(() {
+      ref.read(userActivityLogNotifierProvider.notifier).login();
+      return null;
+    }, const []);
 
     return mainInfo.when(
       data: (mainInfo) {
