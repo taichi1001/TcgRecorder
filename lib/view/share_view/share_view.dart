@@ -116,16 +116,25 @@ class ShareView extends HookConsumerWidget {
                     );
                     if (inputText != null) {
                       final shareDocName = await ref.read(firestoreInviteCodeRepository).validateInviteCode(inputText.first);
-                      if (shareDocName == null) {
-                        // TODO 無効な招待コードであることを通知する
+                      if (shareDocName == null && context.mounted) {
+                        await showOkAlertDialog(
+                          context: context,
+                          title: '無効な招待コード',
+                          message: '無効な招待コードです。正しい招待コードを入力してください。',
+                        );
                       } else {
                         final uid = ref.read(firebaseAuthNotifierProvider).user?.uid;
                         if (uid != null) {
                           try {
-                            await ref.read(firestoreShareRepository).requestDataShare(shareDocName, ShareUser(id: uid));
+                            await ref.read(firestoreShareRepository).requestDataShare(shareDocName!, ShareUser(id: uid));
                           } catch (e) {
-                            // TODO 既に共有済みである旨をエラー分から表示する
-                            print(e);
+                            if (context.mounted) {
+                              await showOkAlertDialog(
+                                context: context,
+                                title: '共有済み',
+                                message: '既に共有中です。',
+                              );
+                            }
                           }
                         }
                       }
