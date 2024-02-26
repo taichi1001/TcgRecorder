@@ -9,6 +9,7 @@ import 'package:tcg_manager/entity/game.dart';
 import 'package:tcg_manager/entity/share_user.dart';
 import 'package:tcg_manager/entity/user_data.dart';
 import 'package:tcg_manager/enum/access_roll.dart';
+import 'package:tcg_manager/provider/firebase_auth_provider.dart';
 import 'package:tcg_manager/repository/firestore_share_repository.dart';
 
 final currentSharedUserViewDataProvider = StateProvider<(UserData, ShareUser, FirestoreShare)>(
@@ -106,9 +107,20 @@ class _PermissionSettingsTileHooksConsumerWidget extends HookConsumerWidget {
                           .map(
                             (roll) => InkWell(
                               onTap: () async {
-                                final isSuccess = await ref.read(firestoreShareRepository).updateUserRoll(user.value, roll, share.docName);
-                                if (isSuccess) user.value = user.value.copyWith(roll: roll);
-                                if (context.mounted) Navigator.pop(context);
+                                final myself = ref.watch(firebaseAuthNotifierProvider).user;
+                                final myselfShareUser = share.shareUserList.firstWhere((element) => element.id == myself?.uid);
+                                if (myselfShareUser.roll != AccessRoll.author) {
+                                  await showOkAlertDialog(
+                                    context: context,
+                                    title: '権限がありません。',
+                                    message: 'この操作をする権限がありません。ゲームの管理者にお問い合わせください。',
+                                  );
+                                } else {
+                                  final isSuccess =
+                                      await ref.read(firestoreShareRepository).updateUserRoll(user.value, roll, share.docName);
+                                  if (isSuccess) user.value = user.value.copyWith(roll: roll);
+                                  if (context.mounted) Navigator.pop(context);
+                                }
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),

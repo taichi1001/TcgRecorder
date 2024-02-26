@@ -264,10 +264,19 @@ class _BrandListTile extends HookConsumerWidget {
       ),
       deleteFunc: () async {
         if (ref.read(isShareGame)) {
-          final gameRecordList = await ref.watch(gameRecordListProvider.future);
-          final targetRecord = gameRecordList.firstWhere((gameRecord) => gameRecord.id == record.recordId);
-          final share = await ref.read(gameFirestoreShareStreamProvider.future);
-          ref.read(firestoreShareDataRepository).removeRecord(targetRecord, share!.docName);
+          final accessRoll = await ref.read(selectGameAccessRoll.future);
+          if (context.mounted && accessRoll == AccessRoll.reader) {
+            await showOkAlertDialog(
+              context: context,
+              title: '権限がありません。',
+              message: 'この操作をする権限がありません。ゲームの管理者にお問い合わせください。',
+            );
+          } else {
+            final gameRecordList = await ref.watch(gameRecordListProvider.future);
+            final targetRecord = gameRecordList.firstWhere((gameRecord) => gameRecord.id == record.recordId);
+            final share = await ref.read(gameFirestoreShareStreamProvider.future);
+            ref.read(firestoreShareDataRepository).removeRecord(targetRecord, share!.docName);
+          }
         } else {
           final targetRecord = await ref.read(recordRepository).getRecordId(record.recordId);
           ref.read(dbHelper).removeRecordImage(targetRecord!);
@@ -277,22 +286,31 @@ class _BrandListTile extends HookConsumerWidget {
         }
       },
       editFunc: () async {
-        // recordによってtagの個数が違うため、画面遷移前のここで設定する
-        ref.read(originalTagLength.notifier).state = record.tag.isEmpty ? 1 : record.tag.length;
-        ref.read(originalTag.notifier).state = record.tag;
-        await Navigator.push(
-          context,
-          MaterialPageRoute(
-            fullscreenDialog: true,
-            builder: (context) => ProviderScope(
-              overrides: [currentMargedRecord.overrideWithValue(record)],
-              child: RecordEditView(
-                margedRecord: record,
+        final accessRoll = await ref.read(selectGameAccessRoll.future);
+        if (context.mounted && accessRoll == AccessRoll.reader) {
+          await showOkAlertDialog(
+            context: context,
+            title: '権限がありません。',
+            message: 'この操作をする権限がありません。ゲームの管理者にお問い合わせください。',
+          );
+        } else if (context.mounted) {
+          // recordによってtagの個数が違うため、画面遷移前のここで設定する
+          ref.read(originalTagLength.notifier).state = record.tag.isEmpty ? 1 : record.tag.length;
+          ref.read(originalTag.notifier).state = record.tag;
+          await Navigator.push(
+            context,
+            MaterialPageRoute(
+              fullscreenDialog: true,
+              builder: (context) => ProviderScope(
+                overrides: [currentMargedRecord.overrideWithValue(record)],
+                child: RecordEditView(
+                  margedRecord: record,
+                ),
               ),
             ),
-          ),
-        );
-        if (context.mounted) await Slidable.of(context)?.close();
+          );
+          if (context.mounted) await Slidable.of(context)?.close();
+        }
       },
       alertTitle: S.of(context).recordListDeleteDialogTitle,
       alertMessage: S.of(context).recordListDeleteDialogMessage,
