@@ -175,7 +175,7 @@ class RecordListView extends HookConsumerWidget {
                         // ファイルにPNGデータを書き込み
                         File file = File(filePath);
                         await file.writeAsBytes(pngBytes);
-                        await Share.shareFiles([filePath], text: '共有する画像');
+                        await Share.shareXFiles([XFile(filePath)], text: '共有する画像');
 
                         isScreenshot.value = true;
                       });
