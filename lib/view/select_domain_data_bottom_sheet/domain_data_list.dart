@@ -48,7 +48,7 @@ class DomainDataList extends HookConsumerWidget {
               if (deselectionFunc != null) deselectionFunc!(domainData);
             } else {
               await selectDomainDataFunc(domainData, tagCount);
-              if (returnSelecting) Navigator.pop(rootContext);
+              if (returnSelecting && rootContext.mounted) Navigator.pop(rootContext);
               if (afterFunc != null) afterFunc!();
             }
           },

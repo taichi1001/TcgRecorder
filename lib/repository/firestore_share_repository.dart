@@ -153,11 +153,11 @@ class FirestoreShareRepository {
           transaction.update(docRef, {'share_user_list': userList});
           return true;
         } else {
-          print('User not found in user_list');
+          // ユーザーがユーザーリストになかった場合
           return false;
         }
       } else {
-        print('Document does not exist');
+        // ドキュメントが見つからなかった場合
         return false;
       }
     });
