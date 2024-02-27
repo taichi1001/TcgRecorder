@@ -281,15 +281,18 @@ class _RevokeShareGameButton extends HookConsumerWidget {
                       record = record.copyWith(useDeckId: newUseDeckId, opponentDeckId: newOpponentDeckId, tagId: newTagIdList);
                       if (record.imagePath != null && record.imagePath!.isNotEmpty) {
                         final List<String> newImagePath = [];
+                        var index = 0;
                         for (final imagePath in record.imagePath!) {
                           final response = await http.get(Uri.parse(imagePath));
                           final saveDir = ref.read(imagePathProvider);
-                          final imageName = imagePath.split('/').last;
+                          final imageName = 'image_${record.id}_$index';
                           final filePath = '$saveDir/$imageName';
                           final file = File(filePath);
                           await file.writeAsBytes(response.bodyBytes);
                           newImagePath.add(imageName);
+                          index++;
                         }
+                        print(newImagePath);
                         record = record.copyWith(imagePath: newImagePath);
                       }
                       newRecordList.add(record);
