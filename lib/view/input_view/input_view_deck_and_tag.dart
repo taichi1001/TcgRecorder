@@ -32,23 +32,29 @@ class InputViewDeckAndTag extends HookConsumerWidget {
         useState(tag.isNotEmpty ? tag.map((e) => TextEditingController(text: e.name)).toList() : [TextEditingController()]);
 
     useEffect(() {
-      useDeckTextController.text = useDeck?.name ?? '';
+      if (!focusNodes[0].hasFocus) {
+        useDeckTextController.text = useDeck?.name ?? '';
+      }
       return null;
     }, [useDeck?.name]);
 
     useEffect(() {
-      opponentDeckTextController.text = opponentDeck?.name ?? '';
+      if (!focusNodes[1].hasFocus) {
+        opponentDeckTextController.text = opponentDeck?.name ?? '';
+      }
       return null;
     }, [opponentDeck?.name]);
 
     useEffect(() {
-      memoTextController.text = memo ?? '';
+      if (!focusNodes.last.hasFocus) {
+        memoTextController.text = memo ?? '';
+      }
       return null;
     }, [memo]);
 
     useEffect(() {
       // タグの数が0でもコントローラが少なくとも1つ存在することを保証
-      final int desiredControllerCount = max(1, tag.length);
+      final desiredControllerCount = max(1, tag.length);
 
       if (desiredControllerCount > tagTextController.value.length) {
         // 足りない分のコントローラを追加
@@ -63,9 +69,12 @@ class InputViewDeckAndTag extends HookConsumerWidget {
         tagTextController.value = tagTextController.value.sublist(0, desiredControllerCount);
       }
 
+      final tagFocusNodes = focusNodes.sublist(2, focusNodes.length - 1);
       // タグが存在する場合、それに応じてコントローラのテキストを更新
       for (int i = 0; i < tag.length; i++) {
-        tagTextController.value[i].text = tag[i].name;
+        if (!tagFocusNodes[i].hasFocus) {
+          tagTextController.value[i].text = tag[i].name;
+        }
       }
 
       // useEffectのクリーンアップ関数では破棄を行わない

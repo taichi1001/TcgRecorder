@@ -82,7 +82,7 @@ class InputTagList extends HookConsumerWidget {
                     isPremium: isPremium ?? false,
                     child: IconButton(
                       onPressed: () async {
-                        if (addFunc != null && !isPremium!) {
+                        if (addFunc != null && isPremium!) {
                           addFunc!();
                         } else if (!isPremium!) {
                           await premiumPlanDialog(context);
