@@ -47,34 +47,56 @@ class ShareView extends HookConsumerWidget {
                     Text('ゲームを共有する'),
                   ],
                 ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: ((context) {
-                        return SelectDomainDataView(
-                          dataType: DomainDataType.game,
-                          selectDomainDataFunc: (data, count) async {
-                            data as Game;
-                            if (data.isShare) return;
-                            final uid = ref.read(firebaseAuthNotifierProvider).user?.uid;
-                            ref.read(loadingProvider.notifier).state = true;
-                            if (uid != null && context.mounted) {
-                              final gameData = data.copyWith(isShare: true);
-                              await ref.read(gameRepository).update(gameData);
-                              ref.invalidate(allGameListProvider);
-                              await ref.read(firestoreControllerProvider).initShareGame(gameData, uid);
-                              ref.read(loadingProvider.notifier).state = false;
-                            }
-                          },
-                          tagCount: 0,
-                          enableVisiblity: true,
-                          isShowMenu: false,
-                          isShowGuestData: false,
-                        );
-                      }),
-                    ),
-                  );
+                onPressed: () async {
+                  final shareCount = ref.read(combinedShareCountProvider);
+                  final isPremium = ref.read(revenueCatProvider)?.isPremium;
+                  if (shareCount[0] > 0 && !isPremium!) {
+                    final result = await showOkCancelAlertDialog(
+                      context: context,
+                      title: '共有個数制限に達しました。',
+                      message: 'ホストできる共有ゲーム数は最大1つです。プレミアムプランに加入することでこの制限を解除することができます。',
+                      okLabel: 'OK',
+                      cancelLabel: 'プレミアムプラン詳細',
+                      isDestructiveAction: true,
+                    );
+                    if (result == OkCancelResult.cancel && context.mounted) {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          fullscreenDialog: true,
+                          builder: (context) => const PremiumPlanPurchaseView(),
+                        ),
+                      );
+                    }
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return SelectDomainDataView(
+                            dataType: DomainDataType.game,
+                            selectDomainDataFunc: (data, count) async {
+                              data as Game;
+                              if (data.isShare) return;
+                              final uid = ref.read(firebaseAuthNotifierProvider).user?.uid;
+                              ref.read(loadingProvider.notifier).state = true;
+                              if (uid != null && context.mounted) {
+                                final gameData = data.copyWith(isShare: true);
+                                await ref.read(gameRepository).update(gameData);
+                                ref.invalidate(allGameListProvider);
+                                await ref.read(firestoreControllerProvider).initShareGame(gameData, uid);
+                                ref.read(loadingProvider.notifier).state = false;
+                              }
+                            },
+                            tagCount: 0,
+                            enableVisiblity: true,
+                            isShowMenu: false,
+                            isShowGuestData: false,
+                          );
+                        },
+                      ),
+                    );
+                  }
                 },
               ),
               MenuItemButton(
@@ -89,11 +111,11 @@ class ShareView extends HookConsumerWidget {
                   final shareCount = ref.read(combinedShareCountProvider);
                   final isPremium = ref.read(revenueCatProvider)?.isPremium;
 
-                  if (shareCount[0] > 1 && !isPremium!) {
+                  if (shareCount[1] > 1 && !isPremium!) {
                     final result = await showOkCancelAlertDialog(
                       context: context,
                       title: '共有個数制限に達しました。',
-                      message: '作成できる共有ゲーム数は最大1つまでです。プレミアムプランに加入することでこの制限を解除することができます。',
+                      message: '参加できる共有ゲーム数は最大2つです。プレミアムプランに加入することでこの制限を解除することができます。',
                       okLabel: 'OK',
                       cancelLabel: 'プレミアムプラン詳細',
                       isDestructiveAction: true,

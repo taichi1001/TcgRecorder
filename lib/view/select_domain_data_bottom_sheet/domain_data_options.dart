@@ -9,9 +9,11 @@ import 'package:tcg_manager/entity/firestore_share.dart';
 import 'package:tcg_manager/entity/game.dart';
 import 'package:tcg_manager/entity/tag.dart';
 import 'package:tcg_manager/helper/db_helper.dart';
+import 'package:tcg_manager/main.dart';
 import 'package:tcg_manager/provider/firebase_auth_provider.dart';
 import 'package:tcg_manager/provider/firestore_controller_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
+import 'package:tcg_manager/provider/revenue_cat_provider.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/repository/firestore_share_data_repository.dart';
 import 'package:tcg_manager/repository/firestore_share_repository.dart';
@@ -19,6 +21,7 @@ import 'package:tcg_manager/repository/firestore_user_settings_repositroy.dart';
 import 'package:tcg_manager/repository/game_repository.dart';
 import 'package:tcg_manager/selector/game_share_data_selector.dart';
 import 'package:tcg_manager/view/component/loading_overlay.dart';
+import 'package:tcg_manager/view/premium_plan_purchase_view.dart';
 import 'package:tcg_manager/view/share_view/share_user_management_view.dart';
 
 final currentDomainDataProvider = StateProvider<DomainData>((ref) => Game(name: 'name'));
@@ -84,41 +87,63 @@ class _ShareSelectableRow extends HookConsumerWidget {
             ),
           );
         } else {
-          final result = await showOkCancelAlertDialog(
-            context: context,
-            title: '${domainData.name}を共有しますか？',
-            message: '他のユーザーとこのゲームの記録を共有することができます。',
-          );
-          if (result == OkCancelResult.ok) {
-            final uid = ref.read(firebaseAuthNotifierProvider).user?.uid;
-            final myUserData = await ref.read(myUserDataProvider.future);
-            if (myUserData == null && context.mounted) {
-              await showOkAlertDialog(
-                context: context,
-                title: 'ユーザー名を設定してください。',
-                message: 'この機能を使用するためにはプロフィール設定画面からユーザー名を設定する必要があります。',
+          final shareCount = ref.read(combinedShareCountProvider);
+          final isPremium = ref.read(revenueCatProvider)?.isPremium;
+          if (shareCount[0] > 0 && !isPremium!) {
+            final result = await showOkCancelAlertDialog(
+              context: context,
+              title: '共有個数制限に達しました。',
+              message: 'ホストできる共有ゲーム数は最大1つです。プレミアムプランに加入することでこの制限を解除することができます。',
+              okLabel: 'OK',
+              cancelLabel: 'プレミアムプラン詳細',
+              isDestructiveAction: true,
+            );
+            if (result == OkCancelResult.cancel && context.mounted) {
+              await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  fullscreenDialog: true,
+                  builder: (context) => const PremiumPlanPurchaseView(),
+                ),
               );
-            } else {
-              ref.read(loadingProvider.notifier).state = true;
-              if (uid != null && context.mounted) {
-                final gameData = domainData.copyWith(isShare: true);
-                await ref.read(gameRepository).update(gameData);
-                ref.read(currentDomainDataProvider.notifier).state = gameData;
-                ref.invalidate(allGameListProvider);
-                final selectGame = ref.read(selectGameNotifierProvider).selectGame;
-                if (selectGame?.name == gameData.name) {
-                  ref.read(selectGameNotifierProvider.notifier).setSelectGame(gameData);
-                }
-                await ref.read(firestoreControllerProvider).initShareGame(gameData, uid);
-                ref.read(loadingProvider.notifier).state = false;
-                if (context.mounted) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      fullscreenDialog: true,
-                      builder: (context) => const ShareUserManagementView(),
-                    ),
-                  );
+            }
+          } else {
+            final result = await showOkCancelAlertDialog(
+              context: context,
+              title: '${domainData.name}を共有しますか？',
+              message: '他のユーザーとこのゲームの記録を共有することができます。',
+            );
+            if (result == OkCancelResult.ok) {
+              final uid = ref.read(firebaseAuthNotifierProvider).user?.uid;
+              final myUserData = await ref.read(myUserDataProvider.future);
+              if (myUserData == null && context.mounted) {
+                await showOkAlertDialog(
+                  context: context,
+                  title: 'ユーザー名を設定してください。',
+                  message: 'この機能を使用するためにはプロフィール設定画面からユーザー名を設定する必要があります。',
+                );
+              } else {
+                ref.read(loadingProvider.notifier).state = true;
+                if (uid != null && context.mounted) {
+                  final gameData = domainData.copyWith(isShare: true);
+                  await ref.read(gameRepository).update(gameData);
+                  ref.read(currentDomainDataProvider.notifier).state = gameData;
+                  ref.invalidate(allGameListProvider);
+                  final selectGame = ref.read(selectGameNotifierProvider).selectGame;
+                  if (selectGame?.name == gameData.name) {
+                    ref.read(selectGameNotifierProvider.notifier).setSelectGame(gameData);
+                  }
+                  await ref.read(firestoreControllerProvider).initShareGame(gameData, uid);
+                  ref.read(loadingProvider.notifier).state = false;
+                  if (context.mounted) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        fullscreenDialog: true,
+                        builder: (context) => const ShareUserManagementView(),
+                      ),
+                    );
+                  }
                 }
               }
             }

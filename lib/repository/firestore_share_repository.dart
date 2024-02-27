@@ -22,11 +22,11 @@ final guestPendingShareProvider = StreamProvider.autoDispose<List<FirestoreShare
   (ref) => ref.watch(firestoreShareRepository).getGuestPendingShareData(ref.read(firebaseAuthNotifierProvider).user!.uid),
 );
 
-final hostShareCountProvider = FutureProvider.autoDispose<int>(
+final hostShareCountProvider = StreamProvider.autoDispose<int>(
   (ref) => ref.watch(firestoreShareRepository).getCountOfHostShare(ref.read(firebaseAuthNotifierProvider).user!.uid),
 );
 
-final guestShareCountProvider = FutureProvider.autoDispose<int>(
+final guestShareCountProvider = StreamProvider.autoDispose<int>(
   (ref) => ref.watch(firestoreShareRepository).getCountOfGuestShare(ref.read(firebaseAuthNotifierProvider).user!.uid),
 );
 
@@ -185,13 +185,12 @@ class FirestoreShareRepository {
   }
 
   // シェアフォルダ内の自分がホストになっているゲームの個数を取得する
-  Future<int> getCountOfHostShare(String uid) async {
+  Stream<int> getCountOfHostShare(String uid) {
     final ref = _firestore.collection('share').where('is_shared', isEqualTo: true).where('share_user_list', arrayContainsAny: [
       {'id': uid, 'roll': 'author'},
       {'id': uid, 'roll': 'owner'}
     ]);
-    final querySnapshot = await ref.get();
-    return querySnapshot.size;
+    return ref.snapshots().map((event) => event.size);
   }
 
   // シェアフォルダ内の自分がゲストになっているゲームの情報を取得する
@@ -211,13 +210,12 @@ class FirestoreShareRepository {
   }
 
   // シェアフォルダ内の自分がゲストになっているゲームの個数を取得する
-  Future<int> getCountOfGuestShare(String uid) async {
+  Stream<int> getCountOfGuestShare(String uid) {
     final ref = _firestore.collection('share').where('is_shared', isEqualTo: true).where('share_user_list', arrayContainsAny: [
       {'id': uid, 'roll': 'writer'},
       {'id': uid, 'roll': 'reader'}
     ]);
-    final querySnapshot = await ref.get();
-    return querySnapshot.size;
+    return ref.snapshots().map((event) => event.size);
   }
 
   // シェアフォルダ内の自分が共有申請中になっているゲームの情報を取得する
