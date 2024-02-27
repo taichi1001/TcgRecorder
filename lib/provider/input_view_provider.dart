@@ -16,13 +16,11 @@ import 'package:tcg_manager/main.dart';
 import 'package:tcg_manager/provider/firebase_auth_provider.dart';
 import 'package:tcg_manager/provider/input_view_settings_provider.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
-import 'package:tcg_manager/provider/text_editing_controller_provider.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
 import 'package:tcg_manager/repository/firestore_share_data_repository.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
 import 'package:tcg_manager/repository/tag_repository.dart';
 import 'package:tcg_manager/selector/game_share_data_selector.dart';
-import 'package:tcg_manager/state/input_view_settings_state.dart';
 import 'package:tcg_manager/state/input_view_state.dart';
 
 class InputViewNotifier extends StateNotifier<InputViewState> {
@@ -45,7 +43,10 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
 
   void selectDeck(DomainData deck, int empty, bool isUseDeck) {
     state = isUseDeck ? state.copyWith(useDeck: deck as Deck) : state.copyWith(opponentDeck: deck as Deck);
-    ref.read(textEditingControllerNotifierProvider.notifier).setDeckController(deck.name, isUseDeck);
+  }
+
+  void addTag() {
+    state = state.copyWith(tag: [...state.tag, Tag(name: '')]);
   }
 
   void inputTag(String name, int index) {
@@ -54,7 +55,6 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
 
   void selectTag(DomainData tag, int index) {
     _updateTags(tag as Tag, index);
-    ref.read(textEditingControllerNotifierProvider.notifier).setTagController(tag.name, index);
   }
 
   void _updateTags(Tag tag, int index) {
@@ -179,29 +179,12 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     final tags = ref.read(initialDataControllerProvider).loadTags();
 
     if (useDeck != null && opponentDeck != null) {
-      setUpInitialState(inputViewSettings, useDeck, opponentDeck, tags);
+      state = state.copyWith(
+        useDeck: inputViewSettings.fixUseDeck ? useDeck : null,
+        opponentDeck: inputViewSettings.fixOpponentDeck ? opponentDeck : null,
+        tag: inputViewSettings.fixTag ? tags : [],
+      );
     }
-  }
-
-  void setUpInitialState(
-      InputViewSettingsState inputViewSettings, Deck previousUseDeck, Deck previousOpponentDeck, List<Tag> previousTagList) {
-    if (inputViewSettings.fixUseDeck) {
-      ref.read(textEditingControllerNotifierProvider.notifier).setDeckController(previousUseDeck.name, true);
-    }
-    if (inputViewSettings.fixOpponentDeck) {
-      ref.read(textEditingControllerNotifierProvider.notifier).setDeckController(previousOpponentDeck.name, false);
-    }
-    if (inputViewSettings.fixTag && previousTagList.isNotEmpty) {
-      previousTagList.asMap().forEach((index, tag) {
-        ref.read(textEditingControllerNotifierProvider.notifier).setTagController(tag.name, index);
-      });
-    }
-
-    state = state.copyWith(
-      useDeck: inputViewSettings.fixUseDeck ? previousUseDeck : null,
-      opponentDeck: inputViewSettings.fixOpponentDeck ? previousOpponentDeck : null,
-      tag: inputViewSettings.fixTag ? previousTagList : [],
-    );
   }
 
   void resetView() {
@@ -216,12 +199,16 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
       opponentDeck: fixOpponentDeck ? state.opponentDeck : null,
       tag: fixTag ? state.tag : [],
     );
-    ref.read(textEditingControllerNotifierProvider.notifier).resetInputViewController();
   }
 
   void resetViewAll() {
-    state = InputViewState(date: DateTime.now());
-    ref.read(textEditingControllerNotifierProvider.notifier).resetAllInputViewController();
+    state = InputViewState(
+      date: DateTime.now(),
+      useDeck: null,
+      opponentDeck: null,
+      tag: [],
+      memo: null,
+    );
   }
 
   Future _saveDecks(int? selectGameId) async {
@@ -335,11 +322,6 @@ class TagHandler {
   final Ref ref;
 
   TagHandler(this.ref);
-
-  Future saveTag(int? gameId, List<Tag> tagList) async {
-    if (tagList.isEmpty) return;
-    return await createNewTags(gameId, tagList);
-  }
 
   Future<List<Tag>> createNewTags(int? gameId, List<Tag> tagList) async {
     final List<Tag> newTags = [];
