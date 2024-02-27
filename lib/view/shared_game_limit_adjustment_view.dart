@@ -15,6 +15,7 @@ class SelectSharedHostGameScreen extends HookConsumerWidget {
   Future _save(List<FirestoreShare> shareList, BuildContext context, WidgetRef ref) async {
     for (final share in shareList) {
       await ref.read(firestoreShareRepository).updateShare(share);
+      // TODO サーバのデータをすべてローカルに戻す処理を入れる
     }
     ref.invalidate(hostShareCountProvider);
     if (context.mounted) {
@@ -125,7 +126,6 @@ class SelectSharedGuestGameScreen extends HookConsumerWidget {
         await ref.read(firestoreShareRepository).revokeUser(shareUser, share.docName);
       }
     }
-    ref.invalidate(guestShareCountProvider);
     if (context.mounted) {
       Navigator.pushReplacement(
         context,

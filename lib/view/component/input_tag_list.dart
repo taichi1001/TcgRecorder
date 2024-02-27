@@ -91,6 +91,7 @@ class InputTagList extends HookConsumerWidget {
                       icon: const Icon(Icons.add_circle),
                     ),
                   ),
+                // TODO タグを削除できるようにする
               ],
             ),
           )
