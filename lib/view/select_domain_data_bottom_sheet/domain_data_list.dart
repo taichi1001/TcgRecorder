@@ -38,6 +38,7 @@ class DomainDataList extends HookConsumerWidget {
     return ListView.separated(
       padding: EdgeInsets.zero,
       shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
       itemBuilder: ((context, index) {
         final domainData = domainDataList[index];
         if (enableVisibility && !domainData.isVisibleToPicker) return Container();
