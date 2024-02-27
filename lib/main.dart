@@ -123,26 +123,24 @@ class MainApp extends HookConsumerWidget {
       return null;
     }, const []);
 
-    return mainInfo.when(
-      data: (mainInfo) {
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          localizationsDelegates: const [
-            S.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            DefaultCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: S.delegate.supportedLocales,
-          theme: lightThemeData,
-          darkTheme: darkThemeData,
-          themeMode: ThemeMode.system,
-          home: MainAppHome(mainInfo: mainInfo),
-        );
-      },
-      error: (error, stack) => Text('$error'),
-      loading: () => const Center(child: CircularProgressIndicator()),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      localizationsDelegates: const [
+        S.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        DefaultCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: S.delegate.supportedLocales,
+      theme: lightThemeData,
+      darkTheme: darkThemeData,
+      themeMode: ThemeMode.system,
+      home: mainInfo.when(
+        data: (mainInfo) => MainAppHome(mainInfo: mainInfo),
+        error: (error, stack) => Text('$error'),
+        loading: () => const Center(child: CircularProgressIndicator()),
+      ),
     );
   }
 }
