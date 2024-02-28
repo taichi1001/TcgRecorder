@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/firestore_share.dart';
 import 'package:tcg_manager/main.dart';
 import 'package:tcg_manager/provider/firebase_auth_provider.dart';
+import 'package:tcg_manager/provider/firestore_controller_provider.dart';
 import 'package:tcg_manager/repository/firestore_share_repository.dart';
 import 'package:tcg_manager/view/component/list_tile_ontap.dart';
 import 'package:tcg_manager/view/premium_plan_purchase_view.dart';
@@ -14,8 +15,10 @@ class SelectSharedHostGameScreen extends HookConsumerWidget {
 
   Future _save(List<FirestoreShare> shareList, BuildContext context, WidgetRef ref) async {
     for (final share in shareList) {
-      await ref.read(firestoreShareRepository).updateShare(share);
-      // TODO サーバのデータをすべてローカルに戻す処理を入れる
+      if (!share.isShared) {
+        await ref.read(firestoreControllerProvider).revokeGameSharing(share);
+        await ref.read(firestoreControllerProvider).deleteShareGame(share.docName);
+      }
     }
     ref.invalidate(hostShareCountProvider);
     if (context.mounted) {

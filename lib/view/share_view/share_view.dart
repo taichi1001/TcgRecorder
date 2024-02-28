@@ -69,7 +69,7 @@ class ShareView extends HookConsumerWidget {
                       );
                     }
                   } else {
-                    Navigator.push(
+                    await Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) {
@@ -96,6 +96,7 @@ class ShareView extends HookConsumerWidget {
                         },
                       ),
                     );
+                    ref.invalidate(hostShareCountProvider);
                   }
                 },
               ),

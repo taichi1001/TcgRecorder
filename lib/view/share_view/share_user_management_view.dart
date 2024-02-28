@@ -1,29 +1,13 @@
-import 'dart:io';
-
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:http/http.dart' as http;
-import 'package:tcg_manager/entity/record.dart';
 import 'package:tcg_manager/entity/user_data.dart';
-import 'package:tcg_manager/helper/db_helper.dart';
-import 'package:tcg_manager/main.dart';
-import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/firebase_auth_provider.dart';
 import 'package:tcg_manager/provider/firestore_controller_provider.dart';
-import 'package:tcg_manager/provider/game_list_provider.dart';
-import 'package:tcg_manager/provider/record_list_provider.dart';
-import 'package:tcg_manager/provider/select_game_provider.dart';
-import 'package:tcg_manager/provider/tag_list_provider.dart';
-import 'package:tcg_manager/repository/deck_repository.dart';
 import 'package:tcg_manager/repository/firestore_invite_code_repository.dart';
-import 'package:tcg_manager/repository/firestore_share_data_repository.dart';
 import 'package:tcg_manager/repository/firestore_share_repository.dart';
 import 'package:tcg_manager/repository/firestore_user_settings_repositroy.dart';
-import 'package:tcg_manager/repository/game_repository.dart';
-import 'package:tcg_manager/repository/record_repository.dart';
-import 'package:tcg_manager/repository/tag_repository.dart';
 import 'package:tcg_manager/view/component/list_tile_ontap.dart';
 import 'package:tcg_manager/view/component/loading_overlay.dart';
 import 'package:tcg_manager/view/select_domain_data_bottom_sheet/domain_data_options.dart';
@@ -252,59 +236,9 @@ class _RevokeShareGameButton extends HookConsumerWidget {
                   );
                   if (result == OkCancelResult.ok) {
                     ref.read(loadingProvider.notifier).state = true;
-                    final deckList = await ref.read(firestoreShareDataDeckProvider(data.currentShare!.docName).future);
-                    final tagList = await ref.read(firestoreShareDataTagProvider(data.currentShare!.docName).future);
-                    final recordList = await ref.read(firestoreShareDataRecordProvider(data.currentShare!.docName).future);
-                    if (data.currentShare!.game.id == ref.read(selectGameNotifierProvider).selectGame?.id) {
-                      ref.read(selectGameNotifierProvider.notifier).changeGame(data.currentShare!.game.copyWith(isShare: false));
-                    }
-                    await ref.read(dbHelper).deleteGame(data.currentShare!.game, isRevokeShare: true);
-                    await ref.read(gameRepository).insert(data.currentShare!.game.copyWith(isShare: false));
-
-                    final Map<int, int> deckIdMap = {};
-                    for (final deck in deckList) {
-                      final newId = await ref.read(deckRepository).insert(deck.copyWith(id: null));
-                      deckIdMap[deck.id!] = newId;
-                    }
-
-                    final Map<int, int> tagIdMap = {};
-                    for (final tag in tagList) {
-                      final newId = await ref.read(tagRepository).insert(tag.copyWith(id: null));
-                      tagIdMap[tag.id!] = newId;
-                    }
-
-                    final List<Record> newRecordList = [];
-                    for (var record in recordList) {
-                      final newUseDeckId = deckIdMap[record.useDeckId];
-                      final newOpponentDeckId = deckIdMap[record.opponentDeckId];
-                      final newTagIdList = record.tagId.map((e) => tagIdMap[e]!).toList();
-                      record = record.copyWith(useDeckId: newUseDeckId, opponentDeckId: newOpponentDeckId, tagId: newTagIdList);
-                      if (record.imagePath != null && record.imagePath!.isNotEmpty) {
-                        final List<String> newImagePath = [];
-                        var index = 0;
-                        for (final imagePath in record.imagePath!) {
-                          final response = await http.get(Uri.parse(imagePath));
-                          final saveDir = ref.read(imagePathProvider);
-                          final imageName = 'image_${record.id}_$index';
-                          final filePath = '$saveDir/$imageName';
-                          final file = File(filePath);
-                          await file.writeAsBytes(response.bodyBytes);
-                          newImagePath.add(imageName);
-                          index++;
-                        }
-                        print(newImagePath);
-                        record = record.copyWith(imagePath: newImagePath);
-                      }
-                      newRecordList.add(record);
-                    }
-                    await ref.read(recordRepository).insertList(newRecordList.map((e) => e.copyWith(id: null)).toList());
-                    ref.invalidate(allRecordListProvider);
-                    ref.invalidate(allDeckListProvider);
-                    ref.invalidate(allTagListProvider);
-                    ref.invalidate(allGameListProvider);
-
+                    await ref.read(firestoreControllerProvider).revokeGameSharing(data.currentShare!);
                     ref.read(loadingProvider.notifier).state = false;
-
+                    ref.invalidate(hostShareCountProvider);
                     if (context.mounted) {
                       Navigator.of(context).pop();
                     }

@@ -135,6 +135,7 @@ class _ShareSelectableRow extends HookConsumerWidget {
                   }
                   await ref.read(firestoreControllerProvider).initShareGame(gameData, uid);
                   ref.read(loadingProvider.notifier).state = false;
+                  ref.invalidate(hostShareCountProvider);
                   if (context.mounted) {
                     Navigator.push(
                       context,
