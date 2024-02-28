@@ -5,26 +5,26 @@ import 'package:tcg_manager/helper/record_calc.dart';
 import 'package:tcg_manager/selector/filter_record_list_selector.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
 
-final opponentDeckDataByUseDeckProvider = FutureProvider.family.autoDispose<List<WinRateData>, String>(
-  (ref, useDeckName) async {
+final useDeckDataByOpponentDeckProvider = FutureProvider.family.autoDispose<List<WinRateData>, String>(
+  (ref, opponentDeckName) async {
     final filterRecordList = await ref.watch(filterRecordListProvider.future);
     final gameDeckList = await ref.watch(gameDeckListProvider.future);
-    final useDeck = gameDeckList.firstWhere((deck) => deck.name == useDeckName);
-    final useDeckRecord = filterRecordList.where((record) => record.useDeckId == useDeck.id).toList();
-    final List<Deck> opponentDeckList = [];
+    final opponentDeck = gameDeckList.firstWhere((deck) => deck.name == opponentDeckName);
+    final opponenDeckRecord = filterRecordList.where((record) => record.opponentDeckId == opponentDeck.id).toList();
+    final List<Deck> useDeckList = [];
     for (final deck in gameDeckList) {
-      for (final record in useDeckRecord) {
-        if (record.opponentDeckId == deck.id) {
-          opponentDeckList.add(deck);
+      for (final record in opponenDeckRecord) {
+        if (record.useDeckId == deck.id) {
+          useDeckList.add(deck);
           break;
         }
       }
     }
 
     final calc = RecordCalculator(targetRecordList: filterRecordList);
-    final opponentDeckData = opponentDeckList.map((opponentDeck) {
+    final useDeckData = useDeckList.map((useDeck) {
       return WinRateData(
-        deck: opponentDeck.name,
+        deck: useDeck.name,
         matches: calc.countUseDeckAndOpponentDeckMatches(useDeck, opponentDeck),
         firstMatches: calc.countUseDeckAndOpponentDeckFirstMatches(useDeck, opponentDeck),
         secondMatches: calc.countUseDeckAndOpponentDeckSecondMatches(useDeck, opponentDeck),
@@ -42,27 +42,27 @@ final opponentDeckDataByUseDeckProvider = FutureProvider.family.autoDispose<List
         winRateOfSecond: calc.calcUseDeckAndOpponentDeckWinRateOfSecond(useDeck, opponentDeck),
       );
     }).toList();
-    opponentDeckData.add(
+    useDeckData.add(
       WinRateData(
         deck: '合計',
-        matches: calc.countUseDeckMatches(useDeck),
-        firstMatches: calc.countUseDeckFirstMatches(useDeck),
-        secondMatches: calc.countUseDeckSecondMatches(useDeck),
-        win: calc.countUseDeckWins(useDeck),
-        firstMatchesWin: calc.countUseDeckFirstMatchesWins(useDeck),
-        secondMatchesWin: calc.countUseDeckSecondMatchesWins(useDeck),
-        loss: calc.countUseDeckLoss(useDeck),
-        firstMatchesLoss: calc.countUseDeckFirstMatchesLoss(useDeck),
-        secondMatchesLoss: calc.countUseDeckSecondMatchesLoss(useDeck),
-        draw: calc.countUseDeckDraw(useDeck),
-        firstMatchesDraw: calc.countUseDeckFirstMatchesDraw(useDeck),
-        secondMatchesDraw: calc.countUseDeckSecondMatchesDraw(useDeck),
-        useRate: calc.calcUseDeckUseRate(useDeck),
-        winRate: calc.calcUseDeckWinRate(useDeck),
-        winRateOfFirst: calc.calcUseDeckWinRateOfFirst(useDeck),
-        winRateOfSecond: calc.calcUseDeckWinRateOfSecond(useDeck),
+        matches: calc.countUseDeckMatches(opponentDeck),
+        firstMatches: calc.countUseDeckFirstMatches(opponentDeck),
+        secondMatches: calc.countUseDeckSecondMatches(opponentDeck),
+        win: calc.countUseDeckWins(opponentDeck),
+        firstMatchesWin: calc.countUseDeckFirstMatchesWins(opponentDeck),
+        secondMatchesWin: calc.countUseDeckSecondMatchesWins(opponentDeck),
+        loss: calc.countUseDeckLoss(opponentDeck),
+        firstMatchesLoss: calc.countUseDeckFirstMatchesLoss(opponentDeck),
+        secondMatchesLoss: calc.countUseDeckSecondMatchesLoss(opponentDeck),
+        draw: calc.countUseDeckDraw(opponentDeck),
+        firstMatchesDraw: calc.countUseDeckFirstMatchesDraw(opponentDeck),
+        secondMatchesDraw: calc.countUseDeckSecondMatchesDraw(opponentDeck),
+        useRate: calc.calcUseDeckUseRate(opponentDeck),
+        winRate: calc.calcUseDeckWinRate(opponentDeck),
+        winRateOfFirst: calc.calcUseDeckWinRateOfFirst(opponentDeck),
+        winRateOfSecond: calc.calcUseDeckWinRateOfSecond(opponentDeck),
       ),
     );
-    return opponentDeckData;
+    return useDeckData;
   },
 );
