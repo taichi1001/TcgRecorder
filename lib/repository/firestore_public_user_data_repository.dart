@@ -39,7 +39,7 @@ class FirestorePublicUserDataRepository {
 
   Future<int> addRecord(Record record, String docName) async {
     await _addItem('records', record.toJson(), docName);
-    return record.recordId!;
+    return record.id!;
   }
 
   Future updateRecord(Record updateRecord, String docName) async {
@@ -54,7 +54,7 @@ class FirestorePublicUserDataRepository {
         final List<dynamic> records = snapshot.data()['records'];
 
         // 対象のRecordを検索
-        final targetIndex = records.indexWhere((record) => record['record_id'] == updateRecord.recordId);
+        final targetIndex = records.indexWhere((record) => record['record_id'] == updateRecord.id);
 
         // 対象のRecordが見つかった場合
         if (targetIndex != -1) {
@@ -83,7 +83,7 @@ class FirestorePublicUserDataRepository {
         final List<dynamic> records = snapshot.data()['records'];
 
         // 対象のRecordを検索
-        final targetIndex = records.indexWhere((record) => record['record_id'] == removeRecord.recordId);
+        final targetIndex = records.indexWhere((record) => record['record_id'] == removeRecord.id);
 
         // 対象のRecordが見つかった場合
         if (targetIndex != -1) {

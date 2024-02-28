@@ -265,7 +265,7 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
       final newId = await ref.read(recordRepository).insert(state.record!);
       ref
           .read(firestorePublicUserDataRepository)
-          .addRecord(state.record!.copyWith(recordId: newId), ref.read(firebaseAuthNotifierProvider).user!.uid);
+          .addRecord(state.record!.copyWith(id: newId), ref.read(firebaseAuthNotifierProvider).user!.uid);
     }
   }
 
