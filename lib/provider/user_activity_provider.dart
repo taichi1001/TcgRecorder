@@ -12,6 +12,7 @@ class UserActivityLog {
   late DateTime installDate;
   late DateTime lastLogin;
   late int totalLoginDays;
+  late bool canRecord;
   DateTime? reviewdAt;
   DateTime? dissatisfactionChosenAt;
   DateTime? answerLaterChosenAt;
@@ -38,7 +39,8 @@ class UserActivityLogNotifier extends _$UserActivityLogNotifier {
         ..totalRecordCount = 0
         ..installDate = DateTime.now()
         ..lastLogin = DateTime.now()
-        ..totalLoginDays = 1;
+        ..totalLoginDays = 1
+        ..canRecord = true;
     }
   }
 
@@ -81,11 +83,16 @@ class UserActivityLogNotifier extends _$UserActivityLogNotifier {
 
   void record() {
     final isar = ref.read(isarProvider);
-    isar.write(
-      (isar) => isar.userActivityLogs.put(
-        state..totalRecordCount = state.totalRecordCount + 1,
-      ),
-    );
+    isar.write((isar) {
+      final newTotalRecord = state.totalRecordCount + 1;
+      var canRecord = true;
+      if (newTotalRecord % 20 == 0) canRecord = false;
+      isar.userActivityLogs.put(
+        state
+          ..totalRecordCount = newTotalRecord
+          ..canRecord = canRecord,
+      );
+    });
   }
 
   /// レビューするを選んだ時
@@ -106,14 +113,20 @@ class UserActivityLogNotifier extends _$UserActivityLogNotifier {
     isar.write((isar) => isar.userActivityLogs.put(state..dissatisfactionChosenAt = DateTime.now()));
   }
 
-  /// プレミアムプランを広告で解放したとき
+  /// 記録制限解除用広告閲覧時
+  void showLimitRewardAd() {
+    final isar = ref.read(isarProvider);
+    isar.write((isar) => isar.userActivityLogs.put(state..canRecord = true));
+  }
+
+  /// プレミアムプランを広告で解放したときに実行
   void showPremiumFeaturesAd() {
     final isar = ref.read(isarProvider);
     isar.write((isar) => isar.userActivityLogs.put(state..showPremiumFeaturesAdAt = DateTime.now()));
   }
 
   /// プレミアムプランへアクセスできるかどうかの判定
-  bool canAccessPremiumFeatures() {
+  bool canAccessPremiumFejatures() {
     if (state.showPremiumFeaturesAdAt == null) return false;
     final difference = state.showPremiumFeaturesAdAt!.difference(DateTime.now()).abs();
     return difference.inMinutes <= 60;

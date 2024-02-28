@@ -6,13 +6,13 @@ part of 'firestore_public_user_data.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_FirestorePublicUserData _$$_FirestorePublicUserDataFromJson(
+_$FirestorePublicUserDataImpl _$$FirestorePublicUserDataImplFromJson(
         Map<String, dynamic> json) =>
     $checkedCreate(
-      r'_$_FirestorePublicUserData',
+      r'_$FirestorePublicUserDataImpl',
       json,
       ($checkedConvert) {
-        final val = _$_FirestorePublicUserData(
+        final val = _$FirestorePublicUserDataImpl(
           uid: $checkedConvert('uid', (v) => v as String),
           gameList: $checkedConvert(
               'game_list',
@@ -53,8 +53,8 @@ _$_FirestorePublicUserData _$$_FirestorePublicUserDataFromJson(
       },
     );
 
-Map<String, dynamic> _$$_FirestorePublicUserDataToJson(
-        _$_FirestorePublicUserData instance) =>
+Map<String, dynamic> _$$FirestorePublicUserDataImplToJson(
+        _$FirestorePublicUserDataImpl instance) =>
     <String, dynamic>{
       'uid': instance.uid,
       'game_list': instance.gameList.map((e) => e.toJson()).toList(),
