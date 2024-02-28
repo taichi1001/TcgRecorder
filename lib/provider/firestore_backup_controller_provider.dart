@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/firestore_backup.dart';
-import 'package:tcg_manager/repository/firestore_user_backup_repository.dart';
 import 'package:tcg_manager/entity/record.dart';
 import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/main.dart';
@@ -13,6 +12,7 @@ import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
+import 'package:tcg_manager/repository/firestore_user_backup_repository.dart';
 import 'package:tcg_manager/repository/game_repository.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
 import 'package:tcg_manager/repository/tag_repository.dart';
@@ -144,10 +144,11 @@ class FirestoreBackupController {
     final allRecordList = await ref.read(allRecordListProvider.future);
     final isImageRecordList = allRecordList.where((record) => record.imagePath != null && record.imagePath!.isNotEmpty).toList();
     for (final record in isImageRecordList) {
+      var i = 0;
       for (final imagePath in record.imagePath!) {
         final strageRef = FirebaseStorage.instance.ref().child('user/${ref.read(firebaseAuthNotifierProvider).user?.uid}/$imagePath');
         final savePath = ref.read(imagePathProvider);
-        final file = File('$savePath/$imagePath');
+        final file = File('$savePath/image_${record.id}_$i');
         await strageRef.writeToFile(file);
       }
     }
