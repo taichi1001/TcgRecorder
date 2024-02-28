@@ -28,9 +28,9 @@ class RewardAdStateNotifier extends _$RewardAdStateNotifier {
       }
     } else {
       if (Platform.isAndroid) {
-        return 'ca-app-pub-2720030553523537/3442250082'; // 本番用
+        return 'ca-app-pub-2720030553523537/6562493550'; // 本番用
       } else if (Platform.isIOS) {
-        return 'ca-app-pub-2720030553523537/3854664692'; // 本番用
+        return 'ca-app-pub-2720030553523537/1336472631'; // 本番用
       } else {
         throw UnsupportedError("Unsupported platform");
       }
