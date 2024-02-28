@@ -94,12 +94,7 @@ class GraphView extends HookConsumerWidget {
                 onValueChanged: (int? index) {
                   if (index == null) return;
                   currentIndex.value = index;
-
-                  pageController.animateToPage(
-                    index,
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeInOut,
-                  );
+                  pageController.jumpToPage(index);
                 },
                 groupValue: currentIndex.value,
               ),
