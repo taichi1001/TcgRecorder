@@ -47,7 +47,7 @@ final margedRecordListProvider = FutureProvider.autoDispose<List<MargedRecord>>(
       tagList.add(tag);
     }
     return MargedRecord(
-      recordId: record.recordId!,
+      recordId: record.id!,
       game: game.name,
       useDeck: useDeck.name,
       opponentDeck: opponentDeck.name,
@@ -95,7 +95,7 @@ final allMargedRecordListProvider = FutureProvider.autoDispose<List<MargedRecord
       tagList.add(tag);
     }
     return MargedRecord(
-      recordId: record.recordId!,
+      recordId: record.id!,
       game: game.name,
       useDeck: useDeck.name,
       opponentDeck: opponentDeck.name,

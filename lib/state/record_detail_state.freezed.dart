@@ -12,7 +12,7 @@ part of 'record_detail_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$RecordEditViewState {
@@ -128,11 +128,11 @@ class _$RecordEditViewStateCopyWithImpl<$Res, $Val extends RecordEditViewState>
 }
 
 /// @nodoc
-abstract class _$$_RecordEditViewStateCopyWith<$Res>
+abstract class _$$RecordEditViewStateImplCopyWith<$Res>
     implements $RecordEditViewStateCopyWith<$Res> {
-  factory _$$_RecordEditViewStateCopyWith(_$_RecordEditViewState value,
-          $Res Function(_$_RecordEditViewState) then) =
-      __$$_RecordEditViewStateCopyWithImpl<$Res>;
+  factory _$$RecordEditViewStateImplCopyWith(_$RecordEditViewStateImpl value,
+          $Res Function(_$RecordEditViewStateImpl) then) =
+      __$$RecordEditViewStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -153,11 +153,11 @@ abstract class _$$_RecordEditViewStateCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_RecordEditViewStateCopyWithImpl<$Res>
-    extends _$RecordEditViewStateCopyWithImpl<$Res, _$_RecordEditViewState>
-    implements _$$_RecordEditViewStateCopyWith<$Res> {
-  __$$_RecordEditViewStateCopyWithImpl(_$_RecordEditViewState _value,
-      $Res Function(_$_RecordEditViewState) _then)
+class __$$RecordEditViewStateImplCopyWithImpl<$Res>
+    extends _$RecordEditViewStateCopyWithImpl<$Res, _$RecordEditViewStateImpl>
+    implements _$$RecordEditViewStateImplCopyWith<$Res> {
+  __$$RecordEditViewStateImplCopyWithImpl(_$RecordEditViewStateImpl _value,
+      $Res Function(_$RecordEditViewStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -171,7 +171,7 @@ class __$$_RecordEditViewStateCopyWithImpl<$Res>
     Object? addImages = null,
     Object? removeImages = null,
   }) {
-    return _then(_$_RecordEditViewState(
+    return _then(_$RecordEditViewStateImpl(
       isEdit: null == isEdit
           ? _value.isEdit
           : isEdit // ignore: cast_nullable_to_non_nullable
@@ -206,8 +206,8 @@ class __$$_RecordEditViewStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_RecordEditViewState implements _RecordEditViewState {
-  _$_RecordEditViewState(
+class _$RecordEditViewStateImpl implements _RecordEditViewState {
+  _$RecordEditViewStateImpl(
       {this.isEdit = false,
       required this.record,
       required this.margedRecord,
@@ -261,10 +261,10 @@ class _$_RecordEditViewState implements _RecordEditViewState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_RecordEditViewState &&
+            other is _$RecordEditViewStateImpl &&
             (identical(other.isEdit, isEdit) || other.isEdit == isEdit) &&
             (identical(other.record, record) || other.record == record) &&
             (identical(other.margedRecord, margedRecord) ||
@@ -292,8 +292,8 @@ class _$_RecordEditViewState implements _RecordEditViewState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_RecordEditViewStateCopyWith<_$_RecordEditViewState> get copyWith =>
-      __$$_RecordEditViewStateCopyWithImpl<_$_RecordEditViewState>(
+  _$$RecordEditViewStateImplCopyWith<_$RecordEditViewStateImpl> get copyWith =>
+      __$$RecordEditViewStateImplCopyWithImpl<_$RecordEditViewStateImpl>(
           this, _$identity);
 }
 
@@ -305,7 +305,7 @@ abstract class _RecordEditViewState implements RecordEditViewState {
       required final MargedRecord editMargedRecord,
       final List<String> images,
       final List<XFile> addImages,
-      final List<String> removeImages}) = _$_RecordEditViewState;
+      final List<String> removeImages}) = _$RecordEditViewStateImpl;
 
   @override
   bool get isEdit;
@@ -323,6 +323,6 @@ abstract class _RecordEditViewState implements RecordEditViewState {
   List<String> get removeImages;
   @override
   @JsonKey(ignore: true)
-  _$$_RecordEditViewStateCopyWith<_$_RecordEditViewState> get copyWith =>
+  _$$RecordEditViewStateImplCopyWith<_$RecordEditViewStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

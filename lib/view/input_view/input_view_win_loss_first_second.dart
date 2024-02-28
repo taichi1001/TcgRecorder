@@ -6,8 +6,8 @@ import 'package:tcg_manager/provider/input_view_provider.dart';
 import 'package:tcg_manager/provider/input_view_settings_provider.dart';
 import 'package:tcg_manager/view/component/match_selection_row.dart';
 
-class WinLossFirstSecond extends HookConsumerWidget {
-  const WinLossFirstSecond({key}) : super(key: key);
+class InputViewWinLossFirstSecond extends HookConsumerWidget {
+  const InputViewWinLossFirstSecond({key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

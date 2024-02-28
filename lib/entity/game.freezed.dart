@@ -12,7 +12,7 @@ part of 'game.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 Game _$GameFromJson(Map<String, dynamic> json) {
   return _Game.fromJson(json);
@@ -41,14 +41,11 @@ abstract class $GameCopyWith<$Res> {
       _$GameCopyWithImpl<$Res, Game>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'game_id')
-          int? id,
-      @JsonKey(name: 'game')
-          String name,
+      {@JsonKey(name: 'game_id') int? id,
+      @JsonKey(name: 'game') String name,
       @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
-          bool isVisibleToPicker,
-      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
-          bool isShare,
+      bool isVisibleToPicker,
+      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson) bool isShare,
       int? sortIndex});
 }
 
@@ -97,27 +94,26 @@ class _$GameCopyWithImpl<$Res, $Val extends Game>
 }
 
 /// @nodoc
-abstract class _$$_GameCopyWith<$Res> implements $GameCopyWith<$Res> {
-  factory _$$_GameCopyWith(_$_Game value, $Res Function(_$_Game) then) =
-      __$$_GameCopyWithImpl<$Res>;
+abstract class _$$GameImplCopyWith<$Res> implements $GameCopyWith<$Res> {
+  factory _$$GameImplCopyWith(
+          _$GameImpl value, $Res Function(_$GameImpl) then) =
+      __$$GameImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'game_id')
-          int? id,
-      @JsonKey(name: 'game')
-          String name,
+      {@JsonKey(name: 'game_id') int? id,
+      @JsonKey(name: 'game') String name,
       @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
-          bool isVisibleToPicker,
-      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
-          bool isShare,
+      bool isVisibleToPicker,
+      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson) bool isShare,
       int? sortIndex});
 }
 
 /// @nodoc
-class __$$_GameCopyWithImpl<$Res> extends _$GameCopyWithImpl<$Res, _$_Game>
-    implements _$$_GameCopyWith<$Res> {
-  __$$_GameCopyWithImpl(_$_Game _value, $Res Function(_$_Game) _then)
+class __$$GameImplCopyWithImpl<$Res>
+    extends _$GameCopyWithImpl<$Res, _$GameImpl>
+    implements _$$GameImplCopyWith<$Res> {
+  __$$GameImplCopyWithImpl(_$GameImpl _value, $Res Function(_$GameImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -129,7 +125,7 @@ class __$$_GameCopyWithImpl<$Res> extends _$GameCopyWithImpl<$Res, _$_Game>
     Object? isShare = null,
     Object? sortIndex = freezed,
   }) {
-    return _then(_$_Game(
+    return _then(_$GameImpl(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -156,19 +152,18 @@ class __$$_GameCopyWithImpl<$Res> extends _$GameCopyWithImpl<$Res, _$_Game>
 
 /// @nodoc
 @JsonSerializable()
-class _$_Game implements _Game {
-  _$_Game(
-      {@JsonKey(name: 'game_id')
-          this.id,
-      @JsonKey(name: 'game')
-          required this.name,
+class _$GameImpl implements _Game {
+  _$GameImpl(
+      {@JsonKey(name: 'game_id') this.id,
+      @JsonKey(name: 'game') required this.name,
       @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
-          this.isVisibleToPicker = true,
+      this.isVisibleToPicker = true,
       @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
-          this.isShare = false,
+      this.isShare = false,
       this.sortIndex});
 
-  factory _$_Game.fromJson(Map<String, dynamic> json) => _$$_GameFromJson(json);
+  factory _$GameImpl.fromJson(Map<String, dynamic> json) =>
+      _$$GameImplFromJson(json);
 
   @override
   @JsonKey(name: 'game_id')
@@ -191,10 +186,10 @@ class _$_Game implements _Game {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Game &&
+            other is _$GameImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.isVisibleToPicker, isVisibleToPicker) ||
@@ -212,12 +207,12 @@ class _$_Game implements _Game {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_GameCopyWith<_$_Game> get copyWith =>
-      __$$_GameCopyWithImpl<_$_Game>(this, _$identity);
+  _$$GameImplCopyWith<_$GameImpl> get copyWith =>
+      __$$GameImplCopyWithImpl<_$GameImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_GameToJson(
+    return _$$GameImplToJson(
       this,
     );
   }
@@ -225,17 +220,14 @@ class _$_Game implements _Game {
 
 abstract class _Game implements Game {
   factory _Game(
-      {@JsonKey(name: 'game_id')
-          final int? id,
-      @JsonKey(name: 'game')
-          required final String name,
+      {@JsonKey(name: 'game_id') final int? id,
+      @JsonKey(name: 'game') required final String name,
       @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
-          final bool isVisibleToPicker,
-      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
-          final bool isShare,
-      final int? sortIndex}) = _$_Game;
+      final bool isVisibleToPicker,
+      @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson) final bool isShare,
+      final int? sortIndex}) = _$GameImpl;
 
-  factory _Game.fromJson(Map<String, dynamic> json) = _$_Game.fromJson;
+  factory _Game.fromJson(Map<String, dynamic> json) = _$GameImpl.fromJson;
 
   @override
   @JsonKey(name: 'game_id')
@@ -253,5 +245,6 @@ abstract class _Game implements Game {
   int? get sortIndex;
   @override
   @JsonKey(ignore: true)
-  _$$_GameCopyWith<_$_Game> get copyWith => throw _privateConstructorUsedError;
+  _$$GameImplCopyWith<_$GameImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }

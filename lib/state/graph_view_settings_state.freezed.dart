@@ -12,7 +12,7 @@ part of 'graph_view_settings_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$GraphViewSettingsState {
@@ -157,11 +157,12 @@ class _$GraphViewSettingsStateCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_GraphViewSettingsStateCopyWith<$Res>
+abstract class _$$GraphViewSettingsStateImplCopyWith<$Res>
     implements $GraphViewSettingsStateCopyWith<$Res> {
-  factory _$$_GraphViewSettingsStateCopyWith(_$_GraphViewSettingsState value,
-          $Res Function(_$_GraphViewSettingsState) then) =
-      __$$_GraphViewSettingsStateCopyWithImpl<$Res>;
+  factory _$$GraphViewSettingsStateImplCopyWith(
+          _$GraphViewSettingsStateImpl value,
+          $Res Function(_$GraphViewSettingsStateImpl) then) =
+      __$$GraphViewSettingsStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -183,12 +184,13 @@ abstract class _$$_GraphViewSettingsStateCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_GraphViewSettingsStateCopyWithImpl<$Res>
+class __$$GraphViewSettingsStateImplCopyWithImpl<$Res>
     extends _$GraphViewSettingsStateCopyWithImpl<$Res,
-        _$_GraphViewSettingsState>
-    implements _$$_GraphViewSettingsStateCopyWith<$Res> {
-  __$$_GraphViewSettingsStateCopyWithImpl(_$_GraphViewSettingsState _value,
-      $Res Function(_$_GraphViewSettingsState) _then)
+        _$GraphViewSettingsStateImpl>
+    implements _$$GraphViewSettingsStateImplCopyWith<$Res> {
+  __$$GraphViewSettingsStateImplCopyWithImpl(
+      _$GraphViewSettingsStateImpl _value,
+      $Res Function(_$GraphViewSettingsStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -210,7 +212,7 @@ class __$$_GraphViewSettingsStateCopyWithImpl<$Res>
     Object? firstWinRate = null,
     Object? secondWinRate = null,
   }) {
-    return _then(_$_GraphViewSettingsState(
+    return _then(_$GraphViewSettingsStateImpl(
       matches: null == matches
           ? _value.matches
           : matches // ignore: cast_nullable_to_non_nullable
@@ -277,8 +279,8 @@ class __$$_GraphViewSettingsStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_GraphViewSettingsState implements _GraphViewSettingsState {
-  _$_GraphViewSettingsState(
+class _$GraphViewSettingsStateImpl implements _GraphViewSettingsState {
+  _$GraphViewSettingsStateImpl(
       {this.matches = true,
       this.firstMatches = true,
       this.secondMatches = true,
@@ -347,10 +349,10 @@ class _$_GraphViewSettingsState implements _GraphViewSettingsState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_GraphViewSettingsState &&
+            other is _$GraphViewSettingsStateImpl &&
             (identical(other.matches, matches) || other.matches == matches) &&
             (identical(other.firstMatches, firstMatches) ||
                 other.firstMatches == firstMatches) &&
@@ -400,9 +402,9 @@ class _$_GraphViewSettingsState implements _GraphViewSettingsState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_GraphViewSettingsStateCopyWith<_$_GraphViewSettingsState> get copyWith =>
-      __$$_GraphViewSettingsStateCopyWithImpl<_$_GraphViewSettingsState>(
-          this, _$identity);
+  _$$GraphViewSettingsStateImplCopyWith<_$GraphViewSettingsStateImpl>
+      get copyWith => __$$GraphViewSettingsStateImplCopyWithImpl<
+          _$GraphViewSettingsStateImpl>(this, _$identity);
 }
 
 abstract class _GraphViewSettingsState implements GraphViewSettingsState {
@@ -421,7 +423,7 @@ abstract class _GraphViewSettingsState implements GraphViewSettingsState {
       final bool secondMatchesDraw,
       final bool winRate,
       final bool firstWinRate,
-      final bool secondWinRate}) = _$_GraphViewSettingsState;
+      final bool secondWinRate}) = _$GraphViewSettingsStateImpl;
 
   @override
   bool get matches;
@@ -455,6 +457,6 @@ abstract class _GraphViewSettingsState implements GraphViewSettingsState {
   bool get secondWinRate;
   @override
   @JsonKey(ignore: true)
-  _$$_GraphViewSettingsStateCopyWith<_$_GraphViewSettingsState> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$GraphViewSettingsStateImplCopyWith<_$GraphViewSettingsStateImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

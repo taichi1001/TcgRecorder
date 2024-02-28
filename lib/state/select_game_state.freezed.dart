@@ -12,7 +12,7 @@ part of 'select_game_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$SelectGameState {
@@ -71,11 +71,11 @@ class _$SelectGameStateCopyWithImpl<$Res, $Val extends SelectGameState>
 }
 
 /// @nodoc
-abstract class _$$_SelectGameStateCopyWith<$Res>
+abstract class _$$SelectGameStateImplCopyWith<$Res>
     implements $SelectGameStateCopyWith<$Res> {
-  factory _$$_SelectGameStateCopyWith(
-          _$_SelectGameState value, $Res Function(_$_SelectGameState) then) =
-      __$$_SelectGameStateCopyWithImpl<$Res>;
+  factory _$$SelectGameStateImplCopyWith(_$SelectGameStateImpl value,
+          $Res Function(_$SelectGameStateImpl) then) =
+      __$$SelectGameStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({Game? selectGame});
@@ -85,11 +85,11 @@ abstract class _$$_SelectGameStateCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_SelectGameStateCopyWithImpl<$Res>
-    extends _$SelectGameStateCopyWithImpl<$Res, _$_SelectGameState>
-    implements _$$_SelectGameStateCopyWith<$Res> {
-  __$$_SelectGameStateCopyWithImpl(
-      _$_SelectGameState _value, $Res Function(_$_SelectGameState) _then)
+class __$$SelectGameStateImplCopyWithImpl<$Res>
+    extends _$SelectGameStateCopyWithImpl<$Res, _$SelectGameStateImpl>
+    implements _$$SelectGameStateImplCopyWith<$Res> {
+  __$$SelectGameStateImplCopyWithImpl(
+      _$SelectGameStateImpl _value, $Res Function(_$SelectGameStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -97,7 +97,7 @@ class __$$_SelectGameStateCopyWithImpl<$Res>
   $Res call({
     Object? selectGame = freezed,
   }) {
-    return _then(_$_SelectGameState(
+    return _then(_$SelectGameStateImpl(
       selectGame: freezed == selectGame
           ? _value.selectGame
           : selectGame // ignore: cast_nullable_to_non_nullable
@@ -108,8 +108,8 @@ class __$$_SelectGameStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_SelectGameState implements _SelectGameState {
-  _$_SelectGameState({this.selectGame});
+class _$SelectGameStateImpl implements _SelectGameState {
+  _$SelectGameStateImpl({this.selectGame});
 
   @override
   final Game? selectGame;
@@ -120,10 +120,10 @@ class _$_SelectGameState implements _SelectGameState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_SelectGameState &&
+            other is _$SelectGameStateImpl &&
             (identical(other.selectGame, selectGame) ||
                 other.selectGame == selectGame));
   }
@@ -134,17 +134,18 @@ class _$_SelectGameState implements _SelectGameState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_SelectGameStateCopyWith<_$_SelectGameState> get copyWith =>
-      __$$_SelectGameStateCopyWithImpl<_$_SelectGameState>(this, _$identity);
+  _$$SelectGameStateImplCopyWith<_$SelectGameStateImpl> get copyWith =>
+      __$$SelectGameStateImplCopyWithImpl<_$SelectGameStateImpl>(
+          this, _$identity);
 }
 
 abstract class _SelectGameState implements SelectGameState {
-  factory _SelectGameState({final Game? selectGame}) = _$_SelectGameState;
+  factory _SelectGameState({final Game? selectGame}) = _$SelectGameStateImpl;
 
   @override
   Game? get selectGame;
   @override
   @JsonKey(ignore: true)
-  _$$_SelectGameStateCopyWith<_$_SelectGameState> get copyWith =>
+  _$$SelectGameStateImplCopyWith<_$SelectGameStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -1,6 +1,5 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/enum/access_roll.dart';
 import 'package:tcg_manager/enum/bo.dart';
@@ -13,6 +12,9 @@ import 'package:tcg_manager/provider/input_view_settings_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/select_game_access_roll.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
+import 'package:tcg_manager/provider/user_activity_provider.dart';
+import 'package:tcg_manager/view/component/loading_overlay.dart';
+import 'package:tcg_manager/view/reveiw_modal.dart';
 
 class SaveButton extends HookConsumerWidget {
   const SaveButton({
@@ -67,7 +69,7 @@ class SaveButton extends HookConsumerWidget {
                         );
 
                         if (okCancelResult == OkCancelResult.ok) {
-                          SmartDialog.showLoading();
+                          ref.read(loadingProvider.notifier).state = true;
                           if (isBO3) {
                             await inputViewNotifier.saveRecord(BO.bo3);
                           } else {
@@ -76,18 +78,15 @@ class SaveButton extends HookConsumerWidget {
                           ref.invalidate(allDeckListProvider);
                           ref.invalidate(allTagListProvider);
                           ref.invalidate(allRecordListProvider);
-                          // レビュー催促ダイアログ条件検討中
-                          // if (recordCount % 200 == 0) {
-                          //   final inAppReview = InAppReview.instance;
-                          //   if (await inAppReview.isAvailable()) {
-                          //     inAppReview.requestReview();
-                          //   }
-                          // }
+                          ref.read(userActivityLogNotifierProvider.notifier).record();
+                          if (ref.read(userActivityLogNotifierProvider.notifier).shouldShowReviewDialog()) {
+                            if (context.mounted) await showReviewDialog(context);
+                          }
                           if (ref.read(backupNotifierProvider)) {
                             ref.read(firestoreBackupControllerProvider).addRecord(ref.read(inputViewNotifierProvider).record!);
                           }
                           inputViewNotifier.resetView();
-                          SmartDialog.dismiss();
+                          ref.read(loadingProvider.notifier).state = false;
                         }
                         if (context.mounted) {
                           FocusScope.of(context).unfocus();

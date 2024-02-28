@@ -12,7 +12,7 @@ part of 'revenue_cat_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$RevenueCatState {
@@ -113,11 +113,11 @@ class _$RevenueCatStateCopyWithImpl<$Res, $Val extends RevenueCatState>
 }
 
 /// @nodoc
-abstract class _$$_RevenueCatStateCopyWith<$Res>
+abstract class _$$RevenueCatStateImplCopyWith<$Res>
     implements $RevenueCatStateCopyWith<$Res> {
-  factory _$$_RevenueCatStateCopyWith(
-          _$_RevenueCatState value, $Res Function(_$_RevenueCatState) then) =
-      __$$_RevenueCatStateCopyWithImpl<$Res>;
+  factory _$$RevenueCatStateImplCopyWith(_$RevenueCatStateImpl value,
+          $Res Function(_$RevenueCatStateImpl) then) =
+      __$$RevenueCatStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -134,11 +134,11 @@ abstract class _$$_RevenueCatStateCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_RevenueCatStateCopyWithImpl<$Res>
-    extends _$RevenueCatStateCopyWithImpl<$Res, _$_RevenueCatState>
-    implements _$$_RevenueCatStateCopyWith<$Res> {
-  __$$_RevenueCatStateCopyWithImpl(
-      _$_RevenueCatState _value, $Res Function(_$_RevenueCatState) _then)
+class __$$RevenueCatStateImplCopyWithImpl<$Res>
+    extends _$RevenueCatStateCopyWithImpl<$Res, _$RevenueCatStateImpl>
+    implements _$$RevenueCatStateImplCopyWith<$Res> {
+  __$$RevenueCatStateImplCopyWithImpl(
+      _$RevenueCatStateImpl _value, $Res Function(_$RevenueCatStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -150,7 +150,7 @@ class __$$_RevenueCatStateCopyWithImpl<$Res>
     Object? isPremium = null,
     Object? isLoading = null,
   }) {
-    return _then(_$_RevenueCatState(
+    return _then(_$RevenueCatStateImpl(
       customerInfo: freezed == customerInfo
           ? _value.customerInfo
           : customerInfo // ignore: cast_nullable_to_non_nullable
@@ -177,8 +177,8 @@ class __$$_RevenueCatStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_RevenueCatState implements _RevenueCatState {
-  _$_RevenueCatState(
+class _$RevenueCatStateImpl implements _RevenueCatState {
+  _$RevenueCatStateImpl(
       {this.customerInfo,
       this.offerings,
       this.exception,
@@ -204,10 +204,10 @@ class _$_RevenueCatState implements _RevenueCatState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_RevenueCatState &&
+            other is _$RevenueCatStateImpl &&
             (identical(other.customerInfo, customerInfo) ||
                 other.customerInfo == customerInfo) &&
             (identical(other.offerings, offerings) ||
@@ -227,8 +227,9 @@ class _$_RevenueCatState implements _RevenueCatState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_RevenueCatStateCopyWith<_$_RevenueCatState> get copyWith =>
-      __$$_RevenueCatStateCopyWithImpl<_$_RevenueCatState>(this, _$identity);
+  _$$RevenueCatStateImplCopyWith<_$RevenueCatStateImpl> get copyWith =>
+      __$$RevenueCatStateImplCopyWithImpl<_$RevenueCatStateImpl>(
+          this, _$identity);
 }
 
 abstract class _RevenueCatState implements RevenueCatState {
@@ -237,7 +238,7 @@ abstract class _RevenueCatState implements RevenueCatState {
       final Offerings? offerings,
       final Exception? exception,
       final bool isPremium,
-      final bool isLoading}) = _$_RevenueCatState;
+      final bool isLoading}) = _$RevenueCatStateImpl;
 
   @override
   CustomerInfo? get customerInfo;
@@ -251,6 +252,6 @@ abstract class _RevenueCatState implements RevenueCatState {
   bool get isLoading;
   @override
   @JsonKey(ignore: true)
-  _$$_RevenueCatStateCopyWith<_$_RevenueCatState> get copyWith =>
+  _$$RevenueCatStateImplCopyWith<_$RevenueCatStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

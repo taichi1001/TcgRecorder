@@ -9,7 +9,7 @@ part 'record.g.dart';
 @freezed
 class Record with _$Record {
   factory Record({
-    int? recordId,
+    @JsonKey(name: 'record_id') int? id,
     int? gameId,
     @Default([]) @JsonKey(fromJson: _intListFromJson, toJson: _intListToJson) List<int> tagId,
     int? useDeckId,
@@ -25,6 +25,7 @@ class Record with _$Record {
     @JsonKey(fromJson: _nullableWinLossFromJson, toJson: _nullableWinLossToJson) WinLoss? secondMatchWinLoss,
     @JsonKey(fromJson: _nullableWinLossFromJson, toJson: _nullableWinLossToJson) WinLoss? thirdMatchWinLoss,
     String? memo,
+    String? author,
     @JsonKey(fromJson: _stringListFromJson, toJson: _stringListToJson) List<String>? imagePath,
   }) = _Record;
   factory Record.fromJson(Map<String, dynamic> json) => _$RecordFromJson(json);

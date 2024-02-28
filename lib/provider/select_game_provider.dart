@@ -1,4 +1,4 @@
-// ignore_for_file: unused_result
+import 'dart:async';
 
 import 'package:collection/collection.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -8,13 +8,37 @@ import 'package:tcg_manager/provider/backup_provider.dart';
 import 'package:tcg_manager/provider/firestore_backup_controller_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
+import 'package:tcg_manager/repository/firestore_share_repository.dart';
 import 'package:tcg_manager/repository/game_repository.dart';
 import 'package:tcg_manager/state/select_game_state.dart';
 
-class SelectGameNotifier extends StateNotifier<SelectGameState> {
-  SelectGameNotifier(this.ref) : super(SelectGameState()) {
-    startupGame();
+class InitialSelectGameAsyncNotifier extends AsyncNotifier<Game?> {
+  @override
+  FutureOr<Game?> build() async {
+    final selectGame = await _init();
+    ref.read(selectGameNotifierProvider.notifier).changeGame(selectGame);
+    return selectGame;
   }
+
+  Future<Game?> _init() async {
+    final game = ref.read(initialDataControllerProvider).loadGame();
+    final allGameList = await ref.read(allGameListProvider.future);
+    final isMatchGame = allGameList.firstWhereOrNull((element) => element.id == game?.id);
+    if (isMatchGame != null) return isMatchGame;
+    if (isMatchGame == null && game != null && !game.isShare && allGameList.isNotEmpty) return allGameList.last;
+    if (isMatchGame == null && game != null && game.isShare) {
+      final guestShareList = await ref.read(guestShareProvider.future);
+      final isMatchGuestGame = guestShareList.map((e) => e.game).firstWhereOrNull((e) => e.id == game.id);
+      if (isMatchGuestGame != null) return isMatchGuestGame;
+      if (allGameList.isNotEmpty) return allGameList.last;
+    }
+    if (game == null && allGameList.isNotEmpty) return allGameList.last;
+    return null;
+  }
+}
+
+class SelectGameNotifier extends StateNotifier<SelectGameState> {
+  SelectGameNotifier(this.ref) : super(SelectGameState());
 
   final Ref ref;
 
@@ -64,7 +88,7 @@ class SelectGameNotifier extends StateNotifier<SelectGameState> {
     final newGame = Game(name: name);
     if (await _checkIfSelectedGamekNew(name)) {
       await ref.read(gameRepository).insert(newGame);
-      ref.refresh(allGameListProvider);
+      ref.invalidate(allGameListProvider);
       if (ref.read(backupNotifierProvider)) await ref.read(firestoreBackupControllerProvider).addAll();
       final allGameList = await ref.read(allGameListProvider.future);
       final game = allGameList.last;
@@ -97,3 +121,6 @@ class SelectGameNotifier extends StateNotifier<SelectGameState> {
 final selectGameNotifierProvider = StateNotifierProvider<SelectGameNotifier, SelectGameState>(
   (ref) => SelectGameNotifier(ref),
 );
+
+final initialSelectGameAsyncNotifierProvider =
+    AsyncNotifierProvider<InitialSelectGameAsyncNotifier, Game?>(() => InitialSelectGameAsyncNotifier());

@@ -6,11 +6,12 @@ part of 'record_old.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_RecordOld _$$_RecordOldFromJson(Map<String, dynamic> json) => $checkedCreate(
-      r'_$_RecordOld',
+_$RecordOldImpl _$$RecordOldImplFromJson(Map<String, dynamic> json) =>
+    $checkedCreate(
+      r'_$RecordOldImpl',
       json,
       ($checkedConvert) {
-        final val = _$_RecordOld(
+        final val = _$RecordOldImpl(
           recordId: $checkedConvert('record_id', (v) => v as int?),
           gameId: $checkedConvert('game_id', (v) => v as int?),
           tagId: $checkedConvert('tag_id', (v) => v as int?),
@@ -62,7 +63,7 @@ _$_RecordOld _$$_RecordOldFromJson(Map<String, dynamic> json) => $checkedCreate(
       },
     );
 
-Map<String, dynamic> _$$_RecordOldToJson(_$_RecordOld instance) =>
+Map<String, dynamic> _$$RecordOldImplToJson(_$RecordOldImpl instance) =>
     <String, dynamic>{
       'record_id': instance.recordId,
       'game_id': instance.gameId,

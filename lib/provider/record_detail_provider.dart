@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:io';
+
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
@@ -14,13 +16,13 @@ import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/helper/edit_record_helper.dart';
 import 'package:tcg_manager/main.dart';
 import 'package:tcg_manager/provider/backup_provider.dart';
-import 'package:tcg_manager/repository/deck_repository.dart';
 import 'package:tcg_manager/provider/firestore_backup_controller_provider.dart';
+import 'package:tcg_manager/repository/deck_repository.dart';
 import 'package:tcg_manager/repository/firestore_share_data_repository.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
 import 'package:tcg_manager/repository/tag_repository.dart';
+import 'package:tcg_manager/selector/filter_record_list_selector.dart';
 import 'package:tcg_manager/selector/game_share_data_selector.dart';
-import 'package:tcg_manager/selector/sorted_record_list_selector.dart';
 import 'package:tcg_manager/state/record_detail_state.dart';
 
 class RecordEditViewNotifier extends StateNotifier<RecordEditViewState> {
@@ -400,26 +402,17 @@ class RecordEditViewNotifier extends StateNotifier<RecordEditViewState> {
         final newImages = state.images.map((e) => e == image.path ? image.name : e).toList();
         state = state.copyWith(images: newImages);
       }
-      state = state.copyWith(record: state.record.copyWith(imagePath: state.images));
+      // imagesは先頭にsavePathが含まれているパスの文字列のため、savePathの部分を取り除き、画像の名前のみをimagePathに保存するようにする
+      state = state.copyWith(record: state.record.copyWith(imagePath: state.images.map((e) => e.replaceFirst(savePath, '')).toList()));
     }
   }
 }
 
-final recordListProvider = Provider.autoDispose<List<Record>>((ref) {
-  ref.keepAlive();
-  final recordList = ref.watch(sortedRecordListProvider);
-  final state = recordList.when(
-    data: (recordList) => recordList,
-    error: (_, __) => [],
-    loading: () => [],
-  );
-  return state.cast();
-});
-
 final recordEditViewNotifierProvider =
     StateNotifierProvider.family.autoDispose<RecordEditViewNotifier, RecordEditViewState, MargedRecord>((ref, margedRecord) {
-  final recordList = ref.watch(recordListProvider);
-  final record = recordList.firstWhere((record) => record.recordId == margedRecord.recordId);
+  // TODO 共有ゲームのときも考慮したrecordListにする。
+  final recordList = ref.watch(filterRecordListProvider).asData?.value;
+  final record = recordList!.firstWhere((record) => record.id == margedRecord.recordId);
   final imagePath = ref.read(imagePathProvider);
   return RecordEditViewNotifier(ref: ref, record: record, margedRecord: margedRecord, imagePath: imagePath);
 });

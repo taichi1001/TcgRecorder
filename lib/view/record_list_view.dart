@@ -1,16 +1,21 @@
 import 'dart:io';
+import 'dart:ui' as ui;
 
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:tcg_manager/entity/marged_record.dart';
 import 'package:tcg_manager/enum/access_roll.dart';
 import 'package:tcg_manager/enum/bo.dart';
@@ -21,9 +26,9 @@ import 'package:tcg_manager/helper/convert_sort_string.dart';
 import 'package:tcg_manager/helper/db_helper.dart';
 import 'package:tcg_manager/main.dart';
 import 'package:tcg_manager/provider/backup_provider.dart';
+import 'package:tcg_manager/provider/firestore_backup_controller_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/record_list_view_provider.dart';
-import 'package:tcg_manager/provider/firestore_backup_controller_provider.dart';
 import 'package:tcg_manager/provider/select_game_access_roll.dart';
 import 'package:tcg_manager/repository/firestore_share_data_repository.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
@@ -33,8 +38,8 @@ import 'package:tcg_manager/selector/marged_record_list_selector.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
 import 'package:tcg_manager/view/component/custom_scaffold.dart';
 import 'package:tcg_manager/view/component/slidable_tile.dart';
+import 'package:tcg_manager/view/edit_view/record_edit_view.dart';
 import 'package:tcg_manager/view/filter_modal_bottom_sheet.dart';
-import 'package:tcg_manager/view/record_edit_view.dart';
 
 class RecordListView extends HookConsumerWidget {
   const RecordListView({Key? key}) : super(key: key);
@@ -85,11 +90,42 @@ class RecordListView extends HookConsumerWidget {
     return result;
   }
 
+  List<Widget> _makeScreenshotWidget(BuildContext context, Map<String, List<MargedRecord>> map) {
+    final List<Widget> result = [];
+    map.forEach((key, value) {
+      result.add(
+        Container(
+          height: 30,
+          color: Theme.of(context).colorScheme.surface,
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          alignment: Alignment.centerLeft,
+          child: Text(key),
+        ),
+      );
+      map[key]?.forEach(
+        (element) {
+          result.add(
+            ProviderScope(
+              overrides: [
+                currentMargedRecord.overrideWithValue(element),
+              ],
+              child: const _BrandListTile(),
+            ),
+          );
+        },
+      );
+    });
+
+    return result;
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final recordList = ref.watch(margedRecordListProvider);
     final recordListViewNotifier = ref.read(recordListViewNotifierProvider.notifier);
     final sort = ref.watch(recordListViewNotifierProvider.select((value) => value.sort));
+    final isScreenshot = useState(false);
+    final globalKey = GlobalKey();
 
     return Column(
       children: [
@@ -109,7 +145,7 @@ class RecordListView extends HookConsumerWidget {
             appBarBottom: PreferredSize(
               preferredSize: const Size.fromHeight(30),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CupertinoButton(
                     onPressed: () {
@@ -120,6 +156,32 @@ class RecordListView extends HookConsumerWidget {
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   ),
+                  IconButton(
+                    onPressed: () async {
+                      isScreenshot.value = true;
+                      WidgetsBinding.instance.addPostFrameCallback((_) async {
+                        RenderRepaintBoundary? boundary;
+                        boundary = globalKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
+                        boundary ??=
+                            globalKey.currentContext?.findRenderObject() as RenderRepaintBoundary?; // なぜか1回目でエラーが出るためリトライしている。理由は不明
+                        if (boundary == null) return;
+                        final captureImage = await boundary.toImage(pixelRatio: 3);
+                        final byteData = await captureImage.toByteData(format: ui.ImageByteFormat.png);
+                        final pngBytes = byteData!.buffer.asUint8List();
+
+                        Directory tempDir = await getTemporaryDirectory();
+                        String filePath = '${tempDir.path}/captured_image.png';
+
+                        // ファイルにPNGデータを書き込み
+                        File file = File(filePath);
+                        await file.writeAsBytes(pngBytes);
+                        await Share.shareXFiles([XFile(filePath)], text: '共有する画像');
+
+                        isScreenshot.value = true;
+                      });
+                    },
+                    icon: const Icon(Icons.camera_alt),
+                  ),
                 ],
               ),
             ),
@@ -128,11 +190,23 @@ class RecordListView extends HookConsumerWidget {
                 final recordMap = _makeMap(recordList, context);
                 return recordList.isEmpty
                     ? Center(child: Text(S.of(context).noDataMessage))
-                    : SlidableAutoCloseBehavior(
-                        child: CustomScrollView(
-                          slivers: _makeSliverList(context, recordMap),
-                        ),
-                      );
+                    : !isScreenshot.value
+                        ? SlidableAutoCloseBehavior(
+                            child: CustomScrollView(
+                              slivers: _makeSliverList(context, recordMap),
+                            ),
+                          )
+                        : SingleChildScrollView(
+                            child: RepaintBoundary(
+                              key: globalKey,
+                              child: Container(
+                                color: Theme.of(context).scaffoldBackgroundColor,
+                                child: Column(
+                                  children: _makeScreenshotWidget(context, recordMap),
+                                ),
+                              ),
+                            ),
+                          );
               },
               error: (error, stack) => Text('$error'),
               loading: () => const Center(child: CircularProgressIndicator()),
@@ -264,10 +338,19 @@ class _BrandListTile extends HookConsumerWidget {
       ),
       deleteFunc: () async {
         if (ref.read(isShareGame)) {
-          final gameRecordList = await ref.watch(gameRecordListProvider.future);
-          final targetRecord = gameRecordList.firstWhere((gameRecord) => gameRecord.recordId == record.recordId);
-          final share = await ref.read(gameFirestoreShareStreamProvider.future);
-          ref.read(firestoreShareDataRepository).removeRecord(targetRecord, share!.docName);
+          final accessRoll = await ref.read(selectGameAccessRoll.future);
+          if (context.mounted && accessRoll == AccessRoll.reader) {
+            await showOkAlertDialog(
+              context: context,
+              title: '権限がありません。',
+              message: 'この操作をする権限がありません。ゲームの管理者にお問い合わせください。',
+            );
+          } else {
+            final gameRecordList = await ref.watch(gameRecordListProvider.future);
+            final targetRecord = gameRecordList.firstWhere((gameRecord) => gameRecord.id == record.recordId);
+            final share = await ref.read(gameFirestoreShareStreamProvider.future);
+            ref.read(firestoreShareDataRepository).removeRecord(targetRecord, share!.docName);
+          }
         } else {
           final targetRecord = await ref.read(recordRepository).getRecordId(record.recordId);
           ref.read(dbHelper).removeRecordImage(targetRecord!);
@@ -277,19 +360,31 @@ class _BrandListTile extends HookConsumerWidget {
         }
       },
       editFunc: () async {
-        await Navigator.push(
-          context,
-          MaterialPageRoute(
-            fullscreenDialog: true,
-            builder: (context) => ProviderScope(
-              overrides: [currentMargedRecord.overrideWithValue(record)],
-              child: RecordEditView(
-                margedRecord: record,
+        final accessRoll = await ref.read(selectGameAccessRoll.future);
+        if (context.mounted && accessRoll == AccessRoll.reader) {
+          await showOkAlertDialog(
+            context: context,
+            title: '権限がありません。',
+            message: 'この操作をする権限がありません。ゲームの管理者にお問い合わせください。',
+          );
+        } else if (context.mounted) {
+          // recordによってtagの個数が違うため、画面遷移前のここで設定する
+          ref.read(originalTagLength.notifier).state = record.tag.isEmpty ? 1 : record.tag.length;
+          ref.read(originalTag.notifier).state = record.tag;
+          await Navigator.push(
+            context,
+            MaterialPageRoute(
+              fullscreenDialog: true,
+              builder: (context) => ProviderScope(
+                overrides: [currentMargedRecord.overrideWithValue(record)],
+                child: RecordEditView(
+                  margedRecord: record,
+                ),
               ),
             ),
-          ),
-        );
-        if (context.mounted) await Slidable.of(context)?.close();
+          );
+          if (context.mounted) await Slidable.of(context)?.close();
+        }
       },
       alertTitle: S.of(context).recordListDeleteDialogTitle,
       alertMessage: S.of(context).recordListDeleteDialogMessage,
@@ -639,7 +734,10 @@ class _EditDeleteButtonRow extends HookConsumerWidget {
                     message: 'この操作をする権限がありません。ゲームの管理者にお問い合わせください。',
                   );
                 } else if (context.mounted) {
-                  await Navigator.push(
+                  // recordによってtagの個数が違うため、画面遷移前のここで設定する
+                  ref.read(originalTagLength.notifier).state = record.tag.isEmpty ? 1 : record.tag.length;
+                  ref.read(originalTag.notifier).state = record.tag;
+                  Navigator.push(
                     context,
                     MaterialPageRoute(
                       fullscreenDialog: true,
@@ -676,7 +774,7 @@ class _EditDeleteButtonRow extends HookConsumerWidget {
                 } else if (context.mounted) {
                   if (ref.read(isShareGame)) {
                     final gameRecordList = await ref.watch(gameRecordListProvider.future);
-                    final targetRecord = gameRecordList.firstWhere((gameRecord) => gameRecord.recordId == record.recordId);
+                    final targetRecord = gameRecordList.firstWhere((gameRecord) => gameRecord.id == record.recordId);
                     final share = await ref.read(gameFirestoreShareStreamProvider.future);
                     ref.read(firestoreShareDataRepository).removeRecord(targetRecord, share!.docName);
                   } else {

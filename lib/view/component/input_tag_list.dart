@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:tcg_manager/entity/domain_data.dart';
@@ -30,8 +31,16 @@ class InputTagList extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isPremium = ref.watch(revenueCatProvider.select((value) => value?.isPremium));
+    final controllersState = useState(controllers);
+
+    useEffect(() {
+      controllersState.value = controllers;
+
+      return null;
+    }, [controllers.length, controllers.map((e) => e.text)]);
+
     return Column(
-      children: controllers
+      children: controllersState.value
           .mapIndexed(
             (index, controller) => Row(
               mainAxisSize: MainAxisSize.min,
@@ -68,19 +77,21 @@ class InputTagList extends HookConsumerWidget {
                     ],
                   ),
                 ),
-                PremiumLockIcon(
-                  isPremium: isPremium ?? false,
-                  child: IconButton(
-                    onPressed: () async {
-                      if (addFunc != null && isPremium!) {
-                        addFunc!();
-                      } else if (!isPremium!) {
-                        await premiumPlanDialog(context);
-                      }
-                    },
-                    icon: const Icon(Icons.add_circle),
+                if (index == controllersState.value.length - 1)
+                  PremiumLockIcon(
+                    isPremium: isPremium ?? false,
+                    child: IconButton(
+                      onPressed: () async {
+                        if (addFunc != null && isPremium!) {
+                          addFunc!();
+                        } else if (!isPremium!) {
+                          await premiumPlanDialog(context);
+                        }
+                      },
+                      icon: const Icon(Icons.add_circle),
+                    ),
                   ),
-                ),
+                // TODO タグを削除できるようにする
               ],
             ),
           )

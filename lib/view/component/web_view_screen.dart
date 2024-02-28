@@ -1,14 +1,11 @@
-import 'dart:async';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewScreen extends StatefulWidget {
   const WebViewScreen({
     required this.url,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final String url;
 
@@ -17,16 +14,29 @@ class WebViewScreen extends StatefulWidget {
 }
 
 class WebViewScreenState extends State<WebViewScreen> {
-  final Completer<WebViewController> _controller = Completer<WebViewController>();
-
+  late WebViewController _controller;
   bool _isLoading = false;
+  double _progress = 0;
 
   @override
   void initState() {
     super.initState();
-    if (Platform.isAndroid) {
-      WebView.platform = SurfaceAndroidWebView();
-    }
+    _controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..loadRequest(Uri.parse(widget.url))
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onProgress: (int progress) => setState(() {
+            _progress = progress / 100;
+          }),
+          onPageStarted: (url) => setState(() {
+            _isLoading = true;
+          }),
+          onPageFinished: (url) => setState(() {
+            _isLoading = false;
+          }),
+        ),
+      );
   }
 
   @override
@@ -35,51 +45,16 @@ class WebViewScreenState extends State<WebViewScreen> {
       appBar: AppBar(
         elevation: 0.0,
       ),
-      body: _buildBody(),
-    );
-  }
-
-  Widget _buildBody() {
-    return Column(
-      children: [
-        if (_isLoading) const LinearProgressIndicator(),
-        Expanded(
-          child: _buildWebView(),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildWebView() {
-    return WebView(
-      // 表示URL設定
-      initialUrl: widget.url,
-      // jsを有効化
-      javascriptMode: JavascriptMode.unrestricted,
-      // controllerを登録
-      onWebViewCreated: _controller.complete,
-      // ページの読み込み開始
-      onPageStarted: (String url) {
-        // ローディング開始
-        setState(() {
-          _isLoading = true;
-        });
-      },
-      // ページ読み込み終了
-      onPageFinished: (String url) async {
-        // ローディング終了
-        setState(() {
-          _isLoading = false;
-        });
-        // // ページタイトル取得
-        // final controller = await _controller.future;
-        // final title = await controller.getTitle();
-        // setState(() {
-        //   if (title != null) {
-        //     _title = title;
-        //   }
-        // });
-      },
+      body: Column(
+        children: [
+          if (_isLoading) LinearProgressIndicator(value: _progress),
+          Expanded(
+            child: WebViewWidget(
+              controller: _controller,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

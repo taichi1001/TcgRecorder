@@ -12,7 +12,7 @@ part of 'select_domain_data_view_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$SelectDomainDataViewState {
@@ -70,25 +70,25 @@ class _$SelectDomainDataViewStateCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_SelectDomainDataViewStateCopyWith<$Res>
+abstract class _$$SelectDomainDataViewStateImplCopyWith<$Res>
     implements $SelectDomainDataViewStateCopyWith<$Res> {
-  factory _$$_SelectDomainDataViewStateCopyWith(
-          _$_SelectDomainDataViewState value,
-          $Res Function(_$_SelectDomainDataViewState) then) =
-      __$$_SelectDomainDataViewStateCopyWithImpl<$Res>;
+  factory _$$SelectDomainDataViewStateImplCopyWith(
+          _$SelectDomainDataViewStateImpl value,
+          $Res Function(_$SelectDomainDataViewStateImpl) then) =
+      __$$SelectDomainDataViewStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({Sort sortType, bool isSearch, String searchText});
 }
 
 /// @nodoc
-class __$$_SelectDomainDataViewStateCopyWithImpl<$Res>
+class __$$SelectDomainDataViewStateImplCopyWithImpl<$Res>
     extends _$SelectDomainDataViewStateCopyWithImpl<$Res,
-        _$_SelectDomainDataViewState>
-    implements _$$_SelectDomainDataViewStateCopyWith<$Res> {
-  __$$_SelectDomainDataViewStateCopyWithImpl(
-      _$_SelectDomainDataViewState _value,
-      $Res Function(_$_SelectDomainDataViewState) _then)
+        _$SelectDomainDataViewStateImpl>
+    implements _$$SelectDomainDataViewStateImplCopyWith<$Res> {
+  __$$SelectDomainDataViewStateImplCopyWithImpl(
+      _$SelectDomainDataViewStateImpl _value,
+      $Res Function(_$SelectDomainDataViewStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -98,7 +98,7 @@ class __$$_SelectDomainDataViewStateCopyWithImpl<$Res>
     Object? isSearch = null,
     Object? searchText = null,
   }) {
-    return _then(_$_SelectDomainDataViewState(
+    return _then(_$SelectDomainDataViewStateImpl(
       sortType: null == sortType
           ? _value.sortType
           : sortType // ignore: cast_nullable_to_non_nullable
@@ -117,8 +117,8 @@ class __$$_SelectDomainDataViewStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_SelectDomainDataViewState implements _SelectDomainDataViewState {
-  _$_SelectDomainDataViewState(
+class _$SelectDomainDataViewStateImpl implements _SelectDomainDataViewState {
+  _$SelectDomainDataViewStateImpl(
       {this.sortType = Sort.oldest,
       this.isSearch = false,
       this.searchText = ''});
@@ -139,10 +139,10 @@ class _$_SelectDomainDataViewState implements _SelectDomainDataViewState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_SelectDomainDataViewState &&
+            other is _$SelectDomainDataViewStateImpl &&
             (identical(other.sortType, sortType) ||
                 other.sortType == sortType) &&
             (identical(other.isSearch, isSearch) ||
@@ -157,16 +157,16 @@ class _$_SelectDomainDataViewState implements _SelectDomainDataViewState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_SelectDomainDataViewStateCopyWith<_$_SelectDomainDataViewState>
-      get copyWith => __$$_SelectDomainDataViewStateCopyWithImpl<
-          _$_SelectDomainDataViewState>(this, _$identity);
+  _$$SelectDomainDataViewStateImplCopyWith<_$SelectDomainDataViewStateImpl>
+      get copyWith => __$$SelectDomainDataViewStateImplCopyWithImpl<
+          _$SelectDomainDataViewStateImpl>(this, _$identity);
 }
 
 abstract class _SelectDomainDataViewState implements SelectDomainDataViewState {
   factory _SelectDomainDataViewState(
       {final Sort sortType,
       final bool isSearch,
-      final String searchText}) = _$_SelectDomainDataViewState;
+      final String searchText}) = _$SelectDomainDataViewStateImpl;
 
   @override
   Sort get sortType;
@@ -176,6 +176,6 @@ abstract class _SelectDomainDataViewState implements SelectDomainDataViewState {
   String get searchText;
   @override
   @JsonKey(ignore: true)
-  _$$_SelectDomainDataViewStateCopyWith<_$_SelectDomainDataViewState>
+  _$$SelectDomainDataViewStateImplCopyWith<_$SelectDomainDataViewStateImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

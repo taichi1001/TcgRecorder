@@ -6,13 +6,13 @@ part of 'firestore_share_data.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_FirestoreShareData _$$_FirestoreShareDataFromJson(
+_$FirestoreShareDataImpl _$$FirestoreShareDataImplFromJson(
         Map<String, dynamic> json) =>
     $checkedCreate(
-      r'_$_FirestoreShareData',
+      r'_$FirestoreShareDataImpl',
       json,
       ($checkedConvert) {
-        final val = _$_FirestoreShareData(
+        final val = _$FirestoreShareDataImpl(
           game: $checkedConvert(
               'game', (v) => Game.fromJson(v as Map<String, dynamic>)),
           deckList: $checkedConvert(
@@ -46,8 +46,8 @@ _$_FirestoreShareData _$$_FirestoreShareDataFromJson(
       },
     );
 
-Map<String, dynamic> _$$_FirestoreShareDataToJson(
-        _$_FirestoreShareData instance) =>
+Map<String, dynamic> _$$FirestoreShareDataImplToJson(
+        _$FirestoreShareDataImpl instance) =>
     <String, dynamic>{
       'game': instance.game.toJson(),
       'deck_list': instance.deckList.map((e) => e.toJson()).toList(),

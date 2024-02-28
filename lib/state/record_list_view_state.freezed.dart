@@ -12,7 +12,7 @@ part of 'record_list_view_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$RecordListViewState {
@@ -155,11 +155,11 @@ class _$RecordListViewStateCopyWithImpl<$Res, $Val extends RecordListViewState>
 }
 
 /// @nodoc
-abstract class _$$_RecordListViewStateCopyWith<$Res>
+abstract class _$$RecordListViewStateImplCopyWith<$Res>
     implements $RecordListViewStateCopyWith<$Res> {
-  factory _$$_RecordListViewStateCopyWith(_$_RecordListViewState value,
-          $Res Function(_$_RecordListViewState) then) =
-      __$$_RecordListViewStateCopyWithImpl<$Res>;
+  factory _$$RecordListViewStateImplCopyWith(_$RecordListViewStateImpl value,
+          $Res Function(_$RecordListViewStateImpl) then) =
+      __$$RecordListViewStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -182,11 +182,11 @@ abstract class _$$_RecordListViewStateCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_RecordListViewStateCopyWithImpl<$Res>
-    extends _$RecordListViewStateCopyWithImpl<$Res, _$_RecordListViewState>
-    implements _$$_RecordListViewStateCopyWith<$Res> {
-  __$$_RecordListViewStateCopyWithImpl(_$_RecordListViewState _value,
-      $Res Function(_$_RecordListViewState) _then)
+class __$$RecordListViewStateImplCopyWithImpl<$Res>
+    extends _$RecordListViewStateCopyWithImpl<$Res, _$RecordListViewStateImpl>
+    implements _$$RecordListViewStateImplCopyWith<$Res> {
+  __$$RecordListViewStateImplCopyWithImpl(_$RecordListViewStateImpl _value,
+      $Res Function(_$RecordListViewStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -204,7 +204,7 @@ class __$$_RecordListViewStateCopyWithImpl<$Res>
     Object? cacheStartDate = freezed,
     Object? cacheEndDate = freezed,
   }) {
-    return _then(_$_RecordListViewState(
+    return _then(_$RecordListViewStateImpl(
       sort: null == sort
           ? _value.sort
           : sort // ignore: cast_nullable_to_non_nullable
@@ -255,8 +255,8 @@ class __$$_RecordListViewStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_RecordListViewState implements _RecordListViewState {
-  _$_RecordListViewState(
+class _$RecordListViewStateImpl implements _RecordListViewState {
+  _$RecordListViewStateImpl(
       {this.sort = Sort.newest,
       this.startDate,
       this.endDate,
@@ -308,10 +308,10 @@ class _$_RecordListViewState implements _RecordListViewState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_RecordListViewState &&
+            other is _$RecordListViewStateImpl &&
             (identical(other.sort, sort) || other.sort == sort) &&
             (identical(other.startDate, startDate) ||
                 other.startDate == startDate) &&
@@ -349,8 +349,8 @@ class _$_RecordListViewState implements _RecordListViewState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_RecordListViewStateCopyWith<_$_RecordListViewState> get copyWith =>
-      __$$_RecordListViewStateCopyWithImpl<_$_RecordListViewState>(
+  _$$RecordListViewStateImplCopyWith<_$RecordListViewStateImpl> get copyWith =>
+      __$$RecordListViewStateImplCopyWithImpl<_$RecordListViewStateImpl>(
           this, _$identity);
 }
 
@@ -366,7 +366,7 @@ abstract class _RecordListViewState implements RecordListViewState {
       final List<Tag> tagList,
       final Sort cacheOrder,
       final DateTime? cacheStartDate,
-      final DateTime? cacheEndDate}) = _$_RecordListViewState;
+      final DateTime? cacheEndDate}) = _$RecordListViewStateImpl;
 
   @override
   Sort get sort;
@@ -392,6 +392,6 @@ abstract class _RecordListViewState implements RecordListViewState {
   DateTime? get cacheEndDate;
   @override
   @JsonKey(ignore: true)
-  _$$_RecordListViewStateCopyWith<_$_RecordListViewState> get copyWith =>
+  _$$RecordListViewStateImplCopyWith<_$RecordListViewStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
