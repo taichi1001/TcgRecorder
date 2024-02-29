@@ -112,6 +112,7 @@ class InputViewDeckAndTag extends HookConsumerWidget {
               focusNodes: focusNodes.sublist(2, focusNodes.length - 1),
               selectTagFunc: inputViewNotifier.selectTag,
               addFunc: inputViewNotifier.addTag,
+              removeFunc: inputViewNotifier.removeTag,
             ),
             const SizedBox(height: 8),
             CustomTextField(

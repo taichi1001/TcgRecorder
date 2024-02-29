@@ -15,6 +15,7 @@ import 'package:tcg_manager/view/select_domain_data_bottom_sheet/select_domain_d
 class InputTagList extends HookConsumerWidget {
   const InputTagList({
     this.addFunc,
+    this.removeFunc,
     required this.controllers,
     required this.focusNodes,
     required this.inputTag,
@@ -27,6 +28,7 @@ class InputTagList extends HookConsumerWidget {
   final List<FocusNode> focusNodes;
   final Function(DomainData, int) selectTagFunc;
   final void Function()? addFunc;
+  final void Function(int)? removeFunc;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -82,7 +84,7 @@ class InputTagList extends HookConsumerWidget {
                     isPremium: isPremium ?? false,
                     child: IconButton(
                       onPressed: () async {
-                        if (addFunc != null && isPremium!) {
+                        if (addFunc != null && !isPremium!) {
                           addFunc!();
                         } else if (!isPremium!) {
                           await premiumPlanDialog(context);
@@ -91,7 +93,16 @@ class InputTagList extends HookConsumerWidget {
                       icon: const Icon(Icons.add_circle),
                     ),
                   ),
-                // TODO タグを削除できるようにする
+                if (index != controllersState.value.length - 1)
+                  IconButton(
+                    onPressed: () {
+                      // TODO タグを削除できるようにする
+                      if (removeFunc != null) {
+                        removeFunc!(index);
+                      }
+                    },
+                    icon: const Icon(Icons.remove_circle),
+                  ),
               ],
             ),
           )

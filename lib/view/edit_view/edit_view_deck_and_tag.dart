@@ -85,6 +85,13 @@ class EditViewDeckAndTag extends HookConsumerWidget {
                 ref.read(editViewTagTextController.notifier).state = [...tagTextControllers, TextEditingController()];
                 ref.read(originalTagLength.notifier).state = ref.read(editViewTagTextController).length;
               },
+              removeFunc: (index) {
+                final newTagTextController = [...ref.read(editViewTagTextController.notifier).state];
+                newTagTextController.removeAt(index);
+                ref.read(editViewTagTextController.notifier).state = newTagTextController;
+                ref.read(originalTagLength.notifier).state = ref.read(editViewTagTextController).length;
+                editViewNotifier.removeTag(index);
+              },
             ),
             const SizedBox(height: 8),
             CustomTextField(

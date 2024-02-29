@@ -50,6 +50,12 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
     state = state.copyWith(tag: [...state.tag, Tag(name: '')]);
   }
 
+  void removeTag(int index) {
+    final newTag = [...state.tag];
+    newTag.removeAt(index);
+    state = state.copyWith(tag: newTag);
+  }
+
   void inputTag(String name, int index) {
     _updateTags(Tag(name: name), index);
   }

@@ -88,6 +88,14 @@ class RecordEditViewNotifier extends StateNotifier<RecordEditViewState> {
     );
   }
 
+  void removeTag(int index) {
+    final newTag = [...state.editMargedRecord.tag];
+    newTag.removeAt(index);
+    state = state.copyWith(
+      editMargedRecord: state.editMargedRecord.copyWith(tag: newTag),
+    );
+  }
+
   void selectTag(DomainData tag, int index) {
     final newTags = [...state.editMargedRecord.tag];
     if (newTags.length > index) {
@@ -411,7 +419,7 @@ class RecordEditViewNotifier extends StateNotifier<RecordEditViewState> {
 final recordEditViewNotifierProvider =
     StateNotifierProvider.family.autoDispose<RecordEditViewNotifier, RecordEditViewState, MargedRecord>((ref, margedRecord) {
   final recordList = ref.watch(filterRecordListProvider).asData?.value;
-  final record = recordList!.firstWhere((record) => record.id == margedRecord.recordId);
+  final record = recordList!.firstWhere((record) => record.id == margedRecord.recordId); // TODO recordList!にしているせいでエラー出てるから修正する
   final imagePath = ref.read(imagePathProvider);
   return RecordEditViewNotifier(ref: ref, record: record, margedRecord: margedRecord, imagePath: imagePath);
 });
