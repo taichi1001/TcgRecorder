@@ -59,35 +59,29 @@ class GraphView extends HookConsumerWidget {
             children: [
               const SizedBox(height: 12),
               CupertinoSlidingSegmentedControl(
-                children: const {
+                children: {
                   0: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.table_rows),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Text('使用デッキ')
+                      const Icon(Icons.table_rows, size: 20),
+                      const SizedBox(width: 8),
+                      Text('使用デッキ', style: Theme.of(context).textTheme.bodySmall),
                     ],
                   ),
                   1: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.table_rows),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Text('対戦デッキ')
+                      const Icon(Icons.table_rows, size: 20),
+                      const SizedBox(width: 8),
+                      Text('対戦デッキ', style: Theme.of(context).textTheme.bodySmall)
                     ],
                   ),
                   2: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.pie_chart),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Text('デッキ使用率')
+                      const Icon(Icons.pie_chart, size: 20),
+                      const SizedBox(width: 8),
+                      Text('デッキ使用率', style: Theme.of(context).textTheme.bodySmall)
                     ],
                   ),
                 },
