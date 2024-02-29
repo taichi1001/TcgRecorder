@@ -84,7 +84,7 @@ class InputTagList extends HookConsumerWidget {
                     isPremium: isPremium ?? false,
                     child: IconButton(
                       onPressed: () async {
-                        if (addFunc != null && !isPremium!) {
+                        if (addFunc != null && isPremium!) {
                           addFunc!();
                         } else if (!isPremium!) {
                           await premiumPlanDialog(context);
@@ -96,7 +96,6 @@ class InputTagList extends HookConsumerWidget {
                 if (index != controllersState.value.length - 1)
                   IconButton(
                     onPressed: () {
-                      // TODO タグを削除できるようにする
                       if (removeFunc != null) {
                         removeFunc!(index);
                       }

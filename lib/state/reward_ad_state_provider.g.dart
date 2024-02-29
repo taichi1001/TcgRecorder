@@ -7,7 +7,7 @@ part of 'reward_ad_state_provider.dart';
 // **************************************************************************
 
 String _$rewardAdStateNotifierHash() =>
-    r'4b728500be82822c6017cfe7c304860943a87e47';
+    r'6a9865a8dfcac79bef62b483ec35bbd44bbb36a6';
 
 /// See also [RewardAdStateNotifier].
 @ProviderFor(RewardAdStateNotifier)

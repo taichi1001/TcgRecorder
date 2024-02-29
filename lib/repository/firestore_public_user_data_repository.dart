@@ -108,6 +108,9 @@ class FirestorePublicUserDataRepository {
   Future _addItem(String itemName, Map<String, dynamic> itemData, String uid) async {
     final path = 'public_user_data/$uid/$itemName';
     final snapshot = await _firestore.collection(path).orderBy('index', descending: true).limit(1).get();
+    late List itemList;
+    late int lastDocIndex;
+
     if (snapshot.docs.isEmpty) {
       DocumentSnapshot docSnap = await _firestore.collection(path).doc('${itemName}0').get();
       if (!docSnap.exists) {
@@ -116,11 +119,13 @@ class FirestorePublicUserDataRepository {
       await _firestore.collection(path).doc('${itemName}0').update({
         itemName: FieldValue.arrayUnion([itemData]),
       });
+      itemList = [];
+      lastDocIndex = 0;
+    } else {
+      final lastDoc = snapshot.docs.first;
+      itemList = List.from(lastDoc.data()[itemName]);
+      lastDocIndex = lastDoc.data()['index'];
     }
-    final lastDoc = snapshot.docs.first;
-    final itemList = List.from(lastDoc.data()[itemName]);
-    final lastDocIndex = lastDoc.data()['index'];
-
     if (itemList.length < 500) {
       await _firestore.collection(path).doc('$itemName$lastDocIndex').update({
         itemName: FieldValue.arrayUnion([itemData]),

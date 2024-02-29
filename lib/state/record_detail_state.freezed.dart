@@ -17,7 +17,6 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$RecordEditViewState {
   bool get isEdit => throw _privateConstructorUsedError;
-  Record get record => throw _privateConstructorUsedError;
   MargedRecord get margedRecord => throw _privateConstructorUsedError;
   MargedRecord get editMargedRecord => throw _privateConstructorUsedError;
   List<String> get images => throw _privateConstructorUsedError;
@@ -37,14 +36,12 @@ abstract class $RecordEditViewStateCopyWith<$Res> {
   @useResult
   $Res call(
       {bool isEdit,
-      Record record,
       MargedRecord margedRecord,
       MargedRecord editMargedRecord,
       List<String> images,
       List<XFile> addImages,
       List<String> removeImages});
 
-  $RecordCopyWith<$Res> get record;
   $MargedRecordCopyWith<$Res> get margedRecord;
   $MargedRecordCopyWith<$Res> get editMargedRecord;
 }
@@ -63,7 +60,6 @@ class _$RecordEditViewStateCopyWithImpl<$Res, $Val extends RecordEditViewState>
   @override
   $Res call({
     Object? isEdit = null,
-    Object? record = null,
     Object? margedRecord = null,
     Object? editMargedRecord = null,
     Object? images = null,
@@ -75,10 +71,6 @@ class _$RecordEditViewStateCopyWithImpl<$Res, $Val extends RecordEditViewState>
           ? _value.isEdit
           : isEdit // ignore: cast_nullable_to_non_nullable
               as bool,
-      record: null == record
-          ? _value.record
-          : record // ignore: cast_nullable_to_non_nullable
-              as Record,
       margedRecord: null == margedRecord
           ? _value.margedRecord
           : margedRecord // ignore: cast_nullable_to_non_nullable
@@ -100,14 +92,6 @@ class _$RecordEditViewStateCopyWithImpl<$Res, $Val extends RecordEditViewState>
           : removeImages // ignore: cast_nullable_to_non_nullable
               as List<String>,
     ) as $Val);
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $RecordCopyWith<$Res> get record {
-    return $RecordCopyWith<$Res>(_value.record, (value) {
-      return _then(_value.copyWith(record: value) as $Val);
-    });
   }
 
   @override
@@ -137,15 +121,12 @@ abstract class _$$RecordEditViewStateImplCopyWith<$Res>
   @useResult
   $Res call(
       {bool isEdit,
-      Record record,
       MargedRecord margedRecord,
       MargedRecord editMargedRecord,
       List<String> images,
       List<XFile> addImages,
       List<String> removeImages});
 
-  @override
-  $RecordCopyWith<$Res> get record;
   @override
   $MargedRecordCopyWith<$Res> get margedRecord;
   @override
@@ -164,7 +145,6 @@ class __$$RecordEditViewStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? isEdit = null,
-    Object? record = null,
     Object? margedRecord = null,
     Object? editMargedRecord = null,
     Object? images = null,
@@ -176,10 +156,6 @@ class __$$RecordEditViewStateImplCopyWithImpl<$Res>
           ? _value.isEdit
           : isEdit // ignore: cast_nullable_to_non_nullable
               as bool,
-      record: null == record
-          ? _value.record
-          : record // ignore: cast_nullable_to_non_nullable
-              as Record,
       margedRecord: null == margedRecord
           ? _value.margedRecord
           : margedRecord // ignore: cast_nullable_to_non_nullable
@@ -209,7 +185,6 @@ class __$$RecordEditViewStateImplCopyWithImpl<$Res>
 class _$RecordEditViewStateImpl implements _RecordEditViewState {
   _$RecordEditViewStateImpl(
       {this.isEdit = false,
-      required this.record,
       required this.margedRecord,
       required this.editMargedRecord,
       final List<String> images = const [],
@@ -222,8 +197,6 @@ class _$RecordEditViewStateImpl implements _RecordEditViewState {
   @override
   @JsonKey()
   final bool isEdit;
-  @override
-  final Record record;
   @override
   final MargedRecord margedRecord;
   @override
@@ -257,7 +230,7 @@ class _$RecordEditViewStateImpl implements _RecordEditViewState {
 
   @override
   String toString() {
-    return 'RecordEditViewState(isEdit: $isEdit, record: $record, margedRecord: $margedRecord, editMargedRecord: $editMargedRecord, images: $images, addImages: $addImages, removeImages: $removeImages)';
+    return 'RecordEditViewState(isEdit: $isEdit, margedRecord: $margedRecord, editMargedRecord: $editMargedRecord, images: $images, addImages: $addImages, removeImages: $removeImages)';
   }
 
   @override
@@ -266,7 +239,6 @@ class _$RecordEditViewStateImpl implements _RecordEditViewState {
         (other.runtimeType == runtimeType &&
             other is _$RecordEditViewStateImpl &&
             (identical(other.isEdit, isEdit) || other.isEdit == isEdit) &&
-            (identical(other.record, record) || other.record == record) &&
             (identical(other.margedRecord, margedRecord) ||
                 other.margedRecord == margedRecord) &&
             (identical(other.editMargedRecord, editMargedRecord) ||
@@ -282,7 +254,6 @@ class _$RecordEditViewStateImpl implements _RecordEditViewState {
   int get hashCode => Object.hash(
       runtimeType,
       isEdit,
-      record,
       margedRecord,
       editMargedRecord,
       const DeepCollectionEquality().hash(_images),
@@ -300,7 +271,6 @@ class _$RecordEditViewStateImpl implements _RecordEditViewState {
 abstract class _RecordEditViewState implements RecordEditViewState {
   factory _RecordEditViewState(
       {final bool isEdit,
-      required final Record record,
       required final MargedRecord margedRecord,
       required final MargedRecord editMargedRecord,
       final List<String> images,
@@ -309,8 +279,6 @@ abstract class _RecordEditViewState implements RecordEditViewState {
 
   @override
   bool get isEdit;
-  @override
-  Record get record;
   @override
   MargedRecord get margedRecord;
   @override

@@ -7,7 +7,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/domain_data.dart';
 import 'package:tcg_manager/entity/marged_record.dart';
-import 'package:tcg_manager/entity/record.dart';
 import 'package:tcg_manager/entity/tag.dart';
 import 'package:tcg_manager/enum/bo.dart';
 import 'package:tcg_manager/enum/first_second.dart';
@@ -21,18 +20,15 @@ import 'package:tcg_manager/repository/deck_repository.dart';
 import 'package:tcg_manager/repository/firestore_share_data_repository.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
 import 'package:tcg_manager/repository/tag_repository.dart';
-import 'package:tcg_manager/selector/filter_record_list_selector.dart';
 import 'package:tcg_manager/selector/game_share_data_selector.dart';
 import 'package:tcg_manager/state/record_detail_state.dart';
 
 class RecordEditViewNotifier extends StateNotifier<RecordEditViewState> {
   RecordEditViewNotifier({
     required this.ref,
-    required this.record,
     required this.margedRecord,
     required this.imagePath,
   }) : super(RecordEditViewState(
-          record: record,
           margedRecord: margedRecord,
           editMargedRecord: margedRecord,
           images: margedRecord.imagePaths == null
@@ -47,7 +43,6 @@ class RecordEditViewNotifier extends StateNotifier<RecordEditViewState> {
         ));
 
   final Ref ref;
-  final Record record;
   final MargedRecord margedRecord;
   final String imagePath;
 
@@ -183,18 +178,20 @@ class RecordEditViewNotifier extends StateNotifier<RecordEditViewState> {
 
   RecordEditViewState _updateRecord(BO bo, {required bool isBO3}) {
     return state.copyWith(
-      record: state.record.copyWith(
-        bo: bo,
-        date: state.editMargedRecord.date,
-        winLoss: isBO3 ? state.margedRecord.winLoss : state.editMargedRecord.winLoss,
-        firstSecond: isBO3 ? state.margedRecord.firstSecond : state.editMargedRecord.firstSecond,
-        memo: state.editMargedRecord.memo,
-        firstMatchFirstSecond: isBO3 ? state.margedRecord.firstMatchFirstSecond : null,
-        secondMatchFirstSecond: isBO3 ? state.margedRecord.secondMatchFirstSecond : null,
-        thirdMatchFirstSecond: isBO3 ? state.margedRecord.thirdMatchFirstSecond : null,
-        firstMatchWinLoss: isBO3 ? state.margedRecord.firstMatchWinLoss : null,
-        secondMatchWinLoss: isBO3 ? state.margedRecord.secondMatchWinLoss : null,
-        thirdMatchWinLoss: isBO3 ? state.margedRecord.thirdMatchWinLoss : null,
+      editMargedRecord: state.editMargedRecord.copyWith(
+        record: state.editMargedRecord.record.copyWith(
+          bo: bo,
+          date: state.editMargedRecord.date,
+          winLoss: isBO3 ? state.margedRecord.winLoss : state.editMargedRecord.winLoss,
+          firstSecond: isBO3 ? state.margedRecord.firstSecond : state.editMargedRecord.firstSecond,
+          memo: state.editMargedRecord.memo,
+          firstMatchFirstSecond: isBO3 ? state.margedRecord.firstMatchFirstSecond : null,
+          secondMatchFirstSecond: isBO3 ? state.margedRecord.secondMatchFirstSecond : null,
+          thirdMatchFirstSecond: isBO3 ? state.margedRecord.thirdMatchFirstSecond : null,
+          firstMatchWinLoss: isBO3 ? state.margedRecord.firstMatchWinLoss : null,
+          secondMatchWinLoss: isBO3 ? state.margedRecord.secondMatchWinLoss : null,
+          thirdMatchWinLoss: isBO3 ? state.margedRecord.thirdMatchWinLoss : null,
+        ),
       ),
     );
   }
@@ -215,9 +212,9 @@ class RecordEditViewNotifier extends StateNotifier<RecordEditViewState> {
     final isShare = ref.read(isShareGame);
     if (isShare) {
       final share = await ref.read(gameFirestoreShareStreamProvider.future);
-      await ref.read(firestoreShareDataRepository).updateRecord(state.record, share!.docName);
+      await ref.read(firestoreShareDataRepository).updateRecord(state.editMargedRecord.record, share!.docName);
     } else {
-      await ref.read(recordRepository).update(state.record);
+      await ref.read(recordRepository).update(state.editMargedRecord.record);
       await ref.read(dbHelper).fetchAll();
     }
     if (ref.read(backupNotifierProvider)) {
@@ -294,7 +291,7 @@ class RecordEditViewNotifier extends StateNotifier<RecordEditViewState> {
       return await ref.read(firestoreShareDataRepository).addDeck(
             Deck(
               name: deckName,
-              gameId: state.record.gameId,
+              gameId: state.editMargedRecord.record.gameId,
             ),
             share!.docName,
           );
@@ -302,7 +299,7 @@ class RecordEditViewNotifier extends StateNotifier<RecordEditViewState> {
       return await ref.read(deckRepository).insert(
             Deck(
               name: deckName,
-              gameId: state.record.gameId,
+              gameId: state.editMargedRecord.record.gameId,
             ),
           );
     }
@@ -322,9 +319,17 @@ class RecordEditViewNotifier extends StateNotifier<RecordEditViewState> {
 
     // recordに新しいデッキIDを登録
     if (isUseDeck) {
-      state = state.copyWith(record: state.record.copyWith(useDeckId: newDeckId));
+      state = state.copyWith(
+        editMargedRecord: state.editMargedRecord.copyWith(
+          record: state.editMargedRecord.record.copyWith(useDeckId: newDeckId),
+        ),
+      );
     } else {
-      state = state.copyWith(record: state.record.copyWith(opponentDeckId: newDeckId));
+      state = state.copyWith(
+        editMargedRecord: state.editMargedRecord.copyWith(
+          record: state.editMargedRecord.record.copyWith(opponentDeckId: newDeckId),
+        ),
+      );
     }
   }
 
@@ -341,13 +346,13 @@ class RecordEditViewNotifier extends StateNotifier<RecordEditViewState> {
     if (isShare) {
       final share = await ref.read(gameFirestoreShareStreamProvider.future);
       final newId = await ref.read(firestoreShareDataRepository).addTag(
-            Tag(name: tagName, gameId: state.record.gameId),
+            Tag(name: tagName, gameId: state.editMargedRecord.record.gameId),
             share!.docName,
           );
       return newId;
     } else {
       return await ref.read(tagRepository).insert(
-            Tag(name: tagName, gameId: state.record.gameId),
+            Tag(name: tagName, gameId: state.editMargedRecord.record.gameId),
           );
     }
   }
@@ -371,7 +376,11 @@ class RecordEditViewNotifier extends StateNotifier<RecordEditViewState> {
       newTags.add(newTagId);
     }
 
-    state = state.copyWith(record: state.record.copyWith(tagId: newTags));
+    state = state.copyWith(
+      editMargedRecord: state.editMargedRecord.copyWith(
+        record: state.editMargedRecord.record.copyWith(tagId: newTags),
+      ),
+    );
   }
 
   Future _saveImage() async {
@@ -395,7 +404,12 @@ class RecordEditViewNotifier extends StateNotifier<RecordEditViewState> {
         imagePathList.remove(image.path);
         imagePathList.add(url);
       }
-      state = state.copyWith(record: state.record.copyWith(imagePath: imagePathList));
+
+      state = state.copyWith(
+        editMargedRecord: state.editMargedRecord.copyWith(
+          record: state.editMargedRecord.record.copyWith(imagePath: imagePathList),
+        ),
+      );
     } else {
       final savePath = ref.read(imagePathProvider);
       //　アプリ内で削除した画像を実際に削除する場所
@@ -411,15 +425,20 @@ class RecordEditViewNotifier extends StateNotifier<RecordEditViewState> {
         state = state.copyWith(images: newImages);
       }
       // imagesは先頭にsavePathが含まれているパスの文字列のため、savePathの部分を取り除き、画像の名前のみをimagePathに保存するようにする
-      state = state.copyWith(record: state.record.copyWith(imagePath: state.images.map((e) => e.replaceFirst(savePath, '')).toList()));
+
+      state = state.copyWith(
+        editMargedRecord: state.editMargedRecord.copyWith(
+          record: state.editMargedRecord.record.copyWith(
+            imagePath: state.images.map((e) => e.replaceFirst(savePath, '')).toList(),
+          ),
+        ),
+      );
     }
   }
 }
 
 final recordEditViewNotifierProvider =
     StateNotifierProvider.family.autoDispose<RecordEditViewNotifier, RecordEditViewState, MargedRecord>((ref, margedRecord) {
-  final recordList = ref.watch(filterRecordListProvider).asData?.value;
-  final record = recordList!.firstWhere((record) => record.id == margedRecord.recordId); // TODO recordList!にしているせいでエラー出てるから修正する
   final imagePath = ref.read(imagePathProvider);
-  return RecordEditViewNotifier(ref: ref, record: record, margedRecord: margedRecord, imagePath: imagePath);
+  return RecordEditViewNotifier(ref: ref, margedRecord: margedRecord, imagePath: imagePath);
 });

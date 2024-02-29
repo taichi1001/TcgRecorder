@@ -16,7 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$MargedRecord {
-  int get recordId => throw _privateConstructorUsedError;
+  Record get record => throw _privateConstructorUsedError;
   String get game => throw _privateConstructorUsedError;
   List<String> get tag => throw _privateConstructorUsedError;
   BO get bo => throw _privateConstructorUsedError;
@@ -46,7 +46,7 @@ abstract class $MargedRecordCopyWith<$Res> {
       _$MargedRecordCopyWithImpl<$Res, MargedRecord>;
   @useResult
   $Res call(
-      {int recordId,
+      {Record record,
       String game,
       List<String> tag,
       BO bo,
@@ -63,6 +63,8 @@ abstract class $MargedRecordCopyWith<$Res> {
       WinLoss? thirdMatchWinLoss,
       String? memo,
       List<String>? imagePaths});
+
+  $RecordCopyWith<$Res> get record;
 }
 
 /// @nodoc
@@ -78,7 +80,7 @@ class _$MargedRecordCopyWithImpl<$Res, $Val extends MargedRecord>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? recordId = null,
+    Object? record = null,
     Object? game = null,
     Object? tag = null,
     Object? bo = null,
@@ -97,10 +99,10 @@ class _$MargedRecordCopyWithImpl<$Res, $Val extends MargedRecord>
     Object? imagePaths = freezed,
   }) {
     return _then(_value.copyWith(
-      recordId: null == recordId
-          ? _value.recordId
-          : recordId // ignore: cast_nullable_to_non_nullable
-              as int,
+      record: null == record
+          ? _value.record
+          : record // ignore: cast_nullable_to_non_nullable
+              as Record,
       game: null == game
           ? _value.game
           : game // ignore: cast_nullable_to_non_nullable
@@ -167,6 +169,14 @@ class _$MargedRecordCopyWithImpl<$Res, $Val extends MargedRecord>
               as List<String>?,
     ) as $Val);
   }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $RecordCopyWith<$Res> get record {
+    return $RecordCopyWith<$Res>(_value.record, (value) {
+      return _then(_value.copyWith(record: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -178,7 +188,7 @@ abstract class _$$MargedRecordImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {int recordId,
+      {Record record,
       String game,
       List<String> tag,
       BO bo,
@@ -195,6 +205,9 @@ abstract class _$$MargedRecordImplCopyWith<$Res>
       WinLoss? thirdMatchWinLoss,
       String? memo,
       List<String>? imagePaths});
+
+  @override
+  $RecordCopyWith<$Res> get record;
 }
 
 /// @nodoc
@@ -208,7 +221,7 @@ class __$$MargedRecordImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? recordId = null,
+    Object? record = null,
     Object? game = null,
     Object? tag = null,
     Object? bo = null,
@@ -227,10 +240,10 @@ class __$$MargedRecordImplCopyWithImpl<$Res>
     Object? imagePaths = freezed,
   }) {
     return _then(_$MargedRecordImpl(
-      recordId: null == recordId
-          ? _value.recordId
-          : recordId // ignore: cast_nullable_to_non_nullable
-              as int,
+      record: null == record
+          ? _value.record
+          : record // ignore: cast_nullable_to_non_nullable
+              as Record,
       game: null == game
           ? _value.game
           : game // ignore: cast_nullable_to_non_nullable
@@ -303,7 +316,7 @@ class __$$MargedRecordImplCopyWithImpl<$Res>
 
 class _$MargedRecordImpl implements _MargedRecord {
   _$MargedRecordImpl(
-      {required this.recordId,
+      {required this.record,
       required this.game,
       final List<String> tag = const [],
       required this.bo,
@@ -324,7 +337,7 @@ class _$MargedRecordImpl implements _MargedRecord {
         _imagePaths = imagePaths;
 
   @override
-  final int recordId;
+  final Record record;
   @override
   final String game;
   final List<String> _tag;
@@ -374,7 +387,7 @@ class _$MargedRecordImpl implements _MargedRecord {
 
   @override
   String toString() {
-    return 'MargedRecord(recordId: $recordId, game: $game, tag: $tag, bo: $bo, useDeck: $useDeck, opponentDeck: $opponentDeck, date: $date, firstSecond: $firstSecond, firstMatchFirstSecond: $firstMatchFirstSecond, secondMatchFirstSecond: $secondMatchFirstSecond, thirdMatchFirstSecond: $thirdMatchFirstSecond, winLoss: $winLoss, firstMatchWinLoss: $firstMatchWinLoss, secondMatchWinLoss: $secondMatchWinLoss, thirdMatchWinLoss: $thirdMatchWinLoss, memo: $memo, imagePaths: $imagePaths)';
+    return 'MargedRecord(record: $record, game: $game, tag: $tag, bo: $bo, useDeck: $useDeck, opponentDeck: $opponentDeck, date: $date, firstSecond: $firstSecond, firstMatchFirstSecond: $firstMatchFirstSecond, secondMatchFirstSecond: $secondMatchFirstSecond, thirdMatchFirstSecond: $thirdMatchFirstSecond, winLoss: $winLoss, firstMatchWinLoss: $firstMatchWinLoss, secondMatchWinLoss: $secondMatchWinLoss, thirdMatchWinLoss: $thirdMatchWinLoss, memo: $memo, imagePaths: $imagePaths)';
   }
 
   @override
@@ -382,8 +395,7 @@ class _$MargedRecordImpl implements _MargedRecord {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$MargedRecordImpl &&
-            (identical(other.recordId, recordId) ||
-                other.recordId == recordId) &&
+            (identical(other.record, record) || other.record == record) &&
             (identical(other.game, game) || other.game == game) &&
             const DeepCollectionEquality().equals(other._tag, _tag) &&
             (identical(other.bo, bo) || other.bo == bo) &&
@@ -414,7 +426,7 @@ class _$MargedRecordImpl implements _MargedRecord {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      recordId,
+      record,
       game,
       const DeepCollectionEquality().hash(_tag),
       bo,
@@ -441,7 +453,7 @@ class _$MargedRecordImpl implements _MargedRecord {
 
 abstract class _MargedRecord implements MargedRecord {
   factory _MargedRecord(
-      {required final int recordId,
+      {required final Record record,
       required final String game,
       final List<String> tag,
       required final BO bo,
@@ -460,7 +472,7 @@ abstract class _MargedRecord implements MargedRecord {
       final List<String>? imagePaths}) = _$MargedRecordImpl;
 
   @override
-  int get recordId;
+  Record get record;
   @override
   String get game;
   @override

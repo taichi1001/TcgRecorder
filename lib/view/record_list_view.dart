@@ -17,6 +17,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:tcg_manager/entity/marged_record.dart';
+import 'package:tcg_manager/entity/record.dart';
 import 'package:tcg_manager/enum/access_roll.dart';
 import 'package:tcg_manager/enum/bo.dart';
 import 'package:tcg_manager/enum/first_second.dart';
@@ -220,7 +221,7 @@ class RecordListView extends HookConsumerWidget {
 }
 
 final currentMargedRecord = Provider<MargedRecord>((ref) => MargedRecord(
-      recordId: 0,
+      record: Record(),
       game: '',
       useDeck: '',
       opponentDeck: '',
@@ -347,14 +348,14 @@ class _BrandListTile extends HookConsumerWidget {
             );
           } else {
             final gameRecordList = await ref.watch(gameRecordListProvider.future);
-            final targetRecord = gameRecordList.firstWhere((gameRecord) => gameRecord.id == record.recordId);
+            final targetRecord = gameRecordList.firstWhere((gameRecord) => gameRecord.id == record.record.id);
             final share = await ref.read(gameFirestoreShareStreamProvider.future);
             ref.read(firestoreShareDataRepository).removeRecord(targetRecord, share!.docName);
           }
         } else {
-          final targetRecord = await ref.read(recordRepository).getRecordId(record.recordId);
+          final targetRecord = await ref.read(recordRepository).getRecordId(record.record.id!);
           ref.read(dbHelper).removeRecordImage(targetRecord!);
-          await ref.read(recordRepository).deleteById(record.recordId);
+          await ref.read(recordRepository).deleteById(record.record.id!);
           ref.invalidate(allRecordListProvider);
           if (ref.read(backupNotifierProvider)) await ref.read(firestoreBackupControllerProvider).deleteRecord(targetRecord);
         }
@@ -774,13 +775,13 @@ class _EditDeleteButtonRow extends HookConsumerWidget {
                 } else if (context.mounted) {
                   if (ref.read(isShareGame)) {
                     final gameRecordList = await ref.watch(gameRecordListProvider.future);
-                    final targetRecord = gameRecordList.firstWhere((gameRecord) => gameRecord.id == record.recordId);
+                    final targetRecord = gameRecordList.firstWhere((gameRecord) => gameRecord.id == record.record.id);
                     final share = await ref.read(gameFirestoreShareStreamProvider.future);
                     ref.read(firestoreShareDataRepository).removeRecord(targetRecord, share!.docName);
                   } else {
-                    final targetRecord = await ref.read(recordRepository).getRecordId(record.recordId);
+                    final targetRecord = await ref.read(recordRepository).getRecordId(record.record.id!);
                     ref.read(dbHelper).removeRecordImage(targetRecord!);
-                    await ref.read(recordRepository).deleteById(record.recordId);
+                    await ref.read(recordRepository).deleteById(record.record.id!);
                     ref.invalidate(allRecordListProvider);
                     if (ref.read(backupNotifierProvider)) await ref.read(firestoreBackupControllerProvider).deleteRecord(targetRecord);
                   }

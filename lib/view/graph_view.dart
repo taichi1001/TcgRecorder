@@ -243,7 +243,6 @@ class _UseRateChart extends StatelessWidget {
             ),
           ),
         ),
-        // TODO 使用率詳細ページ開放するときにコメントアウト
         // IconButton(
         //   icon: const Icon(Icons.launch),
         //   onPressed: () => Navigator.push(
