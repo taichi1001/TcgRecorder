@@ -12,6 +12,7 @@ import 'package:tcg_manager/provider/firebase_auth_provider.dart';
 import 'package:tcg_manager/provider/firestore_controller_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/revenue_cat_provider.dart';
+import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/provider/user_info_settings_provider.dart';
 import 'package:tcg_manager/repository/firestore_invite_code_repository.dart';
 import 'package:tcg_manager/repository/firestore_share_repository.dart';
@@ -85,6 +86,10 @@ class ShareView extends HookConsumerWidget {
                                   final gameData = data.copyWith(isShare: true);
                                   await ref.read(gameRepository).update(gameData);
                                   ref.invalidate(allGameListProvider);
+                                  final selectGame = ref.read(selectGameNotifierProvider).selectGame;
+                                  if (selectGame?.name == gameData.name) {
+                                    ref.read(selectGameNotifierProvider.notifier).setSelectGame(gameData);
+                                  }
                                   await ref.read(firestoreControllerProvider).initShareGame(gameData, uid);
                                   ref.read(loadingProvider.notifier).state = false;
                                 }
