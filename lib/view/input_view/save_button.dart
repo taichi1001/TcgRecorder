@@ -10,10 +10,12 @@ import 'package:tcg_manager/provider/firestore_backup_controller_provider.dart';
 import 'package:tcg_manager/provider/input_view_provider.dart';
 import 'package:tcg_manager/provider/input_view_settings_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
+import 'package:tcg_manager/provider/revenue_cat_provider.dart';
 import 'package:tcg_manager/provider/select_game_access_roll.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/provider/user_activity_provider.dart';
 import 'package:tcg_manager/view/component/loading_overlay.dart';
+import 'package:tcg_manager/view/limit_modal.dart';
 import 'package:tcg_manager/view/reveiw_modal.dart';
 
 class SaveButton extends HookConsumerWidget {
@@ -69,27 +71,31 @@ class SaveButton extends HookConsumerWidget {
                         );
 
                         if (okCancelResult == OkCancelResult.ok) {
-                          ref.read(loadingProvider.notifier).state = true;
-                          if (isBO3) {
-                            await inputViewNotifier.saveRecord(BO.bo3);
+                          if (ref.read(userActivityLogNotifierProvider).canRecord || ref.read(revenueCatProvider)!.isPremium) {
+                            ref.read(loadingProvider.notifier).state = true;
+                            if (isBO3) {
+                              await inputViewNotifier.saveRecord(BO.bo3);
+                            } else {
+                              await inputViewNotifier.saveRecord(BO.bo1);
+                            }
+                            ref.invalidate(allDeckListProvider);
+                            ref.invalidate(allTagListProvider);
+                            ref.invalidate(allRecordListProvider);
+                            ref.read(userActivityLogNotifierProvider.notifier).record();
+                            if (ref.read(userActivityLogNotifierProvider.notifier).shouldShowReviewDialog()) {
+                              if (context.mounted) await showReviewDialog(context);
+                            }
+                            if (ref.read(backupNotifierProvider)) {
+                              ref.read(firestoreBackupControllerProvider).addRecord(ref.read(inputViewNotifierProvider).record!);
+                            }
+                            inputViewNotifier.resetView();
+                            ref.read(loadingProvider.notifier).state = false;
                           } else {
-                            await inputViewNotifier.saveRecord(BO.bo1);
+                            if (context.mounted) await showLimitDialog(context);
                           }
-                          ref.invalidate(allDeckListProvider);
-                          ref.invalidate(allTagListProvider);
-                          ref.invalidate(allRecordListProvider);
-                          ref.read(userActivityLogNotifierProvider.notifier).record();
-                          if (ref.read(userActivityLogNotifierProvider.notifier).shouldShowReviewDialog()) {
-                            if (context.mounted) await showReviewDialog(context);
+                          if (context.mounted) {
+                            FocusScope.of(context).unfocus();
                           }
-                          if (ref.read(backupNotifierProvider)) {
-                            ref.read(firestoreBackupControllerProvider).addRecord(ref.read(inputViewNotifierProvider).record!);
-                          }
-                          inputViewNotifier.resetView();
-                          ref.read(loadingProvider.notifier).state = false;
-                        }
-                        if (context.mounted) {
-                          FocusScope.of(context).unfocus();
                         }
                       }
                     },

@@ -12,7 +12,7 @@ part of 'firestore_public_user_data.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 FirestorePublicUserData _$FirestorePublicUserDataFromJson(
     Map<String, dynamic> json) {
@@ -93,11 +93,12 @@ class _$FirestorePublicUserDataCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_FirestorePublicUserDataCopyWith<$Res>
+abstract class _$$FirestorePublicUserDataImplCopyWith<$Res>
     implements $FirestorePublicUserDataCopyWith<$Res> {
-  factory _$$_FirestorePublicUserDataCopyWith(_$_FirestorePublicUserData value,
-          $Res Function(_$_FirestorePublicUserData) then) =
-      __$$_FirestorePublicUserDataCopyWithImpl<$Res>;
+  factory _$$FirestorePublicUserDataImplCopyWith(
+          _$FirestorePublicUserDataImpl value,
+          $Res Function(_$FirestorePublicUserDataImpl) then) =
+      __$$FirestorePublicUserDataImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -109,12 +110,13 @@ abstract class _$$_FirestorePublicUserDataCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_FirestorePublicUserDataCopyWithImpl<$Res>
+class __$$FirestorePublicUserDataImplCopyWithImpl<$Res>
     extends _$FirestorePublicUserDataCopyWithImpl<$Res,
-        _$_FirestorePublicUserData>
-    implements _$$_FirestorePublicUserDataCopyWith<$Res> {
-  __$$_FirestorePublicUserDataCopyWithImpl(_$_FirestorePublicUserData _value,
-      $Res Function(_$_FirestorePublicUserData) _then)
+        _$FirestorePublicUserDataImpl>
+    implements _$$FirestorePublicUserDataImplCopyWith<$Res> {
+  __$$FirestorePublicUserDataImplCopyWithImpl(
+      _$FirestorePublicUserDataImpl _value,
+      $Res Function(_$FirestorePublicUserDataImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -126,7 +128,7 @@ class __$$_FirestorePublicUserDataCopyWithImpl<$Res>
     Object? tagList = null,
     Object? recordList = null,
   }) {
-    return _then(_$_FirestorePublicUserData(
+    return _then(_$FirestorePublicUserDataImpl(
       uid: null == uid
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
@@ -154,8 +156,8 @@ class __$$_FirestorePublicUserDataCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(explicitToJson: true)
-class _$_FirestorePublicUserData implements _FirestorePublicUserData {
-  _$_FirestorePublicUserData(
+class _$FirestorePublicUserDataImpl implements _FirestorePublicUserData {
+  _$FirestorePublicUserDataImpl(
       {required this.uid,
       final List<Game> gameList = const [],
       final List<Deck> deckList = const [],
@@ -166,8 +168,8 @@ class _$_FirestorePublicUserData implements _FirestorePublicUserData {
         _tagList = tagList,
         _recordList = recordList;
 
-  factory _$_FirestorePublicUserData.fromJson(Map<String, dynamic> json) =>
-      _$$_FirestorePublicUserDataFromJson(json);
+  factory _$FirestorePublicUserDataImpl.fromJson(Map<String, dynamic> json) =>
+      _$$FirestorePublicUserDataImplFromJson(json);
 
   @override
   final String uid;
@@ -213,10 +215,10 @@ class _$_FirestorePublicUserData implements _FirestorePublicUserData {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_FirestorePublicUserData &&
+            other is _$FirestorePublicUserDataImpl &&
             (identical(other.uid, uid) || other.uid == uid) &&
             const DeepCollectionEquality().equals(other._gameList, _gameList) &&
             const DeepCollectionEquality().equals(other._deckList, _deckList) &&
@@ -238,14 +240,13 @@ class _$_FirestorePublicUserData implements _FirestorePublicUserData {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_FirestorePublicUserDataCopyWith<_$_FirestorePublicUserData>
-      get copyWith =>
-          __$$_FirestorePublicUserDataCopyWithImpl<_$_FirestorePublicUserData>(
-              this, _$identity);
+  _$$FirestorePublicUserDataImplCopyWith<_$FirestorePublicUserDataImpl>
+      get copyWith => __$$FirestorePublicUserDataImplCopyWithImpl<
+          _$FirestorePublicUserDataImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_FirestorePublicUserDataToJson(
+    return _$$FirestorePublicUserDataImplToJson(
       this,
     );
   }
@@ -257,10 +258,10 @@ abstract class _FirestorePublicUserData implements FirestorePublicUserData {
       final List<Game> gameList,
       final List<Deck> deckList,
       final List<Tag> tagList,
-      final List<Record> recordList}) = _$_FirestorePublicUserData;
+      final List<Record> recordList}) = _$FirestorePublicUserDataImpl;
 
   factory _FirestorePublicUserData.fromJson(Map<String, dynamic> json) =
-      _$_FirestorePublicUserData.fromJson;
+      _$FirestorePublicUserDataImpl.fromJson;
 
   @override
   String get uid;
@@ -274,6 +275,6 @@ abstract class _FirestorePublicUserData implements FirestorePublicUserData {
   List<Record> get recordList;
   @override
   @JsonKey(ignore: true)
-  _$$_FirestorePublicUserDataCopyWith<_$_FirestorePublicUserData>
+  _$$FirestorePublicUserDataImplCopyWith<_$FirestorePublicUserDataImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

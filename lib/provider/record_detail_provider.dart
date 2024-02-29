@@ -410,7 +410,6 @@ class RecordEditViewNotifier extends StateNotifier<RecordEditViewState> {
 
 final recordEditViewNotifierProvider =
     StateNotifierProvider.family.autoDispose<RecordEditViewNotifier, RecordEditViewState, MargedRecord>((ref, margedRecord) {
-  // TODO 共有ゲームのときも考慮したrecordListにする。
   final recordList = ref.watch(filterRecordListProvider).asData?.value;
   final record = recordList!.firstWhere((record) => record.id == margedRecord.recordId);
   final imagePath = ref.read(imagePathProvider);
