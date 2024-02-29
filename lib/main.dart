@@ -28,6 +28,7 @@ import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/provider/user_activity_provider.dart';
 import 'package:tcg_manager/provider/user_info_settings_provider.dart';
 import 'package:tcg_manager/repository/firestore_share_repository.dart';
+import 'package:tcg_manager/state/reward_ad_state_provider.dart';
 import 'package:tcg_manager/view/bottom_navigation_view.dart';
 import 'package:tcg_manager/view/initial_game_registration_view.dart';
 import 'package:tcg_manager/view/login_view.dart';
@@ -184,6 +185,11 @@ class MainAppHome extends HookConsumerWidget {
         return const InitialGameRegistrationView();
       }
     }
+
+    useEffect(() {
+      ref.read(rewardAdStateNotifierProvider.notifier).loadRewardedAd();
+      return null;
+    }, const []);
 
     final revenueCatProvider = ref.watch(revenueCatNotifierProvider);
     final shareCount = ref.watch(combinedShareCountFutureProvider);
