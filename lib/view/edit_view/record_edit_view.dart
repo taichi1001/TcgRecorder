@@ -67,8 +67,13 @@ class RecordEditView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return WillPopScope(
-      onWillPop: () => _handleWillPop(context),
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (didPop) return;
+        final sholdPop = await _handleWillPop(context);
+        if (sholdPop && context.mounted) Navigator.pop(context);
+      },
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,

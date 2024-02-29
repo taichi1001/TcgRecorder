@@ -305,10 +305,12 @@ class _ThemeChangeView extends HookConsumerWidget {
       return;
     }, const []);
 
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) {
+        if (didPop) return;
         themeNotifier.changePreview(currentScheme);
-        return true;
+        Navigator.pop(context);
       },
       child: Scaffold(
         appBar: AppBar(
