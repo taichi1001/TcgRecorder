@@ -413,15 +413,37 @@ class RecordEditViewNotifier extends StateNotifier<RecordEditViewState> {
     } else {
       final savePath = ref.read(imagePathProvider);
       //　アプリ内で削除した画像を実際に削除する場所
-      final removeImagePaths = state.removeImages.map((image) => '$savePath/$image').toList();
+      final removeImagePaths = state.removeImages.map((image) {
+        // imageの先頭がsavePathで始まっているかチェック
+        if (!image.startsWith(savePath)) {
+          // savePathが含まれていない場合、savePathを追加
+          return '$savePath/$image';
+        }
+        // savePathが既に含まれている場合、そのままimageを返す
+        return image;
+      }).toList();
       for (final path in removeImagePaths) {
         final dir = Directory(path);
         dir.deleteSync(recursive: true);
       }
       // 追加した画像を実際に追加する場所
       for (final image in state.addImages) {
+        String filePath = image.path;
+
+        // ファイルパスを使用してFileオブジェクトを作成
+        File fileObject = File(filePath);
+
+        // ファイルのサイズを取得（バイト単位）
+        int fileSizeInBytes = await fileObject.length();
+
+        // バイト単位のサイズをキロバイト単位に変換
+        double fileSizeInKB = fileSizeInBytes / 1024;
+
+        // サイズをコンソールに出力
+        print('File size: $fileSizeInKB KB');
         await image.saveTo('$savePath/${image.name}');
-        final newImages = state.images.map((e) => e == image.path ? image.name : e).toList();
+        print(state.images);
+        final newImages = state.images.map((e) => e == image.path ? '$savePath/${image.name}' : e).toList();
         state = state.copyWith(images: newImages);
       }
       // imagesは先頭にsavePathが含まれているパスの文字列のため、savePathの部分を取り除き、画像の名前のみをimagePathに保存するようにする
