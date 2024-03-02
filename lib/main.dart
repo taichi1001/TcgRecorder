@@ -18,6 +18,7 @@ import 'package:tcg_manager/entity/game.dart';
 import 'package:tcg_manager/firebase_options.dart';
 import 'package:tcg_manager/helper/att.dart';
 import 'package:tcg_manager/helper/theme_data.dart';
+import 'package:tcg_manager/helper/tmp_cache_directory.dart';
 import 'package:tcg_manager/provider/adaptive_banner_ad_provider.dart';
 import 'package:tcg_manager/provider/firebase_auth_provider.dart';
 import 'package:tcg_manager/provider/firestor_config_provider.dart';
@@ -49,13 +50,15 @@ void main() async {
   // SharedPreferences初期化
   prefs = await SharedPreferences.getInstance();
 
+  await TmpCacheDirectory.configure();
+  await TmpCacheDirectory.deleteFiles();
+
   final saveDir = await getApplicationDocumentsDirectory();
   imagePath = saveDir.path;
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await ATT.instance.requestPermission().then((result) {
     MobileAds.instance.initialize();
   });
-  await MobileAds.instance.initialize();
   await generateNoticeSetting();
 
   runApp(
