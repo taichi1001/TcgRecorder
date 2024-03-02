@@ -85,7 +85,16 @@ final allMargedRecordListProvider = FutureProvider.autoDispose<List<MargedRecord
     return false;
   });
 
-  final list = allRecordList.map((Record record) {
+  // Recordから共有中のゲームのデータを取り除く(最新のデータはサーバ側にあるため)
+  allRecordList.removeWhere((record) {
+    final game = allGameList.singleWhere((element) => element.id == record.id);
+    if (game.isShare) return true;
+    return false;
+  });
+
+  // TODO 共有中のゲームもCSV出力できるようにする
+
+  final list = allRecordList.map((record) {
     final game = allGameList.singleWhere((value) => value.id == record.gameId);
     final useDeck = allDeckList.singleWhere((value) => value.id == record.useDeckId);
     final opponentDeck = allDeckList.singleWhere((value) => value.id == record.opponentDeckId);
