@@ -21,14 +21,16 @@ export const onDeleteUser = functions
     const countersDocSnapshot = await admin.firestore().collection("counters").get();
     const batch = admin.firestore().batch();
 
+    const deletedDocumentNames: string[] = [];
     shareSnapshot.docs.forEach((doc) => {
-      if (doc.id.includes(uid)) {
+      if (doc.data().author_name == uid) {
         batch.delete(doc.ref);
+        deletedDocumentNames.push(doc.id);
       }
     });
 
     for (const doc of shareDataSnapshot.docs) {
-      if (doc.id.includes(uid)) {
+      if (deletedDocumentNames.includes(doc.id)) {
         // サブコレクションを削除する
         const subcollections = await doc.ref.listCollections();
         for (const subcollection of subcollections) {
@@ -79,10 +81,10 @@ export const onDeleteUser = functions
 
 
 // 午前4時に全てのユーザーのデータを集計する
-export const aggregateUserData = functions.pubsub.schedule('0 4 * * *').timeZone('Asia/Tokyo').onRun(async () => {
+export const aggregateUserData = functions.region('asia-northeast1').pubsub.schedule('0 4 * * *').timeZone('Asia/Tokyo').onRun(async () => {
   // ステップ1: 全ユーザーのデータを取得
   const allUserData: any[] = [];
-  const userSnapshots = await admin.firestore.collection('public_user_data').get();
+  const userSnapshots = await admin.firestore().collection('public_user_data').get();
   userSnapshots.forEach(doc => {
     allUserData.push(doc.data());
   });
@@ -145,7 +147,7 @@ export const aggregateUserData = functions.pubsub.schedule('0 4 * * *').timeZone
   }
 
   // ステップ4: 集計データをFirestoreに保存
-  await admin.firestore.collection('aggregated_data').doc('result').set({
+  await admin.firestore().collection('aggregated_data').doc('result').set({
     'gameList': aggregatedGames,
     'deckList': aggregatedDecks,
     'recordList': aggregatedRecords,
