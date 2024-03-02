@@ -428,21 +428,7 @@ class RecordEditViewNotifier extends StateNotifier<RecordEditViewState> {
       }
       // 追加した画像を実際に追加する場所
       for (final image in state.addImages) {
-        String filePath = image.path;
-
-        // ファイルパスを使用してFileオブジェクトを作成
-        File fileObject = File(filePath);
-
-        // ファイルのサイズを取得（バイト単位）
-        int fileSizeInBytes = await fileObject.length();
-
-        // バイト単位のサイズをキロバイト単位に変換
-        double fileSizeInKB = fileSizeInBytes / 1024;
-
-        // サイズをコンソールに出力
-        print('File size: $fileSizeInKB KB');
         await image.saveTo('$savePath/${image.name}');
-        print(state.images);
         final newImages = state.images.map((e) => e == image.path ? '$savePath/${image.name}' : e).toList();
         state = state.copyWith(images: newImages);
       }
