@@ -1,10 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 import 'package:tcg_manager/entity/win_rate_data.dart';
 import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/provider/graph_view_settings_provider.dart';
@@ -24,109 +25,150 @@ class GraphView extends HookConsumerWidget {
     final recordList = ref.watch(filterRecordListProvider);
     final useDeckData = ref.watch(useDeckDataByGameProvider);
     final opponentDeckData = ref.watch(opponentDeckDataByGameProvider);
+    final currentIndex = useState(0);
+    final pageController = usePageController();
 
-    return DefaultTabController(
-      length: 2,
-      child: CustomScaffold(
-        leading: IconButton(
-          icon: const Icon(Icons.tune),
-          onPressed: () {
-            showCupertinoModalBottomSheet(
-              expand: false,
-              context: context,
-              builder: (context) => const _SettingModalBottomSheet(),
-            );
-          },
-        ),
-        rightButton: IconButton(
-          icon: const Icon(Icons.filter_list),
-          onPressed: () {
-            showCupertinoModalBottomSheet(
-              expand: false,
-              context: context,
-              builder: (context) => const FilterModalBottomSheet(
-                showSort: false,
-                showUseDeck: false,
-              ),
-            );
-          },
-        ),
-        padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
-        appBarBottom: PreferredSize(
-          preferredSize: const Size.fromHeight(30),
-          child: TabBar(
-            indicator: MaterialIndicator(
-              horizontalPadding: 0,
-              height: 3,
-              color: Theme.of(context).colorScheme.onBackground,
+    return CustomScaffold(
+      leading: IconButton(
+        icon: const Icon(Icons.tune),
+        onPressed: () {
+          showCupertinoModalBottomSheet(
+            expand: false,
+            context: context,
+            builder: (context) => const _SettingModalBottomSheet(),
+          );
+        },
+      ),
+      rightButton: IconButton(
+        icon: const Icon(Icons.filter_list),
+        onPressed: () {
+          showCupertinoModalBottomSheet(
+            expand: false,
+            context: context,
+            builder: (context) => const FilterModalBottomSheet(
+              showSort: false,
+              showUseDeck: false,
             ),
-            tabs: const [
-              Tab(icon: Icon(Icons.table_rows)),
-              Tab(icon: Icon(Icons.pie_chart_outline)),
-            ],
-          ),
-        ),
-        body: recordList.when(
-          data: (recordList) {
-            return TabBarView(
-              children: [
-                Center(
-                  child: recordList.isEmpty
-                      ? Text(S.of(context).noDataMessage)
-                      : const Column(
-                          children: [
-                            Expanded(child: GameDataGrid()),
-                            AdaptiveBannerAd(),
-                          ],
-                        ),
-                ),
-                recordList.isEmpty
-                    ? Center(child: Text(S.of(context).noDataMessage))
-                    : Column(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+          );
+        },
+      ),
+      padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+      body: recordList.when(
+        data: (recordList) {
+          return Column(
+            children: [
+              const SizedBox(height: 12),
+              CupertinoSlidingSegmentedControl(
+                children: {
+                  0: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.table_rows, size: 20),
+                      const SizedBox(width: 8),
+                      Text('使用デッキ', style: Theme.of(context).textTheme.bodySmall),
+                    ],
+                  ),
+                  1: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.table_rows, size: 20),
+                      const SizedBox(width: 8),
+                      Text('対戦デッキ', style: Theme.of(context).textTheme.bodySmall)
+                    ],
+                  ),
+                  2: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.pie_chart, size: 20),
+                      const SizedBox(width: 8),
+                      Text('デッキ使用率', style: Theme.of(context).textTheme.bodySmall)
+                    ],
+                  ),
+                },
+                onValueChanged: (int? index) {
+                  if (index == null) return;
+                  currentIndex.value = index;
+                  pageController.jumpToPage(index);
+                },
+                groupValue: currentIndex.value,
+              ),
+              const SizedBox(height: 12),
+              Expanded(
+                child: PageView(
+                  controller: pageController,
+                  onPageChanged: (index) {
+                    currentIndex.value = index;
+                  },
+                  children: [
+                    Center(
+                      child: recordList.isEmpty
+                          ? Text(S.of(context).noDataMessage)
+                          : const Column(
                               children: [
-                                useDeckData.when(
-                                  data: (useDeckData) {
-                                    return Padding(
-                                      padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
-                                      child: _UseRateChart(
-                                        data: useDeckData,
-                                        title: S.of(context).useDeckDistribution,
-                                      ),
-                                    );
-                                  },
-                                  error: (error, stack) => Text('$error'),
-                                  loading: () => const Center(child: CircularProgressIndicator()),
-                                ),
-                                const SizedBox(height: 16),
-                                opponentDeckData.when(
-                                  data: (opponentDeckData) {
-                                    return Padding(
-                                      padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
-                                      child: _UseRateChart(
-                                        data: opponentDeckData,
-                                        title: S.of(context).opponentDeckDistribution,
-                                      ),
-                                    );
-                                  },
-                                  error: (error, stack) => Text('$error'),
-                                  loading: () => const Center(child: CircularProgressIndicator()),
-                                ),
+                                Expanded(child: UseDeckGameDataGrid()),
+                                AdaptiveBannerAd(),
                               ],
                             ),
+                    ),
+                    Center(
+                      child: recordList.isEmpty
+                          ? Text(S.of(context).noDataMessage)
+                          : const Column(
+                              children: [
+                                Expanded(child: OpponentDeckGameDataGrid()),
+                                AdaptiveBannerAd(),
+                              ],
+                            ),
+                    ),
+                    recordList.isEmpty
+                        ? Center(child: Text(S.of(context).noDataMessage))
+                        : Column(
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    useDeckData.when(
+                                      data: (useDeckData) {
+                                        return Padding(
+                                          padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
+                                          child: _UseRateChart(
+                                            data: useDeckData,
+                                            title: S.of(context).useDeckDistribution,
+                                          ),
+                                        );
+                                      },
+                                      error: (error, stack) => Text('$error'),
+                                      loading: () => const Center(child: CircularProgressIndicator()),
+                                    ),
+                                    const SizedBox(height: 16),
+                                    opponentDeckData.when(
+                                      data: (opponentDeckData) {
+                                        return Padding(
+                                          padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+                                          child: _UseRateChart(
+                                            data: opponentDeckData,
+                                            title: S.of(context).opponentDeckDistribution,
+                                          ),
+                                        );
+                                      },
+                                      error: (error, stack) => Text('$error'),
+                                      loading: () => const Center(child: CircularProgressIndicator()),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const AdaptiveBannerAd(),
+                            ],
                           ),
-                          const AdaptiveBannerAd(),
-                        ],
-                      ),
-              ],
-            );
-          },
-          error: (error, stack) => Text('$error'),
-          loading: () => const Center(child: CircularProgressIndicator()),
-        ),
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
+        error: (error, stack) => Text('$error'),
+        loading: () => const Center(child: CircularProgressIndicator()),
       ),
     );
   }
@@ -201,7 +243,6 @@ class _UseRateChart extends StatelessWidget {
             ),
           ),
         ),
-        // TODO 使用率詳細ページ開放するときにコメントアウト
         // IconButton(
         //   icon: const Icon(Icons.launch),
         //   onPressed: () => Navigator.push(

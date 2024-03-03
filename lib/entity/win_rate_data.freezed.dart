@@ -12,7 +12,7 @@ part of 'win_rate_data.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$WinRateData {
@@ -170,11 +170,11 @@ class _$WinRateDataCopyWithImpl<$Res, $Val extends WinRateData>
 }
 
 /// @nodoc
-abstract class _$$_WinRateDataCopyWith<$Res>
+abstract class _$$WinRateDataImplCopyWith<$Res>
     implements $WinRateDataCopyWith<$Res> {
-  factory _$$_WinRateDataCopyWith(
-          _$_WinRateData value, $Res Function(_$_WinRateData) then) =
-      __$$_WinRateDataCopyWithImpl<$Res>;
+  factory _$$WinRateDataImplCopyWith(
+          _$WinRateDataImpl value, $Res Function(_$WinRateDataImpl) then) =
+      __$$WinRateDataImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -198,11 +198,11 @@ abstract class _$$_WinRateDataCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_WinRateDataCopyWithImpl<$Res>
-    extends _$WinRateDataCopyWithImpl<$Res, _$_WinRateData>
-    implements _$$_WinRateDataCopyWith<$Res> {
-  __$$_WinRateDataCopyWithImpl(
-      _$_WinRateData _value, $Res Function(_$_WinRateData) _then)
+class __$$WinRateDataImplCopyWithImpl<$Res>
+    extends _$WinRateDataCopyWithImpl<$Res, _$WinRateDataImpl>
+    implements _$$WinRateDataImplCopyWith<$Res> {
+  __$$WinRateDataImplCopyWithImpl(
+      _$WinRateDataImpl _value, $Res Function(_$WinRateDataImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -226,7 +226,7 @@ class __$$_WinRateDataCopyWithImpl<$Res>
     Object? winRateOfFirst = null,
     Object? winRateOfSecond = null,
   }) {
-    return _then(_$_WinRateData(
+    return _then(_$WinRateDataImpl(
       deck: null == deck
           ? _value.deck
           : deck // ignore: cast_nullable_to_non_nullable
@@ -301,8 +301,8 @@ class __$$_WinRateDataCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_WinRateData implements _WinRateData {
-  _$_WinRateData(
+class _$WinRateDataImpl implements _WinRateData {
+  _$WinRateDataImpl(
       {this.deck = '',
       this.matches = 0,
       this.firstMatches = 0,
@@ -379,10 +379,10 @@ class _$_WinRateData implements _WinRateData {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_WinRateData &&
+            other is _$WinRateDataImpl &&
             (identical(other.deck, deck) || other.deck == deck) &&
             (identical(other.matches, matches) || other.matches == matches) &&
             (identical(other.firstMatches, firstMatches) ||
@@ -436,8 +436,8 @@ class _$_WinRateData implements _WinRateData {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_WinRateDataCopyWith<_$_WinRateData> get copyWith =>
-      __$$_WinRateDataCopyWithImpl<_$_WinRateData>(this, _$identity);
+  _$$WinRateDataImplCopyWith<_$WinRateDataImpl> get copyWith =>
+      __$$WinRateDataImplCopyWithImpl<_$WinRateDataImpl>(this, _$identity);
 }
 
 abstract class _WinRateData implements WinRateData {
@@ -458,7 +458,7 @@ abstract class _WinRateData implements WinRateData {
       final double useRate,
       final double winRate,
       final double winRateOfFirst,
-      final double winRateOfSecond}) = _$_WinRateData;
+      final double winRateOfSecond}) = _$WinRateDataImpl;
 
   @override
   String get deck;
@@ -496,6 +496,6 @@ abstract class _WinRateData implements WinRateData {
   double get winRateOfSecond;
   @override
   @JsonKey(ignore: true)
-  _$$_WinRateDataCopyWith<_$_WinRateData> get copyWith =>
+  _$$WinRateDataImplCopyWith<_$WinRateDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

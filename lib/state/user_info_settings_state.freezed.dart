@@ -12,7 +12,7 @@ part of 'user_info_settings_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$UserInfoSettingsState {
@@ -87,11 +87,12 @@ class _$UserInfoSettingsStateCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_UserInfoSettingsStateCopyWith<$Res>
+abstract class _$$UserInfoSettingsStateImplCopyWith<$Res>
     implements $UserInfoSettingsStateCopyWith<$Res> {
-  factory _$$_UserInfoSettingsStateCopyWith(_$_UserInfoSettingsState value,
-          $Res Function(_$_UserInfoSettingsState) then) =
-      __$$_UserInfoSettingsStateCopyWithImpl<$Res>;
+  factory _$$UserInfoSettingsStateImplCopyWith(
+          _$UserInfoSettingsStateImpl value,
+          $Res Function(_$UserInfoSettingsStateImpl) then) =
+      __$$UserInfoSettingsStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -103,11 +104,12 @@ abstract class _$$_UserInfoSettingsStateCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_UserInfoSettingsStateCopyWithImpl<$Res>
-    extends _$UserInfoSettingsStateCopyWithImpl<$Res, _$_UserInfoSettingsState>
-    implements _$$_UserInfoSettingsStateCopyWith<$Res> {
-  __$$_UserInfoSettingsStateCopyWithImpl(_$_UserInfoSettingsState _value,
-      $Res Function(_$_UserInfoSettingsState) _then)
+class __$$UserInfoSettingsStateImplCopyWithImpl<$Res>
+    extends _$UserInfoSettingsStateCopyWithImpl<$Res,
+        _$UserInfoSettingsStateImpl>
+    implements _$$UserInfoSettingsStateImplCopyWith<$Res> {
+  __$$UserInfoSettingsStateImplCopyWithImpl(_$UserInfoSettingsStateImpl _value,
+      $Res Function(_$UserInfoSettingsStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -119,7 +121,7 @@ class __$$_UserInfoSettingsStateCopyWithImpl<$Res>
     Object? isPhoneAuth = null,
     Object? isPremium = null,
   }) {
-    return _then(_$_UserInfoSettingsState(
+    return _then(_$UserInfoSettingsStateImpl(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -146,8 +148,8 @@ class __$$_UserInfoSettingsStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_UserInfoSettingsState implements _UserInfoSettingsState {
-  _$_UserInfoSettingsState(
+class _$UserInfoSettingsStateImpl implements _UserInfoSettingsState {
+  _$UserInfoSettingsStateImpl(
       {this.id,
       this.name,
       this.iconPath,
@@ -173,10 +175,10 @@ class _$_UserInfoSettingsState implements _UserInfoSettingsState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_UserInfoSettingsState &&
+            other is _$UserInfoSettingsStateImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.iconPath, iconPath) ||
@@ -194,9 +196,9 @@ class _$_UserInfoSettingsState implements _UserInfoSettingsState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_UserInfoSettingsStateCopyWith<_$_UserInfoSettingsState> get copyWith =>
-      __$$_UserInfoSettingsStateCopyWithImpl<_$_UserInfoSettingsState>(
-          this, _$identity);
+  _$$UserInfoSettingsStateImplCopyWith<_$UserInfoSettingsStateImpl>
+      get copyWith => __$$UserInfoSettingsStateImplCopyWithImpl<
+          _$UserInfoSettingsStateImpl>(this, _$identity);
 }
 
 abstract class _UserInfoSettingsState implements UserInfoSettingsState {
@@ -205,7 +207,7 @@ abstract class _UserInfoSettingsState implements UserInfoSettingsState {
       final String? name,
       final String? iconPath,
       final bool isPhoneAuth,
-      final bool isPremium}) = _$_UserInfoSettingsState;
+      final bool isPremium}) = _$UserInfoSettingsStateImpl;
 
   @override
   String? get id;
@@ -219,6 +221,6 @@ abstract class _UserInfoSettingsState implements UserInfoSettingsState {
   bool get isPremium;
   @override
   @JsonKey(ignore: true)
-  _$$_UserInfoSettingsStateCopyWith<_$_UserInfoSettingsState> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$UserInfoSettingsStateImplCopyWith<_$UserInfoSettingsStateImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

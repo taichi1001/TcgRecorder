@@ -12,7 +12,7 @@ part of 'input_view_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$InputViewState {
@@ -196,11 +196,11 @@ class _$InputViewStateCopyWithImpl<$Res, $Val extends InputViewState>
 }
 
 /// @nodoc
-abstract class _$$_InputViewStateCopyWith<$Res>
+abstract class _$$InputViewStateImplCopyWith<$Res>
     implements $InputViewStateCopyWith<$Res> {
-  factory _$$_InputViewStateCopyWith(
-          _$_InputViewState value, $Res Function(_$_InputViewState) then) =
-      __$$_InputViewStateCopyWithImpl<$Res>;
+  factory _$$InputViewStateImplCopyWith(_$InputViewStateImpl value,
+          $Res Function(_$InputViewStateImpl) then) =
+      __$$InputViewStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -229,11 +229,11 @@ abstract class _$$_InputViewStateCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_InputViewStateCopyWithImpl<$Res>
-    extends _$InputViewStateCopyWithImpl<$Res, _$_InputViewState>
-    implements _$$_InputViewStateCopyWith<$Res> {
-  __$$_InputViewStateCopyWithImpl(
-      _$_InputViewState _value, $Res Function(_$_InputViewState) _then)
+class __$$InputViewStateImplCopyWithImpl<$Res>
+    extends _$InputViewStateCopyWithImpl<$Res, _$InputViewStateImpl>
+    implements _$$InputViewStateImplCopyWith<$Res> {
+  __$$InputViewStateImplCopyWithImpl(
+      _$InputViewStateImpl _value, $Res Function(_$InputViewStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -255,7 +255,7 @@ class __$$_InputViewStateCopyWithImpl<$Res>
     Object? thirdMatchFirstSecond = freezed,
     Object? images = null,
   }) {
-    return _then(_$_InputViewState(
+    return _then(_$InputViewStateImpl(
       record: freezed == record
           ? _value.record
           : record // ignore: cast_nullable_to_non_nullable
@@ -322,8 +322,8 @@ class __$$_InputViewStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_InputViewState implements _InputViewState {
-  _$_InputViewState(
+class _$InputViewStateImpl implements _InputViewState {
+  _$InputViewStateImpl(
       {this.record,
       required this.date,
       this.useDeck,
@@ -394,10 +394,10 @@ class _$_InputViewState implements _InputViewState {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_InputViewState &&
+            other is _$InputViewStateImpl &&
             (identical(other.record, record) || other.record == record) &&
             (identical(other.date, date) || other.date == date) &&
             (identical(other.useDeck, useDeck) || other.useDeck == useDeck) &&
@@ -445,8 +445,9 @@ class _$_InputViewState implements _InputViewState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_InputViewStateCopyWith<_$_InputViewState> get copyWith =>
-      __$$_InputViewStateCopyWithImpl<_$_InputViewState>(this, _$identity);
+  _$$InputViewStateImplCopyWith<_$InputViewStateImpl> get copyWith =>
+      __$$InputViewStateImplCopyWithImpl<_$InputViewStateImpl>(
+          this, _$identity);
 }
 
 abstract class _InputViewState implements InputViewState {
@@ -465,7 +466,7 @@ abstract class _InputViewState implements InputViewState {
       final FirstSecond? firstMatchFirstSecond,
       final FirstSecond? secondMatchFirstSecond,
       final FirstSecond? thirdMatchFirstSecond,
-      final List<XFile> images}) = _$_InputViewState;
+      final List<XFile> images}) = _$InputViewStateImpl;
 
   @override
   Record? get record;
@@ -499,6 +500,6 @@ abstract class _InputViewState implements InputViewState {
   List<XFile> get images;
   @override
   @JsonKey(ignore: true)
-  _$$_InputViewStateCopyWith<_$_InputViewState> get copyWith =>
+  _$$InputViewStateImplCopyWith<_$InputViewStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -12,7 +12,7 @@ part of 'firestore_config.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 FirestoreConfig _$FirestoreConfigFromJson(Map<String, dynamic> json) {
   return _FirestoreConfig.fromJson(json);
@@ -68,22 +68,22 @@ class _$FirestoreConfigCopyWithImpl<$Res, $Val extends FirestoreConfig>
 }
 
 /// @nodoc
-abstract class _$$_FirestoreConfigCopyWith<$Res>
+abstract class _$$FirestoreConfigImplCopyWith<$Res>
     implements $FirestoreConfigCopyWith<$Res> {
-  factory _$$_FirestoreConfigCopyWith(
-          _$_FirestoreConfig value, $Res Function(_$_FirestoreConfig) then) =
-      __$$_FirestoreConfigCopyWithImpl<$Res>;
+  factory _$$FirestoreConfigImplCopyWith(_$FirestoreConfigImpl value,
+          $Res Function(_$FirestoreConfigImpl) then) =
+      __$$FirestoreConfigImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String android, String ios});
 }
 
 /// @nodoc
-class __$$_FirestoreConfigCopyWithImpl<$Res>
-    extends _$FirestoreConfigCopyWithImpl<$Res, _$_FirestoreConfig>
-    implements _$$_FirestoreConfigCopyWith<$Res> {
-  __$$_FirestoreConfigCopyWithImpl(
-      _$_FirestoreConfig _value, $Res Function(_$_FirestoreConfig) _then)
+class __$$FirestoreConfigImplCopyWithImpl<$Res>
+    extends _$FirestoreConfigCopyWithImpl<$Res, _$FirestoreConfigImpl>
+    implements _$$FirestoreConfigImplCopyWith<$Res> {
+  __$$FirestoreConfigImplCopyWithImpl(
+      _$FirestoreConfigImpl _value, $Res Function(_$FirestoreConfigImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -92,7 +92,7 @@ class __$$_FirestoreConfigCopyWithImpl<$Res>
     Object? android = null,
     Object? ios = null,
   }) {
-    return _then(_$_FirestoreConfig(
+    return _then(_$FirestoreConfigImpl(
       android: null == android
           ? _value.android
           : android // ignore: cast_nullable_to_non_nullable
@@ -107,11 +107,11 @@ class __$$_FirestoreConfigCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_FirestoreConfig implements _FirestoreConfig {
-  _$_FirestoreConfig({required this.android, required this.ios});
+class _$FirestoreConfigImpl implements _FirestoreConfig {
+  _$FirestoreConfigImpl({required this.android, required this.ios});
 
-  factory _$_FirestoreConfig.fromJson(Map<String, dynamic> json) =>
-      _$$_FirestoreConfigFromJson(json);
+  factory _$FirestoreConfigImpl.fromJson(Map<String, dynamic> json) =>
+      _$$FirestoreConfigImplFromJson(json);
 
   @override
   final String android;
@@ -124,10 +124,10 @@ class _$_FirestoreConfig implements _FirestoreConfig {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_FirestoreConfig &&
+            other is _$FirestoreConfigImpl &&
             (identical(other.android, android) || other.android == android) &&
             (identical(other.ios, ios) || other.ios == ios));
   }
@@ -139,12 +139,13 @@ class _$_FirestoreConfig implements _FirestoreConfig {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_FirestoreConfigCopyWith<_$_FirestoreConfig> get copyWith =>
-      __$$_FirestoreConfigCopyWithImpl<_$_FirestoreConfig>(this, _$identity);
+  _$$FirestoreConfigImplCopyWith<_$FirestoreConfigImpl> get copyWith =>
+      __$$FirestoreConfigImplCopyWithImpl<_$FirestoreConfigImpl>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_FirestoreConfigToJson(
+    return _$$FirestoreConfigImplToJson(
       this,
     );
   }
@@ -153,10 +154,10 @@ class _$_FirestoreConfig implements _FirestoreConfig {
 abstract class _FirestoreConfig implements FirestoreConfig {
   factory _FirestoreConfig(
       {required final String android,
-      required final String ios}) = _$_FirestoreConfig;
+      required final String ios}) = _$FirestoreConfigImpl;
 
   factory _FirestoreConfig.fromJson(Map<String, dynamic> json) =
-      _$_FirestoreConfig.fromJson;
+      _$FirestoreConfigImpl.fromJson;
 
   @override
   String get android;
@@ -164,6 +165,6 @@ abstract class _FirestoreConfig implements FirestoreConfig {
   String get ios;
   @override
   @JsonKey(ignore: true)
-  _$$_FirestoreConfigCopyWith<_$_FirestoreConfig> get copyWith =>
+  _$$FirestoreConfigImplCopyWith<_$FirestoreConfigImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -6,7 +6,6 @@ import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/selector/game_share_data_selector.dart';
 
 final gameTagListProvider = StreamProvider.autoDispose<List<Tag>>((ref) async* {
-  ref.keepAlive();
   final selectGame = ref.watch(selectGameNotifierProvider).selectGame;
   if (selectGame == null) yield const [];
   if (selectGame!.isShare) {
@@ -29,7 +28,7 @@ final gameTagListStreamProvider = StreamProvider.autoDispose<List<Tag>>((ref) as
   yield shareData ?? [];
 });
 
-final currentTagDeckListProvider = FutureProvider.family.autoDispose<List<Tag>, Game>((ref, selectTag) async {
+final currentGameTagListProvider = FutureProvider.family.autoDispose<List<Tag>, Game>((ref, selectTag) async {
   final allTagList = await ref.watch(allTagListProvider.future);
   return allTagList.where((tag) => tag.gameId! == selectTag.id).toList();
 });

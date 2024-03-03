@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:tcg_manager/provider/firebase_auth_provider.dart';
 import 'package:tcg_manager/repository/firestore_share_repository.dart';
-import 'package:tcg_manager/view/share_view.dart';
+import 'package:tcg_manager/view/share_view/share_view.dart';
 
 class GuestShareGameView extends HookConsumerWidget {
   const GuestShareGameView({

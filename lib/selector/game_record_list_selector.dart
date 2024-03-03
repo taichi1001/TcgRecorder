@@ -1,11 +1,11 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tcg_manager/entity/game.dart';
 import 'package:tcg_manager/entity/record.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/selector/game_share_data_selector.dart';
 
 final gameRecordListProvider = StreamProvider.autoDispose<List<Record>>((ref) async* {
-  ref.keepAlive();
   final selectGame = ref.watch(selectGameNotifierProvider).selectGame;
   if (selectGame == null) yield const [];
   if (selectGame!.isShare) {
@@ -26,4 +26,9 @@ final gameRecordListFutureProvider = FutureProvider.autoDispose<List<Record>>((r
 final gameRecordListStreamProvider = StreamProvider.autoDispose<List<Record>>((ref) async* {
   final shareData = await ref.watch(gameShareDataRecordStreamProvider.future);
   yield shareData ?? [];
+});
+
+final currentGameRecordListProvider = FutureProvider.family.autoDispose<List<Record>, Game>((ref, selectGame) async {
+  final allRecordList = await ref.watch(allRecordListProvider.future);
+  return allRecordList.where((deck) => deck.gameId! == selectGame.id).toList();
 });

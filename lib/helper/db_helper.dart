@@ -10,13 +10,13 @@ import 'package:tcg_manager/entity/tag.dart';
 import 'package:tcg_manager/main.dart';
 import 'package:tcg_manager/provider/backup_provider.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
+import 'package:tcg_manager/provider/firestore_backup_controller_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/repository/deck_repository.dart';
 import 'package:tcg_manager/repository/game_repository.dart';
-import 'package:tcg_manager/provider/firestore_backup_controller_provider.dart';
 import 'package:tcg_manager/repository/record_repository.dart';
 import 'package:tcg_manager/repository/tag_repository.dart';
 
@@ -32,13 +32,16 @@ class DbHelper {
     await fetchAll();
   }
 
-  Future deleteGame(Game game) async {
+  Future deleteGame(Game game, {bool isRevokeShare = false}) async {
     await _deleteGameRecord(game);
     await _deleteGameDeck(game);
     await _deleteGameTag(game);
     await ref.read(gameRepository).deleteById(game.id!);
     await fetchAll();
     if (ref.read(backupNotifierProvider)) await ref.read(firestoreBackupControllerProvider).addAll();
+    if (game.id == ref.read(selectGameNotifierProvider).selectGame?.id && !isRevokeShare) {
+      await ref.read(selectGameNotifierProvider.notifier).changeGameForLastRecord();
+    }
   }
 
   Future deleteDeck(Deck deck) async {
@@ -59,7 +62,7 @@ class DbHelper {
     final allRecord = await ref.read(allRecordListProvider.future);
     final gameRecord = allRecord.where((record) => record.gameId == game.id).toList();
     for (final record in gameRecord) {
-      await ref.read(recordRepository).deleteById(record.recordId!);
+      await ref.read(recordRepository).deleteById(record.id!);
     }
   }
 
@@ -83,7 +86,7 @@ class DbHelper {
     final allRecord = await ref.read(allRecordListProvider.future);
     final deckRecord = allRecord.where((record) => record.useDeckId == deck.id || record.opponentDeckId == deck.id).toList();
     for (final record in deckRecord) {
-      await ref.read(recordRepository).deleteById(record.recordId!);
+      await ref.read(recordRepository).deleteById(record.id!);
       removeRecordImage(record);
     }
   }
@@ -92,8 +95,8 @@ class DbHelper {
     final allRecord = await ref.read(allRecordListProvider.future);
     final tagRecord = allRecord.where((record) => record.tagId == tag.id).toList();
     for (var record in tagRecord) {
-      record = record.copyWith(tagId: []);
-      await ref.read(recordRepository).update(record);
+      final newTagId = [...record.tagId]..removeWhere((element) => element == tag.id);
+      await ref.read(recordRepository).update(record.copyWith(tagId: newTagId));
     }
   }
 
@@ -117,7 +120,7 @@ class DbHelper {
     final newDeck = deck.copyWith(name: newName);
     try {
       await ref.read(deckRepository).update(newDeck);
-      ref.refresh(allDeckListProvider);
+      ref.invalidate(allDeckListProvider);
     } catch (e) {
       rethrow;
     }

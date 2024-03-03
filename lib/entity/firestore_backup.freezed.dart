@@ -12,7 +12,7 @@ part of 'firestore_backup.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 FirestoreBackup _$FirestoreBackupFromJson(Map<String, dynamic> json) {
   return _FirestoreBackup.fromJson(json);
@@ -91,11 +91,11 @@ class _$FirestoreBackupCopyWithImpl<$Res, $Val extends FirestoreBackup>
 }
 
 /// @nodoc
-abstract class _$$_FirestoreBackupCopyWith<$Res>
+abstract class _$$FirestoreBackupImplCopyWith<$Res>
     implements $FirestoreBackupCopyWith<$Res> {
-  factory _$$_FirestoreBackupCopyWith(
-          _$_FirestoreBackup value, $Res Function(_$_FirestoreBackup) then) =
-      __$$_FirestoreBackupCopyWithImpl<$Res>;
+  factory _$$FirestoreBackupImplCopyWith(_$FirestoreBackupImpl value,
+          $Res Function(_$FirestoreBackupImpl) then) =
+      __$$FirestoreBackupImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -107,11 +107,11 @@ abstract class _$$_FirestoreBackupCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_FirestoreBackupCopyWithImpl<$Res>
-    extends _$FirestoreBackupCopyWithImpl<$Res, _$_FirestoreBackup>
-    implements _$$_FirestoreBackupCopyWith<$Res> {
-  __$$_FirestoreBackupCopyWithImpl(
-      _$_FirestoreBackup _value, $Res Function(_$_FirestoreBackup) _then)
+class __$$FirestoreBackupImplCopyWithImpl<$Res>
+    extends _$FirestoreBackupCopyWithImpl<$Res, _$FirestoreBackupImpl>
+    implements _$$FirestoreBackupImplCopyWith<$Res> {
+  __$$FirestoreBackupImplCopyWithImpl(
+      _$FirestoreBackupImpl _value, $Res Function(_$FirestoreBackupImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -123,7 +123,7 @@ class __$$_FirestoreBackupCopyWithImpl<$Res>
     Object? recordList = null,
     Object? lastBackup = freezed,
   }) {
-    return _then(_$_FirestoreBackup(
+    return _then(_$FirestoreBackupImpl(
       gameList: null == gameList
           ? _value._gameList
           : gameList // ignore: cast_nullable_to_non_nullable
@@ -151,8 +151,8 @@ class __$$_FirestoreBackupCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(explicitToJson: true)
-class _$_FirestoreBackup implements _FirestoreBackup {
-  _$_FirestoreBackup(
+class _$FirestoreBackupImpl implements _FirestoreBackup {
+  _$FirestoreBackupImpl(
       {final List<Game> gameList = const [],
       final List<Deck> deckList = const [],
       final List<Tag> tagList = const [],
@@ -163,8 +163,8 @@ class _$_FirestoreBackup implements _FirestoreBackup {
         _tagList = tagList,
         _recordList = recordList;
 
-  factory _$_FirestoreBackup.fromJson(Map<String, dynamic> json) =>
-      _$$_FirestoreBackupFromJson(json);
+  factory _$FirestoreBackupImpl.fromJson(Map<String, dynamic> json) =>
+      _$$FirestoreBackupImplFromJson(json);
 
   final List<Game> _gameList;
   @override
@@ -211,10 +211,10 @@ class _$_FirestoreBackup implements _FirestoreBackup {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_FirestoreBackup &&
+            other is _$FirestoreBackupImpl &&
             const DeepCollectionEquality().equals(other._gameList, _gameList) &&
             const DeepCollectionEquality().equals(other._deckList, _deckList) &&
             const DeepCollectionEquality().equals(other._tagList, _tagList) &&
@@ -237,12 +237,13 @@ class _$_FirestoreBackup implements _FirestoreBackup {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_FirestoreBackupCopyWith<_$_FirestoreBackup> get copyWith =>
-      __$$_FirestoreBackupCopyWithImpl<_$_FirestoreBackup>(this, _$identity);
+  _$$FirestoreBackupImplCopyWith<_$FirestoreBackupImpl> get copyWith =>
+      __$$FirestoreBackupImplCopyWithImpl<_$FirestoreBackupImpl>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_FirestoreBackupToJson(
+    return _$$FirestoreBackupImplToJson(
       this,
     );
   }
@@ -254,10 +255,10 @@ abstract class _FirestoreBackup implements FirestoreBackup {
       final List<Deck> deckList,
       final List<Tag> tagList,
       final List<Record> recordList,
-      final DateTime? lastBackup}) = _$_FirestoreBackup;
+      final DateTime? lastBackup}) = _$FirestoreBackupImpl;
 
   factory _FirestoreBackup.fromJson(Map<String, dynamic> json) =
-      _$_FirestoreBackup.fromJson;
+      _$FirestoreBackupImpl.fromJson;
 
   @override
   List<Game> get gameList;
@@ -271,6 +272,6 @@ abstract class _FirestoreBackup implements FirestoreBackup {
   DateTime? get lastBackup;
   @override
   @JsonKey(ignore: true)
-  _$$_FirestoreBackupCopyWith<_$_FirestoreBackup> get copyWith =>
+  _$$FirestoreBackupImplCopyWith<_$FirestoreBackupImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

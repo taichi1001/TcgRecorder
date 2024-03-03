@@ -6,12 +6,13 @@ part of 'firestore_backup.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_FirestoreBackup _$$_FirestoreBackupFromJson(Map<String, dynamic> json) =>
+_$FirestoreBackupImpl _$$FirestoreBackupImplFromJson(
+        Map<String, dynamic> json) =>
     $checkedCreate(
-      r'_$_FirestoreBackup',
+      r'_$FirestoreBackupImpl',
       json,
       ($checkedConvert) {
-        final val = _$_FirestoreBackup(
+        final val = _$FirestoreBackupImpl(
           gameList: $checkedConvert(
               'game_list',
               (v) =>
@@ -54,7 +55,8 @@ _$_FirestoreBackup _$$_FirestoreBackupFromJson(Map<String, dynamic> json) =>
       },
     );
 
-Map<String, dynamic> _$$_FirestoreBackupToJson(_$_FirestoreBackup instance) =>
+Map<String, dynamic> _$$FirestoreBackupImplToJson(
+        _$FirestoreBackupImpl instance) =>
     <String, dynamic>{
       'game_list': instance.gameList.map((e) => e.toJson()).toList(),
       'deck_list': instance.deckList.map((e) => e.toJson()).toList(),

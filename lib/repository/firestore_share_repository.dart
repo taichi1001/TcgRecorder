@@ -35,12 +35,18 @@ class FirestoreShareRepository {
   FirestoreShareRepository(this._firestore);
 
   // 新規のゲームをシェアするための関数
-  Future initGame(Game game, String user) async {
-    final docName = '$user-${game.name}';
-    final gameCounter = await getGameCounter(user);
+  Future<String> initGame(Game game, String user, int? counter) async {
+    int gameCounter;
+    if (counter == null) {
+      gameCounter = await getGameCounter(user);
+    } else {
+      gameCounter = counter;
+    }
     final myself = ShareUser(id: user, roll: AccessRoll.author);
-    final initShare = FirestoreShare(authorName: user, game: game.copyWith(id: gameCounter), shareUserList: [myself], docName: docName);
-    await _firestore.collection('share').doc(docName).set(initShare.toJson());
+    final initShare = FirestoreShare(authorName: user, game: game.copyWith(id: gameCounter), shareUserList: [myself], docName: '');
+    final docRef = await _firestore.collection('share').add(initShare.toJson());
+    await docRef.set({'doc_name': docRef.id}, SetOptions(merge: true));
+    return docRef.id;
   }
 
   Future<int> getGameCounter(String user) async {
@@ -66,9 +72,19 @@ class FirestoreShareRepository {
 
   // ゲーム共有リクエスト
   Future requestDataShare(String shareDirName, ShareUser user) async {
-    await _firestore.collection('share').doc(shareDirName).update({
-      'pending_user_list': FieldValue.arrayUnion([user.toJson()]),
-    });
+    // ユーザーが既に共有中のユーザーかどうかを確認
+    final documentSnapshot = await _firestore.collection('share').doc(shareDirName).get();
+    final data = documentSnapshot.data() as Map<String, dynamic>;
+    final share = FirestoreShare.fromJson(data);
+    final userExists = share.shareUserList.where((element) => element.id == user.id).toList().isNotEmpty;
+
+    if (userExists) {
+      throw Exception("ユーザーは既に共有リストに含まれています。");
+    } else {
+      await _firestore.collection('share').doc(shareDirName).update({
+        'pending_user_list': FieldValue.arrayUnion([user.toJson()]),
+      });
+    }
   }
 
   // ゲーム共有リクエストを許可する
@@ -118,7 +134,6 @@ class FirestoreShareRepository {
       if (docSnapshot.exists) {
         List<dynamic> userList = docSnapshot['share_user_list'];
         bool isUpdated = false;
-
         // 対象の user_id を持つオブジェクトを探して roll を更新します
         for (int i = 0; i < userList.length; i++) {
           if (userList[i]['id'] == shareUser.id) {
@@ -129,7 +144,8 @@ class FirestoreShareRepository {
         }
 
         // ownerがいなくなる場合にこうしんしないようにする処理
-        final ownerList = userList.map((e) => ShareUser.fromJson(e)).where((element) => element.roll == AccessRoll.owner).toList().toList();
+        final ownerList =
+            userList.map((e) => ShareUser.fromJson(e)).where((element) => element.roll == AccessRoll.author).toList().toList();
         if (ownerList.isEmpty) return false;
 
         // 更新された場合のみ、user_list を Firestore に書き込みます
@@ -137,11 +153,11 @@ class FirestoreShareRepository {
           transaction.update(docRef, {'share_user_list': userList});
           return true;
         } else {
-          print('User not found in user_list');
+          // ユーザーがユーザーリストになかった場合
           return false;
         }
       } else {
-        print('Document does not exist');
+        // ドキュメントが見つからなかった場合
         return false;
       }
     });

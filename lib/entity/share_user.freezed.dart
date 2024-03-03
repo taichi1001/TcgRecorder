@@ -12,7 +12,7 @@ part of 'share_user.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 ShareUser _$ShareUserFromJson(Map<String, dynamic> json) {
   return _ShareUser.fromJson(json);
@@ -67,21 +67,22 @@ class _$ShareUserCopyWithImpl<$Res, $Val extends ShareUser>
 }
 
 /// @nodoc
-abstract class _$$_ShareUserCopyWith<$Res> implements $ShareUserCopyWith<$Res> {
-  factory _$$_ShareUserCopyWith(
-          _$_ShareUser value, $Res Function(_$_ShareUser) then) =
-      __$$_ShareUserCopyWithImpl<$Res>;
+abstract class _$$ShareUserImplCopyWith<$Res>
+    implements $ShareUserCopyWith<$Res> {
+  factory _$$ShareUserImplCopyWith(
+          _$ShareUserImpl value, $Res Function(_$ShareUserImpl) then) =
+      __$$ShareUserImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String id, AccessRoll roll});
 }
 
 /// @nodoc
-class __$$_ShareUserCopyWithImpl<$Res>
-    extends _$ShareUserCopyWithImpl<$Res, _$_ShareUser>
-    implements _$$_ShareUserCopyWith<$Res> {
-  __$$_ShareUserCopyWithImpl(
-      _$_ShareUser _value, $Res Function(_$_ShareUser) _then)
+class __$$ShareUserImplCopyWithImpl<$Res>
+    extends _$ShareUserCopyWithImpl<$Res, _$ShareUserImpl>
+    implements _$$ShareUserImplCopyWith<$Res> {
+  __$$ShareUserImplCopyWithImpl(
+      _$ShareUserImpl _value, $Res Function(_$ShareUserImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -90,7 +91,7 @@ class __$$_ShareUserCopyWithImpl<$Res>
     Object? id = null,
     Object? roll = null,
   }) {
-    return _then(_$_ShareUser(
+    return _then(_$ShareUserImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -105,15 +106,16 @@ class __$$_ShareUserCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ShareUser implements _ShareUser {
-  _$_ShareUser({required this.id, required this.roll});
+class _$ShareUserImpl implements _ShareUser {
+  _$ShareUserImpl({required this.id, this.roll = AccessRoll.reader});
 
-  factory _$_ShareUser.fromJson(Map<String, dynamic> json) =>
-      _$$_ShareUserFromJson(json);
+  factory _$ShareUserImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ShareUserImplFromJson(json);
 
   @override
   final String id;
   @override
+  @JsonKey()
   final AccessRoll roll;
 
   @override
@@ -122,10 +124,10 @@ class _$_ShareUser implements _ShareUser {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ShareUser &&
+            other is _$ShareUserImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.roll, roll) || other.roll == roll));
   }
@@ -137,24 +139,23 @@ class _$_ShareUser implements _ShareUser {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ShareUserCopyWith<_$_ShareUser> get copyWith =>
-      __$$_ShareUserCopyWithImpl<_$_ShareUser>(this, _$identity);
+  _$$ShareUserImplCopyWith<_$ShareUserImpl> get copyWith =>
+      __$$ShareUserImplCopyWithImpl<_$ShareUserImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ShareUserToJson(
+    return _$$ShareUserImplToJson(
       this,
     );
   }
 }
 
 abstract class _ShareUser implements ShareUser {
-  factory _ShareUser(
-      {required final String id,
-      required final AccessRoll roll}) = _$_ShareUser;
+  factory _ShareUser({required final String id, final AccessRoll roll}) =
+      _$ShareUserImpl;
 
   factory _ShareUser.fromJson(Map<String, dynamic> json) =
-      _$_ShareUser.fromJson;
+      _$ShareUserImpl.fromJson;
 
   @override
   String get id;
@@ -162,6 +163,6 @@ abstract class _ShareUser implements ShareUser {
   AccessRoll get roll;
   @override
   @JsonKey(ignore: true)
-  _$$_ShareUserCopyWith<_$_ShareUser> get copyWith =>
+  _$$ShareUserImplCopyWith<_$ShareUserImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

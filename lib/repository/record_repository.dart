@@ -42,7 +42,7 @@ class RecordRepository {
 
   Future<int> update(Record record) async {
     final db = await dbProvider.database;
-    return await db.update(tableName, record.toJson(), where: 'record_id = ?', whereArgs: [record.recordId]);
+    return await db.update(tableName, record.toJson(), where: 'record_id = ?', whereArgs: [record.id]);
   }
 
   Future<List<Object?>> insertList(List<Record> records) async {
@@ -58,7 +58,7 @@ class RecordRepository {
     final db = await dbProvider.database;
     final batch = db.batch();
     for (final record in recordList) {
-      batch.update(tableName, record.toJson(), where: 'record_id = ?', whereArgs: [record.recordId]);
+      batch.update(tableName, record.toJson(), where: 'record_id = ?', whereArgs: [record.id]);
     }
     return await batch.commit();
   }

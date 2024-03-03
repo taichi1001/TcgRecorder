@@ -79,10 +79,10 @@ class RecordCalculator {
   int countUseDeckMatches(Deck deck) => targetRecordList.where((record) => record.useDeckId == deck.id).length;
 
   /// 対象リスト内で指定した対戦相手デッキの試合数をカウント
-  int countOpponentDeckMatches2(Deck deck) => targetRecordList.where((record) => record.opponentDeckId == deck.id).length;
+  int countOpponentDeckMatches(Deck deck) => targetRecordList.where((record) => record.opponentDeckId == deck.id).length;
 
   /// 対象リスト内で使用デッキと対戦相手デッキを指定して該当する試合数をカウント
-  int countOpponentDeckMatches(Deck useDeck, Deck opponentDeck) {
+  int countUseDeckAndOpponentDeckMatches(Deck useDeck, Deck opponentDeck) {
     final useDeckRecordList = targetRecordList.where((record) => record.useDeckId == useDeck.id);
     return useDeckRecordList.where((record) => record.opponentDeckId == opponentDeck.id).length;
   }
@@ -94,8 +94,15 @@ class RecordCalculator {
     return firstRecords.where((record) => record.useDeckId == deck.id).length;
   }
 
+  /// 対象リスト内で対戦相手デッキを指定して該当する先攻試合数をカウント
+  int countOpponentDeckFirstMatches(Deck deck) {
+    final recordList = targetRecordList.where((record) => record.opponentDeckId == deck.id);
+    final firstRecords = recordList.where((record) => record.firstSecond == FirstSecond.first);
+    return firstRecords.where((record) => record.opponentDeckId == deck.id).length;
+  }
+
   /// 対象リスト内で使用デッキと対戦相手デッキを指定して該当する先攻試合数をカウント
-  int countOpponentDeckFirstMatches(Deck useDeck, Deck opponentDeck) {
+  int countUseDeckAndOpponentDeckFirstMatches(Deck useDeck, Deck opponentDeck) {
     final useDeckRecordList = targetRecordList.where((record) => record.useDeckId == useDeck.id);
     final recordList = useDeckRecordList.where((record) => record.opponentDeckId == opponentDeck.id);
     return recordList.where((record) => record.firstSecond == FirstSecond.first).length;
@@ -108,8 +115,15 @@ class RecordCalculator {
     return secondRecords.where((record) => record.useDeckId == deck.id).length;
   }
 
+  /// 対象リスト内で対戦相手デッキを指定して該当する後攻試合数をカウント
+  int countOpponentDeckSecondMatches(Deck deck) {
+    final recordList = targetRecordList.where((record) => record.opponentDeckId == deck.id);
+    final secondRecords = recordList.where((record) => record.firstSecond == FirstSecond.second);
+    return secondRecords.where((record) => record.opponentDeckId == deck.id).length;
+  }
+
   /// 対象リスト内で使用デッキと対戦相手デッキを指定して該当する後攻試合数をカウント
-  int countOpponentDeckSecondMatches(Deck useDeck, Deck opponentDeck) {
+  int countUseDeckAndOpponentDeckSecondMatches(Deck useDeck, Deck opponentDeck) {
     final useDeckRecordList = targetRecordList.where((record) => record.useDeckId == useDeck.id);
     final recordList = useDeckRecordList.where((record) => record.opponentDeckId == opponentDeck.id);
     return recordList.where((record) => record.firstSecond == FirstSecond.second).length;
@@ -121,9 +135,35 @@ class RecordCalculator {
     return recordList.where((record) => record.winLoss == WinLoss.win).length;
   }
 
+  /// 対象リスト内で対戦相手デッキを指定して該当する勝利数をカウント
+  int countOpponentDeckWins(Deck deck) {
+    final recordList = targetRecordList.where((record) => record.opponentDeckId == deck.id);
+    return recordList.where((record) => record.winLoss == WinLoss.win).length;
+  }
+
+  /// 対象リスト内で使用デッキと対戦相手を指定して該当する勝利数をカウント
+  int countUseDeckAndOpponentDeckWins(Deck useDeck, Deck opponentDeck) {
+    final useDeckRecordList = targetRecordList.where((record) => record.useDeckId == useDeck.id);
+    final recordList = useDeckRecordList.where((record) => record.opponentDeckId == opponentDeck.id);
+    return recordList.where((record) => record.winLoss == WinLoss.win).length;
+  }
+
   /// 対象リスト内で使用デッキを指定して該当する先攻勝利数をカウント
   int countUseDeckFirstMatchesWins(Deck deck) {
     final recordList = targetRecordList.where((record) => record.useDeckId == deck.id);
+    return recordList.where((record) => record.winLoss == WinLoss.win && record.firstSecond == FirstSecond.first).length;
+  }
+
+  /// 対象リスト内で対戦相手デッキを指定して該当する先攻勝利数をカウント
+  int countOpponentDeckFirstMatchesWins(Deck deck) {
+    final recordList = targetRecordList.where((record) => record.opponentDeckId == deck.id);
+    return recordList.where((record) => record.winLoss == WinLoss.win && record.firstSecond == FirstSecond.first).length;
+  }
+
+  /// 対象リスト内で使用デッキと対戦相手を指定して該当する先攻勝利数をカウント
+  int countUseDeckAndOpponentDeckFirstMatchesWins(Deck useDeck, Deck opponentDeck) {
+    final useDeckRecordList = targetRecordList.where((record) => record.useDeckId == useDeck.id);
+    final recordList = useDeckRecordList.where((record) => record.opponentDeckId == opponentDeck.id);
     return recordList.where((record) => record.winLoss == WinLoss.win && record.firstSecond == FirstSecond.first).length;
   }
 
@@ -133,22 +173,14 @@ class RecordCalculator {
     return recordList.where((record) => record.winLoss == WinLoss.win && record.firstSecond == FirstSecond.second).length;
   }
 
-  /// 対象リスト内で使用デッキと対戦相手を指定して該当する勝利数をカウント
-  int countOpponentDeckWins(Deck useDeck, Deck opponentDeck) {
-    final useDeckRecordList = targetRecordList.where((record) => record.useDeckId == useDeck.id);
-    final recordList = useDeckRecordList.where((record) => record.opponentDeckId == opponentDeck.id);
-    return recordList.where((record) => record.winLoss == WinLoss.win).length;
-  }
-
-  /// 対象リスト内で使用デッキと対戦相手を指定して該当する先攻勝利数をカウント
-  int countOpponentDeckFirstMatchesWins(Deck useDeck, Deck opponentDeck) {
-    final useDeckRecordList = targetRecordList.where((record) => record.useDeckId == useDeck.id);
-    final recordList = useDeckRecordList.where((record) => record.opponentDeckId == opponentDeck.id);
-    return recordList.where((record) => record.winLoss == WinLoss.win && record.firstSecond == FirstSecond.first).length;
+  /// 対象リスト内で対戦相手デッキを指定して該当する後攻勝利数をカウント
+  int countOpponentDeckSecondMatchesWins(Deck deck) {
+    final recordList = targetRecordList.where((record) => record.opponentDeckId == deck.id);
+    return recordList.where((record) => record.winLoss == WinLoss.win && record.firstSecond == FirstSecond.second).length;
   }
 
   /// 対象リスト内で使用デッキと対戦相手を指定して該当する後攻勝利数をカウント
-  int countOpponentDeckSecondMatchesWins(Deck useDeck, Deck opponentDeck) {
+  int countUseDeckAndOpponentDeckSecondMatchesWins(Deck useDeck, Deck opponentDeck) {
     final useDeckRecordList = targetRecordList.where((record) => record.useDeckId == useDeck.id);
     final recordList = useDeckRecordList.where((record) => record.opponentDeckId == opponentDeck.id);
     return recordList.where((record) => record.winLoss == WinLoss.win && record.firstSecond == FirstSecond.second).length;
@@ -160,9 +192,35 @@ class RecordCalculator {
     return recordList.where((record) => record.winLoss == WinLoss.loss).length;
   }
 
+  /// 対象リスト内で対戦相手デッキを指定して該当する負け数をカウント
+  int countOpponentDeckLoss(Deck deck) {
+    final recordList = targetRecordList.where((record) => record.opponentDeckId == deck.id);
+    return recordList.where((record) => record.winLoss == WinLoss.loss).length;
+  }
+
+  /// 対象リスト内で使用デッキと対戦相手を指定して該当する負け数をカウント
+  int countUseDeckAndOpponentDeckLoss(Deck useDeck, Deck opponentDeck) {
+    final useDeckRecordList = targetRecordList.where((record) => record.useDeckId == useDeck.id);
+    final recordList = useDeckRecordList.where((record) => record.opponentDeckId == opponentDeck.id);
+    return recordList.where((record) => record.winLoss == WinLoss.loss).length;
+  }
+
   /// 対象リスト内で使用デッキを指定して該当する先攻負け数をカウント
   int countUseDeckFirstMatchesLoss(Deck deck) {
     final recordList = targetRecordList.where((record) => record.useDeckId == deck.id);
+    return recordList.where((record) => record.winLoss == WinLoss.loss && record.firstSecond == FirstSecond.first).length;
+  }
+
+  /// 対象リスト内で対戦相手デッキを指定して該当する先攻負け数をカウント
+  int countOpponentDeckFirstMatchesLoss(Deck deck) {
+    final recordList = targetRecordList.where((record) => record.opponentDeckId == deck.id);
+    return recordList.where((record) => record.winLoss == WinLoss.loss && record.firstSecond == FirstSecond.first).length;
+  }
+
+  /// 対象リスト内で使用デッキと対戦相手を指定して該当する先攻負け数をカウント
+  int countUseDeckAndOpponentDeckFirstMatchesLoss(Deck useDeck, Deck opponentDeck) {
+    final useDeckRecordList = targetRecordList.where((record) => record.useDeckId == useDeck.id);
+    final recordList = useDeckRecordList.where((record) => record.opponentDeckId == opponentDeck.id);
     return recordList.where((record) => record.winLoss == WinLoss.loss && record.firstSecond == FirstSecond.first).length;
   }
 
@@ -172,22 +230,14 @@ class RecordCalculator {
     return recordList.where((record) => record.winLoss == WinLoss.loss && record.firstSecond == FirstSecond.second).length;
   }
 
-  /// 対象リスト内で使用デッキと対戦相手を指定して該当する負け数をカウント
-  int countOpponentDeckLoss(Deck useDeck, Deck opponentDeck) {
-    final useDeckRecordList = targetRecordList.where((record) => record.useDeckId == useDeck.id);
-    final recordList = useDeckRecordList.where((record) => record.opponentDeckId == opponentDeck.id);
-    return recordList.where((record) => record.winLoss == WinLoss.loss).length;
-  }
-
-  /// 対象リスト内で使用デッキと対戦相手を指定して該当する先攻負け数をカウント
-  int countOpponentDeckFirstMatchesLoss(Deck useDeck, Deck opponentDeck) {
-    final useDeckRecordList = targetRecordList.where((record) => record.useDeckId == useDeck.id);
-    final recordList = useDeckRecordList.where((record) => record.opponentDeckId == opponentDeck.id);
-    return recordList.where((record) => record.winLoss == WinLoss.loss && record.firstSecond == FirstSecond.first).length;
+  /// 対象リスト内で対戦相手デッキを指定して該当する後攻負け数をカウント
+  int countOpponentDeckSecondMatchesLoss(Deck deck) {
+    final recordList = targetRecordList.where((record) => record.opponentDeckId == deck.id);
+    return recordList.where((record) => record.winLoss == WinLoss.loss && record.firstSecond == FirstSecond.second).length;
   }
 
   /// 対象リスト内で使用デッキと対戦相手を指定して該当する後攻負け数をカウント
-  int countOpponentDeckSecondMatchesLoss(Deck useDeck, Deck opponentDeck) {
+  int countUseDeckAndOpponentDeckSecondMatchesLoss(Deck useDeck, Deck opponentDeck) {
     final useDeckRecordList = targetRecordList.where((record) => record.useDeckId == useDeck.id);
     final recordList = useDeckRecordList.where((record) => record.opponentDeckId == opponentDeck.id);
     return recordList.where((record) => record.winLoss == WinLoss.loss && record.firstSecond == FirstSecond.second).length;
@@ -199,9 +249,35 @@ class RecordCalculator {
     return recordList.where((record) => record.winLoss == WinLoss.draw).length;
   }
 
+  /// 対象リスト内で対戦相手デッキを指定して該当する引き分け数をカウント
+  int countOpponentDeckDraw(Deck deck) {
+    final recordList = targetRecordList.where((record) => record.opponentDeckId == deck.id);
+    return recordList.where((record) => record.winLoss == WinLoss.draw).length;
+  }
+
+  /// 対象リスト内で使用デッキと対戦相手を指定して該当する引き分け数をカウント
+  int countUseDeckAndOpponentDeckDraw(Deck useDeck, Deck opponentDeck) {
+    final useDeckRecordList = targetRecordList.where((record) => record.useDeckId == useDeck.id);
+    final recordList = useDeckRecordList.where((record) => record.opponentDeckId == opponentDeck.id);
+    return recordList.where((record) => record.winLoss == WinLoss.draw).length;
+  }
+
   /// 対象リスト内で使用デッキを指定して該当する先攻引き分け数をカウント
   int countUseDeckFirstMatchesDraw(Deck deck) {
     final recordList = targetRecordList.where((record) => record.useDeckId == deck.id);
+    return recordList.where((record) => record.winLoss == WinLoss.draw && record.firstSecond == FirstSecond.first).length;
+  }
+
+  /// 対象リスト内で対戦相手デッキを指定して該当する先攻引き分け数をカウント
+  int countOpponentDeckFirstMatchesDraw(Deck deck) {
+    final recordList = targetRecordList.where((record) => record.opponentDeckId == deck.id);
+    return recordList.where((record) => record.winLoss == WinLoss.draw && record.firstSecond == FirstSecond.first).length;
+  }
+
+  /// 対象リスト内で使用デッキと対戦相手を指定して該当する先攻引き分け数をカウント
+  int countUseDeckAndOpponentDeckFirstMatchesDraw(Deck useDeck, Deck opponentDeck) {
+    final useDeckRecordList = targetRecordList.where((record) => record.useDeckId == useDeck.id);
+    final recordList = useDeckRecordList.where((record) => record.opponentDeckId == opponentDeck.id);
     return recordList.where((record) => record.winLoss == WinLoss.draw && record.firstSecond == FirstSecond.first).length;
   }
 
@@ -211,74 +287,85 @@ class RecordCalculator {
     return recordList.where((record) => record.winLoss == WinLoss.draw && record.firstSecond == FirstSecond.second).length;
   }
 
-  /// 対象リスト内で使用デッキと対戦相手を指定して該当する引き分け数をカウント
-  int countOpponentDeckDraw(Deck useDeck, Deck opponentDeck) {
-    final useDeckRecordList = targetRecordList.where((record) => record.useDeckId == useDeck.id);
-    final recordList = useDeckRecordList.where((record) => record.opponentDeckId == opponentDeck.id);
-    return recordList.where((record) => record.winLoss == WinLoss.draw).length;
-  }
-
-  /// 対象リスト内で使用デッキと対戦相手を指定して該当する先攻引き分け数をカウント
-  int countOpponentDeckFirstMatchesDraw(Deck useDeck, Deck opponentDeck) {
-    final useDeckRecordList = targetRecordList.where((record) => record.useDeckId == useDeck.id);
-    final recordList = useDeckRecordList.where((record) => record.opponentDeckId == opponentDeck.id);
-    return recordList.where((record) => record.winLoss == WinLoss.draw && record.firstSecond == FirstSecond.first).length;
+  /// 対象リスト内で対戦相手デッキを指定して該当する後攻引き分け数をカウント
+  int countOpponentDeckSecondMatchesDraw(Deck deck) {
+    final recordList = targetRecordList.where((record) => record.opponentDeckId == deck.id);
+    return recordList.where((record) => record.winLoss == WinLoss.draw && record.firstSecond == FirstSecond.second).length;
   }
 
   /// 対象リスト内で使用デッキと対戦相手を指定して該当する後攻引き分け数をカウント
-  int countOpponentDeckSecondMatchesDraw(Deck useDeck, Deck opponentDeck) {
+  int countUseDeckAndOpponentDeckSecondMatchesDraw(Deck useDeck, Deck opponentDeck) {
     final useDeckRecordList = targetRecordList.where((record) => record.useDeckId == useDeck.id);
     final recordList = useDeckRecordList.where((record) => record.opponentDeckId == opponentDeck.id);
     return recordList.where((record) => record.winLoss == WinLoss.draw && record.firstSecond == FirstSecond.second).length;
   }
 
+  /// 使用デッキを指定して使用率を計算
   double calcUseDeckUseRate(Deck useDeck) => countUseDeckMatches(useDeck) / countMatches();
 
-  double calcOpponentDeckUseRate(Deck useDeck) => countOpponentDeckMatches2(useDeck) / countMatches();
+  /// 対戦相手デッキを指定して使用率を計算
+  double calcOpponentDeckUseRate(Deck useDeck) => countOpponentDeckMatches(useDeck) / countMatches();
 
+  /// 使用デッキを指定して勝率を計算
   double calcUseDeckWinRate(Deck deck) {
     final win = countUseDeckWins(deck);
     final matches = countUseDeckMatches(deck);
     return double.parse((win.toDouble() / matches.toDouble() * 100).toStringAsFixed(1));
   }
 
-  double calcOpponentDeckWinRate(Deck useDeck, Deck opponentDeck) {
-    final win = countOpponentDeckWins(useDeck, opponentDeck);
-    final matches = countOpponentDeckMatches(useDeck, opponentDeck);
+  /// 対戦相手デッキを指定して勝率を計算
+  double calcOpponentDeckWinRate(Deck deck) {
+    final win = countOpponentDeckWins(deck);
+    final matches = countOpponentDeckMatches(deck);
     return double.parse((win.toDouble() / matches.toDouble() * 100).toStringAsFixed(1));
   }
 
+  /// 使用デッキと対戦相手デッキを指定して勝率を計算
+  double calcUseDeckAndOpponentDeckWinRate(Deck useDeck, Deck opponentDeck) {
+    final win = countUseDeckAndOpponentDeckWins(useDeck, opponentDeck);
+    final matches = countUseDeckAndOpponentDeckMatches(useDeck, opponentDeck);
+    return double.parse((win.toDouble() / matches.toDouble() * 100).toStringAsFixed(1));
+  }
+
+  /// 使用デッキを指定して先攻勝率を計算
   double calcUseDeckWinRateOfFirst(Deck deck) {
-    final recordList = targetRecordList.where((record) => record.useDeckId == deck.id);
-    final firstRecords = recordList.where((record) => record.firstSecond == FirstSecond.first);
-    final win = firstRecords.where((record) => record.winLoss == WinLoss.win).length;
+    final win = countUseDeckFirstMatchesWins(deck);
     final matches = countUseDeckFirstMatches(deck);
     return double.parse((win.toDouble() / matches.toDouble() * 100).toStringAsFixed(1));
   }
 
-  double calcOpponentDeckWinRateOfFirst(Deck useDeck, Deck opponentDeck) {
-    final useDeckRecordList = targetRecordList.where((record) => record.useDeckId == useDeck.id);
-    final recordList = useDeckRecordList.where((record) => record.opponentDeckId == opponentDeck.id);
-    final firstRecords = recordList.where((record) => record.firstSecond == FirstSecond.first);
-    final win = firstRecords.where((record) => record.winLoss == WinLoss.win).length;
-    final matches = countOpponentDeckFirstMatches(useDeck, opponentDeck);
+  /// 対戦相手デッキを指定して先攻勝率を計算
+  double calcOpponentDeckWinRateOfFirst(Deck deck) {
+    final win = countOpponentDeckFirstMatchesWins(deck);
+    final matches = countOpponentDeckFirstMatches(deck);
     return double.parse((win.toDouble() / matches.toDouble() * 100).toStringAsFixed(1));
   }
 
+  /// 使用デッキと対戦相手デッキを指定して先攻勝率を計算
+  double calcUseDeckAndOpponentDeckWinRateOfFirst(Deck useDeck, Deck opponentDeck) {
+    final win = countUseDeckAndOpponentDeckFirstMatchesWins(useDeck, opponentDeck);
+    final matches = countUseDeckAndOpponentDeckFirstMatches(useDeck, opponentDeck);
+    return double.parse((win.toDouble() / matches.toDouble() * 100).toStringAsFixed(1));
+  }
+
+  /// 使用デッキを指定して後攻勝率を計算
   double calcUseDeckWinRateOfSecond(Deck deck) {
-    final recordList = targetRecordList.where((record) => record.useDeckId == deck.id);
-    final secondRecords = recordList.where((record) => record.firstSecond == FirstSecond.second);
-    final win = secondRecords.where((record) => record.winLoss == WinLoss.win).length;
+    final win = countUseDeckSecondMatchesWins(deck);
     final matches = countUseDeckSecondMatches(deck);
     return double.parse((win.toDouble() / matches.toDouble() * 100).toStringAsFixed(1));
   }
 
-  double calcOpponentDeckWinRateOfSecond(Deck useDeck, Deck opponentDeck) {
-    final useDeckRecordList = targetRecordList.where((record) => record.useDeckId == useDeck.id);
-    final recordList = useDeckRecordList.where((record) => record.opponentDeckId == opponentDeck.id);
-    final secondRecords = recordList.where((record) => record.firstSecond == FirstSecond.second);
-    final win = secondRecords.where((record) => record.winLoss == WinLoss.win).length;
-    final matches = countOpponentDeckSecondMatches(useDeck, opponentDeck);
+  /// 対戦相手デッキを指定して後攻勝率を計算
+  double calcOpponentDeckWinRateOfSecond(Deck deck) {
+    final win = countOpponentDeckSecondMatchesWins(deck);
+    final matches = countOpponentDeckSecondMatches(deck);
+    return double.parse((win.toDouble() / matches.toDouble() * 100).toStringAsFixed(1));
+  }
+
+  /// 使用デッキと対戦相手デッキを指定して後攻勝率を計算
+  double calcUseDeckAndOpponentDeckWinRateOfSecond(Deck useDeck, Deck opponentDeck) {
+    final win = countUseDeckAndOpponentDeckSecondMatchesWins(useDeck, opponentDeck);
+    final matches = countUseDeckAndOpponentDeckSecondMatches(useDeck, opponentDeck);
     return double.parse((win.toDouble() / matches.toDouble() * 100).toStringAsFixed(1));
   }
 }

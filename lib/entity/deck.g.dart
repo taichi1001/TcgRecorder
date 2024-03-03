@@ -6,11 +6,11 @@ part of 'deck.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_Deck _$$_DeckFromJson(Map<String, dynamic> json) => $checkedCreate(
-      r'_$_Deck',
+_$DeckImpl _$$DeckImplFromJson(Map<String, dynamic> json) => $checkedCreate(
+      r'_$DeckImpl',
       json,
       ($checkedConvert) {
-        final val = _$_Deck(
+        final val = _$DeckImpl(
           id: $checkedConvert('deck_id', (v) => v as int?),
           name: $checkedConvert('deck', (v) => v as String),
           gameId: $checkedConvert('game_id', (v) => v as int?),
@@ -29,7 +29,8 @@ _$_Deck _$$_DeckFromJson(Map<String, dynamic> json) => $checkedCreate(
       },
     );
 
-Map<String, dynamic> _$$_DeckToJson(_$_Deck instance) => <String, dynamic>{
+Map<String, dynamic> _$$DeckImplToJson(_$DeckImpl instance) =>
+    <String, dynamic>{
       'deck_id': instance.id,
       'deck': instance.name,
       'game_id': instance.gameId,

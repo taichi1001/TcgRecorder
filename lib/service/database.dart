@@ -7,7 +7,7 @@ import 'package:tcg_manager/entity/record.dart';
 import 'package:tcg_manager/entity/record_old.dart';
 
 class DatabaseService {
-  static const _databaseVersion = 6;
+  static const _databaseVersion = 7;
   static const _databaseName = 'record.db';
 
   //tableName
@@ -78,7 +78,7 @@ class DatabaseService {
         final List<RecordOld> recordOldList = oldData.isNotEmpty ? oldData.map((item) => RecordOld.fromJson(item)).toList() : [];
         final newRecordList = recordOldList
             .map((recordOld) => Record(
-                  recordId: recordOld.recordId,
+                  id: recordOld.recordId,
                   gameId: recordOld.gameId,
                   tagId: recordOld.tagId != null ? [recordOld.tagId!] : [],
                   useDeckId: recordOld.useDeckId,
@@ -111,6 +111,9 @@ class DatabaseService {
       if (oldVersion < 6) {
         database.execute('ALTER TABLE $gameTableName ADD is_share INTEGER');
       }
+      if (oldVersion < 7) {
+        database.execute('ALTER TABLE $recordTableName ADD author TEXT');
+      }
     }
   }
 
@@ -133,7 +136,8 @@ class DatabaseService {
         third_match_win_loss INTEGER,
         bo INTEGER,
         memo TEXT,
-        image_path TEXT
+        image_path TEXT,
+        author TEXT
       )
     ''');
     await database.execute('''

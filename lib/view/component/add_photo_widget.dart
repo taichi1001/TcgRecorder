@@ -73,9 +73,10 @@ class _AddPhotoWidget extends HookConsumerWidget {
         borderRadius: BorderRadius.circular(15),
         child: filePath == null
             ? PremiumLockIcon(
+                isPremium: isPremium!,
                 child: GestureDetector(
                   onTap: () async {
-                    if (isPremium!) {
+                    if (isPremium) {
                       selectImageFunc();
                     } else {
                       await premiumPlanDialog(context);

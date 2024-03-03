@@ -6,11 +6,11 @@ part of 'game.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_Game _$$_GameFromJson(Map<String, dynamic> json) => $checkedCreate(
-      r'_$_Game',
+_$GameImpl _$$GameImplFromJson(Map<String, dynamic> json) => $checkedCreate(
+      r'_$GameImpl',
       json,
       ($checkedConvert) {
-        final val = _$_Game(
+        final val = _$GameImpl(
           id: $checkedConvert('game_id', (v) => v as int?),
           name: $checkedConvert('game', (v) => v as String),
           isVisibleToPicker: $checkedConvert('is_visible_to_picker',
@@ -30,7 +30,8 @@ _$_Game _$$_GameFromJson(Map<String, dynamic> json) => $checkedCreate(
       },
     );
 
-Map<String, dynamic> _$$_GameToJson(_$_Game instance) => <String, dynamic>{
+Map<String, dynamic> _$$GameImplToJson(_$GameImpl instance) =>
+    <String, dynamic>{
       'game_id': instance.id,
       'game': instance.name,
       'is_visible_to_picker': _boolToJson(instance.isVisibleToPicker),

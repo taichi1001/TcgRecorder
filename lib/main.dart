@@ -1,10 +1,12 @@
 import 'dart:io';
+
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -16,6 +18,7 @@ import 'package:tcg_manager/entity/game.dart';
 import 'package:tcg_manager/firebase_options.dart';
 import 'package:tcg_manager/helper/att.dart';
 import 'package:tcg_manager/helper/theme_data.dart';
+import 'package:tcg_manager/helper/tmp_cache_directory.dart';
 import 'package:tcg_manager/provider/adaptive_banner_ad_provider.dart';
 import 'package:tcg_manager/provider/firebase_auth_provider.dart';
 import 'package:tcg_manager/provider/firestor_config_provider.dart';
@@ -23,11 +26,12 @@ import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/revenue_cat_provider.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
+import 'package:tcg_manager/provider/user_activity_provider.dart';
 import 'package:tcg_manager/provider/user_info_settings_provider.dart';
 import 'package:tcg_manager/repository/firestore_share_repository.dart';
+import 'package:tcg_manager/state/reward_ad_state_provider.dart';
 import 'package:tcg_manager/view/bottom_navigation_view.dart';
 import 'package:tcg_manager/view/initial_game_registration_view.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:tcg_manager/view/login_view.dart';
 import 'package:tcg_manager/view/shared_game_limit_adjustment_view.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -41,29 +45,20 @@ void main() async {
   late final SharedPreferences prefs;
   late final String imagePath;
 
-  await Future.wait([
-    // Firebase初期化
-    Future(
-      () async {
-        await Firebase.initializeApp(
-          options: DefaultFirebaseOptions.currentPlatform,
-        );
-      },
-    ),
-    // SharedPreferences初期化
-    Future(() async {
-      prefs = await SharedPreferences.getInstance();
-    }),
-    Future(() async {
-      final saveDir = await getApplicationDocumentsDirectory();
-      imagePath = saveDir.path;
-    }),
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]),
-    ATT.instance.requestPermission().then((result) {
-      MobileAds.instance.initialize();
-    }),
-    MobileAds.instance.initialize(),
-  ]);
+  // Firebase初期化
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  // SharedPreferences初期化
+  prefs = await SharedPreferences.getInstance();
+
+  await TmpCacheDirectory.configure();
+  await TmpCacheDirectory.deleteFiles();
+
+  final saveDir = await getApplicationDocumentsDirectory();
+  imagePath = saveDir.path;
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  await ATT.instance.requestPermission().then((result) {
+    MobileAds.instance.initialize();
+  });
   await generateNoticeSetting();
 
   runApp(
@@ -100,6 +95,7 @@ final mainInfoProvider = FutureProvider.autoDispose.family<MainInfo, BuildContex
   final packgaeInfo = await PackageInfo.fromPlatform();
   final allGameList = await ref.read(allGameListProvider.future);
   final allRecordList = await ref.read(allRecordListProvider.future);
+
   Game? lastGame;
   for (final record in allRecordList) {
     for (final game in allGameList) {
@@ -109,6 +105,7 @@ final mainInfoProvider = FutureProvider.autoDispose.family<MainInfo, BuildContex
     }
   }
   ref.read(firebaseAuthNotifierProvider.notifier).login();
+  await ref.read(initialSelectGameAsyncNotifierProvider.future);
   return MainInfo(
     requiredVersion: version,
     packageInfo: packgaeInfo,
@@ -125,28 +122,29 @@ class MainApp extends HookConsumerWidget {
     final lightThemeData = ref.watch(lightThemeDataProvider(context));
     final darkThemeData = ref.watch(darkThemeDataProvider(context));
 
-    return mainInfo.when(
-      data: (mainInfo) {
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          localizationsDelegates: const [
-            S.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            DefaultCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: S.delegate.supportedLocales,
-          theme: lightThemeData,
-          darkTheme: darkThemeData,
-          themeMode: ThemeMode.system,
-          home: MainAppHome(mainInfo: mainInfo),
-          navigatorObservers: [FlutterSmartDialog.observer],
-          builder: FlutterSmartDialog.init(),
-        );
-      },
-      error: (error, stack) => Text('$error'),
-      loading: () => const Center(child: CircularProgressIndicator()),
+    useEffect(() {
+      ref.read(userActivityLogNotifierProvider.notifier).login();
+      return null;
+    }, const []);
+
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      localizationsDelegates: const [
+        S.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        DefaultCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: S.delegate.supportedLocales,
+      theme: lightThemeData,
+      darkTheme: darkThemeData,
+      themeMode: ThemeMode.system,
+      home: mainInfo.when(
+        data: (mainInfo) => MainAppHome(mainInfo: mainInfo),
+        error: (error, stack) => Text('$error'),
+        loading: () => const Center(child: CircularProgressIndicator()),
+      ),
     );
   }
 }
@@ -190,6 +188,11 @@ class MainAppHome extends HookConsumerWidget {
         return const InitialGameRegistrationView();
       }
     }
+
+    useEffect(() {
+      ref.read(rewardAdStateNotifierProvider.notifier).loadRewardedAd();
+      return null;
+    }, const []);
 
     final revenueCatProvider = ref.watch(revenueCatNotifierProvider);
     final shareCount = ref.watch(combinedShareCountFutureProvider);

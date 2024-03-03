@@ -5,77 +5,122 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:tcg_manager/entity/win_rate_data.dart';
 import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/provider/graph_view_settings_provider.dart';
+import 'package:tcg_manager/provider/opponent_deck_data_by_game_provider.dart';
 import 'package:tcg_manager/provider/opponent_deck_data_by_use_deck_provider.dart';
 import 'package:tcg_manager/provider/use_deck_data_by_game_provider.dart';
+import 'package:tcg_manager/provider/use_deck_data_by_opponent_deck_provider.dart';
 import 'package:tcg_manager/state/graph_view_settings_state.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
 
-class GameDataGrid extends HookConsumerWidget {
-  const GameDataGrid({Key? key}) : super(key: key);
+class UseDeckGameDataGrid extends HookConsumerWidget {
+  const UseDeckGameDataGrid({
+    key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final gameWinRateDataList = ref.watch(totalAddedToUseDeckDataByGameProvider);
-    final graphViewSettings = ref.watch(graphViewSettingsNotifierProvider);
-    return gameWinRateDataList.when(
-      data: (gameWinRateDataList) {
-        final source = GameWinRateDataSource(winRateDataList: gameWinRateDataList, context: context);
-        return SfDataGridTheme(
-          data: SfDataGridThemeData(
-            sortIcon: SortIcon(source: source),
-          ),
-          child: SfDataGrid(
-            source: source,
-            frozenColumnsCount: 1,
-            footerFrozenRowsCount: 1,
-            allowSorting: true,
-            allowMultiColumnSorting: true,
-            allowTriStateSorting: true,
-            verticalScrollPhysics: const ClampingScrollPhysics(),
-            horizontalScrollPhysics: const ClampingScrollPhysics(),
-            isScrollbarAlwaysShown: true,
-            onCellTap: (details) {
-              final dataIndex = details.rowColumnIndex.rowIndex;
-              if (dataIndex == 0) return; // カラム名が書いてある列がタップされた場合
-              if (dataIndex == source.dataGridRows.length) return; // 合計カラムがタップされた場合
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SafeArea(
-                    top: false,
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: DeckDataGrid(deck: source.effectiveRows[details.rowColumnIndex.rowIndex - 1].getCells().first.value),
-                        ),
-                        const AdaptiveBannerAd(),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            },
-            columns: _getGridColumns(context, graphViewSettings),
-          ),
-        );
-      },
-      error: (error, stack) => Text('$error'),
+    final winRateData = ref.watch(totalAddedToUseDeckDataByGameProvider);
+    return winRateData.when(
+      data: (data) => _GameDataGrid(winRateData: data, isUseDeckData: true),
+      error: (error, stack) => Text(error.toString()),
       loading: () => const Center(child: CircularProgressIndicator()),
     );
   }
 }
 
-class DeckDataGrid extends HookConsumerWidget {
-  const DeckDataGrid({
-    Key? key,
-    required this.deck,
+class OpponentDeckGameDataGrid extends HookConsumerWidget {
+  const OpponentDeckGameDataGrid({
+    key,
   }) : super(key: key);
-
-  final String deck;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final gameWinRateDataList = ref.watch(opponentDeckDataByUseDeckProvider(deck));
+    final winRateData = ref.watch(totalAddedToOpponentDeckDataByGameProvider);
+    return winRateData.when(
+      data: (data) => _GameDataGrid(winRateData: data, isUseDeckData: false),
+      error: (error, stack) => Text(error.toString()),
+      loading: () => const Center(child: CircularProgressIndicator()),
+    );
+  }
+}
+
+class _GameDataGrid extends HookConsumerWidget {
+  const _GameDataGrid({
+    required this.winRateData,
+    required this.isUseDeckData,
+    key,
+  }) : super(key: key);
+
+  final List<WinRateData> winRateData;
+  final bool isUseDeckData;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final graphViewSettings = ref.watch(graphViewSettingsNotifierProvider);
+
+    final source = GameWinRateDataSource(winRateDataList: winRateData, context: context);
+    return SfDataGridTheme(
+      data: SfDataGridThemeData(
+        sortIcon: SortIcon(source: source),
+      ),
+      child: SfDataGrid(
+        source: source,
+        frozenColumnsCount: 1,
+        footerFrozenRowsCount: 1,
+        allowSorting: true,
+        allowMultiColumnSorting: true,
+        allowTriStateSorting: true,
+        verticalScrollPhysics: const ClampingScrollPhysics(),
+        horizontalScrollPhysics: const ClampingScrollPhysics(),
+        isScrollbarAlwaysShown: true,
+        onCellTap: (details) {
+          final dataIndex = details.rowColumnIndex.rowIndex;
+          if (dataIndex == 0) return; // カラム名が書いてある列がタップされた場合
+          if (dataIndex == source.dataGridRows.length) return; // 合計カラムがタップされた場合
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SafeArea(
+                top: false,
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: _DeckDataGrid(
+                        deck: source.effectiveRows[details.rowColumnIndex.rowIndex - 1].getCells().first.value,
+                        isUseDeckData: isUseDeckData,
+                      ),
+                    ),
+                    const AdaptiveBannerAd(),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+        columns: _getGridColumns(context, graphViewSettings),
+      ),
+    );
+  }
+}
+
+class _DeckDataGrid extends HookConsumerWidget {
+  const _DeckDataGrid({
+    Key? key,
+    required this.deck,
+    required this.isUseDeckData,
+  }) : super(key: key);
+
+  final String deck;
+  final bool isUseDeckData;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    AsyncValue<List<WinRateData>> winRateDataList;
+    if (isUseDeckData) {
+      winRateDataList = ref.watch(opponentDeckDataByUseDeckProvider(deck));
+    } else {
+      winRateDataList = ref.watch(useDeckDataByOpponentDeckProvider(deck));
+    }
     final graphViewSettings = ref.watch(graphViewSettingsNotifierProvider);
 
     return Scaffold(
@@ -84,7 +129,7 @@ class DeckDataGrid extends HookConsumerWidget {
         title: Text(deck),
         elevation: 0.0,
       ),
-      body: gameWinRateDataList.when(
+      body: winRateDataList.when(
         data: (gameWinRateDataList) {
           final source = GameWinRateDataSource(winRateDataList: gameWinRateDataList, context: context);
           return SfDataGridTheme(

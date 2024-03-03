@@ -4,7 +4,6 @@ import 'package:tcg_manager/selector/game_tag_list_selector.dart';
 import 'package:tcg_manager/selector/sorted_record_list_selector.dart';
 
 final recentlyUseTagProvider = FutureProvider.autoDispose<List<Tag>>((ref) async {
-  ref.keepAlive();
   final recordList = await ref.watch(sortedRecordListProvider.future);
   final recordListCopy = [...recordList];
 
@@ -12,7 +11,7 @@ final recentlyUseTagProvider = FutureProvider.autoDispose<List<Tag>>((ref) async
   recordListCopy.sort((a, b) {
     int result = -a.date!.compareTo(b.date!);
     if (result == 0) {
-      result = -a.recordId!.compareTo(b.recordId!);
+      result = -a.id!.compareTo(b.id!);
     }
     return result;
   });

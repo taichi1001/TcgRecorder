@@ -12,7 +12,7 @@ final sortedRecordListProvider = FutureProvider.autoDispose<List<Record>>((ref) 
     recordList.sort((a, b) {
       int result = a.date!.compareTo(b.date!);
       if (result == 0) {
-        result = a.recordId!.compareTo(b.recordId!);
+        result = a.id!.compareTo(b.id!);
       }
       return result;
     });
@@ -20,7 +20,7 @@ final sortedRecordListProvider = FutureProvider.autoDispose<List<Record>>((ref) 
     recordList.sort((a, b) {
       int result = -a.date!.compareTo(b.date!);
       if (result == 0) {
-        result = -a.recordId!.compareTo(b.recordId!);
+        result = -a.id!.compareTo(b.id!);
       }
       return result;
     });
@@ -38,7 +38,7 @@ final sortedRecordListStreamProvider = StreamProvider.autoDispose<List<Record>>(
     recordList!.sort((a, b) {
       int result = a.date!.compareTo(b.date!);
       if (result == 0) {
-        result = a.recordId!.compareTo(b.recordId!);
+        result = a.id!.compareTo(b.id!);
       }
       return result;
     });
@@ -46,7 +46,7 @@ final sortedRecordListStreamProvider = StreamProvider.autoDispose<List<Record>>(
     recordList!.sort((a, b) {
       int result = -a.date!.compareTo(b.date!);
       if (result == 0) {
-        result = -a.recordId!.compareTo(b.recordId!);
+        result = -a.id!.compareTo(b.id!);
       }
       return result;
     });

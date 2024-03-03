@@ -6,12 +6,12 @@ part of 'record.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_Record _$$_RecordFromJson(Map<String, dynamic> json) => $checkedCreate(
-      r'_$_Record',
+_$RecordImpl _$$RecordImplFromJson(Map<String, dynamic> json) => $checkedCreate(
+      r'_$RecordImpl',
       json,
       ($checkedConvert) {
-        final val = _$_Record(
-          recordId: $checkedConvert('record_id', (v) => v as int?),
+        final val = _$RecordImpl(
+          id: $checkedConvert('record_id', (v) => v as int?),
           gameId: $checkedConvert('game_id', (v) => v as int?),
           tagId: $checkedConvert('tag_id',
               (v) => v == null ? const [] : _intListFromJson(v as String?)),
@@ -40,13 +40,14 @@ _$_Record _$$_RecordFromJson(Map<String, dynamic> json) => $checkedCreate(
           thirdMatchWinLoss: $checkedConvert('third_match_win_loss',
               (v) => _nullableWinLossFromJson(v as int?)),
           memo: $checkedConvert('memo', (v) => v as String?),
+          author: $checkedConvert('author', (v) => v as String?),
           imagePath: $checkedConvert(
               'image_path', (v) => _stringListFromJson(v as String?)),
         );
         return val;
       },
       fieldKeyMap: const {
-        'recordId': 'record_id',
+        'id': 'record_id',
         'gameId': 'game_id',
         'tagId': 'tag_id',
         'useDeckId': 'use_deck_id',
@@ -63,8 +64,9 @@ _$_Record _$$_RecordFromJson(Map<String, dynamic> json) => $checkedCreate(
       },
     );
 
-Map<String, dynamic> _$$_RecordToJson(_$_Record instance) => <String, dynamic>{
-      'record_id': instance.recordId,
+Map<String, dynamic> _$$RecordImplToJson(_$RecordImpl instance) =>
+    <String, dynamic>{
+      'record_id': instance.id,
       'game_id': instance.gameId,
       'tag_id': _intListToJson(instance.tagId),
       'use_deck_id': instance.useDeckId,
@@ -86,5 +88,6 @@ Map<String, dynamic> _$$_RecordToJson(_$_Record instance) => <String, dynamic>{
       'third_match_win_loss':
           _nullableWinLossToJson(instance.thirdMatchWinLoss),
       'memo': instance.memo,
+      'author': instance.author,
       'image_path': _stringListToJson(instance.imagePath),
     };
