@@ -269,9 +269,10 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
       ref.read(firestoreShareDataRepository).addRecord(state.record!, share!.docName);
     } else {
       final newId = await ref.read(recordRepository).insert(state.record!);
-      ref
-          .read(firestorePublicUserDataRepository)
-          .addRecord(state.record!.copyWith(id: newId), ref.read(firebaseAuthNotifierProvider).user!.uid);
+      // TODO データ収集機能追加時に開放
+      // ref
+      //     .read(firestorePublicUserDataRepository)
+      //     .addRecord(state.record!.copyWith(id: newId), ref.read(firebaseAuthNotifierProvider).user!.uid);
     }
   }
 
@@ -309,7 +310,8 @@ class DeckHandler {
 
     if (existingDeck.isNew) {
       final newDeck = await createNewDeck(deck, gameId);
-      ref.read(firestorePublicUserDataRepository).addDeck(newDeck, ref.read(firebaseAuthNotifierProvider).user!.uid);
+      // TODO データ収集機能追加時に開放
+      // ref.read(firestorePublicUserDataRepository).addDeck(newDeck, ref.read(firebaseAuthNotifierProvider).user!.uid);
       return newDeck;
     } else {
       return existingDeck.deck!;
@@ -342,7 +344,8 @@ class TagHandler {
       final existingTag = await ref.read(editRecordHelper).checkIfSelectedTagIsNew(tag.name);
       if (existingTag.isNew) {
         final newTag = await createNewTag(tag, gameId);
-        ref.read(firestorePublicUserDataRepository).addTag(newTag, ref.read(firebaseAuthNotifierProvider).user!.uid);
+        // TODO データ収集機能追加時に開放
+        // ref.read(firestorePublicUserDataRepository).addTag(newTag, ref.read(firebaseAuthNotifierProvider).user!.uid);
         newTags.add(newTag);
       } else {
         newTags.add(existingTag.tag!);
