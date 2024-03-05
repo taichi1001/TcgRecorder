@@ -1,6 +1,6 @@
 enum AccessRoll {
   author('author'),
-  owner('owner'),
+  // owner('owner'),
   writer('writer'),
   reader('reader'),
   ;
