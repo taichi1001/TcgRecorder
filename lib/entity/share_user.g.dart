@@ -31,7 +31,6 @@ Map<String, dynamic> _$$ShareUserImplToJson(_$ShareUserImpl instance) =>
 
 const _$AccessRollEnumMap = {
   AccessRoll.author: 'author',
-  AccessRoll.owner: 'owner',
   AccessRoll.writer: 'writer',
   AccessRoll.reader: 'reader',
 };

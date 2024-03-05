@@ -68,8 +68,19 @@ class _PermissionSettingsTileHooksConsumerWidget extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = useState(ref.watch(currentSharedUserViewDataProvider).$2);
     final share = ref.watch(currentSharedUserViewDataProvider).$3;
-    return InkWell(
-      onTap: () async {
+    return SettingsTile(
+      title: const Text('アクセス権限'),
+      value: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).hoverColor,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
+          child: Text(user.value.roll.displayName),
+        ),
+      ),
+      onPressed: (context) async {
         final delAuthorAccessRollList = List.of(AccessRoll.values)..remove(AccessRoll.author);
         if (user.value.roll == AccessRoll.author) {
           await showOkAlertDialog(
@@ -151,21 +162,6 @@ class _PermissionSettingsTileHooksConsumerWidget extends HookConsumerWidget {
           );
         }
       },
-      child: SettingsTile(
-        title: const Text('アクセス権限'),
-        value: InkWell(
-          child: Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).hoverColor,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
-              child: Text(user.value.roll.displayName),
-            ),
-          ),
-        ),
-      ),
     );
   }
 }
