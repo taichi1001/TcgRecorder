@@ -38,17 +38,24 @@ interface Tags {
 }
 
 export interface UserRecord {
-    record_id: number
+    author?: string
+    bo: number
     date: Date
-    winLoss: number
-    gameid: number
-    useDeckid: number
-    opponentDeckid: number
-    tagid?: number
-    bo?: number
-    firstMatchFirstSecond?: number
-    secondMatchFirstSecond?: number
-    thirdMatchFirestSecond?: number
+    first_match_first_second?: number
+    first_match_win_loss?: number
+    first_second: number
+    game_id: number
+    image_path?: string
+    memo?: string
+    opponent_deck_id: number
+    record_id: number
+    second_match_first_second?: number
+    second_match_win_loss?: number
+    tag_id?: number
+    third_match_firest_second?: number
+    third_match_win_loss?: number
+    use_deck_id: number
+    win_loss: number
 }
 
 interface UserRecords {

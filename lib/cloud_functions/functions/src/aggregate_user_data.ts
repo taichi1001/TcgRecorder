@@ -2,10 +2,12 @@ import { admin, functions } from './init';
 import { PublicUserData, Deck, Game, UserRecord } from './interface/public_user_data';
 
 // 午前4時に全てのユーザーのデータを集計する
-export const aggregateUserData = functions.region('asia-northeast1').pubsub.schedule('0 4 * * *').timeZone('Asia/Tokyo').onRun(async () => {
+// export const aggregateUserData = functions.region('asia-northeast1').pubsub.schedule('0 4 * * *').timeZone('Asia/Tokyo').onRun(async () => {
+export const aggregateUserData = functions.https.onRequest(async (req, res) => {
     // ステップ1: 全ユーザーのデータを取得
     const allUserData: PublicUserData[] = [];
-    const userSnapshots = await admin.firestore().collection('public_user_data').get();
+    const userSnapshots = await admin.firestore().collection("public_user_data").get();
+
 
     for (const doc of userSnapshots.docs) {
         // サブコレクションからドキュメントを取得
@@ -46,6 +48,7 @@ export const aggregateUserData = functions.region('asia-northeast1').pubsub.sche
         }
     }
 
+
     // ステップ3: 集計
     for (const userData of allUserData) {
         const userGameMap: { [key: number]: number } = {};
@@ -74,14 +77,29 @@ export const aggregateUserData = functions.region('asia-northeast1').pubsub.sche
         for (const recordN of userData.records) {
             for (const record of recordN.records) {
                 const newRecord: UserRecord = {
-                    record_id: recordId++,
+                    author: record.author,
+                    bo: record.bo,
                     date: record.date,
-                    winLoss: record.winLoss,
-                    gameid: userGameMap[record.gameid],
-                    useDeckid: userDeckMap[record.useDeckid],
-                    opponentDeckid: userDeckMap[record.opponentDeckid]
+                    first_match_first_second: record.first_match_first_second,
+                    first_match_win_loss: record.first_match_win_loss,
+                    first_second: record.first_second,
+                    game_id: userGameMap[record.game_id],
+                    image_path: record.image_path,
+                    memo: record.memo,
+                    opponent_deck_id: userDeckMap[record.opponent_deck_id],
+                    record_id: recordId++,
+                    second_match_first_second: record.second_match_first_second,
+                    second_match_win_loss: record.second_match_win_loss,
+                    tag_id: record.tag_id, // あとでデッキと同様に変える
+                    third_match_firest_second: record.third_match_firest_second,
+                    third_match_win_loss: record.third_match_win_loss,
+                    use_deck_id: userDeckMap[record.use_deck_id],
+                    win_loss: record.win_loss,
                 };
-                aggregateRecordList.push(newRecord);
+                console.log(newRecord);
+                if (!Object.values(newRecord).some(value => value === undefined)) {
+                    aggregateRecordList.push(newRecord);
+                }
             }
         }
     }
