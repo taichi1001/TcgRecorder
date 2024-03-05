@@ -172,7 +172,7 @@ class MainAppHome extends HookConsumerWidget {
     final user = ref.watch(firebaseAuthNotifierProvider.select((value) => value.user));
     if (user != null) ref.read(userInfoSettingsProvider);
 
-    final versionIsOk = Version.parse(mainInfo.requiredVersion) < Version.parse(mainInfo.packageInfo.version);
+    final versionIsOk = Version.parse(mainInfo.requiredVersion) <= Version.parse(mainInfo.packageInfo.version);
     if (!versionIsOk) return const UpdaterView();
 
     if (user == null) return const LoginView();
