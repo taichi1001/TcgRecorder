@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/game.dart';
@@ -42,33 +41,21 @@ class FirestorePublicUserDataRepository {
     return record.id!;
   }
 
+  Future<int> updateGame(Game updateGame, String docName) async {
+    await _updateItem('games', docName, 'games', 'game_id', updateGame.toJson());
+    return updateGame.id!;
+  }
+
+  Future updateDeck(Deck updateDeck, String docName) async {
+    await _updateItem('decks', docName, 'decks', 'deck_id', updateDeck.toJson());
+  }
+
+  Future updateTag(Tag updateTag, String docName) async {
+    await _updateItem('tags', docName, 'tags', 'tag_id', updateTag.toJson());
+  }
+
   Future updateRecord(Record updateRecord, String docName) async {
-    final recordsCollection = FirebaseFirestore.instance.collection('public_user_data').doc(docName).collection('records');
-
-    // トランザクションを開始
-    await FirebaseFirestore.instance.runTransaction((transaction) async {
-      // 各ドキュメントを順番に処理
-      final snapshotList = await recordsCollection.get();
-
-      for (final snapshot in snapshotList.docs) {
-        final List<dynamic> records = snapshot.data()['records'];
-
-        // 対象のRecordを検索
-        final targetIndex = records.indexWhere((record) => record['record_id'] == updateRecord.id);
-
-        // 対象のRecordが見つかった場合
-        if (targetIndex != -1) {
-          // Recordの名前を更新
-          records[targetIndex] = updateRecord.toJson();
-
-          // トランザクションでドキュメントを更新
-          transaction.update(snapshot.reference, {'records': records});
-
-          // 更新が完了したらループを抜ける
-          break;
-        }
-      }
-    });
+    await _updateItem('records', docName, 'records', 'record_id', updateRecord.toJson());
   }
 
   Future removeRecord(Record removeRecord, String docName) async {
@@ -76,33 +63,17 @@ class FirestorePublicUserDataRepository {
 
     // トランザクションを開始
     await FirebaseFirestore.instance.runTransaction((transaction) async {
-      // 各ドキュメントを順番に処理
       final snapshotList = await recordsCollection.get();
-
       for (final snapshot in snapshotList.docs) {
         final List<dynamic> records = snapshot.data()['records'];
-
-        // 対象のRecordを検索
         final targetIndex = records.indexWhere((record) => record['record_id'] == removeRecord.id);
-
-        // 対象のRecordが見つかった場合
         if (targetIndex != -1) {
-          // Recordの名前を更新
           records.removeAt(targetIndex);
-          // トランザクションでドキュメントを更新
           transaction.update(snapshot.reference, {'records': records});
-
-          // 更新が完了したらループを抜ける
           break;
         }
       }
     });
-    if (removeRecord.imagePath != null) {
-      for (final imagePath in removeRecord.imagePath!) {
-        final strageRef = FirebaseStorage.instance.refFromURL(imagePath);
-        await strageRef.delete();
-      }
-    }
   }
 
   Future _addItem(String itemName, Map<String, dynamic> itemData, String uid) async {
@@ -138,17 +109,38 @@ class FirestorePublicUserDataRepository {
     }
   }
 
-  Future deleteShareData(String shareDocName) async {
-    await _deleteSubCollections(shareDocName, 'decks');
-    await _deleteSubCollections(shareDocName, 'tags');
-    await _deleteSubCollections(shareDocName, 'records');
-    await _firestore.collection('share_data').doc(shareDocName).delete();
+  Future _updateItem(String collectionName, String docName, String fieldName, String idField, Map<String, dynamic> updateData) async {
+    final collection = FirebaseFirestore.instance.collection('public_user_data').doc(docName).collection(collectionName);
+
+    await FirebaseFirestore.instance.runTransaction((transaction) async {
+      final snapshotList = await collection.get();
+
+      for (final snapshot in snapshotList.docs) {
+        final List<dynamic> items = snapshot.data()[fieldName];
+        final targetIndex = items.indexWhere((item) => item[idField] == updateData[idField]);
+        if (targetIndex != -1) {
+          items[targetIndex] = updateData;
+          transaction.update(snapshot.reference, {fieldName: items});
+          break;
+        }
+      }
+    });
   }
 
-  Future _deleteSubCollections(String docName, String targetCollection) async {
-    await FirebaseFirestore.instance.collection('public_user_data/$docName/$targetCollection').get().then((querySnapshot) {
-      for (final doc in querySnapshot.docs) {
-        doc.reference.delete();
+  Future _removeItem(String collectionName, String docName, String fieldName, String idField, int? idToRemove) async {
+    final collection = FirebaseFirestore.instance.collection('public_user_data').doc(docName).collection(collectionName);
+
+    await FirebaseFirestore.instance.runTransaction((transaction) async {
+      final snapshotList = await collection.get();
+
+      for (final snapshot in snapshotList.docs) {
+        final List<dynamic> items = snapshot.data()[fieldName];
+        final targetIndex = items.indexWhere((item) => item[idField] == idToRemove);
+        if (targetIndex != -1) {
+          items.removeAt(targetIndex);
+          transaction.update(snapshot.reference, {fieldName: items});
+          break;
+        }
       }
     });
   }

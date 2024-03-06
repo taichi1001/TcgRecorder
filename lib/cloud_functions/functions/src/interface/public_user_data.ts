@@ -26,7 +26,7 @@ interface Decks {
     decks: Deck[]
 }
 
-interface Tag {
+export interface Tag {
     tag_id: number
     tag: string
     game_id: number
@@ -52,7 +52,7 @@ export interface UserRecord {
     second_match_first_second?: number
     second_match_win_loss?: number
     tag_id?: number
-    third_match_firest_second?: number
+    third_match_first_second?: number
     third_match_win_loss?: number
     use_deck_id: number
     win_loss: number
