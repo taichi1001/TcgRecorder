@@ -1,5 +1,5 @@
 import { admin, functions } from './init';
-import { PublicUserData, Deck, Game, UserRecord } from './interface/public_user_data';
+import { Deck, Game, PublicUserData, UserRecord } from './interface/public_user_data';
 
 // 午前4時に全てのユーザーのデータを集計する
 // export const aggregateUserData = functions.region('asia-northeast1').pubsub.schedule('0 4 * * *').timeZone('Asia/Tokyo').onRun(async () => {
@@ -91,12 +91,12 @@ export const aggregateUserData = functions.https.onRequest(async (req, res) => {
                     second_match_first_second: record.second_match_first_second,
                     second_match_win_loss: record.second_match_win_loss,
                     tag_id: record.tag_id, // あとでデッキと同様に変える
-                    third_match_firest_second: record.third_match_firest_second,
+                    third_match_first_second: record.third_match_first_second,
                     third_match_win_loss: record.third_match_win_loss,
                     use_deck_id: userDeckMap[record.use_deck_id],
                     win_loss: record.win_loss,
                 };
-                console.log(newRecord);
+
                 if (!Object.values(newRecord).some(value => value === undefined)) {
                     aggregateRecordList.push(newRecord);
                 }
@@ -105,11 +105,21 @@ export const aggregateUserData = functions.https.onRequest(async (req, res) => {
     }
 
     // ステップ4: 集計データをFirestoreに保存
-    await admin.firestore().collection('aggregated_data').doc('result').set({
-        'gameList': aggregateGameList,
-        'deckList': aggregateDeckList,
-        'recordList': aggregateRecordList,
-    });
+    await saveDataInChunks(aggregateGameList, 'gameList');
+    await saveDataInChunks(aggregateDeckList, 'deckList');
+    await saveDataInChunks(aggregateRecordList, 'recordList');
 
     console.log('Aggregation completed');
 });
+
+async function saveDataInChunks<T>(dataList: T[], dataLabel: string) {
+    const chunkSize = 500;
+    for (let i = 0; i < dataList.length; i += chunkSize) {
+        const chunk = dataList.slice(i, i + chunkSize);
+        const docName = `${dataLabel}${Math.floor(i / chunkSize) + 1}`;
+        const docData = { [dataLabel]: chunk };
+
+        await admin.firestore().collection('aggregated_data').doc(docName).set(docData);
+        console.log(`Saved ${docName}: ${chunk.length} items.`);
+    }
+}
