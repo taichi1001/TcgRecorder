@@ -86,7 +86,7 @@ class UserActivityLogNotifier extends _$UserActivityLogNotifier {
     isar.write((isar) {
       final newTotalRecord = state.totalRecordCount + 1;
       var canRecord = true;
-      if (newTotalRecord % 20 == 0) canRecord = false;
+      if (newTotalRecord % 30 == 0) canRecord = false;
       isar.userActivityLogs.put(
         state
           ..totalRecordCount = newTotalRecord
