@@ -188,7 +188,7 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
       state = state.copyWith(
         useDeck: inputViewSettings.fixUseDeck ? useDeck : null,
         opponentDeck: inputViewSettings.fixOpponentDeck ? opponentDeck : null,
-        tag: inputViewSettings.fixTag ? tags : [],
+        tag: inputViewSettings.fixTag ? tags : [Tag(name: '')],
       );
     }
   }

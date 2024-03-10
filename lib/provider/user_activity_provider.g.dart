@@ -1956,7 +1956,7 @@ extension UserActivityLogQueryProperty3<R1, R2>
 // **************************************************************************
 
 String _$userActivityLogNotifierHash() =>
-    r'515864ad4976ddb6a4971ce578fd8310c94cc209';
+    r'2d1225d89f41b9fda09646b924eaa401b4be8829';
 
 /// See also [UserActivityLogNotifier].
 @ProviderFor(UserActivityLogNotifier)
