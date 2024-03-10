@@ -13,6 +13,7 @@ class UserActivityLog {
   late DateTime lastLogin;
   late int totalLoginDays;
   late bool canRecord;
+  late bool isPublicDataUploaded;
   DateTime? reviewdAt;
   DateTime? dissatisfactionChosenAt;
   DateTime? answerLaterChosenAt;
@@ -40,7 +41,8 @@ class UserActivityLogNotifier extends _$UserActivityLogNotifier {
         ..installDate = DateTime.now()
         ..lastLogin = DateTime.now()
         ..totalLoginDays = 1
-        ..canRecord = true;
+        ..canRecord = true
+        ..isPublicDataUploaded = false;
     }
   }
 
@@ -93,6 +95,12 @@ class UserActivityLogNotifier extends _$UserActivityLogNotifier {
           ..canRecord = canRecord,
       );
     });
+  }
+
+  /// パブリックユーザーデータをアップロードした時
+  void publicDataUploaded() {
+    final isar = ref.read(isarProvider);
+    isar.write((isar) => isar.userActivityLogs.put(state..isPublicDataUploaded = true));
   }
 
   /// レビューするを選んだ時

@@ -1,9 +1,8 @@
 import { admin, functions } from './init';
-import { Deck, Game, PublicUserData, UserRecord } from './interface/public_user_data';
+import { Deck, Game, PublicUserData, Tag, UserRecord } from './interface/public_user_data';
 
 // 午前4時に全てのユーザーのデータを集計する
-// export const aggregateUserData = functions.region('asia-northeast1').pubsub.schedule('0 4 * * *').timeZone('Asia/Tokyo').onRun(async () => {
-export const aggregateUserData = functions.https.onRequest(async (req, res) => {
+export const aggregateUserData = functions.region('asia-northeast1').pubsub.schedule('0 4 * * *').timeZone('Asia/Tokyo').onRun(async () => {
     // ステップ1: 全ユーザーのデータを取得
     const allUserData: PublicUserData[] = [];
     const userSnapshots = await admin.firestore().collection("public_user_data").get();
@@ -31,10 +30,12 @@ export const aggregateUserData = functions.https.onRequest(async (req, res) => {
 
     let gameId = 0;
     let deckId = 0;
+    let tagId = 0;
     let recordId = 0;
 
     const aggregateGameList: Game[] = [];
     const aggregateDeckList: Deck[] = [];
+    const aggregateTagList: Tag[] = [];
     const aggregateRecordList: UserRecord[] = [];
     // ステップ2: 一意なゲームのリストを作成
     for (const userData of allUserData) {
@@ -74,6 +75,21 @@ export const aggregateUserData = functions.https.onRequest(async (req, res) => {
             }
         }
 
+        const userTagMap: { [key: number]: number } = {};
+        for (const tagN of userData.tags) {
+            for (const tag of tagN.tags) {
+                const gameIdx = userGameMap[tag.game_id];
+                if (!aggregateTagList.some(item => item.tag === tag.tag && item.game_id === gameIdx)) {
+                    const newTag: Tag = { tag_id: tagId++, tag: tag.tag, game_id: gameIdx };
+                    userTagMap[tag.tag_id] = newTag.tag_id;
+                    aggregateTagList.push(newTag);
+                } else {
+                    const tagIdx = aggregateTagList.find(item => item.tag === tag.tag && item.game_id === gameIdx)!.tag_id;
+                    userTagMap[tag.tag_id] = tagIdx;
+                }
+            }
+        }
+        console.log(userTagMap);
         for (const recordN of userData.records) {
             for (const record of recordN.records) {
                 const newRecord: UserRecord = {
@@ -90,13 +106,12 @@ export const aggregateUserData = functions.https.onRequest(async (req, res) => {
                     record_id: recordId++,
                     second_match_first_second: record.second_match_first_second,
                     second_match_win_loss: record.second_match_win_loss,
-                    tag_id: record.tag_id, // あとでデッキと同様に変える
+                    tag_id: record.tag_id && record.tag_id !== '' ? record.tag_id.split(',').map(id => userTagMap[parseInt(id)]).join(',') : null,
                     third_match_first_second: record.third_match_first_second,
                     third_match_win_loss: record.third_match_win_loss,
                     use_deck_id: userDeckMap[record.use_deck_id],
                     win_loss: record.win_loss,
                 };
-
                 if (!Object.values(newRecord).some(value => value === undefined)) {
                     aggregateRecordList.push(newRecord);
                 }
@@ -107,6 +122,7 @@ export const aggregateUserData = functions.https.onRequest(async (req, res) => {
     // ステップ4: 集計データをFirestoreに保存
     await saveDataInChunks(aggregateGameList, 'gameList');
     await saveDataInChunks(aggregateDeckList, 'deckList');
+    await saveDataInChunks(aggregateTagList, 'tagList');
     await saveDataInChunks(aggregateRecordList, 'recordList');
 
     console.log('Aggregation completed');

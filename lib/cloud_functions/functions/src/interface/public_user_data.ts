@@ -51,7 +51,7 @@ export interface UserRecord {
     record_id: number
     second_match_first_second?: number
     second_match_win_loss?: number
-    tag_id?: number
+    tag_id?: string | null
     third_match_first_second?: number
     third_match_win_loss?: number
     use_deck_id: number

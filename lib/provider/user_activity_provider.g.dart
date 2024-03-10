@@ -42,6 +42,10 @@ const UserActivityLogSchema = IsarGeneratedSchema(
         type: IsarType.bool,
       ),
       IsarPropertySchema(
+        name: 'isPublicDataUploaded',
+        type: IsarType.bool,
+      ),
+      IsarPropertySchema(
         name: 'reviewdAt',
         type: IsarType.dateTime,
       ),
@@ -77,21 +81,22 @@ int serializeUserActivityLog(IsarWriter writer, UserActivityLog object) {
       writer, 3, object.lastLogin.toUtc().microsecondsSinceEpoch);
   IsarCore.writeLong(writer, 4, object.totalLoginDays);
   IsarCore.writeBool(writer, 5, object.canRecord);
-  IsarCore.writeLong(writer, 6,
+  IsarCore.writeBool(writer, 6, object.isPublicDataUploaded);
+  IsarCore.writeLong(writer, 7,
       object.reviewdAt?.toUtc().microsecondsSinceEpoch ?? -9223372036854775808);
   IsarCore.writeLong(
       writer,
-      7,
+      8,
       object.dissatisfactionChosenAt?.toUtc().microsecondsSinceEpoch ??
           -9223372036854775808);
   IsarCore.writeLong(
       writer,
-      8,
+      9,
       object.answerLaterChosenAt?.toUtc().microsecondsSinceEpoch ??
           -9223372036854775808);
   IsarCore.writeLong(
       writer,
-      9,
+      10,
       object.showPremiumFeaturesAdAt?.toUtc().microsecondsSinceEpoch ??
           -9223372036854775808);
   return object.id;
@@ -124,8 +129,9 @@ UserActivityLog deserializeUserActivityLog(IsarReader reader) {
   }
   object.totalLoginDays = IsarCore.readLong(reader, 4);
   object.canRecord = IsarCore.readBool(reader, 5);
+  object.isPublicDataUploaded = IsarCore.readBool(reader, 6);
   {
-    final value = IsarCore.readLong(reader, 6);
+    final value = IsarCore.readLong(reader, 7);
     if (value == -9223372036854775808) {
       object.reviewdAt = null;
     } else {
@@ -134,7 +140,7 @@ UserActivityLog deserializeUserActivityLog(IsarReader reader) {
     }
   }
   {
-    final value = IsarCore.readLong(reader, 7);
+    final value = IsarCore.readLong(reader, 8);
     if (value == -9223372036854775808) {
       object.dissatisfactionChosenAt = null;
     } else {
@@ -143,7 +149,7 @@ UserActivityLog deserializeUserActivityLog(IsarReader reader) {
     }
   }
   {
-    final value = IsarCore.readLong(reader, 8);
+    final value = IsarCore.readLong(reader, 9);
     if (value == -9223372036854775808) {
       object.answerLaterChosenAt = null;
     } else {
@@ -152,7 +158,7 @@ UserActivityLog deserializeUserActivityLog(IsarReader reader) {
     }
   }
   {
-    final value = IsarCore.readLong(reader, 9);
+    final value = IsarCore.readLong(reader, 10);
     if (value == -9223372036854775808) {
       object.showPremiumFeaturesAdAt = null;
     } else {
@@ -195,15 +201,7 @@ dynamic deserializeUserActivityLogProp(IsarReader reader, int property) {
     case 5:
       return IsarCore.readBool(reader, 5);
     case 6:
-      {
-        final value = IsarCore.readLong(reader, 6);
-        if (value == -9223372036854775808) {
-          return null;
-        } else {
-          return DateTime.fromMicrosecondsSinceEpoch(value, isUtc: true)
-              .toLocal();
-        }
-      }
+      return IsarCore.readBool(reader, 6);
     case 7:
       {
         final value = IsarCore.readLong(reader, 7);
@@ -234,6 +232,16 @@ dynamic deserializeUserActivityLogProp(IsarReader reader, int property) {
               .toLocal();
         }
       }
+    case 10:
+      {
+        final value = IsarCore.readLong(reader, 10);
+        if (value == -9223372036854775808) {
+          return null;
+        } else {
+          return DateTime.fromMicrosecondsSinceEpoch(value, isUtc: true)
+              .toLocal();
+        }
+      }
     default:
       throw ArgumentError('Unknown property: $property');
   }
@@ -247,6 +255,7 @@ sealed class _UserActivityLogUpdate {
     DateTime? lastLogin,
     int? totalLoginDays,
     bool? canRecord,
+    bool? isPublicDataUploaded,
     DateTime? reviewdAt,
     DateTime? dissatisfactionChosenAt,
     DateTime? answerLaterChosenAt,
@@ -267,6 +276,7 @@ class _UserActivityLogUpdateImpl implements _UserActivityLogUpdate {
     Object? lastLogin = ignore,
     Object? totalLoginDays = ignore,
     Object? canRecord = ignore,
+    Object? isPublicDataUploaded = ignore,
     Object? reviewdAt = ignore,
     Object? dissatisfactionChosenAt = ignore,
     Object? answerLaterChosenAt = ignore,
@@ -280,13 +290,14 @@ class _UserActivityLogUpdateImpl implements _UserActivityLogUpdate {
           if (lastLogin != ignore) 3: lastLogin as DateTime?,
           if (totalLoginDays != ignore) 4: totalLoginDays as int?,
           if (canRecord != ignore) 5: canRecord as bool?,
-          if (reviewdAt != ignore) 6: reviewdAt as DateTime?,
+          if (isPublicDataUploaded != ignore) 6: isPublicDataUploaded as bool?,
+          if (reviewdAt != ignore) 7: reviewdAt as DateTime?,
           if (dissatisfactionChosenAt != ignore)
-            7: dissatisfactionChosenAt as DateTime?,
+            8: dissatisfactionChosenAt as DateTime?,
           if (answerLaterChosenAt != ignore)
-            8: answerLaterChosenAt as DateTime?,
+            9: answerLaterChosenAt as DateTime?,
           if (showPremiumFeaturesAdAt != ignore)
-            9: showPremiumFeaturesAdAt as DateTime?,
+            10: showPremiumFeaturesAdAt as DateTime?,
         }) >
         0;
   }
@@ -300,6 +311,7 @@ sealed class _UserActivityLogUpdateAll {
     DateTime? lastLogin,
     int? totalLoginDays,
     bool? canRecord,
+    bool? isPublicDataUploaded,
     DateTime? reviewdAt,
     DateTime? dissatisfactionChosenAt,
     DateTime? answerLaterChosenAt,
@@ -320,6 +332,7 @@ class _UserActivityLogUpdateAllImpl implements _UserActivityLogUpdateAll {
     Object? lastLogin = ignore,
     Object? totalLoginDays = ignore,
     Object? canRecord = ignore,
+    Object? isPublicDataUploaded = ignore,
     Object? reviewdAt = ignore,
     Object? dissatisfactionChosenAt = ignore,
     Object? answerLaterChosenAt = ignore,
@@ -331,12 +344,13 @@ class _UserActivityLogUpdateAllImpl implements _UserActivityLogUpdateAll {
       if (lastLogin != ignore) 3: lastLogin as DateTime?,
       if (totalLoginDays != ignore) 4: totalLoginDays as int?,
       if (canRecord != ignore) 5: canRecord as bool?,
-      if (reviewdAt != ignore) 6: reviewdAt as DateTime?,
+      if (isPublicDataUploaded != ignore) 6: isPublicDataUploaded as bool?,
+      if (reviewdAt != ignore) 7: reviewdAt as DateTime?,
       if (dissatisfactionChosenAt != ignore)
-        7: dissatisfactionChosenAt as DateTime?,
-      if (answerLaterChosenAt != ignore) 8: answerLaterChosenAt as DateTime?,
+        8: dissatisfactionChosenAt as DateTime?,
+      if (answerLaterChosenAt != ignore) 9: answerLaterChosenAt as DateTime?,
       if (showPremiumFeaturesAdAt != ignore)
-        9: showPremiumFeaturesAdAt as DateTime?,
+        10: showPremiumFeaturesAdAt as DateTime?,
     });
   }
 }
@@ -355,6 +369,7 @@ sealed class _UserActivityLogQueryUpdate {
     DateTime? lastLogin,
     int? totalLoginDays,
     bool? canRecord,
+    bool? isPublicDataUploaded,
     DateTime? reviewdAt,
     DateTime? dissatisfactionChosenAt,
     DateTime? answerLaterChosenAt,
@@ -375,6 +390,7 @@ class _UserActivityLogQueryUpdateImpl implements _UserActivityLogQueryUpdate {
     Object? lastLogin = ignore,
     Object? totalLoginDays = ignore,
     Object? canRecord = ignore,
+    Object? isPublicDataUploaded = ignore,
     Object? reviewdAt = ignore,
     Object? dissatisfactionChosenAt = ignore,
     Object? answerLaterChosenAt = ignore,
@@ -386,12 +402,13 @@ class _UserActivityLogQueryUpdateImpl implements _UserActivityLogQueryUpdate {
       if (lastLogin != ignore) 3: lastLogin as DateTime?,
       if (totalLoginDays != ignore) 4: totalLoginDays as int?,
       if (canRecord != ignore) 5: canRecord as bool?,
-      if (reviewdAt != ignore) 6: reviewdAt as DateTime?,
+      if (isPublicDataUploaded != ignore) 6: isPublicDataUploaded as bool?,
+      if (reviewdAt != ignore) 7: reviewdAt as DateTime?,
       if (dissatisfactionChosenAt != ignore)
-        7: dissatisfactionChosenAt as DateTime?,
-      if (answerLaterChosenAt != ignore) 8: answerLaterChosenAt as DateTime?,
+        8: dissatisfactionChosenAt as DateTime?,
+      if (answerLaterChosenAt != ignore) 9: answerLaterChosenAt as DateTime?,
       if (showPremiumFeaturesAdAt != ignore)
-        9: showPremiumFeaturesAdAt as DateTime?,
+        10: showPremiumFeaturesAdAt as DateTime?,
     });
   }
 }
@@ -418,6 +435,7 @@ class _UserActivityLogQueryBuilderUpdateImpl
     Object? lastLogin = ignore,
     Object? totalLoginDays = ignore,
     Object? canRecord = ignore,
+    Object? isPublicDataUploaded = ignore,
     Object? reviewdAt = ignore,
     Object? dissatisfactionChosenAt = ignore,
     Object? answerLaterChosenAt = ignore,
@@ -431,12 +449,13 @@ class _UserActivityLogQueryBuilderUpdateImpl
         if (lastLogin != ignore) 3: lastLogin as DateTime?,
         if (totalLoginDays != ignore) 4: totalLoginDays as int?,
         if (canRecord != ignore) 5: canRecord as bool?,
-        if (reviewdAt != ignore) 6: reviewdAt as DateTime?,
+        if (isPublicDataUploaded != ignore) 6: isPublicDataUploaded as bool?,
+        if (reviewdAt != ignore) 7: reviewdAt as DateTime?,
         if (dissatisfactionChosenAt != ignore)
-          7: dissatisfactionChosenAt as DateTime?,
-        if (answerLaterChosenAt != ignore) 8: answerLaterChosenAt as DateTime?,
+          8: dissatisfactionChosenAt as DateTime?,
+        if (answerLaterChosenAt != ignore) 9: answerLaterChosenAt as DateTime?,
         if (showPremiumFeaturesAdAt != ignore)
-          9: showPremiumFeaturesAdAt as DateTime?,
+          10: showPremiumFeaturesAdAt as DateTime?,
       });
     } finally {
       q.close();
@@ -900,16 +919,30 @@ extension UserActivityLogQueryFilter
   }
 
   QueryBuilder<UserActivityLog, UserActivityLog, QAfterFilterCondition>
+      isPublicDataUploadedEqualTo(
+    bool value,
+  ) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        EqualCondition(
+          property: 6,
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<UserActivityLog, UserActivityLog, QAfterFilterCondition>
       reviewdAtIsNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const IsNullCondition(property: 6));
+      return query.addFilterCondition(const IsNullCondition(property: 7));
     });
   }
 
   QueryBuilder<UserActivityLog, UserActivityLog, QAfterFilterCondition>
       reviewdAtIsNotNull() {
     return QueryBuilder.apply(not(), (query) {
-      return query.addFilterCondition(const IsNullCondition(property: 6));
+      return query.addFilterCondition(const IsNullCondition(property: 7));
     });
   }
 
@@ -920,7 +953,7 @@ extension UserActivityLogQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         EqualCondition(
-          property: 6,
+          property: 7,
           value: value,
         ),
       );
@@ -934,7 +967,7 @@ extension UserActivityLogQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         GreaterCondition(
-          property: 6,
+          property: 7,
           value: value,
         ),
       );
@@ -948,7 +981,7 @@ extension UserActivityLogQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         GreaterOrEqualCondition(
-          property: 6,
+          property: 7,
           value: value,
         ),
       );
@@ -962,7 +995,7 @@ extension UserActivityLogQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         LessCondition(
-          property: 6,
+          property: 7,
           value: value,
         ),
       );
@@ -976,7 +1009,7 @@ extension UserActivityLogQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         LessOrEqualCondition(
-          property: 6,
+          property: 7,
           value: value,
         ),
       );
@@ -991,7 +1024,7 @@ extension UserActivityLogQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         BetweenCondition(
-          property: 6,
+          property: 7,
           lower: lower,
           upper: upper,
         ),
@@ -1002,14 +1035,14 @@ extension UserActivityLogQueryFilter
   QueryBuilder<UserActivityLog, UserActivityLog, QAfterFilterCondition>
       dissatisfactionChosenAtIsNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const IsNullCondition(property: 7));
+      return query.addFilterCondition(const IsNullCondition(property: 8));
     });
   }
 
   QueryBuilder<UserActivityLog, UserActivityLog, QAfterFilterCondition>
       dissatisfactionChosenAtIsNotNull() {
     return QueryBuilder.apply(not(), (query) {
-      return query.addFilterCondition(const IsNullCondition(property: 7));
+      return query.addFilterCondition(const IsNullCondition(property: 8));
     });
   }
 
@@ -1020,7 +1053,7 @@ extension UserActivityLogQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         EqualCondition(
-          property: 7,
+          property: 8,
           value: value,
         ),
       );
@@ -1034,7 +1067,7 @@ extension UserActivityLogQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         GreaterCondition(
-          property: 7,
+          property: 8,
           value: value,
         ),
       );
@@ -1048,7 +1081,7 @@ extension UserActivityLogQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         GreaterOrEqualCondition(
-          property: 7,
+          property: 8,
           value: value,
         ),
       );
@@ -1062,7 +1095,7 @@ extension UserActivityLogQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         LessCondition(
-          property: 7,
+          property: 8,
           value: value,
         ),
       );
@@ -1076,7 +1109,7 @@ extension UserActivityLogQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         LessOrEqualCondition(
-          property: 7,
+          property: 8,
           value: value,
         ),
       );
@@ -1091,7 +1124,7 @@ extension UserActivityLogQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         BetweenCondition(
-          property: 7,
+          property: 8,
           lower: lower,
           upper: upper,
         ),
@@ -1102,14 +1135,14 @@ extension UserActivityLogQueryFilter
   QueryBuilder<UserActivityLog, UserActivityLog, QAfterFilterCondition>
       answerLaterChosenAtIsNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const IsNullCondition(property: 8));
+      return query.addFilterCondition(const IsNullCondition(property: 9));
     });
   }
 
   QueryBuilder<UserActivityLog, UserActivityLog, QAfterFilterCondition>
       answerLaterChosenAtIsNotNull() {
     return QueryBuilder.apply(not(), (query) {
-      return query.addFilterCondition(const IsNullCondition(property: 8));
+      return query.addFilterCondition(const IsNullCondition(property: 9));
     });
   }
 
@@ -1120,7 +1153,7 @@ extension UserActivityLogQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         EqualCondition(
-          property: 8,
+          property: 9,
           value: value,
         ),
       );
@@ -1134,7 +1167,7 @@ extension UserActivityLogQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         GreaterCondition(
-          property: 8,
+          property: 9,
           value: value,
         ),
       );
@@ -1148,7 +1181,7 @@ extension UserActivityLogQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         GreaterOrEqualCondition(
-          property: 8,
+          property: 9,
           value: value,
         ),
       );
@@ -1162,7 +1195,7 @@ extension UserActivityLogQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         LessCondition(
-          property: 8,
+          property: 9,
           value: value,
         ),
       );
@@ -1176,7 +1209,7 @@ extension UserActivityLogQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         LessOrEqualCondition(
-          property: 8,
+          property: 9,
           value: value,
         ),
       );
@@ -1191,7 +1224,7 @@ extension UserActivityLogQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         BetweenCondition(
-          property: 8,
+          property: 9,
           lower: lower,
           upper: upper,
         ),
@@ -1202,14 +1235,14 @@ extension UserActivityLogQueryFilter
   QueryBuilder<UserActivityLog, UserActivityLog, QAfterFilterCondition>
       showPremiumFeaturesAdAtIsNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const IsNullCondition(property: 9));
+      return query.addFilterCondition(const IsNullCondition(property: 10));
     });
   }
 
   QueryBuilder<UserActivityLog, UserActivityLog, QAfterFilterCondition>
       showPremiumFeaturesAdAtIsNotNull() {
     return QueryBuilder.apply(not(), (query) {
-      return query.addFilterCondition(const IsNullCondition(property: 9));
+      return query.addFilterCondition(const IsNullCondition(property: 10));
     });
   }
 
@@ -1220,7 +1253,7 @@ extension UserActivityLogQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         EqualCondition(
-          property: 9,
+          property: 10,
           value: value,
         ),
       );
@@ -1234,7 +1267,7 @@ extension UserActivityLogQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         GreaterCondition(
-          property: 9,
+          property: 10,
           value: value,
         ),
       );
@@ -1248,7 +1281,7 @@ extension UserActivityLogQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         GreaterOrEqualCondition(
-          property: 9,
+          property: 10,
           value: value,
         ),
       );
@@ -1262,7 +1295,7 @@ extension UserActivityLogQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         LessCondition(
-          property: 9,
+          property: 10,
           value: value,
         ),
       );
@@ -1276,7 +1309,7 @@ extension UserActivityLogQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         LessOrEqualCondition(
-          property: 9,
+          property: 10,
           value: value,
         ),
       );
@@ -1291,7 +1324,7 @@ extension UserActivityLogQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         BetweenCondition(
-          property: 9,
+          property: 10,
           lower: lower,
           upper: upper,
         ),
@@ -1388,58 +1421,72 @@ extension UserActivityLogQuerySortBy
   }
 
   QueryBuilder<UserActivityLog, UserActivityLog, QAfterSortBy>
-      sortByReviewdAt() {
+      sortByIsPublicDataUploaded() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(6);
     });
   }
 
   QueryBuilder<UserActivityLog, UserActivityLog, QAfterSortBy>
-      sortByReviewdAtDesc() {
+      sortByIsPublicDataUploadedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(6, sort: Sort.desc);
     });
   }
 
   QueryBuilder<UserActivityLog, UserActivityLog, QAfterSortBy>
-      sortByDissatisfactionChosenAt() {
+      sortByReviewdAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(7);
     });
   }
 
   QueryBuilder<UserActivityLog, UserActivityLog, QAfterSortBy>
-      sortByDissatisfactionChosenAtDesc() {
+      sortByReviewdAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(7, sort: Sort.desc);
     });
   }
 
   QueryBuilder<UserActivityLog, UserActivityLog, QAfterSortBy>
-      sortByAnswerLaterChosenAt() {
+      sortByDissatisfactionChosenAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(8);
     });
   }
 
   QueryBuilder<UserActivityLog, UserActivityLog, QAfterSortBy>
-      sortByAnswerLaterChosenAtDesc() {
+      sortByDissatisfactionChosenAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(8, sort: Sort.desc);
     });
   }
 
   QueryBuilder<UserActivityLog, UserActivityLog, QAfterSortBy>
-      sortByShowPremiumFeaturesAdAt() {
+      sortByAnswerLaterChosenAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(9);
     });
   }
 
   QueryBuilder<UserActivityLog, UserActivityLog, QAfterSortBy>
-      sortByShowPremiumFeaturesAdAtDesc() {
+      sortByAnswerLaterChosenAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(9, sort: Sort.desc);
+    });
+  }
+
+  QueryBuilder<UserActivityLog, UserActivityLog, QAfterSortBy>
+      sortByShowPremiumFeaturesAdAt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(10);
+    });
+  }
+
+  QueryBuilder<UserActivityLog, UserActivityLog, QAfterSortBy>
+      sortByShowPremiumFeaturesAdAtDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(10, sort: Sort.desc);
     });
   }
 }
@@ -1529,58 +1576,72 @@ extension UserActivityLogQuerySortThenBy
   }
 
   QueryBuilder<UserActivityLog, UserActivityLog, QAfterSortBy>
-      thenByReviewdAt() {
+      thenByIsPublicDataUploaded() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(6);
     });
   }
 
   QueryBuilder<UserActivityLog, UserActivityLog, QAfterSortBy>
-      thenByReviewdAtDesc() {
+      thenByIsPublicDataUploadedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(6, sort: Sort.desc);
     });
   }
 
   QueryBuilder<UserActivityLog, UserActivityLog, QAfterSortBy>
-      thenByDissatisfactionChosenAt() {
+      thenByReviewdAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(7);
     });
   }
 
   QueryBuilder<UserActivityLog, UserActivityLog, QAfterSortBy>
-      thenByDissatisfactionChosenAtDesc() {
+      thenByReviewdAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(7, sort: Sort.desc);
     });
   }
 
   QueryBuilder<UserActivityLog, UserActivityLog, QAfterSortBy>
-      thenByAnswerLaterChosenAt() {
+      thenByDissatisfactionChosenAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(8);
     });
   }
 
   QueryBuilder<UserActivityLog, UserActivityLog, QAfterSortBy>
-      thenByAnswerLaterChosenAtDesc() {
+      thenByDissatisfactionChosenAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(8, sort: Sort.desc);
     });
   }
 
   QueryBuilder<UserActivityLog, UserActivityLog, QAfterSortBy>
-      thenByShowPremiumFeaturesAdAt() {
+      thenByAnswerLaterChosenAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(9);
     });
   }
 
   QueryBuilder<UserActivityLog, UserActivityLog, QAfterSortBy>
-      thenByShowPremiumFeaturesAdAtDesc() {
+      thenByAnswerLaterChosenAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(9, sort: Sort.desc);
+    });
+  }
+
+  QueryBuilder<UserActivityLog, UserActivityLog, QAfterSortBy>
+      thenByShowPremiumFeaturesAdAt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(10);
+    });
+  }
+
+  QueryBuilder<UserActivityLog, UserActivityLog, QAfterSortBy>
+      thenByShowPremiumFeaturesAdAtDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(10, sort: Sort.desc);
     });
   }
 }
@@ -1623,30 +1684,37 @@ extension UserActivityLogQueryWhereDistinct
   }
 
   QueryBuilder<UserActivityLog, UserActivityLog, QAfterDistinct>
-      distinctByReviewdAt() {
+      distinctByIsPublicDataUploaded() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(6);
     });
   }
 
   QueryBuilder<UserActivityLog, UserActivityLog, QAfterDistinct>
-      distinctByDissatisfactionChosenAt() {
+      distinctByReviewdAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(7);
     });
   }
 
   QueryBuilder<UserActivityLog, UserActivityLog, QAfterDistinct>
-      distinctByAnswerLaterChosenAt() {
+      distinctByDissatisfactionChosenAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(8);
     });
   }
 
   QueryBuilder<UserActivityLog, UserActivityLog, QAfterDistinct>
-      distinctByShowPremiumFeaturesAdAt() {
+      distinctByAnswerLaterChosenAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(9);
+    });
+  }
+
+  QueryBuilder<UserActivityLog, UserActivityLog, QAfterDistinct>
+      distinctByShowPremiumFeaturesAdAt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(10);
     });
   }
 }
@@ -1691,30 +1759,37 @@ extension UserActivityLogQueryProperty1
     });
   }
 
-  QueryBuilder<UserActivityLog, DateTime?, QAfterProperty> reviewdAtProperty() {
+  QueryBuilder<UserActivityLog, bool, QAfterProperty>
+      isPublicDataUploadedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(6);
     });
   }
 
-  QueryBuilder<UserActivityLog, DateTime?, QAfterProperty>
-      dissatisfactionChosenAtProperty() {
+  QueryBuilder<UserActivityLog, DateTime?, QAfterProperty> reviewdAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(7);
     });
   }
 
   QueryBuilder<UserActivityLog, DateTime?, QAfterProperty>
-      answerLaterChosenAtProperty() {
+      dissatisfactionChosenAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(8);
     });
   }
 
   QueryBuilder<UserActivityLog, DateTime?, QAfterProperty>
-      showPremiumFeaturesAdAtProperty() {
+      answerLaterChosenAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(9);
+    });
+  }
+
+  QueryBuilder<UserActivityLog, DateTime?, QAfterProperty>
+      showPremiumFeaturesAdAtProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(10);
     });
   }
 }
@@ -1761,31 +1836,38 @@ extension UserActivityLogQueryProperty2<R>
     });
   }
 
-  QueryBuilder<UserActivityLog, (R, DateTime?), QAfterProperty>
-      reviewdAtProperty() {
+  QueryBuilder<UserActivityLog, (R, bool), QAfterProperty>
+      isPublicDataUploadedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(6);
     });
   }
 
   QueryBuilder<UserActivityLog, (R, DateTime?), QAfterProperty>
-      dissatisfactionChosenAtProperty() {
+      reviewdAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(7);
     });
   }
 
   QueryBuilder<UserActivityLog, (R, DateTime?), QAfterProperty>
-      answerLaterChosenAtProperty() {
+      dissatisfactionChosenAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(8);
     });
   }
 
   QueryBuilder<UserActivityLog, (R, DateTime?), QAfterProperty>
-      showPremiumFeaturesAdAtProperty() {
+      answerLaterChosenAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(9);
+    });
+  }
+
+  QueryBuilder<UserActivityLog, (R, DateTime?), QAfterProperty>
+      showPremiumFeaturesAdAtProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(10);
     });
   }
 }
@@ -1833,31 +1915,38 @@ extension UserActivityLogQueryProperty3<R1, R2>
     });
   }
 
-  QueryBuilder<UserActivityLog, (R1, R2, DateTime?), QOperations>
-      reviewdAtProperty() {
+  QueryBuilder<UserActivityLog, (R1, R2, bool), QOperations>
+      isPublicDataUploadedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(6);
     });
   }
 
   QueryBuilder<UserActivityLog, (R1, R2, DateTime?), QOperations>
-      dissatisfactionChosenAtProperty() {
+      reviewdAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(7);
     });
   }
 
   QueryBuilder<UserActivityLog, (R1, R2, DateTime?), QOperations>
-      answerLaterChosenAtProperty() {
+      dissatisfactionChosenAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(8);
     });
   }
 
   QueryBuilder<UserActivityLog, (R1, R2, DateTime?), QOperations>
-      showPremiumFeaturesAdAtProperty() {
+      answerLaterChosenAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addProperty(9);
+    });
+  }
+
+  QueryBuilder<UserActivityLog, (R1, R2, DateTime?), QOperations>
+      showPremiumFeaturesAdAtProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addProperty(10);
     });
   }
 }
@@ -1867,7 +1956,7 @@ extension UserActivityLogQueryProperty3<R1, R2>
 // **************************************************************************
 
 String _$userActivityLogNotifierHash() =>
-    r'378174041424d143bcd879a1746fc6721e4c7eb3';
+    r'515864ad4976ddb6a4971ce578fd8310c94cc209';
 
 /// See also [UserActivityLogNotifier].
 @ProviderFor(UserActivityLogNotifier)

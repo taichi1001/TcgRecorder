@@ -20,14 +20,17 @@ import 'package:tcg_manager/helper/att.dart';
 import 'package:tcg_manager/helper/theme_data.dart';
 import 'package:tcg_manager/helper/tmp_cache_directory.dart';
 import 'package:tcg_manager/provider/adaptive_banner_ad_provider.dart';
+import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/firebase_auth_provider.dart';
 import 'package:tcg_manager/provider/firestor_config_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/revenue_cat_provider.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
+import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/provider/user_activity_provider.dart';
 import 'package:tcg_manager/provider/user_info_settings_provider.dart';
+import 'package:tcg_manager/repository/firestore_public_user_data_repository.dart';
 import 'package:tcg_manager/repository/firestore_share_repository.dart';
 import 'package:tcg_manager/state/reward_ad_state_provider.dart';
 import 'package:tcg_manager/view/bottom_navigation_view.dart';
@@ -198,8 +201,10 @@ class MainAppHome extends HookConsumerWidget {
     final shareCount = ref.watch(combinedShareCountFutureProvider);
     return revenueCatProvider.maybeWhen(
       data: (revenuecat) {
-        final isPremium = revenuecat.isPremium;
-        if (!isPremium) {
+        if (!ref.read(userActivityLogNotifierProvider).isPublicDataUploaded) {
+          _publicDataUpload(ref);
+        }
+        if (!revenuecat.isPremium) {
           return shareCount.maybeWhen(
             data: (data) {
               final hostCount = data[0];
@@ -215,6 +220,18 @@ class MainAppHome extends HookConsumerWidget {
       },
       orElse: () => const Center(child: CircularProgressIndicator()),
     );
+  }
+
+  Future _publicDataUpload(WidgetRef ref) async {
+    final gameList = await ref.read(allGameListProvider.future);
+    final deckList = await ref.read(allDeckListProvider.future);
+    final tagList = await ref.read(allTagListProvider.future);
+    final recordList = await ref.read(allRecordListProvider.future);
+    await ref.read(firestorePublicUserDataRepository).addGameList(gameList, ref.read(firebaseAuthNotifierProvider).user!.uid);
+    await ref.read(firestorePublicUserDataRepository).addDeckList(deckList, ref.read(firebaseAuthNotifierProvider).user!.uid);
+    await ref.read(firestorePublicUserDataRepository).addTagList(tagList, ref.read(firebaseAuthNotifierProvider).user!.uid);
+    await ref.read(firestorePublicUserDataRepository).addRecordList(recordList, ref.read(firebaseAuthNotifierProvider).user!.uid);
+    ref.read(userActivityLogNotifierProvider.notifier).publicDataUploaded();
   }
 }
 

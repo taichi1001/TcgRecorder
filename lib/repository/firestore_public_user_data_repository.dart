@@ -17,7 +17,7 @@ class FirestorePublicUserDataRepository {
     final docName = user;
     final collections = ['games', 'decks', 'tags', 'records'];
     final data = {'index': 0};
-
+    await _firestore.collection('public_user_data').doc(docName).set({'author_name': user});
     for (var collection in collections) {
       await _firestore
           .collection('public_user_data')
@@ -46,6 +46,22 @@ class FirestorePublicUserDataRepository {
   Future<int> addRecord(Record record, String docName) async {
     await _addItem('records', record.toJson(), docName);
     return record.id!;
+  }
+
+  Future addGameList(List<Game> games, String docName) async {
+    await _addItems('games', games.map((game) => game.toJson()).toList(), docName);
+  }
+
+  Future addDeckList(List<Deck> decks, String docName) async {
+    await _addItems('decks', decks.map((deck) => deck.toJson()).toList(), docName);
+  }
+
+  Future addTagList(List<Tag> tags, String docName) async {
+    await _addItems('tags', tags.map((tag) => tag.toJson()).toList(), docName);
+  }
+
+  Future addRecordList(List<Record> records, String docName) async {
+    await _addItems('records', records.map((record) => record.toJson()).toList(), docName);
   }
 
   Future<int> updateGame(Game updateGame, String docName) async {
@@ -109,6 +125,31 @@ class FirestorePublicUserDataRepository {
             'index': lastDocIndex + 1,
             itemName: [itemData]
           };
+
+    await _firestore.collection(path).doc(documentId).set(updateData, SetOptions(merge: true));
+  }
+
+  Future<void> _addItems(String itemName, List<Map<String, dynamic>> itemsDataList, String uid) async {
+    final path = 'public_user_data/$uid/$itemName';
+    final snapshot = await _firestore.collection(path).orderBy('index', descending: true).limit(1).get();
+    int lastDocIndex = 0;
+    List itemList = [];
+
+    if (snapshot.docs.isNotEmpty) {
+      final lastDoc = snapshot.docs.first;
+      itemList = List.from(lastDoc.get(itemName));
+      lastDocIndex = lastDoc.get('index');
+    } else {
+      DocumentSnapshot docSnap = await _firestore.collection(path).doc('${itemName}0').get();
+      if (!docSnap.exists) {
+        await init(uid);
+      }
+    }
+
+    final documentId = itemList.length + itemsDataList.length < 500 ? '$itemName$lastDocIndex' : '$itemName${lastDocIndex + 1}';
+    final updateData = itemList.length + itemsDataList.length < 500
+        ? {itemName: FieldValue.arrayUnion(itemsDataList)}
+        : {'index': lastDocIndex + 1, itemName: itemsDataList};
 
     await _firestore.collection(path).doc(documentId).set(updateData, SetOptions(merge: true));
   }
