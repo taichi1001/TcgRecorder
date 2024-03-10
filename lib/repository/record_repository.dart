@@ -1,5 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/record.dart';
+import 'package:tcg_manager/provider/firebase_auth_provider.dart';
+import 'package:tcg_manager/repository/firestore_public_user_data_repository.dart';
 import 'package:tcg_manager/service/database.dart';
 
 final recordRepository = Provider.autoDispose<RecordRepository>((ref) => RecordRepository(ref));
@@ -36,11 +38,23 @@ class RecordRepository {
   }
 
   Future<int> insert(Record record) async {
+    final newId = await _insert(record);
+    ref.read(firestorePublicUserDataRepository).addRecord(record.copyWith(id: newId), ref.read(firebaseAuthNotifierProvider).user!.uid);
+    return newId;
+  }
+
+  Future<int> _insert(Record record) async {
     final db = await dbProvider.database;
     return db.insert(tableName, record.toJson());
   }
 
   Future<int> update(Record record) async {
+    final newId = await _update(record);
+    ref.read(firestorePublicUserDataRepository).updateRecord(record.copyWith(id: newId), ref.read(firebaseAuthNotifierProvider).user!.uid);
+    return newId;
+  }
+
+  Future<int> _update(Record record) async {
     final db = await dbProvider.database;
     return await db.update(tableName, record.toJson(), where: 'record_id = ?', whereArgs: [record.id]);
   }
@@ -63,7 +77,13 @@ class RecordRepository {
     return await batch.commit();
   }
 
-  Future<int> deleteById(int id) async {
+  Future<int> delete(Record record) async {
+    final newId = await _deleteById(record.id!);
+    ref.read(firestorePublicUserDataRepository).removeRecord(record, ref.read(firebaseAuthNotifierProvider).user!.uid);
+    return newId;
+  }
+
+  Future<int> _deleteById(int id) async {
     final db = await dbProvider.database;
     return await db.delete(tableName, where: 'record_id = ?', whereArgs: [id]);
   }

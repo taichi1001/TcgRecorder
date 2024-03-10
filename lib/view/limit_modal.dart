@@ -45,7 +45,7 @@ class LimitModal extends HookConsumerWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 16, right: 16),
                 child: Text(
-                  '「広告を削除する」からプレミアムプラン購入すると、広告が表示されなくなり、シミュレーション回数が無制限になります。\nまた、動画広告を視聴することで、シミュレーションの回数が一時的に10回増加します。',
+                  '動画広告を視聴することで、シミュレーションの回数が30回増加します。\nまた、「広告を削除する」からプレミアムプラン購入すると、広告が表示されなくなり、シミュレーション回数が無制限になります。',
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
               ),

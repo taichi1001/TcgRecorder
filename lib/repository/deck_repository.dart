@@ -1,5 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/deck.dart';
+import 'package:tcg_manager/provider/firebase_auth_provider.dart';
+import 'package:tcg_manager/repository/firestore_public_user_data_repository.dart';
 import 'package:tcg_manager/service/database.dart';
 
 final deckRepository = Provider.autoDispose<DeckRepository>((ref) => DeckRepository(ref));
@@ -24,11 +26,23 @@ class DeckRepository {
   }
 
   Future<int> insert(Deck deck) async {
+    final newId = await _insert(deck);
+    ref.read(firestorePublicUserDataRepository).addDeck(deck.copyWith(id: newId), ref.read(firebaseAuthNotifierProvider).user!.uid);
+    return newId;
+  }
+
+  Future<int> _insert(Deck deck) async {
     final db = await dbProvider.database;
     return db.insert(tableName, deck.toJson());
   }
 
   Future<int> update(Deck deck) async {
+    final newId = await _update(deck);
+    ref.read(firestorePublicUserDataRepository).updateDeck(deck, ref.read(firebaseAuthNotifierProvider).user!.uid);
+    return newId;
+  }
+
+  Future<int> _update(Deck deck) async {
     final db = await dbProvider.database;
     try {
       return await db.update(tableName, deck.toJson(), where: 'deck_id = ?', whereArgs: [deck.id]);
@@ -55,7 +69,13 @@ class DeckRepository {
     return await batch.commit();
   }
 
-  Future<int> deleteById(int id) async {
+  Future<int> delete(Deck deck) async {
+    final newId = await _deleteById(deck.id!);
+    ref.read(firestorePublicUserDataRepository).removeDeck(deck, ref.read(firebaseAuthNotifierProvider).user!.uid);
+    return newId;
+  }
+
+  Future<int> _deleteById(int id) async {
     final db = await dbProvider.database;
     return await db.delete(tableName, where: 'deck_id = ?', whereArgs: [id]);
   }

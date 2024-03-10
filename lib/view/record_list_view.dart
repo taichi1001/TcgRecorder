@@ -355,7 +355,7 @@ class _BrandListTile extends HookConsumerWidget {
         } else {
           final targetRecord = await ref.read(recordRepository).getRecordId(record.record.id!);
           ref.read(dbHelper).removeRecordImage(targetRecord!);
-          await ref.read(recordRepository).deleteById(record.record.id!);
+          await ref.read(recordRepository).delete(targetRecord);
           ref.invalidate(allRecordListProvider);
           if (ref.read(backupNotifierProvider)) await ref.read(firestoreBackupControllerProvider).deleteRecord(targetRecord);
         }
@@ -781,7 +781,7 @@ class _EditDeleteButtonRow extends HookConsumerWidget {
                   } else {
                     final targetRecord = await ref.read(recordRepository).getRecordId(record.record.id!);
                     ref.read(dbHelper).removeRecordImage(targetRecord!);
-                    await ref.read(recordRepository).deleteById(record.record.id!);
+                    await ref.read(recordRepository).delete(targetRecord);
                     ref.invalidate(allRecordListProvider);
                     if (ref.read(backupNotifierProvider)) await ref.read(firestoreBackupControllerProvider).deleteRecord(targetRecord);
                   }
