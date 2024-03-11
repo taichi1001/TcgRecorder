@@ -64,6 +64,7 @@ export const aggregateUserData = functions.region('asia-northeast1').pubsub.sche
         for (const deckN of userData.decks) {
             for (const deck of deckN.decks) {
                 const gameIdx = userGameMap[deck.game_id];
+                if (gameIdx == null || gameIdx === undefined) continue;
                 if (!aggregateDeckList.some(item => item.deck === deck.deck && item.game_id === gameIdx)) {
                     const newDeck: Deck = { deck_id: deckId++, deck: deck.deck, game_id: gameIdx }
                     userDeckMap[deck.deck_id] = newDeck.deck_id;
@@ -79,6 +80,7 @@ export const aggregateUserData = functions.region('asia-northeast1').pubsub.sche
         for (const tagN of userData.tags) {
             for (const tag of tagN.tags) {
                 const gameIdx = userGameMap[tag.game_id];
+                if (gameIdx == null || gameIdx === undefined) continue;
                 if (!aggregateTagList.some(item => item.tag === tag.tag && item.game_id === gameIdx)) {
                     const newTag: Tag = { tag_id: tagId++, tag: tag.tag, game_id: gameIdx };
                     userTagMap[tag.tag_id] = newTag.tag_id;
@@ -89,7 +91,6 @@ export const aggregateUserData = functions.region('asia-northeast1').pubsub.sche
                 }
             }
         }
-        console.log(userTagMap);
         for (const recordN of userData.records) {
             for (const record of recordN.records) {
                 const newRecord: UserRecord = {
