@@ -34,6 +34,7 @@ import 'package:tcg_manager/repository/firestore_public_user_data_repository.dar
 import 'package:tcg_manager/repository/firestore_share_repository.dart';
 import 'package:tcg_manager/state/reward_ad_state_provider.dart';
 import 'package:tcg_manager/view/bottom_navigation_view.dart';
+import 'package:tcg_manager/view/game_linking_view.dart';
 import 'package:tcg_manager/view/initial_game_registration_view.dart';
 import 'package:tcg_manager/view/login_view.dart';
 import 'package:tcg_manager/view/shared_game_limit_adjustment_view.dart';
@@ -85,11 +86,13 @@ class MainInfo {
   const MainInfo({
     required this.requiredVersion,
     required this.packageInfo,
+    this.gameList = const [],
     this.lastGame,
   });
   final String requiredVersion;
   final PackageInfo packageInfo;
   final Game? lastGame;
+  final List<Game> gameList;
 }
 
 final mainInfoProvider = FutureProvider.autoDispose.family<MainInfo, BuildContext>((ref, context) async {
@@ -113,6 +116,7 @@ final mainInfoProvider = FutureProvider.autoDispose.family<MainInfo, BuildContex
     requiredVersion: version,
     packageInfo: packgaeInfo,
     lastGame: lastGame,
+    gameList: allGameList,
   );
 });
 
@@ -204,6 +208,9 @@ class MainAppHome extends HookConsumerWidget {
         if (!ref.read(userActivityLogNotifierProvider).isPublicDataUploaded) {
           _publicDataUpload(ref);
         }
+        final hasUnlinkedGame = mainInfo.gameList.any((game) => game.publicGameId == null);
+        if (hasUnlinkedGame) return const GameLinkingView();
+
         if (!revenuecat.isPremium) {
           return shareCount.maybeWhen(
             data: (data) {
