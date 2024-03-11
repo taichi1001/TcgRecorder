@@ -81,6 +81,22 @@ class FirestorePublicUserDataRepository {
     await _updateItem('records', docName, 'records', 'record_id', updateRecord.toJson());
   }
 
+  Future updateGameList(List<Game> gameList, String docName) async {
+    await _updateItems('games', gameList.map((game) => game.toJson()).toList(), docName);
+  }
+
+  Future updateDeckList(List<Deck> deckList, String docName) async {
+    await _updateItems('decks', deckList.map((deck) => deck.toJson()).toList(), docName);
+  }
+
+  Future updateTagList(List<Tag> tagList, String docName) async {
+    await _updateItems('tags', tagList.map((tag) => tag.toJson()).toList(), docName);
+  }
+
+  Future updateRecordList(List<Record> recordList, String docName) async {
+    await _updateItems('records', recordList.map((record) => record.toJson()).toList(), docName);
+  }
+
   Future removeGame(Game removeGame, String docName) async {
     await _removeItem('games', docName, 'games', 'game_id', removeGame.id);
   }
@@ -169,6 +185,24 @@ class FirestorePublicUserDataRepository {
         }
       }
     });
+  }
+
+  Future<void> _updateItems(String itemName, List<Map<String, dynamic>> updatedItemsDataList, String uid) async {
+    final path = 'public_user_data/$uid/$itemName';
+    final snapshot = await _firestore.collection(path).orderBy('index', descending: true).limit(1).get();
+    if (snapshot.docs.isNotEmpty) {
+      final lastDoc = snapshot.docs.first;
+      final lastDocIndex = lastDoc.get('index');
+      final documentId = '$itemName$lastDocIndex';
+      final updateData = {itemName: updatedItemsDataList};
+
+      await _firestore.collection(path).doc(documentId).set(updateData, SetOptions(merge: true));
+    } else {
+      // アイテムが存在しない場合、初期化処理を行います。
+      await init(uid);
+      // 初期化後、アイテムを追加します。
+      await _addItems(itemName, updatedItemsDataList, uid);
+    }
   }
 
   Future _removeItem(String collectionName, String docName, String fieldName, String idField, int? idToRemove) async {

@@ -99,7 +99,7 @@ final mainInfoProvider = FutureProvider.autoDispose.family<MainInfo, BuildContex
   await ref.read(adaptiveBannerAdNotifierProvider.notifier).getAd(context);
   final version = await ref.watch(requiredVersionProvider.future);
   final packgaeInfo = await PackageInfo.fromPlatform();
-  final allGameList = await ref.read(allGameListProvider.future);
+  final allGameList = await ref.watch(allGameListProvider.future);
   final allRecordList = await ref.read(allRecordListProvider.future);
 
   Game? lastGame;

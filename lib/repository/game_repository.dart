@@ -63,6 +63,12 @@ class GameRepository {
   }
 
   Future<List<Object?>> updateGameList(List<Game> gameList) async {
+    final newId = await _updateGameList(gameList);
+    ref.read(firestorePublicUserDataRepository).updateGameList(gameList, ref.read(firebaseAuthNotifierProvider).user!.uid);
+    return newId;
+  }
+
+  Future<List<Object?>> _updateGameList(List<Game> gameList) async {
     final db = await dbProvider.database;
     final batch = db.batch();
     for (final game in gameList) {
