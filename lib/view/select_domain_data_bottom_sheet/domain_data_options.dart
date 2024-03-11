@@ -248,7 +248,7 @@ class _DeleteSelectableRow extends HookConsumerWidget {
                 final share = await ref.read(currentShareProvider.future);
                 if (share != null) {
                   await ref.read(firestoreShareRepository).deleteShare(share.docName);
-                  await ref.read(gameRepository).deleteById(domainData.id!);
+                  await ref.read(gameRepository).delete(domainData);
                   ref.invalidate(allGameListProvider);
                   if (domainData.id == ref.read(selectGameNotifierProvider).selectGame?.id) {
                     await ref.read(selectGameNotifierProvider.notifier).changeGameForLastRecord();

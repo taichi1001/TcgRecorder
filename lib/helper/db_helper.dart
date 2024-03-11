@@ -36,7 +36,7 @@ class DbHelper {
     await _deleteGameRecord(game);
     await _deleteGameDeck(game);
     await _deleteGameTag(game);
-    await ref.read(gameRepository).deleteById(game.id!);
+    await ref.read(gameRepository).delete(game);
     await fetchAll();
     if (ref.read(backupNotifierProvider)) await ref.read(firestoreBackupControllerProvider).addAll();
     if (game.id == ref.read(selectGameNotifierProvider).selectGame?.id && !isRevokeShare) {
@@ -46,14 +46,14 @@ class DbHelper {
 
   Future deleteDeck(Deck deck) async {
     await _deleteDeckRecord(deck);
-    await ref.read(deckRepository).deleteById(deck.id!);
+    await ref.read(deckRepository).delete(deck);
     await fetchAll();
     if (ref.read(backupNotifierProvider)) await ref.read(firestoreBackupControllerProvider).addAll();
   }
 
   Future deleteTag(Tag tag) async {
     await _removeTagFromRecord(tag);
-    await ref.read(tagRepository).deleteById(tag.id!);
+    await ref.read(tagRepository).delete(tag);
     await fetchAll();
     if (ref.read(backupNotifierProvider)) await ref.read(firestoreBackupControllerProvider).addAll();
   }
@@ -62,7 +62,7 @@ class DbHelper {
     final allRecord = await ref.read(allRecordListProvider.future);
     final gameRecord = allRecord.where((record) => record.gameId == game.id).toList();
     for (final record in gameRecord) {
-      await ref.read(recordRepository).deleteById(record.id!);
+      await ref.read(recordRepository).delete(record);
     }
   }
 
@@ -70,7 +70,7 @@ class DbHelper {
     final allDeck = await ref.read(allDeckListProvider.future);
     final gameDeck = allDeck.where((deck) => deck.gameId == game.id).toList();
     for (final deck in gameDeck) {
-      await ref.read(deckRepository).deleteById(deck.id!);
+      await ref.read(deckRepository).delete(deck);
     }
   }
 
@@ -78,7 +78,7 @@ class DbHelper {
     final allTag = await ref.read(allTagListProvider.future);
     final gameTag = allTag.where((tag) => tag.gameId == game.id).toList();
     for (final tag in gameTag) {
-      await ref.read(tagRepository).deleteById(tag.id!);
+      await ref.read(tagRepository).delete(tag);
     }
   }
 
@@ -86,7 +86,7 @@ class DbHelper {
     final allRecord = await ref.read(allRecordListProvider.future);
     final deckRecord = allRecord.where((record) => record.useDeckId == deck.id || record.opponentDeckId == deck.id).toList();
     for (final record in deckRecord) {
-      await ref.read(recordRepository).deleteById(record.id!);
+      await ref.read(recordRepository).delete(record);
       removeRecordImage(record);
     }
   }

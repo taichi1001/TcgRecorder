@@ -1,5 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/game.dart';
+import 'package:tcg_manager/provider/firebase_auth_provider.dart';
+import 'package:tcg_manager/repository/firestore_public_user_data_repository.dart';
 import 'package:tcg_manager/service/database.dart';
 
 final gameRepository = Provider.autoDispose<GameRepository>((ref) => GameRepository(ref));
@@ -18,16 +20,35 @@ class GameRepository {
   }
 
   Future<int> insert(Game game) async {
+    final newId = await _insert(game);
+    ref.read(firestorePublicUserDataRepository).addGame(game.copyWith(id: newId), ref.read(firebaseAuthNotifierProvider).user!.uid);
+    return newId;
+  }
+
+  Future<int> _insert(Game game) async {
     final db = await dbProvider.database;
     return db.insert(tableName, game.toJson());
   }
 
   Future<int> update(Game game) async {
+    final newId = await _update(game);
+    ref.read(firestorePublicUserDataRepository).updateGame(game, ref.read(firebaseAuthNotifierProvider).user!.uid);
+    return newId;
+  }
+
+  Future<int> _update(Game game) async {
     final db = await dbProvider.database;
     return await db.update(tableName, game.toJson(), where: 'game_id = ?', whereArgs: [game.id]);
   }
 
-  Future<int> deleteById(int id) async {
+  Future<int> delete(Game game) async {
+    if (game.id == null) return 0;
+    final newId = await _deleteById(game.id!);
+    ref.read(firestorePublicUserDataRepository).removeGame(game, ref.read(firebaseAuthNotifierProvider).user!.uid);
+    return newId;
+  }
+
+  Future<int> _deleteById(int id) async {
     final db = await dbProvider.database;
     return await db.delete(tableName, where: 'game_id = ?', whereArgs: [id]);
   }
