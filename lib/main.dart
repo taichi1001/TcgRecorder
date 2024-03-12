@@ -19,7 +19,6 @@ import 'package:tcg_manager/firebase_options.dart';
 import 'package:tcg_manager/helper/att.dart';
 import 'package:tcg_manager/helper/theme_data.dart';
 import 'package:tcg_manager/helper/tmp_cache_directory.dart';
-import 'package:tcg_manager/provider/adaptive_banner_ad_provider.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/firebase_auth_provider.dart';
 import 'package:tcg_manager/provider/firestor_config_provider.dart';
@@ -32,7 +31,7 @@ import 'package:tcg_manager/provider/user_activity_provider.dart';
 import 'package:tcg_manager/provider/user_info_settings_provider.dart';
 import 'package:tcg_manager/repository/firestore_public_user_data_repository.dart';
 import 'package:tcg_manager/repository/firestore_share_repository.dart';
-import 'package:tcg_manager/state/reward_ad_state_provider.dart';
+import 'package:tcg_manager/provider/reward_ad_state_provider.dart';
 import 'package:tcg_manager/view/bottom_navigation_view.dart';
 import 'package:tcg_manager/view/game_linking_view.dart';
 import 'package:tcg_manager/view/initial_game_registration_view.dart';
@@ -96,7 +95,6 @@ class MainInfo {
 }
 
 final mainInfoProvider = FutureProvider.autoDispose.family<MainInfo, BuildContext>((ref, context) async {
-  await ref.read(adaptiveBannerAdNotifierProvider.notifier).getAd(context);
   final version = await ref.watch(requiredVersionProvider.future);
   final packgaeInfo = await PackageInfo.fromPlatform();
   final allGameList = await ref.watch(allGameListProvider.future);

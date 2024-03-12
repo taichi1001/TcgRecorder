@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tcg_manager/state/reward_ad_state_provider.dart';
+import 'package:tcg_manager/provider/reward_ad_state_provider.dart';
 import 'package:tcg_manager/view/premium_plan_purchase_view.dart';
 
 Future showLimitDialog(BuildContext context) async {
