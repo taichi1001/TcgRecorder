@@ -22,6 +22,8 @@ PublicGame _$PublicGameFromJson(Map<String, dynamic> json) {
 mixin _$PublicGame {
   int get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
+  bool get isVisibleToPicker => throw _privateConstructorUsedError;
+  int? get sortIndex => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +37,7 @@ abstract class $PublicGameCopyWith<$Res> {
           PublicGame value, $Res Function(PublicGame) then) =
       _$PublicGameCopyWithImpl<$Res, PublicGame>;
   @useResult
-  $Res call({int id, String name});
+  $Res call({int id, String name, bool isVisibleToPicker, int? sortIndex});
 }
 
 /// @nodoc
@@ -53,6 +55,8 @@ class _$PublicGameCopyWithImpl<$Res, $Val extends PublicGame>
   $Res call({
     Object? id = null,
     Object? name = null,
+    Object? isVisibleToPicker = null,
+    Object? sortIndex = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -63,6 +67,14 @@ class _$PublicGameCopyWithImpl<$Res, $Val extends PublicGame>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      isVisibleToPicker: null == isVisibleToPicker
+          ? _value.isVisibleToPicker
+          : isVisibleToPicker // ignore: cast_nullable_to_non_nullable
+              as bool,
+      sortIndex: freezed == sortIndex
+          ? _value.sortIndex
+          : sortIndex // ignore: cast_nullable_to_non_nullable
+              as int?,
     ) as $Val);
   }
 }
@@ -75,7 +87,7 @@ abstract class _$$PublicGameImplCopyWith<$Res>
       __$$PublicGameImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, String name});
+  $Res call({int id, String name, bool isVisibleToPicker, int? sortIndex});
 }
 
 /// @nodoc
@@ -91,6 +103,8 @@ class __$$PublicGameImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? name = null,
+    Object? isVisibleToPicker = null,
+    Object? sortIndex = freezed,
   }) {
     return _then(_$PublicGameImpl(
       id: null == id
@@ -101,6 +115,14 @@ class __$$PublicGameImplCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      isVisibleToPicker: null == isVisibleToPicker
+          ? _value.isVisibleToPicker
+          : isVisibleToPicker // ignore: cast_nullable_to_non_nullable
+              as bool,
+      sortIndex: freezed == sortIndex
+          ? _value.sortIndex
+          : sortIndex // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -108,7 +130,11 @@ class __$$PublicGameImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$PublicGameImpl implements _PublicGame {
-  _$PublicGameImpl({required this.id, required this.name});
+  _$PublicGameImpl(
+      {required this.id,
+      required this.name,
+      this.isVisibleToPicker = true,
+      this.sortIndex});
 
   factory _$PublicGameImpl.fromJson(Map<String, dynamic> json) =>
       _$$PublicGameImplFromJson(json);
@@ -117,10 +143,15 @@ class _$PublicGameImpl implements _PublicGame {
   final int id;
   @override
   final String name;
+  @override
+  @JsonKey()
+  final bool isVisibleToPicker;
+  @override
+  final int? sortIndex;
 
   @override
   String toString() {
-    return 'PublicGame(id: $id, name: $name)';
+    return 'PublicGame(id: $id, name: $name, isVisibleToPicker: $isVisibleToPicker, sortIndex: $sortIndex)';
   }
 
   @override
@@ -129,12 +160,17 @@ class _$PublicGameImpl implements _PublicGame {
         (other.runtimeType == runtimeType &&
             other is _$PublicGameImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name));
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.isVisibleToPicker, isVisibleToPicker) ||
+                other.isVisibleToPicker == isVisibleToPicker) &&
+            (identical(other.sortIndex, sortIndex) ||
+                other.sortIndex == sortIndex));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name);
+  int get hashCode =>
+      Object.hash(runtimeType, id, name, isVisibleToPicker, sortIndex);
 
   @JsonKey(ignore: true)
   @override
@@ -151,8 +187,11 @@ class _$PublicGameImpl implements _PublicGame {
 }
 
 abstract class _PublicGame implements PublicGame {
-  factory _PublicGame({required final int id, required final String name}) =
-      _$PublicGameImpl;
+  factory _PublicGame(
+      {required final int id,
+      required final String name,
+      final bool isVisibleToPicker,
+      final int? sortIndex}) = _$PublicGameImpl;
 
   factory _PublicGame.fromJson(Map<String, dynamic> json) =
       _$PublicGameImpl.fromJson;
@@ -161,6 +200,10 @@ abstract class _PublicGame implements PublicGame {
   int get id;
   @override
   String get name;
+  @override
+  bool get isVisibleToPicker;
+  @override
+  int? get sortIndex;
   @override
   @JsonKey(ignore: true)
   _$$PublicGameImplCopyWith<_$PublicGameImpl> get copyWith =>

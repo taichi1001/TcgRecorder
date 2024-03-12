@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:tcg_manager/entity/domain_data.dart';
@@ -101,8 +100,8 @@ class _Body extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selectDomainViewInfo = ref.watch(selectDomainViewInfoProvider(dataType));
     final selectDomainDataViewNotifier = ref.watch(selectDomainDataViewNotifierProvider(dataType).notifier);
-    final isSearch = useState(true);
     final searchText = ref.watch(selectDomainDataViewNotifierProvider(dataType).select((value) => value.searchText));
+    final isNewAdd = ref.watch(selectDomainDataViewNotifierProvider(dataType).select((value) => value.isNewAdd));
     final searchExactMatchDomainData = ref.watch(searchExactMatchDomainDataProvider(dataType));
     final selectedDomainDataList = ref.watch(recordListViewNotifierProvider.select((value) => value.tagList));
     return SingleChildScrollView(
@@ -113,8 +112,25 @@ class _Body extends HookConsumerWidget {
         error: (error, stack) => Text('$error'),
         loading: () => const Center(child: CircularProgressIndicator()),
         data: (selectDomainViewInfo) {
+          // dataTypeがGameで、新規追加ボタンを押したら新規追加ボタンを非表示にする
+          if (dataType == DomainDataType.game && isNewAdd) {
+            // TODO 新規作成用の処理を追加する
+            return DomainDataList(
+              domainDataList: selectDomainViewInfo.publicGameDomainDataList,
+              selectedDomainDataList: selectedDomainDataList,
+              rootContext: rootContext,
+              selectDomainDataFunc: selectDomainDataFunc,
+              enableVisibility: false,
+              afterFunc: afterFunc,
+              deselectionFunc: deselectionFunc,
+              tagCount: tagCount,
+              returnSelecting: returnSelecting,
+              isShowMenu: false,
+            );
+          }
+
           // 検索結果がなかった場合
-          if (isSearch.value && selectDomainViewInfo.searchDomainDataList.isEmpty && searchText != '') {
+          if (selectDomainViewInfo.searchDomainDataList.isEmpty && searchText != '') {
             return GestureDetector(
               onTap: () {
                 selectDomainDataViewNotifier.saveDomainData(searchText);
@@ -130,8 +146,7 @@ class _Body extends HookConsumerWidget {
               ),
             );
             // 完全一致の検索結果があった場合
-          } else if (isSearch.value &&
-              selectDomainViewInfo.searchDomainDataList.isNotEmpty &&
+          } else if (selectDomainViewInfo.searchDomainDataList.isNotEmpty &&
               searchExactMatchDomainData.asData?.value != null &&
               searchText != '') {
             return Column(
@@ -160,8 +175,7 @@ class _Body extends HookConsumerWidget {
               ],
             );
             // 完全一致はないが検索結果がある場合
-          } else if (isSearch.value &&
-              selectDomainViewInfo.searchDomainDataList.isNotEmpty &&
+          } else if (selectDomainViewInfo.searchDomainDataList.isNotEmpty &&
               searchExactMatchDomainData.asData?.value == null &&
               searchText != '') {
             return Column(

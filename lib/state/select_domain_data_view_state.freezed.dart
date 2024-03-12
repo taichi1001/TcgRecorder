@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$SelectDomainDataViewState {
   Sort get sortType => throw _privateConstructorUsedError;
   bool get isSearch => throw _privateConstructorUsedError;
+  bool get isNewAdd => throw _privateConstructorUsedError;
   String get searchText => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -31,7 +32,7 @@ abstract class $SelectDomainDataViewStateCopyWith<$Res> {
           $Res Function(SelectDomainDataViewState) then) =
       _$SelectDomainDataViewStateCopyWithImpl<$Res, SelectDomainDataViewState>;
   @useResult
-  $Res call({Sort sortType, bool isSearch, String searchText});
+  $Res call({Sort sortType, bool isSearch, bool isNewAdd, String searchText});
 }
 
 /// @nodoc
@@ -50,6 +51,7 @@ class _$SelectDomainDataViewStateCopyWithImpl<$Res,
   $Res call({
     Object? sortType = null,
     Object? isSearch = null,
+    Object? isNewAdd = null,
     Object? searchText = null,
   }) {
     return _then(_value.copyWith(
@@ -60,6 +62,10 @@ class _$SelectDomainDataViewStateCopyWithImpl<$Res,
       isSearch: null == isSearch
           ? _value.isSearch
           : isSearch // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isNewAdd: null == isNewAdd
+          ? _value.isNewAdd
+          : isNewAdd // ignore: cast_nullable_to_non_nullable
               as bool,
       searchText: null == searchText
           ? _value.searchText
@@ -78,7 +84,7 @@ abstract class _$$SelectDomainDataViewStateImplCopyWith<$Res>
       __$$SelectDomainDataViewStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Sort sortType, bool isSearch, String searchText});
+  $Res call({Sort sortType, bool isSearch, bool isNewAdd, String searchText});
 }
 
 /// @nodoc
@@ -96,6 +102,7 @@ class __$$SelectDomainDataViewStateImplCopyWithImpl<$Res>
   $Res call({
     Object? sortType = null,
     Object? isSearch = null,
+    Object? isNewAdd = null,
     Object? searchText = null,
   }) {
     return _then(_$SelectDomainDataViewStateImpl(
@@ -106,6 +113,10 @@ class __$$SelectDomainDataViewStateImplCopyWithImpl<$Res>
       isSearch: null == isSearch
           ? _value.isSearch
           : isSearch // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isNewAdd: null == isNewAdd
+          ? _value.isNewAdd
+          : isNewAdd // ignore: cast_nullable_to_non_nullable
               as bool,
       searchText: null == searchText
           ? _value.searchText
@@ -121,6 +132,7 @@ class _$SelectDomainDataViewStateImpl implements _SelectDomainDataViewState {
   _$SelectDomainDataViewStateImpl(
       {this.sortType = Sort.oldest,
       this.isSearch = false,
+      this.isNewAdd = false,
       this.searchText = ''});
 
   @override
@@ -131,11 +143,14 @@ class _$SelectDomainDataViewStateImpl implements _SelectDomainDataViewState {
   final bool isSearch;
   @override
   @JsonKey()
+  final bool isNewAdd;
+  @override
+  @JsonKey()
   final String searchText;
 
   @override
   String toString() {
-    return 'SelectDomainDataViewState(sortType: $sortType, isSearch: $isSearch, searchText: $searchText)';
+    return 'SelectDomainDataViewState(sortType: $sortType, isSearch: $isSearch, isNewAdd: $isNewAdd, searchText: $searchText)';
   }
 
   @override
@@ -147,12 +162,15 @@ class _$SelectDomainDataViewStateImpl implements _SelectDomainDataViewState {
                 other.sortType == sortType) &&
             (identical(other.isSearch, isSearch) ||
                 other.isSearch == isSearch) &&
+            (identical(other.isNewAdd, isNewAdd) ||
+                other.isNewAdd == isNewAdd) &&
             (identical(other.searchText, searchText) ||
                 other.searchText == searchText));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, sortType, isSearch, searchText);
+  int get hashCode =>
+      Object.hash(runtimeType, sortType, isSearch, isNewAdd, searchText);
 
   @JsonKey(ignore: true)
   @override
@@ -166,12 +184,15 @@ abstract class _SelectDomainDataViewState implements SelectDomainDataViewState {
   factory _SelectDomainDataViewState(
       {final Sort sortType,
       final bool isSearch,
+      final bool isNewAdd,
       final String searchText}) = _$SelectDomainDataViewStateImpl;
 
   @override
   Sort get sortType;
   @override
   bool get isSearch;
+  @override
+  bool get isNewAdd;
   @override
   String get searchText;
   @override
