@@ -1,3 +1,4 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -112,19 +113,28 @@ class _Body extends HookConsumerWidget {
         error: (error, stack) => Text('$error'),
         loading: () => const Center(child: CircularProgressIndicator()),
         data: (selectDomainViewInfo) {
-          // dataTypeがGameで、新規追加ボタンを押したら新規追加ボタンを非表示にする
+          // dataTypeがGameで、新規追加ボタンを押したら
           if (dataType == DomainDataType.game && isNewAdd) {
-            // TODO 新規作成用の処理を追加する
             return DomainDataList(
               domainDataList: selectDomainViewInfo.publicGameDomainDataList,
-              selectedDomainDataList: selectedDomainDataList,
+              selectedDomainDataList: const [],
               rootContext: rootContext,
-              selectDomainDataFunc: selectDomainDataFunc,
+              selectDomainDataFunc: (domainData, _) async {
+                final result = await showTextInputDialog(
+                  context: context,
+                  title: 'ゲーム名を入力',
+                  textFields: [
+                    DialogTextField(initialText: domainData.name),
+                  ],
+                );
+                if (result != null) {
+                  await selectDomainDataViewNotifier.saveDomainData(result.first, domainData.id);
+                }
+              },
               enableVisibility: false,
-              afterFunc: afterFunc,
-              deselectionFunc: deselectionFunc,
+              afterFunc: () => ref.read(selectDomainDataViewNotifierProvider(dataType).notifier).toggleIsNewAdd(),
               tagCount: tagCount,
-              returnSelecting: returnSelecting,
+              returnSelecting: false,
               isShowMenu: false,
             );
           }

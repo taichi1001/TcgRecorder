@@ -45,10 +45,10 @@ class SelectDomainDataViewNotifier extends StateNotifier<SelectDomainDataViewSta
     state = state.copyWith(isNewAdd: !state.isNewAdd);
   }
 
-  Future saveDomainData(String name) async {
+  Future saveDomainData(String name, [int? publicGameId]) async {
     final selectGame = ref.read(selectGameNotifierProvider).selectGame;
-    if (dataType == DomainDataType.game) {
-      final game = Game(name: name);
+    if (dataType == DomainDataType.game && publicGameId != null) {
+      final game = Game(name: name, publicGameId: publicGameId);
       ref.read(gameRepository).insert(game);
       ref.invalidate(allGameListProvider);
     } else if (dataType == DomainDataType.deck) {
