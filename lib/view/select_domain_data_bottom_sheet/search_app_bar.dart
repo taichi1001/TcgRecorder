@@ -75,8 +75,7 @@ class SearchAppBar extends HookConsumerWidget implements PreferredSizeWidget {
                 ],
               );
               if (result != null) {
-                // TODO デッキとタグを新規保存する処理追加
-                print(result);
+                selectDomainDataViewNotifier.saveDomainData(result.first);
               }
             }
           },
