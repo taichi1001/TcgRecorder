@@ -26,6 +26,7 @@ class InitialGameRegistrationView extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('ゲーム一覧')),
       bottomNavigationBar: const AdaptiveBannerAd(),
+      // TODO 説明文を追加
       body: publicGameList.when(
         data: (publicGameListData) => ListView.separated(
           itemCount: publicGameListData.length,

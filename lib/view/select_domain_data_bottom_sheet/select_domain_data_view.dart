@@ -13,6 +13,7 @@ import 'package:tcg_manager/view/select_domain_data_bottom_sheet/all_list_sectio
 import 'package:tcg_manager/view/select_domain_data_bottom_sheet/domain_data_list.dart';
 import 'package:tcg_manager/view/select_domain_data_bottom_sheet/search_app_bar.dart';
 
+// TODO 検索バーから新規登録できなくする
 class SelectDomainDataView extends HookConsumerWidget {
   const SelectDomainDataView({
     required this.selectDomainDataFunc,
@@ -128,6 +129,7 @@ class _Body extends HookConsumerWidget {
                   ],
                 );
                 if (result != null) {
+                  // TODO 登録済みのものだった場合の処理追加
                   await selectDomainDataViewNotifier.saveDomainData(result.first, domainData.id);
                 }
               },
