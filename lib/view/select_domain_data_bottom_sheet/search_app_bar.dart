@@ -48,18 +48,14 @@ class SearchAppBar extends HookConsumerWidget implements PreferredSizeWidget {
               color: Theme.of(context).primaryColor,
             ),
       actions: [
-        if (!isNewAdd)
+        if (!isNewAdd && searchTextController.text != '')
           TextButton(
-            onPressed: searchTextController.text == ''
-                ? null
-                : () {
-                    searchTextController.text = '';
-                  },
+            onPressed: () {
+              searchTextController.text = '';
+            },
             child: Text(
               'クリア',
-              style: searchTextController.text == ''
-                  ? Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.grey)
-                  : Theme.of(context).textTheme.bodySmall,
+              style: Theme.of(context).textTheme.bodySmall,
             ),
           ),
         IconButton(
@@ -75,12 +71,23 @@ class SearchAppBar extends HookConsumerWidget implements PreferredSizeWidget {
                 ],
               );
               if (result != null) {
-                // TODO 登録済みのものだった場合の処理追加
-                selectDomainDataViewNotifier.saveDomainData(result.first);
+                try {
+                  await selectDomainDataViewNotifier.saveDomainData(result.first);
+                } catch (e) {
+                  if (!context.mounted) return;
+                  await showOkAlertDialog(
+                    context: context,
+                    title: 'エラー',
+                    message: '既に登録済みのデータです。',
+                  );
+                }
               }
             }
           },
-          icon: isNewAdd ? const Icon(Icons.close) : const Icon(Icons.add),
+          icon: Text(
+            isNewAdd ? 'キャンセル' : '新規登録',
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).primaryColor),
+          ),
         ),
       ],
       // titleSpacing: 0,

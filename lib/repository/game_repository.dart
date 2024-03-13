@@ -20,9 +20,13 @@ class GameRepository {
   }
 
   Future<int> insert(Game game) async {
-    final newId = await _insert(game);
-    ref.read(firestorePublicUserDataRepository).addGame(game.copyWith(id: newId), ref.read(firebaseAuthNotifierProvider).user!.uid);
-    return newId;
+    try {
+      final newId = await _insert(game);
+      ref.read(firestorePublicUserDataRepository).addGame(game.copyWith(id: newId), ref.read(firebaseAuthNotifierProvider).user!.uid);
+      return newId;
+    } on Exception catch (_) {
+      throw Exception('ゲームの追加に失敗しました。ゲーム名が重複している可能性があります。');
+    }
   }
 
   Future<int> _insert(Game game) async {

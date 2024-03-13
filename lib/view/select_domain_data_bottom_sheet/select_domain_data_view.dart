@@ -6,14 +6,12 @@ import 'package:tcg_manager/entity/domain_data.dart';
 import 'package:tcg_manager/enum/domain_data_type.dart';
 import 'package:tcg_manager/provider/record_list_view_provider.dart';
 import 'package:tcg_manager/provider/select_domain_data_view_provider.dart';
-import 'package:tcg_manager/selector/search_exact_match_domain_data_selector.dart';
 import 'package:tcg_manager/selector/select_domain_view_info_selector.dart';
 import 'package:tcg_manager/view/component/loading_overlay.dart';
 import 'package:tcg_manager/view/select_domain_data_bottom_sheet/all_list_section_bar.dart';
 import 'package:tcg_manager/view/select_domain_data_bottom_sheet/domain_data_list.dart';
 import 'package:tcg_manager/view/select_domain_data_bottom_sheet/search_app_bar.dart';
 
-// TODO 検索バーから新規登録できなくする
 class SelectDomainDataView extends HookConsumerWidget {
   const SelectDomainDataView({
     required this.selectDomainDataFunc,
@@ -101,10 +99,8 @@ class _Body extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectDomainViewInfo = ref.watch(selectDomainViewInfoProvider(dataType));
-    final selectDomainDataViewNotifier = ref.watch(selectDomainDataViewNotifierProvider(dataType).notifier);
     final searchText = ref.watch(selectDomainDataViewNotifierProvider(dataType).select((value) => value.searchText));
     final isNewAdd = ref.watch(selectDomainDataViewNotifierProvider(dataType).select((value) => value.isNewAdd));
-    final searchExactMatchDomainData = ref.watch(searchExactMatchDomainDataProvider(dataType));
     final selectedDomainDataList = ref.watch(recordListViewNotifierProvider.select((value) => value.tagList));
     return SingleChildScrollView(
       controller: ModalScrollController.of(context),
@@ -129,8 +125,16 @@ class _Body extends HookConsumerWidget {
                   ],
                 );
                 if (result != null) {
-                  // TODO 登録済みのものだった場合の処理追加
-                  await selectDomainDataViewNotifier.saveDomainData(result.first, domainData.id);
+                  try {
+                    await ref.read(selectDomainDataViewNotifierProvider(dataType).notifier).saveDomainData(result.first, domainData.id);
+                  } catch (e) {
+                    if (!context.mounted) return;
+                    await showOkAlertDialog(
+                      context: context,
+                      title: 'エラー',
+                      message: '既に登録済みのデータです。',
+                    );
+                  }
                 }
               },
               enableVisibility: false,
@@ -140,27 +144,20 @@ class _Body extends HookConsumerWidget {
               isShowMenu: false,
             );
           }
-
           // 検索結果がなかった場合
           if (selectDomainViewInfo.searchDomainDataList.isEmpty && searchText != '') {
-            return GestureDetector(
-              onTap: () {
-                selectDomainDataViewNotifier.saveDomainData(searchText);
-              },
-              child: Container(
-                padding: const EdgeInsets.all(16),
-                width: double.infinity,
-                color: Theme.of(context).colorScheme.surface,
+            return Container(
+              padding: const EdgeInsets.all(16),
+              width: double.infinity,
+              child: Center(
                 child: Text(
-                  '「$searchText」を登録する',
+                  '検索結果がありませんでした。',
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ),
             );
-            // 完全一致の検索結果があった場合
-          } else if (selectDomainViewInfo.searchDomainDataList.isNotEmpty &&
-              searchExactMatchDomainData.asData?.value != null &&
-              searchText != '') {
+            // 検索結果があった場合
+          } else if (selectDomainViewInfo.searchDomainDataList.isNotEmpty && searchText != '') {
             return Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -180,49 +177,6 @@ class _Body extends HookConsumerWidget {
                   enableVisibility: false,
                   afterFunc: afterFunc,
                   deselectionFunc: deselectionFunc,
-                  tagCount: tagCount,
-                  returnSelecting: returnSelecting,
-                  isShowMenu: isShowMenu,
-                ),
-              ],
-            );
-            // 完全一致はないが検索結果がある場合
-          } else if (selectDomainViewInfo.searchDomainDataList.isNotEmpty &&
-              searchExactMatchDomainData.asData?.value == null &&
-              searchText != '') {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    selectDomainDataViewNotifier.saveDomainData(searchText);
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(16),
-                    width: double.infinity,
-                    color: Theme.of(context).colorScheme.surface,
-                    child: Text(
-                      '「$searchText」を登録する',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Text(
-                    '検索結果',
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                ),
-                DomainDataList(
-                  domainDataList: selectDomainViewInfo.searchDomainDataList,
-                  selectedDomainDataList: selectedDomainDataList,
-                  rootContext: rootContext,
-                  selectDomainDataFunc: selectDomainDataFunc,
-                  deselectionFunc: deselectionFunc,
-                  enableVisibility: false,
-                  afterFunc: afterFunc,
                   tagCount: tagCount,
                   returnSelecting: returnSelecting,
                   isShowMenu: isShowMenu,

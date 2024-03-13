@@ -26,36 +26,49 @@ class InitialGameRegistrationView extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('ゲーム一覧')),
       bottomNavigationBar: const AdaptiveBannerAd(),
-      // TODO 説明文を追加
       body: publicGameList.when(
-        data: (publicGameListData) => ListView.separated(
-          itemCount: publicGameListData.length,
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-              tileColor: Theme.of(context).colorScheme.surface,
-              selectedColor: Theme.of(context).hoverColor,
-              titleTextStyle: Theme.of(context).textTheme.bodyMedium,
-              subtitleTextStyle: Theme.of(context).textTheme.labelSmall,
-              title: Text(publicGameListData[index].name),
-              onTap: () async {
-                final result = await showTextInputDialog(
-                  context: context,
-                  title: 'ゲーム名を入力',
-                  textFields: [
-                    DialogTextField(initialText: publicGameListData[index].name),
-                  ],
-                );
-                if (result != null) {
-                  _save(ref, Game(name: result.first, publicGameId: publicGameListData[index].id));
-                }
-              },
-            );
-          },
-          separatorBuilder: (context, index) => const Divider(
-            indent: 16,
-            thickness: 1,
-            height: 0,
-          ),
+        data: (publicGameListData) => Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Text(
+                '記録するゲームを選択してください。',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+            ),
+            Expanded(
+              child: ListView.separated(
+                itemCount: publicGameListData.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return ListTile(
+                    tileColor: Theme.of(context).colorScheme.surface,
+                    selectedColor: Theme.of(context).hoverColor,
+                    titleTextStyle: Theme.of(context).textTheme.bodyMedium,
+                    subtitleTextStyle: Theme.of(context).textTheme.labelSmall,
+                    title: Text(publicGameListData[index].name),
+                    onTap: () async {
+                      final result = await showTextInputDialog(
+                        context: context,
+                        title: 'ゲーム名を入力',
+                        textFields: [
+                          DialogTextField(initialText: publicGameListData[index].name),
+                        ],
+                      );
+                      if (result != null) {
+                        _save(ref, Game(name: result.first, publicGameId: publicGameListData[index].id));
+                      }
+                    },
+                  );
+                },
+                separatorBuilder: (context, index) => const Divider(
+                  indent: 16,
+                  thickness: 1,
+                  height: 0,
+                ),
+              ),
+            ),
+          ],
         ),
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, _) => Center(child: Text(error.toString())),
