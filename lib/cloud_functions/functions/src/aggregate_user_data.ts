@@ -2,13 +2,21 @@ import { admin, functions } from './init';
 import { Deck, Game, PublicUserData, Tag, UserRecord } from './interface/public_user_data';
 
 // 午前4時に全てのユーザーのデータを集計する
-export const aggregateUserData = functions.region('asia-northeast1').pubsub.schedule('0 4 * * *').timeZone('Asia/Tokyo').onRun(async () => {
+export const aggregateUserData = functions.runWith({ timeoutSeconds: 540, memory: '2GB' }).region('asia-northeast1').pubsub.schedule('0 4 * * *').timeZone('Asia/Tokyo').onRun(async () => {
     // ステップ1: 全ユーザーのデータを取得
     const allUserData: PublicUserData[] = [];
     const userSnapshots = await admin.firestore().collection("public_user_data").get();
 
+    // 集計データコレクションの全データを削除
+    const aggregatedDataRef = admin.firestore().collection("aggregated_data");
+    const aggregatedDataSnapshot = await aggregatedDataRef.get();
+    aggregatedDataSnapshot.forEach(doc => {
+        doc.ref.delete();
+    });
 
+    console.log(`userSnapshotsの長さ: ${userSnapshots.docs.length}`);
     for (const doc of userSnapshots.docs) {
+
         // サブコレクションからドキュメントを取得
         const gamesSnapshot = await doc.ref.collection('games').get();
         const decksSnapshot = await doc.ref.collection('decks').get();
@@ -121,22 +129,18 @@ export const aggregateUserData = functions.region('asia-northeast1').pubsub.sche
     }
 
     // ステップ4: 集計データをFirestoreに保存
-    await saveDataInChunks(aggregateGameList, 'gameList');
-    await saveDataInChunks(aggregateDeckList, 'deckList');
-    await saveDataInChunks(aggregateTagList, 'tagList');
-    await saveDataInChunks(aggregateRecordList, 'recordList');
-
+    await saveDataInChunks(aggregateGameList, 'gameList', 10000);
+    await saveDataInChunks(aggregateDeckList, 'deckList', 10000);
+    await saveDataInChunks(aggregateTagList, 'tagList', 10000);
+    await saveDataInChunks(aggregateRecordList, 'recordList', 1500);
     console.log('Aggregation completed');
 });
 
-async function saveDataInChunks<T>(dataList: T[], dataLabel: string) {
-    const chunkSize = 500;
+async function saveDataInChunks<T>(dataList: T[], dataLabel: string, chunkSize: number) {
     for (let i = 0; i < dataList.length; i += chunkSize) {
         const chunk = dataList.slice(i, i + chunkSize);
         const docName = `${dataLabel}${Math.floor(i / chunkSize) + 1}`;
         const docData = { [dataLabel]: chunk };
-
         await admin.firestore().collection('aggregated_data').doc(docName).set(docData);
-        console.log(`Saved ${docName}: ${chunk.length} items.`);
     }
 }

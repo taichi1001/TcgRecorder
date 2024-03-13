@@ -7,6 +7,7 @@ export interface PublicUserData {
 
 export interface Game {
     game_id: number
+    public_game_id?: number
     game: string
 }
 
