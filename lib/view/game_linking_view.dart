@@ -5,15 +5,15 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:tcg_manager/entity/game.dart';
 import 'package:tcg_manager/entity/public_game.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
-import 'package:tcg_manager/repository/firestore_public_game_repository.dart';
 import 'package:tcg_manager/repository/game_repository.dart';
+import 'package:tcg_manager/selector/sorted_public_game_list_selector.dart';
 
 class GameLinkingView extends HookConsumerWidget {
   const GameLinkingView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final gameList = ref.watch(allGameListProvider);
-    final publicGameList = ref.watch(publicGameListProvider);
+    final publicGameList = ref.watch(sortedPublicGameListProvider);
     final linkedGames = useState<List<Game>>([]);
 
     useEffect(() {

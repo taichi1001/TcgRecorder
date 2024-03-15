@@ -5,8 +5,8 @@ import 'package:tcg_manager/entity/game.dart';
 import 'package:tcg_manager/helper/initial_data_controller.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
-import 'package:tcg_manager/repository/firestore_public_game_repository.dart';
 import 'package:tcg_manager/repository/game_repository.dart';
+import 'package:tcg_manager/selector/sorted_public_game_list_selector.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
 
 class InitialGameRegistrationView extends HookConsumerWidget {
@@ -21,7 +21,7 @@ class InitialGameRegistrationView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final publicGameList = ref.watch(publicGameListProvider);
+    final publicGameList = ref.watch(sortedPublicGameListProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text('ゲーム一覧')),
