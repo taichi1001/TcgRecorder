@@ -148,15 +148,12 @@ async function saveAllAggregatedData(aggregatedDataMap: Map<number, AggregatedDa
 
 // 指定されたデータをチャンクサイズに基づいて Firestore に保存する関数
 async function saveDataInChunks(dataArray: any[], gameId: number, dataName: string, chunkSize: number) {
-    let globalIndex = 0;
+    const promises: Promise<any>[] = []; // または Promise<any>[]
     for (let i = 0; i < dataArray.length; i += chunkSize) {
         const chunk = dataArray.slice(i, i + chunkSize);
-        const batch = admin.firestore().batch();
-        chunk.forEach((item, index) => {
-            const docId = `${gameId}_${dataName}_${globalIndex++}`;
-            const docRef = admin.firestore().collection('aggregated_data').doc(docId);
-            batch.set(docRef, item);
-        });
-        await batch.commit();
+        const docId = `${gameId}_${dataName}_${i / chunkSize}`;
+        const docRef = admin.firestore().collection('aggregated_data').doc(docId);
+        promises.push(docRef.set({ [dataName]: chunk }));
     }
+    await Promise.all(promises);
 }
