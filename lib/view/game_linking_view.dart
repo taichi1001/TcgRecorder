@@ -32,7 +32,7 @@ class GameLinkingView extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ゲームと紐づけ'),
+        title: const Text('ゲーム名紐づけ'),
         actions: [
           IconButton(
             icon: Text(
