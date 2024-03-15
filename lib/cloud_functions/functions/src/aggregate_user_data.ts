@@ -1,11 +1,10 @@
 import { admin, functions } from './init';
-import { Deck, Game, PublicUserData, Tag, UserRecord } from './interface/public_user_data';
+import { Deck, PublicUserData, Tag, UserRecord } from './interface/public_user_data';
 
 
 // 午前4時に全てのユーザーのデータを集計する
 export const aggregateUserData = functions.runWith({ timeoutSeconds: 540, memory: '4GB' }).region('asia-northeast1').pubsub.schedule('0 4 * * *').timeZone('Asia/Tokyo').onRun(async () => {
     // ステップ1: 全ユーザーのデータを取得
-    const allUserData: PublicUserData[] = [];
     const userSnapshots = await admin.firestore().collection("public_user_data").get();
 
     // 集計データコレクションの全データを削除
@@ -40,37 +39,19 @@ export const aggregateUserData = functions.runWith({ timeoutSeconds: 540, memory
 
     // 全ユーザーの処理を平行化
     const userProcessPromises = userSnapshots.docs.map(doc => processUserData(doc));
-    const processedUsers = await Promise.all(userProcessPromises);
+    const allUserData = await Promise.all(userProcessPromises);
 
-    // 処理されたユーザーデータをallUserDataに統合
-    allUserData.push(...processedUsers);
-
-    let gameId = 0;
     let deckId = 0;
     let tagId = 0;
     let recordId = 0;
 
-    const aggregateGameList: Game[] = [];
     const aggregateDeckList: Deck[] = [];
     const aggregateTagList: Tag[] = [];
     const aggregateRecordList: UserRecord[] = [];
     const skippedRecordList: UserRecord[] = [];
 
-    // ステップ2: 一意なゲームのリストを作成
-    for (const userData of allUserData) {
-        for (const gamesN of userData.games) {
-            for (const game of gamesN.games) {
-                if (!aggregateGameList.some(item => item.game === game.game)) {
-                    const newGame: Game = { game_id: gameId++, game: game.game, };
-                    aggregateGameList.push(newGame);
-                }
-            }
-        }
-    }
-
     // ステップ3: 集計
     // Mapオブジェクトを使用して、検索効率を向上させる
-    const aggregateGameMap = new Map<string, Game>();
     const aggregateDeckMap = new Map<string, Deck>();
     const aggregateTagMap = new Map<string, Tag>();
     let totalRecordsCount = 0;
@@ -79,13 +60,9 @@ export const aggregateUserData = functions.runWith({ timeoutSeconds: 540, memory
         const userGameMap = new Map<number, number>();
         for (const gamesN of userData.games) {
             for (const game of gamesN.games) {
-                let aggregateGame = aggregateGameMap.get(game.game);
-                if (!aggregateGame) {
-                    aggregateGame = { game_id: gameId++, game: game.game };
-                    aggregateGameMap.set(game.game, aggregateGame);
-                    aggregateGameList.push(aggregateGame); // 依然としてリストにも追加しておく
+                if (game.public_game_id !== undefined) {
+                    userGameMap.set(game.game_id, game.public_game_id);
                 }
-                userGameMap.set(game.game_id, aggregateGame.game_id);
             }
         }
 
@@ -162,7 +139,6 @@ export const aggregateUserData = functions.runWith({ timeoutSeconds: 540, memory
 
     // ステップ4: 集計データをFirestoreに保存
     await Promise.all([
-        saveDataInChunks(aggregateGameList, 'gameList', 10000),
         saveDataInChunks(aggregateDeckList, 'deckList', 10000),
         saveDataInChunks(aggregateTagList, 'tagList', 10000),
         saveDataInChunks(aggregateRecordList, 'recordList', 1500),
@@ -174,7 +150,7 @@ export const aggregateUserData = functions.runWith({ timeoutSeconds: 540, memory
 
 
 async function saveDataInChunks<T>(dataList: T[], dataLabel: string, chunkSize: number) {
-    const promises: Promise<FirebaseFirestore.WriteResult>[] = []; // この行を修正
+    const promises: Promise<FirebaseFirestore.WriteResult>[] = [];
     for (let i = 0; i < dataList.length; i += chunkSize) {
         const chunk = dataList.slice(i, i + chunkSize);
         const docName = `${dataLabel}${Math.floor(i / chunkSize) + 1}`;
