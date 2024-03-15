@@ -35,7 +35,12 @@ class GameLinkingView extends HookConsumerWidget {
         title: const Text('ゲームと紐づけ'),
         actions: [
           IconButton(
-            icon: const Text('保存'),
+            icon: Text(
+              '保存',
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: isAllGamesLinked ? Theme.of(context).colorScheme.primary : Theme.of(context).disabledColor,
+                  ),
+            ),
             onPressed: isAllGamesLinked
                 ? () async {
                     await ref.read(gameRepository).updateGameList(linkedGames.value);
@@ -53,9 +58,19 @@ class GameLinkingView extends HookConsumerWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: Text(
-                    'これまで入力していたゲームを、正しいゲームと紐付けてください。',
-                    style: Theme.of(context).textTheme.bodyMedium,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'これまでに入力したゲームを、正しいゲームと紐付けてください。\nあなたのゲームデータが正確なゲーム名と一致し、更に多様なデータを表示できるようになります(今後のアップデートで実装予定です)。',
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        '全てのゲームの紐づけが完了したら、右上の保存ボタンを押してください。',
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                    ],
                   ),
                 ),
                 Expanded(
