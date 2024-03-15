@@ -1,5 +1,5 @@
 import { admin, functions } from './init';
-import { Deck, PublicUserData, Tag, UserRecord } from './interface/public_user_data';
+import { AggregatedData, Deck, PublicUserData, Tag, UserRecord } from './interface/public_user_data';
 
 
 // 午前4時に全てのユーザーのデータを集計する
@@ -41,122 +41,122 @@ export const aggregateUserData = functions.runWith({ timeoutSeconds: 540, memory
     const userProcessPromises = userSnapshots.docs.map(doc => processUserData(doc));
     const allUserData = await Promise.all(userProcessPromises);
 
+    const aggregateDeckMap = new Map<string, Deck>();
+    const aggregateTagMap = new Map<string, Tag>();
+    const aggregatedDataMap = new Map<number, AggregatedData>();
+
     let deckId = 0;
     let tagId = 0;
     let recordId = 0;
 
-    const aggregateDeckList: Deck[] = [];
-    const aggregateTagList: Tag[] = [];
-    const aggregateRecordList: UserRecord[] = [];
-    const skippedRecordList: UserRecord[] = [];
-
-    // ステップ3: 集計
-    // Mapオブジェクトを使用して、検索効率を向上させる
-    const aggregateDeckMap = new Map<string, Deck>();
-    const aggregateTagMap = new Map<string, Tag>();
-    let totalRecordsCount = 0;
-    let skippedRecordsCount = 0;
     for (const userData of allUserData) {
         const userGameMap = new Map<number, number>();
+        const userDeckMap = new Map<number, number>();
+        const userTagMap = new Map<number, number>();
+
+        // ゲームIDのマッピングを設定
         for (const gamesN of userData.games) {
             for (const game of gamesN.games) {
                 if (game.public_game_id !== undefined) {
                     userGameMap.set(game.game_id, game.public_game_id);
+                    if (!aggregatedDataMap.has(game.public_game_id)) {
+                        aggregatedDataMap.set(game.public_game_id, { decks: [], tags: [], records: [] });
+                    }
                 }
             }
         }
 
-        const userDeckMap = new Map<number, number>();
+        // デッキの集計とユーザーデッキマップの設定
         for (const deckN of userData.decks) {
             for (const deck of deckN.decks) {
-                const gameIdx = userGameMap.get(deck.game_id);
-                if (gameIdx == null || gameIdx === undefined) continue;
-                const deckKey = `${deck.deck}_${gameIdx}`;
-                let aggregateDeck = aggregateDeckMap.get(deckKey);
-                if (!aggregateDeck) {
-                    aggregateDeck = { deck_id: deckId++, deck: deck.deck, game_id: gameIdx };
+                const publicGameId = userGameMap.get(deck.game_id);
+                if (publicGameId == null) continue;
+                const deckKey = `${deck.deck}_${publicGameId}`;
+                if (!aggregateDeckMap.has(deckKey)) {
+                    const aggregateDeck = { deck_id: deckId++, deck: deck.deck, game_id: publicGameId };
                     aggregateDeckMap.set(deckKey, aggregateDeck);
-                    aggregateDeckList.push(aggregateDeck); // リストにも追加
+                    aggregatedDataMap.get(publicGameId)?.decks.push(aggregateDeck);
                 }
-                userDeckMap.set(deck.deck_id, aggregateDeck.deck_id);
+                const aggregateDeck = aggregateDeckMap.get(deckKey);
+                if (aggregateDeck) {
+                    userDeckMap.set(deck.deck_id, aggregateDeck.deck_id);
+                }
             }
         }
 
-        const userTagMap = new Map<number, number>();
+        // タグの集計とユーザータグマップの設定
         for (const tagN of userData.tags) {
             for (const tag of tagN.tags) {
-                const gameIdx = userGameMap.get(tag.game_id);
-                if (gameIdx == null || gameIdx === undefined) continue;
-                const tagKey = `${tag.tag}_${gameIdx}`;
-                let aggregateTag = aggregateTagMap.get(tagKey);
-                if (!aggregateTag) {
-                    aggregateTag = { tag_id: tagId++, tag: tag.tag, game_id: gameIdx };
+                const publicGameId = userGameMap.get(tag.game_id);
+                if (publicGameId == null) continue;
+                const tagKey = `${tag.tag}_${publicGameId}`;
+                if (!aggregateTagMap.has(tagKey)) {
+                    const aggregateTag = { tag_id: tagId++, tag: tag.tag, game_id: publicGameId };
                     aggregateTagMap.set(tagKey, aggregateTag);
-                    aggregateTagList.push(aggregateTag); // リストにも追加
+                    aggregatedDataMap.get(publicGameId)?.tags.push(aggregateTag);
                 }
-                userTagMap.set(tag.tag_id, aggregateTag.tag_id);
+                const aggregateTag = aggregateTagMap.get(tagKey);
+                if (aggregateTag) {
+                    userTagMap.set(tag.tag_id, aggregateTag.tag_id);
+                }
             }
         }
+
+        // レコードの集計
         for (const recordN of userData.records) {
             for (const record of recordN.records) {
-                totalRecordsCount++;
-                const game_id = userGameMap.get(record.game_id);
-                const use_deck_id = userDeckMap.get(record.use_deck_id);
-                const opponent_deck_id = userDeckMap.get(record.opponent_deck_id);
-
-                // game_id、use_deck_id、opponent_deck_idがundefinedでないことを確認
-                if (game_id !== undefined && use_deck_id !== undefined && opponent_deck_id !== undefined) {
-                    let tag_ids: string | null = null;
-                    if (record.tag_id && record.tag_id !== '') {
-                        tag_ids = record.tag_id.split(',')
-                            .map(id => userTagMap.get(parseInt(id)))
-                            .filter(id => id !== undefined)
-                            .join(',');
-                    }
+                const publicGameId = userGameMap.get(record.game_id);
+                if (publicGameId == null) continue;
+                const useDeckId = userDeckMap.get(record.use_deck_id);
+                const opponentDeckId = userDeckMap.get(record.opponent_deck_id);
+                if (useDeckId !== undefined && opponentDeckId !== undefined) {
                     const newRecord: UserRecord = {
                         ...record,
-                        game_id: game_id,
-                        use_deck_id: use_deck_id,
-                        opponent_deck_id: opponent_deck_id,
-                        tag_id: tag_ids,
+                        game_id: publicGameId,
+                        use_deck_id: useDeckId,
+                        opponent_deck_id: opponentDeckId,
                         record_id: recordId++
                     };
-                    aggregateRecordList.push(newRecord);
-                } else {
-                    skippedRecordsCount++;
-                    const skippedRecord: UserRecord = {
-                        ...record,
-
-                    };
-                    skippedRecordList.push(skippedRecord);
+                    aggregatedDataMap.get(publicGameId)?.records.push(newRecord);
                 }
             }
         }
     }
 
-    console.log(`Total records processed: ${totalRecordsCount}`);
-    console.log(`Records skipped due to undefined ID(s): ${skippedRecordsCount}`);
-
     // ステップ4: 集計データをFirestoreに保存
-    await Promise.all([
-        saveDataInChunks(aggregateDeckList, 'deckList', 10000),
-        saveDataInChunks(aggregateTagList, 'tagList', 10000),
-        saveDataInChunks(aggregateRecordList, 'recordList', 1500),
-        saveDataInChunks(skippedRecordList, 'askippedRecordList', 1500),
-    ]);
+    saveAllAggregatedData(aggregatedDataMap, 10000);
     console.log('Aggregation completed');
 });
 
 
 
-async function saveDataInChunks<T>(dataList: T[], dataLabel: string, chunkSize: number) {
-    const promises: Promise<FirebaseFirestore.WriteResult>[] = [];
-    for (let i = 0; i < dataList.length; i += chunkSize) {
-        const chunk = dataList.slice(i, i + chunkSize);
-        const docName = `${dataLabel}${Math.floor(i / chunkSize) + 1}`;
-        const docData = { [dataLabel]: chunk };
-        const promise = admin.firestore().collection('aggregated_data').doc(docName).set(docData);
-        promises.push(promise);
-    }
+// Firestore にデータをチャンクサイズに基づいて保存する関数
+async function saveAllAggregatedData(aggregatedDataMap: Map<number, AggregatedData>, chunkSize: number) {
+    const promises: Promise<void>[] = [];
+
+    aggregatedDataMap.forEach((aggregatedData, gameId) => {
+        // デッキデータを保存
+        promises.push(saveDataInChunks(aggregatedData.decks, gameId, 'decks', 10000));
+        // タグデータを保存
+        promises.push(saveDataInChunks(aggregatedData.tags, gameId, 'tags', 10000));
+        // レコードデータを保存
+        promises.push(saveDataInChunks(aggregatedData.records, gameId, 'records', 1500));
+    });
+
     await Promise.all(promises);
+}
+
+// 指定されたデータをチャンクサイズに基づいて Firestore に保存する関数
+async function saveDataInChunks(dataArray: any[], gameId: number, dataName: string, chunkSize: number) {
+    let globalIndex = 0;
+    for (let i = 0; i < dataArray.length; i += chunkSize) {
+        const chunk = dataArray.slice(i, i + chunkSize);
+        const batch = admin.firestore().batch();
+        chunk.forEach((item, index) => {
+            const docId = `${gameId}_${dataName}_${globalIndex++}`;
+            const docRef = admin.firestore().collection('aggregated_data').doc(docId);
+            batch.set(docRef, item);
+        });
+        await batch.commit();
+    }
 }
