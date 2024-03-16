@@ -210,7 +210,6 @@ class MainAppHome extends HookConsumerWidget {
         final hasUnlinkedGame = mainInfo.gameList.any((game) => game.publicGameId == null);
         if (hasUnlinkedGame) return const GameLinkingView();
         if (!ref.read(userActivityLogNotifierProvider).isPublicDataUploaded) {
-          print('publicDataUpload');
           _publicDataUpload(ref);
         }
         if (!revenuecat.isPremium) {

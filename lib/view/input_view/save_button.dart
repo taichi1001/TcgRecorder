@@ -11,6 +11,7 @@ import 'package:tcg_manager/provider/input_view_provider.dart';
 import 'package:tcg_manager/provider/input_view_settings_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/revenue_cat_provider.dart';
+import 'package:tcg_manager/provider/reward_ad_state_provider.dart';
 import 'package:tcg_manager/provider/select_game_access_roll.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/provider/user_activity_provider.dart';
@@ -71,7 +72,10 @@ class SaveButton extends HookConsumerWidget {
                         );
 
                         if (okCancelResult == OkCancelResult.ok) {
-                          if (ref.read(userActivityLogNotifierProvider).canRecord || ref.read(revenueCatProvider)!.isPremium) {
+                          // 条件にリワード広告が読み込まれているかどうかを含める
+                          if (ref.read(userActivityLogNotifierProvider).canRecord ||
+                              ref.read(revenueCatProvider)!.isPremium ||
+                              ref.read(rewardAdStateNotifierProvider) != null) {
                             ref.read(loadingProvider.notifier).state = true;
                             if (isBO3) {
                               await inputViewNotifier.saveRecord(BO.bo3);

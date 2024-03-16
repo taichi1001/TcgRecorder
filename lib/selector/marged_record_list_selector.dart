@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/game.dart';
@@ -32,6 +33,7 @@ final margedRecordListProvider = FutureProvider.autoDispose<List<MargedRecord>>(
       return false;
     });
   }
+
   final list = filterRecordListCopy.map((Record record) {
     Game game;
     if (isShare) {
@@ -42,9 +44,12 @@ final margedRecordListProvider = FutureProvider.autoDispose<List<MargedRecord>>(
     final useDeck = allDeckList.singleWhere((value) => value.id == record.useDeckId);
     final opponentDeck = allDeckList.singleWhere((value) => value.id == record.opponentDeckId);
     List<Tag> tagList = [];
+
     for (final tagId in record.tagId) {
-      final tag = allTagList.firstWhere((value) => value.id == tagId);
-      tagList.add(tag);
+      final tag = allTagList.firstWhereOrNull((value) => value.id == tagId);
+      if (tag != null) {
+        tagList.add(tag);
+      }
     }
     return MargedRecord(
       record: record,
