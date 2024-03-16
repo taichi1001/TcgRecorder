@@ -56,21 +56,25 @@ class GameLinkingView extends HookConsumerWidget {
             final unlinkedGameList = gameListData.where((game) => game.publicGameId == null).toList();
             return Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'これまでに入力したゲームを、正しいゲームと紐付けてください。\nあなたのゲームデータが正確なゲーム名と一致し、更に多様なデータを表示できるようになります(今後のアップデートで実装予定です)。',
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        '全てのゲームの紐づけが完了したら、右上の保存ボタンを押してください。',
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                    ],
+                Container(
+                  width: double.infinity,
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '共通のゲーム名を作成しました。今後入力するゲームはこの共通のゲーム名から選択する形になるので、これまでに入力したゲームも、共通のゲーム名と紐付けてください。\nあなたのゲームデータが正確なゲーム名と一致し、更に多様なデータを表示できるようになります(今後のアップデートで実装予定です)。',
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          '全てのゲームの紐づけが完了したら、右上の保存ボタンを押してください。',
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 Expanded(
