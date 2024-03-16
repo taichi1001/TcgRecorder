@@ -75,7 +75,7 @@ class SaveButton extends HookConsumerWidget {
                           // 条件にリワード広告が読み込まれているかどうかを含める
                           if (ref.read(userActivityLogNotifierProvider).canRecord ||
                               ref.read(revenueCatProvider)!.isPremium ||
-                              ref.read(rewardAdStateNotifierProvider) != null) {
+                              ref.read(rewardAdStateNotifierProvider) == null) {
                             ref.read(loadingProvider.notifier).state = true;
                             if (isBO3) {
                               await inputViewNotifier.saveRecord(BO.bo3);
