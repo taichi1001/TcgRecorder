@@ -98,15 +98,16 @@ final allMargedRecordListProvider = FutureProvider.autoDispose<List<MargedRecord
   });
 
   // TODO 共有中のゲームもCSV出力できるようにする
-
   final list = allRecordList.map((record) {
     final game = allGameList.singleWhere((value) => value.id == record.gameId);
     final useDeck = allDeckList.singleWhere((value) => value.id == record.useDeckId);
     final opponentDeck = allDeckList.singleWhere((value) => value.id == record.opponentDeckId);
     List<Tag> tagList = [];
     for (final tagId in record.tagId) {
-      final tag = allTagList.firstWhere((value) => value.id == tagId);
-      tagList.add(tag);
+      final tag = allTagList.firstWhereOrNull((value) => value.id == tagId);
+      if (tag != null) {
+        tagList.add(tag);
+      }
     }
     return MargedRecord(
       record: record,
