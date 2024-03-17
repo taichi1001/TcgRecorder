@@ -7,7 +7,7 @@ import 'package:tcg_manager/entity/record.dart';
 import 'package:tcg_manager/entity/record_old.dart';
 
 class DatabaseService {
-  static const _databaseVersion = 7;
+  static const _databaseVersion = 8;
   static const _databaseName = 'record.db';
 
   //tableName
@@ -114,6 +114,9 @@ class DatabaseService {
       if (oldVersion < 7) {
         database.execute('ALTER TABLE $recordTableName ADD author TEXT');
       }
+      if (oldVersion < 8) {
+        database.execute('ALTER TABLE $gameTableName ADD public_game_id INTEGER');
+      }
     }
   }
 
@@ -144,6 +147,7 @@ class DatabaseService {
       CREATE TABLE $gameTableName (
         game_id INTEGER PRIMARY KEY AUTOINCREMENT,
         game TEXT NOT NULL,
+        public_game_id INTEGER,
         is_visible_to_picker INTEGER NOT NULL,
         is_share INTEGER NOT NULL,
         sort_index INTEGER,

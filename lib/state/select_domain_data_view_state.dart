@@ -8,6 +8,7 @@ abstract class SelectDomainDataViewState with _$SelectDomainDataViewState {
   factory SelectDomainDataViewState({
     @Default(Sort.oldest) Sort sortType,
     @Default(false) bool isSearch,
+    @Default(false) bool isNewAdd,
     @Default('') String searchText,
   }) = _SelectDomainDataViewState;
 }

@@ -10,6 +10,7 @@ import 'package:tcg_manager/selector/search_game_list_selector.dart';
 import 'package:tcg_manager/selector/search_tag_list_selector.dart';
 import 'package:tcg_manager/selector/sorted_deck_list_selector.dart';
 import 'package:tcg_manager/selector/sorted_game_list_selector.dart';
+import 'package:tcg_manager/selector/sorted_public_game_list_selector.dart';
 import 'package:tcg_manager/selector/sorted_tag_list_selector.dart';
 
 class SelectDomainViewInfo {
@@ -17,6 +18,7 @@ class SelectDomainViewInfo {
     required this.gameDomainDataList,
     required this.searchDomainDataList,
     required this.recentlyUseDomainDataList,
+    required this.publicGameDomainDataList,
     required this.hostGameList,
     required this.guestGameList,
   });
@@ -24,6 +26,7 @@ class SelectDomainViewInfo {
   final List<DomainData> gameDomainDataList;
   final List<DomainData> searchDomainDataList;
   final List<DomainData> recentlyUseDomainDataList;
+  final List<DomainData> publicGameDomainDataList;
   final List<Game> hostGameList;
   final List<Game> guestGameList;
 }
@@ -37,10 +40,12 @@ final selectDomainViewInfoProvider = FutureProvider.autoDispose.family<SelectDom
       final hostShareGameList = hostShareList.map((e) => e.game).toList();
       final guestShareList = await ref.watch(guestShareProvider.future);
       final guestShareGameList = guestShareList.map((e) => e.game).toList();
+      final publicGameList = await ref.watch(sortedPublicGameListProvider.future);
       return SelectDomainViewInfo(
         gameDomainDataList: gameList,
         searchDomainDataList: searchGameList,
         recentlyUseDomainDataList: [],
+        publicGameDomainDataList: publicGameList,
         hostGameList: hostShareGameList,
         guestGameList: guestShareGameList,
       );
@@ -52,6 +57,7 @@ final selectDomainViewInfoProvider = FutureProvider.autoDispose.family<SelectDom
         gameDomainDataList: gameDeckList,
         searchDomainDataList: searchDeckList,
         recentlyUseDomainDataList: recentlyUseDeckList,
+        publicGameDomainDataList: [],
         hostGameList: [],
         guestGameList: [],
       );
@@ -63,6 +69,7 @@ final selectDomainViewInfoProvider = FutureProvider.autoDispose.family<SelectDom
         gameDomainDataList: gameTagList,
         searchDomainDataList: searchTagList,
         recentlyUseDomainDataList: recentlyUseTagList,
+        publicGameDomainDataList: [],
         hostGameList: [],
         guestGameList: [],
       );
@@ -72,6 +79,7 @@ final selectDomainViewInfoProvider = FutureProvider.autoDispose.family<SelectDom
         gameDomainDataList: [],
         searchDomainDataList: [],
         recentlyUseDomainDataList: [],
+        publicGameDomainDataList: [],
         hostGameList: [],
         guestGameList: [],
       );

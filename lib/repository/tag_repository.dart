@@ -14,9 +14,13 @@ class TagRepository {
   final tableName = DatabaseService.tagTableName;
 
   Future<int> insert(Tag tag) async {
-    final newId = await _insert(tag);
-    ref.read(firestorePublicUserDataRepository).addTag(tag.copyWith(id: newId), ref.read(firebaseAuthNotifierProvider).user!.uid);
-    return newId;
+    try {
+      final newId = await _insert(tag);
+      ref.read(firestorePublicUserDataRepository).addTag(tag.copyWith(id: newId), ref.read(firebaseAuthNotifierProvider).user!.uid);
+      return newId;
+    } on Exception catch (_) {
+      throw Exception('タグの追加に失敗しました。タグ名が重複している可能性があります。');
+    }
   }
 
   Future<int> _insert(Tag tag) async {

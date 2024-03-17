@@ -13,6 +13,7 @@ _$GameImpl _$$GameImplFromJson(Map<String, dynamic> json) => $checkedCreate(
         final val = _$GameImpl(
           id: $checkedConvert('game_id', (v) => v as int?),
           name: $checkedConvert('game', (v) => v as String),
+          publicGameId: $checkedConvert('public_game_id', (v) => v as int?),
           isVisibleToPicker: $checkedConvert('is_visible_to_picker',
               (v) => v == null ? true : _boolFromJson(v)),
           isShare: $checkedConvert(
@@ -24,6 +25,7 @@ _$GameImpl _$$GameImplFromJson(Map<String, dynamic> json) => $checkedCreate(
       fieldKeyMap: const {
         'id': 'game_id',
         'name': 'game',
+        'publicGameId': 'public_game_id',
         'isVisibleToPicker': 'is_visible_to_picker',
         'isShare': 'is_share',
         'sortIndex': 'sort_index'
@@ -34,6 +36,7 @@ Map<String, dynamic> _$$GameImplToJson(_$GameImpl instance) =>
     <String, dynamic>{
       'game_id': instance.id,
       'game': instance.name,
+      'public_game_id': instance.publicGameId,
       'is_visible_to_picker': _boolToJson(instance.isVisibleToPicker),
       'is_share': _boolToJson(instance.isShare),
       'sort_index': instance.sortIndex,

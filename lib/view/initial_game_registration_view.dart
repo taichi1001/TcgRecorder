@@ -1,65 +1,77 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tcg_manager/generated/l10n.dart';
-import 'package:tcg_manager/provider/initital_game_registration_provider.dart';
+import 'package:tcg_manager/entity/game.dart';
+import 'package:tcg_manager/helper/initial_data_controller.dart';
+import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
+import 'package:tcg_manager/repository/game_repository.dart';
+import 'package:tcg_manager/selector/sorted_public_game_list_selector.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
-import 'package:tcg_manager/view/component/custom_textfield.dart';
 
 class InitialGameRegistrationView extends HookConsumerWidget {
   const InitialGameRegistrationView({Key? key}) : super(key: key);
 
+  Future _save(WidgetRef ref, Game game) async {
+    final id = await ref.read(gameRepository).insert(game);
+    ref.read(initialDataControllerProvider).saveGame(game.copyWith(id: id));
+    ref.invalidate(allGameListProvider);
+    ref.read(selectGameNotifierProvider.notifier).startupGame();
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final gameTextEditingController = useTextEditingController();
-    final initialGameRegistrationNotifier = ref.read(initialGameRegistrationNotifierProvider.notifier);
-    final initialGameState = ref.watch(initialGameRegistrationNotifierProvider);
+    final publicGameList = ref.watch(sortedPublicGameListProvider);
 
-    return SafeArea(
-      top: false,
-      child: Column(
-        children: [
-          Expanded(
-            child: Scaffold(
-              body: Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(S.of(context).initializeGame),
-                    const SizedBox(height: 16),
-                    CustomTextField(
-                      labelText: S.of(context).inputgame,
-                      controller: gameTextEditingController,
-                      onChanged: initialGameRegistrationNotifier.changeGameForString,
-                    ),
-                    const SizedBox(height: 16),
-                    SizedBox(
-                      width: 300,
-                      height: 50,
-                      child: ElevatedButton(
-                        onPressed: initialGameState.initialGame == null
-                            ? null
-                            : () async {
-                                await initialGameRegistrationNotifier.save();
-                                ref.read(selectGameNotifierProvider.notifier).startupGame();
-                              },
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        child: Text(S.of(context).save),
-                      ),
-                    ),
-                  ],
+    return Scaffold(
+      appBar: AppBar(title: const Text('ゲーム一覧')),
+      bottomNavigationBar: const AdaptiveBannerAd(),
+      body: publicGameList.when(
+        data: (publicGameListData) => Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Text(
+                '記録するゲームを選択してください。',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+            ),
+            Expanded(
+              child: ListView.separated(
+                itemCount: publicGameListData.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return ListTile(
+                    tileColor: Theme.of(context).colorScheme.surface,
+                    selectedColor: Theme.of(context).hoverColor,
+                    titleTextStyle: Theme.of(context).textTheme.bodyMedium,
+                    subtitleTextStyle: Theme.of(context).textTheme.labelSmall,
+                    title: Text(publicGameListData[index].name),
+                    onTap: () async {
+                      final result = await showTextInputDialog(
+                        context: context,
+                        title: 'ゲーム名を入力',
+                        textFields: [
+                          DialogTextField(initialText: publicGameListData[index].name),
+                        ],
+                      );
+                      if (result != null) {
+                        _save(ref, Game(name: result.first, publicGameId: publicGameListData[index].id));
+                      }
+                    },
+                  );
+                },
+                separatorBuilder: (context, index) => const Divider(
+                  indent: 16,
+                  thickness: 1,
+                  height: 0,
                 ),
               ),
             ),
-          ),
-          const AdaptiveBannerAd(),
-        ],
+          ],
+        ),
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, _) => Center(child: Text(error.toString())),
       ),
     );
   }

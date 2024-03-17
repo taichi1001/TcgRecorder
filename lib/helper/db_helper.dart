@@ -93,7 +93,7 @@ class DbHelper {
 
   Future _removeTagFromRecord(Tag tag) async {
     final allRecord = await ref.read(allRecordListProvider.future);
-    final tagRecord = allRecord.where((record) => record.tagId == tag.id).toList();
+    final tagRecord = allRecord.where((record) => record.tagId.contains(tag.id)).toList();
     for (var record in tagRecord) {
       final newTagId = [...record.tagId]..removeWhere((element) => element == tag.id);
       await ref.read(recordRepository).update(record.copyWith(tagId: newTagId));
