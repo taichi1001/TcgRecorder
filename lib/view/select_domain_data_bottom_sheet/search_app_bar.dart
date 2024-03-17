@@ -1,3 +1,4 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -18,6 +19,7 @@ class SearchAppBar extends HookConsumerWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectDomainDataViewNotifier = ref.watch(selectDomainDataViewNotifierProvider(dataType).notifier);
+    final isNewAdd = ref.watch(selectDomainDataViewNotifierProvider(dataType).select((value) => value.isNewAdd));
     final searchTextController = useTextEditingController(text: '');
     final searchFocusNode = useFocusNode();
     final isSearchFocus = useState(false);
@@ -39,35 +41,71 @@ class SearchAppBar extends HookConsumerWidget implements PreferredSizeWidget {
       isSearch.value = isSearchFocus.value || isSearchText.value;
     });
     return AppBar(
-      leading: Icon(
-        Icons.search,
-        color: Theme.of(context).primaryColor,
-      ),
+      leading: isNewAdd
+          ? null
+          : Icon(
+              Icons.search,
+              color: Theme.of(context).primaryColor,
+            ),
       actions: [
-        TextButton(
-          onPressed: searchTextController.text == ''
-              ? null
-              : () {
-                  searchTextController.text = '';
-                },
-          child: Text(
-            'クリア',
-            style: searchTextController.text == ''
-                ? Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.grey)
-                : Theme.of(context).textTheme.bodySmall,
+        if (!isNewAdd && searchTextController.text != '')
+          TextButton(
+            onPressed: () {
+              searchTextController.text = '';
+            },
+            child: Text(
+              'クリア',
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ),
+        IconButton(
+          onPressed: () async {
+            if (dataType == DomainDataType.game) {
+              selectDomainDataViewNotifier.toggleIsNewAdd();
+            } else {
+              final result = await showTextInputDialog(
+                context: context,
+                title: dataType == DomainDataType.deck ? 'デッキ名を入力' : 'タグ名を入力',
+                textFields: [
+                  const DialogTextField(),
+                ],
+              );
+              if (result != null) {
+                try {
+                  await selectDomainDataViewNotifier.saveDomainData(result.first);
+                } catch (e) {
+                  if (!context.mounted) return;
+                  await showOkAlertDialog(
+                    context: context,
+                    title: 'エラー',
+                    message: '既に登録済みのデータです。',
+                  );
+                }
+              }
+            }
+          },
+          icon: Text(
+            isNewAdd ? 'キャンセル' : '新規登録',
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).primaryColor),
           ),
         ),
       ],
-      titleSpacing: 0,
+      // titleSpacing: 0,
       backgroundColor: Theme.of(context).colorScheme.surface,
-      title: TextField(
-        controller: searchTextController,
-        focusNode: searchFocusNode,
-        decoration: InputDecoration(
-          labelText: '検索・新規登録',
-          labelStyle: Theme.of(context).textTheme.bodyMedium,
-        ),
-      ),
+      centerTitle: isNewAdd,
+      title: isNewAdd
+          ? Text(
+              '新規登録',
+              style: Theme.of(context).textTheme.titleMedium,
+            )
+          : TextField(
+              controller: searchTextController,
+              focusNode: searchFocusNode,
+              decoration: InputDecoration(
+                labelText: '検索',
+                labelStyle: Theme.of(context).textTheme.bodyMedium,
+              ),
+            ),
     );
   }
 }

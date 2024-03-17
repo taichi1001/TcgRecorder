@@ -24,6 +24,8 @@ mixin _$Game {
   int? get id => throw _privateConstructorUsedError;
   @JsonKey(name: 'game')
   String get name => throw _privateConstructorUsedError;
+  @JsonKey(name: 'public_game_id')
+  int? get publicGameId => throw _privateConstructorUsedError;
   @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
   bool get isVisibleToPicker => throw _privateConstructorUsedError;
   @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
@@ -43,6 +45,7 @@ abstract class $GameCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: 'game_id') int? id,
       @JsonKey(name: 'game') String name,
+      @JsonKey(name: 'public_game_id') int? publicGameId,
       @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
       bool isVisibleToPicker,
       @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson) bool isShare,
@@ -64,6 +67,7 @@ class _$GameCopyWithImpl<$Res, $Val extends Game>
   $Res call({
     Object? id = freezed,
     Object? name = null,
+    Object? publicGameId = freezed,
     Object? isVisibleToPicker = null,
     Object? isShare = null,
     Object? sortIndex = freezed,
@@ -77,6 +81,10 @@ class _$GameCopyWithImpl<$Res, $Val extends Game>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      publicGameId: freezed == publicGameId
+          ? _value.publicGameId
+          : publicGameId // ignore: cast_nullable_to_non_nullable
+              as int?,
       isVisibleToPicker: null == isVisibleToPicker
           ? _value.isVisibleToPicker
           : isVisibleToPicker // ignore: cast_nullable_to_non_nullable
@@ -103,6 +111,7 @@ abstract class _$$GameImplCopyWith<$Res> implements $GameCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: 'game_id') int? id,
       @JsonKey(name: 'game') String name,
+      @JsonKey(name: 'public_game_id') int? publicGameId,
       @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
       bool isVisibleToPicker,
       @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson) bool isShare,
@@ -121,6 +130,7 @@ class __$$GameImplCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? name = null,
+    Object? publicGameId = freezed,
     Object? isVisibleToPicker = null,
     Object? isShare = null,
     Object? sortIndex = freezed,
@@ -134,6 +144,10 @@ class __$$GameImplCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      publicGameId: freezed == publicGameId
+          ? _value.publicGameId
+          : publicGameId // ignore: cast_nullable_to_non_nullable
+              as int?,
       isVisibleToPicker: null == isVisibleToPicker
           ? _value.isVisibleToPicker
           : isVisibleToPicker // ignore: cast_nullable_to_non_nullable
@@ -156,6 +170,7 @@ class _$GameImpl implements _Game {
   _$GameImpl(
       {@JsonKey(name: 'game_id') this.id,
       @JsonKey(name: 'game') required this.name,
+      @JsonKey(name: 'public_game_id') this.publicGameId,
       @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
       this.isVisibleToPicker = true,
       @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
@@ -172,6 +187,9 @@ class _$GameImpl implements _Game {
   @JsonKey(name: 'game')
   final String name;
   @override
+  @JsonKey(name: 'public_game_id')
+  final int? publicGameId;
+  @override
   @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
   final bool isVisibleToPicker;
   @override
@@ -182,7 +200,7 @@ class _$GameImpl implements _Game {
 
   @override
   String toString() {
-    return 'Game(id: $id, name: $name, isVisibleToPicker: $isVisibleToPicker, isShare: $isShare, sortIndex: $sortIndex)';
+    return 'Game(id: $id, name: $name, publicGameId: $publicGameId, isVisibleToPicker: $isVisibleToPicker, isShare: $isShare, sortIndex: $sortIndex)';
   }
 
   @override
@@ -192,6 +210,8 @@ class _$GameImpl implements _Game {
             other is _$GameImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
+            (identical(other.publicGameId, publicGameId) ||
+                other.publicGameId == publicGameId) &&
             (identical(other.isVisibleToPicker, isVisibleToPicker) ||
                 other.isVisibleToPicker == isVisibleToPicker) &&
             (identical(other.isShare, isShare) || other.isShare == isShare) &&
@@ -201,8 +221,8 @@ class _$GameImpl implements _Game {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, name, isVisibleToPicker, isShare, sortIndex);
+  int get hashCode => Object.hash(runtimeType, id, name, publicGameId,
+      isVisibleToPicker, isShare, sortIndex);
 
   @JsonKey(ignore: true)
   @override
@@ -222,6 +242,7 @@ abstract class _Game implements Game {
   factory _Game(
       {@JsonKey(name: 'game_id') final int? id,
       @JsonKey(name: 'game') required final String name,
+      @JsonKey(name: 'public_game_id') final int? publicGameId,
       @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
       final bool isVisibleToPicker,
       @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson) final bool isShare,
@@ -235,6 +256,9 @@ abstract class _Game implements Game {
   @override
   @JsonKey(name: 'game')
   String get name;
+  @override
+  @JsonKey(name: 'public_game_id')
+  int? get publicGameId;
   @override
   @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson)
   bool get isVisibleToPicker;

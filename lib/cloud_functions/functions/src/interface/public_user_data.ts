@@ -5,8 +5,15 @@ export interface PublicUserData {
     records: UserRecords[]
 }
 
+export interface AggregatedData {
+    decks: Deck[]
+    tags: Tag[]
+    records: UserRecord[]
+}
+
 export interface Game {
     game_id: number
+    public_game_id?: number
     game: string
 }
 

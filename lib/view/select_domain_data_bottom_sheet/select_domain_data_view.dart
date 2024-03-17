@@ -1,12 +1,11 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:tcg_manager/entity/domain_data.dart';
 import 'package:tcg_manager/enum/domain_data_type.dart';
 import 'package:tcg_manager/provider/record_list_view_provider.dart';
 import 'package:tcg_manager/provider/select_domain_data_view_provider.dart';
-import 'package:tcg_manager/selector/search_exact_match_domain_data_selector.dart';
 import 'package:tcg_manager/selector/select_domain_view_info_selector.dart';
 import 'package:tcg_manager/view/component/loading_overlay.dart';
 import 'package:tcg_manager/view/select_domain_data_bottom_sheet/all_list_section_bar.dart';
@@ -100,10 +99,8 @@ class _Body extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectDomainViewInfo = ref.watch(selectDomainViewInfoProvider(dataType));
-    final selectDomainDataViewNotifier = ref.watch(selectDomainDataViewNotifierProvider(dataType).notifier);
-    final isSearch = useState(true);
     final searchText = ref.watch(selectDomainDataViewNotifierProvider(dataType).select((value) => value.searchText));
-    final searchExactMatchDomainData = ref.watch(searchExactMatchDomainDataProvider(dataType));
+    final isNewAdd = ref.watch(selectDomainDataViewNotifierProvider(dataType).select((value) => value.isNewAdd));
     final selectedDomainDataList = ref.watch(recordListViewNotifierProvider.select((value) => value.tagList));
     return SingleChildScrollView(
       controller: ModalScrollController.of(context),
@@ -113,27 +110,54 @@ class _Body extends HookConsumerWidget {
         error: (error, stack) => Text('$error'),
         loading: () => const Center(child: CircularProgressIndicator()),
         data: (selectDomainViewInfo) {
-          // 検索結果がなかった場合
-          if (isSearch.value && selectDomainViewInfo.searchDomainDataList.isEmpty && searchText != '') {
-            return GestureDetector(
-              onTap: () {
-                selectDomainDataViewNotifier.saveDomainData(searchText);
+          // dataTypeがGameで、新規追加ボタンを押したら
+          if (dataType == DomainDataType.game && isNewAdd) {
+            return DomainDataList(
+              domainDataList: selectDomainViewInfo.publicGameDomainDataList,
+              selectedDomainDataList: const [],
+              rootContext: rootContext,
+              selectDomainDataFunc: (domainData, _) async {
+                final result = await showTextInputDialog(
+                  context: context,
+                  title: 'ゲーム名を入力',
+                  textFields: [
+                    DialogTextField(initialText: domainData.name),
+                  ],
+                );
+                if (result != null) {
+                  try {
+                    await ref.read(selectDomainDataViewNotifierProvider(dataType).notifier).saveDomainData(result.first, domainData.id);
+                  } catch (e) {
+                    if (!context.mounted) return;
+                    await showOkAlertDialog(
+                      context: context,
+                      title: 'エラー',
+                      message: '既に登録済みのデータです。',
+                    );
+                  }
+                }
               },
-              child: Container(
-                padding: const EdgeInsets.all(16),
-                width: double.infinity,
-                color: Theme.of(context).colorScheme.surface,
+              enableVisibility: false,
+              afterFunc: () => ref.read(selectDomainDataViewNotifierProvider(dataType).notifier).toggleIsNewAdd(),
+              tagCount: tagCount,
+              returnSelecting: false,
+              isShowMenu: false,
+            );
+          }
+          // 検索結果がなかった場合
+          if (selectDomainViewInfo.searchDomainDataList.isEmpty && searchText != '') {
+            return Container(
+              padding: const EdgeInsets.all(16),
+              width: double.infinity,
+              child: Center(
                 child: Text(
-                  '「$searchText」を登録する',
+                  '検索結果がありませんでした。',
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ),
             );
-            // 完全一致の検索結果があった場合
-          } else if (isSearch.value &&
-              selectDomainViewInfo.searchDomainDataList.isNotEmpty &&
-              searchExactMatchDomainData.asData?.value != null &&
-              searchText != '') {
+            // 検索結果があった場合
+          } else if (selectDomainViewInfo.searchDomainDataList.isNotEmpty && searchText != '') {
             return Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -153,50 +177,6 @@ class _Body extends HookConsumerWidget {
                   enableVisibility: false,
                   afterFunc: afterFunc,
                   deselectionFunc: deselectionFunc,
-                  tagCount: tagCount,
-                  returnSelecting: returnSelecting,
-                  isShowMenu: isShowMenu,
-                ),
-              ],
-            );
-            // 完全一致はないが検索結果がある場合
-          } else if (isSearch.value &&
-              selectDomainViewInfo.searchDomainDataList.isNotEmpty &&
-              searchExactMatchDomainData.asData?.value == null &&
-              searchText != '') {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    selectDomainDataViewNotifier.saveDomainData(searchText);
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(16),
-                    width: double.infinity,
-                    color: Theme.of(context).colorScheme.surface,
-                    child: Text(
-                      '「$searchText」を登録する',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Text(
-                    '検索結果',
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                ),
-                DomainDataList(
-                  domainDataList: selectDomainViewInfo.searchDomainDataList,
-                  selectedDomainDataList: selectedDomainDataList,
-                  rootContext: rootContext,
-                  selectDomainDataFunc: selectDomainDataFunc,
-                  deselectionFunc: deselectionFunc,
-                  enableVisibility: false,
-                  afterFunc: afterFunc,
                   tagCount: tagCount,
                   returnSelecting: returnSelecting,
                   isShowMenu: isShowMenu,

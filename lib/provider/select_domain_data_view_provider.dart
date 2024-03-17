@@ -41,36 +41,45 @@ class SelectDomainDataViewNotifier extends StateNotifier<SelectDomainDataViewSta
     state = state.copyWith(searchText: searchText);
   }
 
-  Future saveDomainData(String name) async {
+  void toggleIsNewAdd() {
+    state = state.copyWith(isNewAdd: !state.isNewAdd);
+  }
+
+  Future saveDomainData(String name, [int? publicGameId]) async {
     final selectGame = ref.read(selectGameNotifierProvider).selectGame;
-    if (dataType == DomainDataType.game) {
-      final game = Game(name: name);
-      ref.read(gameRepository).insert(game);
-      ref.invalidate(allGameListProvider);
-    } else if (dataType == DomainDataType.deck) {
-      final deck = Deck(
-        name: name,
-        gameId: selectGame!.id,
-      );
-      if (ref.read(isShareGame)) {
-        final share = await ref.read(gameFirestoreShareStreamProvider.future);
-        ref.read(firestoreShareDataRepository).addDeck(deck, share!.docName);
-      } else {
-        ref.read(deckRepository).insert(deck);
-        ref.refresh(allDeckListProvider);
+    try {
+      if (dataType == DomainDataType.game && publicGameId != null) {
+        final game = Game(name: name, publicGameId: publicGameId);
+        await ref.read(gameRepository).insert(game);
+        ref.invalidate(allGameListProvider);
+      } else if (dataType == DomainDataType.deck) {
+        final deck = Deck(
+          name: name,
+          gameId: selectGame!.id,
+        );
+        if (ref.read(isShareGame)) {
+          final share = await ref.read(gameFirestoreShareStreamProvider.future);
+          await ref.read(firestoreShareDataRepository).addDeck(deck, share!.docName);
+        } else {
+          await ref.read(deckRepository).insert(deck);
+          ref.refresh(allDeckListProvider);
+        }
+      } else if (dataType == DomainDataType.tag) {
+        final tag = Tag(
+          name: name,
+          gameId: selectGame!.id,
+        );
+        if (ref.read(isShareGame)) {
+          final share = await ref.read(gameFirestoreShareStreamProvider.future);
+          await ref.read(firestoreShareDataRepository).addTag(tag, share!.docName);
+        } else {
+          await ref.read(tagRepository).insert(tag);
+          ref.refresh(allTagListProvider);
+        }
       }
-    } else if (dataType == DomainDataType.tag) {
-      final tag = Tag(
-        name: name,
-        gameId: selectGame!.id,
-      );
-      if (ref.read(isShareGame)) {
-        final share = await ref.read(gameFirestoreShareStreamProvider.future);
-        ref.read(firestoreShareDataRepository).addTag(tag, share!.docName);
-      } else {
-        ref.read(tagRepository).insert(tag);
-        ref.refresh(allTagListProvider);
-      }
+    } catch (e) {
+      // 既に登録済みの場合の例外処理
+      throw Exception('既に登録済みのデータです: $e');
     }
     if (ref.read(backupNotifierProvider)) await ref.read(firestoreBackupControllerProvider).addAll();
   }

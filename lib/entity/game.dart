@@ -9,6 +9,7 @@ class Game with _$Game implements DomainData {
   factory Game({
     @JsonKey(name: 'game_id') int? id,
     @JsonKey(name: 'game') required String name,
+    @JsonKey(name: 'public_game_id') int? publicGameId,
     @Default(true) @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson) bool isVisibleToPicker,
     @Default(false) @JsonKey(fromJson: _boolFromJson, toJson: _boolToJson) bool isShare,
     int? sortIndex,

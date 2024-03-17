@@ -1,4 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/provider/firebase_auth_provider.dart';
 import 'package:tcg_manager/repository/firestore_public_user_data_repository.dart';
@@ -26,9 +27,13 @@ class DeckRepository {
   }
 
   Future<int> insert(Deck deck) async {
-    final newId = await _insert(deck);
-    ref.read(firestorePublicUserDataRepository).addDeck(deck.copyWith(id: newId), ref.read(firebaseAuthNotifierProvider).user!.uid);
-    return newId;
+    try {
+      final newId = await _insert(deck);
+      ref.read(firestorePublicUserDataRepository).addDeck(deck.copyWith(id: newId), ref.read(firebaseAuthNotifierProvider).user!.uid);
+      return newId;
+    } on DatabaseException catch (_) {
+      throw Exception('デッキの追加に失敗しました。デッキ名が重複している可能性があります。');
+    }
   }
 
   Future<int> _insert(Deck deck) async {

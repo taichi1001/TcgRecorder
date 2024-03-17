@@ -19,21 +19,22 @@ import 'package:tcg_manager/firebase_options.dart';
 import 'package:tcg_manager/helper/att.dart';
 import 'package:tcg_manager/helper/theme_data.dart';
 import 'package:tcg_manager/helper/tmp_cache_directory.dart';
-import 'package:tcg_manager/provider/adaptive_banner_ad_provider.dart';
+import 'package:tcg_manager/provider/database_version_provider.dart';
 import 'package:tcg_manager/provider/deck_list_provider.dart';
 import 'package:tcg_manager/provider/firebase_auth_provider.dart';
 import 'package:tcg_manager/provider/firestor_config_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
 import 'package:tcg_manager/provider/revenue_cat_provider.dart';
+import 'package:tcg_manager/provider/reward_ad_state_provider.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/provider/tag_list_provider.dart';
 import 'package:tcg_manager/provider/user_activity_provider.dart';
 import 'package:tcg_manager/provider/user_info_settings_provider.dart';
 import 'package:tcg_manager/repository/firestore_public_user_data_repository.dart';
 import 'package:tcg_manager/repository/firestore_share_repository.dart';
-import 'package:tcg_manager/state/reward_ad_state_provider.dart';
 import 'package:tcg_manager/view/bottom_navigation_view.dart';
+import 'package:tcg_manager/view/game_linking_view.dart';
 import 'package:tcg_manager/view/initial_game_registration_view.dart';
 import 'package:tcg_manager/view/login_view.dart';
 import 'package:tcg_manager/view/shared_game_limit_adjustment_view.dart';
@@ -85,19 +86,22 @@ class MainInfo {
   const MainInfo({
     required this.requiredVersion,
     required this.packageInfo,
+    this.gameList = const [],
     this.lastGame,
   });
   final String requiredVersion;
   final PackageInfo packageInfo;
   final Game? lastGame;
+  final List<Game> gameList;
 }
 
 final mainInfoProvider = FutureProvider.autoDispose.family<MainInfo, BuildContext>((ref, context) async {
-  await ref.read(adaptiveBannerAdNotifierProvider.notifier).getAd(context);
   final version = await ref.watch(requiredVersionProvider.future);
   final packgaeInfo = await PackageInfo.fromPlatform();
-  final allGameList = await ref.read(allGameListProvider.future);
+  final allGameList = await ref.watch(allGameListProvider.future);
   final allRecordList = await ref.read(allRecordListProvider.future);
+  // データベースバージョンの更新。
+  // ref.read(databaseVersionNotifierProvider.notifier).updateDatabaseVersion(2);
 
   Game? lastGame;
   for (final record in allRecordList) {
@@ -113,6 +117,7 @@ final mainInfoProvider = FutureProvider.autoDispose.family<MainInfo, BuildContex
     requiredVersion: version,
     packageInfo: packgaeInfo,
     lastGame: lastGame,
+    gameList: allGameList,
   );
 });
 
@@ -126,6 +131,7 @@ class MainApp extends HookConsumerWidget {
     final darkThemeData = ref.watch(darkThemeDataProvider(context));
 
     useEffect(() {
+      ref.read(databaseVersionNotifierProvider.notifier).updateDatabaseVersion(2);
       ref.read(userActivityLogNotifierProvider.notifier).login();
       return null;
     }, const []);
@@ -184,7 +190,7 @@ class MainAppHome extends HookConsumerWidget {
     if (!isInitialGame) {
       if (mainInfo.lastGame != null) {
         // ビルドメソッド終了後に呼ばれる
-        Future.delayed(Duration.zero, () {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
           ref.read(selectGameNotifierProvider.notifier).setSelectGame(mainInfo.lastGame!);
         });
       } else {
@@ -201,6 +207,8 @@ class MainAppHome extends HookConsumerWidget {
     final shareCount = ref.watch(combinedShareCountFutureProvider);
     return revenueCatProvider.maybeWhen(
       data: (revenuecat) {
+        final hasUnlinkedGame = mainInfo.gameList.any((game) => game.publicGameId == null);
+        if (hasUnlinkedGame) return const GameLinkingView();
         if (!ref.read(userActivityLogNotifierProvider).isPublicDataUploaded) {
           _publicDataUpload(ref);
         }
