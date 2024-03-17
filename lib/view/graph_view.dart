@@ -43,7 +43,10 @@ class GraphView extends HookConsumerWidget {
       rightButton: Row(
         children: [
           IconButton(
-            icon: const Icon(Icons.public),
+            icon: Icon(
+              Icons.public,
+              color: isAggregatedData ? Theme.of(context).colorScheme.primary : null,
+            ),
             onPressed: () => ref.read(isAggregatedDataProvider.notifier).state = !isAggregatedData,
           ),
           IconButton(
