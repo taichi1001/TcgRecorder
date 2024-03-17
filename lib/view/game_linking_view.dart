@@ -73,6 +73,10 @@ class GameLinkingView extends HookConsumerWidget {
                           '全てのゲームの紐づけが完了したら、右上の保存ボタンを押してください。',
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
+                        Text(
+                          '保存後は変更できないので、よくご確認ください。',
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.error),
+                        ),
                       ],
                     ),
                   ),
