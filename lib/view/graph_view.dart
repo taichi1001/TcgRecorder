@@ -11,7 +11,6 @@ import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/provider/graph_view_settings_provider.dart';
 import 'package:tcg_manager/provider/opponent_deck_data_by_game_provider.dart';
 import 'package:tcg_manager/provider/use_deck_data_by_game_provider.dart';
-import 'package:tcg_manager/selector/game_record_list_selector.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
 import 'package:tcg_manager/view/component/custom_scaffold.dart';
 import 'package:tcg_manager/view/data_grid.dart';
@@ -24,7 +23,7 @@ class GraphView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final recordList = ref.watch(gameRecordListProvider);
+    final useDeckDataByGame = ref.watch(useDeckDataByGameProvider);
     final isAggregatedData = ref.watch(isAggregatedDataProvider);
     final useDeckData = ref.watch(useDeckDataByGameProvider);
     final opponentDeckData = ref.watch(opponentDeckDataByGameProvider);
@@ -63,7 +62,7 @@ class GraphView extends HookConsumerWidget {
         ],
       ),
       padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
-      body: recordList.when(
+      body: useDeckDataByGame.when(
         data: (recordList) {
           return Column(
             children: [
