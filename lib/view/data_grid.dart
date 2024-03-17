@@ -11,6 +11,7 @@ import 'package:tcg_manager/provider/use_deck_data_by_game_provider.dart';
 import 'package:tcg_manager/provider/use_deck_data_by_opponent_deck_provider.dart';
 import 'package:tcg_manager/state/graph_view_settings_state.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
+import 'package:tcg_manager/view/graph_view.dart';
 
 class UseDeckGameDataGrid extends HookConsumerWidget {
   const UseDeckGameDataGrid({
@@ -57,6 +58,7 @@ class _GameDataGrid extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final graphViewSettings = ref.watch(graphViewSettingsNotifierProvider);
+    final isAggregated = ref.watch(isAggregatedDataProvider);
 
     final source = GameWinRateDataSource(winRateDataList: winRateData, context: context);
     return SfDataGridTheme(
@@ -66,7 +68,7 @@ class _GameDataGrid extends HookConsumerWidget {
       child: SfDataGrid(
         source: source,
         frozenColumnsCount: 1,
-        footerFrozenRowsCount: 1,
+        footerFrozenRowsCount: isAggregated ? 0 : 1,
         allowSorting: true,
         allowMultiColumnSorting: true,
         allowTriStateSorting: true,
@@ -122,6 +124,7 @@ class _DeckDataGrid extends HookConsumerWidget {
       winRateDataList = ref.watch(useDeckDataByOpponentDeckProvider(deck));
     }
     final graphViewSettings = ref.watch(graphViewSettingsNotifierProvider);
+    final isAggregated = ref.watch(isAggregatedDataProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -141,7 +144,7 @@ class _DeckDataGrid extends HookConsumerWidget {
             child: SfDataGrid(
               source: source,
               frozenColumnsCount: 1,
-              footerFrozenRowsCount: 1,
+              footerFrozenRowsCount: isAggregated ? 0 : 1,
               allowSorting: true,
               allowMultiColumnSorting: true,
               allowTriStateSorting: true,

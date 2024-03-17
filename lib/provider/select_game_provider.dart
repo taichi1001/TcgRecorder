@@ -8,6 +8,7 @@ import 'package:tcg_manager/provider/backup_provider.dart';
 import 'package:tcg_manager/provider/firestore_backup_controller_provider.dart';
 import 'package:tcg_manager/provider/game_list_provider.dart';
 import 'package:tcg_manager/provider/record_list_provider.dart';
+import 'package:tcg_manager/repository/firestore_public_game_repository.dart';
 import 'package:tcg_manager/repository/firestore_share_repository.dart';
 import 'package:tcg_manager/repository/game_repository.dart';
 import 'package:tcg_manager/state/select_game_state.dart';
@@ -124,3 +125,10 @@ final selectGameNotifierProvider = StateNotifierProvider<SelectGameNotifier, Sel
 
 final initialSelectGameAsyncNotifierProvider =
     AsyncNotifierProvider<InitialSelectGameAsyncNotifier, Game?>(() => InitialSelectGameAsyncNotifier());
+
+final selectAggregatedGameProvider = FutureProvider((ref) async {
+  final selectGame = ref.watch(selectGameNotifierProvider);
+  if (selectGame.selectGame == null) return null;
+  final publicGameList = await ref.watch(publicGameListProvider.future);
+  return publicGameList.firstWhereOrNull((element) => element.id == selectGame.selectGame?.publicGameId);
+});

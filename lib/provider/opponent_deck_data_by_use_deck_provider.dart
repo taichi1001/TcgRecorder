@@ -1,14 +1,29 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/deck.dart';
+import 'package:tcg_manager/entity/record.dart';
 import 'package:tcg_manager/entity/win_rate_data.dart';
 import 'package:tcg_manager/helper/record_calc.dart';
+import 'package:tcg_manager/provider/select_game_provider.dart';
+import 'package:tcg_manager/repository/firestore_aggregated_data_repository.dart';
 import 'package:tcg_manager/selector/filter_record_list_selector.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
+import 'package:tcg_manager/view/graph_view.dart';
 
 final opponentDeckDataByUseDeckProvider = FutureProvider.family.autoDispose<List<WinRateData>, String>(
   (ref, useDeckName) async {
-    final filterRecordList = await ref.watch(filterRecordListProvider.future);
-    final gameDeckList = await ref.watch(gameDeckListProvider.future);
+    List<Record> filterRecordList = [];
+    List<Deck> gameDeckList = [];
+    final isAggregatedData = ref.watch(isAggregatedDataProvider);
+    if (isAggregatedData) {
+      final publicGameId = ref.watch(selectGameNotifierProvider).selectGame!.publicGameId;
+      final aggregatedData = await ref.watch(aggregatedDataProvider(publicGameId!).future);
+      filterRecordList = aggregatedData.records;
+      gameDeckList = aggregatedData.decks;
+    } else {
+      filterRecordList = await ref.watch(filterRecordListProvider.future);
+      gameDeckList = await ref.watch(gameDeckListProvider.future);
+    }
+
     final useDeck = gameDeckList.firstWhere((deck) => deck.name == useDeckName);
     final useDeckRecord = filterRecordList.where((record) => record.useDeckId == useDeck.id).toList();
     final List<Deck> opponentDeckList = [];

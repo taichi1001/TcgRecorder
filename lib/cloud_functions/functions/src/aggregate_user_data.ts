@@ -124,14 +124,14 @@ export const aggregateUserData = functions.runWith({ timeoutSeconds: 540, memory
     }
 
     // ステップ4: 集計データをFirestoreに保存
-    saveAllAggregatedData(aggregatedDataMap, 10000);
+    saveAllAggregatedData(aggregatedDataMap);
     console.log('Aggregation completed');
 });
 
 
 
 // Firestore にデータをチャンクサイズに基づいて保存する関数
-async function saveAllAggregatedData(aggregatedDataMap: Map<number, AggregatedData>, chunkSize: number) {
+async function saveAllAggregatedData(aggregatedDataMap: Map<number, AggregatedData>) {
     const promises: Promise<void>[] = [];
 
     aggregatedDataMap.forEach((aggregatedData, gameId) => {
@@ -151,8 +151,8 @@ async function saveDataInChunks(dataArray: any[], gameId: number, dataName: stri
     const promises: Promise<any>[] = []; // または Promise<any>[]
     for (let i = 0; i < dataArray.length; i += chunkSize) {
         const chunk = dataArray.slice(i, i + chunkSize);
-        const docId = `${gameId}_${dataName}_${i / chunkSize}`;
-        const docRef = admin.firestore().collection('aggregated_data').doc(docId);
+        const docId = `${dataName}${i / chunkSize}`;
+        const docRef = admin.firestore().collection('aggregated_data').doc(gameId.toString()).collection(dataName).doc(docId);
         promises.push(docRef.set({ [dataName]: chunk }));
     }
     await Promise.all(promises);

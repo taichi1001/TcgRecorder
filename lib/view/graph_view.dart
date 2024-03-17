@@ -11,23 +11,25 @@ import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/provider/graph_view_settings_provider.dart';
 import 'package:tcg_manager/provider/opponent_deck_data_by_game_provider.dart';
 import 'package:tcg_manager/provider/use_deck_data_by_game_provider.dart';
-import 'package:tcg_manager/selector/filter_record_list_selector.dart';
+import 'package:tcg_manager/selector/game_record_list_selector.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
 import 'package:tcg_manager/view/component/custom_scaffold.dart';
 import 'package:tcg_manager/view/data_grid.dart';
 import 'package:tcg_manager/view/filter_modal_bottom_sheet.dart';
+
+final isAggregatedDataProvider = StateProvider.autoDispose<bool>((ref) => false);
 
 class GraphView extends HookConsumerWidget {
   const GraphView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final recordList = ref.watch(filterRecordListProvider);
+    final recordList = ref.watch(gameRecordListProvider);
+    final isAggregatedData = ref.watch(isAggregatedDataProvider);
     final useDeckData = ref.watch(useDeckDataByGameProvider);
     final opponentDeckData = ref.watch(opponentDeckDataByGameProvider);
     final currentIndex = useState(0);
-    final pageController = usePageController();
-
+    final pageController = usePageController(initialPage: currentIndex.value);
     return CustomScaffold(
       leading: IconButton(
         icon: const Icon(Icons.tune),
@@ -39,18 +41,26 @@ class GraphView extends HookConsumerWidget {
           );
         },
       ),
-      rightButton: IconButton(
-        icon: const Icon(Icons.filter_list),
-        onPressed: () {
-          showCupertinoModalBottomSheet(
-            expand: false,
-            context: context,
-            builder: (context) => const FilterModalBottomSheet(
-              showSort: false,
-              showUseDeck: false,
-            ),
-          );
-        },
+      rightButton: Row(
+        children: [
+          IconButton(
+            icon: const Icon(Icons.public),
+            onPressed: () => ref.read(isAggregatedDataProvider.notifier).state = !isAggregatedData,
+          ),
+          IconButton(
+            icon: const Icon(Icons.filter_list),
+            onPressed: () {
+              showCupertinoModalBottomSheet(
+                expand: false,
+                context: context,
+                builder: (context) => const FilterModalBottomSheet(
+                  showSort: false,
+                  showUseDeck: false,
+                ),
+              );
+            },
+          ),
+        ],
       ),
       padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
       body: recordList.when(
