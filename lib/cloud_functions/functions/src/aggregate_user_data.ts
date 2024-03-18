@@ -10,7 +10,13 @@ export const aggregateUserData = functions.runWith({ timeoutSeconds: 540, memory
     // 集計データコレクションの全データを削除
     const aggregatedDataRef = admin.firestore().collection("aggregated_data");
     const aggregatedDataSnapshot = await aggregatedDataRef.get();
-    aggregatedDataSnapshot.forEach(doc => {
+    aggregatedDataSnapshot.forEach(async (doc) => {
+        const subcollections = await doc.ref.listCollections();
+        const subcollectionDeletions = subcollections.map(async (subcollection) => {
+            const subcollectionSnapshot = await subcollection.get();
+            subcollectionSnapshot.forEach(subDoc => subDoc.ref.delete());
+        });
+        await Promise.all(subcollectionDeletions);
         doc.ref.delete();
     });
 
