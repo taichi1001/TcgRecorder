@@ -203,7 +203,7 @@ class InputViewNotifier extends StateNotifier<InputViewState> {
       firstSecond: state.firstSecond,
       useDeck: fixUseDeck ? state.useDeck : null,
       opponentDeck: fixOpponentDeck ? state.opponentDeck : null,
-      tag: fixTag ? state.tag : [],
+      tag: fixTag ? state.tag : [Tag(name: '')],
     );
   }
 

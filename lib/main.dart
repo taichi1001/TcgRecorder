@@ -101,7 +101,7 @@ final mainInfoProvider = FutureProvider.autoDispose.family<MainInfo, BuildContex
   final allGameList = await ref.watch(allGameListProvider.future);
   final allRecordList = await ref.read(allRecordListProvider.future);
   // データベースバージョンの更新。
-  // ref.read(databaseVersionNotifierProvider.notifier).updateDatabaseVersion(2);
+  ref.read(databaseVersionNotifierProvider.notifier).updateDatabaseVersion(2);
 
   Game? lastGame;
   for (final record in allRecordList) {
