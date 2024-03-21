@@ -67,10 +67,11 @@ class DataView extends HookConsumerWidget {
               onPageChanged: (index) {
                 currentIndex.value = index;
               },
-              children: const [
-                UseDeckGameDataGrid(),
-                OpponentDeckGameDataGrid(),
-                DeckUseRateChart(),
+              children: [
+                if (isAggregatedData) const PublicGameDataGrid(),
+                if (!isAggregatedData) const UseDeckGameDataGrid(),
+                if (!isAggregatedData) const OpponentDeckGameDataGrid(),
+                const DeckUseRateChart(),
               ],
             ),
           ),
@@ -81,7 +82,7 @@ class DataView extends HookConsumerWidget {
   }
 }
 
-class _CustomSegmentedControl extends StatelessWidget {
+class _CustomSegmentedControl extends HookConsumerWidget {
   final ValueNotifier<int> currentIndex;
   final PageController pageController;
 
@@ -92,33 +93,85 @@ class _CustomSegmentedControl extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isAggregatedData = ref.watch(isAggregatedDataProvider);
+    useEffect(() {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (isAggregatedData) {
+          switch (currentIndex.value) {
+            case 0:
+            case 1:
+              currentIndex.value = 0;
+              pageController.jumpToPage(0);
+              break;
+            case 2:
+              currentIndex.value = 1;
+              pageController.jumpToPage(1);
+              break;
+          }
+        } else {
+          switch (currentIndex.value) {
+            case 0:
+              currentIndex.value = 0;
+              pageController.jumpToPage(0);
+              break;
+            case 1:
+              currentIndex.value = 2;
+              pageController.jumpToPage(2);
+              break;
+          }
+        }
+      });
+      return null; // useEffectのクリーンアップ関数はここでは不要なのでnullを返す
+    }, [isAggregatedData]);
+
     return CupertinoSlidingSegmentedControl<int>(
       children: {
-        0: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.table_rows, size: 20),
-            const SizedBox(width: 8),
-            Text('使用デッキ', style: Theme.of(context).textTheme.bodySmall),
-          ],
-        ),
-        1: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.table_rows, size: 20),
-            const SizedBox(width: 8),
-            Text('対戦デッキ', style: Theme.of(context).textTheme.bodySmall),
-          ],
-        ),
-        2: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.pie_chart, size: 20),
-            const SizedBox(width: 8),
-            Text('デッキ使用率', style: Theme.of(context).textTheme.bodySmall),
-          ],
-        ),
+        if (!isAggregatedData)
+          0: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.table_rows, size: 20),
+              const SizedBox(width: 8),
+              Text('使用デッキ', style: Theme.of(context).textTheme.bodySmall),
+            ],
+          ),
+        if (!isAggregatedData)
+          1: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.table_rows, size: 20),
+              const SizedBox(width: 8),
+              Text('対戦デッキ', style: Theme.of(context).textTheme.bodySmall),
+            ],
+          ),
+        if (!isAggregatedData)
+          2: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.pie_chart, size: 20),
+              const SizedBox(width: 8),
+              Text('デッキ使用率', style: Theme.of(context).textTheme.bodySmall),
+            ],
+          ),
+        if (isAggregatedData)
+          0: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.table_rows, size: 20),
+              const SizedBox(width: 8),
+              Text('集計データ', style: Theme.of(context).textTheme.bodySmall),
+            ],
+          ),
+        if (isAggregatedData)
+          1: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.pie_chart, size: 20),
+              const SizedBox(width: 8),
+              Text('デッキ使用率', style: Theme.of(context).textTheme.bodySmall),
+            ],
+          ),
       },
       onValueChanged: (int? index) {
         if (index == null) return;

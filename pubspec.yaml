@@ -19,9 +19,9 @@ dependencies:
 
   app_tracking_transparency: ^2.0.4
 
-  hooks_riverpod: ^2.4.10
+  hooks_riverpod: ^2.5.1
   flutter_hooks: ^0.20.5
-  riverpod_annotation: ^2.3.4
+  riverpod_annotation: ^2.3.5
 
   state_notifier: ^0.7.2+1
 
@@ -48,11 +48,11 @@ dependencies:
 
   tab_indicator_styler: ^2.0.0
 
-  syncfusion_flutter_core: ^22.1.37
-  syncfusion_flutter_datagrid: ^22.1.37
-  syncfusion_flutter_datepicker: ^22.1.37
-  syncfusion_flutter_charts: ^22.1.37
-  syncfusion_flutter_sliders: ^22.1.37
+  syncfusion_flutter_core: ^25.1.35
+  syncfusion_flutter_datagrid: ^25.1.35
+  syncfusion_flutter_datepicker: ^25.1.35
+  syncfusion_flutter_charts: ^25.1.35
+  syncfusion_flutter_sliders: ^25.1.35
 
   isar: ^4.0.0-dev.12
   isar_flutter_libs: ^4.0.0-dev.12

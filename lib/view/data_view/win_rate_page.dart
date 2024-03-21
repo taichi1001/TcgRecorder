@@ -6,7 +6,9 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:tcg_manager/entity/win_rate_data.dart';
 import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/provider/opponent_deck_data_by_game_provider.dart';
+import 'package:tcg_manager/provider/public_data_by_game_provider.dart';
 import 'package:tcg_manager/provider/use_deck_data_by_game_provider.dart';
+import 'package:tcg_manager/view/data_view/data_view.dart';
 
 class DeckUseRateChart extends HookConsumerWidget {
   const DeckUseRateChart({
@@ -15,14 +17,16 @@ class DeckUseRateChart extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return const Column(
+    final isAggregate = ref.watch(isAggregatedDataProvider);
+    return Column(
       children: [
         Expanded(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _UseDeckUseRateChart(),
-              _OpponentDeckUseRateChart(),
+              if (!isAggregate) const _UseDeckUseRateChart(),
+              if (!isAggregate) const _OpponentDeckUseRateChart(),
+              if (isAggregate) const _PublicDataUseRateChart(),
             ],
           ),
         ),
@@ -61,6 +65,25 @@ class _OpponentDeckUseRateChart extends HookConsumerWidget {
       data: (data) => data.isEmpty
           ? Center(child: Text(S.of(context).noDataMessage))
           : _UseRateChart(data: data, title: S.of(context).opponentDeckDistribution),
+      error: (error, stack) => Text(error.toString()),
+      loading: () => const Center(child: CircularProgressIndicator()),
+    );
+  }
+}
+
+class _PublicDataUseRateChart extends HookConsumerWidget {
+  const _PublicDataUseRateChart({
+    key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final winRateData = ref.watch(publicUseRateProvider);
+    return winRateData.when(
+      data: (data) {
+        if (data.isEmpty) return Center(child: Text(S.of(context).noDataMessage));
+        return _UseRateChart(data: data, title: S.of(context).useDeckDistribution);
+      },
       error: (error, stack) => Text(error.toString()),
       loading: () => const Center(child: CircularProgressIndicator()),
     );

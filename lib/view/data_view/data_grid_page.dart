@@ -7,6 +7,8 @@ import 'package:tcg_manager/generated/l10n.dart';
 import 'package:tcg_manager/provider/graph_view_settings_provider.dart';
 import 'package:tcg_manager/provider/opponent_deck_data_by_game_provider.dart';
 import 'package:tcg_manager/provider/opponent_deck_data_by_use_deck_provider.dart';
+import 'package:tcg_manager/provider/public_data_by_deck_provider.dart';
+import 'package:tcg_manager/provider/public_data_by_game_provider.dart';
 import 'package:tcg_manager/provider/use_deck_data_by_game_provider.dart';
 import 'package:tcg_manager/provider/use_deck_data_by_opponent_deck_provider.dart';
 import 'package:tcg_manager/state/graph_view_settings_state.dart';
@@ -22,7 +24,7 @@ class UseDeckGameDataGrid extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final winRateData = ref.watch(totalAddedToUseDeckDataByGameProvider);
     return winRateData.when(
-      data: (data) => _GameDataGrid(winRateData: data, isUseDeckData: true),
+      data: (data) => _GameDataGrid(winRateData: data, isUseDeckData: true, isPublicData: false),
       error: (error, stack) => Text(error.toString()),
       loading: () => const Center(child: CircularProgressIndicator()),
     );
@@ -38,7 +40,23 @@ class OpponentDeckGameDataGrid extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final winRateData = ref.watch(totalAddedToOpponentDeckDataByGameProvider);
     return winRateData.when(
-      data: (data) => _GameDataGrid(winRateData: data, isUseDeckData: false),
+      data: (data) => _GameDataGrid(winRateData: data, isUseDeckData: false, isPublicData: false),
+      error: (error, stack) => Text(error.toString()),
+      loading: () => const Center(child: CircularProgressIndicator()),
+    );
+  }
+}
+
+class PublicGameDataGrid extends HookConsumerWidget {
+  const PublicGameDataGrid({
+    key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final winRateData = ref.watch(totalAddedToPublicDataByGameProvider);
+    return winRateData.when(
+      data: (data) => _GameDataGrid(winRateData: data, isUseDeckData: false, isPublicData: true),
       error: (error, stack) => Text(error.toString()),
       loading: () => const Center(child: CircularProgressIndicator()),
     );
@@ -49,11 +67,13 @@ class _GameDataGrid extends HookConsumerWidget {
   const _GameDataGrid({
     required this.winRateData,
     required this.isUseDeckData,
+    required this.isPublicData,
     key,
   }) : super(key: key);
 
   final List<WinRateData> winRateData;
   final bool isUseDeckData;
+  final bool isPublicData;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -78,6 +98,9 @@ class _GameDataGrid extends HookConsumerWidget {
         onCellTap: (details) {
           final dataIndex = details.rowColumnIndex.rowIndex;
           if (dataIndex == 0) return; // カラム名が書いてある列がタップされた場合
+          if (isAggregated && dataIndex == source.dataGridRows.length - 1 && source.rows[dataIndex - 1].getCells().first.value == 'その他') {
+            return; // その他絡むがタップされた場合
+          }
           if (dataIndex == source.dataGridRows.length) return; // 合計カラムがタップされた場合
           Navigator.push(
             context,
@@ -90,6 +113,7 @@ class _GameDataGrid extends HookConsumerWidget {
                       child: _DeckDataGrid(
                         deck: source.effectiveRows[details.rowColumnIndex.rowIndex - 1].getCells().first.value,
                         isUseDeckData: isUseDeckData,
+                        isPublicData: isPublicData,
                       ),
                     ),
                     const AdaptiveBannerAd(),
@@ -110,15 +134,19 @@ class _DeckDataGrid extends HookConsumerWidget {
     Key? key,
     required this.deck,
     required this.isUseDeckData,
+    required this.isPublicData,
   }) : super(key: key);
 
   final String deck;
   final bool isUseDeckData;
+  final bool isPublicData;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     AsyncValue<List<WinRateData>> winRateDataList;
-    if (isUseDeckData) {
+    if (isPublicData) {
+      winRateDataList = ref.watch(publicDataByDeckProvider(deck));
+    } else if (isUseDeckData) {
       winRateDataList = ref.watch(opponentDeckDataByUseDeckProvider(deck));
     } else {
       winRateDataList = ref.watch(useDeckDataByOpponentDeckProvider(deck));
@@ -495,10 +523,18 @@ class GameWinRateDataSource extends DataGridSource {
     return const Text('test');
   }
 
-  // 合計行をソート対象から外すための処理を追加している
+  // 合計行が常に一番下になるように修正している
   @override
   int compare(DataGridRow? a, DataGridRow? b, SortColumnDetails sortColumn) {
-    if (a?.getCells().first.value == '合計' || b?.getCells().first.value == '合計') return 0;
+    if (a?.getCells().first.value == '合計') return 1;
+    if (b?.getCells().first.value == '合計') return -1;
+    if ((a?.getCells().first.value == 'その他' && b?.getCells().first.value != 'その他') ||
+        (a?.getCells().first.value != 'その他' && b?.getCells().first.value == 'その他')) {
+      if (a?.getCells().first.value == 'その他') {
+        return 1;
+      }
+      return -1;
+    }
     return super.compare(a, b, sortColumn);
   }
 }
