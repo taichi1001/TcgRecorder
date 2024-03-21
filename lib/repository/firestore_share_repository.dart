@@ -11,7 +11,8 @@ final firestoreShareRepository =
     Provider.autoDispose<FirestoreShareRepository>((ref) => FirestoreShareRepository(ref.watch(firestoreServiceProvider)));
 
 final hostShareProvider = StreamProvider.autoDispose<List<FirestoreShare>>(
-  (ref) => ref.watch(firestoreShareRepository).getHostShareData(ref.read(firebaseAuthNotifierProvider).user!.uid),
+  // (ref) => ref.watch(firestoreShareRepository).getHostShareData(ref.read(firebaseAuthNotifierProvider).user!.uid),
+  (ref) => ref.watch(firestoreShareRepository).getHostShareData('So8NjYaxkMhKnUDDudQDh6Evxmg2'),
 );
 
 final guestShareProvider = StreamProvider.autoDispose<List<FirestoreShare>>(

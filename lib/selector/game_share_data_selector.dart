@@ -46,6 +46,8 @@ final gameFirestoreShareStreamProvider = StreamProvider.autoDispose<FirestoreSha
     final hostGameList = await ref.watch(hostShareProvider.future);
     final guestGameList = await ref.watch(guestShareProvider.future);
     final shareGameList = [...hostGameList, ...guestGameList];
+    // TODO ローカルDBのゲームにpublic_game_idを追加したことが原因で、shareにあるgameと不整合が起こっているため修正必要
+    // とりあえずfirestore側のデータを修正して対応した。
     yield shareGameList.firstWhereOrNull((element) => element.game == selectGame);
   }
 });

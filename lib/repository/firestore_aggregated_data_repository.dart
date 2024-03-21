@@ -5,8 +5,8 @@ import 'package:tcg_manager/entity/tag.dart';
 import 'package:tcg_manager/entity/record.dart';
 import 'package:tcg_manager/service/firestore.dart';
 
-final aggregatedDataProvider = FutureProvider.family
-    .autoDispose<AggregatedData, int>((ref, id) => ref.read(firestoreAggregatedDataRepositoryProvider).getAggregatedData(id));
+final aggregatedDataProvider =
+    FutureProvider.family<AggregatedData, int>((ref, id) => ref.read(firestoreAggregatedDataRepositoryProvider).getAggregatedData(id));
 
 final firestoreAggregatedDataRepositoryProvider = Provider((ref) => FirestoreAggregatedDataRepository(ref.watch(firestoreServiceProvider)));
 

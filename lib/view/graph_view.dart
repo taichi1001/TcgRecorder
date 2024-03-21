@@ -23,7 +23,6 @@ class GraphView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final useDeckDataByGame = ref.watch(useDeckDataByGameProvider);
     final isAggregatedData = ref.watch(isAggregatedDataProvider);
     final useDeckData = ref.watch(useDeckDataByGameProvider);
     final opponentDeckData = ref.watch(opponentDeckDataByGameProvider);
@@ -65,7 +64,7 @@ class GraphView extends HookConsumerWidget {
         ],
       ),
       padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
-      body: useDeckDataByGame.when(
+      body: useDeckData.when(
         data: (recordList) {
           return Column(
             children: [

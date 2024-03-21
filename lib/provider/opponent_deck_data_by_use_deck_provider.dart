@@ -4,7 +4,7 @@ import 'package:tcg_manager/entity/record.dart';
 import 'package:tcg_manager/entity/win_rate_data.dart';
 import 'package:tcg_manager/helper/record_calc.dart';
 import 'package:tcg_manager/provider/select_game_provider.dart';
-import 'package:tcg_manager/repository/firestore_aggregated_data_repository.dart';
+import 'package:tcg_manager/selector/filter_aggregated_data_selector.dart';
 import 'package:tcg_manager/selector/filter_record_list_selector.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
 import 'package:tcg_manager/view/graph_view.dart';
@@ -16,7 +16,7 @@ final opponentDeckDataByUseDeckProvider = FutureProvider.family.autoDispose<List
     final isAggregatedData = ref.watch(isAggregatedDataProvider);
     if (isAggregatedData) {
       final publicGameId = ref.watch(selectGameNotifierProvider).selectGame!.publicGameId;
-      final aggregatedData = await ref.watch(aggregatedDataProvider(publicGameId!).future);
+      final aggregatedData = await ref.watch(filterAggregatedDataProvider(publicGameId!).future);
       filterRecordList = aggregatedData.records;
       gameDeckList = aggregatedData.decks;
     } else {
@@ -57,6 +57,7 @@ final opponentDeckDataByUseDeckProvider = FutureProvider.family.autoDispose<List
         winRateOfSecond: calc.calcUseDeckAndOpponentDeckWinRateOfSecond(useDeck, opponentDeck),
       );
     }).toList();
+    if (isAggregatedData) return opponentDeckData;
     opponentDeckData.add(
       WinRateData(
         deck: '合計',
