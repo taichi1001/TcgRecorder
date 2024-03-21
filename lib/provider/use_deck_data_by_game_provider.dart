@@ -1,4 +1,3 @@
-import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tcg_manager/entity/deck.dart';
 import 'package:tcg_manager/entity/record.dart';
@@ -8,7 +7,7 @@ import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/selector/filter_aggregated_data_selector.dart';
 import 'package:tcg_manager/selector/filter_record_list_selector.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
-import 'package:tcg_manager/view/graph_view.dart';
+import 'package:tcg_manager/view/data_view/data_view.dart';
 
 import 'package:flutter/foundation.dart';
 

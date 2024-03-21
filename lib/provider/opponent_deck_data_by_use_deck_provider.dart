@@ -7,7 +7,7 @@ import 'package:tcg_manager/provider/select_game_provider.dart';
 import 'package:tcg_manager/selector/filter_aggregated_data_selector.dart';
 import 'package:tcg_manager/selector/filter_record_list_selector.dart';
 import 'package:tcg_manager/selector/game_deck_list_selector.dart';
-import 'package:tcg_manager/view/graph_view.dart';
+import 'package:tcg_manager/view/data_view/data_view.dart';
 
 final opponentDeckDataByUseDeckProvider = FutureProvider.family.autoDispose<List<WinRateData>, String>(
   (ref, useDeckName) async {

@@ -11,7 +11,7 @@ import 'package:tcg_manager/provider/use_deck_data_by_game_provider.dart';
 import 'package:tcg_manager/provider/use_deck_data_by_opponent_deck_provider.dart';
 import 'package:tcg_manager/state/graph_view_settings_state.dart';
 import 'package:tcg_manager/view/component/adaptive_banner_ad.dart';
-import 'package:tcg_manager/view/graph_view.dart';
+import 'package:tcg_manager/view/data_view/data_view.dart';
 
 class UseDeckGameDataGrid extends HookConsumerWidget {
   const UseDeckGameDataGrid({
